@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package weebi.boutique;
+
+import "common/phone.proto";
+import "common/address.proto";
+import "common/mongo.proto";
+
+message Boutique {
+    weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
+    string firmOid = 2 [json_name = 'firmOid'];
+    string chainOid = 3 [json_name = 'chainOid'];
+    string dateCreation = 4 [json_name = 'creationDate'];
+    string dateUpdate = 5 [json_name = 'updateDate'];
+    string dateStatus = 6 [json_name = 'statusUpdateDate'];
+    bool status = 7 [json_name = 'status'];
+    string name = 8 [json_name = 'name'];
+    weebi.common.phone.Phone phone = 9 [json_name = 'phone'];
+    weebi.common.address.Address address = 10 [json_name = 'addressFull'];
+    double promo = 11 [json_name = 'promo'];
+    string promoStart =  12 [json_name = 'promoStart'];
+    string promoEnd = 13 [json_name = 'promoEnd'];
+    reserved 14 to 98;
+    map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
+   }
+
+//  required super.serverStatus,
+//  required super.serverStatusUpdateDate,
+//  required super.isProd,
+//  required super.isLocked,
+//  this.logoSource = PhotoSource.unknown,
+//  this.logoPath = '',

@@ -1,0 +1,92 @@
+name: server_weebi
+
+packages:
+  - packages/*
+  - apps/*
+# The packages list should contain paths to the individual packages within your project. 
+
+# Melos overrides local files 
+#  If a local package A is defined in the melos.yaml file
+#  when another local package B lists package A as a dependency,
+#  A will be linked regardless of whether a version has been specified.
+command:
+  version:
+    # Generate commit links in package changelogs.
+    #linkToCommits: true
+    # # Only allow versioning to happen on main branch.
+    # branch: master
+    # Additionally build a changelog at the root of the workspace.
+    workspaceChangelog: true
+
+  bootstrap:
+    # running "pub get" in parallel has some issues (like
+    runPubGetInParallel: false
+    #usePubspecOverrides: true
+
+scripts:
+# if fail consider dart pub upgrade
+# intl_utils:generate, run flutter pub global activate intl_utils
+  test:
+    run: melos run test:dart --no-select && melos run test:flutter --no-select
+    description: Run all Dart & Flutter tests in this project.
+
+  test:dart:
+    run: melos exec -c 1 --dir-exists="test" --fail-fast -- "dart test test"
+    description: Run Dart tests for a specific package in this project.
+    packageFilters:
+      flutter: false
+
+  test:flutter:
+    run: melos exec -c 1 --dir-exists="test" --fail-fast -- "flutter test test"
+    description: Run Flutter tests for a specific package in this project.
+    packageFilters:
+      flutter: true
+
+  lint:all:
+    run: melos run analyze && melos run format
+    description: Run all static analysis checks.
+
+  analyze:
+    # We are setting the concurrency to 1 because a higher concurrency can crash
+    # the analysis server on low performance machines (like GitHub Actions).
+    run: |
+      melos exec -c 1 -- \
+        dart analyze . --fatal-infos
+    description: |
+      Run `dart analyze` in all packages.
+       - Note: you can also rely on your IDEs Dart Analysis / Issues window.
+
+  check-license-header:
+    # If you add here another --ignore flag, add it also to
+    # "add-license-header".
+    run: |
+      addlicense -f header_template.txt \
+        --check \
+        --ignore "**/*.yml" \
+        --ignore "**/*.yaml" \
+        --ignore "**/*.xml" \
+        --ignore "**/*.g.dart" \
+        --ignore "**/*.sh" \
+        --ignore "**/*.html" \
+        --ignore "**/*.js" \
+        --ignore "**/*.ts" \
+        --ignore "**/*.g.h" \
+        --ignore "**/*.g.m" \
+        --ignore "**/*.rb" \
+        --ignore "**/*.txt" \
+        --ignore "**/*.cmake" \
+        --ignore "**/Runner/AppDelegate.swift" \
+        --ignore "**/Runner/MainFlutterWindow.swift" \
+        --ignore "**/Runner/Runner-Bridging-Header.h" \
+        --ignore "**/Runner/AppDelegate.h" \
+        --ignore "**/Runner/AppDelegate.m" \
+        --ignore "**/Runner/main.m" \
+        --ignore "**/MainActivity.kt" \
+        --ignore "**/MainActivity.java" \
+        --ignore "**/FlutterMultiDexApplication.java" \
+        --ignore "**/GeneratedPluginRegistrant.swift" \
+        --ignore "**/Pods/**" \
+        --ignore "**/flutter/generated_plugin_registrant.h" \
+        --ignore "**/flutter/generated_plugin_registrant.cc" \
+        .
+    description: Add a license header to all necessary files.

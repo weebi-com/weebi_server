@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package weebi.ticket;
+
+import "article.proto";
+import "ticket/ticket_type.proto";
+// import "common/g_timestamp.proto";
+
+message TicketMongo {
+    weebi.ticket.TicketPb ticket = 1 [json_name = 'ticket'];
+    int32 ticketNonUniqueId = 2 [json_name = 'ticketNonUniqueId']; // // to be combined with userOid
+    string userOid = 3 [json_name = 'userOid'];
+    string boutiqueOid = 4 [json_name = 'boutiqueOid'];
+    string firmOid = 5 [json_name = 'firmOid'];
+    string chainOid = 6 [json_name = 'chainOid'];
+}
+// string uploadByUserOid = 3 [json_name = 'uploadByUserOid'];
+// string uploadByUsername = 4 [json_name = 'uploadByUsername'];
+// google.protobuf.Timestamp dateUploadUTC = 5 [json_name = 'dateUploadUTC'];
+// string lastTouchedByUserOid = 6 [json_name = 'lastTouchedByUserOid'];
+// string lastTouchedByUsername = 7 [json_name = 'lastTouchedByUsername'];
+
+message TicketPb {
+  int32 id = 1 [json_name = 'id'];
+  Counterfoil counterfoil = 2 [json_name = 'counterfoil'];
+  enum PaymentTypePb {
+    unknown = 0;
+    cash = 1 ;
+    nope = 2 ;
+    mobileMoney = 3 ;
+    cheque = 4 ;
+    creditCard = 5 ;
+    goods = 6 ;
+    }
+  string dateCreation = 3 [json_name = 'date'];
+  string dateStatus = 4 [json_name = 'statusUpdateDate'];
+  bool status = 5 [json_name = 'status'];
+  repeated ItemCartPb items = 6 [json_name = 'items'];
+  weebi.ticket_type.TicketTypePb ticketType = 7 [json_name = 'ticketType'];
+  PaymentTypePb paymentType = 8 [json_name = 'paymentType'];
+  int32 contactId = 9 [json_name = 'contactId'];
+  TaxPb taxe = 10 [json_name = 'taxe'];
+  double promo = 11 [json_name = 'promo'];
+  double received = 12 [json_name = 'received'];
+  double discountAmount = 13 [json_name = 'discountAmount'];
+  string comment = 14 [json_name = 'comment'];
+}
+
+
+message Counterfoil {
+  string firmOid = 1;
+  string firmName = 2;
+  string chainOid = 3;
+  string chainName = 4;
+  string deviceOid = 5;
+  string deviceName = 6;
+  string boutiqueOid = 7;
+  string boutiqueName = 8;
+  string userOid = 9;
+  string userName = 10;
+}
+
+message TaxPb {
+  string id = 1;
+  string name = 2;
+  double percentage = 3;
+}
+
+message ProxyArticleWorthPb {
+  int32 calibreId = 1 [json_name = 'calibreId'];
+  int32 articleId = 2 [json_name = 'articleId'];
+  int32 id = 3 [json_name = 'id'];
+  bool status = 4 [json_name = 'status'];
+  int32 proxyCalibreId = 5 [json_name = 'proxyCalibreId'];
+  int32 proxyArticleId = 6 [json_name = 'proxyArticleId'];
+  double minimumUnitPerBasket = 7 [json_name = 'minimumUnitPerBasket'];
+  double articleWeight = 8 [json_name = 'articleWeight'];
+  double price = 9  [json_name = 'price'];
+  double cost = 10 [json_name = 'cost'];
+}
+
+message ItemCartPb {
+  weebi.article.ArticleRetailOnTicketPb articleRetail = 1;
+  weebi.article.ArticleBasketOnTicketPb articleBasket = 2;
+  double quantity = 3;
+  repeated ProxyArticleWorthPb proxies_worth = 4;
+  double inventoryAbsoluteQt = 5;
+}
+
+

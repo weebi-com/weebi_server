@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package weebi.ticket.service;
+
+import "ticket/ticket.proto";
+
+import "common/g_common.proto";
+// import "common/empty.proto";
+// import "common/mongo.proto";
+
+message FindTicketRequest {
+  // weebi.common.mongo.MallAndBoutiqueOids chainAndBoutiqueOids = 1 [json_name = 'mallAndBoutiqueOids'];
+  string firmOid = 1 [json_name = 'firmOid'];
+  string ticketChainOid = 2 [json_name = 'ticketChainOid'];
+  string ticketUserOid = 3 [json_name = 'ticketUserOid'];
+  int32 ticketNonUniqueId = 4 [json_name = 'ticketNonUniqueId'];
+}
+
+message TicketRequest {
+  /// restrict request on a single boutique to ease access verification
+  //  weebi.common.mongo.MallAndBoutiqueOids chainAndBoutiqueOids = 1 [json_name = 'mallAndBoutiqueOids'];
+  weebi.ticket.TicketPb ticket = 2 [json_name = 'ticket'];
+}
+
+message TicketsResponse {
+  repeated weebi.ticket.TicketPb tickets = 1;
+}
+
+service TicketService {
+  /// allows to read tickets from all accessible boutiques
+  /// no need to paginate yet, will conisder streaming
+  rpc readAll (weebi.ticket.Counterfoil) returns  (TicketsResponse);
+  rpc readOne (FindTicketRequest) returns (weebi.ticket.TicketPb);
+  rpc createOne (TicketRequest) returns (google.retail.common.StatusResponse);
+  rpc updateStatusOne (TicketRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOne (TicketRequest) returns (google.retail.common.StatusResponse);
+}

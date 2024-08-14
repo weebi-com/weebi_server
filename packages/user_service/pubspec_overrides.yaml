@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: boutique_service
+dependency_overrides:
+  boutique_service:
+    path: ../boutique_service

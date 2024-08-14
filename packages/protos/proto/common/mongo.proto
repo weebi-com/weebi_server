@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package weebi.common.mongo;
+
+
+message ChainOidAndBoutiqueOid {
+  string chainOid = 1;
+  string boutiqueOid = 2;
+}
+
+message Testing {
+  ObjectIdProto _id = 1;
+  string name = 2;
+}
+
+message ObjectIdProto{
+  string oid = 1 [json_name = 'oid'];
+}

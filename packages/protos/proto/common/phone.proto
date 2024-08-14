@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package weebi.common.phone;
+
+message Phone {
+    int32 countryCode = 1;
+    string number = 2;
+  }
