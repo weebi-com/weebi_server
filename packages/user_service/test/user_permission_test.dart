@@ -22,7 +22,7 @@ void main() async {
     await db.createCollection(userService.collection.collectionName);
     await userService.createOne(
       null,
-      UserDummy.userNoId,
+      UserPrivateDummy.userNoId,
     );
   });
 

@@ -18,8 +18,8 @@ const Boutique$json = {
   '1': 'Boutique',
   '2': [
     {'1': '_id', '3': 1, '4': 1, '5': 11, '6': '.weebi.common.mongo.ObjectIdProto', '10': '_id'},
-    {'1': 'chainOid', '3': 2, '4': 1, '5': 9, '10': 'chainOid'},
-    {'1': 'firmOid', '3': 3, '4': 1, '5': 9, '10': 'firmOid'},
+    {'1': 'firmOid', '3': 2, '4': 1, '5': 9, '10': 'firmOid'},
+    {'1': 'chainOid', '3': 3, '4': 1, '5': 9, '10': 'chainOid'},
     {'1': 'dateCreation', '3': 4, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'dateUpdate', '3': 5, '4': 1, '5': 9, '10': 'updateDate'},
     {'1': 'dateStatus', '3': 6, '4': 1, '5': 9, '10': 'statusUpdateDate'},
@@ -51,8 +51,8 @@ const Boutique_AdditionalAttributesEntry$json = {
 /// Descriptor for `Boutique`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List boutiqueDescriptor = $convert.base64Decode(
     'CghCb3V0aXF1ZRIzCgNfaWQYASABKAsyIS53ZWViaS5jb21tb24ubW9uZ28uT2JqZWN0SWRQcm'
-    '90b1IDX2lkEhoKCGNoYWluT2lkGAIgASgJUghjaGFpbk9pZBIYCgdmaXJtT2lkGAMgASgJUgdm'
-    'aXJtT2lkEiIKDGRhdGVDcmVhdGlvbhgEIAEoCVIMY3JlYXRpb25EYXRlEh4KCmRhdGVVcGRhdG'
+    '90b1IDX2lkEhgKB2Zpcm1PaWQYAiABKAlSB2Zpcm1PaWQSGgoIY2hhaW5PaWQYAyABKAlSCGNo'
+    'YWluT2lkEiIKDGRhdGVDcmVhdGlvbhgEIAEoCVIMY3JlYXRpb25EYXRlEh4KCmRhdGVVcGRhdG'
     'UYBSABKAlSCnVwZGF0ZURhdGUSJAoKZGF0ZVN0YXR1cxgGIAEoCVIQc3RhdHVzVXBkYXRlRGF0'
     'ZRIWCgZzdGF0dXMYByABKAhSBnN0YXR1cxISCgRuYW1lGAggASgJUgRuYW1lEi8KBXBob25lGA'
     'kgASgLMhkud2VlYmkuY29tbW9uLnBob25lLlBob25lUgVwaG9uZRI7CgdhZGRyZXNzGAogASgL'

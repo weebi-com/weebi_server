@@ -48,9 +48,10 @@ message Tokens {
 
 message UserInfo {
   string userOid = 1 [json_name = 'userOid'];
-  string firstname = 2 [json_name = 'firstname'];
-  string lastname = 3 [json_name = 'lastname'];;
-  string mail = 4 [json_name = 'mail'];;
+  string firmOid = 2 [json_name = 'firmOid'];
+  string firstname = 3 [json_name = 'firstname'];
+  string lastname = 4 [json_name = 'lastname'];
+  string mail = 5 [json_name = 'mail'];
 }
 
 message UpdateDevicePasswordRequest {

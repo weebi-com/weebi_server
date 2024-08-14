@@ -44,7 +44,7 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
-        ..contactId = request.contact.id
+        ..contactNonUniqueId = request.contact.id
         ..chainOid = request.chainOid
         ..firmOid = userPermission.firmOid
         ..userOid = userPermission.userOid;
@@ -96,7 +96,7 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
-        ..contactId = request.contact.id
+        ..contactNonUniqueId = request.contact.id
         ..chainOid = request.chainOid
         ..firmOid = userPermission.firmOid
         ..userOid = userPermission.userOid;
@@ -190,14 +190,14 @@ class ContactService extends ContactServiceBase {
 
   @override
   Future<ContactPb> readOne(
-      ServiceCall call, FindContactRequest request) async {
+      ServiceCall? call, FindContactRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.contactChainOid.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.contactChainOid}');
     }
 
     if (userPermission.contactRights.rights.any((e) => e == Right.read) ==
@@ -207,9 +207,10 @@ class ContactService extends ContactServiceBase {
     }
     try {
       final selector = where
-          .eq('chainOid', request.chainOid)
-          .eq('firstName', request.firstName);
-      // TOBE completed
+          .eq('chainOid', request.contactChainOid)
+          .eq('userOid', request.contactUserOid)
+          .eq('contactNonUniqueId', request.contactNonUniqueId);
+      // TOBE completed with firstname, lastname and all that jazz
       final contact = await collection.findOne(selector);
       if (contact != null) {
         final contactMongo = ContactMongo.create()

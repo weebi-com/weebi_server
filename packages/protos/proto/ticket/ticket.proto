@@ -7,13 +7,12 @@ import "ticket/ticket_type.proto";
 // import "common/g_timestamp.proto";
 
 message TicketMongo {
-    // faster object read
-    int32 ticketId = 1 [json_name = 'ticketId'];
-    weebi.ticket.TicketPb ticket = 2 [json_name = 'ticket'];
-    string boutiqueOid = 3 [json_name = 'boutiqueOid'];
-    string chainOid = 4 [json_name = 'chainOid'];
+    weebi.ticket.TicketPb ticket = 1 [json_name = 'ticket'];
+    int32 ticketNonUniqueId = 2 [json_name = 'ticketNonUniqueId']; // // to be combined with userOid
+    string userOid = 3 [json_name = 'userOid'];
+    string boutiqueOid = 4 [json_name = 'boutiqueOid'];
     string firmOid = 5 [json_name = 'firmOid'];
-    string userOid = 6 [json_name = 'userOid'];
+    string chainOid = 6 [json_name = 'chainOid'];
 }
 // string uploadByUserOid = 3 [json_name = 'uploadByUserOid'];
 // string uploadByUsername = 4 [json_name = 'uploadByUsername'];
@@ -57,6 +56,8 @@ message Counterfoil {
   string deviceName = 6;
   string boutiqueOid = 7;
   string boutiqueName = 8;
+  string userOid = 9;
+  string userName = 10;
 }
 
 message TaxPb {

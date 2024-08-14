@@ -487,6 +487,7 @@ class Tokens extends $pb.GeneratedMessage {
 class UserInfo extends $pb.GeneratedMessage {
   factory UserInfo({
     $core.String? userOid,
+    $core.String? firmOid,
     $core.String? firstname,
     $core.String? lastname,
     $core.String? mail,
@@ -494,6 +495,9 @@ class UserInfo extends $pb.GeneratedMessage {
     final $result = create();
     if (userOid != null) {
       $result.userOid = userOid;
+    }
+    if (firmOid != null) {
+      $result.firmOid = firmOid;
     }
     if (firstname != null) {
       $result.firstname = firstname;
@@ -512,9 +516,10 @@ class UserInfo extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserInfo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
-    ..aOS(2, _omitFieldNames ? '' : 'firstname')
-    ..aOS(3, _omitFieldNames ? '' : 'lastname')
-    ..aOS(4, _omitFieldNames ? '' : 'mail')
+    ..aOS(2, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
+    ..aOS(3, _omitFieldNames ? '' : 'firstname')
+    ..aOS(4, _omitFieldNames ? '' : 'lastname')
+    ..aOS(5, _omitFieldNames ? '' : 'mail')
     ..hasRequiredFields = false
   ;
 
@@ -549,31 +554,40 @@ class UserInfo extends $pb.GeneratedMessage {
   void clearUserOid() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get firstname => $_getSZ(1);
+  $core.String get firmOid => $_getSZ(1);
   @$pb.TagNumber(2)
-  set firstname($core.String v) { $_setString(1, v); }
+  set firmOid($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasFirstname() => $_has(1);
+  $core.bool hasFirmOid() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirstname() => clearField(2);
+  void clearFirmOid() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get lastname => $_getSZ(2);
+  $core.String get firstname => $_getSZ(2);
   @$pb.TagNumber(3)
-  set lastname($core.String v) { $_setString(2, v); }
+  set firstname($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasLastname() => $_has(2);
+  $core.bool hasFirstname() => $_has(2);
   @$pb.TagNumber(3)
-  void clearLastname() => clearField(3);
+  void clearFirstname() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get mail => $_getSZ(3);
+  $core.String get lastname => $_getSZ(3);
   @$pb.TagNumber(4)
-  set mail($core.String v) { $_setString(3, v); }
+  set lastname($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasMail() => $_has(3);
+  $core.bool hasLastname() => $_has(3);
   @$pb.TagNumber(4)
-  void clearMail() => clearField(4);
+  void clearLastname() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get mail => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set mail($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasMail() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearMail() => clearField(5);
 }
 
 class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {

@@ -21,7 +21,7 @@ void main() async {
     boutiqueService = BoutiqueService(
       db,
       isTest: true,
-      userPermissionIfTest: UserDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission,
     );
     await db.collection(boutiqueService.collection.collectionName).drop();
     await db.createCollection(boutiqueService.collection.collectionName);
@@ -37,7 +37,7 @@ void main() async {
     final response =
         await boutiqueService.createOneFirm(null, FirmDummy.firmNoId);
     expect(response.type, StatusResponse_Type.CREATED);
-    final userPermissionsUpdated = UserDummy.adminPermission;
+    final userPermissionsUpdated = UserPrivateDummy.adminPermission;
     userPermissionsUpdated.firmOid = response.message;
     boutiqueService..userPermissionIfTest = userPermissionsUpdated;
   });
@@ -62,14 +62,15 @@ void main() async {
       db,
       boutiqueService,
       isTest: true,
-      userPermissionIfTest: UserDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission,
     );
-    final responseUser = await userService.createOne(null, UserDummy.userNoId);
-    UserDummy.adminPermission.firmOid = firmOid;
-    UserDummy.adminPermission.chainsAccessible = Oids(oids: [chainOid]);
-    UserDummy.adminPermission.userOid = responseUser.id;
+    final responseUser =
+        await userService.createOne(null, UserPrivateDummy.userNoId);
+    UserPrivateDummy.adminPermission.firmOid = firmOid;
+    UserPrivateDummy.adminPermission.chainsAccessible = Oids(oids: [chainOid]);
+    UserPrivateDummy.adminPermission.userOid = responseUser.id;
     //userService..userPermissionIfTest = UserDummy.adminPermission;
-    boutiqueService..userPermissionIfTest = UserDummy.adminPermission;
+    boutiqueService..userPermissionIfTest = UserPrivateDummy.adminPermission;
 
     final liliChain = ChainDummy.chainNoId;
     liliChain

@@ -26,7 +26,7 @@ void main() async {
     articleService = ArticleService(
       db,
       isTest: true,
-      userPermissionIfTest: UserDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission,
     );
     await db.collection(articleService.collection.collectionName).drop();
     await db.createCollection(articleService.collection.collectionName);

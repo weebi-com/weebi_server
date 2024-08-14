@@ -2,7 +2,7 @@ import 'package:user_service/user_service.dart';
 import 'package:user_service/user_testing.dart';
 
 void main(List<String> args) async {
-  final userPermission = UserDummy.adminPermission;
+  final userPermission = UserPrivateDummy.adminPermission;
   var jwt = JsonWebToken();
   final payload = userPermission.toProto3Json() as Map<String, dynamic>?;
   jwt.createPayload(

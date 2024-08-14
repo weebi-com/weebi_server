@@ -15,8 +15,8 @@ void main() async {
   firmService = BoutiqueService(db);
   userService = UserService(db, firmService);
   //await db.createCollection(userService.collection.collectionName);
-  await userService.collection
-      .insertOne(UserDummy.userNoId.toProto3Json() as Map<String, dynamic>);
+  await userService.collection.insertOne(
+      UserPrivateDummy.userNoId.toProto3Json() as Map<String, dynamic>);
   await connection.close();
   return;
 }

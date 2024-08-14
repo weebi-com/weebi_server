@@ -26,7 +26,7 @@ void main() async {
     ticketService = TicketService(
       db,
       isTest: true,
-      userPermissionIfTest: UserDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission,
     );
     await db.collection(ticketService.collection.collectionName).drop();
     await db.createCollection(ticketService.collection.collectionName);

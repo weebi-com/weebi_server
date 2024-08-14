@@ -50,7 +50,20 @@ class ChainDummy {
 
 class FirmDummy {
   static final firmNoId = Firm(
-    //id: ObjectIdProto(oid: '665e12f798357783e8000000'),
+    name: 'firmDummy',
+    chains: <Chain>[ChainDummy.chainNoId],
+    subscriptionPlan: 'test',
+    subscriptionSeats: 1,
+    subscriptionStartTimestampUTC: Timestamp(seconds: Int64.ONE, nanos: 0),
+    subscriptionEndTimestampUTC: null, // everlasting subs
+    status: true,
+    statusUpdateTimestampUTC: Timestamp(seconds: Int64.ONE, nanos: 0),
+    lastUpdateTimestampUTC: Timestamp(seconds: Int64.ONE, nanos: 0),
+    lastUpdatedByUserOid: '1',
+  );
+
+  static final firm = Firm(
+    id: ObjectIdProto.create()..oid = '665e12f798357783e8000000',
     name: 'firmDummy',
     chains: <Chain>[ChainDummy.chainNoId],
     subscriptionPlan: 'test',
@@ -64,7 +77,15 @@ class FirmDummy {
   );
 }
 
-class UserDummy {
+class UserInfoDummy {
+  static final userInfo = UserInfo(
+    userOid: '665e12f798357783e8000008',
+    firstname: 'dev',
+    lastname: 'tester',
+  );
+}
+
+class UserPrivateDummy {
   static final userNoId = UserPrivate(
     //userOid: '665e12f798357783e8000008',
     firstname: 'dev',

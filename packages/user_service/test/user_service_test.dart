@@ -22,27 +22,28 @@ void main() async {
     boutiqueService = BoutiqueService(
       db,
       isTest: true,
-      userPermissionIfTest: UserDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission,
     );
     userService = UserService(
       db,
       boutiqueService,
       isTest: true,
-      userPermissionIfTest: UserDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission,
     );
     await db.createCollection(userService.collection.collectionName);
     await db.createCollection(boutiqueService.collection.collectionName);
-    final responseUser = await userService.createOne(null, UserDummy.userNoId);
+    final responseUser =
+        await userService.createOne(null, UserPrivateDummy.userNoId);
     final response =
         await boutiqueService.createOneFirm(null, FirmDummy.firmNoId);
 
     expect(response.type, StatusResponse_Type.CREATED);
     final firmOid = response.id;
-    UserDummy.adminPermission.firmOid = firmOid;
-    UserDummy.adminPermission.userOid = responseUser.id;
+    UserPrivateDummy.adminPermission.firmOid = firmOid;
+    UserPrivateDummy.adminPermission.userOid = responseUser.id;
     userOid = responseUser.id;
 
-    userService..userPermissionIfTest = UserDummy.adminPermission;
+    userService..userPermissionIfTest = UserPrivateDummy.adminPermission;
   });
 
   tearDownAll(() async {

@@ -8,9 +8,11 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:contact_service/contact_service.dart';
 import 'package:user_service/user_testing.dart';
 
+// TODO test this again with userOid new process might fail
 void main() async {
   final db = TestHelper.localDb;
   final connection = Connection(ConnectionManager(db));
+  final firmOid = FirmDummy.firm.id;
   final chainOid = ChainDummy.chain.id;
   late ContactService contactService;
 
@@ -25,7 +27,7 @@ void main() async {
     contactService = ContactService(
       db,
       isTest: true,
-      userPermissionIfTest: UserDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission,
     );
     await db.collection(contactService.collection.collectionName).drop();
     await db.createCollection(contactService.collection.collectionName);
@@ -43,9 +45,22 @@ void main() async {
     expect(response.type, StatusResponse_Type.CREATED);
   });
   test('test readAll', () async {
-    final response = await contactService.readAll(
-        null, ReadAllContactsRequest(chainOid: chainOid.oid));
+    final response = await contactService.readAll(null,
+        ReadAllContactsRequest(firmOid: firmOid.oid, chainOid: chainOid.oid));
     expect(response.contacts.length, 1);
+  });
+
+  test('test readOne', () async {
+    final response = await contactService.readOne(
+      null,
+      FindContactRequest(
+        firmOid: firmOid.oid,
+        contactChainOid: chainOid.oid,
+        contactUserOid: UserInfoDummy.userInfo.userOid,
+        contactNonUniqueId: 1,
+      ),
+    );
+    expect(response.firstName, 'John');
   });
 
   test('test upsertOne ', () async {

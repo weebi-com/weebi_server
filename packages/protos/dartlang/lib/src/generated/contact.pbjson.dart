@@ -17,20 +17,20 @@ import 'dart:typed_data' as $typed_data;
 const ContactMongo$json = {
   '1': 'ContactMongo',
   '2': [
-    {'1': 'contactId', '3': 1, '4': 1, '5': 5, '10': 'contactId'},
-    {'1': 'contact', '3': 2, '4': 1, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contact'},
-    {'1': 'chainOid', '3': 3, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'contact', '3': 1, '4': 1, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contact'},
+    {'1': 'contactNonUniqueId', '3': 2, '4': 1, '5': 5, '10': 'contactNonUniqueId'},
+    {'1': 'userOid', '3': 3, '4': 1, '5': 9, '10': 'userOid'},
     {'1': 'firmOid', '3': 4, '4': 1, '5': 9, '10': 'firmOid'},
-    {'1': 'userOid', '3': 5, '4': 1, '5': 9, '10': 'userOid'},
+    {'1': 'chainOid', '3': 5, '4': 1, '5': 9, '10': 'chainOid'},
   ],
 };
 
 /// Descriptor for `ContactMongo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactMongoDescriptor = $convert.base64Decode(
-    'CgxDb250YWN0TW9uZ28SHAoJY29udGFjdElkGAEgASgFUgljb250YWN0SWQSMgoHY29udGFjdB'
-    'gCIAEoCzIYLndlZWJpLmNvbnRhY3QuQ29udGFjdFBiUgdjb250YWN0EhoKCGNoYWluT2lkGAMg'
-    'ASgJUghjaGFpbk9pZBIYCgdmaXJtT2lkGAQgASgJUgdmaXJtT2lkEhgKB3VzZXJPaWQYBSABKA'
-    'lSB3VzZXJPaWQ=');
+    'CgxDb250YWN0TW9uZ28SMgoHY29udGFjdBgBIAEoCzIYLndlZWJpLmNvbnRhY3QuQ29udGFjdF'
+    'BiUgdjb250YWN0Ei4KEmNvbnRhY3ROb25VbmlxdWVJZBgCIAEoBVISY29udGFjdE5vblVuaXF1'
+    'ZUlkEhgKB3VzZXJPaWQYAyABKAlSB3VzZXJPaWQSGAoHZmlybU9pZBgEIAEoCVIHZmlybU9pZB'
+    'IaCghjaGFpbk9pZBgFIAEoCVIIY2hhaW5PaWQ=');
 
 @$core.Deprecated('Use contactPbDescriptor instead')
 const ContactPb$json = {

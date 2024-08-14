@@ -10,7 +10,7 @@ import 'package:contact_service/contact_service.dart';
 import 'package:boutique_service/boutique_service.dart';
 import 'package:ticket_service/ticket_service.dart';
 import 'package:user_service/user_service.dart';
-import 'package:user_service/user_testing.dart';
+// import 'package:user_service/user_testing.dart';
 import 'package:user_service/weebi_app_service.dart';
 
 void main(List<String> arguments) async {

@@ -20,8 +20,8 @@ import 'common/phone.pb.dart' as $19;
 class Boutique extends $pb.GeneratedMessage {
   factory Boutique({
     $11.ObjectIdProto? id,
-    $core.String? chainOid,
     $core.String? firmOid,
+    $core.String? chainOid,
     $core.String? dateCreation,
     $core.String? dateUpdate,
     $core.String? dateStatus,
@@ -38,11 +38,11 @@ class Boutique extends $pb.GeneratedMessage {
     if (id != null) {
       $result.id = id;
     }
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
-    }
     if (firmOid != null) {
       $result.firmOid = firmOid;
+    }
+    if (chainOid != null) {
+      $result.chainOid = chainOid;
     }
     if (dateCreation != null) {
       $result.dateCreation = dateCreation;
@@ -85,8 +85,8 @@ class Boutique extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Boutique', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
     ..aOM<$11.ObjectIdProto>(1, _omitFieldNames ? '' : '_id', subBuilder: $11.ObjectIdProto.create)
-    ..aOS(2, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
-    ..aOS(3, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
+    ..aOS(2, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
+    ..aOS(3, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
     ..aOS(4, _omitFieldNames ? '' : 'creationDate', protoName: 'dateCreation')
     ..aOS(5, _omitFieldNames ? '' : 'updateDate', protoName: 'dateUpdate')
     ..aOS(6, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
@@ -135,22 +135,22 @@ class Boutique extends $pb.GeneratedMessage {
   $11.ObjectIdProto ensureId() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.String get chainOid => $_getSZ(1);
+  $core.String get firmOid => $_getSZ(1);
   @$pb.TagNumber(2)
-  set chainOid($core.String v) { $_setString(1, v); }
+  set firmOid($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasChainOid() => $_has(1);
+  $core.bool hasFirmOid() => $_has(1);
   @$pb.TagNumber(2)
-  void clearChainOid() => clearField(2);
+  void clearFirmOid() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get firmOid => $_getSZ(2);
+  $core.String get chainOid => $_getSZ(2);
   @$pb.TagNumber(3)
-  set firmOid($core.String v) { $_setString(2, v); }
+  set chainOid($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasFirmOid() => $_has(2);
+  $core.bool hasChainOid() => $_has(2);
   @$pb.TagNumber(3)
-  void clearFirmOid() => clearField(3);
+  void clearChainOid() => clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get dateCreation => $_getSZ(3);

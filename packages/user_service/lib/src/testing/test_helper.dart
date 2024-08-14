@@ -17,17 +17,18 @@ class TestHelper {
     final boutiqueService = BoutiqueService(
       db,
       isTest: true,
-      userPermissionIfTest: UserDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission,
     );
     var userService = UserService(
       db,
       boutiqueService,
       isTest: true,
-      userPermissionIfTest: UserDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission,
     );
     await db.createCollection(userService.collection.collectionName);
     await db.createCollection(boutiqueService.collection.collectionName);
-    final responseUser = await userService.createOne(null, UserDummy.userNoId);
+    final responseUser =
+        await userService.createOne(null, UserPrivateDummy.userNoId);
     final response =
         await boutiqueService.createOneFirm(null, FirmDummy.firmNoId);
 
@@ -43,12 +44,13 @@ class TestHelper {
           ..chainOid = chainOid);
     final boutiqueOid = responseBoutique.id;
 
-    UserDummy.adminPermission.firmOid = firmOid;
-    UserDummy.adminPermission.userOid = responseUser.id;
-    UserDummy.adminPermission.chainsAccessible = Oids(oids: [chainOid]);
-    UserDummy.adminPermission.boutiquesAccessible = Oids(oids: [boutiqueOid]);
+    UserPrivateDummy.adminPermission.firmOid = firmOid;
+    UserPrivateDummy.adminPermission.userOid = responseUser.id;
+    UserPrivateDummy.adminPermission.chainsAccessible = Oids(oids: [chainOid]);
+    UserPrivateDummy.adminPermission.boutiquesAccessible =
+        Oids(oids: [boutiqueOid]);
 
-    userService..userPermissionIfTest = UserDummy.adminPermission;
+    userService..userPermissionIfTest = UserPrivateDummy.adminPermission;
     return Counterfoil.create()
       ..firmOid = firmOid
       ..chainOid = chainOid

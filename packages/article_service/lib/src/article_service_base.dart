@@ -43,7 +43,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
-        ..calibreId = request.calibre.id
+        ..calibreUniqueId = request.calibre.id
         ..chainOid = request.chainOid
         ..firmOid = userPermission.firmOid
         ..userOid = userPermission.userOid;
@@ -95,7 +95,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
-        ..calibreId = request.calibre.id
+        ..calibreUniqueId = request.calibre.id
         ..chainOid = request.chainOid
         ..firmOid = userPermission.firmOid
         ..userOid = userPermission.userOid;

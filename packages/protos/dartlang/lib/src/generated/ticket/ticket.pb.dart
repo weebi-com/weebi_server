@@ -21,31 +21,31 @@ export 'ticket.pbenum.dart';
 
 class TicketMongo extends $pb.GeneratedMessage {
   factory TicketMongo({
-    $core.int? ticketId,
     TicketPb? ticket,
-    $core.String? boutiqueOid,
-    $core.String? chainOid,
-    $core.String? firmOid,
+    $core.int? ticketNonUniqueId,
     $core.String? userOid,
+    $core.String? boutiqueOid,
+    $core.String? firmOid,
+    $core.String? chainOid,
   }) {
     final $result = create();
-    if (ticketId != null) {
-      $result.ticketId = ticketId;
-    }
     if (ticket != null) {
       $result.ticket = ticket;
+    }
+    if (ticketNonUniqueId != null) {
+      $result.ticketNonUniqueId = ticketNonUniqueId;
+    }
+    if (userOid != null) {
+      $result.userOid = userOid;
     }
     if (boutiqueOid != null) {
       $result.boutiqueOid = boutiqueOid;
     }
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
-    }
     if (firmOid != null) {
       $result.firmOid = firmOid;
     }
-    if (userOid != null) {
-      $result.userOid = userOid;
+    if (chainOid != null) {
+      $result.chainOid = chainOid;
     }
     return $result;
   }
@@ -54,12 +54,12 @@ class TicketMongo extends $pb.GeneratedMessage {
   factory TicketMongo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'ticketId', $pb.PbFieldType.O3, protoName: 'ticketId')
-    ..aOM<TicketPb>(2, _omitFieldNames ? '' : 'ticket', subBuilder: TicketPb.create)
-    ..aOS(3, _omitFieldNames ? '' : 'boutiqueOid', protoName: 'boutiqueOid')
-    ..aOS(4, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
+    ..aOM<TicketPb>(1, _omitFieldNames ? '' : 'ticket', subBuilder: TicketPb.create)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'ticketNonUniqueId', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
+    ..aOS(3, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
+    ..aOS(4, _omitFieldNames ? '' : 'boutiqueOid', protoName: 'boutiqueOid')
     ..aOS(5, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
-    ..aOS(6, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
+    ..aOS(6, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
     ..hasRequiredFields = false
   ;
 
@@ -84,44 +84,43 @@ class TicketMongo extends $pb.GeneratedMessage {
   static TicketMongo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TicketMongo>(create);
   static TicketMongo? _defaultInstance;
 
-  /// faster object read
   @$pb.TagNumber(1)
-  $core.int get ticketId => $_getIZ(0);
+  TicketPb get ticket => $_getN(0);
   @$pb.TagNumber(1)
-  set ticketId($core.int v) { $_setSignedInt32(0, v); }
+  set ticket(TicketPb v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasTicketId() => $_has(0);
+  $core.bool hasTicket() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTicketId() => clearField(1);
+  void clearTicket() => clearField(1);
+  @$pb.TagNumber(1)
+  TicketPb ensureTicket() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  TicketPb get ticket => $_getN(1);
+  $core.int get ticketNonUniqueId => $_getIZ(1);
   @$pb.TagNumber(2)
-  set ticket(TicketPb v) { setField(2, v); }
+  set ticketNonUniqueId($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasTicket() => $_has(1);
+  $core.bool hasTicketNonUniqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTicket() => clearField(2);
-  @$pb.TagNumber(2)
-  TicketPb ensureTicket() => $_ensure(1);
+  void clearTicketNonUniqueId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get boutiqueOid => $_getSZ(2);
+  $core.String get userOid => $_getSZ(2);
   @$pb.TagNumber(3)
-  set boutiqueOid($core.String v) { $_setString(2, v); }
+  set userOid($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasBoutiqueOid() => $_has(2);
+  $core.bool hasUserOid() => $_has(2);
   @$pb.TagNumber(3)
-  void clearBoutiqueOid() => clearField(3);
+  void clearUserOid() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get chainOid => $_getSZ(3);
+  $core.String get boutiqueOid => $_getSZ(3);
   @$pb.TagNumber(4)
-  set chainOid($core.String v) { $_setString(3, v); }
+  set boutiqueOid($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasChainOid() => $_has(3);
+  $core.bool hasBoutiqueOid() => $_has(3);
   @$pb.TagNumber(4)
-  void clearChainOid() => clearField(4);
+  void clearBoutiqueOid() => clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get firmOid => $_getSZ(4);
@@ -133,13 +132,13 @@ class TicketMongo extends $pb.GeneratedMessage {
   void clearFirmOid() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.String get userOid => $_getSZ(5);
+  $core.String get chainOid => $_getSZ(5);
   @$pb.TagNumber(6)
-  set userOid($core.String v) { $_setString(5, v); }
+  set chainOid($core.String v) { $_setString(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasUserOid() => $_has(5);
+  $core.bool hasChainOid() => $_has(5);
   @$pb.TagNumber(6)
-  void clearUserOid() => clearField(6);
+  void clearChainOid() => clearField(6);
 }
 
 class TicketPb extends $pb.GeneratedMessage {
@@ -382,6 +381,8 @@ class Counterfoil extends $pb.GeneratedMessage {
     $core.String? deviceName,
     $core.String? boutiqueOid,
     $core.String? boutiqueName,
+    $core.String? userOid,
+    $core.String? userName,
   }) {
     final $result = create();
     if (firmOid != null) {
@@ -408,6 +409,12 @@ class Counterfoil extends $pb.GeneratedMessage {
     if (boutiqueName != null) {
       $result.boutiqueName = boutiqueName;
     }
+    if (userOid != null) {
+      $result.userOid = userOid;
+    }
+    if (userName != null) {
+      $result.userName = userName;
+    }
     return $result;
   }
   Counterfoil._() : super();
@@ -423,6 +430,8 @@ class Counterfoil extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'deviceName', protoName: 'deviceName')
     ..aOS(7, _omitFieldNames ? '' : 'boutiqueOid', protoName: 'boutiqueOid')
     ..aOS(8, _omitFieldNames ? '' : 'boutiqueName', protoName: 'boutiqueName')
+    ..aOS(9, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
+    ..aOS(10, _omitFieldNames ? '' : 'userName', protoName: 'userName')
     ..hasRequiredFields = false
   ;
 
@@ -518,6 +527,24 @@ class Counterfoil extends $pb.GeneratedMessage {
   $core.bool hasBoutiqueName() => $_has(7);
   @$pb.TagNumber(8)
   void clearBoutiqueName() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get userOid => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set userOid($core.String v) { $_setString(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasUserOid() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearUserOid() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.String get userName => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set userName($core.String v) { $_setString(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasUserName() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearUserName() => clearField(10);
 }
 
 class TaxPb extends $pb.GeneratedMessage {

@@ -7,10 +7,9 @@ import "common/address.proto";
 import "common/mongo.proto";
 
 message Boutique {
-// safer to have firmOid and chainOid
     weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
-    string chainOid = 2 [json_name = 'chainOid'];
-    string firmOid = 3 [json_name = 'firmOid'];
+    string firmOid = 2 [json_name = 'firmOid'];
+    string chainOid = 3 [json_name = 'chainOid'];
     string dateCreation = 4 [json_name = 'creationDate'];
     string dateUpdate = 5 [json_name = 'updateDate'];
     string dateStatus = 6 [json_name = 'statusUpdateDate'];

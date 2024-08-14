@@ -7,11 +7,11 @@ import "common/phone.proto";
 
 
 message ContactMongo {
-  int32 contactId = 1 [json_name = 'contactId']; // faster object read id
-  ContactPb contact = 2 [json_name = 'contact'] ;
-  string chainOid = 3 [json_name = 'chainOid'];
+  ContactPb contact = 1 [json_name = 'contact'] ;
+  int32 contactNonUniqueId = 2 [json_name = 'contactNonUniqueId']; // to be combined with userOid
+  string userOid = 3 [json_name = 'userOid'];
   string firmOid = 4 [json_name = 'firmOid'];
-  string userOid = 5 [json_name = 'userOid'];
+  string chainOid = 5 [json_name = 'chainOid'];
 }
 
 message ContactPb {

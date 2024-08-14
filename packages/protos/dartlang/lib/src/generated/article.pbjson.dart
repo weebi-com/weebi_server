@@ -33,20 +33,20 @@ final $typed_data.Uint8List articleKindPbDescriptor = $convert.base64Decode(
 const CalibreMongo$json = {
   '1': 'CalibreMongo',
   '2': [
-    {'1': 'calibreId', '3': 1, '4': 1, '5': 5, '10': 'calibreId'},
-    {'1': 'calibre', '3': 2, '4': 1, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibre'},
-    {'1': 'chainOid', '3': 3, '4': 1, '5': 9, '10': 'chainOid'},
-    {'1': 'firmOid', '3': 4, '4': 1, '5': 9, '10': 'firmOid'},
+    {'1': 'calibre', '3': 1, '4': 1, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibre'},
+    {'1': 'calibreUniqueId', '3': 2, '4': 1, '5': 5, '10': 'calibreUniqueId'},
+    {'1': 'firmOid', '3': 3, '4': 1, '5': 9, '10': 'firmOid'},
+    {'1': 'chainOid', '3': 4, '4': 1, '5': 9, '10': 'chainOid'},
     {'1': 'userOid', '3': 5, '4': 1, '5': 9, '10': 'userOid'},
   ],
 };
 
 /// Descriptor for `CalibreMongo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List calibreMongoDescriptor = $convert.base64Decode(
-    'CgxDYWxpYnJlTW9uZ28SHAoJY2FsaWJyZUlkGAEgASgFUgljYWxpYnJlSWQSMgoHY2FsaWJyZR'
-    'gCIAEoCzIYLndlZWJpLmFydGljbGUuQ2FsaWJyZVBiUgdjYWxpYnJlEhoKCGNoYWluT2lkGAMg'
-    'ASgJUghjaGFpbk9pZBIYCgdmaXJtT2lkGAQgASgJUgdmaXJtT2lkEhgKB3VzZXJPaWQYBSABKA'
-    'lSB3VzZXJPaWQ=');
+    'CgxDYWxpYnJlTW9uZ28SMgoHY2FsaWJyZRgBIAEoCzIYLndlZWJpLmFydGljbGUuQ2FsaWJyZV'
+    'BiUgdjYWxpYnJlEigKD2NhbGlicmVVbmlxdWVJZBgCIAEoBVIPY2FsaWJyZVVuaXF1ZUlkEhgK'
+    'B2Zpcm1PaWQYAyABKAlSB2Zpcm1PaWQSGgoIY2hhaW5PaWQYBCABKAlSCGNoYWluT2lkEhgKB3'
+    'VzZXJPaWQYBSABKAlSB3VzZXJPaWQ=');
 
 @$core.Deprecated('Use calibrePbDescriptor instead')
 const CalibrePb$json = {

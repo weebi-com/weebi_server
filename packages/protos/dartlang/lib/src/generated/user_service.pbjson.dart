@@ -118,17 +118,18 @@ const UserInfo$json = {
   '1': 'UserInfo',
   '2': [
     {'1': 'userOid', '3': 1, '4': 1, '5': 9, '10': 'userOid'},
-    {'1': 'firstname', '3': 2, '4': 1, '5': 9, '10': 'firstname'},
-    {'1': 'lastname', '3': 3, '4': 1, '5': 9, '10': 'lastname'},
-    {'1': 'mail', '3': 4, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'firmOid', '3': 2, '4': 1, '5': 9, '10': 'firmOid'},
+    {'1': 'firstname', '3': 3, '4': 1, '5': 9, '10': 'firstname'},
+    {'1': 'lastname', '3': 4, '4': 1, '5': 9, '10': 'lastname'},
+    {'1': 'mail', '3': 5, '4': 1, '5': 9, '10': 'mail'},
   ],
 };
 
 /// Descriptor for `UserInfo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List userInfoDescriptor = $convert.base64Decode(
-    'CghVc2VySW5mbxIYCgd1c2VyT2lkGAEgASgJUgd1c2VyT2lkEhwKCWZpcnN0bmFtZRgCIAEoCV'
-    'IJZmlyc3RuYW1lEhoKCGxhc3RuYW1lGAMgASgJUghsYXN0bmFtZRISCgRtYWlsGAQgASgJUgRt'
-    'YWls');
+    'CghVc2VySW5mbxIYCgd1c2VyT2lkGAEgASgJUgd1c2VyT2lkEhgKB2Zpcm1PaWQYAiABKAlSB2'
+    'Zpcm1PaWQSHAoJZmlyc3RuYW1lGAMgASgJUglmaXJzdG5hbWUSGgoIbGFzdG5hbWUYBCABKAlS'
+    'CGxhc3RuYW1lEhIKBG1haWwYBSABKAlSBG1haWw=');
 
 @$core.Deprecated('Use updateDevicePasswordRequestDescriptor instead')
 const UpdateDevicePasswordRequest$json = {

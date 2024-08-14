@@ -19,24 +19,24 @@ export 'article.pbenum.dart';
 
 class CalibreMongo extends $pb.GeneratedMessage {
   factory CalibreMongo({
-    $core.int? calibreId,
     CalibrePb? calibre,
-    $core.String? chainOid,
+    $core.int? calibreUniqueId,
     $core.String? firmOid,
+    $core.String? chainOid,
     $core.String? userOid,
   }) {
     final $result = create();
-    if (calibreId != null) {
-      $result.calibreId = calibreId;
-    }
     if (calibre != null) {
       $result.calibre = calibre;
     }
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (calibreUniqueId != null) {
+      $result.calibreUniqueId = calibreUniqueId;
     }
     if (firmOid != null) {
       $result.firmOid = firmOid;
+    }
+    if (chainOid != null) {
+      $result.chainOid = chainOid;
     }
     if (userOid != null) {
       $result.userOid = userOid;
@@ -48,10 +48,10 @@ class CalibreMongo extends $pb.GeneratedMessage {
   factory CalibreMongo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibreMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
-    ..aOM<CalibrePb>(2, _omitFieldNames ? '' : 'calibre', subBuilder: CalibrePb.create)
-    ..aOS(3, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
-    ..aOS(4, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
+    ..aOM<CalibrePb>(1, _omitFieldNames ? '' : 'calibre', subBuilder: CalibrePb.create)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'calibreUniqueId', $pb.PbFieldType.O3, protoName: 'calibreUniqueId')
+    ..aOS(3, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
+    ..aOS(4, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
     ..aOS(5, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
     ..hasRequiredFields = false
   ;
@@ -79,42 +79,42 @@ class CalibreMongo extends $pb.GeneratedMessage {
 
   /// faster object read
   @$pb.TagNumber(1)
-  $core.int get calibreId => $_getIZ(0);
+  CalibrePb get calibre => $_getN(0);
   @$pb.TagNumber(1)
-  set calibreId($core.int v) { $_setSignedInt32(0, v); }
+  set calibre(CalibrePb v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasCalibreId() => $_has(0);
+  $core.bool hasCalibre() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCalibreId() => clearField(1);
+  void clearCalibre() => clearField(1);
+  @$pb.TagNumber(1)
+  CalibrePb ensureCalibre() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  CalibrePb get calibre => $_getN(1);
+  $core.int get calibreUniqueId => $_getIZ(1);
   @$pb.TagNumber(2)
-  set calibre(CalibrePb v) { setField(2, v); }
+  set calibreUniqueId($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasCalibre() => $_has(1);
+  $core.bool hasCalibreUniqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCalibre() => clearField(2);
-  @$pb.TagNumber(2)
-  CalibrePb ensureCalibre() => $_ensure(1);
+  void clearCalibreUniqueId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get chainOid => $_getSZ(2);
+  $core.String get firmOid => $_getSZ(2);
   @$pb.TagNumber(3)
-  set chainOid($core.String v) { $_setString(2, v); }
+  set firmOid($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasChainOid() => $_has(2);
+  $core.bool hasFirmOid() => $_has(2);
   @$pb.TagNumber(3)
-  void clearChainOid() => clearField(3);
+  void clearFirmOid() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get firmOid => $_getSZ(3);
+  $core.String get chainOid => $_getSZ(3);
   @$pb.TagNumber(4)
-  set firmOid($core.String v) { $_setString(3, v); }
+  set chainOid($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasFirmOid() => $_has(3);
+  $core.bool hasChainOid() => $_has(3);
   @$pb.TagNumber(4)
-  void clearFirmOid() => clearField(4);
+  void clearChainOid() => clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get userOid => $_getSZ(4);

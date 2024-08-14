@@ -4,11 +4,11 @@ package weebi.article;
 
 message CalibreMongo {
   // faster object read
-  int32 calibreId = 1 [json_name = 'calibreId'];
-  weebi.article.CalibrePb calibre = 2 [json_name = 'calibre'] ;  
-  string chainOid = 3 [json_name = 'chainOid'];
-  string firmOid = 4 [json_name = 'firmOid'];
-  string userOid = 5 [json_name = 'userOid'];
+  weebi.article.CalibrePb calibre = 1 [json_name = 'calibre'] ;  
+  int32 calibreUniqueId = 2 [json_name = 'calibreUniqueId'];
+  string firmOid = 3 [json_name = 'firmOid'];
+  string chainOid = 4 [json_name = 'chainOid'];
+  string userOid = 5 [json_name = 'userOid']; 
 }
 
 /// Wrapping articles, using Pb to != from Calibre Dart in models weebi 

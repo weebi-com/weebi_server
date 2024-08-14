@@ -11,7 +11,7 @@ void main() {
     final isConnected = await connection.connect();
     print(isConnected);
     final userService = UserService(db, null);
-    final d = await userService.createOne(null, UserDummy.userNoId);
+    final d = await userService.createOne(null, UserPrivateDummy.userNoId);
     print(d);
     final object = ObjectId.fromHexString(d.id);
     print(object);

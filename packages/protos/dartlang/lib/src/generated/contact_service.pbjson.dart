@@ -17,14 +17,19 @@ import 'dart:typed_data' as $typed_data;
 const FindContactRequest$json = {
   '1': 'FindContactRequest',
   '2': [
-    {'1': 'chainOid', '3': 1, '4': 1, '5': 9, '10': 'chainOid'},
-    {'1': 'firstName', '3': 2, '4': 1, '5': 9, '10': 'firstName'},
-    {'1': 'lastName', '3': 3, '4': 1, '5': 9, '10': 'lastName'},
-    {'1': 'mail', '3': 4, '4': 1, '5': 9, '9': 0, '10': 'mail', '17': true},
-    {'1': 'phone', '3': 5, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '9': 1, '10': 'phone', '17': true},
-    {'1': 'address', '3': 6, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '9': 2, '10': 'addressFull', '17': true},
+    {'1': 'firmOid', '3': 1, '4': 1, '5': 9, '10': 'firmOid'},
+    {'1': 'contactChainOid', '3': 2, '4': 1, '5': 9, '10': 'contactChainOid'},
+    {'1': 'contactUserOid', '3': 3, '4': 1, '5': 9, '10': 'contactUserOid'},
+    {'1': 'contactNonUniqueId', '3': 4, '4': 1, '5': 5, '10': 'contactNonUniqueId'},
+    {'1': 'firstName', '3': 5, '4': 1, '5': 9, '9': 0, '10': 'firstName', '17': true},
+    {'1': 'lastName', '3': 6, '4': 1, '5': 9, '9': 1, '10': 'lastName', '17': true},
+    {'1': 'mail', '3': 7, '4': 1, '5': 9, '9': 2, '10': 'mail', '17': true},
+    {'1': 'phone', '3': 8, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '9': 3, '10': 'phone', '17': true},
+    {'1': 'address', '3': 9, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '9': 4, '10': 'addressFull', '17': true},
   ],
   '8': [
+    {'1': '_firstName'},
+    {'1': '_lastName'},
     {'1': '_mail'},
     {'1': '_phone'},
     {'1': '_address'},
@@ -33,24 +38,29 @@ const FindContactRequest$json = {
 
 /// Descriptor for `FindContactRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List findContactRequestDescriptor = $convert.base64Decode(
-    'ChJGaW5kQ29udGFjdFJlcXVlc3QSGgoIY2hhaW5PaWQYASABKAlSCGNoYWluT2lkEhwKCWZpcn'
-    'N0TmFtZRgCIAEoCVIJZmlyc3ROYW1lEhoKCGxhc3ROYW1lGAMgASgJUghsYXN0TmFtZRIXCgRt'
-    'YWlsGAQgASgJSABSBG1haWyIAQESNAoFcGhvbmUYBSABKAsyGS53ZWViaS5jb21tb24ucGhvbm'
-    'UuUGhvbmVIAVIFcGhvbmWIAQESQAoHYWRkcmVzcxgGIAEoCzIdLndlZWJpLmNvbW1vbi5hZGRy'
-    'ZXNzLkFkZHJlc3NIAlILYWRkcmVzc0Z1bGyIAQFCBwoFX21haWxCCAoGX3Bob25lQgoKCF9hZG'
-    'RyZXNz');
+    'ChJGaW5kQ29udGFjdFJlcXVlc3QSGAoHZmlybU9pZBgBIAEoCVIHZmlybU9pZBIoCg9jb250YW'
+    'N0Q2hhaW5PaWQYAiABKAlSD2NvbnRhY3RDaGFpbk9pZBImCg5jb250YWN0VXNlck9pZBgDIAEo'
+    'CVIOY29udGFjdFVzZXJPaWQSLgoSY29udGFjdE5vblVuaXF1ZUlkGAQgASgFUhJjb250YWN0Tm'
+    '9uVW5pcXVlSWQSIQoJZmlyc3ROYW1lGAUgASgJSABSCWZpcnN0TmFtZYgBARIfCghsYXN0TmFt'
+    'ZRgGIAEoCUgBUghsYXN0TmFtZYgBARIXCgRtYWlsGAcgASgJSAJSBG1haWyIAQESNAoFcGhvbm'
+    'UYCCABKAsyGS53ZWViaS5jb21tb24ucGhvbmUuUGhvbmVIA1IFcGhvbmWIAQESQAoHYWRkcmVz'
+    'cxgJIAEoCzIdLndlZWJpLmNvbW1vbi5hZGRyZXNzLkFkZHJlc3NIBFILYWRkcmVzc0Z1bGyIAQ'
+    'FCDAoKX2ZpcnN0TmFtZUILCglfbGFzdE5hbWVCBwoFX21haWxCCAoGX3Bob25lQgoKCF9hZGRy'
+    'ZXNz');
 
 @$core.Deprecated('Use readAllContactsRequestDescriptor instead')
 const ReadAllContactsRequest$json = {
   '1': 'ReadAllContactsRequest',
   '2': [
-    {'1': 'chainOid', '3': 1, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'firmOid', '3': 1, '4': 1, '5': 9, '10': 'firmOid'},
+    {'1': 'chainOid', '3': 2, '4': 1, '5': 9, '10': 'chainOid'},
   ],
 };
 
 /// Descriptor for `ReadAllContactsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List readAllContactsRequestDescriptor = $convert.base64Decode(
-    'ChZSZWFkQWxsQ29udGFjdHNSZXF1ZXN0EhoKCGNoYWluT2lkGAEgASgJUghjaGFpbk9pZA==');
+    'ChZSZWFkQWxsQ29udGFjdHNSZXF1ZXN0EhgKB2Zpcm1PaWQYASABKAlSB2Zpcm1PaWQSGgoIY2'
+    'hhaW5PaWQYAiABKAlSCGNoYWluT2lk');
 
 @$core.Deprecated('Use contactRequestDescriptor instead')
 const ContactRequest$json = {

@@ -113,7 +113,6 @@ class Firm extends $pb.GeneratedMessage {
   static Firm getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Firm>(create);
   static Firm? _defaultInstance;
 
-  /// 'oid' to avoid conflict with _id
   @$pb.TagNumber(1)
   $11.ObjectIdProto get id => $_getN(0);
   @$pb.TagNumber(1)

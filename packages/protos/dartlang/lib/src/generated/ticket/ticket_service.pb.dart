@@ -17,15 +17,23 @@ import 'ticket.pb.dart' as $14;
 
 class FindTicketRequest extends $pb.GeneratedMessage {
   factory FindTicketRequest({
-    $14.Counterfoil? counterfoil,
-    $core.int? ticketId,
+    $core.String? firmOid,
+    $core.String? ticketChainOid,
+    $core.String? ticketUserOid,
+    $core.int? ticketNonUniqueId,
   }) {
     final $result = create();
-    if (counterfoil != null) {
-      $result.counterfoil = counterfoil;
+    if (firmOid != null) {
+      $result.firmOid = firmOid;
     }
-    if (ticketId != null) {
-      $result.ticketId = ticketId;
+    if (ticketChainOid != null) {
+      $result.ticketChainOid = ticketChainOid;
+    }
+    if (ticketUserOid != null) {
+      $result.ticketUserOid = ticketUserOid;
+    }
+    if (ticketNonUniqueId != null) {
+      $result.ticketNonUniqueId = ticketNonUniqueId;
     }
     return $result;
   }
@@ -34,8 +42,10 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   factory FindTicketRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FindTicketRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
-    ..aOM<$14.Counterfoil>(1, _omitFieldNames ? '' : 'counterfoil', subBuilder: $14.Counterfoil.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'ticketId')
+    ..aOS(1, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
+    ..aOS(2, _omitFieldNames ? '' : 'ticketChainOid', protoName: 'ticketChainOid')
+    ..aOS(3, _omitFieldNames ? '' : 'ticketUserOid', protoName: 'ticketUserOid')
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'ticketNonUniqueId', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
     ..hasRequiredFields = false
   ;
 
@@ -62,24 +72,40 @@ class FindTicketRequest extends $pb.GeneratedMessage {
 
   /// weebi.common.mongo.MallAndBoutiqueOids chainAndBoutiqueOids = 1 [json_name = 'mallAndBoutiqueOids'];
   @$pb.TagNumber(1)
-  $14.Counterfoil get counterfoil => $_getN(0);
+  $core.String get firmOid => $_getSZ(0);
   @$pb.TagNumber(1)
-  set counterfoil($14.Counterfoil v) { setField(1, v); }
+  set firmOid($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasCounterfoil() => $_has(0);
+  $core.bool hasFirmOid() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCounterfoil() => clearField(1);
-  @$pb.TagNumber(1)
-  $14.Counterfoil ensureCounterfoil() => $_ensure(0);
+  void clearFirmOid() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.int get ticketId => $_getIZ(1);
+  $core.String get ticketChainOid => $_getSZ(1);
   @$pb.TagNumber(2)
-  set ticketId($core.int v) { $_setSignedInt32(1, v); }
+  set ticketChainOid($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasTicketId() => $_has(1);
+  $core.bool hasTicketChainOid() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTicketId() => clearField(2);
+  void clearTicketChainOid() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get ticketUserOid => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set ticketUserOid($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasTicketUserOid() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTicketUserOid() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get ticketNonUniqueId => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set ticketNonUniqueId($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasTicketNonUniqueId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearTicketNonUniqueId() => clearField(4);
 }
 
 class TicketRequest extends $pb.GeneratedMessage {

@@ -37,7 +37,7 @@ class TicketService extends TicketServiceBase {
     try {
       final ticketMongo = TicketMongo.create()
         ..ticket = request.ticket
-        ..ticketId = request.ticket.id
+        ..ticketNonUniqueId = request.ticket.id
         ..boutiqueOid = request.ticket.counterfoil.boutiqueOid
         ..chainOid = request.ticket.counterfoil.chainOid
         ..firmOid = userPermission.firmOid
@@ -145,16 +145,15 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read tickets');
     }
-    if (!request.counterfoil.isFirmAndChainAccessible(userPermission)) {
+    if (request.ticketChainOid.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from firm ${request.counterfoil.firmName} or chain ${request.counterfoil.chainName}');
+          'user cannot access data from chain ${request.ticketChainOid}');
     }
 
     final selector = where
         .eq('firmOid', userPermission.firmOid)
-        .eq('chainOid', request.counterfoil.chainOid)
-        .eq('boutiqueOid', request.counterfoil.boutiqueOid)
-        .eq('ticketId', request.ticketId);
+        .eq('chainOid', request.ticketChainOid)
+        .eq('ticketNonUniqueId', request.ticketNonUniqueId);
     try {
       final ticket = await collection.findOne(selector);
       if (ticket == null) {
