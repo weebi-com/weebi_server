@@ -9,9 +9,9 @@ import "common/phone.proto";
 import "common/g_common.proto";
 
 message FindContactRequest {
-  // string firmOid = 1 [json_name = 'firmOid']; // deduced from bearer token
-  string contactChainOid = 1 [json_name = 'contactChainOid'];
-  string contactUserOid = 2 [json_name = 'contactUserOid'];
+  // string firmId = 1 [json_name = 'firmId']; // deduced from bearer token
+  string contactchainId = 1 [json_name = 'contactchainId'];
+  string contactuserId = 2 [json_name = 'contactuserId'];
   int32 contactNonUniqueId = 3 [json_name = 'contactNonUniqueId'];
   optional string firstName =  4 [json_name = 'firstName'];
   optional string lastName =  5 [json_name = 'lastName'];
@@ -21,13 +21,13 @@ message FindContactRequest {
 }
 
 message ReadAllContactsRequest {
-  string firmOid = 1 [json_name = 'firmOid'];
-  string chainOid = 2 [json_name = 'chainOid'];;
+  string firmId = 1 [json_name = 'firmId'];
+  string chainId = 2 [json_name = 'chainId'];;
 }
 
 message ContactRequest {
-  string chainOid = 1;
-  string contactUserOid = 2;
+  string chainId = 1;
+  string contactuserId = 2;
   weebi.contact.ContactPb contact = 3;
 }
 

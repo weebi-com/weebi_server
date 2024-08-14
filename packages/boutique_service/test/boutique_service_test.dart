@@ -11,9 +11,9 @@ void main() async {
 
   final connection = Connection(ConnectionManager(db));
 
-  String firmOid = '';
-  String chainOid = '';
-  String boutiqueOid = '';
+  String firmId = '';
+  String chainId = '';
+  String boutiqueId = '';
 
   late BoutiqueService boutiqueService;
 
@@ -22,7 +22,7 @@ void main() async {
     boutiqueService = BoutiqueService(
       db,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission,
+      userPermissionIfTest: Dummy.adminPermission,
     );
     await db.collection(boutiqueService.collection.collectionName).drop();
     await db.createCollection(boutiqueService.collection.collectionName);
@@ -35,56 +35,54 @@ void main() async {
 
   test('test createOneFirm ', () async {
     // ignore: unused_local_variable
-    final response =
-        await boutiqueService.createOneFirm(null, FirmDummy.firmNoId);
+    final response = await boutiqueService.createOneFirm(null, Dummy.firmNoId);
     expect(response.type, StatusResponse_Type.CREATED);
-    final userPermissionsUpdated = UserPrivateDummy.adminPermission;
-    userPermissionsUpdated.firmOid = response.id;
+    final userPermissionsUpdated = Dummy.adminPermission;
+    userPermissionsUpdated.firmId = response.id;
     boutiqueService..userPermissionIfTest = userPermissionsUpdated;
   });
   test('test readOneFirm', () async {
     final response = await boutiqueService.readOneFirm(null, Empty());
-    expect(response.chains, FirmDummy.firmNoId.chains);
-    expect(response.isMailVerified, FirmDummy.firmNoId.isMailVerified);
-    expect(
-        response.lastUpdatedByUserOid, FirmDummy.firmNoId.lastUpdatedByUserOid);
-    expect(response.name, FirmDummy.firmNoId.name);
-    expect(response.status, FirmDummy.firmNoId.status);
+    expect(response.chains, Dummy.firmNoId.chains);
+    expect(response.isMailVerified, Dummy.firmNoId.isMailVerified);
+    expect(response.lastUpdatedByuserId, Dummy.firmNoId.lastUpdatedByuserId);
+    expect(response.name, Dummy.firmNoId.name);
+    expect(response.status, Dummy.firmNoId.status);
     expect(response.statusUpdateTimestampUTC,
-        FirmDummy.firmNoId.statusUpdateTimestampUTC);
-    expect(response.subscriptionPlan, FirmDummy.firmNoId.subscriptionPlan);
-    expect(response.lastUpdateTimestampUTC,
-        FirmDummy.firmNoId.lastUpdateTimestampUTC);
-    firmOid = response.id.oid;
-    chainOid = response.chains.first.id.oid;
-    boutiqueOid = response.chains.first.boutiques.first.id.oid;
+        Dummy.firmNoId.statusUpdateTimestampUTC);
+    expect(response.subscriptionPlan, Dummy.firmNoId.subscriptionPlan);
+    expect(
+        response.lastUpdateTimestampUTC, Dummy.firmNoId.lastUpdateTimestampUTC);
+    firmId = response.firmId;
+    chainId = response.chains.first.chainId;
+    boutiqueId = response.chains.first.boutiques.first.boutiqueId;
   });
   test('test upsertOneChain', () async {
     var userService = UserService(
       db,
       boutiqueService,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission
-        ..firmOid = firmOid
-        ..chainsAccessible = Oids(oids: [chainOid]),
+      userPermissionIfTest: Dummy.adminPermission
+        ..firmId = firmId
+        ..chainsAccessible = Ids(ids: [chainId]),
     );
 
-    final dd = UserInfoDummy.userInfoNoId;
-    dd.permissions.firmOid = firmOid;
+    final dd = Dummy.userInfoNoId;
+    dd.permissions.firmId = firmId;
     final responseUser = await userService.createOne(
         null, CreateOneRequest(password: '1234', userInfo: dd));
-    UserPrivateDummy.adminPermission.firmOid = firmOid;
-    UserPrivateDummy.adminPermission.chainsAccessible = Oids(oids: [chainOid]);
-    UserPrivateDummy.adminPermission.userOid = responseUser.id;
+    Dummy.adminPermission.firmId = firmId;
+    Dummy.adminPermission.chainsAccessible = Ids(ids: [chainId]);
+    Dummy.adminPermission.userId = responseUser.id;
     //userService..userPermissionIfTest = UserDummy.adminPermission;
-    boutiqueService..userPermissionIfTest = UserPrivateDummy.adminPermission;
+    boutiqueService..userPermissionIfTest = Dummy.adminPermission;
 
-    final liliChain = ChainDummy.chainNoId;
-    print('chainOid $chainOid');
+    final liliChain = Dummy.chainNoId;
+    print('chainId $chainId');
     liliChain
       ..name = 'Lili chain'
-      ..firmOid = firmOid
-      ..id = ObjectIdProto(oid: chainOid);
+      ..firmId = firmId
+      ..chainId = chainId;
 
     final response = await boutiqueService.updateOneChain(null, liliChain);
     expect(response.type, StatusResponse_Type.UPDATED);
@@ -93,11 +91,11 @@ void main() async {
   });
 
   test('test upsertOneBoutique', () async {
-    final boutiqueLili = BoutiqueDummy.boutiqueNoId
+    final boutiqueLili = Dummy.boutiqueNoId
       ..name = 'Lili boutique'
-      ..firmOid = firmOid
-      ..chainOid = chainOid
-      ..id = ObjectIdProto(oid: boutiqueOid);
+      ..firmId = firmId
+      ..chainId = chainId
+      ..boutiqueId = boutiqueId;
 
     final response =
         await boutiqueService.updateOneBoutique(null, boutiqueLili);

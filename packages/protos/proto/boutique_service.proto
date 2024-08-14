@@ -10,12 +10,12 @@ import "boutique_chain.proto";
 import "boutique.proto";
 
 message ReadRequest {
-  string chainOid = 1;
+  string chainId = 1;
 }
 
 
 message DeleteDeviceRequest {
-  string chainOid = 1; 
+  string chainId = 1; 
   weebi.chain.Device device = 2 ;
 }
 

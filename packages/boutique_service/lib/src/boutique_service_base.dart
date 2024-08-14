@@ -17,8 +17,8 @@ class BoutiqueService extends BoutiqueServiceBase {
       : collection = _db.collection(collectionName);
 
   /// only one firm per 'company' using weebi
-  /// 1. user signup and get a userOid
-  /// 2. user create a firm, firmOid == userOid for simplicity
+  /// 1. user signup and get a userId
+  /// 2. user create a firm, firmId == userId for simplicity
   @override
   Future<StatusResponse> createOneFirm(ServiceCall? call, Firm request) async {
     _db.isConnected ? null : await _db.open();
@@ -33,8 +33,8 @@ class BoutiqueService extends BoutiqueServiceBase {
     }
     // ? should we check that no other firm exist for this accouunt ?
     try {
-      final firmMongo = await collection
-          .findOne(where.id(ObjectId.fromHexString(userPermission.firmOid)));
+      final firmMongo =
+          await collection.findOne(where.eq('firmId', (userPermission.firmId)));
       if (firmMongo != null) {
         throw GrpcError.notFound('already such a firm');
       }
@@ -48,16 +48,14 @@ class BoutiqueService extends BoutiqueServiceBase {
       rethrow;
     }
     // set the appropriate ids
-    request.id = ObjectIdProto(oid: userPermission.firmOid);
+    request.firmId = userPermission.firmId;
     request.chains.first
-      ..id = ObjectIdProto(
-          oid: ObjectId.createId(DateTime.now().toUtc().second).hexString)
-      ..firmOid = userPermission.firmOid;
+      ..firmId = ObjectId.createId(DateTime.now().toUtc().second).hexString
+      ..firmId = userPermission.firmId;
     request.chains.first.boutiques.first
-      ..id = ObjectIdProto(
-          oid: ObjectId.createId(DateTime.now().toUtc().second).hexString)
-      ..chainOid = request.chains.first.id.oid
-      ..firmOid = userPermission.firmOid;
+      ..firmId = ObjectId.createId(DateTime.now().toUtc().second).hexString
+      ..chainId = request.chains.first.chainId
+      ..firmId = userPermission.firmId;
     try {
       final result = await collection
           .insertOne(request.toProto3Json() as Map<String, dynamic>);
@@ -66,7 +64,7 @@ class BoutiqueService extends BoutiqueServiceBase {
       }
       if (result.ok == 1 && result.document != null) {
         //print(result.document);
-        final mongoId = result.document!['_id']['oid'];
+        final mongoId = result.document!['_id'];
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
@@ -99,7 +97,7 @@ class BoutiqueService extends BoutiqueServiceBase {
     }
     try {
       final firmMongo =
-          await collection.findOne(where.eq('_id', userPermission.firmOid));
+          await collection.findOne(where.eq('firmId', userPermission.firmId));
       if (firmMongo == null) {
         throw GrpcError.notFound('firm not found');
       }
@@ -113,8 +111,8 @@ class BoutiqueService extends BoutiqueServiceBase {
   }
 
   Future<Firm> _checkFirmAndProtoIt(UserPermissions userPermissions) async {
-    final firmMongo = await collection
-        .findOne(where.id(ObjectId.fromHexString(userPermissions.firmOid)));
+    final firmMongo =
+        await collection.findOne(where.eq('firmId', (userPermissions.firmId)));
     if (firmMongo == null) {
       throw GrpcError.notFound('firm not found');
     }
@@ -125,11 +123,10 @@ class BoutiqueService extends BoutiqueServiceBase {
   /// used to find user access levels called by UserService
   /// consider making this a "public" gRPC
   Future<List<String>> readAllBoutiquesInChains(
-      String firmOid, List<String> chainOids) async {
+      String firmId, List<String> chainIds) async {
     _db.isConnected ? null : await _db.open();
     try {
-      final firmMongo =
-          await collection.findOne(where.id(ObjectId.fromHexString(firmOid)));
+      final firmMongo = await collection.findOne(where.eq('firmId', firmId));
 
       if (firmMongo == null) {
         throw GrpcError.notFound('firm not found');
@@ -138,13 +135,13 @@ class BoutiqueService extends BoutiqueServiceBase {
         ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
 
       final boutiques = <Boutique>[];
-      for (final requestChainOid in chainOids) {
+      for (final requestchainId in chainIds) {
         for (final chain in firm.chains) {
-          if (firmOid == chain.firmOid) {
-            if (requestChainOid == chain.id.oid) {
+          if (firmId == chain.firmId) {
+            if (requestchainId == chain.chainId) {
               for (final boutique in chain.boutiques) {
-                if (boutique.firmOid == firmOid &&
-                    boutique.chainOid == requestChainOid) {
+                if (boutique.firmId == firmId &&
+                    boutique.chainId == requestchainId) {
                   boutiques.add(boutique);
                 }
               }
@@ -152,7 +149,7 @@ class BoutiqueService extends BoutiqueServiceBase {
           }
         }
       }
-      return boutiques.map((e) => e.id.oid).toList();
+      return boutiques.map((e) => e.boutiqueId).toList();
     } on GrpcError catch (e) {
       print(e);
       rethrow;
@@ -163,8 +160,8 @@ class BoutiqueService extends BoutiqueServiceBase {
   Future<List<String>> readAllBoutiquesInChain(UserPrivate user) async {
     _db.isConnected ? null : await _db.open();
     try {
-      final firmMongo = await collection
-          .findOne(where.id(ObjectId.fromHexString(user.firmOid)));
+      final firmMongo =
+          await collection.findOne(where.eq('firmId', user.firmId));
 
       if (firmMongo == null) {
         throw GrpcError.notFound('firm not found');
@@ -173,13 +170,13 @@ class BoutiqueService extends BoutiqueServiceBase {
         ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
 
       final boutiques = <Boutique>[];
-      for (final requestChainOid in user.chainOids.oids) {
+      for (final requestchainId in user.chainIds.ids) {
         for (final chain in firm.chains) {
-          if (user.firmOid == chain.firmOid) {
-            if (requestChainOid == chain.id.oid) {
+          if (user.firmId == chain.firmId) {
+            if (requestchainId == chain.chainId) {
               for (final boutique in chain.boutiques) {
-                if (boutique.firmOid == user.firmOid &&
-                    boutique.chainOid == requestChainOid) {
+                if (boutique.firmId == user.firmId &&
+                    boutique.chainId == requestchainId) {
                   boutiques.add(boutique);
                 }
               }
@@ -187,7 +184,7 @@ class BoutiqueService extends BoutiqueServiceBase {
           }
         }
       }
-      return boutiques.map((e) => e.id.oid).toList();
+      return boutiques.map((e) => e.boutiqueId).toList();
     } on GrpcError catch (e) {
       print(e);
       rethrow;
@@ -202,9 +199,9 @@ class BoutiqueService extends BoutiqueServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
 
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.name} ${request.id.oid}');
+          'user cannot access data from chain ${request.name} ${request.boutiqueId}');
     }
 
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.create) ==
@@ -217,17 +214,14 @@ class BoutiqueService extends BoutiqueServiceBase {
       final firm = await _checkFirmAndProtoIt(userPermission);
 
       final chainIndex =
-          firm.chains.indexWhere((e) => e.id.oid == request.chainOid);
+          firm.chains.indexWhere((e) => e.chainId == request.chainId);
       if (chainIndex == -1) {
         throw GrpcError.notFound('boutique chain not found');
       }
       firm.chains[chainIndex].boutiques.add(request);
 
-      // _id clearing just in case
-      firm.clearId();
-      request.clearId();
       final result = await collection.replaceOne(
-        where.id(ObjectId.fromHexString(userPermission.firmOid)),
+        where.eq('firmId', userPermission.firmId),
         firm.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
@@ -236,7 +230,7 @@ class BoutiqueService extends BoutiqueServiceBase {
       }
       if (result.ok == 1 && result.document != null) {
         print(result.document.toString());
-        final mongoId = result.document!['_id']['oid'];
+        final mongoId = result.document!['_id'];
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
@@ -258,7 +252,7 @@ class BoutiqueService extends BoutiqueServiceBase {
     }
   }
 
-  /// the client will need to provide firmOid
+  /// the client will need to provide firmId
   @override
   Future<StatusResponse> createOneChain(
       ServiceCall? call, Chain request) async {
@@ -267,8 +261,8 @@ class BoutiqueService extends BoutiqueServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
 
-    // TODO check request.firmOid is not empty
-    // TODO check user.firmOid match request.firmOid
+    // TODO check request.firmId is not empty
+    // TODO check user.firmId match request.firmId
     if (userPermission.chainRights.rights.any((e) => e == Right.create) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -279,13 +273,8 @@ class BoutiqueService extends BoutiqueServiceBase {
       final firm = await _checkFirmAndProtoIt(userPermission);
       firm.chains.add(request);
 
-      // _id clearing just in case
-      request.clearId();
-      request.boutiques.forEach((e) => e.clearId);
-      request.devices.forEach((e) => e.clearId);
-
       final result = await collection.replaceOne(
-        where.id(ObjectId.fromHexString(userPermission.firmOid)),
+        where.eq('firmId', userPermission.firmId),
         firm.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
@@ -293,7 +282,7 @@ class BoutiqueService extends BoutiqueServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id']['oid'];
+        final mongoId = result.document!['_id'];
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
           ..id = mongoId
@@ -318,7 +307,7 @@ class BoutiqueService extends BoutiqueServiceBase {
   Future<StatusResponse> updateOneBoutique(
       ServiceCall? call, Boutique request) async {
     _db.isConnected ? null : await _db.open();
-    if (request.id.oid.isEmpty) {
+    if (request.boutiqueId.isEmpty) {
       throw GrpcError.failedPrecondition('boutique id cannot be empty');
     }
     final userPermission = isTest
@@ -329,28 +318,27 @@ class BoutiqueService extends BoutiqueServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update boutique');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
 
     try {
       final firm = await _checkFirmAndProtoIt(userPermission);
       final chainIndex =
-          firm.chains.indexWhere((e) => e.id.oid == request.chainOid);
+          firm.chains.indexWhere((e) => e.chainId == request.chainId);
       if (chainIndex == -1) {
         throw GrpcError.notFound('boutique chain not found');
       }
       final boutiqueIndex = firm.chains[chainIndex].boutiques
-          .indexWhere((e) => e.id.oid == request.id.oid);
+          .indexWhere((e) => e.boutiqueId == request.boutiqueId);
       if (boutiqueIndex == -1) {
         throw GrpcError.notFound('boutique not found');
       }
       firm.chains[chainIndex].boutiques[boutiqueIndex] = request;
 
-      firm.clearId(); // do not interfere with mongo object id management
       final result = await collection.replaceOne(
-        where.id(ObjectId.fromHexString(userPermission.firmOid)),
+        where.eq('firmId', userPermission.firmId),
         firm.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
@@ -381,7 +369,7 @@ class BoutiqueService extends BoutiqueServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.id.oid.isEmpty) {
+    if (request.chainId.isEmpty) {
       throw GrpcError.failedPrecondition('chain id cannot be empty');
     }
     if (userPermission.chainRights.rights.any((e) => e == Right.update) ==
@@ -389,22 +377,21 @@ class BoutiqueService extends BoutiqueServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update chain');
     }
-    if (request.id.oid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.name} ${request.id.oid}');
+          'user cannot access data from chain ${request.name} ${request.chainId}');
     }
 
     try {
       final firm = await _checkFirmAndProtoIt(userPermission);
-      final index = firm.chains.indexWhere((e) => e.id.oid == request.id.oid);
+      final index = firm.chains.indexWhere((e) => e.chainId == request.chainId);
       if (index == -1) {
         throw GrpcError.notFound('chain not found');
       } else {
         firm.chains[index] = request;
       }
-      firm.clearId();
       final result = await collection.replaceOne(
-        where.id(ObjectId.fromHexString(userPermission.firmOid)),
+        where.eq('firmId', userPermission.firmId),
         firm.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
@@ -441,13 +428,13 @@ class BoutiqueService extends BoutiqueServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete device');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     try {
       final firm = await _checkFirmAndProtoIt(userPermission);
-      final index = firm.chains.indexWhere((e) => e.id.oid == request.chainOid);
+      final index = firm.chains.indexWhere((e) => e.chainId == request.chainId);
       if (index == -1) {
         throw GrpcError.notFound();
       }
@@ -455,13 +442,13 @@ class BoutiqueService extends BoutiqueServiceBase {
 // ** .oid would be safer, but not sure it is populated properly
       final deviceIndex = firm.chains[index].devices.indexWhere((d) =>
           d.serialNumber == request.device.serialNumber &&
-          d.boutiqueOid == request.device.boutiqueOid);
+          d.boutiqueId == request.device.boutiqueId);
       if (deviceIndex == -1) {
         throw GrpcError.unavailable('no device found');
       }
       firm.chains[index].devices.removeAt(deviceIndex);
       final result = await collection.replaceOne(
-        where.id(ObjectId.fromHexString(userPermission.firmOid)),
+        where.eq('firmId', userPermission.firmId),
         firm.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
@@ -492,23 +479,23 @@ class BoutiqueService extends BoutiqueServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read devices');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     try {
-      final firmMongo = await collection
-          .findOne(where.id(ObjectId.fromHexString(userPermission.firmOid)));
+      final firmMongo =
+          await collection.findOne(where.eq('firmId', userPermission.firmId));
 
       if (firmMongo == null) {
-        throw GrpcError.unknown('firm not found ${userPermission.firmOid}');
+        throw GrpcError.unknown('firm not found ${userPermission.firmId}');
       }
       final firm = Firm.create()
         ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
 
-      final index = firm.chains.indexWhere((e) => e.id.oid == request.chainOid);
+      final index = firm.chains.indexWhere((e) => e.chainId == request.chainId);
       if (index == -1) {
-        throw GrpcError.unknown('mall ${request.chainOid}');
+        throw GrpcError.unknown('mall ${request.chainId}');
       }
 
       final devices = <Device>[];

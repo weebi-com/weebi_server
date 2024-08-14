@@ -18,9 +18,9 @@ void main() {
 
     final dd = DevicePairingResponse(
         code: 123456,
-        firmOid: '',
-        chainOid: '',
-        userOid: '',
+        firmId: '',
+        chainId: '',
+        userId: '',
         timestampUTC: timestamp);
 
     final insertResult = await db

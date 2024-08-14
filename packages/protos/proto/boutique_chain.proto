@@ -13,13 +13,13 @@ import "common/mongo.proto";
 // devices are handled at the chains level, not the boutiques
 
 message Chain {
-  string _id = 1 [json_name = '_id'];
-  string firmOid = 2 [json_name = 'firmOid'];
+  string chainId = 1 [json_name = 'chainId'];
+  string firmId = 2 [json_name = 'firmId'];
   string name = 3 [json_name = 'name'];
   repeated weebi.boutique.Boutique boutiques = 4 [json_name = 'boutiques'];
   repeated Device devices = 5 [json_name = 'devices'];
   google.protobuf.Timestamp lastUpdateTimestampUTC = 6 [json_name = 'lastUpdateTimestampUTC'];;
-  string lastUpdatedByUserOid = 7 [json_name = 'lastUpdatedByUserOid'];
+  string lastUpdatedByuserId = 7 [json_name = 'lastUpdatedByuserId'];
 }
 
 message Chains {
@@ -29,10 +29,10 @@ message Chains {
 /// a Device == cash register, assigned to a chain, it can be used by each chain's boutiques
 message Device {
   string _id = 1 [json_name = '_id'];
-  string chainOid = 2 [json_name = 'chainOid'];
+  string chainId = 2 [json_name = 'chainId'];
 
   // TODO : think again if we really need to have boutique here, really depends on user permission I think...
-  string boutiqueOid = 3 [json_name = 'boutiqueOid'];
+  string boutiqueId = 3 [json_name = 'boutiqueId'];
   bool status = 4 [json_name = 'status'];
   string password = 5 [json_name = 'password'];
   // below comes from device

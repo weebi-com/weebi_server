@@ -18,7 +18,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'common/empty.pb.dart' as $0;
 import 'common/g_common.pb.dart' as $1;
 import 'common/mongo.pb.dart' as $11;
-import 'user_permission.pb.dart' as $12;
+import 'user.pb.dart' as $12;
 import 'user_service.pb.dart' as $10;
 
 export 'user_service.pb.dart';
@@ -33,9 +33,9 @@ class UserServiceClient extends $grpc.Client {
       '/weebi.user.service.UserService/authenticateWithRefreshToken',
       ($10.RefreshToken value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $10.Tokens.fromBuffer(value));
-  static final _$generateCodeForPairingDevice = $grpc.ClientMethod<$11.ChainOidAndBoutiqueOid, $10.DevicePairingResponse>(
+  static final _$generateCodeForPairingDevice = $grpc.ClientMethod<$11.chainIdAndboutiqueId, $10.DevicePairingResponse>(
       '/weebi.user.service.UserService/generateCodeForPairingDevice',
-      ($11.ChainOidAndBoutiqueOid value) => value.writeToBuffer(),
+      ($11.chainIdAndboutiqueId value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $10.DevicePairingResponse.fromBuffer(value));
   static final _$addPendingDevice = $grpc.ClientMethod<$10.PendingDeviceRequest, $1.StatusResponse>(
       '/weebi.user.service.UserService/addPendingDevice',
@@ -61,17 +61,17 @@ class UserServiceClient extends $grpc.Client {
       '/weebi.user.service.UserService/readUserPermissionsByToken',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $12.UserPermissions.fromBuffer(value));
-  static final _$readOne = $grpc.ClientMethod<$10.UserOid, $10.UserInfo>(
+  static final _$readOne = $grpc.ClientMethod<$10.UserId, $12.UserInfo>(
       '/weebi.user.service.UserService/readOne',
-      ($10.UserOid value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $10.UserInfo.fromBuffer(value));
-  static final _$updateOne = $grpc.ClientMethod<$10.UserInfo, $1.StatusResponse>(
+      ($10.UserId value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $12.UserInfo.fromBuffer(value));
+  static final _$updateOne = $grpc.ClientMethod<$12.UserInfo, $1.StatusResponse>(
       '/weebi.user.service.UserService/updateOne',
-      ($10.UserInfo value) => value.writeToBuffer(),
+      ($12.UserInfo value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$deleteOne = $grpc.ClientMethod<$10.UserOid, $1.StatusResponse>(
+  static final _$deleteOne = $grpc.ClientMethod<$10.UserId, $1.StatusResponse>(
       '/weebi.user.service.UserService/deleteOne',
-      ($10.UserOid value) => value.writeToBuffer(),
+      ($10.UserId value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
 
   UserServiceClient($grpc.ClientChannel channel,
@@ -88,7 +88,7 @@ class UserServiceClient extends $grpc.Client {
     return $createUnaryCall(_$authenticateWithRefreshToken, request, options: options);
   }
 
-  $grpc.ResponseFuture<$10.DevicePairingResponse> generateCodeForPairingDevice($11.ChainOidAndBoutiqueOid request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$10.DevicePairingResponse> generateCodeForPairingDevice($11.chainIdAndboutiqueId request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$generateCodeForPairingDevice, request, options: options);
   }
 
@@ -116,15 +116,15 @@ class UserServiceClient extends $grpc.Client {
     return $createUnaryCall(_$readUserPermissionsByToken, request, options: options);
   }
 
-  $grpc.ResponseFuture<$10.UserInfo> readOne($10.UserOid request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$12.UserInfo> readOne($10.UserId request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readOne, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> updateOne($10.UserInfo request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> updateOne($12.UserInfo request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateOne, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> deleteOne($10.UserOid request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> deleteOne($10.UserId request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOne, request, options: options);
   }
 }
@@ -148,12 +148,12 @@ abstract class UserServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $10.RefreshToken.fromBuffer(value),
         ($10.Tokens value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$11.ChainOidAndBoutiqueOid, $10.DevicePairingResponse>(
+    $addMethod($grpc.ServiceMethod<$11.chainIdAndboutiqueId, $10.DevicePairingResponse>(
         'generateCodeForPairingDevice',
         generateCodeForPairingDevice_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $11.ChainOidAndBoutiqueOid.fromBuffer(value),
+        ($core.List<$core.int> value) => $11.chainIdAndboutiqueId.fromBuffer(value),
         ($10.DevicePairingResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$10.PendingDeviceRequest, $1.StatusResponse>(
         'addPendingDevice',
@@ -197,26 +197,26 @@ abstract class UserServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($12.UserPermissions value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$10.UserOid, $10.UserInfo>(
+    $addMethod($grpc.ServiceMethod<$10.UserId, $12.UserInfo>(
         'readOne',
         readOne_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $10.UserOid.fromBuffer(value),
-        ($10.UserInfo value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$10.UserInfo, $1.StatusResponse>(
+        ($core.List<$core.int> value) => $10.UserId.fromBuffer(value),
+        ($12.UserInfo value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$12.UserInfo, $1.StatusResponse>(
         'updateOne',
         updateOne_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $10.UserInfo.fromBuffer(value),
+        ($core.List<$core.int> value) => $12.UserInfo.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$10.UserOid, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$10.UserId, $1.StatusResponse>(
         'deleteOne',
         deleteOne_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $10.UserOid.fromBuffer(value),
+        ($core.List<$core.int> value) => $10.UserId.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
   }
 
@@ -228,7 +228,7 @@ abstract class UserServiceBase extends $grpc.Service {
     return authenticateWithRefreshToken(call, await request);
   }
 
-  $async.Future<$10.DevicePairingResponse> generateCodeForPairingDevice_Pre($grpc.ServiceCall call, $async.Future<$11.ChainOidAndBoutiqueOid> request) async {
+  $async.Future<$10.DevicePairingResponse> generateCodeForPairingDevice_Pre($grpc.ServiceCall call, $async.Future<$11.chainIdAndboutiqueId> request) async {
     return generateCodeForPairingDevice(call, await request);
   }
 
@@ -256,28 +256,28 @@ abstract class UserServiceBase extends $grpc.Service {
     return readUserPermissionsByToken(call, await request);
   }
 
-  $async.Future<$10.UserInfo> readOne_Pre($grpc.ServiceCall call, $async.Future<$10.UserOid> request) async {
+  $async.Future<$12.UserInfo> readOne_Pre($grpc.ServiceCall call, $async.Future<$10.UserId> request) async {
     return readOne(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> updateOne_Pre($grpc.ServiceCall call, $async.Future<$10.UserInfo> request) async {
+  $async.Future<$1.StatusResponse> updateOne_Pre($grpc.ServiceCall call, $async.Future<$12.UserInfo> request) async {
     return updateOne(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> deleteOne_Pre($grpc.ServiceCall call, $async.Future<$10.UserOid> request) async {
+  $async.Future<$1.StatusResponse> deleteOne_Pre($grpc.ServiceCall call, $async.Future<$10.UserId> request) async {
     return deleteOne(call, await request);
   }
 
   $async.Future<$10.Tokens> authenticateWithCredentials($grpc.ServiceCall call, $10.LoginRequest request);
   $async.Future<$10.Tokens> authenticateWithRefreshToken($grpc.ServiceCall call, $10.RefreshToken request);
-  $async.Future<$10.DevicePairingResponse> generateCodeForPairingDevice($grpc.ServiceCall call, $11.ChainOidAndBoutiqueOid request);
+  $async.Future<$10.DevicePairingResponse> generateCodeForPairingDevice($grpc.ServiceCall call, $11.chainIdAndboutiqueId request);
   $async.Future<$1.StatusResponse> addPendingDevice($grpc.ServiceCall call, $10.PendingDeviceRequest request);
   $async.Future<$1.StatusResponse> approveDevice($grpc.ServiceCall call, $10.ApproveDeviceRequest request);
   $async.Future<$10.Tokens> authenticateWithDevice($grpc.ServiceCall call, $10.DeviceLoginRequest request);
   $async.Future<$1.StatusResponse> updateDeviceDefaultPassword($grpc.ServiceCall call, $10.UpdateDevicePasswordRequest request);
   $async.Future<$1.StatusResponse> createOne($grpc.ServiceCall call, $10.CreateOneRequest request);
   $async.Future<$12.UserPermissions> readUserPermissionsByToken($grpc.ServiceCall call, $0.Empty request);
-  $async.Future<$10.UserInfo> readOne($grpc.ServiceCall call, $10.UserOid request);
-  $async.Future<$1.StatusResponse> updateOne($grpc.ServiceCall call, $10.UserInfo request);
-  $async.Future<$1.StatusResponse> deleteOne($grpc.ServiceCall call, $10.UserOid request);
+  $async.Future<$12.UserInfo> readOne($grpc.ServiceCall call, $10.UserId request);
+  $async.Future<$1.StatusResponse> updateOne($grpc.ServiceCall call, $12.UserInfo request);
+  $async.Future<$1.StatusResponse> deleteOne($grpc.ServiceCall call, $10.UserId request);
 }

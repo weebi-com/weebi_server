@@ -3,15 +3,15 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 
 extension UserPermExt on String {
   bool isChainAccessible(UserPermissions userPermission) =>
-      userPermission.chainsAccessible.oids
-          .any((accessiblechainOid) => accessiblechainOid == this);
+      userPermission.chainsAccessible.ids
+          .any((accessiblechainId) => accessiblechainId == this);
 }
 
-extension UserPermExt2 on Oids {
+extension UserPermExt2 on Ids {
   bool areChainsAccessible(UserPermissions userPermission) {
-    for (final chainOid in oids) {
-      if (userPermission.chainsAccessible.oids
-          .none((accessiblechainOid) => accessiblechainOid == chainOid)) {
+    for (final chainId in ids) {
+      if (userPermission.chainsAccessible.ids
+          .none((accessiblechainId) => accessiblechainId == chainId)) {
         return false;
       }
     }
@@ -21,22 +21,22 @@ extension UserPermExt2 on Oids {
 
 extension UserPermExt3 on Counterfoil {
   bool isFirmAndChainAccessible(UserPermissions userPermission) =>
-      userPermission.firmOid == firmOid &&
-      userPermission.chainsAccessible.oids
-          .any((accessiblechainOid) => accessiblechainOid == chainOid);
+      userPermission.firmId == firmId &&
+      userPermission.chainsAccessible.ids
+          .any((accessiblechainId) => accessiblechainId == chainId);
 
   bool isBoutAccessible(UserPermissions userPermission) =>
-      userPermission.firmOid == firmOid &&
-      userPermission.chainsAccessible.oids
-          .any((accessiblechainOid) => accessiblechainOid == chainOid);
+      userPermission.firmId == firmId &&
+      userPermission.chainsAccessible.ids
+          .any((accessiblechainId) => accessiblechainId == chainId);
 }
 
-//&&      userPermission.boutiquesAccessible.oids
-//      .any((accessibleBoutiqueOid) => accessibleBoutiqueOid == boutiqueOid)
+//&&      userPermission.boutiquesAccessible.ids
+//      .any((accessibleboutiqueId) => accessibleboutiqueId == boutiqueId)
 
 extension JsonExt on Map<String, dynamic> {
-  Map<String, dynamic> addChain(String chainOid) {
-    final d = {'chainOid': chainOid};
+  Map<String, dynamic> addChain(String chainId) {
+    final d = {'chainId': chainId};
     return this..addAll(d);
   }
 }

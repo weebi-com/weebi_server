@@ -17,25 +17,25 @@ import 'dart:typed_data' as $typed_data;
 const ReadRequest$json = {
   '1': 'ReadRequest',
   '2': [
-    {'1': 'chainOid', '3': 1, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
   ],
 };
 
 /// Descriptor for `ReadRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List readRequestDescriptor = $convert.base64Decode(
-    'CgtSZWFkUmVxdWVzdBIaCghjaGFpbk9pZBgBIAEoCVIIY2hhaW5PaWQ=');
+    'CgtSZWFkUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklk');
 
 @$core.Deprecated('Use deleteDeviceRequestDescriptor instead')
 const DeleteDeviceRequest$json = {
   '1': 'DeleteDeviceRequest',
   '2': [
-    {'1': 'chainOid', '3': 1, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'device', '3': 2, '4': 1, '5': 11, '6': '.weebi.chain.Device', '10': 'device'},
   ],
 };
 
 /// Descriptor for `DeleteDeviceRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteDeviceRequestDescriptor = $convert.base64Decode(
-    'ChNEZWxldGVEZXZpY2VSZXF1ZXN0EhoKCGNoYWluT2lkGAEgASgJUghjaGFpbk9pZBIrCgZkZX'
-    'ZpY2UYAiABKAsyEy53ZWViaS5jaGFpbi5EZXZpY2VSBmRldmljZQ==');
+    'ChNEZWxldGVEZXZpY2VSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQSKwoGZGV2aW'
+    'NlGAIgASgLMhMud2VlYmkuY2hhaW4uRGV2aWNlUgZkZXZpY2U=');
 

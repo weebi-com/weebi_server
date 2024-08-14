@@ -19,9 +19,9 @@ const ContactMongo$json = {
   '2': [
     {'1': 'contact', '3': 1, '4': 1, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contact'},
     {'1': 'contactNonUniqueId', '3': 2, '4': 1, '5': 5, '10': 'contactNonUniqueId'},
-    {'1': 'userOid', '3': 3, '4': 1, '5': 9, '10': 'userOid'},
-    {'1': 'firmOid', '3': 4, '4': 1, '5': 9, '10': 'firmOid'},
-    {'1': 'chainOid', '3': 5, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
+    {'1': 'firmId', '3': 4, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'chainId', '3': 5, '4': 1, '5': 9, '10': 'chainId'},
   ],
 };
 
@@ -29,8 +29,8 @@ const ContactMongo$json = {
 final $typed_data.Uint8List contactMongoDescriptor = $convert.base64Decode(
     'CgxDb250YWN0TW9uZ28SMgoHY29udGFjdBgBIAEoCzIYLndlZWJpLmNvbnRhY3QuQ29udGFjdF'
     'BiUgdjb250YWN0Ei4KEmNvbnRhY3ROb25VbmlxdWVJZBgCIAEoBVISY29udGFjdE5vblVuaXF1'
-    'ZUlkEhgKB3VzZXJPaWQYAyABKAlSB3VzZXJPaWQSGAoHZmlybU9pZBgEIAEoCVIHZmlybU9pZB'
-    'IaCghjaGFpbk9pZBgFIAEoCVIIY2hhaW5PaWQ=');
+    'ZUlkEhYKBnVzZXJJZBgDIAEoCVIGdXNlcklkEhYKBmZpcm1JZBgEIAEoCVIGZmlybUlkEhgKB2'
+    'NoYWluSWQYBSABKAlSB2NoYWluSWQ=');
 
 @$core.Deprecated('Use contactPbDescriptor instead')
 const ContactPb$json = {

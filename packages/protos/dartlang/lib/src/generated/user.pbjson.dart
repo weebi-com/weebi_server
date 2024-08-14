@@ -30,6 +30,41 @@ final $typed_data.Uint8List rightDescriptor = $convert.base64Decode(
     'CgVSaWdodBILCgd1bmtub3duEAASCgoGY3JlYXRlEAESCAoEcmVhZBACEgoKBnVwZGF0ZRADEg'
     'oKBmRlbGV0ZRAE');
 
+@$core.Deprecated('Use userPermissionsDescriptor instead')
+const UserPermissions$json = {
+  '1': 'UserPermissions',
+  '2': [
+    {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+    {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'chainsAccessible', '3': 3, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'chainsAccessible'},
+    {'1': 'boutiquesAccessible', '3': 4, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'boutiquesAccessible'},
+    {'1': 'ticketRights', '3': 5, '4': 1, '5': 11, '6': '.weebi.user.TicketRights', '10': 'ticketRights'},
+    {'1': 'contactRights', '3': 6, '4': 1, '5': 11, '6': '.weebi.user.ContactRights', '10': 'contactRights'},
+    {'1': 'articleRights', '3': 7, '4': 1, '5': 11, '6': '.weebi.user.ArticleRights', '10': 'articleRights'},
+    {'1': 'boutiqueRights', '3': 8, '4': 1, '5': 11, '6': '.weebi.user.BoutiqueRights', '10': 'boutiqueRights'},
+    {'1': 'chainRights', '3': 9, '4': 1, '5': 11, '6': '.weebi.user.MallRights', '10': 'mallRights'},
+    {'1': 'firmRights', '3': 10, '4': 1, '5': 11, '6': '.weebi.user.FirmRights', '10': 'firmRights'},
+    {'1': 'userManagementRights', '3': 11, '4': 1, '5': 11, '6': '.weebi.user.UserManagementRights', '10': 'userManagementRights'},
+    {'1': 'boolRights', '3': 12, '4': 1, '5': 11, '6': '.weebi.user.BoolRights', '10': 'boolRights'},
+  ],
+};
+
+/// Descriptor for `UserPermissions`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List userPermissionsDescriptor = $convert.base64Decode(
+    'Cg9Vc2VyUGVybWlzc2lvbnMSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQSFgoGZmlybUlkGAIgAS'
+    'gJUgZmaXJtSWQSOwoQY2hhaW5zQWNjZXNzaWJsZRgDIAEoCzIPLndlZWJpLnVzZXIuSWRzUhBj'
+    'aGFpbnNBY2Nlc3NpYmxlEkEKE2JvdXRpcXVlc0FjY2Vzc2libGUYBCABKAsyDy53ZWViaS51c2'
+    'VyLklkc1ITYm91dGlxdWVzQWNjZXNzaWJsZRI8Cgx0aWNrZXRSaWdodHMYBSABKAsyGC53ZWVi'
+    'aS51c2VyLlRpY2tldFJpZ2h0c1IMdGlja2V0UmlnaHRzEj8KDWNvbnRhY3RSaWdodHMYBiABKA'
+    'syGS53ZWViaS51c2VyLkNvbnRhY3RSaWdodHNSDWNvbnRhY3RSaWdodHMSPwoNYXJ0aWNsZVJp'
+    'Z2h0cxgHIAEoCzIZLndlZWJpLnVzZXIuQXJ0aWNsZVJpZ2h0c1INYXJ0aWNsZVJpZ2h0cxJCCg'
+    '5ib3V0aXF1ZVJpZ2h0cxgIIAEoCzIaLndlZWJpLnVzZXIuQm91dGlxdWVSaWdodHNSDmJvdXRp'
+    'cXVlUmlnaHRzEjcKC2NoYWluUmlnaHRzGAkgASgLMhYud2VlYmkudXNlci5NYWxsUmlnaHRzUg'
+    'ptYWxsUmlnaHRzEjYKCmZpcm1SaWdodHMYCiABKAsyFi53ZWViaS51c2VyLkZpcm1SaWdodHNS'
+    'CmZpcm1SaWdodHMSVAoUdXNlck1hbmFnZW1lbnRSaWdodHMYCyABKAsyIC53ZWViaS51c2VyLl'
+    'VzZXJNYW5hZ2VtZW50UmlnaHRzUhR1c2VyTWFuYWdlbWVudFJpZ2h0cxI2Cgpib29sUmlnaHRz'
+    'GAwgASgLMhYud2VlYmkudXNlci5Cb29sUmlnaHRzUgpib29sUmlnaHRz');
+
 @$core.Deprecated('Use articleRightsDescriptor instead')
 const ArticleRights$json = {
   '1': 'ArticleRights',
@@ -147,28 +182,47 @@ final $typed_data.Uint8List boolRightsDescriptor = $convert.base64Decode(
     '5RdWlja1NwZW5kEiAKC2NhblB1cmNoYXNlGAggASgIUgtjYW5QdXJjaGFzZRIqChBjYW5JbXBv'
     'cnRUaWNrZXRzGAkgASgIUhBjYW5JbXBvcnRUaWNrZXRz');
 
-@$core.Deprecated('Use oidsDescriptor instead')
-const Oids$json = {
-  '1': 'Oids',
+@$core.Deprecated('Use idsDescriptor instead')
+const Ids$json = {
+  '1': 'Ids',
   '2': [
-    {'1': 'oids', '3': 1, '4': 3, '5': 9, '10': 'oids'},
+    {'1': 'ids', '3': 1, '4': 3, '5': 9, '10': 'ids'},
   ],
 };
 
-/// Descriptor for `Oids`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List oidsDescriptor = $convert.base64Decode(
-    'CgRPaWRzEhIKBG9pZHMYASADKAlSBG9pZHM=');
+/// Descriptor for `Ids`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List idsDescriptor = $convert.base64Decode(
+    'CgNJZHMSEAoDaWRzGAEgAygJUgNpZHM=');
+
+@$core.Deprecated('Use userInfoDescriptor instead')
+const UserInfo$json = {
+  '1': 'UserInfo',
+  '2': [
+    {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+    {'1': 'mail', '3': 2, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'firstname', '3': 3, '4': 1, '5': 9, '10': 'firstname'},
+    {'1': 'lastname', '3': 4, '4': 1, '5': 9, '10': 'lastname'},
+    {'1': 'permissions', '3': 5, '4': 1, '5': 11, '6': '.weebi.user.UserPermissions', '10': 'permissions'},
+  ],
+};
+
+/// Descriptor for `UserInfo`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List userInfoDescriptor = $convert.base64Decode(
+    'CghVc2VySW5mbxIWCgZ1c2VySWQYASABKAlSBnVzZXJJZBISCgRtYWlsGAIgASgJUgRtYWlsEh'
+    'wKCWZpcnN0bmFtZRgDIAEoCVIJZmlyc3RuYW1lEhoKCGxhc3RuYW1lGAQgASgJUghsYXN0bmFt'
+    'ZRI9CgtwZXJtaXNzaW9ucxgFIAEoCzIbLndlZWJpLnVzZXIuVXNlclBlcm1pc3Npb25zUgtwZX'
+    'JtaXNzaW9ucw==');
 
 @$core.Deprecated('Use userPrivateDescriptor instead')
 const UserPrivate$json = {
   '1': 'UserPrivate',
   '2': [
-    {'1': '_id', '3': 1, '4': 1, '5': 11, '6': '.weebi.common.mongo.ObjectIdProto', '10': '_id'},
+    {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'mail', '3': 2, '4': 1, '5': 9, '10': 'mail'},
     {'1': 'passwordEncrypted', '3': 3, '4': 1, '5': 9, '10': 'password'},
-    {'1': 'firmOid', '3': 4, '4': 1, '5': 9, '10': 'firmOid'},
-    {'1': 'chainOids', '3': 5, '4': 1, '5': 11, '6': '.weebi.user.Oids', '10': 'chainOids'},
-    {'1': 'boutiqueOids', '3': 6, '4': 1, '5': 11, '6': '.weebi.user.Oids', '10': 'boutiqueOids'},
+    {'1': 'firmId', '3': 4, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'chainIds', '3': 5, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'chainIds'},
+    {'1': 'boutiqueIds', '3': 6, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'boutiqueIds'},
     {'1': 'articleRights', '3': 7, '4': 1, '5': 11, '6': '.weebi.user.ArticleRights', '10': 'articleRights'},
     {'1': 'boutiqueRights', '3': 8, '4': 1, '5': 11, '6': '.weebi.user.BoutiqueRights', '10': 'boutiqueRights'},
     {'1': 'firmRights', '3': 9, '4': 1, '5': 11, '6': '.weebi.user.FirmRights', '10': 'firmRights'},
@@ -177,7 +231,7 @@ const UserPrivate$json = {
     {'1': 'ticketRights', '3': 12, '4': 1, '5': 11, '6': '.weebi.user.TicketRights', '10': 'ticketRights'},
     {'1': 'userManagementRights', '3': 13, '4': 1, '5': 11, '6': '.weebi.user.UserManagementRights', '10': 'userManagementRights'},
     {'1': 'boolRights', '3': 14, '4': 1, '5': 11, '6': '.weebi.user.BoolRights', '10': 'boolRights'},
-    {'1': 'lastUpdatedByUserOid', '3': 15, '4': 1, '5': 9, '10': 'lastUpdatedByUserOid'},
+    {'1': 'lastUpdatedByuserId', '3': 15, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
     {'1': 'lastUpdateTimestampUTC', '3': 16, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
     {'1': 'firstname', '3': 17, '4': 1, '5': 9, '10': 'firstname'},
     {'1': 'lastname', '3': 18, '4': 1, '5': 9, '10': 'lastname'},
@@ -186,22 +240,21 @@ const UserPrivate$json = {
 
 /// Descriptor for `UserPrivate`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List userPrivateDescriptor = $convert.base64Decode(
-    'CgtVc2VyUHJpdmF0ZRIzCgNfaWQYASABKAsyIS53ZWViaS5jb21tb24ubW9uZ28uT2JqZWN0SW'
-    'RQcm90b1IDX2lkEhIKBG1haWwYAiABKAlSBG1haWwSIwoRcGFzc3dvcmRFbmNyeXB0ZWQYAyAB'
-    'KAlSCHBhc3N3b3JkEhgKB2Zpcm1PaWQYBCABKAlSB2Zpcm1PaWQSLgoJY2hhaW5PaWRzGAUgAS'
-    'gLMhAud2VlYmkudXNlci5PaWRzUgljaGFpbk9pZHMSNAoMYm91dGlxdWVPaWRzGAYgASgLMhAu'
-    'd2VlYmkudXNlci5PaWRzUgxib3V0aXF1ZU9pZHMSPwoNYXJ0aWNsZVJpZ2h0cxgHIAEoCzIZLn'
-    'dlZWJpLnVzZXIuQXJ0aWNsZVJpZ2h0c1INYXJ0aWNsZVJpZ2h0cxJCCg5ib3V0aXF1ZVJpZ2h0'
-    'cxgIIAEoCzIaLndlZWJpLnVzZXIuQm91dGlxdWVSaWdodHNSDmJvdXRpcXVlUmlnaHRzEjYKCm'
-    'Zpcm1SaWdodHMYCSABKAsyFi53ZWViaS51c2VyLkZpcm1SaWdodHNSCmZpcm1SaWdodHMSNwoL'
-    'Y2hhaW5SaWdodHMYCiABKAsyFi53ZWViaS51c2VyLk1hbGxSaWdodHNSCm1hbGxSaWdodHMSPw'
-    'oNY29udGFjdFJpZ2h0cxgLIAEoCzIZLndlZWJpLnVzZXIuQ29udGFjdFJpZ2h0c1INY29udGFj'
-    'dFJpZ2h0cxI8Cgx0aWNrZXRSaWdodHMYDCABKAsyGC53ZWViaS51c2VyLlRpY2tldFJpZ2h0c1'
-    'IMdGlja2V0UmlnaHRzElQKFHVzZXJNYW5hZ2VtZW50UmlnaHRzGA0gASgLMiAud2VlYmkudXNl'
-    'ci5Vc2VyTWFuYWdlbWVudFJpZ2h0c1IUdXNlck1hbmFnZW1lbnRSaWdodHMSNgoKYm9vbFJpZ2'
-    'h0cxgOIAEoCzIWLndlZWJpLnVzZXIuQm9vbFJpZ2h0c1IKYm9vbFJpZ2h0cxIyChRsYXN0VXBk'
-    'YXRlZEJ5VXNlck9pZBgPIAEoCVIUbGFzdFVwZGF0ZWRCeVVzZXJPaWQSUgoWbGFzdFVwZGF0ZV'
-    'RpbWVzdGFtcFVUQxgQIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFmxhc3RVcGRh'
-    'dGVUaW1lc3RhbXBVVEMSHAoJZmlyc3RuYW1lGBEgASgJUglmaXJzdG5hbWUSGgoIbGFzdG5hbW'
-    'UYEiABKAlSCGxhc3RuYW1l');
+    'CgtVc2VyUHJpdmF0ZRIWCgZ1c2VySWQYASABKAlSBnVzZXJJZBISCgRtYWlsGAIgASgJUgRtYW'
+    'lsEiMKEXBhc3N3b3JkRW5jcnlwdGVkGAMgASgJUghwYXNzd29yZBIWCgZmaXJtSWQYBCABKAlS'
+    'BmZpcm1JZBIrCghjaGFpbklkcxgFIAEoCzIPLndlZWJpLnVzZXIuSWRzUghjaGFpbklkcxIxCg'
+    'tib3V0aXF1ZUlkcxgGIAEoCzIPLndlZWJpLnVzZXIuSWRzUgtib3V0aXF1ZUlkcxI/Cg1hcnRp'
+    'Y2xlUmlnaHRzGAcgASgLMhkud2VlYmkudXNlci5BcnRpY2xlUmlnaHRzUg1hcnRpY2xlUmlnaH'
+    'RzEkIKDmJvdXRpcXVlUmlnaHRzGAggASgLMhoud2VlYmkudXNlci5Cb3V0aXF1ZVJpZ2h0c1IO'
+    'Ym91dGlxdWVSaWdodHMSNgoKZmlybVJpZ2h0cxgJIAEoCzIWLndlZWJpLnVzZXIuRmlybVJpZ2'
+    'h0c1IKZmlybVJpZ2h0cxI3CgtjaGFpblJpZ2h0cxgKIAEoCzIWLndlZWJpLnVzZXIuTWFsbFJp'
+    'Z2h0c1IKbWFsbFJpZ2h0cxI/Cg1jb250YWN0UmlnaHRzGAsgASgLMhkud2VlYmkudXNlci5Db2'
+    '50YWN0UmlnaHRzUg1jb250YWN0UmlnaHRzEjwKDHRpY2tldFJpZ2h0cxgMIAEoCzIYLndlZWJp'
+    'LnVzZXIuVGlja2V0UmlnaHRzUgx0aWNrZXRSaWdodHMSVAoUdXNlck1hbmFnZW1lbnRSaWdodH'
+    'MYDSABKAsyIC53ZWViaS51c2VyLlVzZXJNYW5hZ2VtZW50UmlnaHRzUhR1c2VyTWFuYWdlbWVu'
+    'dFJpZ2h0cxI2Cgpib29sUmlnaHRzGA4gASgLMhYud2VlYmkudXNlci5Cb29sUmlnaHRzUgpib2'
+    '9sUmlnaHRzEjAKE2xhc3RVcGRhdGVkQnl1c2VySWQYDyABKAlSE2xhc3RVcGRhdGVkQnl1c2Vy'
+    'SWQSUgoWbGFzdFVwZGF0ZVRpbWVzdGFtcFVUQxgQIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW'
+    '1lc3RhbXBSFmxhc3RVcGRhdGVUaW1lc3RhbXBVVEMSHAoJZmlyc3RuYW1lGBEgASgJUglmaXJz'
+    'dG5hbWUSGgoIbGFzdG5hbWUYEiABKAlSCGxhc3RuYW1l');
 

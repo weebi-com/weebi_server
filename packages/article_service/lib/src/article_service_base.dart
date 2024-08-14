@@ -4,9 +4,9 @@ import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder select(String firmOid, ArticleRequest request) => where
-      .eq('firmOid', firmOid)
-      .eq('chainOid', request.chainOid)
+  static SelectorBuilder select(String firmId, ArticleRequest request) => where
+      .eq('firmId', firmId)
+      .eq('chainId', request.chainId)
       .eq('calibreId', request.calibre.id);
 }
 
@@ -31,9 +31,9 @@ class ArticleService extends ArticleServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     if (userPermission.articleRights.rights.any((e) => e == Right.create) ==
         false) {
@@ -44,9 +44,9 @@ class ArticleService extends ArticleServiceBase {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
         ..calibreId = request.calibre.id
-        ..chainOid = request.chainOid
-        ..firmOid = userPermission.firmOid
-        ..userOid = userPermission.userOid;
+        ..chainId = request.chainId
+        ..firmId = userPermission.firmId
+        ..userId = userPermission.userId;
 
       final result = await collection
           .insertOne(calibreMongo.toProto3Json() as Map<String, dynamic>);
@@ -54,11 +54,10 @@ class ArticleService extends ArticleServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id']['oid'];
-
+        final calibreId = result.document!['calibreId'] as int;
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..id = mongoId
+          ..id = calibreId.toString()
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -88,20 +87,20 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update articles');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
         ..calibreId = request.calibre.id
-        ..chainOid = request.chainOid
-        ..firmOid = userPermission.firmOid
-        ..userOid = userPermission.userOid;
+        ..chainId = request.chainId
+        ..firmId = userPermission.firmId
+        ..userId = userPermission.userId;
 
       final result = await collection.replaceOne(
-          _Helpers.select(userPermission.firmOid, request),
+          _Helpers.select(userPermission.firmId, request),
           calibreMongo.toProto3Json() as Map<String, dynamic>,
           upsert: true);
       if (result.hasWriteErrors) {
@@ -136,13 +135,13 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete article');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     try {
       await collection
-          .deleteOne(_Helpers.select(userPermission.firmOid, request));
+          .deleteOne(_Helpers.select(userPermission.firmId, request));
       return StatusResponse()
         ..type = StatusResponse_Type.DELETED
         ..timestamp = DateTime.now().timestampProto;
@@ -164,9 +163,9 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read articles');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     //
     try {
@@ -200,13 +199,13 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read article');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     try {
       final selector =
-          where.eq('chainOid', request.chainOid).eq('title', request.title);
+          where.eq('chainId', request.chainId).eq('title', request.title);
       final calibre = await collection.findOne(selector);
       if (calibre != null) {
         final calibreMongo = CalibreMongo.create()

@@ -21,9 +21,9 @@ class CalibreMongo extends $pb.GeneratedMessage {
   factory CalibreMongo({
     CalibrePb? calibre,
     $core.int? calibreId,
-    $core.String? firmOid,
-    $core.String? chainOid,
-    $core.String? userOid,
+    $core.String? firmId,
+    $core.String? chainId,
+    $core.String? userId,
   }) {
     final $result = create();
     if (calibre != null) {
@@ -32,14 +32,14 @@ class CalibreMongo extends $pb.GeneratedMessage {
     if (calibreId != null) {
       $result.calibreId = calibreId;
     }
-    if (firmOid != null) {
-      $result.firmOid = firmOid;
+    if (firmId != null) {
+      $result.firmId = firmId;
     }
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
-    if (userOid != null) {
-      $result.userOid = userOid;
+    if (userId != null) {
+      $result.userId = userId;
     }
     return $result;
   }
@@ -50,9 +50,9 @@ class CalibreMongo extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibreMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article'), createEmptyInstance: create)
     ..aOM<CalibrePb>(1, _omitFieldNames ? '' : 'calibre', subBuilder: CalibrePb.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
-    ..aOS(3, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
-    ..aOS(4, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
-    ..aOS(5, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
+    ..aOS(3, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(4, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(5, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..hasRequiredFields = false
   ;
 
@@ -99,31 +99,31 @@ class CalibreMongo extends $pb.GeneratedMessage {
   void clearCalibreId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get firmOid => $_getSZ(2);
+  $core.String get firmId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set firmOid($core.String v) { $_setString(2, v); }
+  set firmId($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasFirmOid() => $_has(2);
+  $core.bool hasFirmId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearFirmOid() => clearField(3);
+  void clearFirmId() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get chainOid => $_getSZ(3);
+  $core.String get chainId => $_getSZ(3);
   @$pb.TagNumber(4)
-  set chainOid($core.String v) { $_setString(3, v); }
+  set chainId($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasChainOid() => $_has(3);
+  $core.bool hasChainId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearChainOid() => clearField(4);
+  void clearChainId() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get userOid => $_getSZ(4);
+  $core.String get userId => $_getSZ(4);
   @$pb.TagNumber(5)
-  set userOid($core.String v) { $_setString(4, v); }
+  set userId($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasUserOid() => $_has(4);
+  $core.bool hasUserId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearUserOid() => clearField(5);
+  void clearUserId() => clearField(5);
 }
 
 /// / Wrapping articles, using Pb to != from Calibre Dart in models weebi

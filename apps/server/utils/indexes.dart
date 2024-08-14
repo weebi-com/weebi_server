@@ -35,22 +35,22 @@ main() async {
       name: 'article_calibreId', keys: {'calibreId': 1});
   print(dd);
   dd = await db.ensureIndex(ArticleService.collectionName,
-      name: 'article_chainOid', keys: {'chainOid': 1});
+      name: 'article_chainId', keys: {'chainId': 1});
   print(dd);
   dd = await db.ensureIndex(ContactService.collectionName,
       name: 'contact_contactId', keys: {'contactId': 1});
   print(dd);
   dd = await db.ensureIndex(ContactService.collectionName,
-      name: 'contact_chainOid', keys: {'chainOid': 1});
+      name: 'contact_chainId', keys: {'chainId': 1});
   print(dd);
   dd = await db.ensureIndex(TicketService.collectionName,
       name: 'ticket_ticketId', keys: {'ticketId': 1});
   print(dd);
   dd = await db.ensureIndex(TicketService.collectionName,
-      name: 'ticket_boutiqueOid', keys: {'boutiqueOid': 1});
+      name: 'ticket_boutiqueId', keys: {'boutiqueId': 1});
   print(dd);
   dd = await db.ensureIndex(TicketService.collectionName,
-      name: 'ticket_chainOid', keys: {'chainOid': 1});
+      name: 'ticket_chainId', keys: {'chainId': 1});
   print(dd);
   return;
 }

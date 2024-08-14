@@ -15,7 +15,7 @@ void main() {
     final d = await userService.createOne(
         null,
         CreateOneRequest(
-          userInfo: UserInfoDummy.userInfoNoId,
+          userInfo: Dummy.userInfoNoId,
           password: '1234',
         ));
     print(d);

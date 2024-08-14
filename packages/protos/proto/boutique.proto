@@ -7,9 +7,9 @@ import "common/address.proto";
 import "common/mongo.proto";
 
 message Boutique {
-    string _id = 1 [json_name = '_id'];
-    string firmOid = 2 [json_name = 'firmOid'];
-    string chainOid = 3 [json_name = 'chainOid'];
+    string boutiqueId = 1 [json_name = 'boutiqueId'];
+    string firmId = 2 [json_name = 'firmId'];
+    string chainId = 3 [json_name = 'chainId'];
     string dateCreation = 4 [json_name = 'creationDate'];
     string dateUpdate = 5 [json_name = 'updateDate'];
     string dateStatus = 6 [json_name = 'statusUpdateDate'];

@@ -25,7 +25,7 @@ sh dartlang/tool/generate_protos.sh
 
 note that id are used as key for offline first objects made in the weebi app, 
 e.g. article, contact, ticket
-primary key for those common at chain level (article,contact) is id & chainOid
-primary key for those at the boutique level (ticket) is id & chainOid & boutiqueOid
+primary key for those common at chain level (article,contact) is id & chainId
+primary key for those at the boutique level (ticket) is id & chainId & boutiqueId
 
-firmOid is saved on all objects as a commodity
+firmId is saved on all objects as a commodity

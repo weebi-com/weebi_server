@@ -17,41 +17,41 @@ import 'dart:typed_data' as $typed_data;
 const FindArticleRequest$json = {
   '1': 'FindArticleRequest',
   '2': [
-    {'1': 'chainOid', '3': 1, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'title', '3': 2, '4': 1, '5': 9, '10': 'title'},
   ],
 };
 
 /// Descriptor for `FindArticleRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List findArticleRequestDescriptor = $convert.base64Decode(
-    'ChJGaW5kQXJ0aWNsZVJlcXVlc3QSGgoIY2hhaW5PaWQYASABKAlSCGNoYWluT2lkEhQKBXRpdG'
-    'xlGAIgASgJUgV0aXRsZQ==');
+    'ChJGaW5kQXJ0aWNsZVJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBIUCgV0aXRsZR'
+    'gCIAEoCVIFdGl0bGU=');
 
 @$core.Deprecated('Use readAllRequestDescriptor instead')
 const ReadAllRequest$json = {
   '1': 'ReadAllRequest',
   '2': [
-    {'1': 'chainOid', '3': 1, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
   ],
 };
 
 /// Descriptor for `ReadAllRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List readAllRequestDescriptor = $convert.base64Decode(
-    'Cg5SZWFkQWxsUmVxdWVzdBIaCghjaGFpbk9pZBgBIAEoCVIIY2hhaW5PaWQ=');
+    'Cg5SZWFkQWxsUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklk');
 
 @$core.Deprecated('Use articleRequestDescriptor instead')
 const ArticleRequest$json = {
   '1': 'ArticleRequest',
   '2': [
-    {'1': 'chainOid', '3': 1, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'calibre', '3': 2, '4': 1, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibre'},
   ],
 };
 
 /// Descriptor for `ArticleRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List articleRequestDescriptor = $convert.base64Decode(
-    'Cg5BcnRpY2xlUmVxdWVzdBIaCghjaGFpbk9pZBgBIAEoCVIIY2hhaW5PaWQSMgoHY2FsaWJyZR'
-    'gCIAEoCzIYLndlZWJpLmFydGljbGUuQ2FsaWJyZVBiUgdjYWxpYnJl');
+    'Cg5BcnRpY2xlUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEjIKB2NhbGlicmUYAi'
+    'ABKAsyGC53ZWViaS5hcnRpY2xlLkNhbGlicmVQYlIHY2FsaWJyZQ==');
 
 @$core.Deprecated('Use articlesResponseDescriptor instead')
 const ArticlesResponse$json = {

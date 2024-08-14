@@ -5,12 +5,12 @@ import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder selectContact(String firmOid, String chainOid,
-          String contactUserOid, int contactNonUniqueId) =>
+  static SelectorBuilder selectContact(String firmId, String chainId,
+          String contactuserId, int contactNonUniqueId) =>
       where
-          .eq('firmOid', firmOid)
-          .eq('chainOid', chainOid)
-          .eq('userOid', contactUserOid)
+          .eq('firmId', firmId)
+          .eq('chainId', chainId)
+          .eq('userId', contactuserId)
           .eq('contactNonUniqueId', contactNonUniqueId);
 }
 
@@ -35,9 +35,9 @@ class ContactService extends ContactServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     if (userPermission.contactRights.rights.any((e) => e == Right.create) ==
         false) {
@@ -48,9 +48,9 @@ class ContactService extends ContactServiceBase {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
         ..contactNonUniqueId = request.contact.contactNonUniqueId
-        ..chainOid = request.chainOid
-        ..firmOid = userPermission.firmOid
-        ..userOid = userPermission.userOid;
+        ..chainId = request.chainId
+        ..firmId = userPermission.firmId
+        ..userId = userPermission.userId;
 
       final result = await collection
           .insertOne(contactMongo.toProto3Json() as Map<String, dynamic>);
@@ -58,11 +58,12 @@ class ContactService extends ContactServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id'];
+        final contactNonUniqueId =
+            result.document!['contactNonUniqueId'] as int;
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..message = (mongoId as ObjectId).oid
+          ..id = contactNonUniqueId.toString()
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -87,9 +88,9 @@ class ContactService extends ContactServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     if (userPermission.contactRights.rights.any((e) => e == Right.update) ==
         false) {
@@ -100,15 +101,15 @@ class ContactService extends ContactServiceBase {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
         ..contactNonUniqueId = request.contact.contactNonUniqueId
-        ..chainOid = request.chainOid
-        ..firmOid = userPermission.firmOid
-        ..userOid = userPermission.userOid;
+        ..chainId = request.chainId
+        ..firmId = userPermission.firmId
+        ..userId = userPermission.userId;
 
       final result = await collection.replaceOne(
           _Helpers.selectContact(
-            userPermission.firmOid,
-            request.chainOid,
-            request.contactUserOid,
+            userPermission.firmId,
+            request.chainId,
+            request.contactuserId,
             request.contact.contactNonUniqueId,
           ),
           contactMongo.toProto3Json() as Map<String, dynamic>,
@@ -145,14 +146,14 @@ class ContactService extends ContactServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete contact');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     try {
       await collection.deleteOne(
-        _Helpers.selectContact(userPermission.firmOid, request.chainOid,
-            request.contactUserOid, request.contact.contactNonUniqueId),
+        _Helpers.selectContact(userPermission.firmId, request.chainId,
+            request.contactuserId, request.contact.contactNonUniqueId),
       );
       return StatusResponse()
         ..type = StatusResponse_Type.DELETED
@@ -170,9 +171,9 @@ class ContactService extends ContactServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     if (userPermission.contactRights.rights.any((e) => e == Right.read) ==
         false) {
@@ -205,9 +206,9 @@ class ContactService extends ContactServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.contactChainOid.isChainAccessible(userPermission) == false) {
+    if (request.contactchainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.contactChainOid}');
+          'user cannot access data from chain ${request.contactchainId}');
     }
 
     if (userPermission.contactRights.rights.any((e) => e == Right.read) ==
@@ -217,8 +218,8 @@ class ContactService extends ContactServiceBase {
     }
     try {
       final selector = where
-          .eq('chainOid', request.contactChainOid)
-          .eq('userOid', request.contactUserOid)
+          .eq('chainId', request.contactchainId)
+          .eq('userId', request.contactuserId)
           .eq('contactNonUniqueId', request.contactNonUniqueId);
       // TOBE completed with firstname, lastname and all that jazz
       final contact = await collection.findOne(selector);

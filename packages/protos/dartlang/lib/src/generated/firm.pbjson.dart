@@ -17,7 +17,7 @@ import 'dart:typed_data' as $typed_data;
 const Firm$json = {
   '1': 'Firm',
   '2': [
-    {'1': '_id', '3': 1, '4': 1, '5': 11, '6': '.weebi.common.mongo.ObjectIdProto', '10': '_id'},
+    {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     {'1': 'chains', '3': 3, '4': 3, '5': 11, '6': '.weebi.chain.Chain', '10': 'chains'},
     {'1': 'subscriptionPlan', '3': 4, '4': 1, '5': 9, '10': 'subscriptionPlan'},
@@ -27,24 +27,23 @@ const Firm$json = {
     {'1': 'status', '3': 8, '4': 1, '5': 8, '10': 'status'},
     {'1': 'statusUpdateTimestampUTC', '3': 9, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'statusUpdateTimestampUTC'},
     {'1': 'lastUpdateTimestampUTC', '3': 10, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
-    {'1': 'lastUpdatedByUserOid', '3': 11, '4': 1, '5': 9, '10': 'lastUpdatedByUserOid'},
+    {'1': 'lastUpdatedByuserId', '3': 11, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
     {'1': 'isMailVerified', '3': 12, '4': 1, '5': 8, '10': 'isMailVerified'},
   ],
 };
 
 /// Descriptor for `Firm`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List firmDescriptor = $convert.base64Decode(
-    'CgRGaXJtEjMKA19pZBgBIAEoCzIhLndlZWJpLmNvbW1vbi5tb25nby5PYmplY3RJZFByb3RvUg'
-    'NfaWQSEgoEbmFtZRgCIAEoCVIEbmFtZRIqCgZjaGFpbnMYAyADKAsyEi53ZWViaS5jaGFpbi5D'
-    'aGFpblIGY2hhaW5zEioKEHN1YnNjcmlwdGlvblBsYW4YBCABKAlSEHN1YnNjcmlwdGlvblBsYW'
-    '4SLAoRc3Vic2NyaXB0aW9uU2VhdHMYBSABKAVSEXN1YnNjcmlwdGlvblNlYXRzEmAKHXN1YnNj'
-    'cmlwdGlvblN0YXJ0VGltZXN0YW1wVVRDGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdG'
-    'FtcFIdc3Vic2NyaXB0aW9uU3RhcnRUaW1lc3RhbXBVVEMSXAobc3Vic2NyaXB0aW9uRW5kVGlt'
-    'ZXN0YW1wVVRDGAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIbc3Vic2NyaXB0aW'
-    '9uRW5kVGltZXN0YW1wVVRDEhYKBnN0YXR1cxgIIAEoCFIGc3RhdHVzElYKGHN0YXR1c1VwZGF0'
-    'ZVRpbWVzdGFtcFVUQxgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSGHN0YXR1c1'
-    'VwZGF0ZVRpbWVzdGFtcFVUQxJSChZsYXN0VXBkYXRlVGltZXN0YW1wVVRDGAogASgLMhouZ29v'
-    'Z2xlLnByb3RvYnVmLlRpbWVzdGFtcFIWbGFzdFVwZGF0ZVRpbWVzdGFtcFVUQxIyChRsYXN0VX'
-    'BkYXRlZEJ5VXNlck9pZBgLIAEoCVIUbGFzdFVwZGF0ZWRCeVVzZXJPaWQSJgoOaXNNYWlsVmVy'
-    'aWZpZWQYDCABKAhSDmlzTWFpbFZlcmlmaWVk');
+    'CgRGaXJtEhYKBmZpcm1JZBgBIAEoCVIGZmlybUlkEhIKBG5hbWUYAiABKAlSBG5hbWUSKgoGY2'
+    'hhaW5zGAMgAygLMhIud2VlYmkuY2hhaW4uQ2hhaW5SBmNoYWlucxIqChBzdWJzY3JpcHRpb25Q'
+    'bGFuGAQgASgJUhBzdWJzY3JpcHRpb25QbGFuEiwKEXN1YnNjcmlwdGlvblNlYXRzGAUgASgFUh'
+    'FzdWJzY3JpcHRpb25TZWF0cxJgCh1zdWJzY3JpcHRpb25TdGFydFRpbWVzdGFtcFVUQxgGIAEo'
+    'CzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSHXN1YnNjcmlwdGlvblN0YXJ0VGltZXN0YW'
+    '1wVVRDElwKG3N1YnNjcmlwdGlvbkVuZFRpbWVzdGFtcFVUQxgHIAEoCzIaLmdvb2dsZS5wcm90'
+    'b2J1Zi5UaW1lc3RhbXBSG3N1YnNjcmlwdGlvbkVuZFRpbWVzdGFtcFVUQxIWCgZzdGF0dXMYCC'
+    'ABKAhSBnN0YXR1cxJWChhzdGF0dXNVcGRhdGVUaW1lc3RhbXBVVEMYCSABKAsyGi5nb29nbGUu'
+    'cHJvdG9idWYuVGltZXN0YW1wUhhzdGF0dXNVcGRhdGVUaW1lc3RhbXBVVEMSUgoWbGFzdFVwZG'
+    'F0ZVRpbWVzdGFtcFVUQxgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFmxhc3RV'
+    'cGRhdGVUaW1lc3RhbXBVVEMSMAoTbGFzdFVwZGF0ZWRCeXVzZXJJZBgLIAEoCVITbGFzdFVwZG'
+    'F0ZWRCeXVzZXJJZBImCg5pc01haWxWZXJpZmllZBgMIAEoCFIOaXNNYWlsVmVyaWZpZWQ=');
 

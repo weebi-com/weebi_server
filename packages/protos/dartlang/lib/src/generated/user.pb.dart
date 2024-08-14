@@ -14,10 +14,245 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'common/g_timestamp.pb.dart' as $17;
-import 'common/mongo.pb.dart' as $11;
 import 'user.pbenum.dart';
 
 export 'user.pbenum.dart';
+
+/// / if user is simple seller / cashier
+/// / user.chainIds = ['mall1']
+/// / user.boutiquesOids = ['boutique1A']
+/// /   =>
+/// /   userPermission.chainsAccessible = ['mall1'] chainId where the boutique belongs
+/// /   userPermission.boutiquesAccessible = ['boutique1A']
+/// / if user is admin
+/// / user.chainIds = ['mall1', 'mall2']
+/// / user.boutiquesOids = []
+/// / =>
+/// /   userPermission.chainsAccessible = ['mall1', 'mall2']
+/// /   userPermission.boutiquesAccessible = ['boutique1A', 'boutique1B', 'boutique2A']
+class UserPermissions extends $pb.GeneratedMessage {
+  factory UserPermissions({
+    $core.String? userId,
+    $core.String? firmId,
+    Ids? chainsAccessible,
+    Ids? boutiquesAccessible,
+    TicketRights? ticketRights,
+    ContactRights? contactRights,
+    ArticleRights? articleRights,
+    BoutiqueRights? boutiqueRights,
+    MallRights? chainRights,
+    FirmRights? firmRights,
+    UserManagementRights? userManagementRights,
+    BoolRights? boolRights,
+  }) {
+    final $result = create();
+    if (userId != null) {
+      $result.userId = userId;
+    }
+    if (firmId != null) {
+      $result.firmId = firmId;
+    }
+    if (chainsAccessible != null) {
+      $result.chainsAccessible = chainsAccessible;
+    }
+    if (boutiquesAccessible != null) {
+      $result.boutiquesAccessible = boutiquesAccessible;
+    }
+    if (ticketRights != null) {
+      $result.ticketRights = ticketRights;
+    }
+    if (contactRights != null) {
+      $result.contactRights = contactRights;
+    }
+    if (articleRights != null) {
+      $result.articleRights = articleRights;
+    }
+    if (boutiqueRights != null) {
+      $result.boutiqueRights = boutiqueRights;
+    }
+    if (chainRights != null) {
+      $result.chainRights = chainRights;
+    }
+    if (firmRights != null) {
+      $result.firmRights = firmRights;
+    }
+    if (userManagementRights != null) {
+      $result.userManagementRights = userManagementRights;
+    }
+    if (boolRights != null) {
+      $result.boolRights = boolRights;
+    }
+    return $result;
+  }
+  UserPermissions._() : super();
+  factory UserPermissions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UserPermissions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserPermissions', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
+    ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOM<Ids>(3, _omitFieldNames ? '' : 'chainsAccessible', protoName: 'chainsAccessible', subBuilder: Ids.create)
+    ..aOM<Ids>(4, _omitFieldNames ? '' : 'boutiquesAccessible', protoName: 'boutiquesAccessible', subBuilder: Ids.create)
+    ..aOM<TicketRights>(5, _omitFieldNames ? '' : 'ticketRights', protoName: 'ticketRights', subBuilder: TicketRights.create)
+    ..aOM<ContactRights>(6, _omitFieldNames ? '' : 'contactRights', protoName: 'contactRights', subBuilder: ContactRights.create)
+    ..aOM<ArticleRights>(7, _omitFieldNames ? '' : 'articleRights', protoName: 'articleRights', subBuilder: ArticleRights.create)
+    ..aOM<BoutiqueRights>(8, _omitFieldNames ? '' : 'boutiqueRights', protoName: 'boutiqueRights', subBuilder: BoutiqueRights.create)
+    ..aOM<MallRights>(9, _omitFieldNames ? '' : 'mallRights', protoName: 'chainRights', subBuilder: MallRights.create)
+    ..aOM<FirmRights>(10, _omitFieldNames ? '' : 'firmRights', protoName: 'firmRights', subBuilder: FirmRights.create)
+    ..aOM<UserManagementRights>(11, _omitFieldNames ? '' : 'userManagementRights', protoName: 'userManagementRights', subBuilder: UserManagementRights.create)
+    ..aOM<BoolRights>(12, _omitFieldNames ? '' : 'boolRights', protoName: 'boolRights', subBuilder: BoolRights.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UserPermissions clone() => UserPermissions()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UserPermissions copyWith(void Function(UserPermissions) updates) => super.copyWith((message) => updates(message as UserPermissions)) as UserPermissions;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UserPermissions create() => UserPermissions._();
+  UserPermissions createEmptyInstance() => create();
+  static $pb.PbList<UserPermissions> createRepeated() => $pb.PbList<UserPermissions>();
+  @$core.pragma('dart2js:noInline')
+  static UserPermissions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserPermissions>(create);
+  static UserPermissions? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get userId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get firmId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set firmId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasFirmId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearFirmId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  Ids get chainsAccessible => $_getN(2);
+  @$pb.TagNumber(3)
+  set chainsAccessible(Ids v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasChainsAccessible() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearChainsAccessible() => clearField(3);
+  @$pb.TagNumber(3)
+  Ids ensureChainsAccessible() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  Ids get boutiquesAccessible => $_getN(3);
+  @$pb.TagNumber(4)
+  set boutiquesAccessible(Ids v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasBoutiquesAccessible() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearBoutiquesAccessible() => clearField(4);
+  @$pb.TagNumber(4)
+  Ids ensureBoutiquesAccessible() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  TicketRights get ticketRights => $_getN(4);
+  @$pb.TagNumber(5)
+  set ticketRights(TicketRights v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasTicketRights() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearTicketRights() => clearField(5);
+  @$pb.TagNumber(5)
+  TicketRights ensureTicketRights() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  ContactRights get contactRights => $_getN(5);
+  @$pb.TagNumber(6)
+  set contactRights(ContactRights v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasContactRights() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearContactRights() => clearField(6);
+  @$pb.TagNumber(6)
+  ContactRights ensureContactRights() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  ArticleRights get articleRights => $_getN(6);
+  @$pb.TagNumber(7)
+  set articleRights(ArticleRights v) { setField(7, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasArticleRights() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearArticleRights() => clearField(7);
+  @$pb.TagNumber(7)
+  ArticleRights ensureArticleRights() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  BoutiqueRights get boutiqueRights => $_getN(7);
+  @$pb.TagNumber(8)
+  set boutiqueRights(BoutiqueRights v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasBoutiqueRights() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearBoutiqueRights() => clearField(8);
+  @$pb.TagNumber(8)
+  BoutiqueRights ensureBoutiqueRights() => $_ensure(7);
+
+  @$pb.TagNumber(9)
+  MallRights get chainRights => $_getN(8);
+  @$pb.TagNumber(9)
+  set chainRights(MallRights v) { setField(9, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasChainRights() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearChainRights() => clearField(9);
+  @$pb.TagNumber(9)
+  MallRights ensureChainRights() => $_ensure(8);
+
+  @$pb.TagNumber(10)
+  FirmRights get firmRights => $_getN(9);
+  @$pb.TagNumber(10)
+  set firmRights(FirmRights v) { setField(10, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasFirmRights() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearFirmRights() => clearField(10);
+  @$pb.TagNumber(10)
+  FirmRights ensureFirmRights() => $_ensure(9);
+
+  @$pb.TagNumber(11)
+  UserManagementRights get userManagementRights => $_getN(10);
+  @$pb.TagNumber(11)
+  set userManagementRights(UserManagementRights v) { setField(11, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasUserManagementRights() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearUserManagementRights() => clearField(11);
+  @$pb.TagNumber(11)
+  UserManagementRights ensureUserManagementRights() => $_ensure(10);
+
+  @$pb.TagNumber(12)
+  BoolRights get boolRights => $_getN(11);
+  @$pb.TagNumber(12)
+  set boolRights(BoolRights v) { setField(12, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasBoolRights() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearBoolRights() => clearField(12);
+  @$pb.TagNumber(12)
+  BoolRights ensureBoolRights() => $_ensure(11);
+}
 
 class ArticleRights extends $pb.GeneratedMessage {
   factory ArticleRights({
@@ -491,22 +726,22 @@ class BoolRights extends $pb.GeneratedMessage {
   void clearCanImportTickets() => clearField(9);
 }
 
-class Oids extends $pb.GeneratedMessage {
-  factory Oids({
-    $core.Iterable<$core.String>? oids,
+class Ids extends $pb.GeneratedMessage {
+  factory Ids({
+    $core.Iterable<$core.String>? ids,
   }) {
     final $result = create();
-    if (oids != null) {
-      $result.oids.addAll(oids);
+    if (ids != null) {
+      $result.ids.addAll(ids);
     }
     return $result;
   }
-  Oids._() : super();
-  factory Oids.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Oids.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Ids._() : super();
+  factory Ids.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Ids.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Oids', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
-    ..pPS(1, _omitFieldNames ? '' : 'oids')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Ids', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
+    ..pPS(1, _omitFieldNames ? '' : 'ids')
     ..hasRequiredFields = false
   ;
 
@@ -514,37 +749,146 @@ class Oids extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  Oids clone() => Oids()..mergeFromMessage(this);
+  Ids clone() => Ids()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Oids copyWith(void Function(Oids) updates) => super.copyWith((message) => updates(message as Oids)) as Oids;
+  Ids copyWith(void Function(Ids) updates) => super.copyWith((message) => updates(message as Ids)) as Ids;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static Oids create() => Oids._();
-  Oids createEmptyInstance() => create();
-  static $pb.PbList<Oids> createRepeated() => $pb.PbList<Oids>();
+  static Ids create() => Ids._();
+  Ids createEmptyInstance() => create();
+  static $pb.PbList<Ids> createRepeated() => $pb.PbList<Ids>();
   @$core.pragma('dart2js:noInline')
-  static Oids getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Oids>(create);
-  static Oids? _defaultInstance;
+  static Ids getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Ids>(create);
+  static Ids? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.String> get oids => $_getList(0);
+  $core.List<$core.String> get ids => $_getList(0);
+}
+
+/// / ! any addition to this model must be replicated in the user_service_base.dart updateOne()
+class UserInfo extends $pb.GeneratedMessage {
+  factory UserInfo({
+    $core.String? userId,
+    $core.String? mail,
+    $core.String? firstname,
+    $core.String? lastname,
+    UserPermissions? permissions,
+  }) {
+    final $result = create();
+    if (userId != null) {
+      $result.userId = userId;
+    }
+    if (mail != null) {
+      $result.mail = mail;
+    }
+    if (firstname != null) {
+      $result.firstname = firstname;
+    }
+    if (lastname != null) {
+      $result.lastname = lastname;
+    }
+    if (permissions != null) {
+      $result.permissions = permissions;
+    }
+    return $result;
+  }
+  UserInfo._() : super();
+  factory UserInfo.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UserInfo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserInfo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
+    ..aOS(2, _omitFieldNames ? '' : 'mail')
+    ..aOS(3, _omitFieldNames ? '' : 'firstname')
+    ..aOS(4, _omitFieldNames ? '' : 'lastname')
+    ..aOM<UserPermissions>(5, _omitFieldNames ? '' : 'permissions', subBuilder: UserPermissions.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UserInfo clone() => UserInfo()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UserInfo copyWith(void Function(UserInfo) updates) => super.copyWith((message) => updates(message as UserInfo)) as UserInfo;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UserInfo create() => UserInfo._();
+  UserInfo createEmptyInstance() => create();
+  static $pb.PbList<UserInfo> createRepeated() => $pb.PbList<UserInfo>();
+  @$core.pragma('dart2js:noInline')
+  static UserInfo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserInfo>(create);
+  static UserInfo? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get userId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set userId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasUserId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUserId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get mail => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set mail($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasMail() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMail() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get firstname => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set firstname($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasFirstname() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearFirstname() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get lastname => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set lastname($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasLastname() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLastname() => clearField(4);
+
+  @$pb.TagNumber(5)
+  UserPermissions get permissions => $_getN(4);
+  @$pb.TagNumber(5)
+  set permissions(UserPermissions v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasPermissions() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearPermissions() => clearField(5);
+  @$pb.TagNumber(5)
+  UserPermissions ensurePermissions() => $_ensure(4);
 }
 
 /// / this is how users are stored in db
 /// / this model should not be exposed / used by clients
 class UserPrivate extends $pb.GeneratedMessage {
   factory UserPrivate({
-    $11.ObjectIdProto? id,
+    $core.String? userId,
     $core.String? mail,
     $core.String? passwordEncrypted,
-    $core.String? firmOid,
-    Oids? chainOids,
-    Oids? boutiqueOids,
+    $core.String? firmId,
+    Ids? chainIds,
+    Ids? boutiqueIds,
     ArticleRights? articleRights,
     BoutiqueRights? boutiqueRights,
     FirmRights? firmRights,
@@ -553,14 +897,14 @@ class UserPrivate extends $pb.GeneratedMessage {
     TicketRights? ticketRights,
     UserManagementRights? userManagementRights,
     BoolRights? boolRights,
-    $core.String? lastUpdatedByUserOid,
+    $core.String? lastUpdatedByuserId,
     $17.Timestamp? lastUpdateTimestampUTC,
     $core.String? firstname,
     $core.String? lastname,
   }) {
     final $result = create();
-    if (id != null) {
-      $result.id = id;
+    if (userId != null) {
+      $result.userId = userId;
     }
     if (mail != null) {
       $result.mail = mail;
@@ -568,14 +912,14 @@ class UserPrivate extends $pb.GeneratedMessage {
     if (passwordEncrypted != null) {
       $result.passwordEncrypted = passwordEncrypted;
     }
-    if (firmOid != null) {
-      $result.firmOid = firmOid;
+    if (firmId != null) {
+      $result.firmId = firmId;
     }
-    if (chainOids != null) {
-      $result.chainOids = chainOids;
+    if (chainIds != null) {
+      $result.chainIds = chainIds;
     }
-    if (boutiqueOids != null) {
-      $result.boutiqueOids = boutiqueOids;
+    if (boutiqueIds != null) {
+      $result.boutiqueIds = boutiqueIds;
     }
     if (articleRights != null) {
       $result.articleRights = articleRights;
@@ -601,8 +945,8 @@ class UserPrivate extends $pb.GeneratedMessage {
     if (boolRights != null) {
       $result.boolRights = boolRights;
     }
-    if (lastUpdatedByUserOid != null) {
-      $result.lastUpdatedByUserOid = lastUpdatedByUserOid;
+    if (lastUpdatedByuserId != null) {
+      $result.lastUpdatedByuserId = lastUpdatedByuserId;
     }
     if (lastUpdateTimestampUTC != null) {
       $result.lastUpdateTimestampUTC = lastUpdateTimestampUTC;
@@ -620,12 +964,12 @@ class UserPrivate extends $pb.GeneratedMessage {
   factory UserPrivate.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserPrivate', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
-    ..aOM<$11.ObjectIdProto>(1, _omitFieldNames ? '' : '_id', subBuilder: $11.ObjectIdProto.create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'mail')
     ..aOS(3, _omitFieldNames ? '' : 'password', protoName: 'passwordEncrypted')
-    ..aOS(4, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
-    ..aOM<Oids>(5, _omitFieldNames ? '' : 'chainOids', protoName: 'chainOids', subBuilder: Oids.create)
-    ..aOM<Oids>(6, _omitFieldNames ? '' : 'boutiqueOids', protoName: 'boutiqueOids', subBuilder: Oids.create)
+    ..aOS(4, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOM<Ids>(5, _omitFieldNames ? '' : 'chainIds', protoName: 'chainIds', subBuilder: Ids.create)
+    ..aOM<Ids>(6, _omitFieldNames ? '' : 'boutiqueIds', protoName: 'boutiqueIds', subBuilder: Ids.create)
     ..aOM<ArticleRights>(7, _omitFieldNames ? '' : 'articleRights', protoName: 'articleRights', subBuilder: ArticleRights.create)
     ..aOM<BoutiqueRights>(8, _omitFieldNames ? '' : 'boutiqueRights', protoName: 'boutiqueRights', subBuilder: BoutiqueRights.create)
     ..aOM<FirmRights>(9, _omitFieldNames ? '' : 'firmRights', protoName: 'firmRights', subBuilder: FirmRights.create)
@@ -634,7 +978,7 @@ class UserPrivate extends $pb.GeneratedMessage {
     ..aOM<TicketRights>(12, _omitFieldNames ? '' : 'ticketRights', protoName: 'ticketRights', subBuilder: TicketRights.create)
     ..aOM<UserManagementRights>(13, _omitFieldNames ? '' : 'userManagementRights', protoName: 'userManagementRights', subBuilder: UserManagementRights.create)
     ..aOM<BoolRights>(14, _omitFieldNames ? '' : 'boolRights', protoName: 'boolRights', subBuilder: BoolRights.create)
-    ..aOS(15, _omitFieldNames ? '' : 'lastUpdatedByUserOid', protoName: 'lastUpdatedByUserOid')
+    ..aOS(15, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
     ..aOM<$17.Timestamp>(16, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOS(17, _omitFieldNames ? '' : 'firstname')
     ..aOS(18, _omitFieldNames ? '' : 'lastname')
@@ -662,17 +1006,15 @@ class UserPrivate extends $pb.GeneratedMessage {
   static UserPrivate getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserPrivate>(create);
   static UserPrivate? _defaultInstance;
 
-  /// string userOid = 1 [json_name = 'userOid'];
+  /// string userId = 1 [json_name = 'userId'];
   @$pb.TagNumber(1)
-  $11.ObjectIdProto get id => $_getN(0);
+  $core.String get userId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set id($11.ObjectIdProto v) { setField(1, v); }
+  set userId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
-  @$pb.TagNumber(1)
-  $11.ObjectIdProto ensureId() => $_ensure(0);
+  void clearUserId() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get mail => $_getSZ(1);
@@ -693,35 +1035,35 @@ class UserPrivate extends $pb.GeneratedMessage {
   void clearPasswordEncrypted() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get firmOid => $_getSZ(3);
+  $core.String get firmId => $_getSZ(3);
   @$pb.TagNumber(4)
-  set firmOid($core.String v) { $_setString(3, v); }
+  set firmId($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasFirmOid() => $_has(3);
+  $core.bool hasFirmId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearFirmOid() => clearField(4);
+  void clearFirmId() => clearField(4);
 
   @$pb.TagNumber(5)
-  Oids get chainOids => $_getN(4);
+  Ids get chainIds => $_getN(4);
   @$pb.TagNumber(5)
-  set chainOids(Oids v) { setField(5, v); }
+  set chainIds(Ids v) { setField(5, v); }
   @$pb.TagNumber(5)
-  $core.bool hasChainOids() => $_has(4);
+  $core.bool hasChainIds() => $_has(4);
   @$pb.TagNumber(5)
-  void clearChainOids() => clearField(5);
+  void clearChainIds() => clearField(5);
   @$pb.TagNumber(5)
-  Oids ensureChainOids() => $_ensure(4);
+  Ids ensureChainIds() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  Oids get boutiqueOids => $_getN(5);
+  Ids get boutiqueIds => $_getN(5);
   @$pb.TagNumber(6)
-  set boutiqueOids(Oids v) { setField(6, v); }
+  set boutiqueIds(Ids v) { setField(6, v); }
   @$pb.TagNumber(6)
-  $core.bool hasBoutiqueOids() => $_has(5);
+  $core.bool hasBoutiqueIds() => $_has(5);
   @$pb.TagNumber(6)
-  void clearBoutiqueOids() => clearField(6);
+  void clearBoutiqueIds() => clearField(6);
   @$pb.TagNumber(6)
-  Oids ensureBoutiqueOids() => $_ensure(5);
+  Ids ensureBoutiqueIds() => $_ensure(5);
 
   @$pb.TagNumber(7)
   ArticleRights get articleRights => $_getN(6);
@@ -812,13 +1154,13 @@ class UserPrivate extends $pb.GeneratedMessage {
   BoolRights ensureBoolRights() => $_ensure(13);
 
   @$pb.TagNumber(15)
-  $core.String get lastUpdatedByUserOid => $_getSZ(14);
+  $core.String get lastUpdatedByuserId => $_getSZ(14);
   @$pb.TagNumber(15)
-  set lastUpdatedByUserOid($core.String v) { $_setString(14, v); }
+  set lastUpdatedByuserId($core.String v) { $_setString(14, v); }
   @$pb.TagNumber(15)
-  $core.bool hasLastUpdatedByUserOid() => $_has(14);
+  $core.bool hasLastUpdatedByuserId() => $_has(14);
   @$pb.TagNumber(15)
-  void clearLastUpdatedByUserOid() => clearField(15);
+  void clearLastUpdatedByuserId() => clearField(15);
 
   @$pb.TagNumber(16)
   $17.Timestamp get lastUpdateTimestampUTC => $_getN(15);

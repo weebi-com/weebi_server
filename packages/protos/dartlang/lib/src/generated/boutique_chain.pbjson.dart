@@ -17,25 +17,24 @@ import 'dart:typed_data' as $typed_data;
 const Chain$json = {
   '1': 'Chain',
   '2': [
-    {'1': '_id', '3': 1, '4': 1, '5': 11, '6': '.weebi.common.mongo.ObjectIdProto', '10': '_id'},
-    {'1': 'firmOid', '3': 2, '4': 1, '5': 9, '10': 'firmOid'},
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'name', '3': 3, '4': 1, '5': 9, '10': 'name'},
     {'1': 'boutiques', '3': 4, '4': 3, '5': 11, '6': '.weebi.boutique.Boutique', '10': 'boutiques'},
     {'1': 'devices', '3': 5, '4': 3, '5': 11, '6': '.weebi.chain.Device', '10': 'devices'},
     {'1': 'lastUpdateTimestampUTC', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
-    {'1': 'lastUpdatedByUserOid', '3': 7, '4': 1, '5': 9, '10': 'lastUpdatedByUserOid'},
+    {'1': 'lastUpdatedByuserId', '3': 7, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
   ],
 };
 
 /// Descriptor for `Chain`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List chainDescriptor = $convert.base64Decode(
-    'CgVDaGFpbhIzCgNfaWQYASABKAsyIS53ZWViaS5jb21tb24ubW9uZ28uT2JqZWN0SWRQcm90b1'
-    'IDX2lkEhgKB2Zpcm1PaWQYAiABKAlSB2Zpcm1PaWQSEgoEbmFtZRgDIAEoCVIEbmFtZRI2Cgli'
-    'b3V0aXF1ZXMYBCADKAsyGC53ZWViaS5ib3V0aXF1ZS5Cb3V0aXF1ZVIJYm91dGlxdWVzEi0KB2'
-    'RldmljZXMYBSADKAsyEy53ZWViaS5jaGFpbi5EZXZpY2VSB2RldmljZXMSUgoWbGFzdFVwZGF0'
-    'ZVRpbWVzdGFtcFVUQxgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFmxhc3RVcG'
-    'RhdGVUaW1lc3RhbXBVVEMSMgoUbGFzdFVwZGF0ZWRCeVVzZXJPaWQYByABKAlSFGxhc3RVcGRh'
-    'dGVkQnlVc2VyT2lk');
+    'CgVDaGFpbhIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEhYKBmZpcm1JZBgCIAEoCVIGZmlybU'
+    'lkEhIKBG5hbWUYAyABKAlSBG5hbWUSNgoJYm91dGlxdWVzGAQgAygLMhgud2VlYmkuYm91dGlx'
+    'dWUuQm91dGlxdWVSCWJvdXRpcXVlcxItCgdkZXZpY2VzGAUgAygLMhMud2VlYmkuY2hhaW4uRG'
+    'V2aWNlUgdkZXZpY2VzElIKFmxhc3RVcGRhdGVUaW1lc3RhbXBVVEMYBiABKAsyGi5nb29nbGUu'
+    'cHJvdG9idWYuVGltZXN0YW1wUhZsYXN0VXBkYXRlVGltZXN0YW1wVVRDEjAKE2xhc3RVcGRhdG'
+    'VkQnl1c2VySWQYByABKAlSE2xhc3RVcGRhdGVkQnl1c2VySWQ=');
 
 @$core.Deprecated('Use chainsDescriptor instead')
 const Chains$json = {
@@ -53,9 +52,9 @@ final $typed_data.Uint8List chainsDescriptor = $convert.base64Decode(
 const Device$json = {
   '1': 'Device',
   '2': [
-    {'1': '_id', '3': 1, '4': 1, '5': 11, '6': '.weebi.common.mongo.ObjectIdProto', '10': '_id'},
-    {'1': 'chainOid', '3': 2, '4': 1, '5': 9, '10': 'chainOid'},
-    {'1': 'boutiqueOid', '3': 3, '4': 1, '5': 9, '10': 'boutiqueOid'},
+    {'1': '_id', '3': 1, '4': 1, '5': 9, '10': '_id'},
+    {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'boutiqueId', '3': 3, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'status', '3': 4, '4': 1, '5': 8, '10': 'status'},
     {'1': 'password', '3': 5, '4': 1, '5': 9, '10': 'password'},
     {'1': 'name', '3': 6, '4': 1, '5': 9, '10': 'name'},
@@ -67,12 +66,11 @@ const Device$json = {
 
 /// Descriptor for `Device`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deviceDescriptor = $convert.base64Decode(
-    'CgZEZXZpY2USMwoDX2lkGAEgASgLMiEud2VlYmkuY29tbW9uLm1vbmdvLk9iamVjdElkUHJvdG'
-    '9SA19pZBIaCghjaGFpbk9pZBgCIAEoCVIIY2hhaW5PaWQSIAoLYm91dGlxdWVPaWQYAyABKAlS'
-    'C2JvdXRpcXVlT2lkEhYKBnN0YXR1cxgEIAEoCFIGc3RhdHVzEhoKCHBhc3N3b3JkGAUgASgJUg'
-    'hwYXNzd29yZBISCgRuYW1lGAYgASgJUgRuYW1lEiIKDHNlcmlhbE51bWJlchgHIAEoCVIMc2Vy'
-    'aWFsTnVtYmVyEhYKBmJhc2VPUxgIIAEoCVIGYmFzZU9TEhQKBWJyYW5kGAkgASgJUgVicmFuZA'
-    '==');
+    'CgZEZXZpY2USEAoDX2lkGAEgASgJUgNfaWQSGAoHY2hhaW5JZBgCIAEoCVIHY2hhaW5JZBIeCg'
+    'pib3V0aXF1ZUlkGAMgASgJUgpib3V0aXF1ZUlkEhYKBnN0YXR1cxgEIAEoCFIGc3RhdHVzEhoK'
+    'CHBhc3N3b3JkGAUgASgJUghwYXNzd29yZBISCgRuYW1lGAYgASgJUgRuYW1lEiIKDHNlcmlhbE'
+    '51bWJlchgHIAEoCVIMc2VyaWFsTnVtYmVyEhYKBmJhc2VPUxgIIAEoCVIGYmFzZU9TEhQKBWJy'
+    'YW5kGAkgASgJUgVicmFuZA==');
 
 @$core.Deprecated('Use devicesDescriptor instead')
 const Devices$json = {

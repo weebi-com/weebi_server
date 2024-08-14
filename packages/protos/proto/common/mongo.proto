@@ -3,9 +3,9 @@ syntax = "proto3";
 package weebi.common.mongo;
 
 
-message ChainOidAndBoutiqueOid {
-  string chainOid = 1;
-  string boutiqueOid = 2;
+message chainIdAndboutiqueId {
+  string chainId = 1;
+  string boutiqueId = 2;
 }
 
 message Testing {

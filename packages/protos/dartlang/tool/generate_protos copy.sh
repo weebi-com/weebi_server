@@ -16,7 +16,6 @@ protoc  --dart_out=grpc:dartlang/lib/src/generated \
         firm.proto \
         boutique_service.proto \
         user.proto \
-        user_permission.proto \
         user_service.proto \
         ticket/ticket.proto \
         ticket/ticket_type.proto \

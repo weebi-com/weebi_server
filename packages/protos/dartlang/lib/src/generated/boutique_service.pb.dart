@@ -17,11 +17,11 @@ import 'boutique_chain.pb.dart' as $7;
 
 class ReadRequest extends $pb.GeneratedMessage {
   factory ReadRequest({
-    $core.String? chainOid,
+    $core.String? chainId,
   }) {
     final $result = create();
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
     return $result;
   }
@@ -30,7 +30,7 @@ class ReadRequest extends $pb.GeneratedMessage {
   factory ReadRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..hasRequiredFields = false
   ;
 
@@ -56,23 +56,23 @@ class ReadRequest extends $pb.GeneratedMessage {
   static ReadRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get chainOid => $_getSZ(0);
+  $core.String get chainId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set chainOid($core.String v) { $_setString(0, v); }
+  set chainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChainOid() => $_has(0);
+  $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainOid() => clearField(1);
+  void clearChainId() => clearField(1);
 }
 
 class DeleteDeviceRequest extends $pb.GeneratedMessage {
   factory DeleteDeviceRequest({
-    $core.String? chainOid,
+    $core.String? chainId,
     $7.Device? device,
   }) {
     final $result = create();
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
     if (device != null) {
       $result.device = device;
@@ -84,7 +84,7 @@ class DeleteDeviceRequest extends $pb.GeneratedMessage {
   factory DeleteDeviceRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteDeviceRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOM<$7.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $7.Device.create)
     ..hasRequiredFields = false
   ;
@@ -111,13 +111,13 @@ class DeleteDeviceRequest extends $pb.GeneratedMessage {
   static DeleteDeviceRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get chainOid => $_getSZ(0);
+  $core.String get chainId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set chainOid($core.String v) { $_setString(0, v); }
+  set chainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChainOid() => $_has(0);
+  $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainOid() => clearField(1);
+  void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
   $7.Device get device => $_getN(1);

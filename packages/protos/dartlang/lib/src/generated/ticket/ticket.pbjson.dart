@@ -19,19 +19,19 @@ const TicketMongo$json = {
   '2': [
     {'1': 'ticket', '3': 1, '4': 1, '5': 11, '6': '.weebi.ticket.TicketPb', '10': 'ticket'},
     {'1': 'ticketNonUniqueId', '3': 2, '4': 1, '5': 5, '10': 'ticketNonUniqueId'},
-    {'1': 'userOid', '3': 3, '4': 1, '5': 9, '10': 'userOid'},
-    {'1': 'boutiqueOid', '3': 4, '4': 1, '5': 9, '10': 'boutiqueOid'},
-    {'1': 'firmOid', '3': 5, '4': 1, '5': 9, '10': 'firmOid'},
-    {'1': 'chainOid', '3': 6, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
+    {'1': 'boutiqueId', '3': 4, '4': 1, '5': 9, '10': 'boutiqueId'},
+    {'1': 'firmId', '3': 5, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'chainId', '3': 6, '4': 1, '5': 9, '10': 'chainId'},
   ],
 };
 
 /// Descriptor for `TicketMongo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List ticketMongoDescriptor = $convert.base64Decode(
     'CgtUaWNrZXRNb25nbxIuCgZ0aWNrZXQYASABKAsyFi53ZWViaS50aWNrZXQuVGlja2V0UGJSBn'
-    'RpY2tldBIsChF0aWNrZXROb25VbmlxdWVJZBgCIAEoBVIRdGlja2V0Tm9uVW5pcXVlSWQSGAoH'
-    'dXNlck9pZBgDIAEoCVIHdXNlck9pZBIgCgtib3V0aXF1ZU9pZBgEIAEoCVILYm91dGlxdWVPaW'
-    'QSGAoHZmlybU9pZBgFIAEoCVIHZmlybU9pZBIaCghjaGFpbk9pZBgGIAEoCVIIY2hhaW5PaWQ=');
+    'RpY2tldBIsChF0aWNrZXROb25VbmlxdWVJZBgCIAEoBVIRdGlja2V0Tm9uVW5pcXVlSWQSFgoG'
+    'dXNlcklkGAMgASgJUgZ1c2VySWQSHgoKYm91dGlxdWVJZBgEIAEoCVIKYm91dGlxdWVJZBIWCg'
+    'ZmaXJtSWQYBSABKAlSBmZpcm1JZBIYCgdjaGFpbklkGAYgASgJUgdjaGFpbklk');
 
 @$core.Deprecated('Use ticketPbDescriptor instead')
 const TicketPb$json = {
@@ -89,27 +89,27 @@ final $typed_data.Uint8List ticketPbDescriptor = $convert.base64Decode(
 const Counterfoil$json = {
   '1': 'Counterfoil',
   '2': [
-    {'1': 'firmOid', '3': 1, '4': 1, '5': 9, '10': 'firmOid'},
+    {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'firmName', '3': 2, '4': 1, '5': 9, '10': 'firmName'},
-    {'1': 'chainOid', '3': 3, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'chainId', '3': 3, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'chainName', '3': 4, '4': 1, '5': 9, '10': 'chainName'},
     {'1': 'deviceOid', '3': 5, '4': 1, '5': 9, '10': 'deviceOid'},
     {'1': 'deviceName', '3': 6, '4': 1, '5': 9, '10': 'deviceName'},
-    {'1': 'boutiqueOid', '3': 7, '4': 1, '5': 9, '10': 'boutiqueOid'},
+    {'1': 'boutiqueId', '3': 7, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'boutiqueName', '3': 8, '4': 1, '5': 9, '10': 'boutiqueName'},
-    {'1': 'userOid', '3': 9, '4': 1, '5': 9, '10': 'userOid'},
+    {'1': 'userId', '3': 9, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'userName', '3': 10, '4': 1, '5': 9, '10': 'userName'},
   ],
 };
 
 /// Descriptor for `Counterfoil`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List counterfoilDescriptor = $convert.base64Decode(
-    'CgtDb3VudGVyZm9pbBIYCgdmaXJtT2lkGAEgASgJUgdmaXJtT2lkEhoKCGZpcm1OYW1lGAIgAS'
-    'gJUghmaXJtTmFtZRIaCghjaGFpbk9pZBgDIAEoCVIIY2hhaW5PaWQSHAoJY2hhaW5OYW1lGAQg'
-    'ASgJUgljaGFpbk5hbWUSHAoJZGV2aWNlT2lkGAUgASgJUglkZXZpY2VPaWQSHgoKZGV2aWNlTm'
-    'FtZRgGIAEoCVIKZGV2aWNlTmFtZRIgCgtib3V0aXF1ZU9pZBgHIAEoCVILYm91dGlxdWVPaWQS'
-    'IgoMYm91dGlxdWVOYW1lGAggASgJUgxib3V0aXF1ZU5hbWUSGAoHdXNlck9pZBgJIAEoCVIHdX'
-    'Nlck9pZBIaCgh1c2VyTmFtZRgKIAEoCVIIdXNlck5hbWU=');
+    'CgtDb3VudGVyZm9pbBIWCgZmaXJtSWQYASABKAlSBmZpcm1JZBIaCghmaXJtTmFtZRgCIAEoCV'
+    'IIZmlybU5hbWUSGAoHY2hhaW5JZBgDIAEoCVIHY2hhaW5JZBIcCgljaGFpbk5hbWUYBCABKAlS'
+    'CWNoYWluTmFtZRIcCglkZXZpY2VPaWQYBSABKAlSCWRldmljZU9pZBIeCgpkZXZpY2VOYW1lGA'
+    'YgASgJUgpkZXZpY2VOYW1lEh4KCmJvdXRpcXVlSWQYByABKAlSCmJvdXRpcXVlSWQSIgoMYm91'
+    'dGlxdWVOYW1lGAggASgJUgxib3V0aXF1ZU5hbWUSFgoGdXNlcklkGAkgASgJUgZ1c2VySWQSGg'
+    'oIdXNlck5hbWUYCiABKAlSCHVzZXJOYW1l');
 
 @$core.Deprecated('Use taxPbDescriptor instead')
 const TaxPb$json = {

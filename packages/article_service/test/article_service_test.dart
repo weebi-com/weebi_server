@@ -26,7 +26,7 @@ void main() async {
     articleService = ArticleService(
       db,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission,
+      userPermissionIfTest: Dummy.adminPermission,
     );
     await db.collection(articleService.collection.collectionName).drop();
     await db.createCollection(articleService.collection.collectionName);
@@ -38,15 +38,15 @@ void main() async {
   });
 
   test('test insertOne ', () async {
-    final request = ArticleRequest(
-        chainOid: ChainDummy.chain.id.oid, calibre: calibreDummy);
+    final request =
+        ArticleRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
     // ignore: unused_local_variable
     final response = await articleService.createOne(null, request);
     expect(response.type, StatusResponse_Type.CREATED);
   });
   test('test readAll', () async {
     final response = await articleService.readAll(
-        null, ReadAllRequest(chainOid: ChainDummy.chain.id.oid));
+        null, ReadAllRequest(chainId: Dummy.chain.chainId));
     expect(response.calibres.length, 1);
   });
   test('test replaceOne ', () async {
@@ -61,24 +61,24 @@ void main() async {
       );
 
     final request =
-        ArticleRequest(chainOid: ChainDummy.chain.id.oid, calibre: calibreLili);
+        ArticleRequest(chainId: Dummy.chain.chainId, calibre: calibreLili);
     // ignore: unused_local_variable
     final response = await articleService.replaceOne(null, request);
     expect(response.type, StatusResponse_Type.UPDATED);
     final response2 = await articleService.readAll(
-        null, ReadAllRequest(chainOid: ChainDummy.chain.id.oid));
+        null, ReadAllRequest(chainId: Dummy.chain.chainId));
     print('response2 ${response2.calibres.length}');
     expect(response2.calibres.first.title, 'Lili biscuit');
   });
 
   test('test deleteOne ', () async {
-    final request = ArticleRequest(
-        chainOid: ChainDummy.chain.id.oid, calibre: calibreDummy);
+    final request =
+        ArticleRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
     // ignore: unused_local_variable
     final response = await articleService.deleteOne(null, request);
 
     final response2 = await articleService.readAll(
-        null, ReadAllRequest(chainOid: ChainDummy.chain.id.oid));
+        null, ReadAllRequest(chainId: Dummy.chain.chainId));
     expect(response2.calibres.length, 0);
   });
 }

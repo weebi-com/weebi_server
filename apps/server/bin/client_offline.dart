@@ -57,7 +57,7 @@ void main(List<String> args) async {
   );
 
   final userInfo = await userStub2.readOne(
-      UserOid(oid: '665e12f798357783e8000008'),
+      UserId(userId: '665e12f798357783e8000008'),
       options: CallOptions());
   print(userInfo.toProto3Json());
   await channel.terminate();

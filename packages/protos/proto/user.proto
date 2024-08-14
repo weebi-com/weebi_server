@@ -5,6 +5,54 @@ package weebi.user;
 import "common/g_timestamp.proto";
 import "common/mongo.proto";
 
+// ! any addition in this object must also be echoed in user_service_base.dart in : 
+
+/// -  _readUserPermissions() 
+/// - createOne()
+/// - approveDevice()
+
+/// Permissions encompass two notions : 
+///  - access (in the boutiques hierarchy)
+///  - rights 
+///   - CRUD on editable objects
+///   - bool on certain action/screen in app
+
+/// boutiquesAccessible != user.boutiquesOids
+/// boutiquesAccessible encompass all boutiques access
+/// while user.boutiquesOids == 'ALL' if user manages muliple chains  
+/// As boutiques get created in the chain NO NEED to update each user that has access to this chain to add boutique 
+/// if user is admin / on chain level, then user.boutiquesOids will be empty
+/// name pattern changed here as a reminder
+
+/// if user is simple seller / cashier
+/// user.chainIds = ['mall1']
+/// user.boutiquesOids = ['boutique1A']
+///   =>
+///   userPermission.chainsAccessible = ['mall1'] chainId where the boutique belongs 
+///   userPermission.boutiquesAccessible = ['boutique1A'] 
+/// if user is admin
+/// user.chainIds = ['mall1', 'mall2']
+/// user.boutiquesOids = []
+/// =>
+///   userPermission.chainsAccessible = ['mall1', 'mall2']
+///   userPermission.boutiquesAccessible = ['boutique1A', 'boutique1B', 'boutique2A']
+message UserPermissions {
+  string userId = 1 [json_name = 'userId'];
+  string firmId = 2  [json_name = 'firmId'];
+  weebi.user.Ids chainsAccessible = 3 [json_name = 'chainsAccessible'];
+  weebi.user.Ids boutiquesAccessible = 4 [json_name = 'boutiquesAccessible']; 
+  weebi.user.TicketRights ticketRights = 5  [json_name = 'ticketRights'];
+  weebi.user.ContactRights contactRights =  6  [json_name = 'contactRights'];
+  weebi.user.ArticleRights articleRights =  7 [json_name = 'articleRights'];
+  weebi.user.BoutiqueRights boutiqueRights = 8  [json_name = 'boutiqueRights'];
+  weebi.user.MallRights chainRights =  9 [json_name = 'mallRights'];
+  weebi.user.FirmRights firmRights =  10  [json_name = 'firmRights'];
+  weebi.user.UserManagementRights userManagementRights =  11 [json_name = 'userManagementRights'];
+  weebi.user.BoolRights boolRights = 12 [json_name = 'boolRights'];
+}
+
+
+
 /// user CRUD rights on base models 
 enum Right {
   unknown = 0;
@@ -55,27 +103,38 @@ message BoolRights {
 /// all users need to belong at least to a chain to see articles and contact
 /// specific rights will then be checked to see what kind of action the user can perform on this chain's objects
 /// for users who need to access all boutiques of a chain we use the following hack :
-/// boutiqueOids == ['ALL'] instead of passing all oids
+/// boutiqueIds == ['ALL'] instead of passing all oids
 /// accessible boutiques will be deduced in boutique_service endpoint
 /// allowing us not to keep track of boutique creation/deletion
 /// firm admins can have access to multiple chains, and manage them from web app
 /// if they try login in the flutter app they will be asked to select one chain only
 
-message Oids {
-  repeated string oids = 1 [json_name = 'oids'];
+message Ids {
+  repeated string ids = 1 [json_name = 'ids'];
 }
+
+
+/// ! any addition to this model must be replicated in the user_service_base.dart updateOne() 
+message UserInfo {
+  string userId = 1 [json_name = 'userId'];
+  string mail = 2 [json_name = 'mail'];
+  string firstname = 3 [json_name = 'firstname'];
+  string lastname = 4 [json_name = 'lastname'];
+  UserPermissions permissions = 5 [json_name = 'permissions'];
+}
+
 
 
 /// this is how users are stored in db
 /// this model should not be exposed / used by clients
 message UserPrivate {
-  //string userOid = 1 [json_name = 'userOid'];
-  string _id = 1 [json_name = '_id'];
+  //string userId = 1 [json_name = 'userId'];
+  string userId = 1 [json_name = 'userId'];
   string mail = 2 [json_name = 'mail'];
   string passwordEncrypted = 3 [json_name = 'password'];
-  string firmOid = 4 [json_name = 'firmOid'];
-  Oids chainOids = 5 [json_name = 'chainOids'];
-  Oids boutiqueOids = 6 [json_name = 'boutiqueOids'];
+  string firmId = 4 [json_name = 'firmId'];
+  Ids chainIds = 5 [json_name = 'chainIds'];
+  Ids boutiqueIds = 6 [json_name = 'boutiqueIds'];
   ArticleRights articleRights = 7 [json_name = 'articleRights'];
   BoutiqueRights boutiqueRights = 8 [json_name = 'boutiqueRights'];
   FirmRights firmRights = 9 [json_name = 'firmRights'];
@@ -84,7 +143,7 @@ message UserPrivate {
   TicketRights ticketRights = 12 [json_name = 'ticketRights'];
   UserManagementRights userManagementRights = 13 [json_name = 'userManagementRights'];
   BoolRights boolRights = 14 [json_name = 'boolRights'];
-  string lastUpdatedByUserOid = 15 [json_name = 'lastUpdatedByUserOid'];
+  string lastUpdatedByuserId = 15 [json_name = 'lastUpdatedByuserId'];
   google.protobuf.Timestamp lastUpdateTimestampUTC = 16 [json_name = 'lastUpdateTimestampUTC'];
   string firstname = 17 [json_name = 'firstname'];
   string lastname = 18 [json_name = 'lastname'];

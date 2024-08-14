@@ -17,17 +17,17 @@ import 'dart:typed_data' as $typed_data;
 const FindTicketRequest$json = {
   '1': 'FindTicketRequest',
   '2': [
-    {'1': 'ticketChainOid', '3': 1, '4': 1, '5': 9, '10': 'ticketChainOid'},
-    {'1': 'ticketUserOid', '3': 2, '4': 1, '5': 9, '10': 'ticketUserOid'},
+    {'1': 'ticketchainId', '3': 1, '4': 1, '5': 9, '10': 'ticketchainId'},
+    {'1': 'ticketuserId', '3': 2, '4': 1, '5': 9, '10': 'ticketuserId'},
     {'1': 'ticketNonUniqueId', '3': 3, '4': 1, '5': 5, '10': 'ticketNonUniqueId'},
   ],
 };
 
 /// Descriptor for `FindTicketRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List findTicketRequestDescriptor = $convert.base64Decode(
-    'ChFGaW5kVGlja2V0UmVxdWVzdBImCg50aWNrZXRDaGFpbk9pZBgBIAEoCVIOdGlja2V0Q2hhaW'
-    '5PaWQSJAoNdGlja2V0VXNlck9pZBgCIAEoCVINdGlja2V0VXNlck9pZBIsChF0aWNrZXROb25V'
-    'bmlxdWVJZBgDIAEoBVIRdGlja2V0Tm9uVW5pcXVlSWQ=');
+    'ChFGaW5kVGlja2V0UmVxdWVzdBIkCg10aWNrZXRjaGFpbklkGAEgASgJUg10aWNrZXRjaGFpbk'
+    'lkEiIKDHRpY2tldHVzZXJJZBgCIAEoCVIMdGlja2V0dXNlcklkEiwKEXRpY2tldE5vblVuaXF1'
+    'ZUlkGAMgASgFUhF0aWNrZXROb25VbmlxdWVJZA==');
 
 @$core.Deprecated('Use ticketRequestDescriptor instead')
 const TicketRequest$json = {

@@ -6,20 +6,20 @@ import "article.proto";
 import "ticket/ticket_type.proto";
 // import "common/g_timestamp.proto";
 
-/// ticketNonUniqueId is to be combined with userOid
+/// ticketNonUniqueId is to be combined with userId
 /// local ids can lead to duplicates as each sellers from its own device can create contact 
 message TicketMongo {
     weebi.ticket.TicketPb ticket = 1 [json_name = 'ticket'];
     int32 ticketNonUniqueId = 2 [json_name = 'ticketNonUniqueId'];
-    string userOid = 3 [json_name = 'userOid'];
-    string boutiqueOid = 4 [json_name = 'boutiqueOid'];
-    string firmOid = 5 [json_name = 'firmOid'];
-    string chainOid = 6 [json_name = 'chainOid'];
+    string userId = 3 [json_name = 'userId'];
+    string boutiqueId = 4 [json_name = 'boutiqueId'];
+    string firmId = 5 [json_name = 'firmId'];
+    string chainId = 6 [json_name = 'chainId'];
 }
-// string uploadByUserOid = 3 [json_name = 'uploadByUserOid'];
+// string uploadByuserId = 3 [json_name = 'uploadByuserId'];
 // string uploadByUsername = 4 [json_name = 'uploadByUsername'];
 // google.protobuf.Timestamp dateUploadUTC = 5 [json_name = 'dateUploadUTC'];
-// string lastTouchedByUserOid = 6 [json_name = 'lastTouchedByUserOid'];
+// string lastTouchedByuserId = 6 [json_name = 'lastTouchedByuserId'];
 // string lastTouchedByUsername = 7 [json_name = 'lastTouchedByUsername'];
 
 message TicketPb {
@@ -50,15 +50,15 @@ message TicketPb {
 
 
 message Counterfoil {
-  string firmOid = 1;
+  string firmId = 1;
   string firmName = 2;
-  string chainOid = 3;
+  string chainId = 3;
   string chainName = 4;
   string deviceOid = 5;
   string deviceName = 6;
-  string boutiqueOid = 7;
+  string boutiqueId = 7;
   string boutiqueName = 8;
-  string userOid = 9;
+  string userId = 9;
   string userName = 10;
 }
 

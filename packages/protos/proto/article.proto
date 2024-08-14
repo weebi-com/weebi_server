@@ -6,9 +6,9 @@ message CalibreMongo {
   // faster object read
   weebi.article.CalibrePb calibre = 1 [json_name = 'calibre'] ;  
   int32 calibreId = 2 [json_name = 'calibreId'];
-  string firmOid = 3 [json_name = 'firmOid'];
-  string chainOid = 4 [json_name = 'chainOid'];
-  string userOid = 5 [json_name = 'userOid']; 
+  string firmId = 3 [json_name = 'firmId'];
+  string chainId = 4 [json_name = 'chainId'];
+  string userId = 5 [json_name = 'userId']; 
 }
 
 /// Wrapping articles, using Pb to != from Calibre Dart in models weebi 

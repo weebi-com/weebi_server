@@ -14,14 +14,13 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'common/address.pb.dart' as $19;
-import 'common/mongo.pb.dart' as $11;
 import 'common/phone.pb.dart' as $18;
 
 class Boutique extends $pb.GeneratedMessage {
   factory Boutique({
-    $11.ObjectIdProto? id,
-    $core.String? firmOid,
-    $core.String? chainOid,
+    $core.String? boutiqueId,
+    $core.String? firmId,
+    $core.String? chainId,
     $core.String? dateCreation,
     $core.String? dateUpdate,
     $core.String? dateStatus,
@@ -35,14 +34,14 @@ class Boutique extends $pb.GeneratedMessage {
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
-    if (id != null) {
-      $result.id = id;
+    if (boutiqueId != null) {
+      $result.boutiqueId = boutiqueId;
     }
-    if (firmOid != null) {
-      $result.firmOid = firmOid;
+    if (firmId != null) {
+      $result.firmId = firmId;
     }
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
     if (dateCreation != null) {
       $result.dateCreation = dateCreation;
@@ -84,9 +83,9 @@ class Boutique extends $pb.GeneratedMessage {
   factory Boutique.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Boutique', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
-    ..aOM<$11.ObjectIdProto>(1, _omitFieldNames ? '' : '_id', subBuilder: $11.ObjectIdProto.create)
-    ..aOS(2, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
-    ..aOS(3, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
+    ..aOS(1, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
+    ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(3, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(4, _omitFieldNames ? '' : 'creationDate', protoName: 'dateCreation')
     ..aOS(5, _omitFieldNames ? '' : 'updateDate', protoName: 'dateUpdate')
     ..aOS(6, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
@@ -123,33 +122,31 @@ class Boutique extends $pb.GeneratedMessage {
   static Boutique? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $11.ObjectIdProto get id => $_getN(0);
+  $core.String get boutiqueId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set id($11.ObjectIdProto v) { setField(1, v); }
+  set boutiqueId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasBoutiqueId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
-  @$pb.TagNumber(1)
-  $11.ObjectIdProto ensureId() => $_ensure(0);
+  void clearBoutiqueId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get firmOid => $_getSZ(1);
+  $core.String get firmId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set firmOid($core.String v) { $_setString(1, v); }
+  set firmId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasFirmOid() => $_has(1);
+  $core.bool hasFirmId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirmOid() => clearField(2);
+  void clearFirmId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get chainOid => $_getSZ(2);
+  $core.String get chainId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set chainOid($core.String v) { $_setString(2, v); }
+  set chainId($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasChainOid() => $_has(2);
+  $core.bool hasChainId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearChainOid() => clearField(3);
+  void clearChainId() => clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get dateCreation => $_getSZ(3);

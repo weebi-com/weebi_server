@@ -8,7 +8,7 @@ import "common/mongo.proto";
 
 /// yes one object to delimit all but permissions
 message Firm {
-    string _id = 1 [json_name = '_id'];
+    string firmId = 1 [json_name = 'firmId'];
     string name = 2 [json_name = 'name'];
     repeated weebi.chain.Chain chains = 3 [json_name = 'chains'] ;
     string subscriptionPlan = 4 [json_name = 'subscriptionPlan'];
@@ -18,7 +18,7 @@ message Firm {
     bool status = 8 [json_name = 'status'];
     google.protobuf.Timestamp statusUpdateTimestampUTC = 9 [json_name = 'statusUpdateTimestampUTC']; //if weebi disables date will be in UTC time not local 
     google.protobuf.Timestamp lastUpdateTimestampUTC = 10 [json_name = 'lastUpdateTimestampUTC'];
-    string lastUpdatedByUserOid = 11 [json_name = 'lastUpdatedByUserOid'];
+    string lastUpdatedByuserId = 11 [json_name = 'lastUpdatedByuserId'];
     bool isMailVerified = 12 [json_name = 'isMailVerified'];
   }
   

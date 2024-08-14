@@ -35,18 +35,18 @@ const CalibreMongo$json = {
   '2': [
     {'1': 'calibre', '3': 1, '4': 1, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibre'},
     {'1': 'calibreId', '3': 2, '4': 1, '5': 5, '10': 'calibreId'},
-    {'1': 'firmOid', '3': 3, '4': 1, '5': 9, '10': 'firmOid'},
-    {'1': 'chainOid', '3': 4, '4': 1, '5': 9, '10': 'chainOid'},
-    {'1': 'userOid', '3': 5, '4': 1, '5': 9, '10': 'userOid'},
+    {'1': 'firmId', '3': 3, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'chainId', '3': 4, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'userId', '3': 5, '4': 1, '5': 9, '10': 'userId'},
   ],
 };
 
 /// Descriptor for `CalibreMongo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List calibreMongoDescriptor = $convert.base64Decode(
     'CgxDYWxpYnJlTW9uZ28SMgoHY2FsaWJyZRgBIAEoCzIYLndlZWJpLmFydGljbGUuQ2FsaWJyZV'
-    'BiUgdjYWxpYnJlEhwKCWNhbGlicmVJZBgCIAEoBVIJY2FsaWJyZUlkEhgKB2Zpcm1PaWQYAyAB'
-    'KAlSB2Zpcm1PaWQSGgoIY2hhaW5PaWQYBCABKAlSCGNoYWluT2lkEhgKB3VzZXJPaWQYBSABKA'
-    'lSB3VzZXJPaWQ=');
+    'BiUgdjYWxpYnJlEhwKCWNhbGlicmVJZBgCIAEoBVIJY2FsaWJyZUlkEhYKBmZpcm1JZBgDIAEo'
+    'CVIGZmlybUlkEhgKB2NoYWluSWQYBCABKAlSB2NoYWluSWQSFgoGdXNlcklkGAUgASgJUgZ1c2'
+    'VySWQ=');
 
 @$core.Deprecated('Use calibrePbDescriptor instead')
 const CalibrePb$json = {

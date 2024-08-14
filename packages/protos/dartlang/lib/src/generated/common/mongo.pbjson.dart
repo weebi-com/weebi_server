@@ -13,19 +13,19 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use chainOidAndBoutiqueOidDescriptor instead')
-const ChainOidAndBoutiqueOid$json = {
-  '1': 'ChainOidAndBoutiqueOid',
+@$core.Deprecated('Use chainIdAndboutiqueIdDescriptor instead')
+const chainIdAndboutiqueId$json = {
+  '1': 'chainIdAndboutiqueId',
   '2': [
-    {'1': 'chainOid', '3': 1, '4': 1, '5': 9, '10': 'chainOid'},
-    {'1': 'boutiqueOid', '3': 2, '4': 1, '5': 9, '10': 'boutiqueOid'},
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'boutiqueId', '3': 2, '4': 1, '5': 9, '10': 'boutiqueId'},
   ],
 };
 
-/// Descriptor for `ChainOidAndBoutiqueOid`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List chainOidAndBoutiqueOidDescriptor = $convert.base64Decode(
-    'ChZDaGFpbk9pZEFuZEJvdXRpcXVlT2lkEhoKCGNoYWluT2lkGAEgASgJUghjaGFpbk9pZBIgCg'
-    'tib3V0aXF1ZU9pZBgCIAEoCVILYm91dGlxdWVPaWQ=');
+/// Descriptor for `chainIdAndboutiqueId`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List chainIdAndboutiqueIdDescriptor = $convert.base64Decode(
+    'ChRjaGFpbklkQW5kYm91dGlxdWVJZBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEh4KCmJvdX'
+    'RpcXVlSWQYAiABKAlSCmJvdXRpcXVlSWQ=');
 
 @$core.Deprecated('Use testingDescriptor instead')
 const Testing$json = {

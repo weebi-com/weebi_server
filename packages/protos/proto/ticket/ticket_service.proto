@@ -9,16 +9,16 @@ import "common/g_common.proto";
 // import "common/mongo.proto";
 
 message FindTicketRequest {
-  // weebi.common.mongo.MallAndBoutiqueOids chainAndBoutiqueOids = 1 [json_name = 'mallAndBoutiqueOids'];
-  // string firmOid = 1 [json_name = 'firmOid']; deduced from bearer token
-  string ticketChainOid = 1 [json_name = 'ticketChainOid'];
-  string ticketUserOid = 2 [json_name = 'ticketUserOid'];
+  // weebi.common.mongo.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
+  // string firmId = 1 [json_name = 'firmId']; deduced from bearer token
+  string ticketchainId = 1 [json_name = 'ticketchainId'];
+  string ticketuserId = 2 [json_name = 'ticketuserId'];
   int32 ticketNonUniqueId = 3 [json_name = 'ticketNonUniqueId'];
 }
 
 message TicketRequest {
   /// restrict request on a single boutique to ease access verification
-  //  weebi.common.mongo.MallAndBoutiqueOids chainAndBoutiqueOids = 1 [json_name = 'mallAndBoutiqueOids'];
+  //  weebi.common.mongo.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
   weebi.ticket.TicketPb ticket = 2 [json_name = 'ticket'];
 }
 

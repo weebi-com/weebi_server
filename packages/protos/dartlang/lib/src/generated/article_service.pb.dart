@@ -17,12 +17,12 @@ import 'article.pb.dart' as $3;
 
 class FindArticleRequest extends $pb.GeneratedMessage {
   factory FindArticleRequest({
-    $core.String? chainOid,
+    $core.String? chainId,
     $core.String? title,
   }) {
     final $result = create();
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
     if (title != null) {
       $result.title = title;
@@ -34,7 +34,7 @@ class FindArticleRequest extends $pb.GeneratedMessage {
   factory FindArticleRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FindArticleRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(2, _omitFieldNames ? '' : 'title')
     ..hasRequiredFields = false
   ;
@@ -61,13 +61,13 @@ class FindArticleRequest extends $pb.GeneratedMessage {
   static FindArticleRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get chainOid => $_getSZ(0);
+  $core.String get chainId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set chainOid($core.String v) { $_setString(0, v); }
+  set chainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChainOid() => $_has(0);
+  $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainOid() => clearField(1);
+  void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get title => $_getSZ(1);
@@ -81,11 +81,11 @@ class FindArticleRequest extends $pb.GeneratedMessage {
 
 class ReadAllRequest extends $pb.GeneratedMessage {
   factory ReadAllRequest({
-    $core.String? chainOid,
+    $core.String? chainId,
   }) {
     final $result = create();
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
     return $result;
   }
@@ -94,7 +94,7 @@ class ReadAllRequest extends $pb.GeneratedMessage {
   factory ReadAllRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..hasRequiredFields = false
   ;
 
@@ -120,23 +120,23 @@ class ReadAllRequest extends $pb.GeneratedMessage {
   static ReadAllRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get chainOid => $_getSZ(0);
+  $core.String get chainId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set chainOid($core.String v) { $_setString(0, v); }
+  set chainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChainOid() => $_has(0);
+  $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainOid() => clearField(1);
+  void clearChainId() => clearField(1);
 }
 
 class ArticleRequest extends $pb.GeneratedMessage {
   factory ArticleRequest({
-    $core.String? chainOid,
+    $core.String? chainId,
     $3.CalibrePb? calibre,
   }) {
     final $result = create();
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
     if (calibre != null) {
       $result.calibre = calibre;
@@ -148,7 +148,7 @@ class ArticleRequest extends $pb.GeneratedMessage {
   factory ArticleRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticleRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOM<$3.CalibrePb>(2, _omitFieldNames ? '' : 'calibre', subBuilder: $3.CalibrePb.create)
     ..hasRequiredFields = false
   ;
@@ -176,13 +176,13 @@ class ArticleRequest extends $pb.GeneratedMessage {
 
   /// below in case mutiple chains, permission check will still be applied to verify
   @$pb.TagNumber(1)
-  $core.String get chainOid => $_getSZ(0);
+  $core.String get chainId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set chainOid($core.String v) { $_setString(0, v); }
+  set chainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChainOid() => $_has(0);
+  $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainOid() => clearField(1);
+  void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
   $3.CalibrePb get calibre => $_getN(1);

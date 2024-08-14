@@ -16,8 +16,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'boutique_chain.pb.dart' as $7;
 import 'common/g_timestamp.pb.dart' as $17;
 import 'common/mongo.pb.dart' as $11;
-import 'user.pb.dart' as $20;
-import 'user_permission.pb.dart' as $12;
+import 'user.pb.dart' as $12;
 
 class MailAndEncyptedPasswordRequest extends $pb.GeneratedMessage {
   factory MailAndEncyptedPasswordRequest({
@@ -83,22 +82,22 @@ class MailAndEncyptedPasswordRequest extends $pb.GeneratedMessage {
   void clearPasswordEncrypted() => clearField(2);
 }
 
-class UserOid extends $pb.GeneratedMessage {
-  factory UserOid({
-    $core.String? oid,
+class UserId extends $pb.GeneratedMessage {
+  factory UserId({
+    $core.String? userId,
   }) {
     final $result = create();
-    if (oid != null) {
-      $result.oid = oid;
+    if (userId != null) {
+      $result.userId = userId;
     }
     return $result;
   }
-  UserOid._() : super();
-  factory UserOid.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory UserOid.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  UserId._() : super();
+  factory UserId.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UserId.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserOid', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'oid')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserId', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..hasRequiredFields = false
   ;
 
@@ -106,37 +105,37 @@ class UserOid extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  UserOid clone() => UserOid()..mergeFromMessage(this);
+  UserId clone() => UserId()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  UserOid copyWith(void Function(UserOid) updates) => super.copyWith((message) => updates(message as UserOid)) as UserOid;
+  UserId copyWith(void Function(UserId) updates) => super.copyWith((message) => updates(message as UserId)) as UserId;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static UserOid create() => UserOid._();
-  UserOid createEmptyInstance() => create();
-  static $pb.PbList<UserOid> createRepeated() => $pb.PbList<UserOid>();
+  static UserId create() => UserId._();
+  UserId createEmptyInstance() => create();
+  static $pb.PbList<UserId> createRepeated() => $pb.PbList<UserId>();
   @$core.pragma('dart2js:noInline')
-  static UserOid getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserOid>(create);
-  static UserOid? _defaultInstance;
+  static UserId getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserId>(create);
+  static UserId? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get oid => $_getSZ(0);
+  $core.String get userId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set oid($core.String v) { $_setString(0, v); }
+  set userId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasOid() => $_has(0);
+  $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearOid() => clearField(1);
+  void clearUserId() => clearField(1);
 }
 
 class Access extends $pb.GeneratedMessage {
   factory Access({
-    $20.Oids? chainsAccessible,
-    $20.Oids? boutiquesAccessible,
+    $12.Ids? chainsAccessible,
+    $12.Ids? boutiquesAccessible,
   }) {
     final $result = create();
     if (chainsAccessible != null) {
@@ -152,8 +151,8 @@ class Access extends $pb.GeneratedMessage {
   factory Access.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Access', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
-    ..aOM<$20.Oids>(1, _omitFieldNames ? '' : 'chainsAccessible', protoName: 'chainsAccessible', subBuilder: $20.Oids.create)
-    ..aOM<$20.Oids>(2, _omitFieldNames ? '' : 'boutiquesAccessible', protoName: 'boutiquesAccessible', subBuilder: $20.Oids.create)
+    ..aOM<$12.Ids>(1, _omitFieldNames ? '' : 'chainsAccessible', protoName: 'chainsAccessible', subBuilder: $12.Ids.create)
+    ..aOM<$12.Ids>(2, _omitFieldNames ? '' : 'boutiquesAccessible', protoName: 'boutiquesAccessible', subBuilder: $12.Ids.create)
     ..hasRequiredFields = false
   ;
 
@@ -179,26 +178,26 @@ class Access extends $pb.GeneratedMessage {
   static Access? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $20.Oids get chainsAccessible => $_getN(0);
+  $12.Ids get chainsAccessible => $_getN(0);
   @$pb.TagNumber(1)
-  set chainsAccessible($20.Oids v) { setField(1, v); }
+  set chainsAccessible($12.Ids v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasChainsAccessible() => $_has(0);
   @$pb.TagNumber(1)
   void clearChainsAccessible() => clearField(1);
   @$pb.TagNumber(1)
-  $20.Oids ensureChainsAccessible() => $_ensure(0);
+  $12.Ids ensureChainsAccessible() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $20.Oids get boutiquesAccessible => $_getN(1);
+  $12.Ids get boutiquesAccessible => $_getN(1);
   @$pb.TagNumber(2)
-  set boutiquesAccessible($20.Oids v) { setField(2, v); }
+  set boutiquesAccessible($12.Ids v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBoutiquesAccessible() => $_has(1);
   @$pb.TagNumber(2)
   void clearBoutiquesAccessible() => clearField(2);
   @$pb.TagNumber(2)
-  $20.Oids ensureBoutiquesAccessible() => $_ensure(1);
+  $12.Ids ensureBoutiquesAccessible() => $_ensure(1);
 }
 
 class LoginRequest extends $pb.GeneratedMessage {
@@ -267,21 +266,21 @@ class LoginRequest extends $pb.GeneratedMessage {
 
 class DeviceLoginRequest extends $pb.GeneratedMessage {
   factory DeviceLoginRequest({
-    $core.String? firmOid,
-    $core.String? chainOid,
-    $core.String? boutiqueOid,
+    $core.String? firmId,
+    $core.String? chainId,
+    $core.String? boutiqueId,
     $core.String? deviceOid,
     $core.String? password,
   }) {
     final $result = create();
-    if (firmOid != null) {
-      $result.firmOid = firmOid;
+    if (firmId != null) {
+      $result.firmId = firmId;
     }
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
-    if (boutiqueOid != null) {
-      $result.boutiqueOid = boutiqueOid;
+    if (boutiqueId != null) {
+      $result.boutiqueId = boutiqueId;
     }
     if (deviceOid != null) {
       $result.deviceOid = deviceOid;
@@ -296,9 +295,9 @@ class DeviceLoginRequest extends $pb.GeneratedMessage {
   factory DeviceLoginRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeviceLoginRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
-    ..aOS(2, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
-    ..aOS(3, _omitFieldNames ? '' : 'boutiqueOid', protoName: 'boutiqueOid')
+    ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(4, _omitFieldNames ? '' : 'deviceOid', protoName: 'deviceOid')
     ..aOS(5, _omitFieldNames ? '' : 'password')
     ..hasRequiredFields = false
@@ -326,31 +325,31 @@ class DeviceLoginRequest extends $pb.GeneratedMessage {
   static DeviceLoginRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get firmOid => $_getSZ(0);
+  $core.String get firmId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set firmOid($core.String v) { $_setString(0, v); }
+  set firmId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasFirmOid() => $_has(0);
+  $core.bool hasFirmId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearFirmOid() => clearField(1);
+  void clearFirmId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get chainOid => $_getSZ(1);
+  $core.String get chainId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set chainOid($core.String v) { $_setString(1, v); }
+  set chainId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasChainOid() => $_has(1);
+  $core.bool hasChainId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearChainOid() => clearField(2);
+  void clearChainId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get boutiqueOid => $_getSZ(2);
+  $core.String get boutiqueId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set boutiqueOid($core.String v) { $_setString(2, v); }
+  set boutiqueId($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasBoutiqueOid() => $_has(2);
+  $core.bool hasBoutiqueId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearBoutiqueOid() => clearField(3);
+  void clearBoutiqueId() => clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get deviceOid => $_getSZ(3);
@@ -487,12 +486,12 @@ class Tokens extends $pb.GeneratedMessage {
 
 class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
   factory UpdateDevicePasswordRequest({
-    $core.String? chainOid,
+    $core.String? chainId,
     $7.Device? device,
   }) {
     final $result = create();
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
     if (device != null) {
       $result.device = device;
@@ -504,7 +503,7 @@ class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
   factory UpdateDevicePasswordRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateDevicePasswordRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOM<$7.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $7.Device.create)
     ..hasRequiredFields = false
   ;
@@ -531,13 +530,13 @@ class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
   static UpdateDevicePasswordRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get chainOid => $_getSZ(0);
+  $core.String get chainId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set chainOid($core.String v) { $_setString(0, v); }
+  set chainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChainOid() => $_has(0);
+  $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainOid() => clearField(1);
+  void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
   $7.Device get device => $_getN(1);
@@ -551,118 +550,9 @@ class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
   $7.Device ensureDevice() => $_ensure(1);
 }
 
-/// / ! any addition to this model must be replicated in the user_service_base.dart updateOne()
-class UserInfo extends $pb.GeneratedMessage {
-  factory UserInfo({
-    $core.String? userOid,
-    $core.String? mail,
-    $core.String? firstname,
-    $core.String? lastname,
-    $12.UserPermissions? permissions,
-  }) {
-    final $result = create();
-    if (userOid != null) {
-      $result.userOid = userOid;
-    }
-    if (mail != null) {
-      $result.mail = mail;
-    }
-    if (firstname != null) {
-      $result.firstname = firstname;
-    }
-    if (lastname != null) {
-      $result.lastname = lastname;
-    }
-    if (permissions != null) {
-      $result.permissions = permissions;
-    }
-    return $result;
-  }
-  UserInfo._() : super();
-  factory UserInfo.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory UserInfo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserInfo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
-    ..aOS(2, _omitFieldNames ? '' : 'mail')
-    ..aOS(3, _omitFieldNames ? '' : 'firstname')
-    ..aOS(4, _omitFieldNames ? '' : 'lastname')
-    ..aOM<$12.UserPermissions>(5, _omitFieldNames ? '' : 'permissions', subBuilder: $12.UserPermissions.create)
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  UserInfo clone() => UserInfo()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  UserInfo copyWith(void Function(UserInfo) updates) => super.copyWith((message) => updates(message as UserInfo)) as UserInfo;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static UserInfo create() => UserInfo._();
-  UserInfo createEmptyInstance() => create();
-  static $pb.PbList<UserInfo> createRepeated() => $pb.PbList<UserInfo>();
-  @$core.pragma('dart2js:noInline')
-  static UserInfo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserInfo>(create);
-  static UserInfo? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get userOid => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set userOid($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasUserOid() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearUserOid() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get mail => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set mail($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasMail() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearMail() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get firstname => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set firstname($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasFirstname() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearFirstname() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.String get lastname => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set lastname($core.String v) { $_setString(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasLastname() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearLastname() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $12.UserPermissions get permissions => $_getN(4);
-  @$pb.TagNumber(5)
-  set permissions($12.UserPermissions v) { setField(5, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasPermissions() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearPermissions() => clearField(5);
-  @$pb.TagNumber(5)
-  $12.UserPermissions ensurePermissions() => $_ensure(4);
-}
-
 class CreateOneRequest extends $pb.GeneratedMessage {
   factory CreateOneRequest({
-    UserInfo? userInfo,
+    $12.UserInfo? userInfo,
     $core.String? password,
     $core.bool? isFirstUser,
   }) {
@@ -683,7 +573,7 @@ class CreateOneRequest extends $pb.GeneratedMessage {
   factory CreateOneRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateOneRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
-    ..aOM<UserInfo>(1, _omitFieldNames ? '' : 'userInfo', protoName: 'userInfo', subBuilder: UserInfo.create)
+    ..aOM<$12.UserInfo>(1, _omitFieldNames ? '' : 'userInfo', protoName: 'userInfo', subBuilder: $12.UserInfo.create)
     ..aOS(2, _omitFieldNames ? '' : 'password')
     ..aOB(3, _omitFieldNames ? '' : 'isFirstUser', protoName: 'isFirstUser')
     ..hasRequiredFields = false
@@ -711,15 +601,15 @@ class CreateOneRequest extends $pb.GeneratedMessage {
   static CreateOneRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  UserInfo get userInfo => $_getN(0);
+  $12.UserInfo get userInfo => $_getN(0);
   @$pb.TagNumber(1)
-  set userInfo(UserInfo v) { setField(1, v); }
+  set userInfo($12.UserInfo v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasUserInfo() => $_has(0);
   @$pb.TagNumber(1)
   void clearUserInfo() => clearField(1);
   @$pb.TagNumber(1)
-  UserInfo ensureUserInfo() => $_ensure(0);
+  $12.UserInfo ensureUserInfo() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.String get password => $_getSZ(1);
@@ -742,15 +632,15 @@ class CreateOneRequest extends $pb.GeneratedMessage {
 
 class PasswordUpdateRequest extends $pb.GeneratedMessage {
   factory PasswordUpdateRequest({
-    $core.String? userOid,
-    $core.String? firmOid,
+    $core.String? userId,
+    $core.String? firmId,
   }) {
     final $result = create();
-    if (userOid != null) {
-      $result.userOid = userOid;
+    if (userId != null) {
+      $result.userId = userId;
     }
-    if (firmOid != null) {
-      $result.firmOid = firmOid;
+    if (firmId != null) {
+      $result.firmId = firmId;
     }
     return $result;
   }
@@ -759,8 +649,8 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   factory PasswordUpdateRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasswordUpdateRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
-    ..aOS(2, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
+    ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
+    ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..hasRequiredFields = false
   ;
 
@@ -786,22 +676,22 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   static PasswordUpdateRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get userOid => $_getSZ(0);
+  $core.String get userId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set userOid($core.String v) { $_setString(0, v); }
+  set userId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasUserOid() => $_has(0);
+  $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserOid() => clearField(1);
+  void clearUserId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get firmOid => $_getSZ(1);
+  $core.String get firmId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set firmOid($core.String v) { $_setString(1, v); }
+  set firmId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasFirmOid() => $_has(1);
+  $core.bool hasFirmId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirmOid() => clearField(2);
+  void clearFirmId() => clearField(2);
 }
 
 class PendingDeviceRequest extends $pb.GeneratedMessage {
@@ -872,25 +762,25 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
 
 class DevicePairingResponse extends $pb.GeneratedMessage {
   factory DevicePairingResponse({
-    $core.String? firmOid,
-    $core.String? chainOid,
-    $core.String? boutiqueOid,
-    $core.String? userOid,
+    $core.String? firmId,
+    $core.String? chainId,
+    $core.String? boutiqueId,
+    $core.String? userId,
     $core.int? code,
     $17.Timestamp? timestampUTC,
   }) {
     final $result = create();
-    if (firmOid != null) {
-      $result.firmOid = firmOid;
+    if (firmId != null) {
+      $result.firmId = firmId;
     }
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
-    if (boutiqueOid != null) {
-      $result.boutiqueOid = boutiqueOid;
+    if (boutiqueId != null) {
+      $result.boutiqueId = boutiqueId;
     }
-    if (userOid != null) {
-      $result.userOid = userOid;
+    if (userId != null) {
+      $result.userId = userId;
     }
     if (code != null) {
       $result.code = code;
@@ -905,10 +795,10 @@ class DevicePairingResponse extends $pb.GeneratedMessage {
   factory DevicePairingResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DevicePairingResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
-    ..aOS(2, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
-    ..aOS(3, _omitFieldNames ? '' : 'boutiqueOid', protoName: 'boutiqueOid')
-    ..aOS(4, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
+    ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
+    ..aOS(4, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..a<$core.int>(5, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
     ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'timestampUTC', protoName: 'timestampUTC', subBuilder: $17.Timestamp.create)
     ..hasRequiredFields = false
@@ -936,40 +826,40 @@ class DevicePairingResponse extends $pb.GeneratedMessage {
   static DevicePairingResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get firmOid => $_getSZ(0);
+  $core.String get firmId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set firmOid($core.String v) { $_setString(0, v); }
+  set firmId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasFirmOid() => $_has(0);
+  $core.bool hasFirmId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearFirmOid() => clearField(1);
+  void clearFirmId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get chainOid => $_getSZ(1);
+  $core.String get chainId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set chainOid($core.String v) { $_setString(1, v); }
+  set chainId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasChainOid() => $_has(1);
+  $core.bool hasChainId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearChainOid() => clearField(2);
+  void clearChainId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get boutiqueOid => $_getSZ(2);
+  $core.String get boutiqueId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set boutiqueOid($core.String v) { $_setString(2, v); }
+  set boutiqueId($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasBoutiqueOid() => $_has(2);
+  $core.bool hasBoutiqueId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearBoutiqueOid() => clearField(3);
+  void clearBoutiqueId() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get userOid => $_getSZ(3);
+  $core.String get userId => $_getSZ(3);
   @$pb.TagNumber(4)
-  set userOid($core.String v) { $_setString(3, v); }
+  set userId($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasUserOid() => $_has(3);
+  $core.bool hasUserId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearUserOid() => clearField(4);
+  void clearUserId() => clearField(4);
 
   @$pb.TagNumber(5)
   $core.int get code => $_getIZ(4);
@@ -994,12 +884,12 @@ class DevicePairingResponse extends $pb.GeneratedMessage {
 
 class ApproveDeviceRequest extends $pb.GeneratedMessage {
   factory ApproveDeviceRequest({
-    $11.ChainOidAndBoutiqueOid? chainOidAndBoutiqueOid,
+    $11.chainIdAndboutiqueId? chainIdAndboutiqueId,
     $7.Device? device,
   }) {
     final $result = create();
-    if (chainOidAndBoutiqueOid != null) {
-      $result.chainOidAndBoutiqueOid = chainOidAndBoutiqueOid;
+    if (chainIdAndboutiqueId != null) {
+      $result.chainIdAndboutiqueId = chainIdAndboutiqueId;
     }
     if (device != null) {
       $result.device = device;
@@ -1011,7 +901,7 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
   factory ApproveDeviceRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ApproveDeviceRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.service'), createEmptyInstance: create)
-    ..aOM<$11.ChainOidAndBoutiqueOid>(1, _omitFieldNames ? '' : 'chainOidAndBoutiqueOid', protoName: 'chainOidAndBoutiqueOid', subBuilder: $11.ChainOidAndBoutiqueOid.create)
+    ..aOM<$11.chainIdAndboutiqueId>(1, _omitFieldNames ? '' : 'chainIdAndboutiqueId', protoName: 'chainIdAndboutiqueId', subBuilder: $11.chainIdAndboutiqueId.create)
     ..aOM<$7.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $7.Device.create)
     ..hasRequiredFields = false
   ;
@@ -1038,15 +928,15 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
   static ApproveDeviceRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $11.ChainOidAndBoutiqueOid get chainOidAndBoutiqueOid => $_getN(0);
+  $11.chainIdAndboutiqueId get chainIdAndboutiqueId => $_getN(0);
   @$pb.TagNumber(1)
-  set chainOidAndBoutiqueOid($11.ChainOidAndBoutiqueOid v) { setField(1, v); }
+  set chainIdAndboutiqueId($11.chainIdAndboutiqueId v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChainOidAndBoutiqueOid() => $_has(0);
+  $core.bool hasChainIdAndboutiqueId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainOidAndBoutiqueOid() => clearField(1);
+  void clearChainIdAndboutiqueId() => clearField(1);
   @$pb.TagNumber(1)
-  $11.ChainOidAndBoutiqueOid ensureChainOidAndBoutiqueOid() => $_ensure(0);
+  $11.chainIdAndboutiqueId ensureChainIdAndboutiqueId() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $7.Device get device => $_getN(1);

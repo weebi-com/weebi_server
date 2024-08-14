@@ -13,7 +13,7 @@ void main() async {
   final connection = Connection(ConnectionManager(db));
   late UserService userService;
   late BoutiqueService boutiqueService;
-  String userOid = '';
+  String userId = '';
 
   setUpAll(() async {
     await db.open();
@@ -22,32 +22,31 @@ void main() async {
     boutiqueService = BoutiqueService(
       db,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission,
+      userPermissionIfTest: Dummy.adminPermission,
     );
     userService = UserService(
       db,
       boutiqueService,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission,
+      userPermissionIfTest: Dummy.adminPermission,
     );
     await db.createCollection(userService.collection.collectionName);
     await db.createCollection(boutiqueService.collection.collectionName);
     final responseUser = await userService.createOne(
         null,
         CreateOneRequest(
-          userInfo: UserInfoDummy.userInfoNoId,
+          userInfo: Dummy.userInfoNoId,
           password: '1234',
         ));
-    final response =
-        await boutiqueService.createOneFirm(null, FirmDummy.firmNoId);
+    final response = await boutiqueService.createOneFirm(null, Dummy.firmNoId);
 
     expect(response.type, StatusResponse_Type.CREATED);
-    final firmOid = response.id;
-    UserPrivateDummy.adminPermission.firmOid = firmOid;
-    UserPrivateDummy.adminPermission.userOid = responseUser.id;
-    userOid = responseUser.id;
+    final firmId = response.id;
+    Dummy.adminPermission.firmId = firmId;
+    Dummy.adminPermission.userId = responseUser.id;
+    userId = responseUser.id;
 
-    userService..userPermissionIfTest = UserPrivateDummy.adminPermission;
+    userService..userPermissionIfTest = Dummy.adminPermission;
   });
 
   tearDownAll(() async {
@@ -56,7 +55,7 @@ void main() async {
   });
 
   test('test replaceOne', () async {
-    final permissions = UserPermissions.create()..userOid = userOid;
+    final permissions = UserPermissions.create()..userId = userId;
     final userLili = UserInfo()
       ..firstname = 'lili'
       ..lastname = 'biscuit'
@@ -64,7 +63,7 @@ void main() async {
     final response = await userService.updateOne(null, userLili);
 
     expect(response.type, StatusResponse_Type.UPDATED);
-    final response2 = await userService.readOne(null, UserOid(oid: userOid));
+    final response2 = await userService.readOne(null, UserId(userId: userId));
     expect(response2.firstname, 'lili');
     expect(response2.lastname, 'biscuit');
   });

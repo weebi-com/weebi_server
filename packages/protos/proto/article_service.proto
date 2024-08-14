@@ -15,17 +15,17 @@ service ArticleService {
 }
 
 message FindArticleRequest {
-  string chainOid = 1;
+  string chainId = 1;
   string title = 2 [json_name = 'title'];
 }
 
 message ReadAllRequest {
-  string chainOid = 1;
+  string chainId = 1;
 }
 
 message ArticleRequest {
   // below in case mutiple chains, permission check will still be applied to verify 
-  string chainOid = 1; 
+  string chainId = 1; 
   weebi.article.CalibrePb calibre = 2;
 }
 

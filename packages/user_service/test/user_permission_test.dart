@@ -23,7 +23,7 @@ void main() async {
     await userService.createOne(
         null,
         CreateOneRequest(
-          userInfo: UserInfoDummy.userInfoNoId,
+          userInfo: Dummy.userInfoNoId,
           password: '1234',
         ));
   });
@@ -36,6 +36,6 @@ void main() async {
   test('test readRestrictions', () async {
     final response =
         await userService.readUserPermissionsByToken(null, Empty());
-    expect(response.chainsAccessible.oids, ['665e12f798357783e8000001']);
+    expect(response.chainsAccessible.ids, ['665e12f798357783e8000001']);
   }, skip: 'will fail until I get a fake token');
 }

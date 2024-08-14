@@ -39,10 +39,6 @@ export 'package:protos_weebi/src/generated/user.pb.dart';
 export 'package:protos_weebi/src/generated/user.pbenum.dart';
 export 'package:protos_weebi/src/generated/user.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/user_permission.pb.dart';
-export 'package:protos_weebi/src/generated/user_permission.pbenum.dart';
-export 'package:protos_weebi/src/generated/user_permission.pbjson.dart';
-
 export 'package:protos_weebi/src/generated/user_service.pb.dart';
 export 'package:protos_weebi/src/generated/user_service.pbenum.dart';
 export 'package:protos_weebi/src/generated/user_service.pbgrpc.dart';

@@ -15,12 +15,11 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'boutique_chain.pb.dart' as $7;
 import 'common/g_timestamp.pb.dart' as $17;
-import 'common/mongo.pb.dart' as $11;
 
 /// / yes one object to delimit all but permissions
 class Firm extends $pb.GeneratedMessage {
   factory Firm({
-    $11.ObjectIdProto? id,
+    $core.String? firmId,
     $core.String? name,
     $core.Iterable<$7.Chain>? chains,
     $core.String? subscriptionPlan,
@@ -30,12 +29,12 @@ class Firm extends $pb.GeneratedMessage {
     $core.bool? status,
     $17.Timestamp? statusUpdateTimestampUTC,
     $17.Timestamp? lastUpdateTimestampUTC,
-    $core.String? lastUpdatedByUserOid,
+    $core.String? lastUpdatedByuserId,
     $core.bool? isMailVerified,
   }) {
     final $result = create();
-    if (id != null) {
-      $result.id = id;
+    if (firmId != null) {
+      $result.firmId = firmId;
     }
     if (name != null) {
       $result.name = name;
@@ -64,8 +63,8 @@ class Firm extends $pb.GeneratedMessage {
     if (lastUpdateTimestampUTC != null) {
       $result.lastUpdateTimestampUTC = lastUpdateTimestampUTC;
     }
-    if (lastUpdatedByUserOid != null) {
-      $result.lastUpdatedByUserOid = lastUpdatedByUserOid;
+    if (lastUpdatedByuserId != null) {
+      $result.lastUpdatedByuserId = lastUpdatedByuserId;
     }
     if (isMailVerified != null) {
       $result.isMailVerified = isMailVerified;
@@ -77,7 +76,7 @@ class Firm extends $pb.GeneratedMessage {
   factory Firm.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Firm', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm'), createEmptyInstance: create)
-    ..aOM<$11.ObjectIdProto>(1, _omitFieldNames ? '' : '_id', subBuilder: $11.ObjectIdProto.create)
+    ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..pc<$7.Chain>(3, _omitFieldNames ? '' : 'chains', $pb.PbFieldType.PM, subBuilder: $7.Chain.create)
     ..aOS(4, _omitFieldNames ? '' : 'subscriptionPlan', protoName: 'subscriptionPlan')
@@ -87,7 +86,7 @@ class Firm extends $pb.GeneratedMessage {
     ..aOB(8, _omitFieldNames ? '' : 'status')
     ..aOM<$17.Timestamp>(9, _omitFieldNames ? '' : 'statusUpdateTimestampUTC', protoName: 'statusUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOM<$17.Timestamp>(10, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
-    ..aOS(11, _omitFieldNames ? '' : 'lastUpdatedByUserOid', protoName: 'lastUpdatedByUserOid')
+    ..aOS(11, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
     ..aOB(12, _omitFieldNames ? '' : 'isMailVerified', protoName: 'isMailVerified')
     ..hasRequiredFields = false
   ;
@@ -114,15 +113,13 @@ class Firm extends $pb.GeneratedMessage {
   static Firm? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $11.ObjectIdProto get id => $_getN(0);
+  $core.String get firmId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set id($11.ObjectIdProto v) { setField(1, v); }
+  set firmId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasFirmId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
-  @$pb.TagNumber(1)
-  $11.ObjectIdProto ensureId() => $_ensure(0);
+  void clearFirmId() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -208,13 +205,13 @@ class Firm extends $pb.GeneratedMessage {
   $17.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(9);
 
   @$pb.TagNumber(11)
-  $core.String get lastUpdatedByUserOid => $_getSZ(10);
+  $core.String get lastUpdatedByuserId => $_getSZ(10);
   @$pb.TagNumber(11)
-  set lastUpdatedByUserOid($core.String v) { $_setString(10, v); }
+  set lastUpdatedByuserId($core.String v) { $_setString(10, v); }
   @$pb.TagNumber(11)
-  $core.bool hasLastUpdatedByUserOid() => $_has(10);
+  $core.bool hasLastUpdatedByuserId() => $_has(10);
   @$pb.TagNumber(11)
-  void clearLastUpdatedByUserOid() => clearField(11);
+  void clearLastUpdatedByuserId() => clearField(11);
 
   @$pb.TagNumber(12)
   $core.bool get isMailVerified => $_getBF(11);

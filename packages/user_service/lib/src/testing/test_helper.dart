@@ -17,40 +17,40 @@ class TestHelper {
     final boutiqueService = BoutiqueService(
       db,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission,
+      userPermissionIfTest: Dummy.adminPermission,
     );
     var userService = UserService(
       db,
       boutiqueService,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission,
+      userPermissionIfTest: Dummy.adminPermission,
     );
     await db.createCollection(userService.collection.collectionName);
     await db.createCollection(boutiqueService.collection.collectionName);
     final responseUser = await userService.createOne(
       null,
       CreateOneRequest(
-        userInfo: UserInfoDummy.userInfo,
+        userInfo: Dummy.userInfo,
         password: '1234',
         isFirstUser: true,
       ),
     );
-    final response =
-        await boutiqueService.createOneFirm(null, FirmDummy.firmNoId);
+    final response = await boutiqueService.createOneFirm(null, Dummy.firmNoId);
 
     final firm = await boutiqueService.readOneFirm(null, Empty());
 
-    UserPrivateDummy.adminPermission.firmOid = response.id;
-    UserPrivateDummy.adminPermission.userOid = responseUser.id;
-    UserPrivateDummy.adminPermission.chainsAccessible =
-        Oids(oids: [firm.chains.first.id.oid]);
-    UserPrivateDummy.adminPermission.boutiquesAccessible =
-        Oids(oids: [firm.chains.first.boutiques.first.id.oid]);
+    Dummy.adminPermission.firmId = Dummy.userInfo.permissions.firmId;
+    Dummy.adminPermission.userId = responseUser.id;
+    Dummy.adminPermission.chainsAccessible =
+        Ids(ids: [firm.chains.first.chainId]);
+    Dummy.adminPermission.boutiquesAccessible =
+        Ids(ids: [firm.chains.first.boutiques.first.boutiqueId]);
 
-    userService..userPermissionIfTest = UserPrivateDummy.adminPermission;
+    userService..userPermissionIfTest = Dummy.adminPermission;
     return Counterfoil.create()
-      ..firmOid = response.id
-      ..chainOid = firm.chains.first.id.oid
-      ..boutiqueOid = firm.chains.first.boutiques.first.id.oid;
+      ..firmId = response.id
+      ..chainId = firm.chains.first.chainId
+      ..boutiqueId = firm.chains.first.boutiques.first.boutiqueId
+      ..userId = Dummy.userInfo.userId;
   }
 }

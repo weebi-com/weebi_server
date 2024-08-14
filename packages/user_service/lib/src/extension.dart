@@ -23,7 +23,8 @@ extension ObjectIdNastyBoogie on Map<String, dynamic> {
   /// see issue https://github.com/google/protobuf.dart/issues/940
 
 //DEPRECATED
-
+  @Deprecated(
+      'this is the reason why I gave up using mongo _id, read above and imagine the mess it became')
   Map<String, dynamic> get properOid {
     for (final entry in entries) {
       if (entry.key == '_id') {

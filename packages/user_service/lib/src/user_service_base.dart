@@ -47,9 +47,14 @@ class UserService extends UserServiceBase {
         : call.bearer.userPermission;
 
     _db.isConnected ? null : await _db.open();
-    if (userPermission.firmOid != request.userInfo.permissions.firmOid) {
-      throw GrpcError.permissionDenied(
-          'user does not have access to firm ${request.userInfo.permissions.firmOid}');
+
+    //TODO consider rethinking this, might be also possible to check in db to deduce it
+
+    if (request.isFirstUser == false) {
+      if (userPermission.firmId != request.userInfo.permissions.firmId) {
+        throw GrpcError.permissionDenied(
+            'user does not have access to firm ${request.userInfo.permissions.firmId}');
+      }
     }
 
     if (userPermission.userManagementRights.rights
@@ -70,14 +75,14 @@ class UserService extends UserServiceBase {
       // keep simple logic in weebi_web that will pass all boutiques oids in user.permissions.boutiquesAccessible
       // at the time of manager creation if these oids match all that exist in db we set to ALL
 
-      Oids boutiqueOids = request.isFirstUser
-          ? Oids(oids: ['ALL'])
+      Ids boutiqueIds = request.isFirstUser
+          ? Ids(ids: ['ALL'])
           : identical(
                   await _boutiqueService.readAllBoutiquesInChains(
-                      user.permissions.firmOid,
-                      user.permissions.chainsAccessible.oids),
+                      user.permissions.firmId,
+                      user.permissions.chainsAccessible.ids),
                   user.permissions.boutiquesAccessible)
-              ? Oids(oids: ['ALL'])
+              ? Ids(ids: ['ALL'])
               : user.permissions.boutiquesAccessible;
 
       // firstUser cannot have access to a firm that is not created yet
@@ -85,17 +90,17 @@ class UserService extends UserServiceBase {
 
       final objectId =
           ObjectId.createId(DateTime.now().toUtc().second).hexString;
-      String firmOid = request.isFirstUser ? objectId : userPermission.firmOid;
+      String firmId = request.isFirstUser ? objectId : userPermission.firmId;
 
       final userPrivate = UserPrivate.create()
-        ..id = ObjectIdProto(oid: objectId)
+        ..userId = objectId
         ..passwordEncrypted = Encrypter(request.password).encrypted
         ..mail = user.mail
         ..firstname = user.firstname
         ..lastname = user.lastname
-        ..firmOid = firmOid
-        ..chainOids = user.permissions.chainsAccessible
-        ..boutiqueOids = boutiqueOids
+        ..firmId = firmId
+        ..chainIds = user.permissions.chainsAccessible
+        ..boutiqueIds = boutiqueIds
         ..articleRights = user.permissions.articleRights
         ..boutiqueRights = user.permissions.boutiqueRights
         ..contactRights = user.permissions.contactRights
@@ -112,7 +117,7 @@ class UserService extends UserServiceBase {
       }
       final timestamp = DateTime.now().timestampProto;
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id']['oid'];
+        final mongoId = result.document!['_id'];
         print('mongoId.runtimeType ${mongoId.runtimeType}');
         return StatusResponse()
           ..id = mongoId
@@ -142,7 +147,7 @@ class UserService extends UserServiceBase {
       var jwt = JsonWebToken();
       final payload = userPermission.toProto3Json() as Map<String, dynamic>?;
       jwt.createPayload(
-        userPermission.userOid,
+        userPermission.userId,
         expireIn: const Duration(days: 1),
         payload: payload,
       );
@@ -150,14 +155,14 @@ class UserService extends UserServiceBase {
       final accessToken = jwt.sign();
       jwt = JsonWebToken();
       jwt.createPayload(
-        userPermission.userOid,
+        userPermission.userId,
         expireIn: Duration(days: 30),
         payload: {
-          'userOid': userPermission.userOid,
-          'firmOid': userPermission.firmOid
+          'userId': userPermission.userId,
+          'firmId': userPermission.firmId
         },
       );
-      // refresh token only contains userOid & firmOid
+      // refresh token only contains userId & firmId
       final resfreshToken = jwt.sign();
       return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
     } on GrpcError catch (e) {
@@ -197,8 +202,8 @@ class UserService extends UserServiceBase {
         ..mergeFromProto3Json(jwtRefresh.payload, ignoreUnknownFields: true);
 
       final user = await _readUserByObjectId(
-        userPermissionObsolete.userOid,
-        userPermissionObsolete.firmOid,
+        userPermissionObsolete.userId,
+        userPermissionObsolete.firmId,
       );
 
       final userPermission = await _readUserPermissions(user);
@@ -206,20 +211,20 @@ class UserService extends UserServiceBase {
       var jwt = JsonWebToken();
       final payload = userPermission.toProto3Json() as Map<String, dynamic>?;
       jwt.createPayload(
-        userPermission.userOid,
+        userPermission.userId,
         expireIn: const Duration(days: 1),
         payload: payload,
       );
       jwt.sign();
       final accessToken = jwt.sign();
       jwt = JsonWebToken();
-      jwt.createPayload(userPermission.userOid,
+      jwt.createPayload(userPermission.userId,
           expireIn: Duration(days: 30),
           payload: {
-            'userOid': userPermission.userOid,
-            'firmOid': userPermission.firmOid
+            'userId': userPermission.userId,
+            'firmId': userPermission.firmId
           });
-      // refresh token only containes userOid and firmOid
+      // refresh token only containes userId and firmId
       final resfreshToken = jwt.sign();
       return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
     } on GrpcError catch (e) {
@@ -228,16 +233,14 @@ class UserService extends UserServiceBase {
     }
   }
 
-  Future<UserPrivate> _readUserByObjectId(
-      String firmOid, String userOid) async {
+  Future<UserPrivate> _readUserByObjectId(String firmId, String userId) async {
     _db.isConnected ? null : await _db.open();
     try {
-      final userOid2 = ObjectId.fromHexString(userOid);
       final userPrivate = await collection.findOne(
-        where.id(userOid2).eq('firmOid', firmOid),
+        where.eq('userId', userId).eq('firmId', firmId),
       );
       if (userPrivate == null) {
-        throw GrpcError.notFound('userOid $userOid');
+        throw GrpcError.notFound('userId $userId');
       }
       return UserPrivate()
         ..mergeFromProto3Json(userPrivate, ignoreUnknownFields: true);
@@ -285,8 +288,8 @@ class UserService extends UserServiceBase {
   Future<UserPermissions> _readUserPermissions(UserPrivate user) async {
     final access = await _readUserAccess(user);
     return UserPermissions.create()
-      ..userOid = user.id.oid
-      ..firmOid = user.firmOid
+      ..userId = user.userId
+      ..firmId = user.firmId
       ..articleRights = user.articleRights
       ..boutiqueRights = user.boutiqueRights
       ..contactRights = user.contactRights
@@ -294,8 +297,8 @@ class UserService extends UserServiceBase {
       ..firmRights = user.firmRights
       ..ticketRights = user.ticketRights
       ..userManagementRights = user.userManagementRights
-      ..boutiquesAccessible = Oids(oids: access.boutiquesAccessible.oids)
-      ..chainsAccessible = Oids(oids: access.chainsAccessible.oids)
+      ..boutiquesAccessible = Ids(ids: access.boutiquesAccessible.ids)
+      ..chainsAccessible = Ids(ids: access.chainsAccessible.ids)
       ..boolRights = user.boolRights;
   }
 
@@ -304,29 +307,27 @@ class UserService extends UserServiceBase {
 
     /// for users who need to access all boutiques
     /// instead of passing all oids of a chain we use this hack :
-    /// boutiqueOids = ['ALL']
+    /// boutiqueIds = ['ALL']
     /// accessible boutiques will be deduced in boutique_service endpoint
     /// allowing us not to keep track of boutiques creation/deletion in the user collection
-    if (user.boutiqueOids.oids.contains('ALL') &&
-        user.chainOids.oids.isNotEmpty) {
+    if (user.boutiqueIds.ids.contains('ALL') && user.chainIds.ids.isNotEmpty) {
       if (_boutiqueService == null) {
         throw '_boutiqueService is not initialized/available';
       }
       final boutiquesOids = await _boutiqueService.readAllBoutiquesInChains(
-          user.firmOid, user.chainOids.oids);
+          user.firmId, user.chainIds.ids);
       return Access(
-          chainsAccessible: Oids(oids: user.chainOids.oids),
-          boutiquesAccessible: Oids(oids: boutiquesOids));
+          chainsAccessible: Ids(ids: user.chainIds.ids),
+          boutiquesAccessible: Ids(ids: boutiquesOids));
     } else {
       return Access(
-          chainsAccessible: Oids(oids: user.chainOids.oids),
-          boutiquesAccessible: Oids(oids: user.boutiqueOids.oids));
+          chainsAccessible: Ids(ids: user.chainIds.ids),
+          boutiquesAccessible: Ids(ids: user.boutiqueIds.ids));
     }
   }
 
-  Future<UserPrivate> _checkUserAndProtoIt(String userOid) async {
-    final userMongo =
-        await collection.findOne(where.id(ObjectId.fromHexString(userOid)));
+  Future<UserPrivate> _checkUserAndProtoIt(String userId) async {
+    final userMongo = await collection.findOne(where.eq('userId', userId));
     if (userMongo == null) {
       throw GrpcError.notFound('user not found');
     }
@@ -336,12 +337,12 @@ class UserService extends UserServiceBase {
 
   @override
   Future<StatusResponse> updateOne(ServiceCall? call, UserInfo request) async {
-    if (request.userOid.isEmpty) {
-      throw GrpcError.failedPrecondition('userOid cannot be empty');
+    if (request.userId.isEmpty) {
+      throw GrpcError.failedPrecondition('userId cannot be empty');
     }
-    if (request.userOid != request.permissions.userOid) {
+    if (request.userId != request.permissions.userId) {
       throw GrpcError.failedPrecondition(
-          'request.userOid != user.permissions.userOid');
+          'request.userId != user.permissions.userId');
     }
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
@@ -354,16 +355,16 @@ class UserService extends UserServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update users');
     }
-    final userPrivate = await _checkUserAndProtoIt(request.permissions.userOid);
-    if (userPrivate.firmOid != userPermission.firmOid) {
+    final userPrivate = await _checkUserAndProtoIt(request.permissions.userId);
+    if (userPrivate.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied(
           'user cannot be updated because it belongs to a different firm');
     }
     try {
 //      final user = request.toProto3Json() as Map<String, dynamic>;
-      final userOid = ObjectId.fromHexString(request.permissions.userOid);
+      final userId = ObjectId.fromHexString(request.permissions.userId);
       final result = await collection.update(
-          where.id(userOid),
+          where.id(userId),
           ModifierBuilder()
               .set('firstname', request.firstname)
               .set('lastname', request.lastname)
@@ -393,7 +394,7 @@ class UserService extends UserServiceBase {
   }
 
   @override
-  Future<UserInfo> readOne(ServiceCall? call, UserOid request) async {
+  Future<UserInfo> readOne(ServiceCall? call, UserId request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -404,8 +405,8 @@ class UserService extends UserServiceBase {
           'user does not have right to read other users');
     }
     try {
-      final userMongo = await collection
-          .findOne(where.id(ObjectId.fromHexString(request.oid)));
+      final userMongo =
+          await collection.findOne(where.eq('userId', request.userId));
       if (userMongo == null) {
         throw GrpcError.notFound('user not found');
       }
@@ -429,18 +430,18 @@ class UserService extends UserServiceBase {
   Future<Tokens> authenticateWithDevice(
       ServiceCall? call, DeviceLoginRequest request) async {
     _db.isConnected ? null : await _db.open();
-    if (request.firmOid.isEmpty) {
-      throw GrpcError.invalidArgument('firmOid.isEmpty');
+    if (request.firmId.isEmpty) {
+      throw GrpcError.invalidArgument('firmId.isEmpty');
     }
-    if (request.chainOid.isEmpty) {
-      throw GrpcError.invalidArgument('chainOid.isEmpty');
+    if (request.chainId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId.isEmpty');
     }
     if (request.deviceOid.isEmpty) {
       throw GrpcError.invalidArgument('deviceOid.isEmpty');
     }
     try {
-      final firmMongo = await collection
-          .findOne(where.id(ObjectId.fromHexString(request.firmOid)));
+      final firmMongo =
+          await collection.findOne(where.eq('firmId', request.firmId));
       if (firmMongo == null) {
         throw GrpcError.notFound();
       }
@@ -448,13 +449,12 @@ class UserService extends UserServiceBase {
         ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
 
       final chainNullable =
-          firm.chains.firstWhereOrNull((c) => c.id.oid == request.chainOid);
+          firm.chains.firstWhereOrNull((c) => c.chainId == request.chainId);
       if (chainNullable == null) {
         throw GrpcError.notFound();
       }
       final deviceNullable = chainNullable.devices.firstWhereOrNull((d) =>
-          d.id.oid == request.deviceOid &&
-          d.boutiqueOid == request.boutiqueOid);
+          d.id == request.deviceOid && d.boutiqueId == request.boutiqueId);
       if (deviceNullable == null) {
         throw GrpcError.notFound();
       }
@@ -466,19 +466,19 @@ class UserService extends UserServiceBase {
       }
 
       final userPermission = UserPermissions.create()
-        ..userOid = 'device_${request.deviceOid}'
-        ..firmOid = request.firmOid
+        ..userId = 'device_${request.deviceOid}'
+        ..firmId = request.firmId
         ..articleRights = RightSalesperson.article
         ..boutiqueRights = RightSalesperson.boutique
         ..contactRights = ContactRights(rights: [Right.read])
         ..ticketRights = RightSalesperson.ticket
         ..boolRights = BoolRights.create()
-        ..boutiquesAccessible = Oids(oids: [request.boutiqueOid])
-        ..chainsAccessible = Oids(oids: [request.chainOid]);
+        ..boutiquesAccessible = Ids(ids: [request.boutiqueId])
+        ..chainsAccessible = Ids(ids: [request.chainId]);
       var jwt = JsonWebToken();
       final payload = userPermission.toProto3Json() as Map<String, dynamic>?;
       jwt.createPayload(
-        userPermission.userOid,
+        userPermission.userId,
         expireIn: const Duration(days: 1),
         payload: payload,
       );
@@ -486,14 +486,14 @@ class UserService extends UserServiceBase {
       final accessToken = jwt.sign();
       jwt = JsonWebToken();
       jwt.createPayload(
-        userPermission.userOid,
+        userPermission.userId,
         expireIn: Duration(days: 30),
         payload: {
-          'userOid': userPermission.userOid,
-          'firmOid': userPermission.firmOid
+          'userId': userPermission.userId,
+          'firmId': userPermission.firmId
         },
       );
-      // refresh token only contains userOid & firmOid
+      // refresh token only contains userId & firmId
       final resfreshToken = jwt.sign();
       return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
     } on GrpcError catch (e) {
@@ -504,7 +504,7 @@ class UserService extends UserServiceBase {
 
   @override
   Future<DevicePairingResponse> generateCodeForPairingDevice(
-      ServiceCall? call, ChainOidAndBoutiqueOid request) async {
+      ServiceCall? call, chainIdAndboutiqueId request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -515,9 +515,9 @@ class UserService extends UserServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to pair device (missing chainRights)');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     try {
       /// make sure we do not use an already existing code
@@ -533,10 +533,10 @@ class UserService extends UserServiceBase {
         ..seconds = Int64(millis)
         ..nanos = (millis % 1000) * 1000000;
       final temp = DevicePairingResponse.create()
-        ..userOid = userPermission.userOid
-        ..firmOid = userPermission.firmOid
-        ..chainOid = request.chainOid
-        ..boutiqueOid = request.boutiqueOid
+        ..userId = userPermission.userId
+        ..firmId = userPermission.firmId
+        ..chainId = request.chainId
+        ..boutiqueId = request.boutiqueId
         ..code = code
         ..timestampUTC = timestamp;
       final result = await pairingCodesCollection
@@ -592,33 +592,32 @@ class UserService extends UserServiceBase {
         ..timestamp = DateTime.now().timestampProto;
     }
     try {
-      final firmMongo = await collection
-          .findOne(where.id(ObjectId.fromHexString(pairingResp.firmOid)));
+      final firmMongo =
+          await collection.findOne(where.eq('firmId', pairingResp.firmId));
       if (firmMongo == null) {
-        throw GrpcError.unknown('firm ${pairingResp.firmOid}');
+        throw GrpcError.unknown('firm ${pairingResp.firmId}');
       }
 
       final firm = Firm.create()
         ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
       final chainIndex =
-          firm.chains.indexWhere((e) => e.id.oid == pairingResp.chainOid);
+          firm.chains.indexWhere((e) => e.chainId == pairingResp.chainId);
 
       if (chainIndex == -1) {
-        throw GrpcError.unknown('mall ${pairingResp.chainOid}');
+        throw GrpcError.unknown('mall ${pairingResp.chainId}');
       }
 
       // admin still need to approve device in case code leaked or else
       request.device.status = false;
-      // set the boutiqueOid selected by web admin
-      request.device.boutiqueOid = pairingResp.boutiqueOid;
-      request.device.id = ObjectIdProto(
-          oid: ObjectId.createId(DateTime.now().toUtc().second).hexString);
+      // set the boutiqueId selected by web admin
+      request.device.boutiqueId = pairingResp.boutiqueId;
+      request.device.id =
+          ObjectId.createId(DateTime.now().toUtc().second).hexString;
 
       firm.chains[chainIndex].devices.add(request.device);
 
-      firm.clearId(); // do not interfere with mongodb _id management
       final result = await collection.replaceOne(
-        where.id(ObjectId.fromHexString(pairingResp.firmOid)),
+        where.eq('firmId', pairingResp.firmId),
         firm.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
@@ -666,37 +665,36 @@ class UserService extends UserServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to pair device (missing chainRights)');
     }
-    if (request.chainOidAndBoutiqueOid.chainOid
+    if (request.chainIdAndboutiqueId.chainId
             .isChainAccessible(userPermission) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOidAndBoutiqueOid.chainOid}');
+          'user cannot access data from chain ${request.chainIdAndboutiqueId.chainId}');
     }
     try {
-      final firm = await collection
-          .findOne(where.id(ObjectId.fromHexString(userPermission.firmOid)));
+      final firm =
+          await collection.findOne(where.eq('firmId', userPermission.firmId));
       if (firm == null) {
         throw GrpcError.notFound('firm not found');
       }
 
       final firmProto = Firm.create()
         ..mergeFromProto3Json(firm, ignoreUnknownFields: true);
-      final index = firmProto.chains.indexWhere(
-          (e) => e.id.oid == request.chainOidAndBoutiqueOid.chainOid);
+      final index = firmProto.chains
+          .indexWhere((e) => e.chainId == request.chainIdAndboutiqueId.chainId);
       if (index == -1) {
         throw GrpcError.notFound();
       }
       final deviceIndex = firmProto.chains[index].devices.indexWhere((d) =>
-          d.id.oid == request.device.id.oid &&
-          d.boutiqueOid == request.device.boutiqueOid);
+          d.id == request.device.id &&
+          d.boutiqueId == request.device.boutiqueId);
       if (deviceIndex == -1) {
         throw GrpcError.unknown('no device found');
       }
       firmProto.chains[index].devices[deviceIndex].status = true;
 
-      firmProto.clearId(); // do not interfere with mongodb _id management
       final result = await collection.replaceOne(
-        where.id(ObjectId.fromHexString(userPermission.firmOid)),
+        where.eq('firmId', userPermission.firmId),
         firmProto.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
@@ -715,20 +713,20 @@ class UserService extends UserServiceBase {
     // create user for simple
 
     return await _createDefaultDeviceCashier(
-        userPermission.firmOid,
-        request.chainOidAndBoutiqueOid.chainOid,
-        request.chainOidAndBoutiqueOid.boutiqueOid);
+        userPermission.firmId,
+        request.chainIdAndboutiqueId.chainId,
+        request.chainIdAndboutiqueId.boutiqueId);
   }
 
   Future<StatusResponse> _createDefaultDeviceCashier(
-      String firmOid, String chainOid, String boutiqueOid) async {
+      String firmId, String chainId, String boutiqueId) async {
     try {
       final userPrivate = UserPrivate.create()
         // no password for simple cashier
         //..passwordEncrypted = Encrypter(request.password).encrypted
-        ..firmOid = firmOid
-        ..chainOids = Oids(oids: [chainOid])
-        ..boutiqueOids = Oids(oids: [boutiqueOid])
+        ..firmId = firmId
+        ..chainIds = Ids(ids: [chainId])
+        ..boutiqueIds = Ids(ids: [boutiqueId])
         ..articleRights = RightSalesperson.article
         ..boutiqueRights = RightSalesperson.boutique
         ..contactRights = ContactRights(rights: [Right.read])
@@ -740,7 +738,7 @@ class UserService extends UserServiceBase {
       }
       final timestamp = DateTime.now().timestampProto;
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id']['oid'];
+        final mongoId = result.document!['_id'];
         return StatusResponse()
           ..id = mongoId
           ..type = StatusResponse_Type
@@ -752,7 +750,7 @@ class UserService extends UserServiceBase {
           ..timestamp = timestamp;
       }
     } on GrpcError catch (e) {
-      log('device creation error: $e on firmOid $firmOid, chainOid $chainOid, boutiqueOid $boutiqueOid');
+      log('device creation error: $e on firmId $firmId, chainId $chainId, boutiqueId $boutiqueId');
       rethrow;
     }
   }
@@ -771,34 +769,33 @@ class UserService extends UserServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to pair device (missing chainRights)');
     }
-    if (request.chainOid.isChainAccessible(userPermission) == false) {
+    if (request.chainId.isChainAccessible(userPermission) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainOid}');
+          'user cannot access data from chain ${request.chainId}');
     }
     try {
-      final firm = await collection
-          .findOne(where.id(ObjectId.fromHexString(userPermission.firmOid)));
+      final firm =
+          await collection.findOne(where.eq('firmId', userPermission.firmId));
       if (firm == null) {
         throw GrpcError.notFound();
       }
       final firmProto = Firm.create()
         ..mergeFromProto3Json(firm, ignoreUnknownFields: true);
       final index =
-          firmProto.chains.indexWhere((e) => e.id.oid == request.chainOid);
+          firmProto.chains.indexWhere((e) => e.chainId == request.chainId);
       if (index == -1) {
         throw GrpcError.notFound();
       }
       final deviceIndex = firmProto.chains[index].devices
-          .indexWhere((d) => d.id.oid == request.device.id.oid);
+          .indexWhere((d) => d.id == request.device.id);
       if (deviceIndex == -1) {
         throw GrpcError.unavailable('no device found');
       }
       firmProto.chains[index].devices[deviceIndex].password =
           request.device.password;
 
-      firmProto.clearId(); // do not interfere
       final result = await collection.replaceOne(
-        where.id(ObjectId.fromHexString(userPermission.firmOid)),
+        where.eq('firmId', userPermission.firmId),
         firmProto.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
@@ -819,8 +816,8 @@ class UserService extends UserServiceBase {
   }
 
   @override
-  Future<StatusResponse> deleteOne(ServiceCall? call, UserOid request) async {
-    if (request.oid.isEmpty) {
+  Future<StatusResponse> deleteOne(ServiceCall? call, UserId request) async {
+    if (request.userId.isEmpty) {
       throw GrpcError.failedPrecondition('user oid cannot be empty');
     }
     _db.isConnected ? null : await _db.open();
@@ -835,15 +832,15 @@ class UserService extends UserServiceBase {
           'user does not have right to delete users');
     }
 
-    final userPrivate = await _checkUserAndProtoIt(request.oid);
-    if (userPrivate.firmOid != userPermission.firmOid) {
+    final userPrivate = await _checkUserAndProtoIt(request.userId);
+    if (userPrivate.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied('user belongs to a different firm');
     }
 
     try {
-      final objectId = ObjectId.fromHexString(request.oid);
-      final result = await collection.deleteOne(where.id(objectId));
-      print(result);
+      // ignore: unused_local_variable
+      final result =
+          await collection.deleteOne(where.eq('userId', request.userId));
       return StatusResponse()
         ..type = StatusResponse_Type.DELETED
         ..timestamp = DateTime.now().timestampProto;

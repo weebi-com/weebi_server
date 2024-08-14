@@ -13,27 +13,27 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-class ChainOidAndBoutiqueOid extends $pb.GeneratedMessage {
-  factory ChainOidAndBoutiqueOid({
-    $core.String? chainOid,
-    $core.String? boutiqueOid,
+class chainIdAndboutiqueId extends $pb.GeneratedMessage {
+  factory chainIdAndboutiqueId({
+    $core.String? chainId,
+    $core.String? boutiqueId,
   }) {
     final $result = create();
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
-    if (boutiqueOid != null) {
-      $result.boutiqueOid = boutiqueOid;
+    if (boutiqueId != null) {
+      $result.boutiqueId = boutiqueId;
     }
     return $result;
   }
-  ChainOidAndBoutiqueOid._() : super();
-  factory ChainOidAndBoutiqueOid.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ChainOidAndBoutiqueOid.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  chainIdAndboutiqueId._() : super();
+  factory chainIdAndboutiqueId.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory chainIdAndboutiqueId.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChainOidAndBoutiqueOid', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.common.mongo'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
-    ..aOS(2, _omitFieldNames ? '' : 'boutiqueOid', protoName: 'boutiqueOid')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'chainIdAndboutiqueId', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.common.mongo'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(2, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..hasRequiredFields = false
   ;
 
@@ -41,40 +41,40 @@ class ChainOidAndBoutiqueOid extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  ChainOidAndBoutiqueOid clone() => ChainOidAndBoutiqueOid()..mergeFromMessage(this);
+  chainIdAndboutiqueId clone() => chainIdAndboutiqueId()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  ChainOidAndBoutiqueOid copyWith(void Function(ChainOidAndBoutiqueOid) updates) => super.copyWith((message) => updates(message as ChainOidAndBoutiqueOid)) as ChainOidAndBoutiqueOid;
+  chainIdAndboutiqueId copyWith(void Function(chainIdAndboutiqueId) updates) => super.copyWith((message) => updates(message as chainIdAndboutiqueId)) as chainIdAndboutiqueId;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ChainOidAndBoutiqueOid create() => ChainOidAndBoutiqueOid._();
-  ChainOidAndBoutiqueOid createEmptyInstance() => create();
-  static $pb.PbList<ChainOidAndBoutiqueOid> createRepeated() => $pb.PbList<ChainOidAndBoutiqueOid>();
+  static chainIdAndboutiqueId create() => chainIdAndboutiqueId._();
+  chainIdAndboutiqueId createEmptyInstance() => create();
+  static $pb.PbList<chainIdAndboutiqueId> createRepeated() => $pb.PbList<chainIdAndboutiqueId>();
   @$core.pragma('dart2js:noInline')
-  static ChainOidAndBoutiqueOid getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChainOidAndBoutiqueOid>(create);
-  static ChainOidAndBoutiqueOid? _defaultInstance;
+  static chainIdAndboutiqueId getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<chainIdAndboutiqueId>(create);
+  static chainIdAndboutiqueId? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get chainOid => $_getSZ(0);
+  $core.String get chainId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set chainOid($core.String v) { $_setString(0, v); }
+  set chainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasChainOid() => $_has(0);
+  $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainOid() => clearField(1);
+  void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get boutiqueOid => $_getSZ(1);
+  $core.String get boutiqueId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set boutiqueOid($core.String v) { $_setString(1, v); }
+  set boutiqueId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasBoutiqueOid() => $_has(1);
+  $core.bool hasBoutiqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearBoutiqueOid() => clearField(2);
+  void clearBoutiqueId() => clearField(2);
 }
 
 class Testing extends $pb.GeneratedMessage {

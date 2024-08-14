@@ -17,9 +17,9 @@ import 'dart:typed_data' as $typed_data;
 const Boutique$json = {
   '1': 'Boutique',
   '2': [
-    {'1': '_id', '3': 1, '4': 1, '5': 11, '6': '.weebi.common.mongo.ObjectIdProto', '10': '_id'},
-    {'1': 'firmOid', '3': 2, '4': 1, '5': 9, '10': 'firmOid'},
-    {'1': 'chainOid', '3': 3, '4': 1, '5': 9, '10': 'chainOid'},
+    {'1': 'boutiqueId', '3': 1, '4': 1, '5': 9, '10': 'boutiqueId'},
+    {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'chainId', '3': 3, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'dateCreation', '3': 4, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'dateUpdate', '3': 5, '4': 1, '5': 9, '10': 'updateDate'},
     {'1': 'dateStatus', '3': 6, '4': 1, '5': 9, '10': 'statusUpdateDate'},
@@ -50,16 +50,16 @@ const Boutique_AdditionalAttributesEntry$json = {
 
 /// Descriptor for `Boutique`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List boutiqueDescriptor = $convert.base64Decode(
-    'CghCb3V0aXF1ZRIzCgNfaWQYASABKAsyIS53ZWViaS5jb21tb24ubW9uZ28uT2JqZWN0SWRQcm'
-    '90b1IDX2lkEhgKB2Zpcm1PaWQYAiABKAlSB2Zpcm1PaWQSGgoIY2hhaW5PaWQYAyABKAlSCGNo'
-    'YWluT2lkEiIKDGRhdGVDcmVhdGlvbhgEIAEoCVIMY3JlYXRpb25EYXRlEh4KCmRhdGVVcGRhdG'
-    'UYBSABKAlSCnVwZGF0ZURhdGUSJAoKZGF0ZVN0YXR1cxgGIAEoCVIQc3RhdHVzVXBkYXRlRGF0'
-    'ZRIWCgZzdGF0dXMYByABKAhSBnN0YXR1cxISCgRuYW1lGAggASgJUgRuYW1lEi8KBXBob25lGA'
-    'kgASgLMhkud2VlYmkuY29tbW9uLnBob25lLlBob25lUgVwaG9uZRI7CgdhZGRyZXNzGAogASgL'
-    'Mh0ud2VlYmkuY29tbW9uLmFkZHJlc3MuQWRkcmVzc1ILYWRkcmVzc0Z1bGwSFAoFcHJvbW8YCy'
-    'ABKAFSBXByb21vEh4KCnByb21vU3RhcnQYDCABKAlSCnByb21vU3RhcnQSGgoIcHJvbW9FbmQY'
-    'DSABKAlSCHByb21vRW5kEmgKFWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzIyLndlZWJpLm'
-    'JvdXRpcXVlLkJvdXRpcXVlLkFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnlSFWFkZGl0aW9uYWxf'
-    'YXR0cmlidXRlcxpHChlBZGRpdGlvbmFsQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2'
-    'V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgOEGM=');
+    'CghCb3V0aXF1ZRIeCgpib3V0aXF1ZUlkGAEgASgJUgpib3V0aXF1ZUlkEhYKBmZpcm1JZBgCIA'
+    'EoCVIGZmlybUlkEhgKB2NoYWluSWQYAyABKAlSB2NoYWluSWQSIgoMZGF0ZUNyZWF0aW9uGAQg'
+    'ASgJUgxjcmVhdGlvbkRhdGUSHgoKZGF0ZVVwZGF0ZRgFIAEoCVIKdXBkYXRlRGF0ZRIkCgpkYX'
+    'RlU3RhdHVzGAYgASgJUhBzdGF0dXNVcGRhdGVEYXRlEhYKBnN0YXR1cxgHIAEoCFIGc3RhdHVz'
+    'EhIKBG5hbWUYCCABKAlSBG5hbWUSLwoFcGhvbmUYCSABKAsyGS53ZWViaS5jb21tb24ucGhvbm'
+    'UuUGhvbmVSBXBob25lEjsKB2FkZHJlc3MYCiABKAsyHS53ZWViaS5jb21tb24uYWRkcmVzcy5B'
+    'ZGRyZXNzUgthZGRyZXNzRnVsbBIUCgVwcm9tbxgLIAEoAVIFcHJvbW8SHgoKcHJvbW9TdGFydB'
+    'gMIAEoCVIKcHJvbW9TdGFydBIaCghwcm9tb0VuZBgNIAEoCVIIcHJvbW9FbmQSaAoVYWRkaXRp'
+    'b25hbF9hdHRyaWJ1dGVzGGMgAygLMjIud2VlYmkuYm91dGlxdWUuQm91dGlxdWUuQWRkaXRpb2'
+    '5hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb25hbF9hdHRyaWJ1dGVzGkcKGUFkZGl0aW9uYWxB'
+    'dHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOg'
+    'I4AUoECA4QYw==');
 

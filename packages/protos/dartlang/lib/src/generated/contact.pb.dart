@@ -16,15 +16,15 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'common/address.pb.dart' as $19;
 import 'common/phone.pb.dart' as $18;
 
-/// / contactNonUniqueId is to be combined with userOid
+/// / contactNonUniqueId is to be combined with userId
 /// / local ids can lead to duplicates as each sellers from its own device can create contact
 class ContactMongo extends $pb.GeneratedMessage {
   factory ContactMongo({
     ContactPb? contact,
     $core.int? contactNonUniqueId,
-    $core.String? userOid,
-    $core.String? firmOid,
-    $core.String? chainOid,
+    $core.String? userId,
+    $core.String? firmId,
+    $core.String? chainId,
   }) {
     final $result = create();
     if (contact != null) {
@@ -33,14 +33,14 @@ class ContactMongo extends $pb.GeneratedMessage {
     if (contactNonUniqueId != null) {
       $result.contactNonUniqueId = contactNonUniqueId;
     }
-    if (userOid != null) {
-      $result.userOid = userOid;
+    if (userId != null) {
+      $result.userId = userId;
     }
-    if (firmOid != null) {
-      $result.firmOid = firmOid;
+    if (firmId != null) {
+      $result.firmId = firmId;
     }
-    if (chainOid != null) {
-      $result.chainOid = chainOid;
+    if (chainId != null) {
+      $result.chainId = chainId;
     }
     return $result;
   }
@@ -51,9 +51,9 @@ class ContactMongo extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact'), createEmptyInstance: create)
     ..aOM<ContactPb>(1, _omitFieldNames ? '' : 'contact', subBuilder: ContactPb.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'contactNonUniqueId', $pb.PbFieldType.O3, protoName: 'contactNonUniqueId')
-    ..aOS(3, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
-    ..aOS(4, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
-    ..aOS(5, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
+    ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
+    ..aOS(4, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(5, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..hasRequiredFields = false
   ;
 
@@ -99,31 +99,31 @@ class ContactMongo extends $pb.GeneratedMessage {
   void clearContactNonUniqueId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get userOid => $_getSZ(2);
+  $core.String get userId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set userOid($core.String v) { $_setString(2, v); }
+  set userId($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasUserOid() => $_has(2);
+  $core.bool hasUserId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUserOid() => clearField(3);
+  void clearUserId() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get firmOid => $_getSZ(3);
+  $core.String get firmId => $_getSZ(3);
   @$pb.TagNumber(4)
-  set firmOid($core.String v) { $_setString(3, v); }
+  set firmId($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasFirmOid() => $_has(3);
+  $core.bool hasFirmId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearFirmOid() => clearField(4);
+  void clearFirmId() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get chainOid => $_getSZ(4);
+  $core.String get chainId => $_getSZ(4);
   @$pb.TagNumber(5)
-  set chainOid($core.String v) { $_setString(4, v); }
+  set chainId($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasChainOid() => $_has(4);
+  $core.bool hasChainId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearChainOid() => clearField(5);
+  void clearChainId() => clearField(5);
 }
 
 class ContactPb extends $pb.GeneratedMessage {

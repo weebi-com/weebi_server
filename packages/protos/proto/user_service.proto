@@ -5,7 +5,6 @@ package weebi.user.service;
 import "common/g_common.proto";
 import "common/mongo.proto";
 import "user.proto";
-import "user_permission.proto";
 import "common/empty.proto";
 import "boutique_chain.proto";
 import "common/g_timestamp.proto";
@@ -15,13 +14,13 @@ message MailAndEncyptedPasswordRequest {
   string passwordEncrypted = 2;
 }
 
-message UserOid {
-  string oid = 1;
+message UserId {
+  string userId = 1;
 }
 
 message Access {
-  weebi.user.Oids chainsAccessible = 1 [json_name = 'chainsAccessible'];
-  weebi.user.Oids boutiquesAccessible = 2 [json_name = 'boutiquesAccessible'];
+  weebi.user.Ids chainsAccessible = 1 [json_name = 'chainsAccessible'];
+  weebi.user.Ids boutiquesAccessible = 2 [json_name = 'boutiquesAccessible'];
 }
 
 message LoginRequest {
@@ -30,9 +29,9 @@ message LoginRequest {
 }
 
 message DeviceLoginRequest {
-  string firmOid = 1 ;
-  string chainOid = 2 ;
-  string boutiqueOid = 3;
+  string firmId = 1 ;
+  string chainId = 2 ;
+  string boutiqueId = 3;
   string deviceOid = 4 ; 
   string password = 5 ;
 }
@@ -49,7 +48,7 @@ message Tokens {
 
 
 message UpdateDevicePasswordRequest {
-  string chainOid = 1; 
+  string chainId = 1; 
   weebi.chain.Device device = 2 ;
 }
 
@@ -58,7 +57,7 @@ service UserService {
   rpc authenticateWithRefreshToken (RefreshToken) returns (Tokens);
   
   /// device management is as sensitive as user management
-  rpc generateCodeForPairingDevice(weebi.common.mongo.ChainOidAndBoutiqueOid) returns (DevicePairingResponse);
+  rpc generateCodeForPairingDevice(weebi.common.mongo.chainIdAndboutiqueId) returns (DevicePairingResponse);
   rpc addPendingDevice(PendingDeviceRequest) returns (google.retail.common.StatusResponse);
   rpc approveDevice(ApproveDeviceRequest) returns (google.retail.common.StatusResponse);
 
@@ -72,20 +71,12 @@ service UserService {
     /// update userpassword
     /// recover userPassword
   rpc createOne(CreateOneRequest) returns (google.retail.common.StatusResponse);
-  rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user_permissions.UserPermissions);
-  rpc readOne(UserOid) returns (UserInfo);
+  rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.UserPermissions);
+  rpc readOne(UserId) returns (UserInfo);
   rpc updateOne(UserInfo) returns (google.retail.common.StatusResponse);
-  rpc deleteOne(UserOid) returns (google.retail.common.StatusResponse);
+  rpc deleteOne(UserId) returns (google.retail.common.StatusResponse);
 }
 
-/// ! any addition to this model must be replicated in the user_service_base.dart updateOne() 
-message UserInfo {
-  string userOid = 1 [json_name = 'userOid'];
-  string mail = 2 [json_name = 'mail'];
-  string firstname = 3 [json_name = 'firstname'];
-  string lastname = 4 [json_name = 'lastname'];
-  weebi.user_permissions.UserPermissions permissions = 5 [json_name = 'permissions'];
-}
 
 message CreateOneRequest {
   UserInfo userInfo = 1 [json_name = 'userInfo'];
@@ -94,8 +85,8 @@ message CreateOneRequest {
 }
 
 message PasswordUpdateRequest {
-  string userOid = 1 [json_name = 'userOid'];
-  string firmOid = 2 [json_name = 'firmOid'];
+  string userId = 1 [json_name = 'userId'];
+  string firmId = 2 [json_name = 'firmId'];
 }
 
 message PendingDeviceRequest {
@@ -104,15 +95,15 @@ message PendingDeviceRequest {
 }
 
 message DevicePairingResponse {
-  string firmOid = 1 [json_name = 'firmOid'];
-  string chainOid = 2 [json_name = 'chainOid'];
-  string boutiqueOid = 3 [json_name = 'boutiqueOid'];
-  string userOid = 4 [json_name = 'userOid'];
+  string firmId = 1 [json_name = 'firmId'];
+  string chainId = 2 [json_name = 'chainId'];
+  string boutiqueId = 3 [json_name = 'boutiqueId'];
+  string userId = 4 [json_name = 'userId'];
   int32 code = 5 [json_name = 'code'];
   google.protobuf.Timestamp timestampUTC = 6 [json_name = 'timestampUTC'];
 }
 
 message ApproveDeviceRequest {
-  weebi.common.mongo.ChainOidAndBoutiqueOid chainOidAndBoutiqueOid = 1; 
+  weebi.common.mongo.chainIdAndboutiqueId chainIdAndboutiqueId = 1; 
   weebi.chain.Device device = 2 ;
 }
