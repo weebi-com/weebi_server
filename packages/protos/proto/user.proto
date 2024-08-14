@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package weebi.user;
+
+import "common/g_timestamp.proto";
+import "common/mongo.proto";
+
+/// user CRUD rights on base models 
+enum Right {
+  unknown = 0;
+  create = 1;
+  read = 2;
+  update = 3;
+  delete = 4;
+}
+
+message ArticleRights {
+  repeated Right rights = 1 [json_name = 'articleRights'];
+}
+message BoutiqueRights {
+  repeated Right rights = 1 [json_name = 'boutiqueRights'];
+}
+message MallRights {
+  repeated Right rights = 1 [json_name = 'mallRights'];
+}
+message FirmRights {
+  repeated Right rights = 1 [json_name = 'firmRights'];
+}
+message ContactRights {
+  repeated Right rights = 1 [json_name = 'contactRights'];
+}
+
+/// there is no such a thing as updating a ticket, one can simply disable or restore it
+/// but for simplicity we will use the same enum Right here, including update
+message TicketRights {
+  repeated Right rights = 1 [json_name = 'ticketRights'];
+}
+message UserManagementRights {
+  repeated Right rights = 1 [json_name = 'userManagementRights'];
+}
+
+
+message BoolRights {
+  bool canSeeStats = 1 [json_name = 'canSeeStats'];
+  bool canExportData = 2 [json_name = 'canExportData'];
+  bool canGiveDiscount = 3 [json_name = 'canGiveDiscount'];
+  bool canSetPromo = 4 [json_name = 'canSetPromo'];
+  bool canStockMovement = 5 [json_name = 'canStockMovement'];
+  bool canStockInventory = 6 [json_name = 'canStockInventory'];
+  bool canQuickSpend = 7 [json_name = 'canQuickSpend'];
+  bool canPurchase = 8 [json_name = 'canPurchase'];
+  bool canImportTickets = 9 [json_name = 'canImportTickets'];
+}
+
+/// all users need to belong at least to a chain to see articles and contact
+/// specific rights will then be checked to see what kind of action the user can perform on this chain's objects
+/// for users who need to access all boutiques of a chain we use the following hack :
+/// boutiqueOids == ['ALL'] instead of passing all oids
+/// accessible boutiques will be deduced in boutique_service endpoint
+/// allowing us not to keep track of boutique creation/deletion
+/// firm admins can have access to multiple chains, and manage them from ruby web app
+/// if they try login in the flutter app they will be asked to select one chain only
+
+message Oids {
+  repeated string oids = 1 [json_name = 'oids'];
+}
+
+message UserPrivate {
+  //string userOid = 1 [json_name = 'userOid'];
+  weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
+  string mail = 2 [json_name = 'mail'];
+  string passwordEncrypted = 3 [json_name = 'password'];
+  string firmOid = 4 [json_name = 'firmOid'];
+  Oids chainOids = 5 [json_name = 'chainOids'];
+  Oids boutiqueOids = 6 [json_name = 'boutiqueOids'];
+  ArticleRights articleRights = 7 [json_name = 'articleRights'];
+  BoutiqueRights boutiqueRights = 8 [json_name = 'boutiqueRights'];
+  FirmRights firmRights = 9 [json_name = 'firmRights'];
+  MallRights chainRights = 10 [json_name = 'mallRights'];
+  ContactRights contactRights = 11 [json_name = 'contactRights'];
+  TicketRights ticketRights = 12 [json_name = 'ticketRights'];
+  UserManagementRights userManagementRights = 13 [json_name = 'userManagementRights'];
+  BoolRights boolRights = 14 [json_name = 'boolRights'];
+  string lastUpdatedByUserOid = 15 [json_name = 'lastUpdatedByUserOid'];
+  google.protobuf.Timestamp lastUpdateTimestampUTC = 16 [json_name = 'lastUpdateTimestampUTC'];
+  string firstname = 17 [json_name = 'firstname'];
+  string lastname = 18 [json_name = 'lastname'];
+}
+  

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package weebi.article.service;
+
+import "article.proto";
+import "common/g_common.proto";
+
+
+service ArticleService {
+  rpc createOne (ArticleRequest) returns (google.retail.common.StatusResponse);
+  rpc readOne (FindArticleRequest) returns (weebi.article.CalibrePb);
+  rpc readAll (ReadAllRequest) returns  (ArticlesResponse);
+  rpc replaceOne (ArticleRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOne (ArticleRequest) returns (google.retail.common.StatusResponse);
+}
+
+message FindArticleRequest {
+  string chainOid = 1;
+  string title = 2 [json_name = 'title'];
+}
+
+message ReadAllRequest {
+  string chainOid = 1;
+}
+
+message ArticleRequest {
+  // below in case mutiple chains, permission check will still be applied to verify 
+  string chainOid = 1; 
+  weebi.article.CalibrePb calibre = 2;
+}
+
+message ArticlesResponse {
+  repeated weebi.article.CalibrePb calibres = 1;
+}

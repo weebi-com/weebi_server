@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package weebi.firm;
+
+import "boutique_chain.proto";
+import "common/g_timestamp.proto";
+import "common/mongo.proto";
+
+/// yes one object to delimit all but permissions
+message Firm {
+  // 'oid' to avoid conflict with _id
+    weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
+    string name = 2 [json_name = 'name'];
+    repeated weebi.chain.Chain chains = 3 [json_name = 'chains'] ;
+    string subscriptionPlan = 4 [json_name = 'subscriptionPlan'];
+    int32 subscriptionSeats = 5 [json_name = 'subscriptionSeats']; //  1 seat == 1 user/device
+    google.protobuf.Timestamp subscriptionStartTimestampUTC = 6 [json_name = 'subscriptionStartTimestampUTC'];
+    google.protobuf.Timestamp subscriptionEndTimestampUTC = 7 [json_name = 'subscriptionEndTimestampUTC'];
+    bool status = 8 [json_name = 'status'];
+    google.protobuf.Timestamp statusUpdateTimestampUTC = 9 [json_name = 'statusUpdateTimestampUTC']; //if weebi disables date will be in UTC time not local 
+    google.protobuf.Timestamp lastUpdateTimestampUTC = 10 [json_name = 'lastUpdateTimestampUTC'];
+    string lastUpdatedByUserOid = 11 [json_name = 'lastUpdatedByUserOid'];
+    bool isMailVerified = 12 [json_name = 'isMailVerified'];
+  }
+  
+  

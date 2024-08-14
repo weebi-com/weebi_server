@@ -1,0 +1,187 @@
+/* Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ syntax = "proto3";
+
+ package google.retail.enterprise.grpc;
+ 
+ /*
+  * Go Lang Options
+  */
+ option go_package = "github.com/GoogleCloudPlatform/retail-data-model/enterprise/grpc";
+ 
+ /*
+  * Java Options
+  */
+ option java_package = "com.google.retail.enterprise.grpc";
+ option java_multiple_files = true;
+ 
+ import "google/api/annotations.proto";
+ 
+ import "google/protobuf/empty.proto";
+ 
+ import "api/common/model.proto";
+ 
+ import "api/enterprise/model.proto";
+ 
+ import "google/protobuf/field_mask.proto";
+ 
+
+/*
+ * A tax code is a fundamental structure for defining tax for various
+ * segments of the tax hierarchy. Example
+ * USA - Colorado
+ * - SALES_TAX, 0.07 [ ALL ]
+ * USA - Colorado - Parker
+ * - FOOD_TAX, 0.005, [ FOOD, BEVERAGE ]
+ * - CLEAN_AIR_ACT, 0.001 [ TOBACCO ]
+ * In this case, if a customer buys a beverage in Parker COLORADO, they will
+ * pay an additional 0.071 % tax on their purchase.
+ * If a category lowers a base tax rate, then it MUST override it.
+ */
+ message TaxCode {
+    option (gen_bq_schema.bigquery_opts).table_name = "tbl_tax_code";
+    message Rate {
+      google.retail.common.pb.VersionID id = 1 [json_name = 'id'];
+      google.protobuf.Timestamp deleted = 2 [json_name = 'deleted'];
+      string name = 3 [json_name = 'name'];
+      string description = 4 [json_name = 'description'];
+      string municipality = 5 [json_name = 'municipality'];
+      double rate = 6 [json_name = 'rate'];
+      repeated string category_ids= 7 [json_name = 'category_ids'];
+    }
+    google.retail.common.pb.VersionID id = 1 [json_name = 'id'];
+    google.protobuf.Timestamp deleted = 2 [json_name = 'deleted'];
+    string name = 3 [json_name = 'name'];
+    string description = 4  [json_name = 'description'];
+    google.retail.enums.countries.Country country = 5 [json_name = 'country'];
+    repeated Rate rates = 6 [json_name = 'rates'];
+  }
+
+  
+ service TaxCodes {
+   /*
+    * List - Provides a stream / ordered list of tax rates.
+    */
+   rpc GetTaxCodes(google.protobuf.Empty)
+     returns (stream google.retail.enterprise.pb.TaxCode) {
+     option (google.api.http) = {
+       get: "/tax_codes"
+     };
+   }
+ 
+   /*
+   List - Provides a stream / ordered list of active tax rates.
+    */
+   rpc GetTaxCode(google.retail.common.pb.IDRequest)
+     returns (google.retail.enterprise.pb.TaxCode) {
+     option (google.api.http) = {
+       get: "/tax_codes/active/{id}"
+     };
+   }
+ 
+   /*
+   List - Provides a stream / tax code histories.
+    */
+   rpc GetTaxCodeVersionHistory(google.retail.common.pb.IDRequest)
+     returns (stream google.retail.enterprise.pb.TaxCode) {
+     option (google.api.http) = {
+       get: "/tax_codes/history/{id}"
+     };
+   }
+ 
+   /*
+   List - Provides a stream / ordered list of countries.
+    */
+   rpc GetTaxCodeVersion(google.retail.common.pb.VersionIDRequest)
+     returns (google.retail.enterprise.pb.TaxCode) {
+     option (google.api.http) = {
+       get: "/tax_codes/{id}/{version}"
+     };
+   }
+ 
+   /*
+   Create - Adds a tax to the data store
+    */
+   rpc Create(google.retail.enterprise.pb.TaxCode)
+     returns (google.retail.enterprise.pb.TaxCode) {
+     option (google.api.http) = {
+       post: "/tax_codes"
+       body: "model"
+     };
+   }
+ 
+   /*
+   Create - Adds a country to the data store
+    */
+   rpc CreateRate(google.retail.enterprise.pb.TaxCode.Rate)
+     returns (google.retail.enterprise.pb.TaxCode) {
+     option (google.api.http) = {
+       post: "/tax_codes/rates"
+       body: "tax_code_rate"
+     };
+   }
+ 
+   /*
+   Update - Updates an existing tax code, and MUST increment the version
+   and effective dates
+    */
+   rpc Update(google.retail.enterprise.pb.TaxCode)
+     returns (google.retail.enterprise.pb.TaxCode) {
+     option (google.api.http) = {
+       put: "/tax_codes"
+       body: "model"
+     };
+   }
+ 
+   /*
+   Update - Updates an existing tax code rate, and MUST increment the version
+   and effective dates
+    */
+   rpc UpdateRate(google.retail.enterprise.pb.TaxCode.Rate)
+     returns (google.retail.enterprise.pb.TaxCode) {
+     option (google.api.http) = {
+       put: "/tax_codes/rates"
+       body: "model"
+     };
+   }
+ 
+   /*
+   Delete - removes a country from the backing store, the implementation
+   defines the strategy.
+    */
+   rpc Delete(google.retail.enterprise.pb.TaxCode)
+     returns (google.retail.common.pb.StatusResponse) {
+     option (google.api.http) = {
+       delete: "/tax_codes"
+       body: "model"
+     };
+   }
+ 
+   /*
+   Delete - removes a country from the backing store, the implementation
+   defines the strategy.
+    */
+   rpc DeleteRate(google.retail.enterprise.pb.TaxCode.Rate)
+     returns (google.retail.common.pb.StatusResponse) {
+     option (google.api.http) = {
+       delete: "/tax_codes/{tax_code_id}/rates"
+       body: "model"
+     };
+   }
+ }
+ 
+ 
+ 
+ 

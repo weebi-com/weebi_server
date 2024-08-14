@@ -1,0 +1,30 @@
+name: server
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+publish_to: none
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.3.3
+
+# Add regular dependencies here.
+dependencies:
+  mongo_dart: ^0.10.2
+  article_service:
+    path: ../../packages/article_service
+  boutique_service:
+    path: ../../packages/boutique_service
+  contact_service:
+    path: ../../packages/contact_service
+  ticket_service:
+    path: ../../packages/ticket_service
+  user_service:
+    path: ../../packages/user_service
+  #
+  protos_weebi:
+    path: ../../packages/protos/dartlang
+  logging: ^1.2.0
+
+dev_dependencies:
+  lints: ^3.0.0
+  test: ^1.24.0

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package weebi.common.country;
+
+message Country {
+    string code2Letters = 1;
+    string namel10n = 2;
+}

@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+package weebi.common.empty;
+
+message Empty {}
+

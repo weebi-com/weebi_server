@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package weebi.ticket_type;
+
+enum TicketTypePb {
+  unknown = 0;
+  sell = 1;
+  sellDeferred =2;
+  sellCovered =3;
+  spend =4;
+  spendDeferred =5;
+  spendCovered =6;
+  stockIn =7;
+  stockOut =8;
+  inventory =9;
+  wage =10;
+}
