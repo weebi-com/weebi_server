@@ -240,7 +240,7 @@ class UserService extends UserServiceBase {
         throw GrpcError.notFound('userOid $userOid');
       }
       return UserPrivate()
-        ..mergeFromProto3Json(userPrivate.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(userPrivate, ignoreUnknownFields: true);
     } on GrpcError catch (e) {
       log('$e');
       rethrow;
@@ -265,8 +265,7 @@ class UserService extends UserServiceBase {
         }
       }
       final user = UserPrivate()
-        ..mergeFromProto3Json(userPrivateMongo.properOid,
-            ignoreUnknownFields: true);
+        ..mergeFromProto3Json(userPrivateMongo, ignoreUnknownFields: true);
       final userPermission = await _readUserPermissions(user);
       return userPermission;
     } on GrpcError catch (e) {
@@ -332,7 +331,7 @@ class UserService extends UserServiceBase {
       throw GrpcError.notFound('user not found');
     }
     return UserPrivate.create()
-      ..mergeFromProto3Json(userMongo.properOid, ignoreUnknownFields: true);
+      ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
   }
 
   @override
@@ -411,7 +410,7 @@ class UserService extends UserServiceBase {
         throw GrpcError.notFound('user not found');
       }
       final user = UserPrivate()
-        ..mergeFromProto3Json(userMongo.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
       final userInfo = UserInfo.create()
         ..firstname = user.firstname
         ..lastname = user.lastname
@@ -446,7 +445,7 @@ class UserService extends UserServiceBase {
         throw GrpcError.notFound();
       }
       final firm = Firm.create()
-        ..mergeFromProto3Json(firmMongo.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
 
       final chainNullable =
           firm.chains.firstWhereOrNull((c) => c.id.oid == request.chainOid);
@@ -600,7 +599,7 @@ class UserService extends UserServiceBase {
       }
 
       final firm = Firm.create()
-        ..mergeFromProto3Json(firmMongo.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
       final chainIndex =
           firm.chains.indexWhere((e) => e.id.oid == pairingResp.chainOid);
 
@@ -681,7 +680,7 @@ class UserService extends UserServiceBase {
       }
 
       final firmProto = Firm.create()
-        ..mergeFromProto3Json(firm.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(firm, ignoreUnknownFields: true);
       final index = firmProto.chains.indexWhere(
           (e) => e.id.oid == request.chainOidAndBoutiqueOid.chainOid);
       if (index == -1) {
@@ -783,7 +782,7 @@ class UserService extends UserServiceBase {
         throw GrpcError.notFound();
       }
       final firmProto = Firm.create()
-        ..mergeFromProto3Json(firm.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(firm, ignoreUnknownFields: true);
       final index =
           firmProto.chains.indexWhere((e) => e.id.oid == request.chainOid);
       if (index == -1) {

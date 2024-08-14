@@ -7,7 +7,7 @@ import "common/address.proto";
 import "common/mongo.proto";
 
 message Boutique {
-    weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
+    string _id = 1 [json_name = '_id'];
     string firmOid = 2 [json_name = 'firmOid'];
     string chainOid = 3 [json_name = 'chainOid'];
     string dateCreation = 4 [json_name = 'creationDate'];

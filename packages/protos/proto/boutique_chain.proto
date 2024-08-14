@@ -13,7 +13,7 @@ import "common/mongo.proto";
 // devices are handled at the chains level, not the boutiques
 
 message Chain {
-  weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
+  string _id = 1 [json_name = '_id'];
   string firmOid = 2 [json_name = 'firmOid'];
   string name = 3 [json_name = 'name'];
   repeated weebi.boutique.Boutique boutiques = 4 [json_name = 'boutiques'];
@@ -28,7 +28,7 @@ message Chains {
 
 /// a Device == cash register, assigned to a chain, it can be used by each chain's boutiques
 message Device {
-  weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
+  string _id = 1 [json_name = '_id'];
   string chainOid = 2 [json_name = 'chainOid'];
 
   // TODO : think again if we really need to have boutique here, really depends on user permission I think...

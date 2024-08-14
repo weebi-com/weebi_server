@@ -70,7 +70,7 @@ message Oids {
 /// this model should not be exposed / used by clients
 message UserPrivate {
   //string userOid = 1 [json_name = 'userOid'];
-  weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
+  string _id = 1 [json_name = '_id'];
   string mail = 2 [json_name = 'mail'];
   string passwordEncrypted = 3 [json_name = 'password'];
   string firmOid = 4 [json_name = 'firmOid'];

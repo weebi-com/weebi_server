@@ -39,7 +39,7 @@ void main() async {
         await boutiqueService.createOneFirm(null, FirmDummy.firmNoId);
     expect(response.type, StatusResponse_Type.CREATED);
     final userPermissionsUpdated = UserPrivateDummy.adminPermission;
-    userPermissionsUpdated.firmOid = response.message;
+    userPermissionsUpdated.firmOid = response.id;
     boutiqueService..userPermissionIfTest = userPermissionsUpdated;
   });
   test('test readOneFirm', () async {

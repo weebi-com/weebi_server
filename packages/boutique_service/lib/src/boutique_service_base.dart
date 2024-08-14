@@ -25,13 +25,28 @@ class BoutiqueService extends BoutiqueServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
+
     if (userPermission.firmRights.rights.any((e) => e == Right.create) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to create firm');
     }
     // ? should we check that no other firm exist for this accouunt ?
-
+    try {
+      final firmMongo = await collection
+          .findOne(where.id(ObjectId.fromHexString(userPermission.firmOid)));
+      if (firmMongo != null) {
+        throw GrpcError.notFound('already such a firm');
+      }
+    } on GrpcError catch (e) {
+      return StatusResponse.create()
+        ..type = StatusResponse_Type.ERROR
+        ..message = 'firm already exists'
+        ..timestamp = DateTime.now().timestampProto;
+      ;
+    } catch (e) {
+      rethrow;
+    }
     // set the appropriate ids
     request.id = ObjectIdProto(oid: userPermission.firmOid);
     request.chains.first
@@ -83,13 +98,13 @@ class BoutiqueService extends BoutiqueServiceBase {
       throw GrpcError.permissionDenied('user does not have right to read firm');
     }
     try {
-      final firmMongo = await collection
-          .findOne(where.id(ObjectId.fromHexString(userPermission.firmOid)));
+      final firmMongo =
+          await collection.findOne(where.eq('_id', userPermission.firmOid));
       if (firmMongo == null) {
         throw GrpcError.notFound('firm not found');
       }
       final firm = Firm()
-        ..mergeFromProto3Json(firmMongo.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
       return firm;
     } on GrpcError catch (e) {
       print('readFirm error $e');
@@ -104,7 +119,7 @@ class BoutiqueService extends BoutiqueServiceBase {
       throw GrpcError.notFound('firm not found');
     }
     return Firm.create()
-      ..mergeFromProto3Json(firmMongo.properOid, ignoreUnknownFields: true);
+      ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
   }
 
   /// used to find user access levels called by UserService
@@ -120,7 +135,7 @@ class BoutiqueService extends BoutiqueServiceBase {
         throw GrpcError.notFound('firm not found');
       }
       final firm = Firm()
-        ..mergeFromProto3Json(firmMongo.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
 
       final boutiques = <Boutique>[];
       for (final requestChainOid in chainOids) {
@@ -155,7 +170,7 @@ class BoutiqueService extends BoutiqueServiceBase {
         throw GrpcError.notFound('firm not found');
       }
       final firm = Firm()
-        ..mergeFromProto3Json(firmMongo.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
 
       final boutiques = <Boutique>[];
       for (final requestChainOid in user.chainOids.oids) {
@@ -489,7 +504,7 @@ class BoutiqueService extends BoutiqueServiceBase {
         throw GrpcError.unknown('firm not found ${userPermission.firmOid}');
       }
       final firm = Firm.create()
-        ..mergeFromProto3Json(firmMongo.properOid, ignoreUnknownFields: true);
+        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
 
       final index = firm.chains.indexWhere((e) => e.id.oid == request.chainOid);
       if (index == -1) {

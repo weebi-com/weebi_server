@@ -8,7 +8,7 @@ import "common/mongo.proto";
 
 /// yes one object to delimit all but permissions
 message Firm {
-    weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
+    string _id = 1 [json_name = '_id'];
     string name = 2 [json_name = 'name'];
     repeated weebi.chain.Chain chains = 3 [json_name = 'chains'] ;
     string subscriptionPlan = 4 [json_name = 'subscriptionPlan'];

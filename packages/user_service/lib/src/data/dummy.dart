@@ -142,7 +142,7 @@ class UserPrivateDummy {
   /// this permission will be cloned without ids
   static final adminPermission = UserPermissions.create()
     ..userOid = '665e12f798357783e8000008'
-    ..firmOid = userNoId.firmOid
+    ..firmOid = '665e12f798357783e8000008'
     ..articleRights = userNoId.articleRights
     ..boutiqueRights = userNoId.boutiqueRights
     ..contactRights = userNoId.contactRights

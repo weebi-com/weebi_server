@@ -29,7 +29,7 @@ void main() async {
 
     final dd = Testing.create()
       ..mergeFromProto3Json(
-        doc.properOid, // here is the little hack
+        doc, // here is the little hack
         ignoreUnknownFields: true,
       );
 
