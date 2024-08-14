@@ -27,33 +27,30 @@ class TestHelper {
     );
     await db.createCollection(userService.collection.collectionName);
     await db.createCollection(boutiqueService.collection.collectionName);
-    final responseUser =
-        await userService.createOne(null, UserPrivateDummy.userNoId);
+    final responseUser = await userService.createOne(
+      null,
+      CreateOneRequest(
+        userInfo: UserInfoDummy.userInfo,
+        password: '1234',
+        isFirstUser: true,
+      ),
+    );
     final response =
         await boutiqueService.createOneFirm(null, FirmDummy.firmNoId);
 
-    final firmOid = response.id;
-    final responseChain = await boutiqueService.createOneChain(
-        null, ChainDummy.chainNoId..firmOid = firmOid);
-    final chainOid = responseChain.id;
+    final firm = await boutiqueService.readOneFirm(null, Empty());
 
-    final responseBoutique = await boutiqueService.createOneBoutique(
-        null,
-        BoutiqueDummy.boutiqueNoId
-          ..firmOid = firmOid
-          ..chainOid = chainOid);
-    final boutiqueOid = responseBoutique.id;
-
-    UserPrivateDummy.adminPermission.firmOid = firmOid;
+    UserPrivateDummy.adminPermission.firmOid = response.id;
     UserPrivateDummy.adminPermission.userOid = responseUser.id;
-    UserPrivateDummy.adminPermission.chainsAccessible = Oids(oids: [chainOid]);
+    UserPrivateDummy.adminPermission.chainsAccessible =
+        Oids(oids: [firm.chains.first.id.oid]);
     UserPrivateDummy.adminPermission.boutiquesAccessible =
-        Oids(oids: [boutiqueOid]);
+        Oids(oids: [firm.chains.first.boutiques.first.id.oid]);
 
     userService..userPermissionIfTest = UserPrivateDummy.adminPermission;
     return Counterfoil.create()
-      ..firmOid = firmOid
-      ..chainOid = chainOid
-      ..boutiqueOid = boutiqueOid;
+      ..firmOid = response.id
+      ..chainOid = firm.chains.first.id.oid
+      ..boutiqueOid = firm.chains.first.boutiques.first.id.oid;
   }
 }

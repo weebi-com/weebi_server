@@ -46,13 +46,7 @@ message Tokens {
   string refreshToken = 2;
 }
 
-message UserInfo {
-  string userOid = 1 [json_name = 'userOid'];
-  string firmOid = 2 [json_name = 'firmOid'];
-  string firstname = 3 [json_name = 'firstname'];
-  string lastname = 4 [json_name = 'lastname'];
-  string mail = 5 [json_name = 'mail'];
-}
+
 
 message UpdateDevicePasswordRequest {
   string chainOid = 1; 
@@ -77,11 +71,31 @@ service UserService {
     /// update user permissions
     /// update userpassword
     /// recover userPassword
-  rpc createOne(weebi.user.UserPrivate) returns (google.retail.common.StatusResponse);
+  rpc createOne(CreateOneRequest) returns (google.retail.common.StatusResponse);
   rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user_permissions.UserPermissions);
   rpc readOne(UserOid) returns (UserInfo);
   rpc updateOne(UserInfo) returns (google.retail.common.StatusResponse);
   rpc deleteOne(UserOid) returns (google.retail.common.StatusResponse);
+}
+
+/// ! any addition to this model must be replicated in the user_service_base.dart updateOne() 
+message UserInfo {
+  string userOid = 1 [json_name = 'userOid'];
+  string mail = 2 [json_name = 'mail'];
+  string firstname = 3 [json_name = 'firstname'];
+  string lastname = 4 [json_name = 'lastname'];
+  weebi.user_permissions.UserPermissions permissions = 5 [json_name = 'permissions'];
+}
+
+message CreateOneRequest {
+  UserInfo userInfo = 1 [json_name = 'userInfo'];
+  string password = 2 [json_name = 'password'];
+  bool isFirstUser = 3 [json_name = 'isFirstUser'];
+}
+
+message PasswordUpdateRequest {
+  string userOid = 1 [json_name = 'userOid'];
+  string firmOid = 2 [json_name = 'firmOid'];
 }
 
 message PendingDeviceRequest {

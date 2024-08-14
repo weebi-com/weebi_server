@@ -58,13 +58,16 @@ message BoolRights {
 /// boutiqueOids == ['ALL'] instead of passing all oids
 /// accessible boutiques will be deduced in boutique_service endpoint
 /// allowing us not to keep track of boutique creation/deletion
-/// firm admins can have access to multiple chains, and manage them from ruby web app
+/// firm admins can have access to multiple chains, and manage them from web app
 /// if they try login in the flutter app they will be asked to select one chain only
 
 message Oids {
   repeated string oids = 1 [json_name = 'oids'];
 }
 
+
+/// this is how users are stored in db
+/// this model should not be exposed / used by clients
 message UserPrivate {
   //string userOid = 1 [json_name = 'userOid'];
   weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
@@ -86,4 +89,4 @@ message UserPrivate {
   string firstname = 17 [json_name = 'firstname'];
   string lastname = 18 [json_name = 'lastname'];
 }
-  
+

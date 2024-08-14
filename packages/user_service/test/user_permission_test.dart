@@ -21,9 +21,11 @@ void main() async {
     userService = UserService(db, firmService);
     await db.createCollection(userService.collection.collectionName);
     await userService.createOne(
-      null,
-      UserPrivateDummy.userNoId,
-    );
+        null,
+        CreateOneRequest(
+          userInfo: UserInfoDummy.userInfoNoId,
+          password: '1234',
+        ));
   });
 
   tearDownAll(() async {

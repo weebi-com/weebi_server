@@ -1,7 +1,5 @@
-import 'dart:convert';
-import 'package:crypto/crypto.dart';
+import 'package:user_service/src/password_encrypter.dart';
 
 void main(List<String> args) {
-  final encryptedPassword = sha512.convert(utf8.encode(args.first)).toString();
-  print(encryptedPassword);
+  print(Encrypter(args.first).encrypted);
 }

@@ -43,7 +43,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
-        ..calibreUniqueId = request.calibre.id
+        ..calibreId = request.calibre.id
         ..chainOid = request.chainOid
         ..firmOid = userPermission.firmOid
         ..userOid = userPermission.userOid;
@@ -54,11 +54,11 @@ class ArticleService extends ArticleServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id'] as ObjectId;
+        final mongoId = result.document!['_id']['oid'];
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..message = mongoId.oid
+          ..id = mongoId
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -95,7 +95,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
-        ..calibreUniqueId = request.calibre.id
+        ..calibreId = request.calibre.id
         ..chainOid = request.chainOid
         ..firmOid = userPermission.firmOid
         ..userOid = userPermission.userOid;

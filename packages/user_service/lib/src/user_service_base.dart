@@ -1,10 +1,8 @@
 import 'dart:developer';
-import 'dart:convert';
 import 'dart:async';
 import 'dart:math' show Random;
 
 import 'package:collection/collection.dart';
-import 'package:crypto/crypto.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
 
@@ -13,6 +11,8 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:boutique_service/boutique_service.dart';
 import 'package:user_service/user_service.dart';
+
+// TODO : create updateUserPassword rpc admins only
 
 class UserService extends UserServiceBase {
   // ignore: unused_field
@@ -32,11 +32,25 @@ class UserService extends UserServiceBase {
 
   @override
   Future<StatusResponse> createOne(
-      ServiceCall? call, UserPrivate request) async {
-    _db.isConnected ? null : await _db.open();
+      ServiceCall? call, CreateOneRequest request) async {
+    //TODO : consider more annoying password check
+
+    if (request.password.isEmpty) {
+      throw GrpcError.failedPrecondition('password cannot be empty');
+    }
+    if (request.password.length < 3) {
+      throw GrpcError.failedPrecondition('password is a bit too short');
+    }
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
+
+    _db.isConnected ? null : await _db.open();
+    if (userPermission.firmOid != request.userInfo.permissions.firmOid) {
+      throw GrpcError.permissionDenied(
+          'user does not have access to firm ${request.userInfo.permissions.firmOid}');
+    }
 
     if (userPermission.userManagementRights.rights
         .none((e) => e == Right.create)) {
@@ -44,33 +58,73 @@ class UserService extends UserServiceBase {
           'user does not have right to create other users');
     }
     try {
-      final userPrivateMap = request.toProto3Json() as Map<String, dynamic>;
-      final result = await collection.insertOne(userPrivateMap);
+      final user = UserInfo.create()
+        ..mergeFromProto3Json(
+            request.userInfo.toProto3Json() as Map<String, dynamic>,
+            ignoreUnknownFields: true);
+      if (_boutiqueService == null) {
+        throw '_boutiqueService is not initialized/available';
+      }
+
+      // hack so that manager keep access on new boutiques without having to update their permissions for each new creation/deletion
+      // keep simple logic in weebi_web that will pass all boutiques oids in user.permissions.boutiquesAccessible
+      // at the time of manager creation if these oids match all that exist in db we set to ALL
+
+      Oids boutiqueOids = request.isFirstUser
+          ? Oids(oids: ['ALL'])
+          : identical(
+                  await _boutiqueService.readAllBoutiquesInChains(
+                      user.permissions.firmOid,
+                      user.permissions.chainsAccessible.oids),
+                  user.permissions.boutiquesAccessible)
+              ? Oids(oids: ['ALL'])
+              : user.permissions.boutiquesAccessible;
+
+      // firstUser cannot have access to a firm that is not created yet
+      // so we assign
+
+      final objectId =
+          ObjectId.createId(DateTime.now().toUtc().second).hexString;
+      String firmOid = request.isFirstUser ? objectId : userPermission.firmOid;
+
+      final userPrivate = UserPrivate.create()
+        ..id = ObjectIdProto(oid: objectId)
+        ..passwordEncrypted = Encrypter(request.password).encrypted
+        ..mail = user.mail
+        ..firstname = user.firstname
+        ..lastname = user.lastname
+        ..firmOid = firmOid
+        ..chainOids = user.permissions.chainsAccessible
+        ..boutiqueOids = boutiqueOids
+        ..articleRights = user.permissions.articleRights
+        ..boutiqueRights = user.permissions.boutiqueRights
+        ..contactRights = user.permissions.contactRights
+        ..chainRights = user.permissions.chainRights
+        ..firmRights = user.permissions.firmRights
+        ..ticketRights = user.permissions.ticketRights
+        ..userManagementRights = user.permissions.userManagementRights
+        ..boolRights = user.permissions.boolRights;
+
+      final result = await collection
+          .insertOne(userPrivate.toProto3Json() as Map<String, dynamic>);
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
+      final timestamp = DateTime.now().timestampProto;
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id'] as ObjectId;
-
-        final millis = DateTime.now().millisecond;
-        final timestamp = Timestamp()
-          ..seconds = Int64(millis)
-          ..nanos = (millis % 1000) * 1000000;
+        final mongoId = result.document!['_id']['oid'];
+        print('mongoId.runtimeType ${mongoId.runtimeType}');
         return StatusResponse()
-          ..id = mongoId.oid
+          ..id = mongoId
           ..type = StatusResponse_Type.CREATED
           ..timestamp = timestamp;
       } else {
-        final millis = DateTime.now().millisecond;
-        final timestamp = Timestamp()
-          ..seconds = Int64(millis)
-          ..nanos = (millis % 1000) * 1000000;
         return StatusResponse()
           ..type = StatusResponse_Type.ERROR
           ..timestamp = timestamp;
       }
     } on GrpcError catch (e) {
-      log('user mail ${request.mail} createOne error: $e');
+      log('user mail ${request.userInfo.mail} createOne error: $e');
       rethrow;
     }
   }
@@ -124,8 +178,7 @@ class UserService extends UserServiceBase {
     } else if (request.password.isEmpty) {
       throw GrpcError.invalidArgument('password isEmpty');
     }
-    final passwordEncrypted =
-        sha512.convert(utf8.encode(request.password)).toString();
+    final passwordEncrypted = Encrypter(request.password).encrypted;
     return MailAndEncyptedPasswordRequest(
         passwordEncrypted: passwordEncrypted, mail: request.mail);
   }
@@ -260,8 +313,8 @@ class UserService extends UserServiceBase {
       if (_boutiqueService == null) {
         throw '_boutiqueService is not initialized/available';
       }
-      final boutiquesOids =
-          await _boutiqueService.readAllBoutiquesInUserChains(user);
+      final boutiquesOids = await _boutiqueService.readAllBoutiquesInChains(
+          user.firmOid, user.chainOids.oids);
       return Access(
           chainsAccessible: Oids(oids: user.chainOids.oids),
           boutiquesAccessible: Oids(oids: boutiquesOids));
@@ -287,6 +340,10 @@ class UserService extends UserServiceBase {
     if (request.userOid.isEmpty) {
       throw GrpcError.failedPrecondition('userOid cannot be empty');
     }
+    if (request.userOid != request.permissions.userOid) {
+      throw GrpcError.failedPrecondition(
+          'request.userOid != user.permissions.userOid');
+    }
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -298,19 +355,22 @@ class UserService extends UserServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update users');
     }
-    final userPrivate = await _checkUserAndProtoIt(request.userOid);
+    final userPrivate = await _checkUserAndProtoIt(request.permissions.userOid);
     if (userPrivate.firmOid != userPermission.firmOid) {
-      throw GrpcError.permissionDenied('user belongs to a different firm');
+      throw GrpcError.permissionDenied(
+          'user cannot be updated because it belongs to a different firm');
     }
     try {
 //      final user = request.toProto3Json() as Map<String, dynamic>;
-      final userOid = ObjectId.fromHexString(request.userOid);
+      final userOid = ObjectId.fromHexString(request.permissions.userOid);
       final result = await collection.update(
           where.id(userOid),
           ModifierBuilder()
               .set('firstname', request.firstname)
               .set('lastname', request.lastname)
-              .set('mail', request.mail),
+              .set('mail', request.mail)
+              .set('permissions',
+                  request.permissions), // TODO check this might fail
           upsert: true);
       print(result);
 /*       if (result.hasWriteErrors) {
@@ -552,6 +612,8 @@ class UserService extends UserServiceBase {
       request.device.status = false;
       // set the boutiqueOid selected by web admin
       request.device.boutiqueOid = pairingResp.boutiqueOid;
+      request.device.id = ObjectIdProto(
+          oid: ObjectId.createId(DateTime.now().toUtc().second).hexString);
 
       firm.chains[chainIndex].devices.add(request.device);
 
@@ -625,9 +687,8 @@ class UserService extends UserServiceBase {
       if (index == -1) {
         throw GrpcError.notFound();
       }
-      // ** .oid would be safer, but not sure it is populated properly
       final deviceIndex = firmProto.chains[index].devices.indexWhere((d) =>
-          d.serialNumber == request.device.serialNumber &&
+          d.id.oid == request.device.id.oid &&
           d.boutiqueOid == request.device.boutiqueOid);
       if (deviceIndex == -1) {
         throw GrpcError.unknown('no device found');
@@ -647,28 +708,52 @@ class UserService extends UserServiceBase {
         throw GrpcError.unknown(
             'update != 1 ${result.document} ${result.serverResponses}');
       }
-
-      final newUser = UserPrivate.create()
-            ..firmOid = userPermission.firmOid
-            ..chainOids = Oids(oids: [request.chainOidAndBoutiqueOid.chainOid])
-            ..boutiqueOids =
-                Oids(oids: [request.chainOidAndBoutiqueOid.boutiqueOid])
-            ..firstname = 'caissier'
-            ..articleRights = RightSalesperson.article
-            ..boutiqueRights = RightSalesperson.boutique
-            ..contactRights = ContactRights(rights: [Right.read])
-            ..ticketRights = RightSalesperson.ticket
-            ..boolRights = BoolRights.create()
-          // all rights are set to false by default
-          ;
-
-      await createOne(call, newUser);
-
-      return StatusResponse()
-        ..type = StatusResponse_Type.UPDATED
-        ..timestamp = DateTime.now().timestampProto;
     } on GrpcError catch (e) {
       print('pairOneDevice error $e');
+      rethrow;
+    }
+
+    // create user for simple
+
+    return await _createDefaultDeviceCashier(
+        userPermission.firmOid,
+        request.chainOidAndBoutiqueOid.chainOid,
+        request.chainOidAndBoutiqueOid.boutiqueOid);
+  }
+
+  Future<StatusResponse> _createDefaultDeviceCashier(
+      String firmOid, String chainOid, String boutiqueOid) async {
+    try {
+      final userPrivate = UserPrivate.create()
+        // no password for simple cashier
+        //..passwordEncrypted = Encrypter(request.password).encrypted
+        ..firmOid = firmOid
+        ..chainOids = Oids(oids: [chainOid])
+        ..boutiqueOids = Oids(oids: [boutiqueOid])
+        ..articleRights = RightSalesperson.article
+        ..boutiqueRights = RightSalesperson.boutique
+        ..contactRights = ContactRights(rights: [Right.read])
+        ..ticketRights = RightSalesperson.ticket;
+      final result = await collection
+          .insertOne(userPrivate.toProto3Json as Map<String, dynamic>);
+      if (result.hasWriteErrors) {
+        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
+      }
+      final timestamp = DateTime.now().timestampProto;
+      if (result.ok == 1 && result.document != null) {
+        final mongoId = result.document!['_id']['oid'];
+        return StatusResponse()
+          ..id = mongoId
+          ..type = StatusResponse_Type
+              .CREATED // approving device is an updated but let's consider it is a creation
+          ..timestamp = timestamp;
+      } else {
+        return StatusResponse()
+          ..type = StatusResponse_Type.ERROR
+          ..timestamp = timestamp;
+      }
+    } on GrpcError catch (e) {
+      log('device creation error: $e on firmOid $firmOid, chainOid $chainOid, boutiqueOid $boutiqueOid');
       rethrow;
     }
   }

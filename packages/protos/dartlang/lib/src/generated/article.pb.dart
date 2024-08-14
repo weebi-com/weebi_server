@@ -20,7 +20,7 @@ export 'article.pbenum.dart';
 class CalibreMongo extends $pb.GeneratedMessage {
   factory CalibreMongo({
     CalibrePb? calibre,
-    $core.int? calibreUniqueId,
+    $core.int? calibreId,
     $core.String? firmOid,
     $core.String? chainOid,
     $core.String? userOid,
@@ -29,8 +29,8 @@ class CalibreMongo extends $pb.GeneratedMessage {
     if (calibre != null) {
       $result.calibre = calibre;
     }
-    if (calibreUniqueId != null) {
-      $result.calibreUniqueId = calibreUniqueId;
+    if (calibreId != null) {
+      $result.calibreId = calibreId;
     }
     if (firmOid != null) {
       $result.firmOid = firmOid;
@@ -49,7 +49,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibreMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article'), createEmptyInstance: create)
     ..aOM<CalibrePb>(1, _omitFieldNames ? '' : 'calibre', subBuilder: CalibrePb.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'calibreUniqueId', $pb.PbFieldType.O3, protoName: 'calibreUniqueId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
     ..aOS(3, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
     ..aOS(4, _omitFieldNames ? '' : 'chainOid', protoName: 'chainOid')
     ..aOS(5, _omitFieldNames ? '' : 'userOid', protoName: 'userOid')
@@ -90,13 +90,13 @@ class CalibreMongo extends $pb.GeneratedMessage {
   CalibrePb ensureCalibre() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get calibreUniqueId => $_getIZ(1);
+  $core.int get calibreId => $_getIZ(1);
   @$pb.TagNumber(2)
-  set calibreUniqueId($core.int v) { $_setSignedInt32(1, v); }
+  set calibreId($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasCalibreUniqueId() => $_has(1);
+  $core.bool hasCalibreId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCalibreUniqueId() => clearField(2);
+  void clearCalibreId() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get firmOid => $_getSZ(2);

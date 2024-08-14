@@ -6,9 +6,11 @@ import "article.proto";
 import "ticket/ticket_type.proto";
 // import "common/g_timestamp.proto";
 
+/// ticketNonUniqueId is to be combined with userOid
+/// local ids can lead to duplicates as each sellers from its own device can create contact 
 message TicketMongo {
     weebi.ticket.TicketPb ticket = 1 [json_name = 'ticket'];
-    int32 ticketNonUniqueId = 2 [json_name = 'ticketNonUniqueId']; // // to be combined with userOid
+    int32 ticketNonUniqueId = 2 [json_name = 'ticketNonUniqueId'];
     string userOid = 3 [json_name = 'userOid'];
     string boutiqueOid = 4 [json_name = 'boutiqueOid'];
     string firmOid = 5 [json_name = 'firmOid'];
@@ -21,7 +23,7 @@ message TicketMongo {
 // string lastTouchedByUsername = 7 [json_name = 'lastTouchedByUsername'];
 
 message TicketPb {
-  int32 id = 1 [json_name = 'id'];
+  int32 ticketNonUniqueId = 1 [json_name = 'id'];
   Counterfoil counterfoil = 2 [json_name = 'counterfoil'];
   enum PaymentTypePb {
     unknown = 0;

@@ -37,7 +37,7 @@ final $typed_data.Uint8List ticketMongoDescriptor = $convert.base64Decode(
 const TicketPb$json = {
   '1': 'TicketPb',
   '2': [
-    {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
+    {'1': 'ticketNonUniqueId', '3': 1, '4': 1, '5': 5, '10': 'id'},
     {'1': 'counterfoil', '3': 2, '4': 1, '5': 11, '6': '.weebi.ticket.Counterfoil', '10': 'counterfoil'},
     {'1': 'dateCreation', '3': 3, '4': 1, '5': 9, '10': 'date'},
     {'1': 'dateStatus', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
@@ -71,18 +71,19 @@ const TicketPb_PaymentTypePb$json = {
 
 /// Descriptor for `TicketPb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List ticketPbDescriptor = $convert.base64Decode(
-    'CghUaWNrZXRQYhIOCgJpZBgBIAEoBVICaWQSOwoLY291bnRlcmZvaWwYAiABKAsyGS53ZWViaS'
-    '50aWNrZXQuQ291bnRlcmZvaWxSC2NvdW50ZXJmb2lsEhoKDGRhdGVDcmVhdGlvbhgDIAEoCVIE'
-    'ZGF0ZRIkCgpkYXRlU3RhdHVzGAQgASgJUhBzdGF0dXNVcGRhdGVEYXRlEhYKBnN0YXR1cxgFIA'
-    'EoCFIGc3RhdHVzEi4KBWl0ZW1zGAYgAygLMhgud2VlYmkudGlja2V0Lkl0ZW1DYXJ0UGJSBWl0'
-    'ZW1zEj8KCnRpY2tldFR5cGUYByABKA4yHy53ZWViaS50aWNrZXRfdHlwZS5UaWNrZXRUeXBlUG'
-    'JSCnRpY2tldFR5cGUSRgoLcGF5bWVudFR5cGUYCCABKA4yJC53ZWViaS50aWNrZXQuVGlja2V0'
-    'UGIuUGF5bWVudFR5cGVQYlILcGF5bWVudFR5cGUSHAoJY29udGFjdElkGAkgASgFUgljb250YW'
-    'N0SWQSJwoEdGF4ZRgKIAEoCzITLndlZWJpLnRpY2tldC5UYXhQYlIEdGF4ZRIUCgVwcm9tbxgL'
-    'IAEoAVIFcHJvbW8SGgoIcmVjZWl2ZWQYDCABKAFSCHJlY2VpdmVkEiYKDmRpc2NvdW50QW1vdW'
-    '50GA0gASgBUg5kaXNjb3VudEFtb3VudBIYCgdjb21tZW50GA4gASgJUgdjb21tZW50ImgKDVBh'
-    'eW1lbnRUeXBlUGISCwoHdW5rbm93bhAAEggKBGNhc2gQARIICgRub3BlEAISDwoLbW9iaWxlTW'
-    '9uZXkQAxIKCgZjaGVxdWUQBBIOCgpjcmVkaXRDYXJkEAUSCQoFZ29vZHMQBg==');
+    'CghUaWNrZXRQYhIdChF0aWNrZXROb25VbmlxdWVJZBgBIAEoBVICaWQSOwoLY291bnRlcmZvaW'
+    'wYAiABKAsyGS53ZWViaS50aWNrZXQuQ291bnRlcmZvaWxSC2NvdW50ZXJmb2lsEhoKDGRhdGVD'
+    'cmVhdGlvbhgDIAEoCVIEZGF0ZRIkCgpkYXRlU3RhdHVzGAQgASgJUhBzdGF0dXNVcGRhdGVEYX'
+    'RlEhYKBnN0YXR1cxgFIAEoCFIGc3RhdHVzEi4KBWl0ZW1zGAYgAygLMhgud2VlYmkudGlja2V0'
+    'Lkl0ZW1DYXJ0UGJSBWl0ZW1zEj8KCnRpY2tldFR5cGUYByABKA4yHy53ZWViaS50aWNrZXRfdH'
+    'lwZS5UaWNrZXRUeXBlUGJSCnRpY2tldFR5cGUSRgoLcGF5bWVudFR5cGUYCCABKA4yJC53ZWVi'
+    'aS50aWNrZXQuVGlja2V0UGIuUGF5bWVudFR5cGVQYlILcGF5bWVudFR5cGUSHAoJY29udGFjdE'
+    'lkGAkgASgFUgljb250YWN0SWQSJwoEdGF4ZRgKIAEoCzITLndlZWJpLnRpY2tldC5UYXhQYlIE'
+    'dGF4ZRIUCgVwcm9tbxgLIAEoAVIFcHJvbW8SGgoIcmVjZWl2ZWQYDCABKAFSCHJlY2VpdmVkEi'
+    'YKDmRpc2NvdW50QW1vdW50GA0gASgBUg5kaXNjb3VudEFtb3VudBIYCgdjb21tZW50GA4gASgJ'
+    'Ugdjb21tZW50ImgKDVBheW1lbnRUeXBlUGISCwoHdW5rbm93bhAAEggKBGNhc2gQARIICgRub3'
+    'BlEAISDwoLbW9iaWxlTW9uZXkQAxIKCgZjaGVxdWUQBBIOCgpjcmVkaXRDYXJkEAUSCQoFZ29v'
+    'ZHMQBg==');
 
 @$core.Deprecated('Use counterfoilDescriptor instead')
 const Counterfoil$json = {

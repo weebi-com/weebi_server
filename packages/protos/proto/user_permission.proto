@@ -3,10 +3,18 @@ syntax = "proto3";
 package weebi.user_permissions;
 
 import "user.proto";
-// import "common/mongo.proto";
 
-// ! any addition in this object must also be echoed in _readUserPermissions in user_service_base.dart
-/// Permission encompass two notions : access (in the boutiques hierarchy), rights (CRUD on editable objects and bool on certain action/screen in app)
+// ! any addition in this object must also be echoed in user_service_base.dart in : 
+
+/// -  _readUserPermissions() 
+/// - createOne()
+/// - approveDevice()
+
+/// Permissions encompass two notions : 
+///  - access (in the boutiques hierarchy)
+///  - rights 
+///   - CRUD on editable objects
+///   - bool on certain action/screen in app
 
 /// boutiquesAccessible != user.boutiquesOids
 /// boutiquesAccessible encompass all boutiques access
@@ -27,7 +35,6 @@ import "user.proto";
 /// =>
 ///   userPermission.chainsAccessible = ['mall1', 'mall2']
 ///   userPermission.boutiquesAccessible = ['boutique1A', 'boutique1B', 'boutique2A']
-
 
 
 message UserPermissions {

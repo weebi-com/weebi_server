@@ -14,7 +14,7 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'boutique.pb.dart' as $9;
-import 'common/g_timestamp.pb.dart' as $18;
+import 'common/g_timestamp.pb.dart' as $17;
 import 'common/mongo.pb.dart' as $11;
 
 class Chain extends $pb.GeneratedMessage {
@@ -24,7 +24,7 @@ class Chain extends $pb.GeneratedMessage {
     $core.String? name,
     $core.Iterable<$9.Boutique>? boutiques,
     $core.Iterable<Device>? devices,
-    $18.Timestamp? lastUpdateTimestampUTC,
+    $17.Timestamp? lastUpdateTimestampUTC,
     $core.String? lastUpdatedByUserOid,
   }) {
     final $result = create();
@@ -61,7 +61,7 @@ class Chain extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'name')
     ..pc<$9.Boutique>(4, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $9.Boutique.create)
     ..pc<Device>(5, _omitFieldNames ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: Device.create)
-    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'lastUpdatedByUserOid', protoName: 'lastUpdatedByUserOid')
     ..hasRequiredFields = false
   ;
@@ -123,15 +123,15 @@ class Chain extends $pb.GeneratedMessage {
   $core.List<Device> get devices => $_getList(4);
 
   @$pb.TagNumber(6)
-  $18.Timestamp get lastUpdateTimestampUTC => $_getN(5);
+  $17.Timestamp get lastUpdateTimestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set lastUpdateTimestampUTC($18.Timestamp v) { setField(6, v); }
+  set lastUpdateTimestampUTC($17.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasLastUpdateTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
   void clearLastUpdateTimestampUTC() => clearField(6);
   @$pb.TagNumber(6)
-  $18.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(5);
+  $17.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $core.String get lastUpdatedByUserOid => $_getSZ(6);

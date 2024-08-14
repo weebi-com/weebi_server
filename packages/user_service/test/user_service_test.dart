@@ -32,8 +32,12 @@ void main() async {
     );
     await db.createCollection(userService.collection.collectionName);
     await db.createCollection(boutiqueService.collection.collectionName);
-    final responseUser =
-        await userService.createOne(null, UserPrivateDummy.userNoId);
+    final responseUser = await userService.createOne(
+        null,
+        CreateOneRequest(
+          userInfo: UserInfoDummy.userInfoNoId,
+          password: '1234',
+        ));
     final response =
         await boutiqueService.createOneFirm(null, FirmDummy.firmNoId);
 
@@ -52,10 +56,11 @@ void main() async {
   });
 
   test('test replaceOne', () async {
+    final permissions = UserPermissions.create()..userOid = userOid;
     final userLili = UserInfo()
       ..firstname = 'lili'
       ..lastname = 'biscuit'
-      ..userOid = userOid;
+      ..permissions = permissions;
     final response = await userService.updateOne(null, userLili);
 
     expect(response.type, StatusResponse_Type.UPDATED);

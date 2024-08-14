@@ -21,6 +21,9 @@ extension ObjectIdNastyBoogie on Map<String, dynamic> {
   /// Disclaimer it only covers x5 levels deep of embedded docs
   /// if more needed dig at your own risk
   /// see issue https://github.com/google/protobuf.dart/issues/940
+
+//DEPRECATED
+
   Map<String, dynamic> get properOid {
     for (final entry in entries) {
       if (entry.key == '_id') {

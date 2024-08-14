@@ -3,6 +3,16 @@ import 'package:user_service/user_service.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
+abstract class _Helpers {
+  static SelectorBuilder selectTicket(String firmOid, String chainOid,
+          String userOid, int ticketNonUniqueId) =>
+      where
+          .eq('firmOid', firmOid)
+          .eq('chainOid', chainOid)
+          .eq('userOid', userOid)
+          .eq('ticketNonUniqueId', ticketNonUniqueId);
+}
+
 class TicketService extends TicketServiceBase {
   final Db _db;
   final DbCollection collection;
@@ -37,7 +47,7 @@ class TicketService extends TicketServiceBase {
     try {
       final ticketMongo = TicketMongo.create()
         ..ticket = request.ticket
-        ..ticketNonUniqueId = request.ticket.id
+        ..ticketNonUniqueId = request.ticket.ticketNonUniqueId
         ..boutiqueOid = request.ticket.counterfoil.boutiqueOid
         ..chainOid = request.ticket.counterfoil.chainOid
         ..firmOid = userPermission.firmOid
@@ -49,11 +59,11 @@ class TicketService extends TicketServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id'] as ObjectId;
+        final mongoId = result.document!['_id']['oid'];
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..message = mongoId.oid
+          ..id = mongoId
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -99,6 +109,7 @@ class TicketService extends TicketServiceBase {
       isOneBoutiqueFilter = true;
     }
     var selector = SelectorBuilder();
+    // TODO : also include userOid as well as device for better filtering
     if (isOneBoutiqueFilter) {
       selector = where
           .eq('firmOid', userPermission.firmOid)
@@ -190,11 +201,13 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update ticket status');
     }
-    final selector = where
-        .eq('firmOid', request.ticket.counterfoil.firmOid)
-        .eq('chainOid', request.ticket.counterfoil.chainOid)
-        .eq('boutiqueOid', request.ticket.counterfoil.boutiqueOid)
-        .eq('ticketId', request.ticket.id);
+    final selector = _Helpers.selectTicket(
+      request.ticket.counterfoil.firmOid,
+      request.ticket.counterfoil.chainOid,
+      request.ticket.counterfoil.userOid,
+      request.ticket.ticketNonUniqueId,
+    );
+
     try {
       final result = await collection.updateOne(
         selector,
@@ -207,11 +220,11 @@ class TicketService extends TicketServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1) {
-        // final mongoId = result.document!['_id'] as ObjectId;
+        // final mongoId = result.document!['_id']['oid'];
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.UPDATED
-          // ..message = mongoId.oid
+          // ..id= mongoId.oid
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -251,12 +264,11 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete ticket');
     }
-
-    final selector = where
-        .eq('firmOid', request.ticket.counterfoil.firmOid)
-        .eq('chainOid', request.ticket.counterfoil.chainOid)
-        .eq('boutiqueOid', request.ticket.counterfoil.boutiqueOid)
-        .eq('ticketId', request.ticket.id);
+    final selector = _Helpers.selectTicket(
+        request.ticket.counterfoil.firmOid,
+        request.ticket.counterfoil.chainOid,
+        request.ticket.counterfoil.userOid,
+        request.ticket.ticketNonUniqueId);
 
     try {
       await collection.deleteOne(selector);

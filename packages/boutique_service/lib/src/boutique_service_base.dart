@@ -16,6 +16,9 @@ class BoutiqueService extends BoutiqueServiceBase {
   BoutiqueService(this._db, {this.isTest = false, this.userPermissionIfTest})
       : collection = _db.collection(collectionName);
 
+  /// only one firm per 'company' using weebi
+  /// 1. user signup and get a userOid
+  /// 2. user create a firm, firmOid == userOid for simplicity
   @override
   Future<StatusResponse> createOneFirm(ServiceCall? call, Firm request) async {
     _db.isConnected ? null : await _db.open();
@@ -27,10 +30,19 @@ class BoutiqueService extends BoutiqueServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to create firm');
     }
+    // ? should we check that no other firm exist for this accouunt ?
 
-    //TODO here and on all creates, do clear the id just in case someone fancies messing with it
-    // what about chain and boutique ids ?
-    request.clearId();
+    // set the appropriate ids
+    request.id = ObjectIdProto(oid: userPermission.firmOid);
+    request.chains.first
+      ..id = ObjectIdProto(
+          oid: ObjectId.createId(DateTime.now().toUtc().second).hexString)
+      ..firmOid = userPermission.firmOid;
+    request.chains.first.boutiques.first
+      ..id = ObjectIdProto(
+          oid: ObjectId.createId(DateTime.now().toUtc().second).hexString)
+      ..chainOid = request.chains.first.id.oid
+      ..firmOid = userPermission.firmOid;
     try {
       final result = await collection
           .insertOne(request.toProto3Json() as Map<String, dynamic>);
@@ -39,11 +51,11 @@ class BoutiqueService extends BoutiqueServiceBase {
       }
       if (result.ok == 1 && result.document != null) {
         //print(result.document);
-        final mongoId = result.document!['_id'] as ObjectId;
+        final mongoId = result.document!['_id']['oid'];
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..message = mongoId.oid
+          ..id = mongoId
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -96,7 +108,44 @@ class BoutiqueService extends BoutiqueServiceBase {
   }
 
   /// used to find user access levels called by UserService
-  Future<List<String>> readAllBoutiquesInUserChains(UserPrivate user) async {
+  /// consider making this a "public" gRPC
+  Future<List<String>> readAllBoutiquesInChains(
+      String firmOid, List<String> chainOids) async {
+    _db.isConnected ? null : await _db.open();
+    try {
+      final firmMongo =
+          await collection.findOne(where.id(ObjectId.fromHexString(firmOid)));
+
+      if (firmMongo == null) {
+        throw GrpcError.notFound('firm not found');
+      }
+      final firm = Firm()
+        ..mergeFromProto3Json(firmMongo.properOid, ignoreUnknownFields: true);
+
+      final boutiques = <Boutique>[];
+      for (final requestChainOid in chainOids) {
+        for (final chain in firm.chains) {
+          if (firmOid == chain.firmOid) {
+            if (requestChainOid == chain.id.oid) {
+              for (final boutique in chain.boutiques) {
+                if (boutique.firmOid == firmOid &&
+                    boutique.chainOid == requestChainOid) {
+                  boutiques.add(boutique);
+                }
+              }
+            }
+          }
+        }
+      }
+      return boutiques.map((e) => e.id.oid).toList();
+    } on GrpcError catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  /// used to find user access levels called by UserService
+  Future<List<String>> readAllBoutiquesInChain(UserPrivate user) async {
     _db.isConnected ? null : await _db.open();
     try {
       final firmMongo = await collection
@@ -172,11 +221,11 @@ class BoutiqueService extends BoutiqueServiceBase {
       }
       if (result.ok == 1 && result.document != null) {
         print(result.document.toString());
-        final mongoId = result.document!['_id'] as ObjectId;
+        final mongoId = result.document!['_id']['oid'];
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..message = mongoId.oid
+          ..id = mongoId
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -229,10 +278,10 @@ class BoutiqueService extends BoutiqueServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id'] as ObjectId;
+        final mongoId = result.document!['_id']['oid'];
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..message = mongoId.oid
+          ..id = mongoId
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()

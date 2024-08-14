@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import 'package:user_service/src/extension.dart';
 import 'package:user_service/user_testing.dart';
 
-void main(List<String> args) async {
+void main() async {
   test('objectids', () async {
     final collectionName = 'testing_objectids';
     final db = TestHelper.localDb;

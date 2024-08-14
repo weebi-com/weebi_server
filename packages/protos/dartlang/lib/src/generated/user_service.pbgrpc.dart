@@ -18,8 +18,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'common/empty.pb.dart' as $0;
 import 'common/g_common.pb.dart' as $1;
 import 'common/mongo.pb.dart' as $11;
-import 'user.pb.dart' as $12;
-import 'user_permission.pb.dart' as $13;
+import 'user_permission.pb.dart' as $12;
 import 'user_service.pb.dart' as $10;
 
 export 'user_service.pb.dart';
@@ -54,14 +53,14 @@ class UserServiceClient extends $grpc.Client {
       '/weebi.user.service.UserService/updateDeviceDefaultPassword',
       ($10.UpdateDevicePasswordRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$createOne = $grpc.ClientMethod<$12.UserPrivate, $1.StatusResponse>(
+  static final _$createOne = $grpc.ClientMethod<$10.CreateOneRequest, $1.StatusResponse>(
       '/weebi.user.service.UserService/createOne',
-      ($12.UserPrivate value) => value.writeToBuffer(),
+      ($10.CreateOneRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$readUserPermissionsByToken = $grpc.ClientMethod<$0.Empty, $13.UserPermissions>(
+  static final _$readUserPermissionsByToken = $grpc.ClientMethod<$0.Empty, $12.UserPermissions>(
       '/weebi.user.service.UserService/readUserPermissionsByToken',
       ($0.Empty value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $13.UserPermissions.fromBuffer(value));
+      ($core.List<$core.int> value) => $12.UserPermissions.fromBuffer(value));
   static final _$readOne = $grpc.ClientMethod<$10.UserOid, $10.UserInfo>(
       '/weebi.user.service.UserService/readOne',
       ($10.UserOid value) => value.writeToBuffer(),
@@ -109,11 +108,11 @@ class UserServiceClient extends $grpc.Client {
     return $createUnaryCall(_$updateDeviceDefaultPassword, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> createOne($12.UserPrivate request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> createOne($10.CreateOneRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createOne, request, options: options);
   }
 
-  $grpc.ResponseFuture<$13.UserPermissions> readUserPermissionsByToken($0.Empty request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$12.UserPermissions> readUserPermissionsByToken($0.Empty request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readUserPermissionsByToken, request, options: options);
   }
 
@@ -184,20 +183,20 @@ abstract class UserServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $10.UpdateDevicePasswordRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$12.UserPrivate, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$10.CreateOneRequest, $1.StatusResponse>(
         'createOne',
         createOne_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $12.UserPrivate.fromBuffer(value),
+        ($core.List<$core.int> value) => $10.CreateOneRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $13.UserPermissions>(
+    $addMethod($grpc.ServiceMethod<$0.Empty, $12.UserPermissions>(
         'readUserPermissionsByToken',
         readUserPermissionsByToken_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($13.UserPermissions value) => value.writeToBuffer()));
+        ($12.UserPermissions value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$10.UserOid, $10.UserInfo>(
         'readOne',
         readOne_Pre,
@@ -249,11 +248,11 @@ abstract class UserServiceBase extends $grpc.Service {
     return updateDeviceDefaultPassword(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> createOne_Pre($grpc.ServiceCall call, $async.Future<$12.UserPrivate> request) async {
+  $async.Future<$1.StatusResponse> createOne_Pre($grpc.ServiceCall call, $async.Future<$10.CreateOneRequest> request) async {
     return createOne(call, await request);
   }
 
-  $async.Future<$13.UserPermissions> readUserPermissionsByToken_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+  $async.Future<$12.UserPermissions> readUserPermissionsByToken_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
     return readUserPermissionsByToken(call, await request);
   }
 
@@ -276,8 +275,8 @@ abstract class UserServiceBase extends $grpc.Service {
   $async.Future<$1.StatusResponse> approveDevice($grpc.ServiceCall call, $10.ApproveDeviceRequest request);
   $async.Future<$10.Tokens> authenticateWithDevice($grpc.ServiceCall call, $10.DeviceLoginRequest request);
   $async.Future<$1.StatusResponse> updateDeviceDefaultPassword($grpc.ServiceCall call, $10.UpdateDevicePasswordRequest request);
-  $async.Future<$1.StatusResponse> createOne($grpc.ServiceCall call, $12.UserPrivate request);
-  $async.Future<$13.UserPermissions> readUserPermissionsByToken($grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$1.StatusResponse> createOne($grpc.ServiceCall call, $10.CreateOneRequest request);
+  $async.Future<$12.UserPermissions> readUserPermissionsByToken($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$10.UserInfo> readOne($grpc.ServiceCall call, $10.UserOid request);
   $async.Future<$1.StatusResponse> updateOne($grpc.ServiceCall call, $10.UserInfo request);
   $async.Future<$1.StatusResponse> deleteOne($grpc.ServiceCall call, $10.UserOid request);

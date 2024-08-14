@@ -9,15 +9,15 @@ import "common/phone.proto";
 import "common/g_common.proto";
 
 message FindContactRequest {
-  string firmOid = 1 [json_name = 'firmOid'];
-  string contactChainOid = 2 [json_name = 'contactChainOid'];
-  string contactUserOid = 3 [json_name = 'contactUserOid'];
-  int32 contactNonUniqueId = 4 [json_name = 'contactNonUniqueId'];
-  optional string firstName =  5 [json_name = 'firstName'];
-  optional string lastName =  6 [json_name = 'lastName'];
-  optional string mail =  7 [json_name = 'mail'];
-  optional weebi.common.phone.Phone phone =  8 [json_name = 'phone'];
-  optional weebi.common.address.Address address = 9 [json_name = 'addressFull'];
+  // string firmOid = 1 [json_name = 'firmOid']; // deduced from bearer token
+  string contactChainOid = 1 [json_name = 'contactChainOid'];
+  string contactUserOid = 2 [json_name = 'contactUserOid'];
+  int32 contactNonUniqueId = 3 [json_name = 'contactNonUniqueId'];
+  optional string firstName =  4 [json_name = 'firstName'];
+  optional string lastName =  5 [json_name = 'lastName'];
+  optional string mail =  6 [json_name = 'mail'];
+  optional weebi.common.phone.Phone phone =  7 [json_name = 'phone'];
+  optional weebi.common.address.Address address = 8 [json_name = 'addressFull'];
 }
 
 message ReadAllContactsRequest {
@@ -27,7 +27,8 @@ message ReadAllContactsRequest {
 
 message ContactRequest {
   string chainOid = 1;
-  weebi.contact.ContactPb contact = 2;
+  string contactUserOid = 2;
+  weebi.contact.ContactPb contact = 3;
 }
 
 message ContactsResponse {

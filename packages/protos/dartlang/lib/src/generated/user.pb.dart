@@ -13,7 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'common/g_timestamp.pb.dart' as $18;
+import 'common/g_timestamp.pb.dart' as $17;
 import 'common/mongo.pb.dart' as $11;
 import 'user.pbenum.dart';
 
@@ -535,6 +535,8 @@ class Oids extends $pb.GeneratedMessage {
   $core.List<$core.String> get oids => $_getList(0);
 }
 
+/// / this is how users are stored in db
+/// / this model should not be exposed / used by clients
 class UserPrivate extends $pb.GeneratedMessage {
   factory UserPrivate({
     $11.ObjectIdProto? id,
@@ -552,7 +554,7 @@ class UserPrivate extends $pb.GeneratedMessage {
     UserManagementRights? userManagementRights,
     BoolRights? boolRights,
     $core.String? lastUpdatedByUserOid,
-    $18.Timestamp? lastUpdateTimestampUTC,
+    $17.Timestamp? lastUpdateTimestampUTC,
     $core.String? firstname,
     $core.String? lastname,
   }) {
@@ -633,7 +635,7 @@ class UserPrivate extends $pb.GeneratedMessage {
     ..aOM<UserManagementRights>(13, _omitFieldNames ? '' : 'userManagementRights', protoName: 'userManagementRights', subBuilder: UserManagementRights.create)
     ..aOM<BoolRights>(14, _omitFieldNames ? '' : 'boolRights', protoName: 'boolRights', subBuilder: BoolRights.create)
     ..aOS(15, _omitFieldNames ? '' : 'lastUpdatedByUserOid', protoName: 'lastUpdatedByUserOid')
-    ..aOM<$18.Timestamp>(16, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(16, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOS(17, _omitFieldNames ? '' : 'firstname')
     ..aOS(18, _omitFieldNames ? '' : 'lastname')
     ..hasRequiredFields = false
@@ -819,15 +821,15 @@ class UserPrivate extends $pb.GeneratedMessage {
   void clearLastUpdatedByUserOid() => clearField(15);
 
   @$pb.TagNumber(16)
-  $18.Timestamp get lastUpdateTimestampUTC => $_getN(15);
+  $17.Timestamp get lastUpdateTimestampUTC => $_getN(15);
   @$pb.TagNumber(16)
-  set lastUpdateTimestampUTC($18.Timestamp v) { setField(16, v); }
+  set lastUpdateTimestampUTC($17.Timestamp v) { setField(16, v); }
   @$pb.TagNumber(16)
   $core.bool hasLastUpdateTimestampUTC() => $_has(15);
   @$pb.TagNumber(16)
   void clearLastUpdateTimestampUTC() => clearField(16);
   @$pb.TagNumber(16)
-  $18.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(15);
+  $17.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(15);
 
   @$pb.TagNumber(17)
   $core.String get firstname => $_getSZ(16);

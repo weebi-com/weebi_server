@@ -13,7 +13,6 @@ class AddressDummy {
 
 class BoutiqueDummy {
   static final boutiqueNoId = Boutique.create()
-    ..id = ObjectIdProto(oid: '665e12f798357783e8000002')
     ..address = AddressDummy.address
     ..name = 'dummy boutique'
     ..phone = Phone(countryCode: 33, number: '773116767');
@@ -79,10 +78,42 @@ class FirmDummy {
 
 class UserInfoDummy {
   static final userInfo = UserInfo(
-    userOid: '665e12f798357783e8000008',
-    firstname: 'dev',
-    lastname: 'tester',
-  );
+      mail: 'dev@weebi.com',
+      firstname: 'dev',
+      lastname: 'tester',
+      userOid: '665e12f798357783e8000008',
+      permissions: UserPermissions.create()
+        ..firmOid = '665e12f798357783e8000000'
+        ..userOid = '665e12f798357783e8000008'
+        ..articleRights = RightsAdmin.article
+        ..boutiqueRights = RightsAdmin.boutique
+        ..contactRights = RightsAdmin.contact
+        ..chainRights = RightsAdmin.chain
+        ..firmRights = RightsAdmin.firm
+        ..ticketRights = RightsAdmin.ticket
+        ..boolRights = BoolRights()
+        ..userManagementRights = RightsAdmin.userManagement
+        ..boutiquesAccessible = Oids(oids: ['ALL'])
+        ..chainsAccessible = Oids(oids: ['665e12f798357783e8000001']));
+
+  static final userInfoNoId = UserInfo(
+      mail: 'dev@weebi.com',
+      firstname: 'dev',
+      lastname: 'tester',
+      //userOid: '665e12f798357783e8000008',
+      permissions: UserPermissions.create()
+        ..firmOid = '665e12f798357783e8000000'
+        //..userOid = '665e12f798357783e8000008'
+        ..articleRights = RightsAdmin.article
+        ..boutiqueRights = RightsAdmin.boutique
+        ..contactRights = RightsAdmin.contact
+        ..chainRights = RightsAdmin.chain
+        ..firmRights = RightsAdmin.firm
+        ..ticketRights = RightsAdmin.ticket
+        ..boolRights = BoolRights()
+        ..userManagementRights = RightsAdmin.userManagement
+        ..boutiquesAccessible = Oids(oids: ['ALL'])
+        ..chainsAccessible = Oids(oids: ['665e12f798357783e8000001']));
 }
 
 class UserPrivateDummy {

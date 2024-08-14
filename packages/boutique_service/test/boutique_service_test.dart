@@ -13,6 +13,7 @@ void main() async {
 
   String firmOid = '';
   String chainOid = '';
+  String boutiqueOid = '';
 
   late BoutiqueService boutiqueService;
 
@@ -56,16 +57,22 @@ void main() async {
         FirmDummy.firmNoId.lastUpdateTimestampUTC);
     firmOid = response.id.oid;
     chainOid = response.chains.first.id.oid;
+    boutiqueOid = response.chains.first.boutiques.first.id.oid;
   });
   test('test upsertOneChain', () async {
     var userService = UserService(
       db,
       boutiqueService,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission,
+      userPermissionIfTest: UserPrivateDummy.adminPermission
+        ..firmOid = firmOid
+        ..chainsAccessible = Oids(oids: [chainOid]),
     );
-    final responseUser =
-        await userService.createOne(null, UserPrivateDummy.userNoId);
+
+    final dd = UserInfoDummy.userInfoNoId;
+    dd.permissions.firmOid = firmOid;
+    final responseUser = await userService.createOne(
+        null, CreateOneRequest(password: '1234', userInfo: dd));
     UserPrivateDummy.adminPermission.firmOid = firmOid;
     UserPrivateDummy.adminPermission.chainsAccessible = Oids(oids: [chainOid]);
     UserPrivateDummy.adminPermission.userOid = responseUser.id;
@@ -73,6 +80,7 @@ void main() async {
     boutiqueService..userPermissionIfTest = UserPrivateDummy.adminPermission;
 
     final liliChain = ChainDummy.chainNoId;
+    print('chainOid $chainOid');
     liliChain
       ..name = 'Lili chain'
       ..firmOid = firmOid
@@ -85,8 +93,11 @@ void main() async {
   });
 
   test('test upsertOneBoutique', () async {
-    final boutiqueLili = BoutiqueDummy.boutique;
-    boutiqueLili.name = 'Lili boutique';
+    final boutiqueLili = BoutiqueDummy.boutiqueNoId
+      ..name = 'Lili boutique'
+      ..firmOid = firmOid
+      ..chainOid = chainOid
+      ..id = ObjectIdProto(oid: boutiqueOid);
 
     final response =
         await boutiqueService.updateOneBoutique(null, boutiqueLili);

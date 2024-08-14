@@ -10,10 +10,10 @@ import "common/g_common.proto";
 
 message FindTicketRequest {
   // weebi.common.mongo.MallAndBoutiqueOids chainAndBoutiqueOids = 1 [json_name = 'mallAndBoutiqueOids'];
-  string firmOid = 1 [json_name = 'firmOid'];
-  string ticketChainOid = 2 [json_name = 'ticketChainOid'];
-  string ticketUserOid = 3 [json_name = 'ticketUserOid'];
-  int32 ticketNonUniqueId = 4 [json_name = 'ticketNonUniqueId'];
+  // string firmOid = 1 [json_name = 'firmOid']; deduced from bearer token
+  string ticketChainOid = 1 [json_name = 'ticketChainOid'];
+  string ticketUserOid = 2 [json_name = 'ticketUserOid'];
+  int32 ticketNonUniqueId = 3 [json_name = 'ticketNonUniqueId'];
 }
 
 message TicketRequest {

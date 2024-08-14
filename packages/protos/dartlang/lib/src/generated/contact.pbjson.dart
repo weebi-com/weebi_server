@@ -36,7 +36,7 @@ final $typed_data.Uint8List contactMongoDescriptor = $convert.base64Decode(
 const ContactPb$json = {
   '1': 'ContactPb',
   '2': [
-    {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
+    {'1': 'contactNonUniqueId', '3': 1, '4': 1, '5': 5, '10': 'id'},
     {'1': 'dateCreation', '3': 2, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'dateUpdate', '3': 3, '4': 1, '5': 9, '10': 'updateDate'},
     {'1': 'dateStatus', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
@@ -68,15 +68,15 @@ const ContactPb_OtherAttributesEntry$json = {
 
 /// Descriptor for `ContactPb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactPbDescriptor = $convert.base64Decode(
-    'CglDb250YWN0UGISDgoCaWQYASABKAVSAmlkEiIKDGRhdGVDcmVhdGlvbhgCIAEoCVIMY3JlYX'
-    'Rpb25EYXRlEh4KCmRhdGVVcGRhdGUYAyABKAlSCnVwZGF0ZURhdGUSJAoKZGF0ZVN0YXR1cxgE'
-    'IAEoCVIQc3RhdHVzVXBkYXRlRGF0ZRIWCgZzdGF0dXMYBSABKAhSBnN0YXR1cxIcCglmaXJzdE'
-    '5hbWUYBiABKAlSCWZpcnN0TmFtZRIaCghsYXN0TmFtZRgHIAEoCVIIbGFzdE5hbWUSEgoEbWFp'
-    'bBgIIAEoCVIEbWFpbBIvCgVwaG9uZRgJIAEoCzIZLndlZWJpLmNvbW1vbi5waG9uZS5QaG9uZV'
-    'IFcGhvbmUSOwoHYWRkcmVzcxgKIAEoCzIdLndlZWJpLmNvbW1vbi5hZGRyZXNzLkFkZHJlc3NS'
-    'C2FkZHJlc3NGdWxsEhwKCW92ZXJkcmFmdBgLIAEoBVIJb3ZlcmRyYWZ0EhgKBHRhZ3MYDCADKA'
-    'lSCmNhdGVnb3JpZXMSWQoQb3RoZXJfYXR0cmlidXRlcxhjIAMoCzItLndlZWJpLmNvbnRhY3Qu'
-    'Q29udGFjdFBiLk90aGVyQXR0cmlidXRlc0VudHJ5UhBvdGhlcl9hdHRyaWJ1dGVzGkIKFE90aG'
-    'VyQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1'
-    'ZToCOAFKBAgNEGM=');
+    'CglDb250YWN0UGISHgoSY29udGFjdE5vblVuaXF1ZUlkGAEgASgFUgJpZBIiCgxkYXRlQ3JlYX'
+    'Rpb24YAiABKAlSDGNyZWF0aW9uRGF0ZRIeCgpkYXRlVXBkYXRlGAMgASgJUgp1cGRhdGVEYXRl'
+    'EiQKCmRhdGVTdGF0dXMYBCABKAlSEHN0YXR1c1VwZGF0ZURhdGUSFgoGc3RhdHVzGAUgASgIUg'
+    'ZzdGF0dXMSHAoJZmlyc3ROYW1lGAYgASgJUglmaXJzdE5hbWUSGgoIbGFzdE5hbWUYByABKAlS'
+    'CGxhc3ROYW1lEhIKBG1haWwYCCABKAlSBG1haWwSLwoFcGhvbmUYCSABKAsyGS53ZWViaS5jb2'
+    '1tb24ucGhvbmUuUGhvbmVSBXBob25lEjsKB2FkZHJlc3MYCiABKAsyHS53ZWViaS5jb21tb24u'
+    'YWRkcmVzcy5BZGRyZXNzUgthZGRyZXNzRnVsbBIcCglvdmVyZHJhZnQYCyABKAVSCW92ZXJkcm'
+    'FmdBIYCgR0YWdzGAwgAygJUgpjYXRlZ29yaWVzElkKEG90aGVyX2F0dHJpYnV0ZXMYYyADKAsy'
+    'LS53ZWViaS5jb250YWN0LkNvbnRhY3RQYi5PdGhlckF0dHJpYnV0ZXNFbnRyeVIQb3RoZXJfYX'
+    'R0cmlidXRlcxpCChRPdGhlckF0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2'
+    'YWx1ZRgCIAEoCVIFdmFsdWU6AjgBSgQIDRBj');
 

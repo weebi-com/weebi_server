@@ -8,7 +8,6 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:contact_service/contact_service.dart';
 import 'package:user_service/user_testing.dart';
 
-// TODO test this again with userOid new process might fail
 void main() async {
   final db = TestHelper.localDb;
   final connection = Connection(ConnectionManager(db));
@@ -39,8 +38,10 @@ void main() async {
   });
 
   test('test insertOne', () async {
-    final contactRequest =
-        ContactRequest(contact: contactDummy, chainOid: chainOid.oid);
+    final contactRequest = ContactRequest(
+        contact: contactDummy,
+        chainOid: chainOid.oid,
+        contactUserOid: UserInfoDummy.userInfo.permissions.userOid);
     final response = await contactService.createOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.CREATED);
   });
@@ -54,9 +55,8 @@ void main() async {
     final response = await contactService.readOne(
       null,
       FindContactRequest(
-        firmOid: firmOid.oid,
         contactChainOid: chainOid.oid,
-        contactUserOid: UserInfoDummy.userInfo.userOid,
+        contactUserOid: UserInfoDummy.userInfo.permissions.userOid,
         contactNonUniqueId: 1,
       ),
     );
@@ -73,8 +73,11 @@ void main() async {
         lili.toMap(),
         ignoreUnknownFields: true,
       );
-    final contactRequest =
-        ContactRequest(chainOid: chainOid.oid, contact: contactLili);
+    final contactRequest = ContactRequest(
+      chainOid: chainOid.oid,
+      contact: contactLili,
+      contactUserOid: UserInfoDummy.userInfo.userOid,
+    );
     // ignore: unused_local_variable
     final response = await contactService.replaceOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.UPDATED);
@@ -86,8 +89,11 @@ void main() async {
   });
 
   test('test deleteOne ', () async {
-    final contactRequest =
-        ContactRequest(chainOid: chainOid.oid, contact: contactDummy);
+    final contactRequest = ContactRequest(
+      chainOid: chainOid.oid,
+      contact: contactDummy,
+      contactUserOid: UserInfoDummy.userInfo.userOid,
+    );
     // ignore: unused_local_variable
     final response = await contactService.deleteOne(null, contactRequest);
 

@@ -113,24 +113,6 @@ final $typed_data.Uint8List tokensDescriptor = $convert.base64Decode(
     'CgZUb2tlbnMSIAoLYWNjZXNzVG9rZW4YASABKAlSC2FjY2Vzc1Rva2VuEiIKDHJlZnJlc2hUb2'
     'tlbhgCIAEoCVIMcmVmcmVzaFRva2Vu');
 
-@$core.Deprecated('Use userInfoDescriptor instead')
-const UserInfo$json = {
-  '1': 'UserInfo',
-  '2': [
-    {'1': 'userOid', '3': 1, '4': 1, '5': 9, '10': 'userOid'},
-    {'1': 'firmOid', '3': 2, '4': 1, '5': 9, '10': 'firmOid'},
-    {'1': 'firstname', '3': 3, '4': 1, '5': 9, '10': 'firstname'},
-    {'1': 'lastname', '3': 4, '4': 1, '5': 9, '10': 'lastname'},
-    {'1': 'mail', '3': 5, '4': 1, '5': 9, '10': 'mail'},
-  ],
-};
-
-/// Descriptor for `UserInfo`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List userInfoDescriptor = $convert.base64Decode(
-    'CghVc2VySW5mbxIYCgd1c2VyT2lkGAEgASgJUgd1c2VyT2lkEhgKB2Zpcm1PaWQYAiABKAlSB2'
-    'Zpcm1PaWQSHAoJZmlyc3RuYW1lGAMgASgJUglmaXJzdG5hbWUSGgoIbGFzdG5hbWUYBCABKAlS'
-    'CGxhc3RuYW1lEhIKBG1haWwYBSABKAlSBG1haWw=');
-
 @$core.Deprecated('Use updateDevicePasswordRequestDescriptor instead')
 const UpdateDevicePasswordRequest$json = {
   '1': 'UpdateDevicePasswordRequest',
@@ -144,6 +126,55 @@ const UpdateDevicePasswordRequest$json = {
 final $typed_data.Uint8List updateDevicePasswordRequestDescriptor = $convert.base64Decode(
     'ChtVcGRhdGVEZXZpY2VQYXNzd29yZFJlcXVlc3QSGgoIY2hhaW5PaWQYASABKAlSCGNoYWluT2'
     'lkEisKBmRldmljZRgCIAEoCzITLndlZWJpLmNoYWluLkRldmljZVIGZGV2aWNl');
+
+@$core.Deprecated('Use userInfoDescriptor instead')
+const UserInfo$json = {
+  '1': 'UserInfo',
+  '2': [
+    {'1': 'userOid', '3': 1, '4': 1, '5': 9, '10': 'userOid'},
+    {'1': 'mail', '3': 2, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'firstname', '3': 3, '4': 1, '5': 9, '10': 'firstname'},
+    {'1': 'lastname', '3': 4, '4': 1, '5': 9, '10': 'lastname'},
+    {'1': 'permissions', '3': 5, '4': 1, '5': 11, '6': '.weebi.user_permissions.UserPermissions', '10': 'permissions'},
+  ],
+};
+
+/// Descriptor for `UserInfo`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List userInfoDescriptor = $convert.base64Decode(
+    'CghVc2VySW5mbxIYCgd1c2VyT2lkGAEgASgJUgd1c2VyT2lkEhIKBG1haWwYAiABKAlSBG1haW'
+    'wSHAoJZmlyc3RuYW1lGAMgASgJUglmaXJzdG5hbWUSGgoIbGFzdG5hbWUYBCABKAlSCGxhc3Ru'
+    'YW1lEkkKC3Blcm1pc3Npb25zGAUgASgLMicud2VlYmkudXNlcl9wZXJtaXNzaW9ucy5Vc2VyUG'
+    'VybWlzc2lvbnNSC3Blcm1pc3Npb25z');
+
+@$core.Deprecated('Use createOneRequestDescriptor instead')
+const CreateOneRequest$json = {
+  '1': 'CreateOneRequest',
+  '2': [
+    {'1': 'userInfo', '3': 1, '4': 1, '5': 11, '6': '.weebi.user.service.UserInfo', '10': 'userInfo'},
+    {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
+    {'1': 'isFirstUser', '3': 3, '4': 1, '5': 8, '10': 'isFirstUser'},
+  ],
+};
+
+/// Descriptor for `CreateOneRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createOneRequestDescriptor = $convert.base64Decode(
+    'ChBDcmVhdGVPbmVSZXF1ZXN0EjgKCHVzZXJJbmZvGAEgASgLMhwud2VlYmkudXNlci5zZXJ2aW'
+    'NlLlVzZXJJbmZvUgh1c2VySW5mbxIaCghwYXNzd29yZBgCIAEoCVIIcGFzc3dvcmQSIAoLaXNG'
+    'aXJzdFVzZXIYAyABKAhSC2lzRmlyc3RVc2Vy');
+
+@$core.Deprecated('Use passwordUpdateRequestDescriptor instead')
+const PasswordUpdateRequest$json = {
+  '1': 'PasswordUpdateRequest',
+  '2': [
+    {'1': 'userOid', '3': 1, '4': 1, '5': 9, '10': 'userOid'},
+    {'1': 'firmOid', '3': 2, '4': 1, '5': 9, '10': 'firmOid'},
+  ],
+};
+
+/// Descriptor for `PasswordUpdateRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordUpdateRequestDescriptor = $convert.base64Decode(
+    'ChVQYXNzd29yZFVwZGF0ZVJlcXVlc3QSGAoHdXNlck9pZBgBIAEoCVIHdXNlck9pZBIYCgdmaX'
+    'JtT2lkGAIgASgJUgdmaXJtT2lk');
 
 @$core.Deprecated('Use pendingDeviceRequestDescriptor instead')
 const PendingDeviceRequest$json = {

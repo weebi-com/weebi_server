@@ -13,9 +13,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'common/address.pb.dart' as $20;
+import 'common/address.pb.dart' as $19;
 import 'common/mongo.pb.dart' as $11;
-import 'common/phone.pb.dart' as $19;
+import 'common/phone.pb.dart' as $18;
 
 class Boutique extends $pb.GeneratedMessage {
   factory Boutique({
@@ -27,8 +27,8 @@ class Boutique extends $pb.GeneratedMessage {
     $core.String? dateStatus,
     $core.bool? status,
     $core.String? name,
-    $19.Phone? phone,
-    $20.Address? address,
+    $18.Phone? phone,
+    $19.Address? address,
     $core.double? promo,
     $core.String? promoStart,
     $core.String? promoEnd,
@@ -92,8 +92,8 @@ class Boutique extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
     ..aOB(7, _omitFieldNames ? '' : 'status')
     ..aOS(8, _omitFieldNames ? '' : 'name')
-    ..aOM<$19.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
-    ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'address', subBuilder: $20.Address.create)
+    ..aOM<$18.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
+    ..aOM<$19.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'address', subBuilder: $19.Address.create)
     ..a<$core.double>(11, _omitFieldNames ? '' : 'promo', $pb.PbFieldType.OD)
     ..aOS(12, _omitFieldNames ? '' : 'promoStart', protoName: 'promoStart')
     ..aOS(13, _omitFieldNames ? '' : 'promoEnd', protoName: 'promoEnd')
@@ -122,7 +122,6 @@ class Boutique extends $pb.GeneratedMessage {
   static Boutique getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Boutique>(create);
   static Boutique? _defaultInstance;
 
-  /// safer to have firmOid and chainOid
   @$pb.TagNumber(1)
   $11.ObjectIdProto get id => $_getN(0);
   @$pb.TagNumber(1)
@@ -198,26 +197,26 @@ class Boutique extends $pb.GeneratedMessage {
   void clearName() => clearField(8);
 
   @$pb.TagNumber(9)
-  $19.Phone get phone => $_getN(8);
+  $18.Phone get phone => $_getN(8);
   @$pb.TagNumber(9)
-  set phone($19.Phone v) { setField(9, v); }
+  set phone($18.Phone v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasPhone() => $_has(8);
   @$pb.TagNumber(9)
   void clearPhone() => clearField(9);
   @$pb.TagNumber(9)
-  $19.Phone ensurePhone() => $_ensure(8);
+  $18.Phone ensurePhone() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $20.Address get address => $_getN(9);
+  $19.Address get address => $_getN(9);
   @$pb.TagNumber(10)
-  set address($20.Address v) { setField(10, v); }
+  set address($19.Address v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasAddress() => $_has(9);
   @$pb.TagNumber(10)
   void clearAddress() => clearField(10);
   @$pb.TagNumber(10)
-  $20.Address ensureAddress() => $_ensure(9);
+  $19.Address ensureAddress() => $_ensure(9);
 
   @$pb.TagNumber(11)
   $core.double get promo => $_getN(10);

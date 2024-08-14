@@ -5,7 +5,7 @@ package weebi.article;
 message CalibreMongo {
   // faster object read
   weebi.article.CalibrePb calibre = 1 [json_name = 'calibre'] ;  
-  int32 calibreUniqueId = 2 [json_name = 'calibreUniqueId'];
+  int32 calibreId = 2 [json_name = 'calibreId'];
   string firmOid = 3 [json_name = 'firmOid'];
   string chainOid = 4 [json_name = 'chainOid'];
   string userOid = 5 [json_name = 'userOid']; 

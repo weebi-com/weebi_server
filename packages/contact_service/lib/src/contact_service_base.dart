@@ -5,10 +5,13 @@ import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder select(String firmOid, ContactRequest request) => where
-      .eq('firmOid', firmOid)
-      .eq('chainOid', request.chainOid)
-      .eq('contactId', request.contact.id);
+  static SelectorBuilder selectContact(String firmOid, String chainOid,
+          String contactUserOid, int contactNonUniqueId) =>
+      where
+          .eq('firmOid', firmOid)
+          .eq('chainOid', chainOid)
+          .eq('userOid', contactUserOid)
+          .eq('contactNonUniqueId', contactNonUniqueId);
 }
 
 class ContactService extends ContactServiceBase {
@@ -44,7 +47,7 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
-        ..contactNonUniqueId = request.contact.id
+        ..contactNonUniqueId = request.contact.contactNonUniqueId
         ..chainOid = request.chainOid
         ..firmOid = userPermission.firmOid
         ..userOid = userPermission.userOid;
@@ -96,13 +99,18 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
-        ..contactNonUniqueId = request.contact.id
+        ..contactNonUniqueId = request.contact.contactNonUniqueId
         ..chainOid = request.chainOid
         ..firmOid = userPermission.firmOid
         ..userOid = userPermission.userOid;
 
       final result = await collection.replaceOne(
-          _Helpers.select(userPermission.firmOid, request),
+          _Helpers.selectContact(
+            userPermission.firmOid,
+            request.chainOid,
+            request.contactUserOid,
+            request.contact.contactNonUniqueId,
+          ),
           contactMongo.toProto3Json() as Map<String, dynamic>,
           upsert: true);
       if (result.hasWriteErrors) {
@@ -142,8 +150,10 @@ class ContactService extends ContactServiceBase {
           'user cannot access data from chain ${request.chainOid}');
     }
     try {
-      await collection
-          .deleteOne(_Helpers.select(userPermission.firmOid, request));
+      await collection.deleteOne(
+        _Helpers.selectContact(userPermission.firmOid, request.chainOid,
+            request.contactUserOid, request.contact.contactNonUniqueId),
+      );
       return StatusResponse()
         ..type = StatusResponse_Type.DELETED
         ..timestamp = DateTime.now().timestampProto;

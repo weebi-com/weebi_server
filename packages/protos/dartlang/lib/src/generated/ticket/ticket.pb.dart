@@ -19,6 +19,8 @@ import 'ticket_type.pbenum.dart' as $21;
 
 export 'ticket.pbenum.dart';
 
+/// / ticketNonUniqueId is to be combined with userOid
+/// / local ids can lead to duplicates as each sellers from its own device can create contact
 class TicketMongo extends $pb.GeneratedMessage {
   factory TicketMongo({
     TicketPb? ticket,
@@ -143,7 +145,7 @@ class TicketMongo extends $pb.GeneratedMessage {
 
 class TicketPb extends $pb.GeneratedMessage {
   factory TicketPb({
-    $core.int? id,
+    $core.int? ticketNonUniqueId,
     Counterfoil? counterfoil,
     $core.String? dateCreation,
     $core.String? dateStatus,
@@ -159,8 +161,8 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? comment,
   }) {
     final $result = create();
-    if (id != null) {
-      $result.id = id;
+    if (ticketNonUniqueId != null) {
+      $result.ticketNonUniqueId = ticketNonUniqueId;
     }
     if (counterfoil != null) {
       $result.counterfoil = counterfoil;
@@ -208,7 +210,7 @@ class TicketPb extends $pb.GeneratedMessage {
   factory TicketPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
     ..aOM<Counterfoil>(2, _omitFieldNames ? '' : 'counterfoil', subBuilder: Counterfoil.create)
     ..aOS(3, _omitFieldNames ? '' : 'date', protoName: 'dateCreation')
     ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
@@ -247,13 +249,13 @@ class TicketPb extends $pb.GeneratedMessage {
   static TicketPb? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get id => $_getIZ(0);
+  $core.int get ticketNonUniqueId => $_getIZ(0);
   @$pb.TagNumber(1)
-  set id($core.int v) { $_setSignedInt32(0, v); }
+  set ticketNonUniqueId($core.int v) { $_setSignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasId() => $_has(0);
+  $core.bool hasTicketNonUniqueId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
+  void clearTicketNonUniqueId() => clearField(1);
 
   @$pb.TagNumber(2)
   Counterfoil get counterfoil => $_getN(1);
