@@ -6,7 +6,7 @@ import 'package:models_weebi/models.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:contact_service/contact_service.dart';
-import 'package:user_service/user_testing.dart';
+import 'package:fence_service/user_testing.dart';
 
 void main() async {
   final db = TestHelper.localDb;

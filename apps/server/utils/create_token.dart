@@ -1,5 +1,5 @@
-import 'package:user_service/user_service.dart';
-import 'package:user_service/user_testing.dart';
+import 'package:fence_service/fence_service.dart';
+import 'package:fence_service/user_testing.dart';
 
 void main(List<String> args) async {
   final userPermission = Dummy.adminPermission;

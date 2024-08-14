@@ -5,42 +5,20 @@ package weebi.user;
 import "common/g_timestamp.proto";
 import "common/mongo.proto";
 
-// ! any addition in this object must also be echoed in user_service_base.dart in : 
-
-/// -  _readUserPermissions() 
-/// - createOne()
+// ! addition in UserPermissions might also be echoed in fence_service_base.dart in : 
 /// - approveDevice()
 
 /// Permissions encompass two notions : 
-///  - access (in the boutiques hierarchy)
+///  - access (chains and their boutiques boutiques)
 ///  - rights 
 ///   - CRUD on editable objects
 ///   - bool on certain action/screen in app
 
-/// boutiquesAccessible != user.boutiquesOids
-/// boutiquesAccessible encompass all boutiques access
-/// while user.boutiquesOids == 'ALL' if user manages muliple chains  
-/// As boutiques get created in the chain NO NEED to update each user that has access to this chain to add boutique 
-/// if user is admin / on chain level, then user.boutiquesOids will be empty
-/// name pattern changed here as a reminder
-
-/// if user is simple seller / cashier
-/// user.chainIds = ['mall1']
-/// user.boutiquesOids = ['boutique1A']
-///   =>
-///   userPermission.chainsAccessible = ['mall1'] chainId where the boutique belongs 
-///   userPermission.boutiquesAccessible = ['boutique1A'] 
-/// if user is admin
-/// user.chainIds = ['mall1', 'mall2']
-/// user.boutiquesOids = []
-/// =>
-///   userPermission.chainsAccessible = ['mall1', 'mall2']
-///   userPermission.boutiquesAccessible = ['boutique1A', 'boutique1B', 'boutique2A']
 message UserPermissions {
   string userId = 1 [json_name = 'userId'];
   string firmId = 2  [json_name = 'firmId'];
-  weebi.user.Ids chainsAccessible = 3 [json_name = 'chainsAccessible'];
-  weebi.user.Ids boutiquesAccessible = 4 [json_name = 'boutiquesAccessible']; 
+  weebi.user.Ids chainIds = 3 [json_name = 'chainIds'];
+  weebi.user.Ids boutiqueIds = 4 [json_name = 'boutiqueIds']; 
   weebi.user.TicketRights ticketRights = 5  [json_name = 'ticketRights'];
   weebi.user.ContactRights contactRights =  6  [json_name = 'contactRights'];
   weebi.user.ArticleRights articleRights =  7 [json_name = 'articleRights'];
@@ -50,8 +28,6 @@ message UserPermissions {
   weebi.user.UserManagementRights userManagementRights =  11 [json_name = 'userManagementRights'];
   weebi.user.BoolRights boolRights = 12 [json_name = 'boolRights'];
 }
-
-
 
 /// user CRUD rights on base models 
 enum Right {
@@ -102,19 +78,18 @@ message BoolRights {
 
 /// all users need to belong at least to a chain to see articles and contact
 /// specific rights will then be checked to see what kind of action the user can perform on this chain's objects
-/// for users who need to access all boutiques of a chain we use the following hack :
-/// boutiqueIds == ['ALL'] instead of passing all oids
-/// accessible boutiques will be deduced in boutique_service endpoint
-/// allowing us not to keep track of boutique creation/deletion
-/// firm admins can have access to multiple chains, and manage them from web app
-/// if they try login in the flutter app they will be asked to select one chain only
+
+/// TODO : for manaers who will always need to access all boutiques of a chain
+// add a property canAccessFutureBoutiques
+// rework the createOneBoutique to update all users with matching boutique.chainId && canAccessFutureBoutiques == true
 
 message Ids {
   repeated string ids = 1 [json_name = 'ids'];
 }
 
-
-/// ! any addition to this model must be replicated in the user_service_base.dart updateOne() 
+/// ! any addition to this model must be replicated in the fence_service_base.dart 
+/// createOneUser()
+/// updateOneUser() 
 message UserInfo {
   string userId = 1 [json_name = 'userId'];
   string mail = 2 [json_name = 'mail'];

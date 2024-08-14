@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package weebi.ticket;
 
-import "article.proto";
+import "article/article.proto";
 import "ticket/ticket_type.proto";
 // import "common/g_timestamp.proto";
 

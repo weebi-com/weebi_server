@@ -36,8 +36,8 @@ const UserPermissions$json = {
   '2': [
     {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
-    {'1': 'chainsAccessible', '3': 3, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'chainsAccessible'},
-    {'1': 'boutiquesAccessible', '3': 4, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'boutiquesAccessible'},
+    {'1': 'chainIds', '3': 3, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'chainIds'},
+    {'1': 'boutiqueIds', '3': 4, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'boutiqueIds'},
     {'1': 'ticketRights', '3': 5, '4': 1, '5': 11, '6': '.weebi.user.TicketRights', '10': 'ticketRights'},
     {'1': 'contactRights', '3': 6, '4': 1, '5': 11, '6': '.weebi.user.ContactRights', '10': 'contactRights'},
     {'1': 'articleRights', '3': 7, '4': 1, '5': 11, '6': '.weebi.user.ArticleRights', '10': 'articleRights'},
@@ -52,18 +52,18 @@ const UserPermissions$json = {
 /// Descriptor for `UserPermissions`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List userPermissionsDescriptor = $convert.base64Decode(
     'Cg9Vc2VyUGVybWlzc2lvbnMSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQSFgoGZmlybUlkGAIgAS'
-    'gJUgZmaXJtSWQSOwoQY2hhaW5zQWNjZXNzaWJsZRgDIAEoCzIPLndlZWJpLnVzZXIuSWRzUhBj'
-    'aGFpbnNBY2Nlc3NpYmxlEkEKE2JvdXRpcXVlc0FjY2Vzc2libGUYBCABKAsyDy53ZWViaS51c2'
-    'VyLklkc1ITYm91dGlxdWVzQWNjZXNzaWJsZRI8Cgx0aWNrZXRSaWdodHMYBSABKAsyGC53ZWVi'
-    'aS51c2VyLlRpY2tldFJpZ2h0c1IMdGlja2V0UmlnaHRzEj8KDWNvbnRhY3RSaWdodHMYBiABKA'
-    'syGS53ZWViaS51c2VyLkNvbnRhY3RSaWdodHNSDWNvbnRhY3RSaWdodHMSPwoNYXJ0aWNsZVJp'
-    'Z2h0cxgHIAEoCzIZLndlZWJpLnVzZXIuQXJ0aWNsZVJpZ2h0c1INYXJ0aWNsZVJpZ2h0cxJCCg'
-    '5ib3V0aXF1ZVJpZ2h0cxgIIAEoCzIaLndlZWJpLnVzZXIuQm91dGlxdWVSaWdodHNSDmJvdXRp'
-    'cXVlUmlnaHRzEjcKC2NoYWluUmlnaHRzGAkgASgLMhYud2VlYmkudXNlci5NYWxsUmlnaHRzUg'
-    'ptYWxsUmlnaHRzEjYKCmZpcm1SaWdodHMYCiABKAsyFi53ZWViaS51c2VyLkZpcm1SaWdodHNS'
-    'CmZpcm1SaWdodHMSVAoUdXNlck1hbmFnZW1lbnRSaWdodHMYCyABKAsyIC53ZWViaS51c2VyLl'
-    'VzZXJNYW5hZ2VtZW50UmlnaHRzUhR1c2VyTWFuYWdlbWVudFJpZ2h0cxI2Cgpib29sUmlnaHRz'
-    'GAwgASgLMhYud2VlYmkudXNlci5Cb29sUmlnaHRzUgpib29sUmlnaHRz');
+    'gJUgZmaXJtSWQSKwoIY2hhaW5JZHMYAyABKAsyDy53ZWViaS51c2VyLklkc1IIY2hhaW5JZHMS'
+    'MQoLYm91dGlxdWVJZHMYBCABKAsyDy53ZWViaS51c2VyLklkc1ILYm91dGlxdWVJZHMSPAoMdG'
+    'lja2V0UmlnaHRzGAUgASgLMhgud2VlYmkudXNlci5UaWNrZXRSaWdodHNSDHRpY2tldFJpZ2h0'
+    'cxI/Cg1jb250YWN0UmlnaHRzGAYgASgLMhkud2VlYmkudXNlci5Db250YWN0UmlnaHRzUg1jb2'
+    '50YWN0UmlnaHRzEj8KDWFydGljbGVSaWdodHMYByABKAsyGS53ZWViaS51c2VyLkFydGljbGVS'
+    'aWdodHNSDWFydGljbGVSaWdodHMSQgoOYm91dGlxdWVSaWdodHMYCCABKAsyGi53ZWViaS51c2'
+    'VyLkJvdXRpcXVlUmlnaHRzUg5ib3V0aXF1ZVJpZ2h0cxI3CgtjaGFpblJpZ2h0cxgJIAEoCzIW'
+    'LndlZWJpLnVzZXIuTWFsbFJpZ2h0c1IKbWFsbFJpZ2h0cxI2CgpmaXJtUmlnaHRzGAogASgLMh'
+    'Yud2VlYmkudXNlci5GaXJtUmlnaHRzUgpmaXJtUmlnaHRzElQKFHVzZXJNYW5hZ2VtZW50Umln'
+    'aHRzGAsgASgLMiAud2VlYmkudXNlci5Vc2VyTWFuYWdlbWVudFJpZ2h0c1IUdXNlck1hbmFnZW'
+    '1lbnRSaWdodHMSNgoKYm9vbFJpZ2h0cxgMIAEoCzIWLndlZWJpLnVzZXIuQm9vbFJpZ2h0c1IK'
+    'Ym9vbFJpZ2h0cw==');
 
 @$core.Deprecated('Use articleRightsDescriptor instead')
 const ArticleRights$json = {

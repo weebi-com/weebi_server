@@ -13,8 +13,8 @@ dependencies:
   models_weebi: ^1.1.4
   protos_weebi:
     path: ../protos/dartlang
-  user_service:
-    path: ../user_service
+  fence_service:
+    path: ../fence_service
   #fixnum: ^1.1.0
 
 dev_dependencies:

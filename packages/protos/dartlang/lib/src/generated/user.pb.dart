@@ -13,29 +13,17 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'common/g_timestamp.pb.dart' as $17;
+import 'common/g_timestamp.pb.dart' as $16;
 import 'user.pbenum.dart';
 
 export 'user.pbenum.dart';
 
-/// / if user is simple seller / cashier
-/// / user.chainIds = ['mall1']
-/// / user.boutiquesOids = ['boutique1A']
-/// /   =>
-/// /   userPermission.chainsAccessible = ['mall1'] chainId where the boutique belongs
-/// /   userPermission.boutiquesAccessible = ['boutique1A']
-/// / if user is admin
-/// / user.chainIds = ['mall1', 'mall2']
-/// / user.boutiquesOids = []
-/// / =>
-/// /   userPermission.chainsAccessible = ['mall1', 'mall2']
-/// /   userPermission.boutiquesAccessible = ['boutique1A', 'boutique1B', 'boutique2A']
 class UserPermissions extends $pb.GeneratedMessage {
   factory UserPermissions({
     $core.String? userId,
     $core.String? firmId,
-    Ids? chainsAccessible,
-    Ids? boutiquesAccessible,
+    Ids? chainIds,
+    Ids? boutiqueIds,
     TicketRights? ticketRights,
     ContactRights? contactRights,
     ArticleRights? articleRights,
@@ -52,11 +40,11 @@ class UserPermissions extends $pb.GeneratedMessage {
     if (firmId != null) {
       $result.firmId = firmId;
     }
-    if (chainsAccessible != null) {
-      $result.chainsAccessible = chainsAccessible;
+    if (chainIds != null) {
+      $result.chainIds = chainIds;
     }
-    if (boutiquesAccessible != null) {
-      $result.boutiquesAccessible = boutiquesAccessible;
+    if (boutiqueIds != null) {
+      $result.boutiqueIds = boutiqueIds;
     }
     if (ticketRights != null) {
       $result.ticketRights = ticketRights;
@@ -91,8 +79,8 @@ class UserPermissions extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserPermissions', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
-    ..aOM<Ids>(3, _omitFieldNames ? '' : 'chainsAccessible', protoName: 'chainsAccessible', subBuilder: Ids.create)
-    ..aOM<Ids>(4, _omitFieldNames ? '' : 'boutiquesAccessible', protoName: 'boutiquesAccessible', subBuilder: Ids.create)
+    ..aOM<Ids>(3, _omitFieldNames ? '' : 'chainIds', protoName: 'chainIds', subBuilder: Ids.create)
+    ..aOM<Ids>(4, _omitFieldNames ? '' : 'boutiqueIds', protoName: 'boutiqueIds', subBuilder: Ids.create)
     ..aOM<TicketRights>(5, _omitFieldNames ? '' : 'ticketRights', protoName: 'ticketRights', subBuilder: TicketRights.create)
     ..aOM<ContactRights>(6, _omitFieldNames ? '' : 'contactRights', protoName: 'contactRights', subBuilder: ContactRights.create)
     ..aOM<ArticleRights>(7, _omitFieldNames ? '' : 'articleRights', protoName: 'articleRights', subBuilder: ArticleRights.create)
@@ -144,26 +132,26 @@ class UserPermissions extends $pb.GeneratedMessage {
   void clearFirmId() => clearField(2);
 
   @$pb.TagNumber(3)
-  Ids get chainsAccessible => $_getN(2);
+  Ids get chainIds => $_getN(2);
   @$pb.TagNumber(3)
-  set chainsAccessible(Ids v) { setField(3, v); }
+  set chainIds(Ids v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasChainsAccessible() => $_has(2);
+  $core.bool hasChainIds() => $_has(2);
   @$pb.TagNumber(3)
-  void clearChainsAccessible() => clearField(3);
+  void clearChainIds() => clearField(3);
   @$pb.TagNumber(3)
-  Ids ensureChainsAccessible() => $_ensure(2);
+  Ids ensureChainIds() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  Ids get boutiquesAccessible => $_getN(3);
+  Ids get boutiqueIds => $_getN(3);
   @$pb.TagNumber(4)
-  set boutiquesAccessible(Ids v) { setField(4, v); }
+  set boutiqueIds(Ids v) { setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasBoutiquesAccessible() => $_has(3);
+  $core.bool hasBoutiqueIds() => $_has(3);
   @$pb.TagNumber(4)
-  void clearBoutiquesAccessible() => clearField(4);
+  void clearBoutiqueIds() => clearField(4);
   @$pb.TagNumber(4)
-  Ids ensureBoutiquesAccessible() => $_ensure(3);
+  Ids ensureBoutiqueIds() => $_ensure(3);
 
   @$pb.TagNumber(5)
   TicketRights get ticketRights => $_getN(4);
@@ -770,7 +758,7 @@ class Ids extends $pb.GeneratedMessage {
   $core.List<$core.String> get ids => $_getList(0);
 }
 
-/// / ! any addition to this model must be replicated in the user_service_base.dart updateOne()
+/// / ! any addition to this model must be replicated in the fence_service_base.dart updateOne()
 class UserInfo extends $pb.GeneratedMessage {
   factory UserInfo({
     $core.String? userId,
@@ -898,7 +886,7 @@ class UserPrivate extends $pb.GeneratedMessage {
     UserManagementRights? userManagementRights,
     BoolRights? boolRights,
     $core.String? lastUpdatedByuserId,
-    $17.Timestamp? lastUpdateTimestampUTC,
+    $16.Timestamp? lastUpdateTimestampUTC,
     $core.String? firstname,
     $core.String? lastname,
   }) {
@@ -979,7 +967,7 @@ class UserPrivate extends $pb.GeneratedMessage {
     ..aOM<UserManagementRights>(13, _omitFieldNames ? '' : 'userManagementRights', protoName: 'userManagementRights', subBuilder: UserManagementRights.create)
     ..aOM<BoolRights>(14, _omitFieldNames ? '' : 'boolRights', protoName: 'boolRights', subBuilder: BoolRights.create)
     ..aOS(15, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
-    ..aOM<$17.Timestamp>(16, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
+    ..aOM<$16.Timestamp>(16, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $16.Timestamp.create)
     ..aOS(17, _omitFieldNames ? '' : 'firstname')
     ..aOS(18, _omitFieldNames ? '' : 'lastname')
     ..hasRequiredFields = false
@@ -1163,15 +1151,15 @@ class UserPrivate extends $pb.GeneratedMessage {
   void clearLastUpdatedByuserId() => clearField(15);
 
   @$pb.TagNumber(16)
-  $17.Timestamp get lastUpdateTimestampUTC => $_getN(15);
+  $16.Timestamp get lastUpdateTimestampUTC => $_getN(15);
   @$pb.TagNumber(16)
-  set lastUpdateTimestampUTC($17.Timestamp v) { setField(16, v); }
+  set lastUpdateTimestampUTC($16.Timestamp v) { setField(16, v); }
   @$pb.TagNumber(16)
   $core.bool hasLastUpdateTimestampUTC() => $_has(15);
   @$pb.TagNumber(16)
   void clearLastUpdateTimestampUTC() => clearField(16);
   @$pb.TagNumber(16)
-  $17.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(15);
+  $16.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(15);
 
   @$pb.TagNumber(17)
   $core.String get firstname => $_getSZ(16);

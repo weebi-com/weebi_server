@@ -1,5 +1,5 @@
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
-import 'package:user_service/user_service.dart';
+import 'package:fence_service/fence_service.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
@@ -100,7 +100,7 @@ class TicketService extends TicketServiceBase {
 
     bool isOneBoutiqueFilter = false;
     if (request.boutiqueId.isNotEmpty) {
-      if (userPermission.boutiquesAccessible.ids.contains(request.boutiqueId) ==
+      if (userPermission.boutiqueIds.ids.contains(request.boutiqueId) ==
           false) {
         throw GrpcError.permissionDenied(
             'user cannot access data from boutique ${request.boutiqueName}');
@@ -189,7 +189,7 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
     }
-    if (userPermission.boutiquesAccessible.ids
+    if (userPermission.boutiqueIds.ids
             .contains(request.ticket.counterfoil.boutiqueId) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -219,8 +219,6 @@ class TicketService extends TicketServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1) {
-        // final mongoId = result.document!['_id'];
-
         return StatusResponse.create()
           ..type = StatusResponse_Type.UPDATED
           // ..id= mongoid
@@ -252,7 +250,7 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
     }
-    if (userPermission.boutiquesAccessible.ids
+    if (userPermission.boutiqueIds.ids
             .contains(request.ticket.counterfoil.boutiqueId) ==
         false) {
       throw GrpcError.permissionDenied(

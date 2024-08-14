@@ -1,4 +1,0 @@
-# melos_managed_dependency_overrides: user_service
-dependency_overrides:
-  user_service:
-    path: ../user_service

@@ -13,18 +13,13 @@ export 'package:protos_weebi/src/generated/boutique.pb.dart';
 export 'package:protos_weebi/src/generated/boutique.pbenum.dart';
 export 'package:protos_weebi/src/generated/boutique.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/boutique_chain.pb.dart';
-export 'package:protos_weebi/src/generated/boutique_chain.pbenum.dart';
-export 'package:protos_weebi/src/generated/boutique_chain.pbjson.dart';
+export 'package:protos_weebi/src/generated/btq_chain.pb.dart';
+export 'package:protos_weebi/src/generated/btq_chain.pbenum.dart';
+export 'package:protos_weebi/src/generated/btq_chain.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/firm.pb.dart';
-export 'package:protos_weebi/src/generated/firm.pbenum.dart';
-export 'package:protos_weebi/src/generated/firm.pbjson.dart';
-
-export 'package:protos_weebi/src/generated/boutique_service.pb.dart';
-export 'package:protos_weebi/src/generated/boutique_service.pbenum.dart';
-export 'package:protos_weebi/src/generated/boutique_service.pbgrpc.dart';
-export 'package:protos_weebi/src/generated/boutique_service.pbjson.dart';
+export 'package:protos_weebi/src/generated/btq_firm.pb.dart';
+export 'package:protos_weebi/src/generated/btq_firm.pbenum.dart';
+export 'package:protos_weebi/src/generated/btq_firm.pbjson.dart';
 
 export 'package:protos_weebi/src/generated/contact.pb.dart';
 export 'package:protos_weebi/src/generated/contact.pbenum.dart';
@@ -39,10 +34,10 @@ export 'package:protos_weebi/src/generated/user.pb.dart';
 export 'package:protos_weebi/src/generated/user.pbenum.dart';
 export 'package:protos_weebi/src/generated/user.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/user_service.pb.dart';
-export 'package:protos_weebi/src/generated/user_service.pbenum.dart';
-export 'package:protos_weebi/src/generated/user_service.pbgrpc.dart';
-export 'package:protos_weebi/src/generated/user_service.pbjson.dart';
+export 'package:protos_weebi/src/generated/fence_service.pb.dart';
+export 'package:protos_weebi/src/generated/fence_service.pbenum.dart';
+export 'package:protos_weebi/src/generated/fence_service.pbgrpc.dart';
+export 'package:protos_weebi/src/generated/fence_service.pbjson.dart';
 
 export 'package:protos_weebi/src/generated/common/empty.pb.dart';
 export 'package:protos_weebi/src/generated/common/empty.pbenum.dart';
