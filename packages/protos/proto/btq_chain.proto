@@ -4,7 +4,6 @@ package weebi.chain;
 
 import "boutique.proto";
 import "common/g_timestamp.proto";
-import "common/mongo.proto";
 
 /// a Chain, Chaîne de magasins  
 /// is a group of boutiques that share the same article catalog and contact directory

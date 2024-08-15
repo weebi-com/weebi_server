@@ -13,205 +13,46 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use rightDescriptor instead')
-const Right$json = {
-  '1': 'Right',
-  '2': [
-    {'1': 'unknown', '2': 0},
-    {'1': 'create', '2': 1},
-    {'1': 'read', '2': 2},
-    {'1': 'update', '2': 3},
-    {'1': 'delete', '2': 4},
-  ],
-};
-
-/// Descriptor for `Right`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List rightDescriptor = $convert.base64Decode(
-    'CgVSaWdodBILCgd1bmtub3duEAASCgoGY3JlYXRlEAESCAoEcmVhZBACEgoKBnVwZGF0ZRADEg'
-    'oKBmRlbGV0ZRAE');
-
-@$core.Deprecated('Use userPermissionsDescriptor instead')
-const UserPermissions$json = {
-  '1': 'UserPermissions',
-  '2': [
-    {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
-    {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
-    {'1': 'chainIds', '3': 3, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'chainIds'},
-    {'1': 'boutiqueIds', '3': 4, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'boutiqueIds'},
-    {'1': 'ticketRights', '3': 5, '4': 1, '5': 11, '6': '.weebi.user.TicketRights', '10': 'ticketRights'},
-    {'1': 'contactRights', '3': 6, '4': 1, '5': 11, '6': '.weebi.user.ContactRights', '10': 'contactRights'},
-    {'1': 'articleRights', '3': 7, '4': 1, '5': 11, '6': '.weebi.user.ArticleRights', '10': 'articleRights'},
-    {'1': 'boutiqueRights', '3': 8, '4': 1, '5': 11, '6': '.weebi.user.BoutiqueRights', '10': 'boutiqueRights'},
-    {'1': 'chainRights', '3': 9, '4': 1, '5': 11, '6': '.weebi.user.MallRights', '10': 'mallRights'},
-    {'1': 'firmRights', '3': 10, '4': 1, '5': 11, '6': '.weebi.user.FirmRights', '10': 'firmRights'},
-    {'1': 'userManagementRights', '3': 11, '4': 1, '5': 11, '6': '.weebi.user.UserManagementRights', '10': 'userManagementRights'},
-    {'1': 'boolRights', '3': 12, '4': 1, '5': 11, '6': '.weebi.user.BoolRights', '10': 'boolRights'},
-  ],
-};
-
-/// Descriptor for `UserPermissions`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List userPermissionsDescriptor = $convert.base64Decode(
-    'Cg9Vc2VyUGVybWlzc2lvbnMSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQSFgoGZmlybUlkGAIgAS'
-    'gJUgZmaXJtSWQSKwoIY2hhaW5JZHMYAyABKAsyDy53ZWViaS51c2VyLklkc1IIY2hhaW5JZHMS'
-    'MQoLYm91dGlxdWVJZHMYBCABKAsyDy53ZWViaS51c2VyLklkc1ILYm91dGlxdWVJZHMSPAoMdG'
-    'lja2V0UmlnaHRzGAUgASgLMhgud2VlYmkudXNlci5UaWNrZXRSaWdodHNSDHRpY2tldFJpZ2h0'
-    'cxI/Cg1jb250YWN0UmlnaHRzGAYgASgLMhkud2VlYmkudXNlci5Db250YWN0UmlnaHRzUg1jb2'
-    '50YWN0UmlnaHRzEj8KDWFydGljbGVSaWdodHMYByABKAsyGS53ZWViaS51c2VyLkFydGljbGVS'
-    'aWdodHNSDWFydGljbGVSaWdodHMSQgoOYm91dGlxdWVSaWdodHMYCCABKAsyGi53ZWViaS51c2'
-    'VyLkJvdXRpcXVlUmlnaHRzUg5ib3V0aXF1ZVJpZ2h0cxI3CgtjaGFpblJpZ2h0cxgJIAEoCzIW'
-    'LndlZWJpLnVzZXIuTWFsbFJpZ2h0c1IKbWFsbFJpZ2h0cxI2CgpmaXJtUmlnaHRzGAogASgLMh'
-    'Yud2VlYmkudXNlci5GaXJtUmlnaHRzUgpmaXJtUmlnaHRzElQKFHVzZXJNYW5hZ2VtZW50Umln'
-    'aHRzGAsgASgLMiAud2VlYmkudXNlci5Vc2VyTWFuYWdlbWVudFJpZ2h0c1IUdXNlck1hbmFnZW'
-    '1lbnRSaWdodHMSNgoKYm9vbFJpZ2h0cxgMIAEoCzIWLndlZWJpLnVzZXIuQm9vbFJpZ2h0c1IK'
-    'Ym9vbFJpZ2h0cw==');
-
-@$core.Deprecated('Use articleRightsDescriptor instead')
-const ArticleRights$json = {
-  '1': 'ArticleRights',
-  '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.Right', '10': 'articleRights'},
-  ],
-};
-
-/// Descriptor for `ArticleRights`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List articleRightsDescriptor = $convert.base64Decode(
-    'Cg1BcnRpY2xlUmlnaHRzEjAKBnJpZ2h0cxgBIAMoDjIRLndlZWJpLnVzZXIuUmlnaHRSDWFydG'
-    'ljbGVSaWdodHM=');
-
-@$core.Deprecated('Use boutiqueRightsDescriptor instead')
-const BoutiqueRights$json = {
-  '1': 'BoutiqueRights',
-  '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.Right', '10': 'boutiqueRights'},
-  ],
-};
-
-/// Descriptor for `BoutiqueRights`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List boutiqueRightsDescriptor = $convert.base64Decode(
-    'Cg5Cb3V0aXF1ZVJpZ2h0cxIxCgZyaWdodHMYASADKA4yES53ZWViaS51c2VyLlJpZ2h0Ug5ib3'
-    'V0aXF1ZVJpZ2h0cw==');
-
-@$core.Deprecated('Use mallRightsDescriptor instead')
-const MallRights$json = {
-  '1': 'MallRights',
-  '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.Right', '10': 'mallRights'},
-  ],
-};
-
-/// Descriptor for `MallRights`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List mallRightsDescriptor = $convert.base64Decode(
-    'CgpNYWxsUmlnaHRzEi0KBnJpZ2h0cxgBIAMoDjIRLndlZWJpLnVzZXIuUmlnaHRSCm1hbGxSaW'
-    'dodHM=');
-
-@$core.Deprecated('Use firmRightsDescriptor instead')
-const FirmRights$json = {
-  '1': 'FirmRights',
-  '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.Right', '10': 'firmRights'},
-  ],
-};
-
-/// Descriptor for `FirmRights`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List firmRightsDescriptor = $convert.base64Decode(
-    'CgpGaXJtUmlnaHRzEi0KBnJpZ2h0cxgBIAMoDjIRLndlZWJpLnVzZXIuUmlnaHRSCmZpcm1SaW'
-    'dodHM=');
-
-@$core.Deprecated('Use contactRightsDescriptor instead')
-const ContactRights$json = {
-  '1': 'ContactRights',
-  '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.Right', '10': 'contactRights'},
-  ],
-};
-
-/// Descriptor for `ContactRights`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List contactRightsDescriptor = $convert.base64Decode(
-    'Cg1Db250YWN0UmlnaHRzEjAKBnJpZ2h0cxgBIAMoDjIRLndlZWJpLnVzZXIuUmlnaHRSDWNvbn'
-    'RhY3RSaWdodHM=');
-
-@$core.Deprecated('Use ticketRightsDescriptor instead')
-const TicketRights$json = {
-  '1': 'TicketRights',
-  '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.Right', '10': 'ticketRights'},
-  ],
-};
-
-/// Descriptor for `TicketRights`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List ticketRightsDescriptor = $convert.base64Decode(
-    'CgxUaWNrZXRSaWdodHMSLwoGcmlnaHRzGAEgAygOMhEud2VlYmkudXNlci5SaWdodFIMdGlja2'
-    'V0UmlnaHRz');
-
-@$core.Deprecated('Use userManagementRightsDescriptor instead')
-const UserManagementRights$json = {
-  '1': 'UserManagementRights',
-  '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.Right', '10': 'userManagementRights'},
-  ],
-};
-
-/// Descriptor for `UserManagementRights`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List userManagementRightsDescriptor = $convert.base64Decode(
-    'ChRVc2VyTWFuYWdlbWVudFJpZ2h0cxI3CgZyaWdodHMYASADKA4yES53ZWViaS51c2VyLlJpZ2'
-    'h0UhR1c2VyTWFuYWdlbWVudFJpZ2h0cw==');
-
-@$core.Deprecated('Use boolRightsDescriptor instead')
-const BoolRights$json = {
-  '1': 'BoolRights',
-  '2': [
-    {'1': 'canSeeStats', '3': 1, '4': 1, '5': 8, '10': 'canSeeStats'},
-    {'1': 'canExportData', '3': 2, '4': 1, '5': 8, '10': 'canExportData'},
-    {'1': 'canGiveDiscount', '3': 3, '4': 1, '5': 8, '10': 'canGiveDiscount'},
-    {'1': 'canSetPromo', '3': 4, '4': 1, '5': 8, '10': 'canSetPromo'},
-    {'1': 'canStockMovement', '3': 5, '4': 1, '5': 8, '10': 'canStockMovement'},
-    {'1': 'canStockInventory', '3': 6, '4': 1, '5': 8, '10': 'canStockInventory'},
-    {'1': 'canQuickSpend', '3': 7, '4': 1, '5': 8, '10': 'canQuickSpend'},
-    {'1': 'canPurchase', '3': 8, '4': 1, '5': 8, '10': 'canPurchase'},
-    {'1': 'canImportTickets', '3': 9, '4': 1, '5': 8, '10': 'canImportTickets'},
-  ],
-};
-
-/// Descriptor for `BoolRights`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List boolRightsDescriptor = $convert.base64Decode(
-    'CgpCb29sUmlnaHRzEiAKC2NhblNlZVN0YXRzGAEgASgIUgtjYW5TZWVTdGF0cxIkCg1jYW5FeH'
-    'BvcnREYXRhGAIgASgIUg1jYW5FeHBvcnREYXRhEigKD2NhbkdpdmVEaXNjb3VudBgDIAEoCFIP'
-    'Y2FuR2l2ZURpc2NvdW50EiAKC2NhblNldFByb21vGAQgASgIUgtjYW5TZXRQcm9tbxIqChBjYW'
-    '5TdG9ja01vdmVtZW50GAUgASgIUhBjYW5TdG9ja01vdmVtZW50EiwKEWNhblN0b2NrSW52ZW50'
-    'b3J5GAYgASgIUhFjYW5TdG9ja0ludmVudG9yeRIkCg1jYW5RdWlja1NwZW5kGAcgASgIUg1jYW'
-    '5RdWlja1NwZW5kEiAKC2NhblB1cmNoYXNlGAggASgIUgtjYW5QdXJjaGFzZRIqChBjYW5JbXBv'
-    'cnRUaWNrZXRzGAkgASgIUhBjYW5JbXBvcnRUaWNrZXRz');
-
-@$core.Deprecated('Use idsDescriptor instead')
-const Ids$json = {
-  '1': 'Ids',
-  '2': [
-    {'1': 'ids', '3': 1, '4': 3, '5': 9, '10': 'ids'},
-  ],
-};
-
-/// Descriptor for `Ids`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List idsDescriptor = $convert.base64Decode(
-    'CgNJZHMSEAoDaWRzGAEgAygJUgNpZHM=');
-
-@$core.Deprecated('Use userInfoDescriptor instead')
-const UserInfo$json = {
-  '1': 'UserInfo',
+@$core.Deprecated('Use userPublicDescriptor instead')
+const UserPublic$json = {
+  '1': 'UserPublic',
   '2': [
     {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'mail', '3': 2, '4': 1, '5': 9, '10': 'mail'},
     {'1': 'firstname', '3': 3, '4': 1, '5': 9, '10': 'firstname'},
     {'1': 'lastname', '3': 4, '4': 1, '5': 9, '10': 'lastname'},
-    {'1': 'permissions', '3': 5, '4': 1, '5': 11, '6': '.weebi.user.UserPermissions', '10': 'permissions'},
+    {'1': 'phone', '3': 5, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
+    {'1': 'lastSignIn', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastSignIn'},
+    {'1': 'permissions', '3': 7, '4': 1, '5': 11, '6': '.weebi.user.permissions.UserPermissions', '10': 'permissions'},
+    {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.user.UserPublic.OthersAttributesEntry', '10': 'othersAttributes'},
+  ],
+  '3': [UserPublic_OthersAttributesEntry$json],
+  '9': [
+    {'1': 8, '2': 99},
   ],
 };
 
-/// Descriptor for `UserInfo`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List userInfoDescriptor = $convert.base64Decode(
-    'CghVc2VySW5mbxIWCgZ1c2VySWQYASABKAlSBnVzZXJJZBISCgRtYWlsGAIgASgJUgRtYWlsEh'
-    'wKCWZpcnN0bmFtZRgDIAEoCVIJZmlyc3RuYW1lEhoKCGxhc3RuYW1lGAQgASgJUghsYXN0bmFt'
-    'ZRI9CgtwZXJtaXNzaW9ucxgFIAEoCzIbLndlZWJpLnVzZXIuVXNlclBlcm1pc3Npb25zUgtwZX'
-    'JtaXNzaW9ucw==');
+@$core.Deprecated('Use userPublicDescriptor instead')
+const UserPublic_OthersAttributesEntry$json = {
+  '1': 'OthersAttributesEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': {'7': true},
+};
+
+/// Descriptor for `UserPublic`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List userPublicDescriptor = $convert.base64Decode(
+    'CgpVc2VyUHVibGljEhYKBnVzZXJJZBgBIAEoCVIGdXNlcklkEhIKBG1haWwYAiABKAlSBG1haW'
+    'wSHAoJZmlyc3RuYW1lGAMgASgJUglmaXJzdG5hbWUSGgoIbGFzdG5hbWUYBCABKAlSCGxhc3Ru'
+    'YW1lEi8KBXBob25lGAUgASgLMhkud2VlYmkuY29tbW9uLnBob25lLlBob25lUgVwaG9uZRI6Cg'
+    'psYXN0U2lnbkluGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIKbGFzdFNpZ25J'
+    'bhJJCgtwZXJtaXNzaW9ucxgHIAEoCzInLndlZWJpLnVzZXIucGVybWlzc2lvbnMuVXNlclBlcm'
+    '1pc3Npb25zUgtwZXJtaXNzaW9ucxJYChBvdGhlcnNBdHRyaWJ1dGVzGGMgAygLMiwud2VlYmku'
+    'dXNlci5Vc2VyUHVibGljLk90aGVyc0F0dHJpYnV0ZXNFbnRyeVIQb3RoZXJzQXR0cmlidXRlcx'
+    'pDChVPdGhlcnNBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiAB'
+    'KAlSBXZhbHVlOgI4AUoECAgQYw==');
 
 @$core.Deprecated('Use userPrivateDescriptor instead')
 const UserPrivate$json = {
@@ -219,42 +60,132 @@ const UserPrivate$json = {
   '2': [
     {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'mail', '3': 2, '4': 1, '5': 9, '10': 'mail'},
-    {'1': 'passwordEncrypted', '3': 3, '4': 1, '5': 9, '10': 'password'},
-    {'1': 'firmId', '3': 4, '4': 1, '5': 9, '10': 'firmId'},
-    {'1': 'chainIds', '3': 5, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'chainIds'},
-    {'1': 'boutiqueIds', '3': 6, '4': 1, '5': 11, '6': '.weebi.user.Ids', '10': 'boutiqueIds'},
-    {'1': 'articleRights', '3': 7, '4': 1, '5': 11, '6': '.weebi.user.ArticleRights', '10': 'articleRights'},
-    {'1': 'boutiqueRights', '3': 8, '4': 1, '5': 11, '6': '.weebi.user.BoutiqueRights', '10': 'boutiqueRights'},
-    {'1': 'firmRights', '3': 9, '4': 1, '5': 11, '6': '.weebi.user.FirmRights', '10': 'firmRights'},
-    {'1': 'chainRights', '3': 10, '4': 1, '5': 11, '6': '.weebi.user.MallRights', '10': 'mallRights'},
-    {'1': 'contactRights', '3': 11, '4': 1, '5': 11, '6': '.weebi.user.ContactRights', '10': 'contactRights'},
-    {'1': 'ticketRights', '3': 12, '4': 1, '5': 11, '6': '.weebi.user.TicketRights', '10': 'ticketRights'},
-    {'1': 'userManagementRights', '3': 13, '4': 1, '5': 11, '6': '.weebi.user.UserManagementRights', '10': 'userManagementRights'},
-    {'1': 'boolRights', '3': 14, '4': 1, '5': 11, '6': '.weebi.user.BoolRights', '10': 'boolRights'},
-    {'1': 'lastUpdatedByuserId', '3': 15, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
-    {'1': 'lastUpdateTimestampUTC', '3': 16, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
-    {'1': 'firstname', '3': 17, '4': 1, '5': 9, '10': 'firstname'},
-    {'1': 'lastname', '3': 18, '4': 1, '5': 9, '10': 'lastname'},
+    {'1': 'firstname', '3': 3, '4': 1, '5': 9, '10': 'firstname'},
+    {'1': 'lastname', '3': 4, '4': 1, '5': 9, '10': 'lastname'},
+    {'1': 'phone', '3': 5, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
+    {'1': 'passwordEncrypted', '3': 6, '4': 1, '5': 9, '10': 'password'},
+    {'1': 'firmId', '3': 7, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'permissions', '3': 8, '4': 1, '5': 11, '6': '.weebi.user.permissions.UserPermissions', '10': 'permissions'},
+    {'1': 'lastSignIn', '3': 9, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastSignIn'},
+    {'1': 'lastUpdatedByuserId', '3': 10, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
+    {'1': 'lastUpdateTimestampUTC', '3': 11, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
+    {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.user.UserPrivate.OthersAttributesEntry', '10': 'othersAttributes'},
   ],
+  '3': [UserPrivate_OthersAttributesEntry$json],
+  '9': [
+    {'1': 12, '2': 99},
+  ],
+};
+
+@$core.Deprecated('Use userPrivateDescriptor instead')
+const UserPrivate_OthersAttributesEntry$json = {
+  '1': 'OthersAttributesEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': {'7': true},
 };
 
 /// Descriptor for `UserPrivate`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List userPrivateDescriptor = $convert.base64Decode(
     'CgtVc2VyUHJpdmF0ZRIWCgZ1c2VySWQYASABKAlSBnVzZXJJZBISCgRtYWlsGAIgASgJUgRtYW'
-    'lsEiMKEXBhc3N3b3JkRW5jcnlwdGVkGAMgASgJUghwYXNzd29yZBIWCgZmaXJtSWQYBCABKAlS'
-    'BmZpcm1JZBIrCghjaGFpbklkcxgFIAEoCzIPLndlZWJpLnVzZXIuSWRzUghjaGFpbklkcxIxCg'
-    'tib3V0aXF1ZUlkcxgGIAEoCzIPLndlZWJpLnVzZXIuSWRzUgtib3V0aXF1ZUlkcxI/Cg1hcnRp'
-    'Y2xlUmlnaHRzGAcgASgLMhkud2VlYmkudXNlci5BcnRpY2xlUmlnaHRzUg1hcnRpY2xlUmlnaH'
-    'RzEkIKDmJvdXRpcXVlUmlnaHRzGAggASgLMhoud2VlYmkudXNlci5Cb3V0aXF1ZVJpZ2h0c1IO'
-    'Ym91dGlxdWVSaWdodHMSNgoKZmlybVJpZ2h0cxgJIAEoCzIWLndlZWJpLnVzZXIuRmlybVJpZ2'
-    'h0c1IKZmlybVJpZ2h0cxI3CgtjaGFpblJpZ2h0cxgKIAEoCzIWLndlZWJpLnVzZXIuTWFsbFJp'
-    'Z2h0c1IKbWFsbFJpZ2h0cxI/Cg1jb250YWN0UmlnaHRzGAsgASgLMhkud2VlYmkudXNlci5Db2'
-    '50YWN0UmlnaHRzUg1jb250YWN0UmlnaHRzEjwKDHRpY2tldFJpZ2h0cxgMIAEoCzIYLndlZWJp'
-    'LnVzZXIuVGlja2V0UmlnaHRzUgx0aWNrZXRSaWdodHMSVAoUdXNlck1hbmFnZW1lbnRSaWdodH'
-    'MYDSABKAsyIC53ZWViaS51c2VyLlVzZXJNYW5hZ2VtZW50UmlnaHRzUhR1c2VyTWFuYWdlbWVu'
-    'dFJpZ2h0cxI2Cgpib29sUmlnaHRzGA4gASgLMhYud2VlYmkudXNlci5Cb29sUmlnaHRzUgpib2'
-    '9sUmlnaHRzEjAKE2xhc3RVcGRhdGVkQnl1c2VySWQYDyABKAlSE2xhc3RVcGRhdGVkQnl1c2Vy'
-    'SWQSUgoWbGFzdFVwZGF0ZVRpbWVzdGFtcFVUQxgQIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW'
-    '1lc3RhbXBSFmxhc3RVcGRhdGVUaW1lc3RhbXBVVEMSHAoJZmlyc3RuYW1lGBEgASgJUglmaXJz'
-    'dG5hbWUSGgoIbGFzdG5hbWUYEiABKAlSCGxhc3RuYW1l');
+    'lsEhwKCWZpcnN0bmFtZRgDIAEoCVIJZmlyc3RuYW1lEhoKCGxhc3RuYW1lGAQgASgJUghsYXN0'
+    'bmFtZRIvCgVwaG9uZRgFIAEoCzIZLndlZWJpLmNvbW1vbi5waG9uZS5QaG9uZVIFcGhvbmUSIw'
+    'oRcGFzc3dvcmRFbmNyeXB0ZWQYBiABKAlSCHBhc3N3b3JkEhYKBmZpcm1JZBgHIAEoCVIGZmly'
+    'bUlkEkkKC3Blcm1pc3Npb25zGAggASgLMicud2VlYmkudXNlci5wZXJtaXNzaW9ucy5Vc2VyUG'
+    'VybWlzc2lvbnNSC3Blcm1pc3Npb25zEjoKCmxhc3RTaWduSW4YCSABKAsyGi5nb29nbGUucHJv'
+    'dG9idWYuVGltZXN0YW1wUgpsYXN0U2lnbkluEjAKE2xhc3RVcGRhdGVkQnl1c2VySWQYCiABKA'
+    'lSE2xhc3RVcGRhdGVkQnl1c2VySWQSUgoWbGFzdFVwZGF0ZVRpbWVzdGFtcFVUQxgLIAEoCzIa'
+    'Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFmxhc3RVcGRhdGVUaW1lc3RhbXBVVEMSWQoQb3'
+    'RoZXJzQXR0cmlidXRlcxhjIAMoCzItLndlZWJpLnVzZXIuVXNlclByaXZhdGUuT3RoZXJzQXR0'
+    'cmlidXRlc0VudHJ5UhBvdGhlcnNBdHRyaWJ1dGVzGkMKFU90aGVyc0F0dHJpYnV0ZXNFbnRyeR'
+    'IQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBSgQIDBBj');
+
+@$core.Deprecated('Use signUpRequestDescriptor instead')
+const SignUpRequest$json = {
+  '1': 'SignUpRequest',
+  '2': [
+    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
+    {'1': 'mail', '3': 2, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'firstname', '3': 3, '4': 1, '5': 9, '10': 'firstname'},
+    {'1': 'lastname', '3': 4, '4': 1, '5': 9, '10': 'lastname'},
+    {'1': 'password', '3': 5, '4': 1, '5': 9, '10': 'pwd'},
+  ],
+};
+
+/// Descriptor for `SignUpRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List signUpRequestDescriptor = $convert.base64Decode(
+    'Cg1TaWduVXBSZXF1ZXN0EkwKDnN0YXR1c1Jlc3BvbnNlGAEgASgLMiQuZ29vZ2xlLnJldGFpbC'
+    '5jb21tb24uU3RhdHVzUmVzcG9uc2VSDnN0YXR1c1Jlc3BvbnNlEhIKBG1haWwYAiABKAlSBG1h'
+    'aWwSHAoJZmlyc3RuYW1lGAMgASgJUglmaXJzdG5hbWUSGgoIbGFzdG5hbWUYBCABKAlSCGxhc3'
+    'RuYW1lEhUKCHBhc3N3b3JkGAUgASgJUgNwd2Q=');
+
+@$core.Deprecated('Use signUpResponseDescriptor instead')
+const SignUpResponse$json = {
+  '1': 'SignUpResponse',
+  '2': [
+    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
+    {'1': 'userId', '3': 2, '4': 1, '5': 9, '10': 'string'},
+  ],
+};
+
+/// Descriptor for `SignUpResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List signUpResponseDescriptor = $convert.base64Decode(
+    'Cg5TaWduVXBSZXNwb25zZRJMCg5zdGF0dXNSZXNwb25zZRgBIAEoCzIkLmdvb2dsZS5yZXRhaW'
+    'wuY29tbW9uLlN0YXR1c1Jlc3BvbnNlUg5zdGF0dXNSZXNwb25zZRIWCgZ1c2VySWQYAiABKAlS'
+    'BnN0cmluZw==');
+
+@$core.Deprecated('Use addPendingUserRequestDescriptor instead')
+const AddPendingUserRequest$json = {
+  '1': 'AddPendingUserRequest',
+  '2': [
+    {'1': 'mail', '3': 1, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'firstname', '3': 2, '4': 1, '5': 9, '10': 'firstname'},
+    {'1': 'lastname', '3': 3, '4': 1, '5': 9, '10': 'lastname'},
+    {'1': 'permissions', '3': 4, '4': 1, '5': 11, '6': '.weebi.user.permissions.UserPermissions', '10': 'permissions'},
+    {'1': 'phone', '3': 5, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
+    {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.user.AddPendingUserRequest.OthersAttributesEntry', '10': 'othersAttributes'},
+  ],
+  '3': [AddPendingUserRequest_OthersAttributesEntry$json],
+  '9': [
+    {'1': 6, '2': 99},
+  ],
+};
+
+@$core.Deprecated('Use addPendingUserRequestDescriptor instead')
+const AddPendingUserRequest_OthersAttributesEntry$json = {
+  '1': 'OthersAttributesEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': {'7': true},
+};
+
+/// Descriptor for `AddPendingUserRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List addPendingUserRequestDescriptor = $convert.base64Decode(
+    'ChVBZGRQZW5kaW5nVXNlclJlcXVlc3QSEgoEbWFpbBgBIAEoCVIEbWFpbBIcCglmaXJzdG5hbW'
+    'UYAiABKAlSCWZpcnN0bmFtZRIaCghsYXN0bmFtZRgDIAEoCVIIbGFzdG5hbWUSSQoLcGVybWlz'
+    'c2lvbnMYBCABKAsyJy53ZWViaS51c2VyLnBlcm1pc3Npb25zLlVzZXJQZXJtaXNzaW9uc1ILcG'
+    'VybWlzc2lvbnMSLwoFcGhvbmUYBSABKAsyGS53ZWViaS5jb21tb24ucGhvbmUuUGhvbmVSBXBo'
+    'b25lEmMKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsyNy53ZWViaS51c2VyLkFkZFBlbmRpbmdVc2'
+    'VyUmVxdWVzdC5PdGhlcnNBdHRyaWJ1dGVzRW50cnlSEG90aGVyc0F0dHJpYnV0ZXMaQwoVT3Ro'
+    'ZXJzQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YW'
+    'x1ZToCOAFKBAgGEGM=');
+
+@$core.Deprecated('Use addPendingUserResponseDescriptor instead')
+const AddPendingUserResponse$json = {
+  '1': 'AddPendingUserResponse',
+  '2': [
+    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
+    {'1': 'userPublic', '3': 2, '4': 1, '5': 11, '6': '.weebi.user.UserPublic', '10': 'userPublic'},
+  ],
+};
+
+/// Descriptor for `AddPendingUserResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List addPendingUserResponseDescriptor = $convert.base64Decode(
+    'ChZBZGRQZW5kaW5nVXNlclJlc3BvbnNlEkwKDnN0YXR1c1Jlc3BvbnNlGAEgASgLMiQuZ29vZ2'
+    'xlLnJldGFpbC5jb21tb24uU3RhdHVzUmVzcG9uc2VSDnN0YXR1c1Jlc3BvbnNlEjYKCnVzZXJQ'
+    'dWJsaWMYAiABKAsyFi53ZWViaS51c2VyLlVzZXJQdWJsaWNSCnVzZXJQdWJsaWM=');
 

@@ -1,6 +1,9 @@
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 abstract class RightsAdmin {
+  static final billing = BillingRights(
+    rights: const [Right.create, Right.read, Right.update, Right.delete],
+  );
   static final userManagement = UserManagementRights(
     rights: const [Right.create, Right.read, Right.update, Right.delete],
   );
@@ -10,8 +13,9 @@ abstract class RightsAdmin {
   static final chain = MallRights(
     rights: const [Right.create, Right.read, Right.update, Right.delete],
   );
+  // Firm creation only available after signup just in case
   static final firm = FirmRights(
-    rights: const [Right.create, Right.read, Right.update, Right.delete],
+    rights: const [Right.read, Right.update, Right.delete],
   );
   static final boutique = BoutiqueRights(
       rights: const [Right.create, Right.read, Right.update, Right.delete]);

@@ -1,12 +1,21 @@
 # permissions
+
+## explain standard user journey
+
+1. The boss (company/entreprise/franchise) signs up throught the webapp
+2. Authentifies, and get a Bearer token with firmCreation permission 
+3. The boss creates a Firm
+4. Authentifies again with refresh token to get lastest admin permissions on this firm
+5. The boss creates a 2nd boutique
+6. The boss setup/imports articles, contacts and past tickets if any
+7. The boss creates users 
+
 ## explain chains
 
 A chain is a group of boutiques
 Boutiques in a chain share the same article catalog and contact directory
 A boutique belongs to a single chain
-Chain 3 will not be able to add any of BTQ 1,2,3,4,5
-Users who have permissions over two chains need two devices
-
+Users who have permissions over two chains need two devices or will need to download articles and contacts every time
  _______                         _______  
 | Chain1 |        _______        | Chain3|
 | BTQ1   |       | Chain2|       |       |
@@ -45,14 +54,6 @@ Restrictions permissions = {'uniqueId' : 'pierrot', 'boutiqueId' : 1, 'permissio
 
 The upcoming use case is linking boutiques together in a Chain
 With permissions set manually at first.
-- Chain
-    - Boutique 1 - main boutique RW all
-    - Boutique 2 - RO articles, boutique, contacts / RW tickets
-    - Boutique 3 - RO articles, boutique, contacts / RW tickets
-
-making a certain type of ticket or changing prices are more granular permissions
-they should probably be addressed at the user level
-
 
 ### jwt refresh explained
 // client app

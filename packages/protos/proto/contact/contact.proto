@@ -30,5 +30,5 @@ message ContactPb {
     int32 overdraft =  11 [json_name = 'overdraft'];
     repeated string tags =  12 [json_name = 'categories'];
     reserved 13 to 98;
-    map<string, string> other_attributes = 99 [json_name = 'other_attributes'];
+    map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
   }

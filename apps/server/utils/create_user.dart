@@ -12,8 +12,13 @@ void main() async {
   print(isConnected);
   fenceService = FenceService(db);
   //await db.createCollection(fenceService.collection.collectionName);
+
   await fenceService.userCollection
-      .insertOne(Dummy.userInfoNoId.toProto3Json() as Map<String, dynamic>);
+      .insertOne(Dummy.userInfo.toProto3Json() as Map<String, dynamic>);
+  await fenceService.userCollection.update(
+    where.eq('userId', Dummy.userInfo.userId),
+    ModifierBuilder().set('password', Dummy.password),
+  );
   await connection.close();
   return;
 }

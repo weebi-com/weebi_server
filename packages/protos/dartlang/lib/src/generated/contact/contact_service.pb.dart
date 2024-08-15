@@ -13,8 +13,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/address.pb.dart' as $18;
-import '../common/phone.pb.dart' as $17;
+import '../common/address.pb.dart' as $19;
+import '../common/phone.pb.dart' as $18;
 import 'contact.pb.dart' as $5;
 
 class FindContactRequest extends $pb.GeneratedMessage {
@@ -25,8 +25,8 @@ class FindContactRequest extends $pb.GeneratedMessage {
     $core.String? firstName,
     $core.String? lastName,
     $core.String? mail,
-    $17.Phone? phone,
-    $18.Address? address,
+    $18.Phone? phone,
+    $19.Address? address,
   }) {
     final $result = create();
     if (contactchainId != null) {
@@ -66,8 +66,8 @@ class FindContactRequest extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'firstName', protoName: 'firstName')
     ..aOS(5, _omitFieldNames ? '' : 'lastName', protoName: 'lastName')
     ..aOS(6, _omitFieldNames ? '' : 'mail')
-    ..aOM<$17.Phone>(7, _omitFieldNames ? '' : 'phone', subBuilder: $17.Phone.create)
-    ..aOM<$18.Address>(8, _omitFieldNames ? '' : 'addressFull', protoName: 'address', subBuilder: $18.Address.create)
+    ..aOM<$18.Phone>(7, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
+    ..aOM<$19.Address>(8, _omitFieldNames ? '' : 'addressFull', protoName: 'address', subBuilder: $19.Address.create)
     ..hasRequiredFields = false
   ;
 
@@ -148,26 +148,26 @@ class FindContactRequest extends $pb.GeneratedMessage {
   void clearMail() => clearField(6);
 
   @$pb.TagNumber(7)
-  $17.Phone get phone => $_getN(6);
+  $18.Phone get phone => $_getN(6);
   @$pb.TagNumber(7)
-  set phone($17.Phone v) { setField(7, v); }
+  set phone($18.Phone v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasPhone() => $_has(6);
   @$pb.TagNumber(7)
   void clearPhone() => clearField(7);
   @$pb.TagNumber(7)
-  $17.Phone ensurePhone() => $_ensure(6);
+  $18.Phone ensurePhone() => $_ensure(6);
 
   @$pb.TagNumber(8)
-  $18.Address get address => $_getN(7);
+  $19.Address get address => $_getN(7);
   @$pb.TagNumber(8)
-  set address($18.Address v) { setField(8, v); }
+  set address($19.Address v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasAddress() => $_has(7);
   @$pb.TagNumber(8)
   void clearAddress() => clearField(8);
   @$pb.TagNumber(8)
-  $18.Address ensureAddress() => $_ensure(7);
+  $19.Address ensureAddress() => $_ensure(7);
 }
 
 class ReadAllContactsRequest extends $pb.GeneratedMessage {

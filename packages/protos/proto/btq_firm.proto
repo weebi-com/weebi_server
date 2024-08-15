@@ -4,7 +4,7 @@ package weebi.firm;
 
 import "btq_chain.proto";
 import "common/g_timestamp.proto";
-import "common/mongo.proto";
+import "common/g_common.proto";
 
 /// yes one object to delimit all but permissions
 message Firm {
@@ -21,5 +21,12 @@ message Firm {
     string lastUpdatedByuserId = 11 [json_name = 'lastUpdatedByuserId'];
     bool isMailVerified = 12 [json_name = 'isMailVerified'];
   }
-  
-  
+
+message CreateFirmRequest {
+  string name = 1 [json_name = 'name'];
+}
+
+message CreateFirmResponse {
+  google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
+  string firmId = 2 [json_name = 'firmId'];
+}

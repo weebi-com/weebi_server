@@ -40,7 +40,7 @@ void main(List<String> args) async {
     interceptors: interceptors,
   );
 
-  final tokens = await userStub.authenticateWithCredentials(LoginRequest(
+  final tokens = await userStub.authenticateWithCredentials(Credentials(
     mail: 'dev@weebi.com',
     password: '1234',
   ));

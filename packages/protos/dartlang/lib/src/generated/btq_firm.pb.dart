@@ -13,22 +13,23 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'btq_chain.pb.dart' as $10;
-import 'common/g_timestamp.pb.dart' as $16;
+import 'btq_chain.pb.dart' as $11;
+import 'common/g_common.pb.dart' as $1;
+import 'common/g_timestamp.pb.dart' as $17;
 
 /// / yes one object to delimit all but permissions
 class Firm extends $pb.GeneratedMessage {
   factory Firm({
     $core.String? firmId,
     $core.String? name,
-    $core.Iterable<$10.Chain>? chains,
+    $core.Iterable<$11.Chain>? chains,
     $core.String? subscriptionPlan,
     $core.int? subscriptionSeats,
-    $16.Timestamp? subscriptionStartTimestampUTC,
-    $16.Timestamp? subscriptionEndTimestampUTC,
+    $17.Timestamp? subscriptionStartTimestampUTC,
+    $17.Timestamp? subscriptionEndTimestampUTC,
     $core.bool? status,
-    $16.Timestamp? statusUpdateTimestampUTC,
-    $16.Timestamp? lastUpdateTimestampUTC,
+    $17.Timestamp? statusUpdateTimestampUTC,
+    $17.Timestamp? lastUpdateTimestampUTC,
     $core.String? lastUpdatedByuserId,
     $core.bool? isMailVerified,
   }) {
@@ -78,14 +79,14 @@ class Firm extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Firm', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
-    ..pc<$10.Chain>(3, _omitFieldNames ? '' : 'chains', $pb.PbFieldType.PM, subBuilder: $10.Chain.create)
+    ..pc<$11.Chain>(3, _omitFieldNames ? '' : 'chains', $pb.PbFieldType.PM, subBuilder: $11.Chain.create)
     ..aOS(4, _omitFieldNames ? '' : 'subscriptionPlan', protoName: 'subscriptionPlan')
     ..a<$core.int>(5, _omitFieldNames ? '' : 'subscriptionSeats', $pb.PbFieldType.O3, protoName: 'subscriptionSeats')
-    ..aOM<$16.Timestamp>(6, _omitFieldNames ? '' : 'subscriptionStartTimestampUTC', protoName: 'subscriptionStartTimestampUTC', subBuilder: $16.Timestamp.create)
-    ..aOM<$16.Timestamp>(7, _omitFieldNames ? '' : 'subscriptionEndTimestampUTC', protoName: 'subscriptionEndTimestampUTC', subBuilder: $16.Timestamp.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'subscriptionStartTimestampUTC', protoName: 'subscriptionStartTimestampUTC', subBuilder: $17.Timestamp.create)
+    ..aOM<$17.Timestamp>(7, _omitFieldNames ? '' : 'subscriptionEndTimestampUTC', protoName: 'subscriptionEndTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOB(8, _omitFieldNames ? '' : 'status')
-    ..aOM<$16.Timestamp>(9, _omitFieldNames ? '' : 'statusUpdateTimestampUTC', protoName: 'statusUpdateTimestampUTC', subBuilder: $16.Timestamp.create)
-    ..aOM<$16.Timestamp>(10, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $16.Timestamp.create)
+    ..aOM<$17.Timestamp>(9, _omitFieldNames ? '' : 'statusUpdateTimestampUTC', protoName: 'statusUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
+    ..aOM<$17.Timestamp>(10, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOS(11, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
     ..aOB(12, _omitFieldNames ? '' : 'isMailVerified', protoName: 'isMailVerified')
     ..hasRequiredFields = false
@@ -131,7 +132,7 @@ class Firm extends $pb.GeneratedMessage {
   void clearName() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.List<$10.Chain> get chains => $_getList(2);
+  $core.List<$11.Chain> get chains => $_getList(2);
 
   @$pb.TagNumber(4)
   $core.String get subscriptionPlan => $_getSZ(3);
@@ -152,26 +153,26 @@ class Firm extends $pb.GeneratedMessage {
   void clearSubscriptionSeats() => clearField(5);
 
   @$pb.TagNumber(6)
-  $16.Timestamp get subscriptionStartTimestampUTC => $_getN(5);
+  $17.Timestamp get subscriptionStartTimestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set subscriptionStartTimestampUTC($16.Timestamp v) { setField(6, v); }
+  set subscriptionStartTimestampUTC($17.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasSubscriptionStartTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
   void clearSubscriptionStartTimestampUTC() => clearField(6);
   @$pb.TagNumber(6)
-  $16.Timestamp ensureSubscriptionStartTimestampUTC() => $_ensure(5);
+  $17.Timestamp ensureSubscriptionStartTimestampUTC() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $16.Timestamp get subscriptionEndTimestampUTC => $_getN(6);
+  $17.Timestamp get subscriptionEndTimestampUTC => $_getN(6);
   @$pb.TagNumber(7)
-  set subscriptionEndTimestampUTC($16.Timestamp v) { setField(7, v); }
+  set subscriptionEndTimestampUTC($17.Timestamp v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasSubscriptionEndTimestampUTC() => $_has(6);
   @$pb.TagNumber(7)
   void clearSubscriptionEndTimestampUTC() => clearField(7);
   @$pb.TagNumber(7)
-  $16.Timestamp ensureSubscriptionEndTimestampUTC() => $_ensure(6);
+  $17.Timestamp ensureSubscriptionEndTimestampUTC() => $_ensure(6);
 
   @$pb.TagNumber(8)
   $core.bool get status => $_getBF(7);
@@ -183,26 +184,26 @@ class Firm extends $pb.GeneratedMessage {
   void clearStatus() => clearField(8);
 
   @$pb.TagNumber(9)
-  $16.Timestamp get statusUpdateTimestampUTC => $_getN(8);
+  $17.Timestamp get statusUpdateTimestampUTC => $_getN(8);
   @$pb.TagNumber(9)
-  set statusUpdateTimestampUTC($16.Timestamp v) { setField(9, v); }
+  set statusUpdateTimestampUTC($17.Timestamp v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasStatusUpdateTimestampUTC() => $_has(8);
   @$pb.TagNumber(9)
   void clearStatusUpdateTimestampUTC() => clearField(9);
   @$pb.TagNumber(9)
-  $16.Timestamp ensureStatusUpdateTimestampUTC() => $_ensure(8);
+  $17.Timestamp ensureStatusUpdateTimestampUTC() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $16.Timestamp get lastUpdateTimestampUTC => $_getN(9);
+  $17.Timestamp get lastUpdateTimestampUTC => $_getN(9);
   @$pb.TagNumber(10)
-  set lastUpdateTimestampUTC($16.Timestamp v) { setField(10, v); }
+  set lastUpdateTimestampUTC($17.Timestamp v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasLastUpdateTimestampUTC() => $_has(9);
   @$pb.TagNumber(10)
   void clearLastUpdateTimestampUTC() => clearField(10);
   @$pb.TagNumber(10)
-  $16.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(9);
+  $17.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(9);
 
   @$pb.TagNumber(11)
   $core.String get lastUpdatedByuserId => $_getSZ(10);
@@ -221,6 +222,122 @@ class Firm extends $pb.GeneratedMessage {
   $core.bool hasIsMailVerified() => $_has(11);
   @$pb.TagNumber(12)
   void clearIsMailVerified() => clearField(12);
+}
+
+class CreateFirmRequest extends $pb.GeneratedMessage {
+  factory CreateFirmRequest({
+    $core.String? name,
+  }) {
+    final $result = create();
+    if (name != null) {
+      $result.name = name;
+    }
+    return $result;
+  }
+  CreateFirmRequest._() : super();
+  factory CreateFirmRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateFirmRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateFirmRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'name')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreateFirmRequest clone() => CreateFirmRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateFirmRequest copyWith(void Function(CreateFirmRequest) updates) => super.copyWith((message) => updates(message as CreateFirmRequest)) as CreateFirmRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateFirmRequest create() => CreateFirmRequest._();
+  CreateFirmRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateFirmRequest> createRepeated() => $pb.PbList<CreateFirmRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CreateFirmRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateFirmRequest>(create);
+  static CreateFirmRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get name => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set name($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearName() => clearField(1);
+}
+
+class CreateFirmResponse extends $pb.GeneratedMessage {
+  factory CreateFirmResponse({
+    $1.StatusResponse? statusResponse,
+    $core.String? firmId,
+  }) {
+    final $result = create();
+    if (statusResponse != null) {
+      $result.statusResponse = statusResponse;
+    }
+    if (firmId != null) {
+      $result.firmId = firmId;
+    }
+    return $result;
+  }
+  CreateFirmResponse._() : super();
+  factory CreateFirmResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateFirmResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateFirmResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm'), createEmptyInstance: create)
+    ..aOM<$1.StatusResponse>(1, _omitFieldNames ? '' : 'statusResponse', protoName: 'statusResponse', subBuilder: $1.StatusResponse.create)
+    ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreateFirmResponse clone() => CreateFirmResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateFirmResponse copyWith(void Function(CreateFirmResponse) updates) => super.copyWith((message) => updates(message as CreateFirmResponse)) as CreateFirmResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateFirmResponse create() => CreateFirmResponse._();
+  CreateFirmResponse createEmptyInstance() => create();
+  static $pb.PbList<CreateFirmResponse> createRepeated() => $pb.PbList<CreateFirmResponse>();
+  @$core.pragma('dart2js:noInline')
+  static CreateFirmResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateFirmResponse>(create);
+  static CreateFirmResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.StatusResponse get statusResponse => $_getN(0);
+  @$pb.TagNumber(1)
+  set statusResponse($1.StatusResponse v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStatusResponse() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStatusResponse() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.StatusResponse ensureStatusResponse() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get firmId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set firmId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasFirmId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearFirmId() => clearField(2);
 }
 
 

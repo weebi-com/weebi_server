@@ -20,26 +20,23 @@ class TestHelper {
     );
     await db.createCollection(fenceService.userCollection.collectionName);
     await db.createCollection(fenceService.boutiqueCollection.collectionName);
-    final responseUser = await fenceService.createOneUser(
+    final responseUser = await fenceService.addPendingUser(
       null,
-      CreateOneUserRequest(
-        userInfo: Dummy.userInfo,
-        password: '1234',
+      AddPendingUserRequest(
+        mail: Dummy.userInfo.mail,
+        firstname: Dummy.userInfo.firstname,
+        lastname: Dummy.userInfo.lastname,
+        permissions: Dummy.userInfo.permissions,
+        phone: Dummy.userInfo.phone,
       ),
     );
-    final response = await fenceService.createOneFirm(null, Dummy.firmNoId);
+    final response = await fenceService.createFirm(null, CreateFirmRequest());
 
     final firm = await fenceService.readOneFirm(null, Empty());
 
-    Dummy.adminPermission.firmId = Dummy.userInfo.permissions.firmId;
-    Dummy.adminPermission.userId = responseUser.id;
-    Dummy.adminPermission.chainIds = Ids(ids: [firm.chains.first.chainId]);
-    Dummy.adminPermission.boutiqueIds =
-        Ids(ids: [firm.chains.first.boutiques.first.boutiqueId]);
-
     fenceService..userPermissionIfTest = Dummy.adminPermission;
     return Counterfoil.create()
-      ..firmId = response.id
+      ..firmId = response.firmId
       ..chainId = firm.chains.first.chainId
       ..boutiqueId = firm.chains.first.boutiques.first.boutiqueId
       ..userId = Dummy.userInfo.userId;

@@ -6,6 +6,8 @@ import 'package:fence_service/src/data/roles_default.dart';
 /// since the _ids logic is no longer handled by mongodb, some of below could be simplified..
 
 abstract class Dummy {
+  static const password = '1234';
+
   static final address = Address.create()
     ..street = 'str'
     ..city = 'city'
@@ -68,11 +70,12 @@ abstract class Dummy {
     lastUpdatedByuserId: '1',
   );
 
-  static final userInfo = UserInfo(
+  static final userInfo = UserPublic(
       mail: 'dev@weebi.com',
       firstname: 'dev',
       lastname: 'tester',
       userId: '665e12f798357783e8000008',
+      phone: Phone(countryCode: 33, number: '145711299'),
       permissions: UserPermissions.create()
         ..firmId = '665e12f798357783e8000000'
         ..userId = '665e12f798357783e8000008'
@@ -84,31 +87,10 @@ abstract class Dummy {
         ..ticketRights = RightsAdmin.ticket
         ..boolRights = BoolRights()
         ..userManagementRights = RightsAdmin.userManagement
-        ..boutiqueIds = Ids(ids: ['ALL'])
-        ..chainIds = Ids(ids: [chain.chainId]));
-
-  static final userInfoNoId = UserInfo(
-      mail: 'dev@weebi.com',
-      firstname: 'dev',
-      lastname: 'tester',
-      //userId: '665e12f798357783e8000008',
-      permissions: UserPermissions.create()
-        ..firmId = '665e12f798357783e8000000'
-        //..userId = '665e12f798357783e8000008'
-        ..articleRights = RightsAdmin.article
-        ..boutiqueRights = RightsAdmin.boutique
-        ..contactRights = RightsAdmin.contact
-        ..chainRights = RightsAdmin.chain
-        ..firmRights = RightsAdmin.firm
-        ..ticketRights = RightsAdmin.ticket
-        ..boolRights = BoolRights()
-        ..userManagementRights = RightsAdmin.userManagement
-        ..boutiqueIds = Ids(ids: ['ALL'])
-        ..chainIds = Ids(ids: [chain.chainId]));
+        ..boutiqueIds = BoutiqueIds(ids: ['ALL'])
+        ..chainIds = ChainIds(ids: [chain.chainId]));
 
   static final adminPermission = UserPermissions.create()
-    ..userId = '665e12f798357783e8000008'
-    ..firmId = '665e12f798357783e8000008'
     ..articleRights = RightsAdmin.article
     ..boutiqueRights = RightsAdmin.boutique
     ..contactRights = RightsAdmin.contact
@@ -117,8 +99,12 @@ abstract class Dummy {
     ..ticketRights = RightsAdmin.ticket
     ..boolRights = RightsAdmin.boolRights
     ..userManagementRights = RightsAdmin.userManagement
-    ..boutiqueIds = Ids(ids: ['ALL'])
-    ..chainIds = Ids(ids: [chain.chainId]);
+    ..billingRights = RightsAdmin.billing
+    ..boutiqueIds = BoutiqueIds(ids: ['ALL'])
+    ..chainIds = ChainIds(ids: ['ALL']);
+
+  // TODO rework this accessible to fit
+//  chainId and boutiqueWithin
 
   /// hardcoded ids will not work with tests with mongodb
   /// since the _ids logic is handled by mongodb
@@ -131,31 +117,10 @@ abstract class Dummy {
     ..contactRights = RightSalesperson.contact
     ..ticketRights = RightSalesperson.ticket
     ..boolRights = BoolRights()
-    ..boutiqueIds = Ids(ids: [boutique.boutiqueId])
-    ..chainIds = Ids(ids: [chain.chainId]);
+    ..boutiqueIds = BoutiqueIds(ids: [boutique.boutiqueId])
+    ..chainIds = ChainIds(ids: [chain.chainId]);
 }
 /* 
-class UserPrivateDummy {
-  static final userNoId = UserPrivate(
-    //userId: '665e12f798357783e8000008',
-    firstname: 'dev',
-    lastname: 'tester',
-    mail: 'dev@weebi.com',
     passwordEncrypted:
         'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db',
-    firmId: '665e12f798357783e8000000',
-    chainIds: Ids(ids: ['665e12f798357783e8000001']),
-    boutiqueIds: Ids(ids: ['ALL']),
-    articleRights: RightsAdmin.article,
-    boutiqueRights: RightsAdmin.boutique,
-    chainRights: RightsAdmin.chain,
-    firmRights: RightsAdmin.firm,
-    contactRights: RightsAdmin.contact,
-    ticketRights: RightsAdmin.ticket,
-    userManagementRights: RightsAdmin.userManagement,
-    boolRights: BoolRights(),
-  );
-
-
-}
  */

@@ -7,7 +7,7 @@ extension UserPermExt on String {
           .any((accessiblechainId) => accessiblechainId == this);
 }
 
-extension UserPermExt2 on Ids {
+extension UserPermExt2 on ChainIds {
   bool areChainsAccessible(UserPermissions userPermission) {
     for (final chainId in ids) {
       if (userPermission.chainIds.ids

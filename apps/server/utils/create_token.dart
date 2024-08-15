@@ -13,7 +13,7 @@ void main(List<String> args) async {
   jwt.sign();
   final accessToken = jwt.sign();
   jwt = JsonWebToken();
-  // * payload.userId == userId why ????
+  // * userId is also added in the payload for commodity
   jwt.createPayload(
     userPermission.userId,
     expireIn: Duration(days: 30),

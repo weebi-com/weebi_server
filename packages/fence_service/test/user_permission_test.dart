@@ -16,12 +16,14 @@ void main() async {
     print(isConnected);
     fenceService = FenceService(db);
     await db.createCollection(fenceService.userCollection.collectionName);
-    await fenceService.createOneUser(
+    await fenceService.addPendingUser(
         null,
-        CreateOneUserRequest(
-          userInfo: Dummy.userInfoNoId,
-          password: '1234',
-        ));
+        AddPendingUserRequest(
+            mail: Dummy.userInfo.mail,
+            firstname: Dummy.userInfo.firstname,
+            lastname: Dummy.userInfo.lastname,
+            phone: Dummy.userInfo.phone,
+            permissions: Dummy.adminPermission));
   });
 
   tearDownAll(() async {

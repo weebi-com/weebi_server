@@ -34,10 +34,11 @@ void main() async {
 
   test('test createOneFirm ', () async {
     // ignore: unused_local_variable
-    final response = await fenceService.createOneFirm(null, Dummy.firmNoId);
-    expect(response.type, StatusResponse_Type.CREATED);
+    final response = await fenceService.createFirm(
+        null, CreateFirmRequest(name: Dummy.firm.name));
+    expect(response.statusResponse.type, StatusResponse_Type.CREATED);
     final userPermissionsUpdated = Dummy.adminPermission;
-    userPermissionsUpdated.firmId = response.id;
+    userPermissionsUpdated.firmId = response.firmId;
     fenceService..userPermissionIfTest = userPermissionsUpdated;
   });
   test('test readOneFirm', () async {
@@ -62,13 +63,13 @@ void main() async {
       isTest: true,
       userPermissionIfTest: Dummy.adminPermission
         ..firmId = firmId
-        ..chainIds = Ids(ids: [chainId]),
+        ..chainIds = ChainIds(ids: [chainId]),
     );
 
-    final dd = Dummy.userInfoNoId;
+    final dd = Dummy.userInfo;
     dd.permissions.firmId = firmId;
-    final responseUser = await fenceService.createOneUser(
-        null, CreateOneUserRequest(password: '1234', userInfo: dd));
+    final responseUser = await fenceService.add(
+        null, AddPendingUserRequest(password: '1234', userInfo: dd));
     Dummy.adminPermission.firmId = firmId;
     Dummy.adminPermission.chainIds = Ids(ids: [chainId]);
     Dummy.adminPermission.userId = responseUser.id;

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math' show Random;
 
 import 'package:collection/collection.dart';
+import 'package:fence_service/user_testing.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
 
@@ -24,8 +25,6 @@ class FenceService extends FenceServiceBase {
   static const String boutiqueCollectionName = 'boutique';
   static const String userCollectionName = 'user';
 
-//  final BoutiqueService? _boutiqueService;
-
   final bool isTest;
   UserPermissions? userPermissionIfTest;
   FenceService(this._db, {this.isTest = false, this.userPermissionIfTest})
@@ -34,11 +33,9 @@ class FenceService extends FenceServiceBase {
         boutiqueCollection = _db.collection(boutiqueCollectionName);
 
   @override
-  Future<StatusResponse> createOneUser(
-      ServiceCall? call, CreateOneUserRequest request) async {
-    if (request.password.isEmpty || request.password.length < 3) {
-      throw GrpcError.failedPrecondition('password is a bit too short');
-    }
+  Future<AddPendingUserResponse> addPendingUser(
+      ServiceCall? call, AddPendingUserRequest request) async {
+    final credentials = _checkCredentials(Credentials(mail: request.mail));
 
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -46,39 +43,37 @@ class FenceService extends FenceServiceBase {
 
     _db.isConnected ? null : await _db.open();
 
-    if (userPermission.firmId.isNotEmpty) {
-      if (userPermission.firmId != request.userInfo.permissions.firmId) {
-        throw GrpcError.permissionDenied(
-            'user does not have access to firm ${request.userInfo.permissions.firmId}');
-      }
+    if (userPermission.firmId != request.permissions.firmId) {
+      throw GrpcError.permissionDenied(
+          'you do not have access to firm ${request.permissions.firmId}');
     }
 
     if (userPermission.userManagementRights.rights
         .none((e) => e == Right.create)) {
       throw GrpcError.permissionDenied(
-          'user does not have right to create other users');
+          'you do not have right to create other users');
+    }
+    if (await _isMailAvailable == false) {
+      throw GrpcError.failedPrecondition('mail is alread used');
     }
     try {
-      final user = UserInfo.create()
-        ..mergeFromProto3Json(
-            request.userInfo.toProto3Json() as Map<String, dynamic>,
-            ignoreUnknownFields: true);
+      final userId = DateTime.now().objectIdString;
 
-      // firstUser cannot have access to a firm that is not created yet
-      // so we assign
-
-      String firmId = userPermission.firmId.isEmpty
-          ? ObjectId.createId(DateTime.now().toUtc().second).hexString
-          : userPermission.firmId;
+      String firmId =
+          userPermission.firmId.isEmpty ? userId : userPermission.firmId;
+      request.permissions
+        ..firmId = firmId
+        ..userId = userId;
 
       final userPrivate = UserPrivate.create()
         ..mergeFromProto3Json(
-            user.permissions.toProto3Json() as Map<String, dynamic>)
-        ..userId = firmId
-        ..passwordEncrypted = Encrypter(request.password).encrypted
-        ..mail = user.mail
-        ..firstname = user.firstname
-        ..lastname = user.lastname
+            request.permissions.toProto3Json() as Map<String, dynamic>)
+        ..userId = userId
+        ..passwordEncrypted = credentials.passwordEncrypted
+        ..mail = credentials.mail
+        ..phone = request.phone
+        ..firstname = request.firstname
+        ..lastname = request.lastname
         ..firmId = firmId;
 
       final result = await userCollection
@@ -88,28 +83,42 @@ class FenceService extends FenceServiceBase {
       }
       final timestamp = DateTime.now().timestampProto;
       if (result.ok == 1 && result.document != null) {
-        final userId = result.document!['userId'];
+        final _id = result.document!['_id'] as ObjectId;
         print('userId.runtimeType ${userId.runtimeType}');
-        return StatusResponse()
-          ..id = userId
-          ..type = StatusResponse_Type.CREATED
-          ..timestamp = timestamp;
+
+        final userPublic = UserPublic.create()
+          ..mergeFromProto3Json(
+              (userPrivate.toProto3Json() as Map<String, dynamic>),
+              ignoreUnknownFields: true);
+
+        return AddPendingUserResponse(
+            statusResponse: StatusResponse()
+              ..id = _id.oid
+              ..type = StatusResponse_Type.CREATED
+              ..timestamp = timestamp,
+            userPublic: userPublic);
       } else {
-        return StatusResponse()
-          ..type = StatusResponse_Type.ERROR
-          ..timestamp = timestamp;
+        return AddPendingUserResponse(
+            statusResponse: StatusResponse()
+              ..type = StatusResponse_Type.ERROR
+              ..timestamp = timestamp);
       }
     } on GrpcError catch (e) {
-      log('user mail ${request.userInfo.mail} createOne error: $e');
+      log('user mail ${request.mail} addPendingUser error: $e');
       rethrow;
     }
   }
 
+  Future<bool> _isMailAvailable(String mail) async {
+    final userMongo = await userCollection.findOne(where.eq('mail', mail));
+    return userMongo == null;
+  }
+
   @override
   Future<Tokens> authenticateWithCredentials(
-      ServiceCall? call, LoginRequest request) async {
+      ServiceCall? call, Credentials request) async {
     try {
-      final mailAndEncyptedPassword = await _checkRequest(call, request);
+      final mailAndEncyptedPassword = await _checkCredentials(request);
 
       // * here we will eventually check the subscription validity (1 month free or paid sub)
 
@@ -135,28 +144,51 @@ class FenceService extends FenceServiceBase {
       );
       // refresh token only contains userId & firmId
       final resfreshToken = jwt.sign();
+      await _updateUserLastSignIn;
       return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
     } on GrpcError catch (e) {
-      log('authenticate $e');
+      log('authenticate error $e');
       rethrow;
     }
   }
 
-  Future<MailAndEncyptedPasswordRequest> _checkRequest(
-      ServiceCall? call, LoginRequest request) async {
-    if (request.mail.isEmpty) {
+  Future<void> _updateUserLastSignIn(String userId) async {
+    try {
+      await userCollection.update(
+        where.eq('userId', userId),
+        ModifierBuilder().set(
+            'lastSignIn',
+            DateTime.now().timestampProto.toProto3Json()
+                as Map<String, dynamic>),
+      );
+    } catch (e) {
+      log('eroor $e');
+      throw e;
+    }
+  }
+
+  MailAndEncyptedPassword _checkCredentials(Credentials request) =>
+      MailAndEncyptedPassword(
+        mail: _checkMail(request.mail),
+        passwordEncrypted: _checkAndEncryptPassword(request.password),
+      );
+  String _checkMail(String mail) {
+    if (mail.isEmpty) {
       throw GrpcError.invalidArgument('mail isEmpty');
     } else if (RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-        ).hasMatch(request.mail.trim()) ==
+        ).hasMatch(mail.trim()) ==
         false) {
       throw GrpcError.invalidArgument('incorrect mail format');
-    } else if (request.password.isEmpty) {
-      throw GrpcError.invalidArgument('password isEmpty');
     }
-    final passwordEncrypted = Encrypter(request.password).encrypted;
-    return MailAndEncyptedPasswordRequest(
-        passwordEncrypted: passwordEncrypted, mail: request.mail);
+    return mail;
+  }
+
+  String _checkAndEncryptPassword(String password) {
+    if (password.isEmpty || password.length < 3) {
+      throw GrpcError.failedPrecondition('password is a bit too short');
+    }
+    return Encrypter(password).encrypted;
   }
 
   @override
@@ -199,6 +231,8 @@ class FenceService extends FenceServiceBase {
           });
       // refresh token only containes userId and firmId
       final resfreshToken = jwt.sign();
+      // ? is below really useful ?
+      await _updateUserLastSignIn(userPermission.userId);
       return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
     } on GrpcError catch (e) {
       log('authenticateWithRefreshToken $e');
@@ -224,7 +258,7 @@ class FenceService extends FenceServiceBase {
   }
 
   Future<UserPermissions> _readUserPermissionsByMailAndPassword(
-      ServiceCall? call, MailAndEncyptedPasswordRequest request) async {
+      ServiceCall? call, MailAndEncyptedPassword request) async {
     _db.isConnected ? null : await _db.open();
     try {
       final selector = where
@@ -244,7 +278,7 @@ class FenceService extends FenceServiceBase {
         ..mergeFromProto3Json(userPrivateMongo, ignoreUnknownFields: true);
       final userPermission = UserPermissions.create()
         ..mergeFromProto3Json(
-            userPrivate.toProto3Json() as Map<String, dynamic>);
+            userPrivate.permissions.toProto3Json() as Map<String, dynamic>);
       return userPermission;
     } on GrpcError catch (e) {
       log('$e');
@@ -271,7 +305,7 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<StatusResponse> updateOneUser(
-      ServiceCall? call, UserInfo request) async {
+      ServiceCall? call, UserPublic request) async {
     if (request.userId.isEmpty) {
       throw GrpcError.failedPrecondition('userId cannot be empty');
     }
@@ -297,24 +331,17 @@ class FenceService extends FenceServiceBase {
     }
     try {
       final result = await userCollection.update(
-          where.eq('userId', request.permissions.userId),
-          ModifierBuilder()
-              .set('firstname', request.firstname)
-              .set('lastname', request.lastname)
-              .set('mail', request.mail)
-              .set(
-                  'permissions',
-                  request
-                      .permissions), // TODO check update permission is working accordingly might fail
-          upsert: true);
+        where.eq('userId', request.permissions.userId),
+        ModifierBuilder()
+            .set('firstname', request.firstname)
+            .set('lastname', request.lastname)
+            .set('mail', request.mail)
+            .set('phone', request.phone.toProto3Json() as Map<String, dynamic>)
+            .set('permissions',
+                request.permissions.toProto3Json() as Map<String, dynamic>),
+        // TODO check update phone/permission is working accordingly this way
+      );
       print(result);
-/*       if (result.hasWriteErrors) {
-        throw GrpcError.internal('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      if (result.ok != 1) {
-        throw GrpcError.unknown(
-            'update != 1 ${result.document} ${result.serverResponses}');
-      } */
       return StatusResponse()
         ..type = StatusResponse_Type.UPDATED
         ..timestamp = DateTime.now().timestampProto;
@@ -329,7 +356,7 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
-  Future<UserInfo> readOneUser(ServiceCall? call, UserId request) async {
+  Future<UserPublic> readOneUser(ServiceCall? call, UserId request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -347,7 +374,7 @@ class FenceService extends FenceServiceBase {
       }
       final user = UserPrivate()
         ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
-      final userInfo = UserInfo.create()
+      final userInfo = UserPublic.create()
         ..firstname = user.firstname
         ..lastname = user.lastname
         ..mail = user.mail;
@@ -363,7 +390,7 @@ class FenceService extends FenceServiceBase {
   /// forge a bearer token for the default user on this boutique
   @override
   Future<Tokens> authenticateWithDevice(
-      ServiceCall? call, DeviceLoginRequest request) async {
+      ServiceCall? call, DeviceCredentials request) async {
     _db.isConnected ? null : await _db.open();
     if (request.firmId.isEmpty) {
       throw GrpcError.invalidArgument('firmId.isEmpty');
@@ -401,6 +428,7 @@ class FenceService extends FenceServiceBase {
       }
 
       final userPermission = UserPermissions.create()
+        // TODO rework this userId device
         ..userId = 'device_${request.deviceOid}'
         ..firmId = request.firmId
         ..articleRights = RightSalesperson.article
@@ -408,8 +436,8 @@ class FenceService extends FenceServiceBase {
         ..contactRights = ContactRights(rights: [Right.read])
         ..ticketRights = RightSalesperson.ticket
         ..boolRights = BoolRights.create()
-        ..boutiqueIds = Ids(ids: [request.boutiqueId])
-        ..chainIds = Ids(ids: [request.chainId]);
+        ..boutiqueIds = BoutiqueIds(ids: [request.boutiqueId])
+        ..chainIds = ChainIds(ids: [request.chainId]);
       var jwt = JsonWebToken();
       final payload = userPermission.toProto3Json() as Map<String, dynamic>?;
       jwt.createPayload(
@@ -430,6 +458,7 @@ class FenceService extends FenceServiceBase {
       );
       // refresh token only contains userId & firmId
       final resfreshToken = jwt.sign();
+      await _updateUserLastSignIn(userPermission.userId);
       return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
     } on GrpcError catch (e) {
       print('authenticateWithDevice error $e');
@@ -439,7 +468,7 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<DevicePairingResponse> generateCodeForPairingDevice(
-      ServiceCall? call, chainIdAndboutiqueId request) async {
+      ServiceCall? call, ChainIdAndboutiqueId request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -546,8 +575,7 @@ class FenceService extends FenceServiceBase {
       request.device.status = false;
       // set the boutiqueId selected by web admin
       request.device.boutiqueId = pairingResp.boutiqueId;
-      request.device.id =
-          ObjectId.createId(DateTime.now().toUtc().second).hexString;
+      request.device.id = DateTime.now().objectIdString;
 
       firm.chains[chainIndex].devices.add(request.device);
 
@@ -655,17 +683,22 @@ class FenceService extends FenceServiceBase {
 
   Future<StatusResponse> _createDefaultDeviceCashier(
       String firmId, String chainId, String boutiqueId) async {
+    String userId = DateTime.now().objectIdString;
     try {
-      final userPrivate = UserPrivate.create()
-        // no password for simple cashier
-        //..passwordEncrypted = Encrypter(request.password).encrypted
-        ..firmId = firmId
-        ..chainIds = Ids(ids: [chainId])
-        ..boutiqueIds = Ids(ids: [boutiqueId])
+      final permissions = UserPermissions.create()
+        ..userId = userId
+        ..chainIds = ChainIds(ids: [chainId])
+        ..boutiqueIds = BoutiqueIds(ids: [boutiqueId])
         ..articleRights = RightSalesperson.article
         ..boutiqueRights = RightSalesperson.boutique
         ..contactRights = ContactRights(rights: [Right.read])
         ..ticketRights = RightSalesperson.ticket;
+      final userPrivate = UserPrivate.create()
+        // no password for simple cashier
+        // since it won't pass password verification cannot use createOneUser so inserting in db below
+        ..firmId = firmId
+        ..userId = userId
+        ..permissions = permissions;
       final result = await userCollection
           .insertOne(userPrivate.toProto3Json as Map<String, dynamic>);
       if (result.hasWriteErrors) {
@@ -794,62 +827,86 @@ class FenceService extends FenceServiceBase {
 
   /// only one firm per 'company' using weebi
   /// 1. user signup and get a userId
-  /// 2. user create a firm, firmId == userId for simplicity
+  /// 2. either
+  ///     - A. user create a firm
+  ///     - B. user joins a firm
+  /// Chain and Boutique will be created by default and will use the same firmId
+  /// user will need to get a new bearer after creation
   @override
-  Future<StatusResponse> createOneFirm(ServiceCall? call, Firm request) async {
+  Future<CreateFirmResponse> createFirm(
+      ServiceCall? call, CreateFirmRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
+    // so we assign its own userId to firmOid
+    // this same id will be used to create the firm in the following call
+    // and will avoid re-forging a bearer token
 
     if (userPermission.firmRights.rights.any((e) => e == Right.create) ==
-        false) {
+            false ||
+        userPermission.firmId.isNotEmpty) {
       throw GrpcError.permissionDenied(
           'user does not have right to create firm');
     }
     // ? should we check that no other firm exist for this accouunt ?
-    try {
-      final firmMongo = await boutiqueCollection
-          .findOne(where.eq('firmId', (userPermission.firmId)));
-      if (firmMongo != null) {
-        throw GrpcError.notFound('already such a firm');
-      }
-    } on GrpcError {
-      return StatusResponse.create()
-        ..type = StatusResponse_Type.ERROR
-        ..message = 'firm already exists'
-        ..timestamp = DateTime.now().timestampProto;
-    } catch (e) {
-      rethrow;
-    }
     // set the appropriate ids
-    request.firmId = userPermission.firmId;
-    request.chains.first
-      ..firmId = ObjectId.createId(DateTime.now().toUtc().second).hexString
-      ..firmId = userPermission.firmId;
-    request.chains.first.boutiques.first
-      ..firmId = ObjectId.createId(DateTime.now().toUtc().second).hexString
-      ..chainId = request.chains.first.chainId
-      ..firmId = userPermission.firmId;
+
+    final firmId = DateTime.now().objectIdString;
+    final chains = [
+      Chain(firmId: firmId, chainId: firmId, name: request.name, boutiques: [
+        Boutique.create()
+          ..firmId = firmId
+          ..chainId = firmId
+          ..boutiqueId = firmId
+          ..name = request.name
+      ])
+    ];
     try {
-      final result = await boutiqueCollection
-          .insertOne(request.toProto3Json() as Map<String, dynamic>);
+      final result = await boutiqueCollection.insertOne(
+          Firm(firmId: firmId, chains: chains).toProto3Json()
+              as Map<String, dynamic>);
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        //print(result.document);
-        final firmId = result.document!['firmId'];
+        final user = UserPublic(
+          userId: userPermission.userId,
+          permissions: UserPermissions.create()
+            ..articleRights = RightsAdmin.article
+            ..boutiqueRights = RightsAdmin.boutique
+            ..contactRights = RightsAdmin.contact
+            ..chainRights = RightsAdmin.chain
+            ..firmRights = RightsAdmin.firm
+            ..ticketRights = RightsAdmin.ticket
+            ..boolRights = RightsAdmin.boolRights
+            ..userManagementRights = RightsAdmin.userManagement
+            ..billingRights = RightsAdmin.billing
+            ..firmId = firmId
+            ..userId = userPermission.userId,
+        );
 
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.CREATED
-          ..id = firmId
-          ..timestamp = DateTime.now().timestampProto;
+        try {
+          await updateOneUser(call, user);
+        } on GrpcError catch (e) {
+          print(e);
+          rethrow;
+        }
+
+        final _id = result.document!['_id'] as ObjectId;
+        return CreateFirmResponse(
+          statusResponse: StatusResponse.create()
+            ..type = StatusResponse_Type.CREATED
+            ..id = _id.oid
+            ..timestamp = DateTime.now().timestampProto,
+          firmId: firmId,
+        );
       } else {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.ERROR
-          ..message = 'result.ok != 1 || result.document == null'
-          ..timestamp = DateTime.now().timestampProto;
+        return CreateFirmResponse(
+            statusResponse: StatusResponse.create()
+              ..type = StatusResponse_Type.ERROR
+              ..message = 'result.ok != 1 || result.document == null'
+              ..timestamp = DateTime.now().timestampProto);
       }
     } on GrpcError catch (e) {
       print(e);
@@ -895,45 +952,7 @@ class FenceService extends FenceServiceBase {
       ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
   }
 
-  /// used to find user access levels called by UserService
-  /// consider making this a "public" gRPC
-  Future<List<String>> readAllBoutiquesInChains(
-      String firmId, List<String> chainIds) async {
-    _db.isConnected ? null : await _db.open();
-    try {
-      final firmMongo =
-          await boutiqueCollection.findOne(where.eq('firmId', firmId));
-
-      if (firmMongo == null) {
-        throw GrpcError.notFound('firm not found');
-      }
-      final firm = Firm()
-        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
-
-      final boutiques = <Boutique>[];
-      for (final requestchainId in chainIds) {
-        for (final chain in firm.chains) {
-          if (firmId == chain.firmId) {
-            if (requestchainId == chain.chainId) {
-              for (final boutique in chain.boutiques) {
-                if (boutique.firmId == firmId &&
-                    boutique.chainId == requestchainId) {
-                  boutiques.add(boutique);
-                }
-              }
-            }
-          }
-        }
-      }
-      return boutiques.map((e) => e.boutiqueId).toList();
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
-
-  /// used to find user access levels called by UserService
-  Future<List<String>> readAllBoutiquesInChain(UserPrivate user) async {
+  Future<List<String>> _readAllBoutiquesInChain(UserPrivate user) async {
     _db.isConnected ? null : await _db.open();
     try {
       final firmMongo =
@@ -946,7 +965,7 @@ class FenceService extends FenceServiceBase {
         ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
 
       final boutiques = <Boutique>[];
-      for (final requestchainId in user.chainIds.ids) {
+      for (final requestchainId in user.permissions.chainIds.ids) {
         for (final chain in firm.chains) {
           if (user.firmId == chain.firmId) {
             if (requestchainId == chain.chainId) {
@@ -1055,7 +1074,6 @@ class FenceService extends FenceServiceBase {
     try {
       final firm = await _checkFirmAndProtoIt(userPermission);
       firm.chains.add(request);
-
       final result = await boutiqueCollection.replaceOne(
         where.eq('firmId', userPermission.firmId),
         firm.toProto3Json() as Map<String, dynamic>,
@@ -1290,6 +1308,101 @@ class FenceService extends FenceServiceBase {
     } on GrpcError catch (e) {
       print(e);
       rethrow;
+    }
+  }
+
+  @override
+  Future<SignUpResponse> signUp(
+      ServiceCall? call, SignUpRequest request) async {
+    final mailAndEncyptedPassword = _checkCredentials(
+        Credentials(mail: request.mail, password: request.password));
+    _db.isConnected ? null : await _db.open();
+
+    final user = await _isMailAlreadyUsed(mailAndEncyptedPassword.mail);
+    if (user.userId.isNotEmpty && user.mail.isNotEmpty) {
+      if (_isPendingUser(user)) {
+        return await _updatePendingUser(
+            user, mailAndEncyptedPassword.passwordEncrypted);
+      } else {
+        // user signed it at least once
+        throw GrpcError.failedPrecondition('mail is not available');
+      }
+    }
+    try {
+      // mail/user does not exist AND is not a pending user
+      final userId = DateTime.now().objectIdString;
+      final userPrivate = UserPrivate.create()
+        ..userId = userId
+        ..passwordEncrypted = Encrypter(request.password).encrypted
+        ..mail = request.mail
+        ..firstname = request.firstname
+        ..lastname = request.lastname
+        ..permissions.firmRights = FirmRights(rights: [Right.create]);
+
+      final result = await userCollection
+          .insertOne(userPrivate.toProto3Json() as Map<String, dynamic>);
+      if (result.hasWriteErrors) {
+        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
+      }
+      final timestamp = DateTime.now().timestampProto;
+      if (result.ok == 1 && result.document != null) {
+        final _id = result.document!['_id'] as ObjectId;
+        return SignUpResponse(
+            statusResponse: StatusResponse()
+              ..id = _id.oid
+              ..type = StatusResponse_Type.CREATED
+              ..timestamp = timestamp,
+            userId: userId);
+      } else {
+        return SignUpResponse(
+            statusResponse: StatusResponse()
+              ..type = StatusResponse_Type.ERROR
+              ..timestamp = timestamp);
+      }
+    } on GrpcError catch (e) {
+      log('user mail ${request.mail} signup error: $e');
+      rethrow;
+    }
+  }
+
+  Future<UserPublic> _isMailAlreadyUsed(String mail) async {
+    try {
+      final userMap = await userCollection.findOne(where.eq('mail', mail));
+      if (userMap != null) {
+        return UserPublic.create()
+          ..mergeFromProto3Json(userMap, ignoreUnknownFields: true);
+      } else {
+        return UserPublic.create();
+      }
+    } catch (e) {
+      log('isMailAlreadyUsed $e');
+      throw e;
+    }
+  }
+
+  /// User created by a firm manager are pending until they sign in
+  /// lastSignIn is updated in all auth calls
+  bool _isPendingUser(UserPublic user) => user.lastSignIn.seconds == 0;
+
+  // user was created by someone at ${user.permissions.firmId}
+  // so we only update password
+  // if user was created by mistake, he/she can quit/delete profile to start fresh signup
+  Future<SignUpResponse> _updatePendingUser(
+      UserPublic user, String passwordEncrypted) async {
+    try {
+      await userCollection.update(where.eq('userId', user.userId),
+          ModifierBuilder().set('password', passwordEncrypted),
+          upsert: true);
+      return SignUpResponse(
+          statusResponse: StatusResponse()
+            ..message =
+                'pendingUser from firm ${user.permissions.firmId}, just log in to access it'
+            ..type = StatusResponse_Type.UPDATED
+            ..timestamp = DateTime.now().timestampProto,
+          userId: user.userId);
+    } catch (e) {
+      log('error $e');
+      throw e;
     }
   }
 }

@@ -15,7 +15,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../article/article.pb.dart' as $3;
 import 'ticket.pbenum.dart';
-import 'ticket_type.pbenum.dart' as $19;
+import 'ticket_type.pbenum.dart' as $20;
 
 export 'ticket.pbenum.dart';
 
@@ -151,7 +151,7 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? dateStatus,
     $core.bool? status,
     $core.Iterable<ItemCartPb>? items,
-    $19.TicketTypePb? ticketType,
+    $20.TicketTypePb? ticketType,
     TicketPb_PaymentTypePb? paymentType,
     $core.int? contactId,
     TaxPb? taxe,
@@ -216,7 +216,7 @@ class TicketPb extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
     ..aOB(5, _omitFieldNames ? '' : 'status')
     ..pc<ItemCartPb>(6, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM, subBuilder: ItemCartPb.create)
-    ..e<$19.TicketTypePb>(7, _omitFieldNames ? '' : 'ticketType', $pb.PbFieldType.OE, protoName: 'ticketType', defaultOrMaker: $19.TicketTypePb.unknown, valueOf: $19.TicketTypePb.valueOf, enumValues: $19.TicketTypePb.values)
+    ..e<$20.TicketTypePb>(7, _omitFieldNames ? '' : 'ticketType', $pb.PbFieldType.OE, protoName: 'ticketType', defaultOrMaker: $20.TicketTypePb.unknown, valueOf: $20.TicketTypePb.valueOf, enumValues: $20.TicketTypePb.values)
     ..e<TicketPb_PaymentTypePb>(8, _omitFieldNames ? '' : 'paymentType', $pb.PbFieldType.OE, protoName: 'paymentType', defaultOrMaker: TicketPb_PaymentTypePb.unknown, valueOf: TicketPb_PaymentTypePb.valueOf, enumValues: TicketPb_PaymentTypePb.values)
     ..a<$core.int>(9, _omitFieldNames ? '' : 'contactId', $pb.PbFieldType.O3, protoName: 'contactId')
     ..aOM<TaxPb>(10, _omitFieldNames ? '' : 'taxe', subBuilder: TaxPb.create)
@@ -299,9 +299,9 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.List<ItemCartPb> get items => $_getList(5);
 
   @$pb.TagNumber(7)
-  $19.TicketTypePb get ticketType => $_getN(6);
+  $20.TicketTypePb get ticketType => $_getN(6);
   @$pb.TagNumber(7)
-  set ticketType($19.TicketTypePb v) { setField(7, v); }
+  set ticketType($20.TicketTypePb v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasTicketType() => $_has(6);
   @$pb.TagNumber(7)

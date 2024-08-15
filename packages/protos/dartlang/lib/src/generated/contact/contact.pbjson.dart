@@ -48,17 +48,17 @@ const ContactPb$json = {
     {'1': 'address', '3': 10, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
     {'1': 'overdraft', '3': 11, '4': 1, '5': 5, '10': 'overdraft'},
     {'1': 'tags', '3': 12, '4': 3, '5': 9, '10': 'categories'},
-    {'1': 'other_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb.OtherAttributesEntry', '10': 'other_attributes'},
+    {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb.OthersAttributesEntry', '10': 'othersAttributes'},
   ],
-  '3': [ContactPb_OtherAttributesEntry$json],
+  '3': [ContactPb_OthersAttributesEntry$json],
   '9': [
     {'1': 13, '2': 99},
   ],
 };
 
 @$core.Deprecated('Use contactPbDescriptor instead')
-const ContactPb_OtherAttributesEntry$json = {
-  '1': 'OtherAttributesEntry',
+const ContactPb_OthersAttributesEntry$json = {
+  '1': 'OthersAttributesEntry',
   '2': [
     {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
     {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
@@ -75,8 +75,8 @@ final $typed_data.Uint8List contactPbDescriptor = $convert.base64Decode(
     'CGxhc3ROYW1lEhIKBG1haWwYCCABKAlSBG1haWwSLwoFcGhvbmUYCSABKAsyGS53ZWViaS5jb2'
     '1tb24ucGhvbmUuUGhvbmVSBXBob25lEjsKB2FkZHJlc3MYCiABKAsyHS53ZWViaS5jb21tb24u'
     'YWRkcmVzcy5BZGRyZXNzUgthZGRyZXNzRnVsbBIcCglvdmVyZHJhZnQYCyABKAVSCW92ZXJkcm'
-    'FmdBIYCgR0YWdzGAwgAygJUgpjYXRlZ29yaWVzElkKEG90aGVyX2F0dHJpYnV0ZXMYYyADKAsy'
-    'LS53ZWViaS5jb250YWN0LkNvbnRhY3RQYi5PdGhlckF0dHJpYnV0ZXNFbnRyeVIQb3RoZXJfYX'
-    'R0cmlidXRlcxpCChRPdGhlckF0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2'
-    'YWx1ZRgCIAEoCVIFdmFsdWU6AjgBSgQIDRBj');
+    'FmdBIYCgR0YWdzGAwgAygJUgpjYXRlZ29yaWVzEloKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsy'
+    'Li53ZWViaS5jb250YWN0LkNvbnRhY3RQYi5PdGhlcnNBdHRyaWJ1dGVzRW50cnlSEG90aGVyc0'
+    'F0dHJpYnV0ZXMaQwoVT3RoZXJzQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQK'
+    'BXZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgNEGM=');
 

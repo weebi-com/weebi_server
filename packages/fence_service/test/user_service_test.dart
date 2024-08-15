@@ -7,6 +7,7 @@ import 'package:test/test.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
+// TODO test signup
 void main() async {
   final db = TestHelper.localDb;
 
@@ -28,12 +29,12 @@ void main() async {
     await db.createCollection(fenceService.boutiqueCollection.collectionName);
     final responseUser = await fenceService.createOneUser(
       null,
-      CreateOneUserRequest(
+      AddPendingUserRequest(
         userInfo: Dummy.userInfoNoId,
         password: '1234',
       ),
     );
-    final response = await fenceService.createOneFirm(null, Dummy.firmNoId);
+    final response = await fenceService.createFirm(null, Dummy.firmNoId);
 
     expect(response.type, StatusResponse_Type.CREATED);
     final firmId = response.id;
@@ -51,7 +52,7 @@ void main() async {
 
   test('test replaceOne', () async {
     final permissions = UserPermissions.create()..userId = userId;
-    final userLili = UserInfo()
+    final userLili = UserPublic()
       ..firstname = 'lili'
       ..lastname = 'biscuit'
       ..permissions = permissions;

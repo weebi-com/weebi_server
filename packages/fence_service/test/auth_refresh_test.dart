@@ -49,7 +49,7 @@ void main() {
         )
       ],
     );
-    final request = LoginRequest(
+    final request = Credentials(
       mail: 'dev@weebi.com',
       password: '1234',
     );

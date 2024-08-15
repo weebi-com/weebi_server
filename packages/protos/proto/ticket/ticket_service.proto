@@ -3,13 +3,10 @@ syntax = "proto3";
 package weebi.ticket.service;
 
 import "ticket/ticket.proto";
-
 import "common/g_common.proto";
-// import "common/empty.proto";
-// import "common/mongo.proto";
 
 message FindTicketRequest {
-  // weebi.common.mongo.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
+  // weebi.common.chained_ids.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
   // string firmId = 1 [json_name = 'firmId']; deduced from bearer token
   string ticketchainId = 1 [json_name = 'ticketchainId'];
   string ticketuserId = 2 [json_name = 'ticketuserId'];
@@ -18,7 +15,7 @@ message FindTicketRequest {
 
 message TicketRequest {
   /// restrict request on a single boutique to ease access verification
-  //  weebi.common.mongo.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
+  //  weebi.common.chained_ids.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
   weebi.ticket.TicketPb ticket = 2 [json_name = 'ticket'];
 }
 

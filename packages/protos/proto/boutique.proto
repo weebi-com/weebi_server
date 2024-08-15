@@ -4,7 +4,6 @@ package weebi.boutique;
 
 import "common/phone.proto";
 import "common/address.proto";
-import "common/mongo.proto";
 
 message Boutique {
     string boutiqueId = 1 [json_name = 'boutiqueId'];

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package weebi.common.chained_ids;
+
+message ChainIdAndboutiqueId {
+  string chainId = 1;
+  string boutiqueId = 2;
+}

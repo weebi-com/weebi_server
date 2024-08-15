@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: contact_service.proto
+//  source: common/chained_ids.proto
 //
 // @dart = 2.12
 

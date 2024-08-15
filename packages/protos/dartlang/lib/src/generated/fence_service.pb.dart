@@ -13,10 +13,10 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'btq_chain.pb.dart' as $10;
-import 'common/g_timestamp.pb.dart' as $16;
-import 'common/mongo.pb.dart' as $7;
-import 'user.pb.dart' as $8;
+import 'btq_chain.pb.dart' as $11;
+import 'common/chained_ids.pb.dart' as $10;
+import 'common/g_timestamp.pb.dart' as $17;
+import 'user_permissions.pb.dart' as $8;
 
 class ReadDeviceRequest extends $pb.GeneratedMessage {
   factory ReadDeviceRequest({
@@ -71,7 +71,7 @@ class ReadDeviceRequest extends $pb.GeneratedMessage {
 class DeleteDeviceRequest extends $pb.GeneratedMessage {
   factory DeleteDeviceRequest({
     $core.String? chainId,
-    $10.Device? device,
+    $11.Device? device,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -88,7 +88,7 @@ class DeleteDeviceRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteDeviceRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$10.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $10.Device.create)
+    ..aOM<$11.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $11.Device.create)
     ..hasRequiredFields = false
   ;
 
@@ -123,19 +123,19 @@ class DeleteDeviceRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $10.Device get device => $_getN(1);
+  $11.Device get device => $_getN(1);
   @$pb.TagNumber(2)
-  set device($10.Device v) { setField(2, v); }
+  set device($11.Device v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDevice() => $_has(1);
   @$pb.TagNumber(2)
   void clearDevice() => clearField(2);
   @$pb.TagNumber(2)
-  $10.Device ensureDevice() => $_ensure(1);
+  $11.Device ensureDevice() => $_ensure(1);
 }
 
-class MailAndEncyptedPasswordRequest extends $pb.GeneratedMessage {
-  factory MailAndEncyptedPasswordRequest({
+class MailAndEncyptedPassword extends $pb.GeneratedMessage {
+  factory MailAndEncyptedPassword({
     $core.String? mail,
     $core.String? passwordEncrypted,
   }) {
@@ -148,11 +148,11 @@ class MailAndEncyptedPasswordRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  MailAndEncyptedPasswordRequest._() : super();
-  factory MailAndEncyptedPasswordRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory MailAndEncyptedPasswordRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  MailAndEncyptedPassword._() : super();
+  factory MailAndEncyptedPassword.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory MailAndEncyptedPassword.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MailAndEncyptedPasswordRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MailAndEncyptedPassword', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'mail')
     ..aOS(2, _omitFieldNames ? '' : 'passwordEncrypted', protoName: 'passwordEncrypted')
     ..hasRequiredFields = false
@@ -162,22 +162,22 @@ class MailAndEncyptedPasswordRequest extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  MailAndEncyptedPasswordRequest clone() => MailAndEncyptedPasswordRequest()..mergeFromMessage(this);
+  MailAndEncyptedPassword clone() => MailAndEncyptedPassword()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  MailAndEncyptedPasswordRequest copyWith(void Function(MailAndEncyptedPasswordRequest) updates) => super.copyWith((message) => updates(message as MailAndEncyptedPasswordRequest)) as MailAndEncyptedPasswordRequest;
+  MailAndEncyptedPassword copyWith(void Function(MailAndEncyptedPassword) updates) => super.copyWith((message) => updates(message as MailAndEncyptedPassword)) as MailAndEncyptedPassword;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static MailAndEncyptedPasswordRequest create() => MailAndEncyptedPasswordRequest._();
-  MailAndEncyptedPasswordRequest createEmptyInstance() => create();
-  static $pb.PbList<MailAndEncyptedPasswordRequest> createRepeated() => $pb.PbList<MailAndEncyptedPasswordRequest>();
+  static MailAndEncyptedPassword create() => MailAndEncyptedPassword._();
+  MailAndEncyptedPassword createEmptyInstance() => create();
+  static $pb.PbList<MailAndEncyptedPassword> createRepeated() => $pb.PbList<MailAndEncyptedPassword>();
   @$core.pragma('dart2js:noInline')
-  static MailAndEncyptedPasswordRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MailAndEncyptedPasswordRequest>(create);
-  static MailAndEncyptedPasswordRequest? _defaultInstance;
+  static MailAndEncyptedPassword getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MailAndEncyptedPassword>(create);
+  static MailAndEncyptedPassword? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get mail => $_getSZ(0);
@@ -250,8 +250,8 @@ class UserId extends $pb.GeneratedMessage {
 
 class Access extends $pb.GeneratedMessage {
   factory Access({
-    $8.Ids? chainIds,
-    $8.Ids? boutiqueIds,
+    $8.ChainIds? chainIds,
+    $8.BoutiqueIds? boutiqueIds,
   }) {
     final $result = create();
     if (chainIds != null) {
@@ -267,8 +267,8 @@ class Access extends $pb.GeneratedMessage {
   factory Access.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Access', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOM<$8.Ids>(1, _omitFieldNames ? '' : 'chainIds', protoName: 'chainIds', subBuilder: $8.Ids.create)
-    ..aOM<$8.Ids>(2, _omitFieldNames ? '' : 'boutiqueIds', protoName: 'boutiqueIds', subBuilder: $8.Ids.create)
+    ..aOM<$8.ChainIds>(1, _omitFieldNames ? '' : 'chainIds', protoName: 'chainIds', subBuilder: $8.ChainIds.create)
+    ..aOM<$8.BoutiqueIds>(2, _omitFieldNames ? '' : 'boutiqueIds', protoName: 'boutiqueIds', subBuilder: $8.BoutiqueIds.create)
     ..hasRequiredFields = false
   ;
 
@@ -294,30 +294,30 @@ class Access extends $pb.GeneratedMessage {
   static Access? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $8.Ids get chainIds => $_getN(0);
+  $8.ChainIds get chainIds => $_getN(0);
   @$pb.TagNumber(1)
-  set chainIds($8.Ids v) { setField(1, v); }
+  set chainIds($8.ChainIds v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasChainIds() => $_has(0);
   @$pb.TagNumber(1)
   void clearChainIds() => clearField(1);
   @$pb.TagNumber(1)
-  $8.Ids ensureChainIds() => $_ensure(0);
+  $8.ChainIds ensureChainIds() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $8.Ids get boutiqueIds => $_getN(1);
+  $8.BoutiqueIds get boutiqueIds => $_getN(1);
   @$pb.TagNumber(2)
-  set boutiqueIds($8.Ids v) { setField(2, v); }
+  set boutiqueIds($8.BoutiqueIds v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBoutiqueIds() => $_has(1);
   @$pb.TagNumber(2)
   void clearBoutiqueIds() => clearField(2);
   @$pb.TagNumber(2)
-  $8.Ids ensureBoutiqueIds() => $_ensure(1);
+  $8.BoutiqueIds ensureBoutiqueIds() => $_ensure(1);
 }
 
-class LoginRequest extends $pb.GeneratedMessage {
-  factory LoginRequest({
+class Credentials extends $pb.GeneratedMessage {
+  factory Credentials({
     $core.String? mail,
     $core.String? password,
   }) {
@@ -330,11 +330,11 @@ class LoginRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  LoginRequest._() : super();
-  factory LoginRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory LoginRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Credentials._() : super();
+  factory Credentials.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Credentials.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LoginRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Credentials', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'mail')
     ..aOS(2, _omitFieldNames ? '' : 'password')
     ..hasRequiredFields = false
@@ -344,22 +344,22 @@ class LoginRequest extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  LoginRequest clone() => LoginRequest()..mergeFromMessage(this);
+  Credentials clone() => Credentials()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  LoginRequest copyWith(void Function(LoginRequest) updates) => super.copyWith((message) => updates(message as LoginRequest)) as LoginRequest;
+  Credentials copyWith(void Function(Credentials) updates) => super.copyWith((message) => updates(message as Credentials)) as Credentials;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static LoginRequest create() => LoginRequest._();
-  LoginRequest createEmptyInstance() => create();
-  static $pb.PbList<LoginRequest> createRepeated() => $pb.PbList<LoginRequest>();
+  static Credentials create() => Credentials._();
+  Credentials createEmptyInstance() => create();
+  static $pb.PbList<Credentials> createRepeated() => $pb.PbList<Credentials>();
   @$core.pragma('dart2js:noInline')
-  static LoginRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<LoginRequest>(create);
-  static LoginRequest? _defaultInstance;
+  static Credentials getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Credentials>(create);
+  static Credentials? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get mail => $_getSZ(0);
@@ -380,8 +380,8 @@ class LoginRequest extends $pb.GeneratedMessage {
   void clearPassword() => clearField(2);
 }
 
-class DeviceLoginRequest extends $pb.GeneratedMessage {
-  factory DeviceLoginRequest({
+class DeviceCredentials extends $pb.GeneratedMessage {
+  factory DeviceCredentials({
     $core.String? firmId,
     $core.String? chainId,
     $core.String? boutiqueId,
@@ -406,11 +406,11 @@ class DeviceLoginRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  DeviceLoginRequest._() : super();
-  factory DeviceLoginRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DeviceLoginRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  DeviceCredentials._() : super();
+  factory DeviceCredentials.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DeviceCredentials.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeviceLoginRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeviceCredentials', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
@@ -423,22 +423,22 @@ class DeviceLoginRequest extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  DeviceLoginRequest clone() => DeviceLoginRequest()..mergeFromMessage(this);
+  DeviceCredentials clone() => DeviceCredentials()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  DeviceLoginRequest copyWith(void Function(DeviceLoginRequest) updates) => super.copyWith((message) => updates(message as DeviceLoginRequest)) as DeviceLoginRequest;
+  DeviceCredentials copyWith(void Function(DeviceCredentials) updates) => super.copyWith((message) => updates(message as DeviceCredentials)) as DeviceCredentials;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static DeviceLoginRequest create() => DeviceLoginRequest._();
-  DeviceLoginRequest createEmptyInstance() => create();
-  static $pb.PbList<DeviceLoginRequest> createRepeated() => $pb.PbList<DeviceLoginRequest>();
+  static DeviceCredentials create() => DeviceCredentials._();
+  DeviceCredentials createEmptyInstance() => create();
+  static $pb.PbList<DeviceCredentials> createRepeated() => $pb.PbList<DeviceCredentials>();
   @$core.pragma('dart2js:noInline')
-  static DeviceLoginRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeviceLoginRequest>(create);
-  static DeviceLoginRequest? _defaultInstance;
+  static DeviceCredentials getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeviceCredentials>(create);
+  static DeviceCredentials? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get firmId => $_getSZ(0);
@@ -603,7 +603,7 @@ class Tokens extends $pb.GeneratedMessage {
 class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
   factory UpdateDevicePasswordRequest({
     $core.String? chainId,
-    $10.Device? device,
+    $11.Device? device,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -620,7 +620,7 @@ class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateDevicePasswordRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$10.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $10.Device.create)
+    ..aOM<$11.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $11.Device.create)
     ..hasRequiredFields = false
   ;
 
@@ -655,81 +655,15 @@ class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $10.Device get device => $_getN(1);
+  $11.Device get device => $_getN(1);
   @$pb.TagNumber(2)
-  set device($10.Device v) { setField(2, v); }
+  set device($11.Device v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDevice() => $_has(1);
   @$pb.TagNumber(2)
   void clearDevice() => clearField(2);
   @$pb.TagNumber(2)
-  $10.Device ensureDevice() => $_ensure(1);
-}
-
-class CreateOneUserRequest extends $pb.GeneratedMessage {
-  factory CreateOneUserRequest({
-    $8.UserInfo? userInfo,
-    $core.String? password,
-  }) {
-    final $result = create();
-    if (userInfo != null) {
-      $result.userInfo = userInfo;
-    }
-    if (password != null) {
-      $result.password = password;
-    }
-    return $result;
-  }
-  CreateOneUserRequest._() : super();
-  factory CreateOneUserRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CreateOneUserRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateOneUserRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOM<$8.UserInfo>(1, _omitFieldNames ? '' : 'userInfo', protoName: 'userInfo', subBuilder: $8.UserInfo.create)
-    ..aOS(2, _omitFieldNames ? '' : 'password')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  CreateOneUserRequest clone() => CreateOneUserRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  CreateOneUserRequest copyWith(void Function(CreateOneUserRequest) updates) => super.copyWith((message) => updates(message as CreateOneUserRequest)) as CreateOneUserRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CreateOneUserRequest create() => CreateOneUserRequest._();
-  CreateOneUserRequest createEmptyInstance() => create();
-  static $pb.PbList<CreateOneUserRequest> createRepeated() => $pb.PbList<CreateOneUserRequest>();
-  @$core.pragma('dart2js:noInline')
-  static CreateOneUserRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateOneUserRequest>(create);
-  static CreateOneUserRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $8.UserInfo get userInfo => $_getN(0);
-  @$pb.TagNumber(1)
-  set userInfo($8.UserInfo v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasUserInfo() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearUserInfo() => clearField(1);
-  @$pb.TagNumber(1)
-  $8.UserInfo ensureUserInfo() => $_ensure(0);
-
-  @$pb.TagNumber(2)
-  $core.String get password => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set password($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasPassword() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearPassword() => clearField(2);
+  $11.Device ensureDevice() => $_ensure(1);
 }
 
 class PasswordUpdateRequest extends $pb.GeneratedMessage {
@@ -798,7 +732,7 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
 
 class PendingDeviceRequest extends $pb.GeneratedMessage {
   factory PendingDeviceRequest({
-    $10.Device? device,
+    $11.Device? device,
     $core.int? code,
   }) {
     final $result = create();
@@ -815,7 +749,7 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
   factory PendingDeviceRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PendingDeviceRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOM<$10.Device>(1, _omitFieldNames ? '' : 'device', subBuilder: $10.Device.create)
+    ..aOM<$11.Device>(1, _omitFieldNames ? '' : 'device', subBuilder: $11.Device.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
@@ -842,15 +776,15 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
   static PendingDeviceRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $10.Device get device => $_getN(0);
+  $11.Device get device => $_getN(0);
   @$pb.TagNumber(1)
-  set device($10.Device v) { setField(1, v); }
+  set device($11.Device v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasDevice() => $_has(0);
   @$pb.TagNumber(1)
   void clearDevice() => clearField(1);
   @$pb.TagNumber(1)
-  $10.Device ensureDevice() => $_ensure(0);
+  $11.Device ensureDevice() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.int get code => $_getIZ(1);
@@ -869,7 +803,7 @@ class DevicePairingResponse extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.String? userId,
     $core.int? code,
-    $16.Timestamp? timestampUTC,
+    $17.Timestamp? timestampUTC,
   }) {
     final $result = create();
     if (firmId != null) {
@@ -902,7 +836,7 @@ class DevicePairingResponse extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(4, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..a<$core.int>(5, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
-    ..aOM<$16.Timestamp>(6, _omitFieldNames ? '' : 'timestampUTC', protoName: 'timestampUTC', subBuilder: $16.Timestamp.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'timestampUTC', protoName: 'timestampUTC', subBuilder: $17.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -973,21 +907,21 @@ class DevicePairingResponse extends $pb.GeneratedMessage {
   void clearCode() => clearField(5);
 
   @$pb.TagNumber(6)
-  $16.Timestamp get timestampUTC => $_getN(5);
+  $17.Timestamp get timestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set timestampUTC($16.Timestamp v) { setField(6, v); }
+  set timestampUTC($17.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
   void clearTimestampUTC() => clearField(6);
   @$pb.TagNumber(6)
-  $16.Timestamp ensureTimestampUTC() => $_ensure(5);
+  $17.Timestamp ensureTimestampUTC() => $_ensure(5);
 }
 
 class ApproveDeviceRequest extends $pb.GeneratedMessage {
   factory ApproveDeviceRequest({
-    $7.chainIdAndboutiqueId? chainIdAndboutiqueId,
-    $10.Device? device,
+    $10.ChainIdAndboutiqueId? chainIdAndboutiqueId,
+    $11.Device? device,
   }) {
     final $result = create();
     if (chainIdAndboutiqueId != null) {
@@ -1003,8 +937,8 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
   factory ApproveDeviceRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ApproveDeviceRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOM<$7.chainIdAndboutiqueId>(1, _omitFieldNames ? '' : 'chainIdAndboutiqueId', protoName: 'chainIdAndboutiqueId', subBuilder: $7.chainIdAndboutiqueId.create)
-    ..aOM<$10.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $10.Device.create)
+    ..aOM<$10.ChainIdAndboutiqueId>(1, _omitFieldNames ? '' : 'ChainIdAndboutiqueId', protoName: 'ChainIdAndboutiqueId', subBuilder: $10.ChainIdAndboutiqueId.create)
+    ..aOM<$11.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $11.Device.create)
     ..hasRequiredFields = false
   ;
 
@@ -1030,26 +964,26 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
   static ApproveDeviceRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $7.chainIdAndboutiqueId get chainIdAndboutiqueId => $_getN(0);
+  $10.ChainIdAndboutiqueId get chainIdAndboutiqueId => $_getN(0);
   @$pb.TagNumber(1)
-  set chainIdAndboutiqueId($7.chainIdAndboutiqueId v) { setField(1, v); }
+  set chainIdAndboutiqueId($10.ChainIdAndboutiqueId v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasChainIdAndboutiqueId() => $_has(0);
   @$pb.TagNumber(1)
   void clearChainIdAndboutiqueId() => clearField(1);
   @$pb.TagNumber(1)
-  $7.chainIdAndboutiqueId ensureChainIdAndboutiqueId() => $_ensure(0);
+  $10.ChainIdAndboutiqueId ensureChainIdAndboutiqueId() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $10.Device get device => $_getN(1);
+  $11.Device get device => $_getN(1);
   @$pb.TagNumber(2)
-  set device($10.Device v) { setField(2, v); }
+  set device($11.Device v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDevice() => $_has(1);
   @$pb.TagNumber(2)
   void clearDevice() => clearField(2);
   @$pb.TagNumber(2)
-  $10.Device ensureDevice() => $_ensure(1);
+  $11.Device ensureDevice() => $_ensure(1);
 }
 
 

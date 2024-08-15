@@ -1,3 +1,4 @@
+import 'package:fixnum/fixnum.dart';
 import 'package:protos_weebi/src/snippet.dart';
 import 'package:test/test.dart';
 
@@ -6,9 +7,9 @@ void main() {
     final date = DateTime(2024, 07, 28);
     final timestamp = date.timestampProto;
 
-    print(timestamp);
-    print(timestamp.toProto3Json());
+    print('timestamp $timestamp');
+    print('toProto3Json ${timestamp.toProto3Json()}');
 
-    expect(timestamp.seconds, 1722117600);
+    expect(timestamp.seconds, Int64(1722117600));
   });
 }

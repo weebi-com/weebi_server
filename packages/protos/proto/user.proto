@@ -2,125 +2,79 @@ syntax = "proto3";
 
 package weebi.user;
 
+import "common/g_common.proto";
 import "common/g_timestamp.proto";
-import "common/mongo.proto";
+import "user_permissions.proto";
+import "common/phone.proto";
 
-// ! addition in UserPermissions might also be echoed in fence_service_base.dart in : 
-/// - approveDevice()
-
-/// Permissions encompass two notions : 
-///  - access (chains and their boutiques boutiques)
-///  - rights 
-///   - CRUD on editable objects
-///   - bool on certain action/screen in app
-
-message UserPermissions {
-  string userId = 1 [json_name = 'userId'];
-  string firmId = 2  [json_name = 'firmId'];
-  weebi.user.Ids chainIds = 3 [json_name = 'chainIds'];
-  weebi.user.Ids boutiqueIds = 4 [json_name = 'boutiqueIds']; 
-  weebi.user.TicketRights ticketRights = 5  [json_name = 'ticketRights'];
-  weebi.user.ContactRights contactRights =  6  [json_name = 'contactRights'];
-  weebi.user.ArticleRights articleRights =  7 [json_name = 'articleRights'];
-  weebi.user.BoutiqueRights boutiqueRights = 8  [json_name = 'boutiqueRights'];
-  weebi.user.MallRights chainRights =  9 [json_name = 'mallRights'];
-  weebi.user.FirmRights firmRights =  10  [json_name = 'firmRights'];
-  weebi.user.UserManagementRights userManagementRights =  11 [json_name = 'userManagementRights'];
-  weebi.user.BoolRights boolRights = 12 [json_name = 'boolRights'];
-}
-
-/// user CRUD rights on base models 
-enum Right {
-  unknown = 0;
-  create = 1;
-  read = 2;
-  update = 3;
-  delete = 4;
-}
-
-message ArticleRights {
-  repeated Right rights = 1 [json_name = 'articleRights'];
-}
-message BoutiqueRights {
-  repeated Right rights = 1 [json_name = 'boutiqueRights'];
-}
-message MallRights {
-  repeated Right rights = 1 [json_name = 'mallRights'];
-}
-message FirmRights {
-  repeated Right rights = 1 [json_name = 'firmRights'];
-}
-message ContactRights {
-  repeated Right rights = 1 [json_name = 'contactRights'];
-}
-
-/// there is no such a thing as updating a ticket, one can simply disable or restore it
-/// but for simplicity we will use the same enum Right here, including update
-message TicketRights {
-  repeated Right rights = 1 [json_name = 'ticketRights'];
-}
-message UserManagementRights {
-  repeated Right rights = 1 [json_name = 'userManagementRights'];
-}
-
-
-message BoolRights {
-  bool canSeeStats = 1 [json_name = 'canSeeStats'];
-  bool canExportData = 2 [json_name = 'canExportData'];
-  bool canGiveDiscount = 3 [json_name = 'canGiveDiscount'];
-  bool canSetPromo = 4 [json_name = 'canSetPromo'];
-  bool canStockMovement = 5 [json_name = 'canStockMovement'];
-  bool canStockInventory = 6 [json_name = 'canStockInventory'];
-  bool canQuickSpend = 7 [json_name = 'canQuickSpend'];
-  bool canPurchase = 8 [json_name = 'canPurchase'];
-  bool canImportTickets = 9 [json_name = 'canImportTickets'];
-}
-
-/// all users need to belong at least to a chain to see articles and contact
-/// specific rights will then be checked to see what kind of action the user can perform on this chain's objects
-
-/// TODO : for manaers who will always need to access all boutiques of a chain
-// add a property canAccessFutureBoutiques
-// rework the createOneBoutique to update all users with matching boutique.chainId && canAccessFutureBoutiques == true
-
-message Ids {
-  repeated string ids = 1 [json_name = 'ids'];
-}
-
-/// ! any addition to this model must be replicated in the fence_service_base.dart 
+/// ! any addition to this model must be replicated in UserPrivate below and in the fence_service_base.dart 
 /// createOneUser()
 /// updateOneUser() 
-message UserInfo {
+
+message UserPublic {
   string userId = 1 [json_name = 'userId'];
   string mail = 2 [json_name = 'mail'];
   string firstname = 3 [json_name = 'firstname'];
   string lastname = 4 [json_name = 'lastname'];
-  UserPermissions permissions = 5 [json_name = 'permissions'];
+  weebi.common.phone.Phone phone =  5 [json_name = 'phone'];
+  google.protobuf.Timestamp lastSignIn = 6 [json_name = 'lastSignIn'];
+  weebi.user.permissions.UserPermissions permissions = 7 [json_name = 'permissions'];
+  reserved 8 to 98;
+  map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
 }
-
-
 
 /// this is how users are stored in db
 /// this model should not be exposed / used by clients
+/// because it includes password 
 message UserPrivate {
   //string userId = 1 [json_name = 'userId'];
   string userId = 1 [json_name = 'userId'];
   string mail = 2 [json_name = 'mail'];
-  string passwordEncrypted = 3 [json_name = 'password'];
-  string firmId = 4 [json_name = 'firmId'];
-  Ids chainIds = 5 [json_name = 'chainIds'];
-  Ids boutiqueIds = 6 [json_name = 'boutiqueIds'];
-  ArticleRights articleRights = 7 [json_name = 'articleRights'];
-  BoutiqueRights boutiqueRights = 8 [json_name = 'boutiqueRights'];
-  FirmRights firmRights = 9 [json_name = 'firmRights'];
-  MallRights chainRights = 10 [json_name = 'mallRights'];
-  ContactRights contactRights = 11 [json_name = 'contactRights'];
-  TicketRights ticketRights = 12 [json_name = 'ticketRights'];
-  UserManagementRights userManagementRights = 13 [json_name = 'userManagementRights'];
-  BoolRights boolRights = 14 [json_name = 'boolRights'];
-  string lastUpdatedByuserId = 15 [json_name = 'lastUpdatedByuserId'];
-  google.protobuf.Timestamp lastUpdateTimestampUTC = 16 [json_name = 'lastUpdateTimestampUTC'];
-  string firstname = 17 [json_name = 'firstname'];
-  string lastname = 18 [json_name = 'lastname'];
+  string firstname = 3 [json_name = 'firstname'];
+  string lastname = 4 [json_name = 'lastname'];
+  weebi.common.phone.Phone phone =  5 [json_name = 'phone'];
+  string passwordEncrypted = 6 [json_name = 'password'];
+  string firmId = 7 [json_name = 'firmId'];
+  weebi.user.permissions.UserPermissions permissions = 8 [json_name = 'permissions'];
+  google.protobuf.Timestamp lastSignIn = 9 [json_name = 'lastSignIn'];
+  string lastUpdatedByuserId = 10 [json_name = 'lastUpdatedByuserId'];
+  google.protobuf.Timestamp lastUpdateTimestampUTC = 11 [json_name = 'lastUpdateTimestampUTC'];
+  reserved 12 to 98;
+  map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
+}
+
+
+/// 1. signup
+/// 2. either 
+///   - create a firm
+///   - join a firm
+
+message SignUpRequest {
+  google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
+  string mail = 2 [json_name = 'mail'];
+  string firstname = 3 [json_name = 'firstname'];
+  string lastname = 4 [json_name = 'lastname'];
+  string password = 5 [json_name = 'pwd'];
+}
+
+message SignUpResponse {
+  google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
+  string userId = 2 [json_name = 'string'];
+}
+
+/// used by admins to create users
+message AddPendingUserRequest {
+  string mail = 1 [json_name = 'mail'];
+  string firstname = 2 [json_name = 'firstname'];
+  string lastname = 3 [json_name = 'lastname'];
+  weebi.user.permissions.UserPermissions permissions = 4 [json_name = 'permissions'];
+  weebi.common.phone.Phone phone =  5 [json_name = 'phone'];
+  reserved 6 to 98;
+  map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
+}
+
+message AddPendingUserResponse {
+  google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
+  UserPublic userPublic = 2 [json_name = 'userPublic'];
 }
 

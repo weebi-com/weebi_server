@@ -2,15 +2,59 @@ syntax = "proto3";
 
 package weebi.fence.service;
 
-import "common/g_common.proto";
-import "common/mongo.proto";
-import "user.proto";
+import "common/chained_ids.proto";
 import "common/empty.proto";
-import "btq_chain.proto";
+import "common/g_common.proto";
 import "common/g_timestamp.proto";
 
-import "btq_firm.proto";
+import "user.proto";
+import "user_permissions.proto";
+
 import "boutique.proto";
+import "btq_chain.proto";
+import "btq_firm.proto";
+
+service FenceService {
+  rpc signUp(weebi.user.SignUpRequest) returns (weebi.user.SignUpResponse);
+  rpc authenticateWithCredentials (Credentials) returns (Tokens);
+  rpc authenticateWithRefreshToken (RefreshToken) returns (Tokens);
+  rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.permissions.UserPermissions);
+  // TODO: add resign / droit à l'oubli like
+  // allowing user added in an existing firm by mistake to signup again and start his/her own firm
+  
+  rpc createFirm(weebi.firm.CreateFirmRequest) returns (weebi.firm.CreateFirmResponse);
+  rpc readOneFirm(weebi.common.empty.Empty) returns (weebi.firm.Firm);
+  // TODO add replaceFirm
+  // TODO add deleteFirm
+
+  /// device management is as sensitive as user management
+  rpc generateCodeForPairingDevice(weebi.common.chained_ids.ChainIdAndboutiqueId) returns (DevicePairingResponse);
+  rpc addPendingDevice(PendingDeviceRequest) returns (google.retail.common.StatusResponse);
+  rpc approveDevice(ApproveDeviceRequest) returns (google.retail.common.StatusResponse);
+  /// weak auth hack to ease app access to cashiers with very low rights
+  rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
+
+  rpc addPendingUser(weebi.user.AddPendingUserRequest) returns (weebi.user.AddPendingUserResponse);
+  rpc readOneUser(UserId) returns (weebi.user.UserPublic);
+  rpc updateOneUser(weebi.user.UserPublic) returns (google.retail.common.StatusResponse);
+  rpc deleteOneUser(UserId) returns (google.retail.common.StatusResponse);
+  
+  rpc createOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
+  rpc updateOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
+  // TODO add replacechain
+  // TODO add deletechain
+  // TODO add readchains
+
+  // Device belong to chain NOT BOUTIQUE 
+  rpc readDevices(ReadDeviceRequest) returns (weebi.chain.Devices);
+  rpc updateDeviceDefaultPassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
+
+  rpc createOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
+  rpc updateOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
+  
+}
+
 
 message ReadDeviceRequest {
   string chainId = 1;
@@ -21,7 +65,7 @@ message DeleteDeviceRequest {
   weebi.chain.Device device = 2 ;
 }
 
-message MailAndEncyptedPasswordRequest {
+message MailAndEncyptedPassword {
   string mail = 1;
   string passwordEncrypted = 2;
 }
@@ -31,16 +75,16 @@ message UserId {
 }
 
 message Access {
-  weebi.user.Ids chainIds = 1 [json_name = 'chainIds'];
-  weebi.user.Ids boutiqueIds = 2 [json_name = 'boutiqueIds'];
+  weebi.user.permissions.ChainIds chainIds = 1 [json_name = 'chainIds'];
+  weebi.user.permissions.BoutiqueIds boutiqueIds = 2 [json_name = 'boutiqueIds'];
 }
 
-message LoginRequest {
+message Credentials {
   string mail = 1;
   string password = 2;
 }
 
-message DeviceLoginRequest {
+message DeviceCredentials {
   string firmId = 1 ;
   string chainId = 2 ;
   string boutiqueId = 3;
@@ -60,57 +104,6 @@ message Tokens {
 message UpdateDevicePasswordRequest {
   string chainId = 1; 
   weebi.chain.Device device = 2 ;
-}
-
-service FenceService {
-  rpc authenticateWithCredentials (LoginRequest) returns (Tokens);
-  rpc authenticateWithRefreshToken (RefreshToken) returns (Tokens);
-  
-  /// device management is as sensitive as user management
-  rpc generateCodeForPairingDevice(weebi.common.mongo.chainIdAndboutiqueId) returns (DevicePairingResponse);
-  rpc addPendingDevice(PendingDeviceRequest) returns (google.retail.common.StatusResponse);
-  rpc approveDevice(ApproveDeviceRequest) returns (google.retail.common.StatusResponse);
-
-  /// weak auth hack to ease app access to cashiers with very low rights
-  rpc authenticateWithDevice (DeviceLoginRequest) returns (Tokens);
-  rpc updateDeviceDefaultPassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
-
-  rpc createOneUser(CreateOneUserRequest) returns (google.retail.common.StatusResponse);
-  rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.UserPermissions);
-  rpc readOneUser(UserId) returns (weebi.user.UserInfo);
-  rpc updateOneUser(weebi.user.UserInfo) returns (google.retail.common.StatusResponse);
-  rpc deleteOneUser(UserId) returns (google.retail.common.StatusResponse);
-
-
-  /// boutique, device, chain, firm
-  //keeping this here is more simple than having a FIRMSERVICE
-  rpc createOneFirm(weebi.firm.Firm) returns (google.retail.common.StatusResponse);
-  rpc readOneFirm(weebi.common.empty.Empty) returns (weebi.firm.Firm);
-  // TODO add replaceFirm
-  // TODO add deleteFirm
-  
-  //keeping this here is more simple than having a chainSERVICE
-  rpc createOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
-  rpc updateOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
-
-  // DEVICE belong to chain NOT BOUTIQUE
-  /// 
-  rpc readDevices(ReadDeviceRequest) returns (weebi.chain.Devices);
-  rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
-
-  rpc createOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
-  rpc updateOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
-  
-  // TODO add replacechain
-  // TODO add deletechain
-  // TODO add readchains
-}
-
-
-message CreateOneUserRequest {
-  weebi.user.UserInfo userInfo = 1 [json_name = 'userInfo'];
-  string password = 2 [json_name = 'password'];
-//  bool isFirstUser = 3 [json_name = 'isFirstUser'];
 }
 
 message PasswordUpdateRequest {
@@ -133,6 +126,6 @@ message DevicePairingResponse {
 }
 
 message ApproveDeviceRequest {
-  weebi.common.mongo.chainIdAndboutiqueId chainIdAndboutiqueId = 1; 
+  weebi.common.chained_ids.ChainIdAndboutiqueId ChainIdAndboutiqueId = 1; 
   weebi.chain.Device device = 2 ;
 }

@@ -47,3 +47,30 @@ final $typed_data.Uint8List firmDescriptor = $convert.base64Decode(
     'cGRhdGVUaW1lc3RhbXBVVEMSMAoTbGFzdFVwZGF0ZWRCeXVzZXJJZBgLIAEoCVITbGFzdFVwZG'
     'F0ZWRCeXVzZXJJZBImCg5pc01haWxWZXJpZmllZBgMIAEoCFIOaXNNYWlsVmVyaWZpZWQ=');
 
+@$core.Deprecated('Use createFirmRequestDescriptor instead')
+const CreateFirmRequest$json = {
+  '1': 'CreateFirmRequest',
+  '2': [
+    {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
+  ],
+};
+
+/// Descriptor for `CreateFirmRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createFirmRequestDescriptor = $convert.base64Decode(
+    'ChFDcmVhdGVGaXJtUmVxdWVzdBISCgRuYW1lGAEgASgJUgRuYW1l');
+
+@$core.Deprecated('Use createFirmResponseDescriptor instead')
+const CreateFirmResponse$json = {
+  '1': 'CreateFirmResponse',
+  '2': [
+    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
+    {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
+  ],
+};
+
+/// Descriptor for `CreateFirmResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createFirmResponseDescriptor = $convert.base64Decode(
+    'ChJDcmVhdGVGaXJtUmVzcG9uc2USTAoOc3RhdHVzUmVzcG9uc2UYASABKAsyJC5nb29nbGUucm'
+    'V0YWlsLmNvbW1vbi5TdGF0dXNSZXNwb25zZVIOc3RhdHVzUmVzcG9uc2USFgoGZmlybUlkGAIg'
+    'ASgJUgZmaXJtSWQ=');
+
