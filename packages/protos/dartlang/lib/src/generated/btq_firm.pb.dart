@@ -277,14 +277,14 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
 class CreateFirmResponse extends $pb.GeneratedMessage {
   factory CreateFirmResponse({
     $1.StatusResponse? statusResponse,
-    $core.String? firmId,
+    Firm? firm,
   }) {
     final $result = create();
     if (statusResponse != null) {
       $result.statusResponse = statusResponse;
     }
-    if (firmId != null) {
-      $result.firmId = firmId;
+    if (firm != null) {
+      $result.firm = firm;
     }
     return $result;
   }
@@ -294,7 +294,7 @@ class CreateFirmResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateFirmResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm'), createEmptyInstance: create)
     ..aOM<$1.StatusResponse>(1, _omitFieldNames ? '' : 'statusResponse', protoName: 'statusResponse', subBuilder: $1.StatusResponse.create)
-    ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOM<Firm>(2, _omitFieldNames ? '' : 'firm', subBuilder: Firm.create)
     ..hasRequiredFields = false
   ;
 
@@ -331,13 +331,15 @@ class CreateFirmResponse extends $pb.GeneratedMessage {
   $1.StatusResponse ensureStatusResponse() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.String get firmId => $_getSZ(1);
+  Firm get firm => $_getN(1);
   @$pb.TagNumber(2)
-  set firmId($core.String v) { $_setString(1, v); }
+  set firm(Firm v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasFirmId() => $_has(1);
+  $core.bool hasFirm() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirmId() => clearField(2);
+  void clearFirm() => clearField(2);
+  @$pb.TagNumber(2)
+  Firm ensureFirm() => $_ensure(1);
 }
 
 

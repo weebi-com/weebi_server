@@ -64,13 +64,13 @@ const CreateFirmResponse$json = {
   '1': 'CreateFirmResponse',
   '2': [
     {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
-    {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'firm', '3': 2, '4': 1, '5': 11, '6': '.weebi.firm.Firm', '10': 'firm'},
   ],
 };
 
 /// Descriptor for `CreateFirmResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createFirmResponseDescriptor = $convert.base64Decode(
     'ChJDcmVhdGVGaXJtUmVzcG9uc2USTAoOc3RhdHVzUmVzcG9uc2UYASABKAsyJC5nb29nbGUucm'
-    'V0YWlsLmNvbW1vbi5TdGF0dXNSZXNwb25zZVIOc3RhdHVzUmVzcG9uc2USFgoGZmlybUlkGAIg'
-    'ASgJUgZmaXJtSWQ=');
+    'V0YWlsLmNvbW1vbi5TdGF0dXNSZXNwb25zZVIOc3RhdHVzUmVzcG9uc2USJAoEZmlybRgCIAEo'
+    'CzIQLndlZWJpLmZpcm0uRmlybVIEZmlybQ==');
 

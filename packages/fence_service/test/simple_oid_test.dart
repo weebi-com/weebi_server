@@ -15,7 +15,7 @@ void main() {
     final d =
         await fenceService.createFirm(null, CreateFirmRequest(name: 'test'));
     print(d);
-    final object = ObjectId.fromHexString(d.firmId);
+    final object = ObjectId.fromHexString(d.firm.firmId);
     print(object);
     final result = await fenceService.userCollection.findOne(where.id(object));
     print(result);

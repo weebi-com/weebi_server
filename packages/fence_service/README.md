@@ -66,5 +66,12 @@ With permissions set manually at first.
 
 ### ObjectId vs ids
 
-- I did not find a way to parse Mongo ObjectId using .mergeFromProto3Json()
-- Which 
+- Since mongodb does not create _id for nested objects we still need to create ids manually
+- making the case for a simple milliseconds since epoch
+- Besides I did not find a simple way to parse Mongo ObjectId using .mergeFromProto3Json()
+- Which made it clear that using simple id was clearer and as safe for objects such as firm and user 
+
+### mongodb mongodart
+stange error message on update "getLastError"
+getLastError command has been deprecated in MongoDB and is no longer supported. (as of MongoDB 4.4)
+ignore

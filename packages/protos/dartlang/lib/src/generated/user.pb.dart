@@ -378,16 +378,12 @@ class UserPrivate extends $pb.GeneratedMessage {
 
 class SignUpRequest extends $pb.GeneratedMessage {
   factory SignUpRequest({
-    $1.StatusResponse? statusResponse,
     $core.String? mail,
     $core.String? firstname,
     $core.String? lastname,
     $core.String? password,
   }) {
     final $result = create();
-    if (statusResponse != null) {
-      $result.statusResponse = statusResponse;
-    }
     if (mail != null) {
       $result.mail = mail;
     }
@@ -407,11 +403,10 @@ class SignUpRequest extends $pb.GeneratedMessage {
   factory SignUpRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SignUpRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
-    ..aOM<$1.StatusResponse>(1, _omitFieldNames ? '' : 'statusResponse', protoName: 'statusResponse', subBuilder: $1.StatusResponse.create)
-    ..aOS(2, _omitFieldNames ? '' : 'mail')
-    ..aOS(3, _omitFieldNames ? '' : 'firstname')
-    ..aOS(4, _omitFieldNames ? '' : 'lastname')
-    ..aOS(5, _omitFieldNames ? '' : 'pwd', protoName: 'password')
+    ..aOS(1, _omitFieldNames ? '' : 'mail')
+    ..aOS(2, _omitFieldNames ? '' : 'firstname')
+    ..aOS(3, _omitFieldNames ? '' : 'lastname')
+    ..aOS(4, _omitFieldNames ? '' : 'pwd', protoName: 'password')
     ..hasRequiredFields = false
   ;
 
@@ -437,51 +432,40 @@ class SignUpRequest extends $pb.GeneratedMessage {
   static SignUpRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $1.StatusResponse get statusResponse => $_getN(0);
+  $core.String get mail => $_getSZ(0);
   @$pb.TagNumber(1)
-  set statusResponse($1.StatusResponse v) { setField(1, v); }
+  set mail($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasStatusResponse() => $_has(0);
+  $core.bool hasMail() => $_has(0);
   @$pb.TagNumber(1)
-  void clearStatusResponse() => clearField(1);
-  @$pb.TagNumber(1)
-  $1.StatusResponse ensureStatusResponse() => $_ensure(0);
+  void clearMail() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get mail => $_getSZ(1);
+  $core.String get firstname => $_getSZ(1);
   @$pb.TagNumber(2)
-  set mail($core.String v) { $_setString(1, v); }
+  set firstname($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasMail() => $_has(1);
+  $core.bool hasFirstname() => $_has(1);
   @$pb.TagNumber(2)
-  void clearMail() => clearField(2);
+  void clearFirstname() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get firstname => $_getSZ(2);
+  $core.String get lastname => $_getSZ(2);
   @$pb.TagNumber(3)
-  set firstname($core.String v) { $_setString(2, v); }
+  set lastname($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasFirstname() => $_has(2);
+  $core.bool hasLastname() => $_has(2);
   @$pb.TagNumber(3)
-  void clearFirstname() => clearField(3);
+  void clearLastname() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get lastname => $_getSZ(3);
+  $core.String get password => $_getSZ(3);
   @$pb.TagNumber(4)
-  set lastname($core.String v) { $_setString(3, v); }
+  set password($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasLastname() => $_has(3);
+  $core.bool hasPassword() => $_has(3);
   @$pb.TagNumber(4)
-  void clearLastname() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.String get password => $_getSZ(4);
-  @$pb.TagNumber(5)
-  set password($core.String v) { $_setString(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasPassword() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearPassword() => clearField(5);
+  void clearPassword() => clearField(4);
 }
 
 class SignUpResponse extends $pb.GeneratedMessage {
@@ -551,8 +535,8 @@ class SignUpResponse extends $pb.GeneratedMessage {
 }
 
 /// / used by admins to create users
-class AddPendingUserRequest extends $pb.GeneratedMessage {
-  factory AddPendingUserRequest({
+class PendingUserRequest extends $pb.GeneratedMessage {
+  factory PendingUserRequest({
     $core.String? mail,
     $core.String? firstname,
     $core.String? lastname,
@@ -581,17 +565,17 @@ class AddPendingUserRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  AddPendingUserRequest._() : super();
-  factory AddPendingUserRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory AddPendingUserRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PendingUserRequest._() : super();
+  factory PendingUserRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PendingUserRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AddPendingUserRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PendingUserRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'mail')
     ..aOS(2, _omitFieldNames ? '' : 'firstname')
     ..aOS(3, _omitFieldNames ? '' : 'lastname')
     ..aOM<$8.UserPermissions>(4, _omitFieldNames ? '' : 'permissions', subBuilder: $8.UserPermissions.create)
     ..aOM<$18.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
-    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'AddPendingUserRequest.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
+    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'PendingUserRequest.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
 
@@ -599,22 +583,22 @@ class AddPendingUserRequest extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  AddPendingUserRequest clone() => AddPendingUserRequest()..mergeFromMessage(this);
+  PendingUserRequest clone() => PendingUserRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  AddPendingUserRequest copyWith(void Function(AddPendingUserRequest) updates) => super.copyWith((message) => updates(message as AddPendingUserRequest)) as AddPendingUserRequest;
+  PendingUserRequest copyWith(void Function(PendingUserRequest) updates) => super.copyWith((message) => updates(message as PendingUserRequest)) as PendingUserRequest;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static AddPendingUserRequest create() => AddPendingUserRequest._();
-  AddPendingUserRequest createEmptyInstance() => create();
-  static $pb.PbList<AddPendingUserRequest> createRepeated() => $pb.PbList<AddPendingUserRequest>();
+  static PendingUserRequest create() => PendingUserRequest._();
+  PendingUserRequest createEmptyInstance() => create();
+  static $pb.PbList<PendingUserRequest> createRepeated() => $pb.PbList<PendingUserRequest>();
   @$core.pragma('dart2js:noInline')
-  static AddPendingUserRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddPendingUserRequest>(create);
-  static AddPendingUserRequest? _defaultInstance;
+  static PendingUserRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PendingUserRequest>(create);
+  static PendingUserRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get mail => $_getSZ(0);
@@ -669,8 +653,8 @@ class AddPendingUserRequest extends $pb.GeneratedMessage {
   $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(5);
 }
 
-class AddPendingUserResponse extends $pb.GeneratedMessage {
-  factory AddPendingUserResponse({
+class PendingUserResponse extends $pb.GeneratedMessage {
+  factory PendingUserResponse({
     $1.StatusResponse? statusResponse,
     UserPublic? userPublic,
   }) {
@@ -683,11 +667,11 @@ class AddPendingUserResponse extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  AddPendingUserResponse._() : super();
-  factory AddPendingUserResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory AddPendingUserResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  PendingUserResponse._() : super();
+  factory PendingUserResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PendingUserResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AddPendingUserResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PendingUserResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user'), createEmptyInstance: create)
     ..aOM<$1.StatusResponse>(1, _omitFieldNames ? '' : 'statusResponse', protoName: 'statusResponse', subBuilder: $1.StatusResponse.create)
     ..aOM<UserPublic>(2, _omitFieldNames ? '' : 'userPublic', protoName: 'userPublic', subBuilder: UserPublic.create)
     ..hasRequiredFields = false
@@ -697,22 +681,22 @@ class AddPendingUserResponse extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  AddPendingUserResponse clone() => AddPendingUserResponse()..mergeFromMessage(this);
+  PendingUserResponse clone() => PendingUserResponse()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  AddPendingUserResponse copyWith(void Function(AddPendingUserResponse) updates) => super.copyWith((message) => updates(message as AddPendingUserResponse)) as AddPendingUserResponse;
+  PendingUserResponse copyWith(void Function(PendingUserResponse) updates) => super.copyWith((message) => updates(message as PendingUserResponse)) as PendingUserResponse;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static AddPendingUserResponse create() => AddPendingUserResponse._();
-  AddPendingUserResponse createEmptyInstance() => create();
-  static $pb.PbList<AddPendingUserResponse> createRepeated() => $pb.PbList<AddPendingUserResponse>();
+  static PendingUserResponse create() => PendingUserResponse._();
+  PendingUserResponse createEmptyInstance() => create();
+  static $pb.PbList<PendingUserResponse> createRepeated() => $pb.PbList<PendingUserResponse>();
   @$core.pragma('dart2js:noInline')
-  static AddPendingUserResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AddPendingUserResponse>(create);
-  static AddPendingUserResponse? _defaultInstance;
+  static PendingUserResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PendingUserResponse>(create);
+  static PendingUserResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $1.StatusResponse get statusResponse => $_getN(0);

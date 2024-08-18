@@ -19,9 +19,16 @@ service FenceService {
   rpc authenticateWithCredentials (Credentials) returns (Tokens);
   rpc authenticateWithRefreshToken (RefreshToken) returns (Tokens);
   rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.permissions.UserPermissions);
-  // TODO: add resign / droit à l'oubli like
+  // TODO: add quit / droit à l'oubli like
   // allowing user added in an existing firm by mistake to signup again and start his/her own firm
+
   
+  /// only one firm per 'company'
+  /// 1. user signup and get a userId & create firm permission
+  /// 2. A. user create a firm
+  /// Chain and Boutique will be created by default and will use the same firmId
+  /// Since createFirm also updates user permission, clientApp needs to reauthent using refresh right after
+  /// 2. B. user joins a firm is a different use case detailed in createPendingUser rpc
   rpc createFirm(weebi.firm.CreateFirmRequest) returns (weebi.firm.CreateFirmResponse);
   rpc readOneFirm(weebi.common.empty.Empty) returns (weebi.firm.Firm);
   // TODO add replaceFirm
@@ -29,12 +36,12 @@ service FenceService {
 
   /// device management is as sensitive as user management
   rpc generateCodeForPairingDevice(weebi.common.chained_ids.ChainIdAndboutiqueId) returns (DevicePairingResponse);
-  rpc addPendingDevice(PendingDeviceRequest) returns (google.retail.common.StatusResponse);
+  rpc createPendingDevice(PendingDeviceRequest) returns (google.retail.common.StatusResponse);
   rpc approveDevice(ApproveDeviceRequest) returns (google.retail.common.StatusResponse);
   /// weak auth hack to ease app access to cashiers with very low rights
   rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
 
-  rpc addPendingUser(weebi.user.AddPendingUserRequest) returns (weebi.user.AddPendingUserResponse);
+  rpc createPendingUser(weebi.user.PendingUserRequest) returns (weebi.user.PendingUserResponse);
   rpc readOneUser(UserId) returns (weebi.user.UserPublic);
   rpc updateOneUser(weebi.user.UserPublic) returns (google.retail.common.StatusResponse);
   rpc deleteOneUser(UserId) returns (google.retail.common.StatusResponse);

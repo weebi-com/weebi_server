@@ -16,9 +16,9 @@ void main() async {
     print(isConnected);
     fenceService = FenceService(db);
     await db.createCollection(fenceService.userCollection.collectionName);
-    await fenceService.addPendingUser(
+    await fenceService.createPendingUser(
         null,
-        AddPendingUserRequest(
+        PendingUserRequest(
             mail: Dummy.userInfo.mail,
             firstname: Dummy.userInfo.firstname,
             lastname: Dummy.userInfo.lastname,
@@ -34,6 +34,6 @@ void main() async {
   test('test readRestrictions', () async {
     final response =
         await fenceService.readUserPermissionsByToken(null, Empty());
-    expect(response.chainIds.ids, ['665e12f798357783e8000001']);
+    expect(response.fullAccess.hasFullAccess, true);
   }, skip: 'will fail until I get a fake token');
 }

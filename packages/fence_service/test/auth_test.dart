@@ -57,8 +57,8 @@ void main() {
 
     final response = await stub.authenticateWithCredentials(request);
 
-    expect(response.accessToken, true);
-    // expect(response.jwtData is String, true);
+    expect(response.accessToken.isNotEmpty, true);
+    expect(response.refreshToken.isNotEmpty, true);
   });
 }
 

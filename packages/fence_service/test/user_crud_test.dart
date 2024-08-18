@@ -1,5 +1,7 @@
 // import 'dart:io';
 
+import 'dart:math';
+
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/user_testing.dart';
 
@@ -7,10 +9,8 @@ import 'package:test/test.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
-// TODO test signup
 void main() async {
   final db = TestHelper.localDb;
-
   final connection = Connection(ConnectionManager(db));
   late FenceService fenceService;
   String userId = '';
@@ -19,38 +19,18 @@ void main() async {
     await db.open();
     final isConnected = await connection.connect();
     expect(isConnected, true);
-
-    fenceService = FenceService(
-      db,
-      isTest: true,
-      userPermissionIfTest: Dummy.adminPermission,
-    );
+    fenceService = FenceService(db, isMock: false); // we do not mock signup
     await db.createCollection(fenceService.userCollection.collectionName);
     await db.createCollection(fenceService.boutiqueCollection.collectionName);
-    final responseUser = await fenceService.createOneUser(
-      null,
-      AddPendingUserRequest(
-        userInfo: Dummy.userInfoNoId,
-        password: '1234',
-      ),
-    );
-    final response = await fenceService.createFirm(null, Dummy.firmNoId);
-
-    expect(response.type, StatusResponse_Type.CREATED);
-    final firmId = response.id;
-    Dummy.adminPermission.firmId = firmId;
-    Dummy.adminPermission.userId = responseUser.id;
-    userId = responseUser.id;
-
-    fenceService..userPermissionIfTest = Dummy.adminPermission;
   });
 
   tearDownAll(() async {
     await db.collection(fenceService.userCollection.collectionName).drop();
+    await db.collection(fenceService.boutiqueCollection.collectionName).drop();
     await connection.close();
   });
 
-  test('test replaceOne', () async {
+  test('test replaceOne user', () async {
     final permissions = UserPermissions.create()..userId = userId;
     final userLili = UserPublic()
       ..firstname = 'lili'

@@ -28,5 +28,5 @@ message CreateFirmRequest {
 
 message CreateFirmResponse {
   google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
-  string firmId = 2 [json_name = 'firmId'];
+  Firm firm = 2 [json_name = 'firm'];
 }

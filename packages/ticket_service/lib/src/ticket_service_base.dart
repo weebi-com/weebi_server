@@ -4,11 +4,10 @@ import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder selectTicket(String firmId, String chainId,
-          String userId, int ticketNonUniqueId) =>
+  static SelectorBuilder selectTicket(
+          String firmId, String userId, int ticketNonUniqueId) =>
       where
           .eq('firmId', firmId)
-          .eq('chainId', chainId)
           .eq('userId', userId)
           .eq('ticketNonUniqueId', ticketNonUniqueId);
 }
@@ -98,17 +97,16 @@ class TicketService extends TicketServiceBase {
           'user cannot access data from firm ${request.firmName} or chain ${request.chainName}');
     }
 
+    // the boss and managers can access tickets from several boutiques
     bool isOneBoutiqueFilter = false;
     if (request.boutiqueId.isNotEmpty) {
-      if (userPermission.boutiqueIds.ids.contains(request.boutiqueId) ==
-          false) {
+      if (userPermission.isBoutiqueAccessible(request.boutiqueId) == false) {
         throw GrpcError.permissionDenied(
             'user cannot access data from boutique ${request.boutiqueName}');
       }
       isOneBoutiqueFilter = true;
     }
     var selector = SelectorBuilder();
-    // TODO : also include userId as well as device for better filtering
     if (isOneBoutiqueFilter) {
       selector = where
           .eq('firmId', userPermission.firmId)
@@ -189,20 +187,20 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
     }
-    if (userPermission.boutiqueIds.ids
-            .contains(request.ticket.counterfoil.boutiqueId) ==
-        false) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from boutique ${request.ticket.counterfoil.boutiqueName}');
-    }
     if (userPermission.ticketRights.rights.any((e) => e == Right.update) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to update ticket status');
     }
+
+    if (userPermission
+            .isBoutiqueAccessible(request.ticket.counterfoil.boutiqueId) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from boutique ${request.ticket.counterfoil.boutiqueName}');
+    }
     final selector = _Helpers.selectTicket(
       request.ticket.counterfoil.firmId,
-      request.ticket.counterfoil.chainId,
       request.ticket.counterfoil.userId,
       request.ticket.ticketNonUniqueId,
     );
@@ -250,8 +248,8 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
     }
-    if (userPermission.boutiqueIds.ids
-            .contains(request.ticket.counterfoil.boutiqueId) ==
+    if (userPermission
+            .isBoutiqueAccessible(request.ticket.counterfoil.boutiqueId) ==
         false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from boutique ${request.ticket.counterfoil.boutiqueName}');
@@ -261,11 +259,8 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete ticket');
     }
-    final selector = _Helpers.selectTicket(
-        request.ticket.counterfoil.firmId,
-        request.ticket.counterfoil.chainId,
-        request.ticket.counterfoil.userId,
-        request.ticket.ticketNonUniqueId);
+    final selector = _Helpers.selectTicket(request.ticket.counterfoil.firmId,
+        request.ticket.counterfoil.userId, request.ticket.ticketNonUniqueId);
 
     try {
       await collection.deleteOne(selector);

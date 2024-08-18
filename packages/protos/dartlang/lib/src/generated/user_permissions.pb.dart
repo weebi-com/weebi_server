@@ -17,207 +17,19 @@ import 'user_permissions.pbenum.dart';
 
 export 'user_permissions.pbenum.dart';
 
-class ChainsAndBoutiquesAccess_StandardAccess extends $pb.GeneratedMessage {
-  factory ChainsAndBoutiquesAccess_StandardAccess({
-    ChainIds? chainIds,
-    BoutiqueIds? boutiqueIds,
-  }) {
-    final $result = create();
-    if (chainIds != null) {
-      $result.chainIds = chainIds;
-    }
-    if (boutiqueIds != null) {
-      $result.boutiqueIds = boutiqueIds;
-    }
-    return $result;
-  }
-  ChainsAndBoutiquesAccess_StandardAccess._() : super();
-  factory ChainsAndBoutiquesAccess_StandardAccess.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ChainsAndBoutiquesAccess_StandardAccess.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChainsAndBoutiquesAccess.StandardAccess', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
-    ..aOM<ChainIds>(1, _omitFieldNames ? '' : 'boutiqueIds', protoName: 'chainIds', subBuilder: ChainIds.create)
-    ..aOM<BoutiqueIds>(2, _omitFieldNames ? '' : 'boutiqueIds', protoName: 'boutiqueIds', subBuilder: BoutiqueIds.create)
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  ChainsAndBoutiquesAccess_StandardAccess clone() => ChainsAndBoutiquesAccess_StandardAccess()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  ChainsAndBoutiquesAccess_StandardAccess copyWith(void Function(ChainsAndBoutiquesAccess_StandardAccess) updates) => super.copyWith((message) => updates(message as ChainsAndBoutiquesAccess_StandardAccess)) as ChainsAndBoutiquesAccess_StandardAccess;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static ChainsAndBoutiquesAccess_StandardAccess create() => ChainsAndBoutiquesAccess_StandardAccess._();
-  ChainsAndBoutiquesAccess_StandardAccess createEmptyInstance() => create();
-  static $pb.PbList<ChainsAndBoutiquesAccess_StandardAccess> createRepeated() => $pb.PbList<ChainsAndBoutiquesAccess_StandardAccess>();
-  @$core.pragma('dart2js:noInline')
-  static ChainsAndBoutiquesAccess_StandardAccess getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChainsAndBoutiquesAccess_StandardAccess>(create);
-  static ChainsAndBoutiquesAccess_StandardAccess? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  ChainIds get chainIds => $_getN(0);
-  @$pb.TagNumber(1)
-  set chainIds(ChainIds v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasChainIds() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearChainIds() => clearField(1);
-  @$pb.TagNumber(1)
-  ChainIds ensureChainIds() => $_ensure(0);
-
-  @$pb.TagNumber(2)
-  BoutiqueIds get boutiqueIds => $_getN(1);
-  @$pb.TagNumber(2)
-  set boutiqueIds(BoutiqueIds v) { setField(2, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasBoutiqueIds() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearBoutiqueIds() => clearField(2);
-  @$pb.TagNumber(2)
-  BoutiqueIds ensureBoutiqueIds() => $_ensure(1);
-}
-
-class ChainsAndBoutiquesAccess_FullAccess extends $pb.GeneratedMessage {
-  factory ChainsAndBoutiquesAccess_FullAccess({
-    $core.bool? hasFullAccess,
-  }) {
-    final $result = create();
-    if (hasFullAccess != null) {
-      $result.hasFullAccess = hasFullAccess;
-    }
-    return $result;
-  }
-  ChainsAndBoutiquesAccess_FullAccess._() : super();
-  factory ChainsAndBoutiquesAccess_FullAccess.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ChainsAndBoutiquesAccess_FullAccess.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChainsAndBoutiquesAccess.FullAccess', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'hasFullAccess', protoName: 'hasFullAccess')
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  ChainsAndBoutiquesAccess_FullAccess clone() => ChainsAndBoutiquesAccess_FullAccess()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  ChainsAndBoutiquesAccess_FullAccess copyWith(void Function(ChainsAndBoutiquesAccess_FullAccess) updates) => super.copyWith((message) => updates(message as ChainsAndBoutiquesAccess_FullAccess)) as ChainsAndBoutiquesAccess_FullAccess;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static ChainsAndBoutiquesAccess_FullAccess create() => ChainsAndBoutiquesAccess_FullAccess._();
-  ChainsAndBoutiquesAccess_FullAccess createEmptyInstance() => create();
-  static $pb.PbList<ChainsAndBoutiquesAccess_FullAccess> createRepeated() => $pb.PbList<ChainsAndBoutiquesAccess_FullAccess>();
-  @$core.pragma('dart2js:noInline')
-  static ChainsAndBoutiquesAccess_FullAccess getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChainsAndBoutiquesAccess_FullAccess>(create);
-  static ChainsAndBoutiquesAccess_FullAccess? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.bool get hasFullAccess => $_getBF(0);
-  @$pb.TagNumber(1)
-  set hasFullAccess($core.bool v) { $_setBool(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasHasFullAccess() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearHasFullAccess() => clearField(1);
-}
-
-enum ChainsAndBoutiquesAccess_Access {
-  standardAccess, 
-  fullAccess, 
-  notSet
-}
-
-class ChainsAndBoutiquesAccess extends $pb.GeneratedMessage {
-  factory ChainsAndBoutiquesAccess({
-    ChainsAndBoutiquesAccess_StandardAccess? standardAccess,
-    ChainsAndBoutiquesAccess_FullAccess? fullAccess,
-  }) {
-    final $result = create();
-    if (standardAccess != null) {
-      $result.standardAccess = standardAccess;
-    }
-    if (fullAccess != null) {
-      $result.fullAccess = fullAccess;
-    }
-    return $result;
-  }
-  ChainsAndBoutiquesAccess._() : super();
-  factory ChainsAndBoutiquesAccess.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ChainsAndBoutiquesAccess.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static const $core.Map<$core.int, ChainsAndBoutiquesAccess_Access> _ChainsAndBoutiquesAccess_AccessByTag = {
-    1 : ChainsAndBoutiquesAccess_Access.standardAccess,
-    2 : ChainsAndBoutiquesAccess_Access.fullAccess,
-    0 : ChainsAndBoutiquesAccess_Access.notSet
-  };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChainsAndBoutiquesAccess', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
-    ..oo(0, [1, 2])
-    ..aOM<ChainsAndBoutiquesAccess_StandardAccess>(1, _omitFieldNames ? '' : 'standardAccess', protoName: 'standardAccess', subBuilder: ChainsAndBoutiquesAccess_StandardAccess.create)
-    ..aOM<ChainsAndBoutiquesAccess_FullAccess>(2, _omitFieldNames ? '' : 'fullAccess', protoName: 'fullAccess', subBuilder: ChainsAndBoutiquesAccess_FullAccess.create)
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  ChainsAndBoutiquesAccess clone() => ChainsAndBoutiquesAccess()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  ChainsAndBoutiquesAccess copyWith(void Function(ChainsAndBoutiquesAccess) updates) => super.copyWith((message) => updates(message as ChainsAndBoutiquesAccess)) as ChainsAndBoutiquesAccess;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static ChainsAndBoutiquesAccess create() => ChainsAndBoutiquesAccess._();
-  ChainsAndBoutiquesAccess createEmptyInstance() => create();
-  static $pb.PbList<ChainsAndBoutiquesAccess> createRepeated() => $pb.PbList<ChainsAndBoutiquesAccess>();
-  @$core.pragma('dart2js:noInline')
-  static ChainsAndBoutiquesAccess getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChainsAndBoutiquesAccess>(create);
-  static ChainsAndBoutiquesAccess? _defaultInstance;
-
-  ChainsAndBoutiquesAccess_Access whichAccess() => _ChainsAndBoutiquesAccess_AccessByTag[$_whichOneof(0)]!;
-  void clearAccess() => clearField($_whichOneof(0));
-
-  @$pb.TagNumber(1)
-  ChainsAndBoutiquesAccess_StandardAccess get standardAccess => $_getN(0);
-  @$pb.TagNumber(1)
-  set standardAccess(ChainsAndBoutiquesAccess_StandardAccess v) { setField(1, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasStandardAccess() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearStandardAccess() => clearField(1);
-  @$pb.TagNumber(1)
-  ChainsAndBoutiquesAccess_StandardAccess ensureStandardAccess() => $_ensure(0);
-
-  @$pb.TagNumber(2)
-  ChainsAndBoutiquesAccess_FullAccess get fullAccess => $_getN(1);
-  @$pb.TagNumber(2)
-  set fullAccess(ChainsAndBoutiquesAccess_FullAccess v) { setField(2, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasFullAccess() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearFullAccess() => clearField(2);
-  @$pb.TagNumber(2)
-  ChainsAndBoutiquesAccess_FullAccess ensureFullAccess() => $_ensure(1);
-}
-
+///   message AccessChainsAndBoutiques {
+/// message AccessLimited {
+/// ChainIds chainIds = 1 [json_name = 'boutiqueIds'];
+/// BoutiqueIds boutiqueIds = 2 [json_name = 'boutiqueIds'];
+/// }
+/// message AccessFull {
+/// bool hasFullAccess = 1 [json_name = 'hasFullAccess'];
+/// }
+/// oneof access {
+/// AccessLimited limitedAccess = 1 [json_name = 'limitedAccess'];
+/// AccessFull fullAccess = 2 [json_name = 'fullAccess'];
+/// }
+/// }
 class ChainIds extends $pb.GeneratedMessage {
   factory ChainIds({
     $core.Iterable<$core.String>? ids,
@@ -306,13 +118,136 @@ class BoutiqueIds extends $pb.GeneratedMessage {
   $core.List<$core.String> get ids => $_getList(0);
 }
 
+class AccessLimited extends $pb.GeneratedMessage {
+  factory AccessLimited({
+    ChainIds? chainIds,
+    BoutiqueIds? boutiqueIds,
+  }) {
+    final $result = create();
+    if (chainIds != null) {
+      $result.chainIds = chainIds;
+    }
+    if (boutiqueIds != null) {
+      $result.boutiqueIds = boutiqueIds;
+    }
+    return $result;
+  }
+  AccessLimited._() : super();
+  factory AccessLimited.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AccessLimited.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AccessLimited', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..aOM<ChainIds>(1, _omitFieldNames ? '' : 'chainIds', protoName: 'chainIds', subBuilder: ChainIds.create)
+    ..aOM<BoutiqueIds>(2, _omitFieldNames ? '' : 'boutiqueIds', protoName: 'boutiqueIds', subBuilder: BoutiqueIds.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AccessLimited clone() => AccessLimited()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AccessLimited copyWith(void Function(AccessLimited) updates) => super.copyWith((message) => updates(message as AccessLimited)) as AccessLimited;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AccessLimited create() => AccessLimited._();
+  AccessLimited createEmptyInstance() => create();
+  static $pb.PbList<AccessLimited> createRepeated() => $pb.PbList<AccessLimited>();
+  @$core.pragma('dart2js:noInline')
+  static AccessLimited getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AccessLimited>(create);
+  static AccessLimited? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  ChainIds get chainIds => $_getN(0);
+  @$pb.TagNumber(1)
+  set chainIds(ChainIds v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainIds() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainIds() => clearField(1);
+  @$pb.TagNumber(1)
+  ChainIds ensureChainIds() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  BoutiqueIds get boutiqueIds => $_getN(1);
+  @$pb.TagNumber(2)
+  set boutiqueIds(BoutiqueIds v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasBoutiqueIds() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBoutiqueIds() => clearField(2);
+  @$pb.TagNumber(2)
+  BoutiqueIds ensureBoutiqueIds() => $_ensure(1);
+}
+
+class AccessFull extends $pb.GeneratedMessage {
+  factory AccessFull({
+    $core.bool? hasFullAccess,
+  }) {
+    final $result = create();
+    if (hasFullAccess != null) {
+      $result.hasFullAccess = hasFullAccess;
+    }
+    return $result;
+  }
+  AccessFull._() : super();
+  factory AccessFull.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AccessFull.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AccessFull', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'hasFullAccess', protoName: 'hasFullAccess')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AccessFull clone() => AccessFull()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AccessFull copyWith(void Function(AccessFull) updates) => super.copyWith((message) => updates(message as AccessFull)) as AccessFull;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AccessFull create() => AccessFull._();
+  AccessFull createEmptyInstance() => create();
+  static $pb.PbList<AccessFull> createRepeated() => $pb.PbList<AccessFull>();
+  @$core.pragma('dart2js:noInline')
+  static AccessFull getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AccessFull>(create);
+  static AccessFull? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get hasFullAccess => $_getBF(0);
+  @$pb.TagNumber(1)
+  set hasFullAccess($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasHasFullAccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearHasFullAccess() => clearField(1);
+}
+
+enum UserPermissions_Access {
+  limitedAccess, 
+  fullAccess, 
+  notSet
+}
+
 class UserPermissions extends $pb.GeneratedMessage {
   factory UserPermissions({
     $core.String? userId,
     $core.String? firmId,
-    $core.bool? hasAllChainsAccess,
-    ChainIds? chainIds,
-    BoutiqueIds? boutiqueIds,
+    AccessLimited? limitedAccess,
+    AccessFull? fullAccess,
     TicketRights? ticketRights,
     ContactRights? contactRights,
     ArticleRights? articleRights,
@@ -330,14 +265,11 @@ class UserPermissions extends $pb.GeneratedMessage {
     if (firmId != null) {
       $result.firmId = firmId;
     }
-    if (hasAllChainsAccess != null) {
-      $result.hasAllChainsAccess = hasAllChainsAccess;
+    if (limitedAccess != null) {
+      $result.limitedAccess = limitedAccess;
     }
-    if (chainIds != null) {
-      $result.chainIds = chainIds;
-    }
-    if (boutiqueIds != null) {
-      $result.boutiqueIds = boutiqueIds;
+    if (fullAccess != null) {
+      $result.fullAccess = fullAccess;
     }
     if (ticketRights != null) {
       $result.ticketRights = ticketRights;
@@ -372,12 +304,17 @@ class UserPermissions extends $pb.GeneratedMessage {
   factory UserPermissions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory UserPermissions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
+  static const $core.Map<$core.int, UserPermissions_Access> _UserPermissions_AccessByTag = {
+    3 : UserPermissions_Access.limitedAccess,
+    4 : UserPermissions_Access.fullAccess,
+    0 : UserPermissions_Access.notSet
+  };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserPermissions', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..oo(0, [3, 4])
     ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
-    ..aOB(3, _omitFieldNames ? '' : 'hasAllChainsAccess', protoName: 'hasAllChainsAccess')
-    ..aOM<ChainIds>(4, _omitFieldNames ? '' : 'chainIds', protoName: 'chainIds', subBuilder: ChainIds.create)
-    ..aOM<BoutiqueIds>(5, _omitFieldNames ? '' : 'boutiqueIds', protoName: 'boutiqueIds', subBuilder: BoutiqueIds.create)
+    ..aOM<AccessLimited>(3, _omitFieldNames ? '' : 'limitedAccess', protoName: 'limitedAccess', subBuilder: AccessLimited.create)
+    ..aOM<AccessFull>(4, _omitFieldNames ? '' : 'fullAccess', protoName: 'fullAccess', subBuilder: AccessFull.create)
     ..aOM<TicketRights>(6, _omitFieldNames ? '' : 'ticketRights', protoName: 'ticketRights', subBuilder: TicketRights.create)
     ..aOM<ContactRights>(7, _omitFieldNames ? '' : 'contactRights', protoName: 'contactRights', subBuilder: ContactRights.create)
     ..aOM<ArticleRights>(8, _omitFieldNames ? '' : 'articleRights', protoName: 'articleRights', subBuilder: ArticleRights.create)
@@ -411,6 +348,9 @@ class UserPermissions extends $pb.GeneratedMessage {
   static UserPermissions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserPermissions>(create);
   static UserPermissions? _defaultInstance;
 
+  UserPermissions_Access whichAccess() => _UserPermissions_AccessByTag[$_whichOneof(0)]!;
+  void clearAccess() => clearField($_whichOneof(0));
+
   @$pb.TagNumber(1)
   $core.String get userId => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -430,134 +370,125 @@ class UserPermissions extends $pb.GeneratedMessage {
   void clearFirmId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.bool get hasAllChainsAccess => $_getBF(2);
+  AccessLimited get limitedAccess => $_getN(2);
   @$pb.TagNumber(3)
-  set hasAllChainsAccess($core.bool v) { $_setBool(2, v); }
+  set limitedAccess(AccessLimited v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasHasAllChainsAccess() => $_has(2);
+  $core.bool hasLimitedAccess() => $_has(2);
   @$pb.TagNumber(3)
-  void clearHasAllChainsAccess() => clearField(3);
+  void clearLimitedAccess() => clearField(3);
+  @$pb.TagNumber(3)
+  AccessLimited ensureLimitedAccess() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  ChainIds get chainIds => $_getN(3);
+  AccessFull get fullAccess => $_getN(3);
   @$pb.TagNumber(4)
-  set chainIds(ChainIds v) { setField(4, v); }
+  set fullAccess(AccessFull v) { setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasChainIds() => $_has(3);
+  $core.bool hasFullAccess() => $_has(3);
   @$pb.TagNumber(4)
-  void clearChainIds() => clearField(4);
+  void clearFullAccess() => clearField(4);
   @$pb.TagNumber(4)
-  ChainIds ensureChainIds() => $_ensure(3);
-
-  @$pb.TagNumber(5)
-  BoutiqueIds get boutiqueIds => $_getN(4);
-  @$pb.TagNumber(5)
-  set boutiqueIds(BoutiqueIds v) { setField(5, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasBoutiqueIds() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearBoutiqueIds() => clearField(5);
-  @$pb.TagNumber(5)
-  BoutiqueIds ensureBoutiqueIds() => $_ensure(4);
+  AccessFull ensureFullAccess() => $_ensure(3);
 
   @$pb.TagNumber(6)
-  TicketRights get ticketRights => $_getN(5);
+  TicketRights get ticketRights => $_getN(4);
   @$pb.TagNumber(6)
   set ticketRights(TicketRights v) { setField(6, v); }
   @$pb.TagNumber(6)
-  $core.bool hasTicketRights() => $_has(5);
+  $core.bool hasTicketRights() => $_has(4);
   @$pb.TagNumber(6)
   void clearTicketRights() => clearField(6);
   @$pb.TagNumber(6)
-  TicketRights ensureTicketRights() => $_ensure(5);
+  TicketRights ensureTicketRights() => $_ensure(4);
 
   @$pb.TagNumber(7)
-  ContactRights get contactRights => $_getN(6);
+  ContactRights get contactRights => $_getN(5);
   @$pb.TagNumber(7)
   set contactRights(ContactRights v) { setField(7, v); }
   @$pb.TagNumber(7)
-  $core.bool hasContactRights() => $_has(6);
+  $core.bool hasContactRights() => $_has(5);
   @$pb.TagNumber(7)
   void clearContactRights() => clearField(7);
   @$pb.TagNumber(7)
-  ContactRights ensureContactRights() => $_ensure(6);
+  ContactRights ensureContactRights() => $_ensure(5);
 
   @$pb.TagNumber(8)
-  ArticleRights get articleRights => $_getN(7);
+  ArticleRights get articleRights => $_getN(6);
   @$pb.TagNumber(8)
   set articleRights(ArticleRights v) { setField(8, v); }
   @$pb.TagNumber(8)
-  $core.bool hasArticleRights() => $_has(7);
+  $core.bool hasArticleRights() => $_has(6);
   @$pb.TagNumber(8)
   void clearArticleRights() => clearField(8);
   @$pb.TagNumber(8)
-  ArticleRights ensureArticleRights() => $_ensure(7);
+  ArticleRights ensureArticleRights() => $_ensure(6);
 
   @$pb.TagNumber(9)
-  BoutiqueRights get boutiqueRights => $_getN(8);
+  BoutiqueRights get boutiqueRights => $_getN(7);
   @$pb.TagNumber(9)
   set boutiqueRights(BoutiqueRights v) { setField(9, v); }
   @$pb.TagNumber(9)
-  $core.bool hasBoutiqueRights() => $_has(8);
+  $core.bool hasBoutiqueRights() => $_has(7);
   @$pb.TagNumber(9)
   void clearBoutiqueRights() => clearField(9);
   @$pb.TagNumber(9)
-  BoutiqueRights ensureBoutiqueRights() => $_ensure(8);
+  BoutiqueRights ensureBoutiqueRights() => $_ensure(7);
 
   @$pb.TagNumber(10)
-  MallRights get chainRights => $_getN(9);
+  MallRights get chainRights => $_getN(8);
   @$pb.TagNumber(10)
   set chainRights(MallRights v) { setField(10, v); }
   @$pb.TagNumber(10)
-  $core.bool hasChainRights() => $_has(9);
+  $core.bool hasChainRights() => $_has(8);
   @$pb.TagNumber(10)
   void clearChainRights() => clearField(10);
   @$pb.TagNumber(10)
-  MallRights ensureChainRights() => $_ensure(9);
+  MallRights ensureChainRights() => $_ensure(8);
 
   @$pb.TagNumber(11)
-  FirmRights get firmRights => $_getN(10);
+  FirmRights get firmRights => $_getN(9);
   @$pb.TagNumber(11)
   set firmRights(FirmRights v) { setField(11, v); }
   @$pb.TagNumber(11)
-  $core.bool hasFirmRights() => $_has(10);
+  $core.bool hasFirmRights() => $_has(9);
   @$pb.TagNumber(11)
   void clearFirmRights() => clearField(11);
   @$pb.TagNumber(11)
-  FirmRights ensureFirmRights() => $_ensure(10);
+  FirmRights ensureFirmRights() => $_ensure(9);
 
   @$pb.TagNumber(12)
-  UserManagementRights get userManagementRights => $_getN(11);
+  UserManagementRights get userManagementRights => $_getN(10);
   @$pb.TagNumber(12)
   set userManagementRights(UserManagementRights v) { setField(12, v); }
   @$pb.TagNumber(12)
-  $core.bool hasUserManagementRights() => $_has(11);
+  $core.bool hasUserManagementRights() => $_has(10);
   @$pb.TagNumber(12)
   void clearUserManagementRights() => clearField(12);
   @$pb.TagNumber(12)
-  UserManagementRights ensureUserManagementRights() => $_ensure(11);
+  UserManagementRights ensureUserManagementRights() => $_ensure(10);
 
   @$pb.TagNumber(13)
-  BillingRights get billingRights => $_getN(12);
+  BillingRights get billingRights => $_getN(11);
   @$pb.TagNumber(13)
   set billingRights(BillingRights v) { setField(13, v); }
   @$pb.TagNumber(13)
-  $core.bool hasBillingRights() => $_has(12);
+  $core.bool hasBillingRights() => $_has(11);
   @$pb.TagNumber(13)
   void clearBillingRights() => clearField(13);
   @$pb.TagNumber(13)
-  BillingRights ensureBillingRights() => $_ensure(12);
+  BillingRights ensureBillingRights() => $_ensure(11);
 
   @$pb.TagNumber(14)
-  BoolRights get boolRights => $_getN(13);
+  BoolRights get boolRights => $_getN(12);
   @$pb.TagNumber(14)
   set boolRights(BoolRights v) { setField(14, v); }
   @$pb.TagNumber(14)
-  $core.bool hasBoolRights() => $_has(13);
+  $core.bool hasBoolRights() => $_has(12);
   @$pb.TagNumber(14)
   void clearBoolRights() => clearField(14);
   @$pb.TagNumber(14)
-  BoolRights ensureBoolRights() => $_ensure(13);
+  BoolRights ensureBoolRights() => $_ensure(12);
 }
 
 class ArticleRights extends $pb.GeneratedMessage {

@@ -15,14 +15,14 @@ class TestHelper {
     await connection.connect();
     var fenceService = FenceService(
       db,
-      isTest: true,
+      isMock: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
     await db.createCollection(fenceService.userCollection.collectionName);
     await db.createCollection(fenceService.boutiqueCollection.collectionName);
-    final responseUser = await fenceService.addPendingUser(
+    final responseUser = await fenceService.createPendingUser(
       null,
-      AddPendingUserRequest(
+      PendingUserRequest(
         mail: Dummy.userInfo.mail,
         firstname: Dummy.userInfo.firstname,
         lastname: Dummy.userInfo.lastname,
@@ -36,7 +36,7 @@ class TestHelper {
 
     fenceService..userPermissionIfTest = Dummy.adminPermission;
     return Counterfoil.create()
-      ..firmId = response.firmId
+      ..firmId = response.firm.firmId
       ..chainId = firm.chains.first.chainId
       ..boutiqueId = firm.chains.first.boutiques.first.boutiqueId
       ..userId = Dummy.userInfo.userId;

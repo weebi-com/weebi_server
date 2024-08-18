@@ -16,34 +16,41 @@ package weebi.user.permissions;
 
 /// would have been neat with a map but repeated maps not supported by protobuf
 
- message ChainsAndBoutiquesAccess {
-   message StandardAccess {
+/*  message AccessChainsAndBoutiques {
+   message AccessLimited {
      ChainIds chainIds = 1 [json_name = 'boutiqueIds'];
      BoutiqueIds boutiqueIds = 2 [json_name = 'boutiqueIds'];
    }
-   message FullAccess {
+   message AccessFull {
     bool hasFullAccess = 1 [json_name = 'hasFullAccess'];
   }
   oneof access {
-    StandardAccess standardAccess = 1 [json_name = 'standardAccess'];
-    FullAccess fullAccess = 2 [json_name = 'fullAccess'];
+    AccessLimited limitedAccess = 1 [json_name = 'limitedAccess'];
+    AccessFull fullAccess = 2 [json_name = 'fullAccess'];
   }
 }
-
+ */
 message ChainIds {
   repeated string ids = 1 [json_name = 'ids'];
 }
 message BoutiqueIds {
   repeated string ids = 1 [json_name = 'ids'];
 }
-
+message AccessLimited {
+  ChainIds chainIds = 1 [json_name = 'chainIds'];
+  BoutiqueIds boutiqueIds = 2 [json_name = 'boutiqueIds'];
+}
+message AccessFull {
+ bool hasFullAccess = 1 [json_name = 'hasFullAccess'];
+}
 
 message UserPermissions {
   string userId = 1 [json_name = 'userId'];
   string firmId = 2  [json_name = 'firmId'];
-  bool hasAllChainsAccess = 3 [json_name = 'hasAllChainsAccess'];
-  ChainIds chainIds = 4 [json_name = 'chainIds'];
-  BoutiqueIds boutiqueIds = 5  [json_name = 'boutiqueIds']; 
+  oneof access {
+    AccessLimited limitedAccess = 3 [json_name = 'limitedAccess'];
+    AccessFull fullAccess = 4 [json_name = 'fullAccess'];
+  } 
   TicketRights ticketRights = 6  [json_name = 'ticketRights'];
   ContactRights contactRights =  7 [json_name = 'contactRights'];
   ArticleRights articleRights =  8  [json_name = 'articleRights'];

@@ -50,11 +50,10 @@ message UserPrivate {
 ///   - join a firm
 
 message SignUpRequest {
-  google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
-  string mail = 2 [json_name = 'mail'];
-  string firstname = 3 [json_name = 'firstname'];
-  string lastname = 4 [json_name = 'lastname'];
-  string password = 5 [json_name = 'pwd'];
+  string mail = 1 [json_name = 'mail'];
+  string firstname = 2 [json_name = 'firstname'];
+  string lastname = 3 [json_name = 'lastname'];
+  string password = 4 [json_name = 'pwd'];
 }
 
 message SignUpResponse {
@@ -63,7 +62,7 @@ message SignUpResponse {
 }
 
 /// used by admins to create users
-message AddPendingUserRequest {
+message PendingUserRequest {
   string mail = 1 [json_name = 'mail'];
   string firstname = 2 [json_name = 'firstname'];
   string lastname = 3 [json_name = 'lastname'];
@@ -73,7 +72,7 @@ message AddPendingUserRequest {
   map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
 }
 
-message AddPendingUserResponse {
+message PendingUserResponse {
   google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
   UserPublic userPublic = 2 [json_name = 'userPublic'];
 }
