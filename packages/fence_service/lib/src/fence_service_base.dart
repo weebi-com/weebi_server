@@ -13,15 +13,20 @@ import 'package:fence_service/fence_service.dart';
 
 // TODO : create updateUserPassword rpc admins only
 
+// TODO : sortir chain de firm pour + de sécurité
+// TODO : déplacer le device dans la boutique pour plus de lisibilité
+
 class FenceService extends FenceServiceBase {
   // ignore: unused_field
   final Db _db;
   final DbCollection userCollection;
   final DbCollection pairingCodesCollection;
   final DbCollection boutiqueCollection;
+  final DbCollection firmCollection;
 
   static const String pairingCodesCollectionName = 'pairing_codes';
   static const String boutiqueCollectionName = 'boutique';
+  static const String firmCollectionName = 'firm';
   static const String userCollectionName = 'user';
 
   bool isMock;
@@ -29,7 +34,8 @@ class FenceService extends FenceServiceBase {
   FenceService(this._db, {this.isMock = false, this.userPermissionIfTest})
       : pairingCodesCollection = _db.collection(pairingCodesCollectionName),
         userCollection = _db.collection(userCollectionName),
-        boutiqueCollection = _db.collection(boutiqueCollectionName);
+        boutiqueCollection = _db.collection(boutiqueCollectionName),
+        firmCollection = _db.collection(firmCollectionName);
 
   @override
   Future<PendingUserResponse> createPendingUser(
@@ -377,20 +383,11 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.invalidArgument('deviceOid.isEmpty');
     }
     try {
-      final firmMongo =
-          await userCollection.findOne(where.eq('firmId', request.firmId));
-      if (firmMongo == null) {
-        throw GrpcError.notFound();
-      }
-      final firm = Firm.create()
-        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
+      final chain =
+          await _checkOneChainAndProtoIt(request.firmId, request.chainId);
 
-      final chainNullable =
-          firm.chains.firstWhereOrNull((c) => c.chainId == request.chainId);
-      if (chainNullable == null) {
-        throw GrpcError.notFound();
-      }
-      final deviceNullable = chainNullable.devices.firstWhereOrNull((d) =>
+      // TODO fetch device from boutique
+      final deviceNullable = chain.devices.firstWhereOrNull((d) =>
           d.id == request.deviceOid && d.boutiqueId == request.boutiqueId);
       if (deviceNullable == null) {
         throw GrpcError.notFound();
@@ -402,22 +399,14 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.failedPrecondition('deactivated device');
       }
 
-      final userPermission = UserPermissions.create()
-        // TODO rework this userId device
-        ..userId = 'device_${request.deviceOid}'
-        ..firmId = request.firmId
-        ..articleRights = RightSalesperson.article
-        ..boutiqueRights = RightSalesperson.boutique
-        ..contactRights = ContactRights(rights: [Right.read])
-        ..ticketRights = RightSalesperson.ticket
-        ..boolRights = BoolRights.create()
-        ..limitedAccess = AccessLimited(
-            boutiqueIds: BoutiqueIds(ids: [request.boutiqueId]),
-            chainIds: ChainIds(ids: [request.chainId]));
+      // now that we know for sure that this device is linked with a boutique
+      // TODO remove below code and simply ready userpermission using deviceId (== userId)
+      final user = await _readUserByUserId(request.deviceOid);
+
       var jwt = JsonWebToken();
-      final payload = userPermission.toProto3Json() as Map<String, dynamic>?;
+      final payload = user.permissions.toProto3Json() as Map<String, dynamic>?;
       jwt.createPayload(
-        userPermission.userId,
+        user.userId,
         expireIn: const Duration(days: 1),
         payload: payload,
       );
@@ -425,16 +414,13 @@ class FenceService extends FenceServiceBase {
       final accessToken = jwt.sign();
       jwt = JsonWebToken();
       jwt.createPayload(
-        userPermission.userId,
+        user.userId,
         expireIn: Duration(days: 30),
-        payload: {
-          'userId': userPermission.userId,
-          'firmId': userPermission.firmId
-        },
+        payload: {'userId': user.userId, 'firmId': user.firmId},
       );
       // refresh token only contains userId & firmId
       final resfreshToken = jwt.sign();
-      await _updateUserLastSignIn(userPermission.userId);
+      await _updateUserLastSignIn(user.userId);
       return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
     } on GrpcError catch (e) {
       print('authenticateWithDevice error $e');
@@ -531,21 +517,10 @@ class FenceService extends FenceServiceBase {
         ..message = 'no match'
         ..timestamp = DateTime.now().timestampProto;
     }
+    // We create the device in the boutique's chain with a false status
     try {
-      final firmMongo =
-          await userCollection.findOne(where.eq('firmId', pairingResp.firmId));
-      if (firmMongo == null) {
-        throw GrpcError.unknown('firm ${pairingResp.firmId}');
-      }
-
-      final firm = Firm.create()
-        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
-      final chainIndex =
-          firm.chains.indexWhere((e) => e.chainId == pairingResp.chainId);
-
-      if (chainIndex == -1) {
-        throw GrpcError.unknown('mall ${pairingResp.chainId}');
-      }
+      final chain = await _checkOneChainAndProtoIt(
+          pairingResp.firmId, pairingResp.chainId);
 
       // admin still need to approve device in case code leaked or else
       request.device.status = false;
@@ -553,11 +528,14 @@ class FenceService extends FenceServiceBase {
       request.device.boutiqueId = pairingResp.boutiqueId;
       request.device.id = DateTime.now().objectIdString;
 
-      firm.chains[chainIndex].devices.add(request.device);
+      // TODO we will assign the device to a boutique
+      chain.devices.add(request.device);
 
       final result = await userCollection.replaceOne(
-        where.eq('firmId', pairingResp.firmId),
-        firm.toProto3Json() as Map<String, dynamic>,
+        where
+            .eq('firmId', pairingResp.firmId)
+            .eq('chainId', pairingResp.chainId),
+        chain.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
       if (result.hasWriteErrors) {
@@ -610,31 +588,25 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainIdAndboutiqueId.chainId}');
     }
+    // TODO here we want to do x2 things
+    // 1. create the device in the chain's boutique
+    // 2. create the user with the same deviceId
     try {
-      final firm = await userCollection
-          .findOne(where.eq('firmId', userPermission.firmId));
-      if (firm == null) {
-        throw GrpcError.notFound('firm not found');
-      }
+      final chain = await _checkOneChainAndProtoIt(
+          userPermission.firmId, request.chainIdAndboutiqueId.chainId);
 
-      final firmProto = Firm.create()
-        ..mergeFromProto3Json(firm, ignoreUnknownFields: true);
-      final index = firmProto.chains
-          .indexWhere((e) => e.chainId == request.chainIdAndboutiqueId.chainId);
-      if (index == -1) {
-        throw GrpcError.notFound();
-      }
-      final deviceIndex = firmProto.chains[index].devices.indexWhere((d) =>
+      // TODO boutique instead of chainonly
+      final deviceIndex = chain.devices.indexWhere((d) =>
           d.id == request.device.id &&
           d.boutiqueId == request.device.boutiqueId);
       if (deviceIndex == -1) {
         throw GrpcError.unknown('no device found');
       }
-      firmProto.chains[index].devices[deviceIndex].status = true;
+      chain.devices[deviceIndex].status = true;
 
-      final result = await userCollection.replaceOne(
-        where.eq('firmId', userPermission.firmId),
-        firmProto.toProto3Json() as Map<String, dynamic>,
+      final result = await boutiqueCollection.replaceOne(
+        where.eq('firmId', chain.firmId).eq('chainId', chain.chainId),
+        chain.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
       if (result.hasWriteErrors) {
@@ -683,9 +655,9 @@ class FenceService extends FenceServiceBase {
       }
       final timestamp = DateTime.now().timestampProto;
       if (result.ok == 1 && result.document != null) {
-        final userId = result.document!['userId'];
+        final userOid = result.document!['_id'] as ObjectId;
         return StatusResponse()
-          ..id = userId
+          ..id = userOid.oid
           ..type = StatusResponse_Type
               .CREATED // approving device is an updated but let's consider it is a creation
           ..timestamp = timestamp;
@@ -719,29 +691,18 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     try {
-      final firm = await userCollection
-          .findOne(where.eq('firmId', userPermission.firmId));
-      if (firm == null) {
-        throw GrpcError.notFound();
-      }
-      final firmProto = Firm.create()
-        ..mergeFromProto3Json(firm, ignoreUnknownFields: true);
-      final index =
-          firmProto.chains.indexWhere((e) => e.chainId == request.chainId);
-      if (index == -1) {
-        throw GrpcError.notFound();
-      }
-      final deviceIndex = firmProto.chains[index].devices
-          .indexWhere((d) => d.id == request.device.id);
+      final chain = await _checkOneChainAndProtoIt(
+          userPermission.firmId, request.chainId);
+      final deviceIndex =
+          chain.devices.indexWhere((d) => d.id == request.device.id);
       if (deviceIndex == -1) {
         throw GrpcError.unavailable('no device found');
       }
-      firmProto.chains[index].devices[deviceIndex].password =
-          request.device.password;
+      chain.devices[deviceIndex].password = request.device.password;
 
       final result = await userCollection.replaceOne(
-        where.eq('firmId', userPermission.firmId),
-        firmProto.toProto3Json() as Map<String, dynamic>,
+        where.eq('firmId', chain.firmId).eq('chainid', chain.chainId),
+        chain.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
       if (result.hasWriteErrors) {
@@ -816,6 +777,7 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
+
     // so we assign its own userId to firmOid
     // this same id will be used to create the firm in the following call
     // and will avoid re-forging a bearer token
@@ -830,19 +792,18 @@ class FenceService extends FenceServiceBase {
     // set the appropriate ids
 
     final firmId = DateTime.now().objectIdString;
-    final chains = [
-      Chain(firmId: firmId, chainId: firmId, name: request.name, boutiques: [
-        Boutique.create()
-          ..firmId = firmId
-          ..chainId = firmId
-          ..boutiqueId = firmId
-          ..name = request.name
-      ])
-    ];
+    final chain =
+        Chain(firmId: firmId, chainId: firmId, name: request.name, boutiques: [
+      Boutique.create()
+        ..firmId = firmId
+        ..chainId = firmId
+        ..boutiqueId = firmId
+        ..name = request.name
+    ]);
 
-    final firm = Firm(firmId: firmId, chains: chains, name: request.name);
+    final firm = Firm(firmId: firmId, name: request.name);
     try {
-      final result = await boutiqueCollection
+      final result = await firmCollection
           .insertOne(firm.toProto3Json() as Map<String, dynamic>);
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
@@ -954,7 +915,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied('user does not have right to read firm');
     }
     try {
-      final firmMongo = await boutiqueCollection
+      final firmMongo = await firmCollection
           .findOne(where.eq('firmId', userPermission.firmId));
       if (firmMongo == null) {
         throw GrpcError.notFound('firm not found');
@@ -969,7 +930,7 @@ class FenceService extends FenceServiceBase {
   }
 
   Future<Firm> _checkFirmAndProtoIt(UserPermissions userPermissions) async {
-    final firmMongo = await boutiqueCollection
+    final firmMongo = await firmCollection
         .findOne(where.eq('firmId', (userPermissions.firmId)));
     if (firmMongo == null) {
       throw GrpcError.notFound('firm not found');
@@ -978,39 +939,59 @@ class FenceService extends FenceServiceBase {
       ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
   }
 
+  Future<List<Chain>> _checkChainsAndProtoThem(
+      UserPermissions userPermissions) async {
+    try {
+      final chainsMongo = await boutiqueCollection
+          .find(where.eq('firmId', userPermissions.firmId))
+          .toList();
+      if (chainsMongo.isEmpty) {
+        throw GrpcError.notFound('chain(s) not found');
+      }
+      final chains = <Chain>[];
+      for (final chainMongo in chainsMongo) {
+        chains.add(Chain.create()
+          ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true));
+      }
+      return chains;
+    } on GrpcError catch (e) {
+      print('_findChainsAndProtoThem $e');
+      rethrow;
+    }
+  }
+
+  Future<Chain> _checkOneChainAndProtoIt(String firmId, String chainId) async {
+    try {
+      final chainMongo = await boutiqueCollection
+          .findOne(where.eq('firmId', firmId).eq('chainId', chainId));
+      if (chainMongo == null) {
+        throw GrpcError.notFound('chain not found');
+      }
+      return Chain.create()
+        ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
+    } on GrpcError catch (e) {
+      print('_findChainsAndProtoThem $e');
+      rethrow;
+    }
+  }
+
   Future<List<String>> _readAllBoutiquesInChain(UserPrivate user) async {
     _db.isConnected ? null : await _db.open();
-    try {
-      final firmMongo =
-          await boutiqueCollection.findOne(where.eq('firmId', user.firmId));
-
-      if (firmMongo == null) {
-        throw GrpcError.notFound('firm not found');
-      }
-      final firm = Firm()
-        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
-
-      final boutiques = <Boutique>[];
-      for (final requestchainId
-          in user.permissions.limitedAccess.chainIds.ids) {
-        for (final chain in firm.chains) {
-          if (user.firmId == chain.firmId) {
-            if (requestchainId == chain.chainId) {
-              for (final boutique in chain.boutiques) {
-                if (boutique.firmId == user.firmId &&
-                    boutique.chainId == requestchainId) {
-                  boutiques.add(boutique);
-                }
-              }
+    final chains = await _checkChainsAndProtoThem(user.permissions);
+    final boutiques = <Boutique>[];
+    for (final requestchainId in user.permissions.limitedAccess.chainIds.ids) {
+      for (final chain in chains) {
+        if (requestchainId == chain.chainId) {
+          for (final boutique in chain.boutiques) {
+            if (boutique.firmId == user.firmId &&
+                boutique.chainId == requestchainId) {
+              boutiques.add(boutique);
             }
           }
         }
       }
-      return boutiques.map((e) => e.boutiqueId).toList();
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
     }
+    return boutiques.map((e) => e.boutiqueId).toList();
   }
 
   @override
@@ -1021,30 +1002,26 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
 
-    if (request.chainId.isChainAccessible(userPermission) == false) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.name} ${request.boutiqueId}');
-    }
-
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.create) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to create boutique');
     }
+    if (userPermission.isFirmAndChainAccessible(
+            request.firmId, request.chainId) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user cannot create data for firm ${request.firmId} or chain ${request.chainId}');
+    }
 
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+
+    chain.boutiques.add(request);
     try {
-      final firm = await _checkFirmAndProtoIt(userPermission);
-
-      final chainIndex =
-          firm.chains.indexWhere((e) => e.chainId == request.chainId);
-      if (chainIndex == -1) {
-        throw GrpcError.notFound('boutique chain not found');
-      }
-      firm.chains[chainIndex].boutiques.add(request);
-
       final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', userPermission.firmId),
-        firm.toProto3Json() as Map<String, dynamic>,
+        where.eq('firmId', request.firmId).eq('chainId', request.chainId),
+        chain.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
       if (result.hasWriteErrors) {
@@ -1052,11 +1029,10 @@ class FenceService extends FenceServiceBase {
       }
       if (result.ok == 1 && result.document != null) {
         print(result.document.toString());
-        final firmId = result.document!['firmId'];
-
+        final mongoChainId = result.document!['_id'] as ObjectId;
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..id = firmId
+          ..id = mongoChainId.oid
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -1083,37 +1059,31 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
 
-    if (request.firmId.isEmpty) {
-      throw GrpcError.failedPrecondition('request.firmId cannot be empty');
-    }
-
-    if (request.firmId != userPermission.firmId) {
-      throw GrpcError.permissionDenied(
-          'user cannot access firm ${request.firmId}');
-    }
-
     if (userPermission.chainRights.rights.any((e) => e == Right.create) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to create chain');
     }
 
+    if (request.firmId.isEmpty) {
+      throw GrpcError.failedPrecondition('request.firmId cannot be empty');
+    }
+    if (request.firmId != userPermission.firmId) {
+      throw GrpcError.permissionDenied(
+          'user cannot access firm ${request.firmId}');
+    }
+
     try {
-      final firm = await _checkFirmAndProtoIt(userPermission);
-      firm.chains.add(request);
-      final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', userPermission.firmId),
-        firm.toProto3Json() as Map<String, dynamic>,
-        upsert: true,
-      );
+      final result = await boutiqueCollection
+          .insertOne(request.toProto3Json() as Map<String, dynamic>);
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final firmId = result.document!['firmId'];
+        final chainOid = result.document!['_id'] as ObjectId;
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..id = firmId
+          ..id = chainOid.oid
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -1141,33 +1111,32 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
+
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.update) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to update boutique');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isFirmAndChainAccessible(
+            request.firmId, request.chainId) ==
+        false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainId}');
+          'user cannot access data from firm ${request.firmId} or chain ${request.chainId}');
     }
 
     try {
-      final firm = await _checkFirmAndProtoIt(userPermission);
-      final chainIndex =
-          firm.chains.indexWhere((e) => e.chainId == request.chainId);
-      if (chainIndex == -1) {
-        throw GrpcError.notFound('boutique chain not found');
-      }
-      final boutiqueIndex = firm.chains[chainIndex].boutiques
-          .indexWhere((e) => e.boutiqueId == request.boutiqueId);
+      final chain =
+          await _checkOneChainAndProtoIt(request.firmId, request.chainId);
+      final boutiqueIndex =
+          chain.boutiques.indexWhere((e) => e.boutiqueId == request.boutiqueId);
       if (boutiqueIndex == -1) {
         throw GrpcError.notFound('boutique not found');
       }
-      firm.chains[chainIndex].boutiques[boutiqueIndex] = request;
+      chain.boutiques[boutiqueIndex] = request;
 
       final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', userPermission.firmId),
-        firm.toProto3Json() as Map<String, dynamic>,
+        where.eq('firmId', request.firmId).eq('chainId', request.chainId),
+        chain.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
       if (result.hasWriteErrors) {
@@ -1205,22 +1174,19 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update chain');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isFirmAndChainAccessible(
+            request.firmId, request.chainId) ==
+        false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.name} ${request.chainId}');
+          'user cannot access data from firm ${request.firmId} or chain ${request.chainId}');
     }
 
     try {
-      final firm = await _checkFirmAndProtoIt(userPermission);
-      final index = firm.chains.indexWhere((e) => e.chainId == request.chainId);
-      if (index == -1) {
-        throw GrpcError.notFound('chain not found');
-      } else {
-        firm.chains[index] = request;
-      }
+      final chain =
+          await _checkOneChainAndProtoIt(request.firmId, request.chainId);
       final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', userPermission.firmId),
-        firm.toProto3Json() as Map<String, dynamic>,
+        where.eq('firmId', request.firmId).eq('chainId', request.chainId),
+        chain.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
       if (result.hasWriteErrors) {
@@ -1261,23 +1227,21 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     try {
-      final firm = await _checkFirmAndProtoIt(userPermission);
-      final index = firm.chains.indexWhere((e) => e.chainId == request.chainId);
-      if (index == -1) {
-        throw GrpcError.notFound();
-      }
-
-// ** .oid would be safer, but not sure it is populated properly
-      final deviceIndex = firm.chains[index].devices.indexWhere((d) =>
+      final chain = await _checkOneChainAndProtoIt(
+          userPermission.firmId, request.chainId);
+//TODO use boutique here instead
+      final deviceIndex = chain.devices.indexWhere((d) =>
           d.serialNumber == request.device.serialNumber &&
           d.boutiqueId == request.device.boutiqueId);
       if (deviceIndex == -1) {
         throw GrpcError.unavailable('no device found');
       }
-      firm.chains[index].devices.removeAt(deviceIndex);
+      chain.devices.removeAt(deviceIndex);
       final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', userPermission.firmId),
-        firm.toProto3Json() as Map<String, dynamic>,
+        where
+            .eq('firmId', userPermission.firmId)
+            .eq('chainId', request.chainId),
+        chain.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
       if (result.hasWriteErrors) {
@@ -1303,7 +1267,8 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
+    // TODO: device rights are not simple/clear
+    if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to read devices');
@@ -1313,22 +1278,10 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     try {
-      final firmMongo = await boutiqueCollection
-          .findOne(where.eq('firmId', userPermission.firmId));
-
-      if (firmMongo == null) {
-        throw GrpcError.unknown('firm not found ${userPermission.firmId}');
-      }
-      final firm = Firm.create()
-        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
-
-      final index = firm.chains.indexWhere((e) => e.chainId == request.chainId);
-      if (index == -1) {
-        throw GrpcError.unknown('mall ${request.chainId}');
-      }
-
+      final chain = await _checkOneChainAndProtoIt(
+          userPermission.firmId, request.chainId);
       final devices = <Device>[];
-      for (final device in firm.chains[index].devices) {
+      for (final device in chain.devices) {
         devices.add(device);
       }
       return Devices(devices: devices);
@@ -1435,5 +1388,22 @@ class FenceService extends FenceServiceBase {
       log('error $e');
       throw e;
     }
+  }
+
+  @override
+  Future<ReadAllChainsResponse> readAllChains(
+      ServiceCall? call, Empty request) async {
+    _db.isConnected ? null : await _db.open();
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermission;
+    if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to read chain');
+    }
+
+    final chains = await _checkChainsAndProtoThem(userPermission);
+    return ReadAllChainsResponse(chains: chains);
   }
 }

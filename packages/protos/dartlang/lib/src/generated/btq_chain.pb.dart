@@ -13,7 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'boutique.pb.dart' as $12;
+import 'boutique.pb.dart' as $11;
 import 'common/g_timestamp.pb.dart' as $17;
 
 class Chain extends $pb.GeneratedMessage {
@@ -21,7 +21,7 @@ class Chain extends $pb.GeneratedMessage {
     $core.String? chainId,
     $core.String? firmId,
     $core.String? name,
-    $core.Iterable<$12.Boutique>? boutiques,
+    $core.Iterable<$11.Boutique>? boutiques,
     $core.Iterable<Device>? devices,
     $17.Timestamp? lastUpdateTimestampUTC,
     $core.String? lastUpdatedByuserId,
@@ -58,7 +58,7 @@ class Chain extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(3, _omitFieldNames ? '' : 'name')
-    ..pc<$12.Boutique>(4, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $12.Boutique.create)
+    ..pc<$11.Boutique>(4, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $11.Boutique.create)
     ..pc<Device>(5, _omitFieldNames ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: Device.create)
     ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
@@ -114,7 +114,7 @@ class Chain extends $pb.GeneratedMessage {
   void clearName() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.List<$12.Boutique> get boutiques => $_getList(3);
+  $core.List<$11.Boutique> get boutiques => $_getList(3);
 
   @$pb.TagNumber(5)
   $core.List<Device> get devices => $_getList(4);

@@ -5,9 +5,27 @@ extension UserPermissionsExtension on UserPermissions {
   bool isBoutiqueAccessible(String boutiqueId) =>
       (fullAccess.hasFullAccess == false ||
           limitedAccess.boutiqueIds.ids.contains(boutiqueId) == false);
+
+  bool isFirmAndChainAccessible(String firmId, String chainId) {
+    if (this.firmId.isEmpty || this.firmId != firmId) {
+      return false;
+    }
+    if (fullAccess.hasFullAccess == false &&
+        this
+            .limitedAccess
+            .chainIds
+            .ids
+            .none((accessiblechainId) => accessiblechainId == chainId)) {
+      return false;
+    }
+    return true;
+  }
 }
 
 extension UserPermExt on String {
+  bool isFirmAccessible(UserPermissions userPermission) =>
+      this.isEmpty ? false : this == userPermission.firmId;
+
   bool isChainAccessible(UserPermissions userPermission) =>
       userPermission.fullAccess.hasFullAccess
           ? true
@@ -32,12 +50,14 @@ extension UserPermExt2 on ChainIds {
 
 extension UserPermExt3 on Counterfoil {
   bool isFirmAndChainAccessible(UserPermissions userPermission) {
-    if (userPermission.firmId == firmId) {
-      if (userPermission.fullAccess.hasFullAccess) {
-        return true;
-      } else if (userPermission.limitedAccess.chainIds.ids
-          .any((accessiblechainId) => accessiblechainId == chainId)) {
-        return true;
+    if (userPermission.firmId.isNotEmpty) {
+      if (userPermission.firmId == firmId) {
+        if (userPermission.fullAccess.hasFullAccess) {
+          return true;
+        } else if (userPermission.limitedAccess.chainIds.ids
+            .any((accessiblechainId) => accessiblechainId == chainId)) {
+          return true;
+        }
       }
     }
     return false;

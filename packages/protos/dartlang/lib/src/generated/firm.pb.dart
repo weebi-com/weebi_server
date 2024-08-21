@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: btq_firm.proto
+//  source: firm.proto
 //
 // @dart = 2.12
 
@@ -13,16 +13,13 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'btq_chain.pb.dart' as $11;
 import 'common/g_common.pb.dart' as $1;
 import 'common/g_timestamp.pb.dart' as $17;
 
-/// / yes one object to delimit all but permissions
 class Firm extends $pb.GeneratedMessage {
   factory Firm({
     $core.String? firmId,
     $core.String? name,
-    $core.Iterable<$11.Chain>? chains,
     $core.String? subscriptionPlan,
     $core.int? subscriptionSeats,
     $17.Timestamp? subscriptionStartTimestampUTC,
@@ -39,9 +36,6 @@ class Firm extends $pb.GeneratedMessage {
     }
     if (name != null) {
       $result.name = name;
-    }
-    if (chains != null) {
-      $result.chains.addAll(chains);
     }
     if (subscriptionPlan != null) {
       $result.subscriptionPlan = subscriptionPlan;
@@ -79,16 +73,15 @@ class Firm extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Firm', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
-    ..pc<$11.Chain>(3, _omitFieldNames ? '' : 'chains', $pb.PbFieldType.PM, subBuilder: $11.Chain.create)
-    ..aOS(4, _omitFieldNames ? '' : 'subscriptionPlan', protoName: 'subscriptionPlan')
-    ..a<$core.int>(5, _omitFieldNames ? '' : 'subscriptionSeats', $pb.PbFieldType.O3, protoName: 'subscriptionSeats')
-    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'subscriptionStartTimestampUTC', protoName: 'subscriptionStartTimestampUTC', subBuilder: $17.Timestamp.create)
-    ..aOM<$17.Timestamp>(7, _omitFieldNames ? '' : 'subscriptionEndTimestampUTC', protoName: 'subscriptionEndTimestampUTC', subBuilder: $17.Timestamp.create)
-    ..aOB(8, _omitFieldNames ? '' : 'status')
-    ..aOM<$17.Timestamp>(9, _omitFieldNames ? '' : 'statusUpdateTimestampUTC', protoName: 'statusUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
-    ..aOM<$17.Timestamp>(10, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
-    ..aOS(11, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
-    ..aOB(12, _omitFieldNames ? '' : 'isMailVerified', protoName: 'isMailVerified')
+    ..aOS(3, _omitFieldNames ? '' : 'subscriptionPlan', protoName: 'subscriptionPlan')
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'subscriptionSeats', $pb.PbFieldType.O3, protoName: 'subscriptionSeats')
+    ..aOM<$17.Timestamp>(5, _omitFieldNames ? '' : 'subscriptionStartTimestampUTC', protoName: 'subscriptionStartTimestampUTC', subBuilder: $17.Timestamp.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'subscriptionEndTimestampUTC', protoName: 'subscriptionEndTimestampUTC', subBuilder: $17.Timestamp.create)
+    ..aOB(7, _omitFieldNames ? '' : 'status')
+    ..aOM<$17.Timestamp>(8, _omitFieldNames ? '' : 'statusUpdateTimestampUTC', protoName: 'statusUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
+    ..aOM<$17.Timestamp>(9, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
+    ..aOS(10, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
+    ..aOB(11, _omitFieldNames ? '' : 'isMailVerified', protoName: 'isMailVerified')
     ..hasRequiredFields = false
   ;
 
@@ -132,96 +125,93 @@ class Firm extends $pb.GeneratedMessage {
   void clearName() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.List<$11.Chain> get chains => $_getList(2);
+  $core.String get subscriptionPlan => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set subscriptionPlan($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasSubscriptionPlan() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearSubscriptionPlan() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get subscriptionPlan => $_getSZ(3);
+  $core.int get subscriptionSeats => $_getIZ(3);
   @$pb.TagNumber(4)
-  set subscriptionPlan($core.String v) { $_setString(3, v); }
+  set subscriptionSeats($core.int v) { $_setSignedInt32(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasSubscriptionPlan() => $_has(3);
+  $core.bool hasSubscriptionSeats() => $_has(3);
   @$pb.TagNumber(4)
-  void clearSubscriptionPlan() => clearField(4);
+  void clearSubscriptionSeats() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.int get subscriptionSeats => $_getIZ(4);
+  $17.Timestamp get subscriptionStartTimestampUTC => $_getN(4);
   @$pb.TagNumber(5)
-  set subscriptionSeats($core.int v) { $_setSignedInt32(4, v); }
+  set subscriptionStartTimestampUTC($17.Timestamp v) { setField(5, v); }
   @$pb.TagNumber(5)
-  $core.bool hasSubscriptionSeats() => $_has(4);
+  $core.bool hasSubscriptionStartTimestampUTC() => $_has(4);
   @$pb.TagNumber(5)
-  void clearSubscriptionSeats() => clearField(5);
+  void clearSubscriptionStartTimestampUTC() => clearField(5);
+  @$pb.TagNumber(5)
+  $17.Timestamp ensureSubscriptionStartTimestampUTC() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $17.Timestamp get subscriptionStartTimestampUTC => $_getN(5);
+  $17.Timestamp get subscriptionEndTimestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set subscriptionStartTimestampUTC($17.Timestamp v) { setField(6, v); }
+  set subscriptionEndTimestampUTC($17.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
-  $core.bool hasSubscriptionStartTimestampUTC() => $_has(5);
+  $core.bool hasSubscriptionEndTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
-  void clearSubscriptionStartTimestampUTC() => clearField(6);
+  void clearSubscriptionEndTimestampUTC() => clearField(6);
   @$pb.TagNumber(6)
-  $17.Timestamp ensureSubscriptionStartTimestampUTC() => $_ensure(5);
+  $17.Timestamp ensureSubscriptionEndTimestampUTC() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $17.Timestamp get subscriptionEndTimestampUTC => $_getN(6);
+  $core.bool get status => $_getBF(6);
   @$pb.TagNumber(7)
-  set subscriptionEndTimestampUTC($17.Timestamp v) { setField(7, v); }
+  set status($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(7)
-  $core.bool hasSubscriptionEndTimestampUTC() => $_has(6);
+  $core.bool hasStatus() => $_has(6);
   @$pb.TagNumber(7)
-  void clearSubscriptionEndTimestampUTC() => clearField(7);
-  @$pb.TagNumber(7)
-  $17.Timestamp ensureSubscriptionEndTimestampUTC() => $_ensure(6);
+  void clearStatus() => clearField(7);
 
   @$pb.TagNumber(8)
-  $core.bool get status => $_getBF(7);
+  $17.Timestamp get statusUpdateTimestampUTC => $_getN(7);
   @$pb.TagNumber(8)
-  set status($core.bool v) { $_setBool(7, v); }
+  set statusUpdateTimestampUTC($17.Timestamp v) { setField(8, v); }
   @$pb.TagNumber(8)
-  $core.bool hasStatus() => $_has(7);
+  $core.bool hasStatusUpdateTimestampUTC() => $_has(7);
   @$pb.TagNumber(8)
-  void clearStatus() => clearField(8);
+  void clearStatusUpdateTimestampUTC() => clearField(8);
+  @$pb.TagNumber(8)
+  $17.Timestamp ensureStatusUpdateTimestampUTC() => $_ensure(7);
 
   @$pb.TagNumber(9)
-  $17.Timestamp get statusUpdateTimestampUTC => $_getN(8);
+  $17.Timestamp get lastUpdateTimestampUTC => $_getN(8);
   @$pb.TagNumber(9)
-  set statusUpdateTimestampUTC($17.Timestamp v) { setField(9, v); }
+  set lastUpdateTimestampUTC($17.Timestamp v) { setField(9, v); }
   @$pb.TagNumber(9)
-  $core.bool hasStatusUpdateTimestampUTC() => $_has(8);
+  $core.bool hasLastUpdateTimestampUTC() => $_has(8);
   @$pb.TagNumber(9)
-  void clearStatusUpdateTimestampUTC() => clearField(9);
+  void clearLastUpdateTimestampUTC() => clearField(9);
   @$pb.TagNumber(9)
-  $17.Timestamp ensureStatusUpdateTimestampUTC() => $_ensure(8);
+  $17.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $17.Timestamp get lastUpdateTimestampUTC => $_getN(9);
+  $core.String get lastUpdatedByuserId => $_getSZ(9);
   @$pb.TagNumber(10)
-  set lastUpdateTimestampUTC($17.Timestamp v) { setField(10, v); }
+  set lastUpdatedByuserId($core.String v) { $_setString(9, v); }
   @$pb.TagNumber(10)
-  $core.bool hasLastUpdateTimestampUTC() => $_has(9);
+  $core.bool hasLastUpdatedByuserId() => $_has(9);
   @$pb.TagNumber(10)
-  void clearLastUpdateTimestampUTC() => clearField(10);
-  @$pb.TagNumber(10)
-  $17.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(9);
+  void clearLastUpdatedByuserId() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.String get lastUpdatedByuserId => $_getSZ(10);
+  $core.bool get isMailVerified => $_getBF(10);
   @$pb.TagNumber(11)
-  set lastUpdatedByuserId($core.String v) { $_setString(10, v); }
+  set isMailVerified($core.bool v) { $_setBool(10, v); }
   @$pb.TagNumber(11)
-  $core.bool hasLastUpdatedByuserId() => $_has(10);
+  $core.bool hasIsMailVerified() => $_has(10);
   @$pb.TagNumber(11)
-  void clearLastUpdatedByuserId() => clearField(11);
-
-  @$pb.TagNumber(12)
-  $core.bool get isMailVerified => $_getBF(11);
-  @$pb.TagNumber(12)
-  set isMailVerified($core.bool v) { $_setBool(11, v); }
-  @$pb.TagNumber(12)
-  $core.bool hasIsMailVerified() => $_has(11);
-  @$pb.TagNumber(12)
-  void clearIsMailVerified() => clearField(12);
+  void clearIsMailVerified() => clearField(11);
 }
 
 class CreateFirmRequest extends $pb.GeneratedMessage {

@@ -13,6 +13,7 @@ void main() async {
   final connection = Connection(ConnectionManager(db));
 
   late Firm firm;
+  late Chain chain;
 
   late FenceService fenceService;
 
@@ -45,7 +46,6 @@ void main() async {
   });
   test('test readOneFirm', () async {
     final response = await fenceService.readOneFirm(null, Empty());
-    expect(response.chains, Dummy.firmNoId.chains);
     expect(response.isMailVerified, Dummy.firmNoId.isMailVerified);
     expect(response.lastUpdatedByuserId, Dummy.firmNoId.lastUpdatedByuserId);
     expect(response.name, Dummy.firmNoId.name);
@@ -58,19 +58,20 @@ void main() async {
     firm = response;
   });
   test('test upsertOneChain', () async {
-    final liliChain = firm.chains.first..name = 'Lili chain';
+    final responseReadChains = await fenceService.readAllChains(null, Empty());
+    final liliChain = responseReadChains.chains.first..name = 'Lili chain';
     final response = await fenceService.updateOneChain(null, liliChain);
     expect(response.type, StatusResponse_Type.UPDATED);
-    final response2 = await fenceService.readOneFirm(null, Empty());
+    final response2 = await fenceService.readAllChains(null, Empty());
     expect(response2.chains.first.name, 'Lili chain');
+    chain = response2.chains.first;
   });
 
   test('test upsertOneBoutique', () async {
-    final boutiqueLili = firm.chains.first.boutiques.first
-      ..name = 'Lili boutique';
+    final boutiqueLili = chain.boutiques.first..name = 'Lili boutique test';
     final response = await fenceService.updateOneBoutique(null, boutiqueLili);
     expect(response.type, StatusResponse_Type.UPDATED);
-    final response2 = await fenceService.readOneFirm(null, Empty());
-    expect(response2.chains.first.boutiques.first.name, 'Lili boutique');
+    final response2 = await fenceService.readAllChains(null, Empty());
+    expect(response2.chains.first.boutiques.first.name, 'Lili boutique test');
   });
 }

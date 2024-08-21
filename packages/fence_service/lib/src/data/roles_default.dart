@@ -10,7 +10,7 @@ abstract class RightsAdmin {
   static final article = ArticleRights(
     rights: const [Right.create, Right.read, Right.update, Right.delete],
   );
-  static final chain = MallRights(
+  static final chain = ChainRights(
     rights: const [Right.create, Right.read, Right.update, Right.delete],
   );
   // Firm creation only available after signup just in case

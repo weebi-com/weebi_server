@@ -39,7 +39,6 @@ abstract class Dummy {
 
   static final firmNoId = Firm(
     name: 'firmDummy',
-    chains: <Chain>[Dummy.chainNoId],
     subscriptionPlan: 'test',
     subscriptionSeats: 1,
     subscriptionStartTimestampUTC: Timestamp(seconds: Int64.ONE, nanos: 0),

@@ -13,6 +13,19 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use readAllChainsResponseDescriptor instead')
+const ReadAllChainsResponse$json = {
+  '1': 'ReadAllChainsResponse',
+  '2': [
+    {'1': 'chains', '3': 1, '4': 3, '5': 11, '6': '.weebi.chain.Chain', '10': 'chains'},
+  ],
+};
+
+/// Descriptor for `ReadAllChainsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readAllChainsResponseDescriptor = $convert.base64Decode(
+    'ChVSZWFkQWxsQ2hhaW5zUmVzcG9uc2USKgoGY2hhaW5zGAEgAygLMhIud2VlYmkuY2hhaW4uQ2'
+    'hhaW5SBmNoYWlucw==');
+
 @$core.Deprecated('Use readDeviceRequestDescriptor instead')
 const ReadDeviceRequest$json = {
   '1': 'ReadDeviceRequest',

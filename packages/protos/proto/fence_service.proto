@@ -12,7 +12,7 @@ import "user_permissions.proto";
 
 import "boutique.proto";
 import "btq_chain.proto";
-import "btq_firm.proto";
+import "firm.proto";
 
 service FenceService {
   rpc signUp(weebi.user.SignUpRequest) returns (weebi.user.SignUpResponse);
@@ -34,34 +34,40 @@ service FenceService {
   // TODO add replaceFirm
   // TODO add deleteFirm
 
-  /// device management is as sensitive as user management
-  rpc generateCodeForPairingDevice(weebi.common.chained_ids.ChainIdAndboutiqueId) returns (DevicePairingResponse);
-  rpc createPendingDevice(PendingDeviceRequest) returns (google.retail.common.StatusResponse);
-  rpc approveDevice(ApproveDeviceRequest) returns (google.retail.common.StatusResponse);
-  /// weak auth hack to ease app access to cashiers with very low rights
-  rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
-
   rpc createPendingUser(weebi.user.PendingUserRequest) returns (weebi.user.PendingUserResponse);
   rpc readOneUser(UserId) returns (weebi.user.UserPublic);
   rpc updateOneUser(weebi.user.UserPublic) returns (google.retail.common.StatusResponse);
   rpc deleteOneUser(UserId) returns (google.retail.common.StatusResponse);
   
   rpc createOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
+  rpc readAllChains(weebi.common.empty.Empty) returns (ReadAllChainsResponse);
   rpc updateOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
   // TODO add replacechain
   // TODO add deletechain
   // TODO add readchains
+  
+  rpc createOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
+  rpc updateOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
 
-  // Device belong to chain NOT BOUTIQUE 
+  /// device management is as sensitive as user management
+  rpc generateCodeForPairingDevice(weebi.common.chained_ids.ChainIdAndboutiqueId) returns (DevicePairingResponse);
+  rpc createPendingDevice(PendingDeviceRequest) returns (google.retail.common.StatusResponse);
+  // TODO make sure that the deviceId is the same as the user created
+  rpc approveDevice(ApproveDeviceRequest) returns (google.retail.common.StatusResponse);
+  rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
+  // TODO rework DeviceCredentials semantics : no oid please
+
+  // Device belong to boutique 
   rpc readDevices(ReadDeviceRequest) returns (weebi.chain.Devices);
   rpc updateDeviceDefaultPassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
-
-  rpc createOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
-  rpc updateOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
-  
+  /// weak auth hack to ease app access to cashiers with very low rights
 }
 
+message ReadAllChainsResponse {
+  // google.retail.common.StatusResponse ? 
+  repeated weebi.chain.Chain chains = 1;
+}
 
 message ReadDeviceRequest {
   string chainId = 1;

@@ -55,7 +55,9 @@ message UserPermissions {
   ContactRights contactRights =  7 [json_name = 'contactRights'];
   ArticleRights articleRights =  8  [json_name = 'articleRights'];
   BoutiqueRights boutiqueRights = 9 [json_name = 'boutiqueRights'];
-  MallRights chainRights =  10  [json_name = 'mallRights'];
+  // TODO: think about a deviceRights or at least something about device boolRights
+  // TODO reanme below
+  ChainRights chainRights =  10  [json_name = 'chainRights'];
   FirmRights firmRights =  11 [json_name = 'firmRights'];
   UserManagementRights userManagementRights =  12 [json_name = 'userManagementRights'];
   BillingRights billingRights = 13 [json_name = 'billingRights'];
@@ -78,8 +80,8 @@ message ArticleRights {
 message BoutiqueRights {
   repeated Right rights = 1 [json_name = 'boutiqueRights'];
 }
-message MallRights {
-  repeated Right rights = 1 [json_name = 'mallRights'];
+message ChainRights {
+  repeated Right rights = 1 [json_name = 'chainRights'];
 }
 message FirmRights {
   repeated Right rights = 1 [json_name = 'firmRights'];

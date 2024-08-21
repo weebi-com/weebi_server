@@ -1,6 +1,6 @@
 //
 //  Generated code. Do not modify.
-//  source: btq_firm.proto
+//  source: firm.proto
 //
 // @dart = 2.12
 

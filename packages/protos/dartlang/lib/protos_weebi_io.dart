@@ -17,9 +17,9 @@ export 'package:protos_weebi/src/generated/btq_chain.pb.dart';
 export 'package:protos_weebi/src/generated/btq_chain.pbenum.dart';
 export 'package:protos_weebi/src/generated/btq_chain.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/btq_firm.pb.dart';
-export 'package:protos_weebi/src/generated/btq_firm.pbenum.dart';
-export 'package:protos_weebi/src/generated/btq_firm.pbjson.dart';
+export 'package:protos_weebi/src/generated/firm.pb.dart';
+export 'package:protos_weebi/src/generated/firm.pbenum.dart';
+export 'package:protos_weebi/src/generated/firm.pbjson.dart';
 
 export 'package:protos_weebi/src/generated/contact/contact.pb.dart';
 export 'package:protos_weebi/src/generated/contact/contact.pbenum.dart';

@@ -33,12 +33,13 @@ class TestHelper {
     final response = await fenceService.createFirm(null, CreateFirmRequest());
 
     final firm = await fenceService.readOneFirm(null, Empty());
+    final chainsResponse = await fenceService.readAllChains(null, Empty());
 
     fenceService..userPermissionIfTest = Dummy.adminPermission;
     return Counterfoil.create()
       ..firmId = response.firm.firmId
-      ..chainId = firm.chains.first.chainId
-      ..boutiqueId = firm.chains.first.boutiques.first.boutiqueId
+      ..chainId = chainsResponse.chains.first.chainId
+      ..boutiqueId = chainsResponse.chains.first.boutiques.first.boutiqueId
       ..userId = Dummy.userInfo.userId;
   }
 }

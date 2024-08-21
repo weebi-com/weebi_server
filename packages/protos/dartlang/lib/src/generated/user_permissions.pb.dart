@@ -252,7 +252,7 @@ class UserPermissions extends $pb.GeneratedMessage {
     ContactRights? contactRights,
     ArticleRights? articleRights,
     BoutiqueRights? boutiqueRights,
-    MallRights? chainRights,
+    ChainRights? chainRights,
     FirmRights? firmRights,
     UserManagementRights? userManagementRights,
     BillingRights? billingRights,
@@ -319,7 +319,7 @@ class UserPermissions extends $pb.GeneratedMessage {
     ..aOM<ContactRights>(7, _omitFieldNames ? '' : 'contactRights', protoName: 'contactRights', subBuilder: ContactRights.create)
     ..aOM<ArticleRights>(8, _omitFieldNames ? '' : 'articleRights', protoName: 'articleRights', subBuilder: ArticleRights.create)
     ..aOM<BoutiqueRights>(9, _omitFieldNames ? '' : 'boutiqueRights', protoName: 'boutiqueRights', subBuilder: BoutiqueRights.create)
-    ..aOM<MallRights>(10, _omitFieldNames ? '' : 'mallRights', protoName: 'chainRights', subBuilder: MallRights.create)
+    ..aOM<ChainRights>(10, _omitFieldNames ? '' : 'chainRights', protoName: 'chainRights', subBuilder: ChainRights.create)
     ..aOM<FirmRights>(11, _omitFieldNames ? '' : 'firmRights', protoName: 'firmRights', subBuilder: FirmRights.create)
     ..aOM<UserManagementRights>(12, _omitFieldNames ? '' : 'userManagementRights', protoName: 'userManagementRights', subBuilder: UserManagementRights.create)
     ..aOM<BillingRights>(13, _omitFieldNames ? '' : 'billingRights', protoName: 'billingRights', subBuilder: BillingRights.create)
@@ -435,16 +435,18 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   BoutiqueRights ensureBoutiqueRights() => $_ensure(7);
 
+  /// TODO: think about a deviceRights or at least something about device boolRights
+  /// TODO reanme below
   @$pb.TagNumber(10)
-  MallRights get chainRights => $_getN(8);
+  ChainRights get chainRights => $_getN(8);
   @$pb.TagNumber(10)
-  set chainRights(MallRights v) { setField(10, v); }
+  set chainRights(ChainRights v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasChainRights() => $_has(8);
   @$pb.TagNumber(10)
   void clearChainRights() => clearField(10);
   @$pb.TagNumber(10)
-  MallRights ensureChainRights() => $_ensure(8);
+  ChainRights ensureChainRights() => $_ensure(8);
 
   @$pb.TagNumber(11)
   FirmRights get firmRights => $_getN(9);
@@ -579,8 +581,8 @@ class BoutiqueRights extends $pb.GeneratedMessage {
   $core.List<Right> get rights => $_getList(0);
 }
 
-class MallRights extends $pb.GeneratedMessage {
-  factory MallRights({
+class ChainRights extends $pb.GeneratedMessage {
+  factory ChainRights({
     $core.Iterable<Right>? rights,
   }) {
     final $result = create();
@@ -589,12 +591,12 @@ class MallRights extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  MallRights._() : super();
-  factory MallRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory MallRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  ChainRights._() : super();
+  factory ChainRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ChainRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'MallRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
-    ..pc<Right>(1, _omitFieldNames ? '' : 'mallRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChainRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..pc<Right>(1, _omitFieldNames ? '' : 'chainRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
     ..hasRequiredFields = false
   ;
 
@@ -602,22 +604,22 @@ class MallRights extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  MallRights clone() => MallRights()..mergeFromMessage(this);
+  ChainRights clone() => ChainRights()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  MallRights copyWith(void Function(MallRights) updates) => super.copyWith((message) => updates(message as MallRights)) as MallRights;
+  ChainRights copyWith(void Function(ChainRights) updates) => super.copyWith((message) => updates(message as ChainRights)) as ChainRights;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static MallRights create() => MallRights._();
-  MallRights createEmptyInstance() => create();
-  static $pb.PbList<MallRights> createRepeated() => $pb.PbList<MallRights>();
+  static ChainRights create() => ChainRights._();
+  ChainRights createEmptyInstance() => create();
+  static $pb.PbList<ChainRights> createRepeated() => $pb.PbList<ChainRights>();
   @$core.pragma('dart2js:noInline')
-  static MallRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<MallRights>(create);
-  static MallRights? _defaultInstance;
+  static ChainRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChainRights>(create);
+  static ChainRights? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.List<Right> get rights => $_getList(0);
