@@ -4,12 +4,12 @@ package weebi.boutique;
 
 import "common/phone.proto";
 import "common/address.proto";
-import "common/mongo.proto";
+import "device.proto";
 
 message Boutique {
-    weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
-    string firmOid = 2 [json_name = 'firmOid'];
-    string chainOid = 3 [json_name = 'chainOid'];
+    string boutiqueId = 1 [json_name = 'boutiqueId'];
+    string firmId = 2 [json_name = 'firmId'];
+    string chainId = 3 [json_name = 'chainId'];
     string dateCreation = 4 [json_name = 'creationDate'];
     string dateUpdate = 5 [json_name = 'updateDate'];
     string dateStatus = 6 [json_name = 'statusUpdateDate'];
@@ -20,7 +20,8 @@ message Boutique {
     double promo = 11 [json_name = 'promo'];
     string promoStart =  12 [json_name = 'promoStart'];
     string promoEnd = 13 [json_name = 'promoEnd'];
-    reserved 14 to 98;
+    repeated weebi.device.Device devices = 14 [json_name = 'devices'];
+    reserved 15 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
    }
 

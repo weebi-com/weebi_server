@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+package weebi.fence.service;
+
+import "common/chained_ids.proto";
+import "common/empty.proto";
+import "common/g_common.proto";
+import "common/g_timestamp.proto";
+
+import "user.proto";
+import "user_permissions.proto";
+
+import "firm.proto";
+import "btq_chain.proto";
+import "boutique.proto";
+import "device.proto";
+
+service FenceService {
+  rpc signUp(weebi.user.SignUpRequest) returns (weebi.user.SignUpResponse);
+  rpc authenticateWithCredentials (Credentials) returns (Tokens);
+  rpc authenticateWithRefreshToken (RefreshToken) returns (Tokens);
+  rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.permissions.UserPermissions);
+  // TODO: add quit / droit à l'oubli like
+  // allowing user added in an existing firm by mistake to signup again and start his/her own firm
+
+  
+  /// only one firm per 'company'
+  /// 1. user signup and get a userId & create firm permission
+  /// 2. A. user create a firm
+  /// Chain and Boutique will be created by default and will use the same firmId
+  /// Since createFirm also updates user permission, clientApp needs to reauthent using refresh right after
+  /// 2. B. user joins a firm is a different use case detailed in createPendingUser rpc
+  rpc createFirm(weebi.firm.CreateFirmRequest) returns (weebi.firm.CreateFirmResponse);
+  rpc readOneFirm(weebi.common.empty.Empty) returns (weebi.firm.Firm);
+  // TODO add replaceFirm
+  // TODO add deleteFirm
+
+  rpc createPendingUser(weebi.user.PendingUserRequest) returns (weebi.user.PendingUserResponse);
+  rpc readOneUser(UserId) returns (weebi.user.UserPublic);
+  
+  /// Presumably, until 2030 firms will have max 9 users, why bother filter ?
+  rpc readAllUsers(weebi.common.empty.Empty) returns (UsersPublic);
+  rpc updateOneUser(weebi.user.UserPublic) returns (google.retail.common.StatusResponse);
+  rpc updateUserPassword(PasswordUpdateRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOneUser(UserId) returns (google.retail.common.StatusResponse);
+  
+  rpc createOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
+  rpc readAllChains(weebi.common.empty.Empty) returns (ReadAllChainsResponse);
+  rpc updateOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
+  // TODO add replacechain
+  // TODO add deletechain
+  // TODO add readchains
+  
+  rpc createOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
+  rpc updateOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
+
+  /// device management is as sensitive as user management
+  rpc generateCodeForPairingDevice(weebi.common.chained_ids.ChainIdAndboutiqueId) returns (DevicePairingResponse);
+  rpc createPendingDevice(PendingDeviceRequest) returns (google.retail.common.StatusResponse);
+
+  rpc approveDevice(ApproveDeviceRequest) returns (google.retail.common.StatusResponse);
+  rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
+
+  // Device belongs to boutique 
+  rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
+  rpc updateDeviceDefaultPassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
+  /// weak auth hack to ease app access to cashiers with very low rights
+}
+
+message UsersPublic {
+  repeated weebi.user.UserPublic users = 1 [json_name = 'users'];
+}
+
+
+
+message ReadAllChainsResponse {
+  // google.retail.common.StatusResponse ? 
+  repeated weebi.chain.Chain chains = 1;
+}
+
+message ReadDevicesRequest {
+  string chainId = 1;
+}
+
+message DeleteDeviceRequest {
+  string chainId = 1; 
+  weebi.device.Device device = 2 ;
+}
+
+message MailAndEncyptedPassword {
+  string mail = 1;
+  string passwordEncrypted = 2;
+}
+
+message UserId {
+  string userId = 1;
+}
+
+message Access {
+  weebi.user.permissions.ChainIds chainIds = 1 [json_name = 'chainIds'];
+  weebi.user.permissions.BoutiqueIds boutiqueIds = 2 [json_name = 'boutiqueIds'];
+}
+
+message Credentials {
+  string mail = 1;
+  string password = 2;
+}
+
+message DeviceCredentials {
+  string firmId = 1 ;
+  string chainId = 2 ;
+  string boutiqueId = 3;
+  string deviceId = 4 ; 
+  string password = 5 ;
+}
+
+message RefreshToken {
+  string refreshToken = 1;
+}
+
+message Tokens {
+  string accessToken = 1;
+  string refreshToken = 2;
+}
+
+message UpdateDevicePasswordRequest {
+  string chainId = 1; 
+  weebi.device.Device device = 2 ;
+}
+
+message PasswordUpdateRequest {
+  string userId = 1 [json_name = 'userId'];
+  string firmId = 2 [json_name = 'firmId'];
+  string password = 3 [json_name = 'password'];
+}
+
+message PendingDeviceRequest {
+  weebi.device.Device device = 1 ;
+  int32 code = 2;
+}
+
+message DevicePairingResponse {
+  string firmId = 1 [json_name = 'firmId'];
+  string chainId = 2 [json_name = 'chainId'];
+  string boutiqueId = 3 [json_name = 'boutiqueId'];
+  string userId = 4 [json_name = 'userId'];
+  int32 code = 5 [json_name = 'code'];
+  google.protobuf.Timestamp timestampUTC = 6 [json_name = 'timestampUTC'];
+}
+
+message ApproveDeviceRequest { 
+  weebi.device.Device device = 1 ;
+}

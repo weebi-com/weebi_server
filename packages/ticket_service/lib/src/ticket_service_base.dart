@@ -1,7 +1,17 @@
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
-import 'package:user_service/user_service.dart';
+import 'package:fence_service/fence_service.dart';
+import 'package:protos_weebi/extensions.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
+
+abstract class _Helpers {
+  static SelectorBuilder selectTicket(
+          String firmId, String userId, int ticketNonUniqueId) =>
+      where
+          .eq('firmId', firmId)
+          .eq('userId', userId)
+          .eq('ticketNonUniqueId', ticketNonUniqueId);
+}
 
 class TicketService extends TicketServiceBase {
   final Db _db;
@@ -25,7 +35,7 @@ class TicketService extends TicketServiceBase {
         : call.bearer.userPermission;
     if (!request.ticket.counterfoil.isFirmAndChainAccessible(userPermission)) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.ticket.counterfoil.chainName} ${request.ticket.counterfoil.chainOid} / boutique ${request.ticket.counterfoil.boutiqueName} ${request.ticket.counterfoil.boutiqueOid}');
+          'user cannot access data from chain ${request.ticket.counterfoil.chainName} ${request.ticket.counterfoil.chainId} / boutique ${request.ticket.counterfoil.boutiqueName} ${request.ticket.counterfoil.boutiqueId}');
     }
 
     if (userPermission.ticketRights.rights.any((e) => e == Right.create) ==
@@ -37,11 +47,11 @@ class TicketService extends TicketServiceBase {
     try {
       final ticketMongo = TicketMongo.create()
         ..ticket = request.ticket
-        ..ticketNonUniqueId = request.ticket.id
-        ..boutiqueOid = request.ticket.counterfoil.boutiqueOid
-        ..chainOid = request.ticket.counterfoil.chainOid
-        ..firmOid = userPermission.firmOid
-        ..userOid = userPermission.userOid;
+        ..ticketNonUniqueId = request.ticket.ticketNonUniqueId
+        ..boutiqueId = request.ticket.counterfoil.boutiqueId
+        ..chainId = request.ticket.counterfoil.chainId
+        ..firmId = userPermission.firmId
+        ..userId = userPermission.userId;
 
       final result = await collection
           .insertOne(ticketMongo.toProto3Json() as Map<String, dynamic>);
@@ -49,11 +59,11 @@ class TicketService extends TicketServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final mongoId = result.document!['_id'] as ObjectId;
+        final ticketNonUniqueId = result.document!['ticketNonUniqueId'] as int;
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..message = mongoId.oid
+          ..id = ticketNonUniqueId.toString()
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -88,11 +98,10 @@ class TicketService extends TicketServiceBase {
           'user cannot access data from firm ${request.firmName} or chain ${request.chainName}');
     }
 
+    // the boss and managers can access tickets from several boutiques
     bool isOneBoutiqueFilter = false;
-    if (request.boutiqueOid.isNotEmpty) {
-      if (userPermission.boutiquesAccessible.oids
-              .contains(request.boutiqueOid) ==
-          false) {
+    if (request.boutiqueId.isNotEmpty) {
+      if (userPermission.isBoutiqueAccessible(request.boutiqueId) == false) {
         throw GrpcError.permissionDenied(
             'user cannot access data from boutique ${request.boutiqueName}');
       }
@@ -101,13 +110,13 @@ class TicketService extends TicketServiceBase {
     var selector = SelectorBuilder();
     if (isOneBoutiqueFilter) {
       selector = where
-          .eq('firmOid', userPermission.firmOid)
-          .eq('chainOid', request.chainOid)
-          .eq('boutiqueOid', request.boutiqueOid);
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId)
+          .eq('boutiqueId', request.boutiqueId);
     } else {
       selector = where
-          .eq('firmOid', userPermission.firmOid)
-          .eq('chainOid', request.chainOid);
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId);
     }
     try {
       final list = await collection.find(selector).toList();
@@ -145,14 +154,14 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read tickets');
     }
-    if (request.ticketChainOid.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.ticketChainId) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.ticketChainOid}');
+          'user cannot access data from chain ${request.ticketChainId}');
     }
 
     final selector = where
-        .eq('firmOid', userPermission.firmOid)
-        .eq('chainOid', request.ticketChainOid)
+        .eq('firmId', userPermission.firmId)
+        .eq('chainId', request.ticketChainId)
         .eq('ticketNonUniqueId', request.ticketNonUniqueId);
     try {
       final ticket = await collection.findOne(selector);
@@ -179,22 +188,24 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
     }
-    if (userPermission.boutiquesAccessible.oids
-            .contains(request.ticket.counterfoil.boutiqueOid) ==
-        false) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from boutique ${request.ticket.counterfoil.boutiqueName}');
-    }
     if (userPermission.ticketRights.rights.any((e) => e == Right.update) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to update ticket status');
     }
-    final selector = where
-        .eq('firmOid', request.ticket.counterfoil.firmOid)
-        .eq('chainOid', request.ticket.counterfoil.chainOid)
-        .eq('boutiqueOid', request.ticket.counterfoil.boutiqueOid)
-        .eq('ticketId', request.ticket.id);
+
+    if (userPermission
+            .isBoutiqueAccessible(request.ticket.counterfoil.boutiqueId) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from boutique ${request.ticket.counterfoil.boutiqueName}');
+    }
+    final selector = _Helpers.selectTicket(
+      request.ticket.counterfoil.firmId,
+      request.ticket.counterfoil.userId,
+      request.ticket.ticketNonUniqueId,
+    );
+
     try {
       final result = await collection.updateOne(
         selector,
@@ -207,11 +218,9 @@ class TicketService extends TicketServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1) {
-        // final mongoId = result.document!['_id'] as ObjectId;
-
         return StatusResponse.create()
           ..type = StatusResponse_Type.UPDATED
-          // ..message = mongoId.oid
+          // ..id= mongoid
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -240,8 +249,8 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
     }
-    if (userPermission.boutiquesAccessible.oids
-            .contains(request.ticket.counterfoil.boutiqueOid) ==
+    if (userPermission
+            .isBoutiqueAccessible(request.ticket.counterfoil.boutiqueId) ==
         false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from boutique ${request.ticket.counterfoil.boutiqueName}');
@@ -251,12 +260,8 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete ticket');
     }
-
-    final selector = where
-        .eq('firmOid', request.ticket.counterfoil.firmOid)
-        .eq('chainOid', request.ticket.counterfoil.chainOid)
-        .eq('boutiqueOid', request.ticket.counterfoil.boutiqueOid)
-        .eq('ticketId', request.ticket.id);
+    final selector = _Helpers.selectTicket(request.ticket.counterfoil.firmId,
+        request.ticket.counterfoil.userId, request.ticket.ticketNonUniqueId);
 
     try {
       await collection.deleteOne(selector);

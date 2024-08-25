@@ -12,14 +12,12 @@ dependencies:
   mongo_dart: ^0.10.2
   article_service:
     path: ../../packages/article_service
-  boutique_service:
-    path: ../../packages/boutique_service
   contact_service:
     path: ../../packages/contact_service
   ticket_service:
     path: ../../packages/ticket_service
-  user_service:
-    path: ../../packages/user_service
+  fence_service:
+    path: ../../packages/fence_service
   #
   protos_weebi:
     path: ../../packages/protos/dartlang

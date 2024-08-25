@@ -6,7 +6,7 @@ import 'package:protos_weebi/grpc.dart'
         ChannelOptions,
         CallOptions;
 import 'package:protos_weebi/protos_weebi_io.dart';
-import 'package:user_service/client_interceptors.dart';
+import 'package:fence_service/client_interceptors.dart';
 
 void main(List<String> args) async {
   final channelOptions = ChannelOptions(
@@ -32,7 +32,7 @@ void main(List<String> args) async {
 
   print(appMinVersionResponse.toProto3Json());
 
-  final userStub = UserServiceClient(
+  final userStub = FenceServiceClient(
     channel,
     options: CallOptions(
       timeout: const Duration(seconds: 30),
@@ -40,7 +40,7 @@ void main(List<String> args) async {
     interceptors: interceptors,
   );
 
-  final tokens = await userStub.authenticateWithCredentials(LoginRequest(
+  final tokens = await userStub.authenticateWithCredentials(Credentials(
     mail: 'dev@weebi.com',
     password: '1234',
   ));
@@ -48,7 +48,7 @@ void main(List<String> args) async {
   print('accessToken $accessToken');
 
   // this is simple test, no need for provider / state management mayhem
-  final userStub2 = UserServiceClient(
+  final userStub2 = FenceServiceClient(
     channel,
     options: CallOptions(
       timeout: const Duration(seconds: 30),
@@ -56,8 +56,8 @@ void main(List<String> args) async {
     interceptors: [AuthInterceptor(accessToken), RequestLogInterceptor()],
   );
 
-  final userInfo = await userStub2.readOne(
-      UserOid(oid: '665e12f798357783e8000008'),
+  final userInfo = await userStub2.readOneUser(
+      UserId(userId: '665e12f798357783e8000008'),
       options: CallOptions());
   print(userInfo.toProto3Json());
   await channel.terminate();

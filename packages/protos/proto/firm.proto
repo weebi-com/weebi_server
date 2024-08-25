@@ -2,24 +2,28 @@ syntax = "proto3";
 
 package weebi.firm;
 
-import "boutique_chain.proto";
 import "common/g_timestamp.proto";
-import "common/mongo.proto";
+import "common/g_common.proto";
 
-/// yes one object to delimit all but permissions
 message Firm {
-    weebi.common.mongo.ObjectIdProto _id = 1 [json_name = '_id'];
+    string firmId = 1 [json_name = 'firmId'];
     string name = 2 [json_name = 'name'];
-    repeated weebi.chain.Chain chains = 3 [json_name = 'chains'] ;
-    string subscriptionPlan = 4 [json_name = 'subscriptionPlan'];
-    int32 subscriptionSeats = 5 [json_name = 'subscriptionSeats']; //  1 seat == 1 user/device
-    google.protobuf.Timestamp subscriptionStartTimestampUTC = 6 [json_name = 'subscriptionStartTimestampUTC'];
-    google.protobuf.Timestamp subscriptionEndTimestampUTC = 7 [json_name = 'subscriptionEndTimestampUTC'];
-    bool status = 8 [json_name = 'status'];
-    google.protobuf.Timestamp statusUpdateTimestampUTC = 9 [json_name = 'statusUpdateTimestampUTC']; //if weebi disables date will be in UTC time not local 
-    google.protobuf.Timestamp lastUpdateTimestampUTC = 10 [json_name = 'lastUpdateTimestampUTC'];
-    string lastUpdatedByUserOid = 11 [json_name = 'lastUpdatedByUserOid'];
-    bool isMailVerified = 12 [json_name = 'isMailVerified'];
+    string subscriptionPlan = 3 [json_name = 'subscriptionPlan'];
+    int32 subscriptionSeats =  4 [json_name = 'subscriptionSeats']; //  1 seat == 1 user/device
+    google.protobuf.Timestamp subscriptionStartTimestampUTC =  5 [json_name = 'subscriptionStartTimestampUTC'];
+    google.protobuf.Timestamp subscriptionEndTimestampUTC =  6 [json_name = 'subscriptionEndTimestampUTC'];
+    bool status =  7 [json_name = 'status'];
+    google.protobuf.Timestamp statusUpdateTimestampUTC =  8 [json_name = 'statusUpdateTimestampUTC']; //if weebi disables date will be in UTC time not local 
+    google.protobuf.Timestamp lastUpdateTimestampUTC =  9 [json_name = 'lastUpdateTimestampUTC'];
+    string lastUpdatedByuserId =  10 [json_name = 'lastUpdatedByuserId'];
+    bool isMailVerified =  11 [json_name = 'isMailVerified'];
   }
-  
-  
+
+message CreateFirmRequest {
+  string name = 1 [json_name = 'name'];
+}
+
+message CreateFirmResponse {
+  google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
+  Firm firm = 2 [json_name = 'firm'];
+}

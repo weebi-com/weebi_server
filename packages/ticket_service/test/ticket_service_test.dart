@@ -5,7 +5,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:ticket_service/ticket_service.dart';
 import 'package:models_weebi/models.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
-import 'package:user_service/user_testing.dart';
+import 'package:fence_service/user_testing.dart';
 
 void main() async {
   final db = TestHelper.localDb;
@@ -26,7 +26,7 @@ void main() async {
     ticketService = TicketService(
       db,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission,
+      userPermissionIfTest: Dummy.adminPermission,
     );
     await db.collection(ticketService.collection.collectionName).drop();
     await db.createCollection(ticketService.collection.collectionName);
@@ -62,7 +62,9 @@ void main() async {
       );
     ticketLili.counterfoil = counterfoilDummy;
 
-    final request = TicketRequest(ticket: ticketLili);
+    final request = TicketRequest(
+      ticket: ticketLili,
+    );
     // ignore: unused_local_variable
     final response = await ticketService.updateStatusOne(null, request);
     // expect(response.type, StatusResponse_Type.UPDATED);

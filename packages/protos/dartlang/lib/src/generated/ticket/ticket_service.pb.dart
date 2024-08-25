@@ -17,20 +17,16 @@ import 'ticket.pb.dart' as $14;
 
 class FindTicketRequest extends $pb.GeneratedMessage {
   factory FindTicketRequest({
-    $core.String? firmOid,
-    $core.String? ticketChainOid,
-    $core.String? ticketUserOid,
+    $core.String? ticketChainId,
+    $core.String? ticketUserId,
     $core.int? ticketNonUniqueId,
   }) {
     final $result = create();
-    if (firmOid != null) {
-      $result.firmOid = firmOid;
+    if (ticketChainId != null) {
+      $result.ticketChainId = ticketChainId;
     }
-    if (ticketChainOid != null) {
-      $result.ticketChainOid = ticketChainOid;
-    }
-    if (ticketUserOid != null) {
-      $result.ticketUserOid = ticketUserOid;
+    if (ticketUserId != null) {
+      $result.ticketUserId = ticketUserId;
     }
     if (ticketNonUniqueId != null) {
       $result.ticketNonUniqueId = ticketNonUniqueId;
@@ -42,10 +38,9 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   factory FindTicketRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FindTicketRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'firmOid', protoName: 'firmOid')
-    ..aOS(2, _omitFieldNames ? '' : 'ticketChainOid', protoName: 'ticketChainOid')
-    ..aOS(3, _omitFieldNames ? '' : 'ticketUserOid', protoName: 'ticketUserOid')
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'ticketNonUniqueId', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
+    ..aOS(1, _omitFieldNames ? '' : 'ticketChainId', protoName: 'ticketChainId')
+    ..aOS(2, _omitFieldNames ? '' : 'ticketUserId', protoName: 'ticketUserId')
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'ticketNonUniqueId', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
     ..hasRequiredFields = false
   ;
 
@@ -70,42 +65,34 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   static FindTicketRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FindTicketRequest>(create);
   static FindTicketRequest? _defaultInstance;
 
-  /// weebi.common.mongo.MallAndBoutiqueOids chainAndBoutiqueOids = 1 [json_name = 'mallAndBoutiqueOids'];
+  /// weebi.common.chained_ids.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
+  /// string firmId = 1 [json_name = 'firmId']; deduced from bearer token
   @$pb.TagNumber(1)
-  $core.String get firmOid => $_getSZ(0);
+  $core.String get ticketChainId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set firmOid($core.String v) { $_setString(0, v); }
+  set ticketChainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasFirmOid() => $_has(0);
+  $core.bool hasTicketChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearFirmOid() => clearField(1);
+  void clearTicketChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get ticketChainOid => $_getSZ(1);
+  $core.String get ticketUserId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set ticketChainOid($core.String v) { $_setString(1, v); }
+  set ticketUserId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasTicketChainOid() => $_has(1);
+  $core.bool hasTicketUserId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTicketChainOid() => clearField(2);
+  void clearTicketUserId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get ticketUserOid => $_getSZ(2);
+  $core.int get ticketNonUniqueId => $_getIZ(2);
   @$pb.TagNumber(3)
-  set ticketUserOid($core.String v) { $_setString(2, v); }
+  set ticketNonUniqueId($core.int v) { $_setSignedInt32(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasTicketUserOid() => $_has(2);
+  $core.bool hasTicketNonUniqueId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearTicketUserOid() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.int get ticketNonUniqueId => $_getIZ(3);
-  @$pb.TagNumber(4)
-  set ticketNonUniqueId($core.int v) { $_setSignedInt32(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasTicketNonUniqueId() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearTicketNonUniqueId() => clearField(4);
+  void clearTicketNonUniqueId() => clearField(3);
 }
 
 class TicketRequest extends $pb.GeneratedMessage {
@@ -149,7 +136,7 @@ class TicketRequest extends $pb.GeneratedMessage {
   static TicketRequest? _defaultInstance;
 
   /// / restrict request on a single boutique to ease access verification
-  ///   weebi.common.mongo.MallAndBoutiqueOids chainAndBoutiqueOids = 1 [json_name = 'mallAndBoutiqueOids'];
+  ///   weebi.common.chained_ids.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
   @$pb.TagNumber(2)
   $14.TicketPb get ticket => $_getN(0);
   @$pb.TagNumber(2)

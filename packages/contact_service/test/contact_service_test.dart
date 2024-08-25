@@ -6,14 +6,13 @@ import 'package:models_weebi/models.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:contact_service/contact_service.dart';
-import 'package:user_service/user_testing.dart';
+import 'package:fence_service/user_testing.dart';
 
-// TODO test this again with userOid new process might fail
 void main() async {
   final db = TestHelper.localDb;
   final connection = Connection(ConnectionManager(db));
-  final firmOid = FirmDummy.firm.id;
-  final chainOid = ChainDummy.chain.id;
+  final firmId = Dummy.firm.firmId;
+  final chainId = Dummy.chain.chainId;
   late ContactService contactService;
 
   final contactDummy = ContactPb.create()
@@ -27,7 +26,7 @@ void main() async {
     contactService = ContactService(
       db,
       isTest: true,
-      userPermissionIfTest: UserPrivateDummy.adminPermission,
+      userPermissionIfTest: Dummy.adminPermission,
     );
     await db.collection(contactService.collection.collectionName).drop();
     await db.createCollection(contactService.collection.collectionName);
@@ -39,14 +38,16 @@ void main() async {
   });
 
   test('test insertOne', () async {
-    final contactRequest =
-        ContactRequest(contact: contactDummy, chainOid: chainOid.oid);
+    final contactRequest = ContactRequest(
+        contact: contactDummy,
+        chainId: chainId,
+        contactuserId: Dummy.userInfo.permissions.userId);
     final response = await contactService.createOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.CREATED);
   });
   test('test readAll', () async {
-    final response = await contactService.readAll(null,
-        ReadAllContactsRequest(firmOid: firmOid.oid, chainOid: chainOid.oid));
+    final response = await contactService.readAll(
+        null, ReadAllContactsRequest(firmId: firmId, chainId: chainId));
     expect(response.contacts.length, 1);
   });
 
@@ -54,9 +55,8 @@ void main() async {
     final response = await contactService.readOne(
       null,
       FindContactRequest(
-        firmOid: firmOid.oid,
-        contactChainOid: chainOid.oid,
-        contactUserOid: UserInfoDummy.userInfo.userOid,
+        contactChainId: chainId,
+        contactUserId: Dummy.userInfo.permissions.userId,
         contactNonUniqueId: 1,
       ),
     );
@@ -73,26 +73,32 @@ void main() async {
         lili.toMap(),
         ignoreUnknownFields: true,
       );
-    final contactRequest =
-        ContactRequest(chainOid: chainOid.oid, contact: contactLili);
+    final contactRequest = ContactRequest(
+      chainId: chainId,
+      contact: contactLili,
+      contactuserId: Dummy.userInfo.userId,
+    );
     // ignore: unused_local_variable
     final response = await contactService.replaceOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.UPDATED);
 
     final response2 = await contactService.readAll(
-        null, ReadAllContactsRequest(chainOid: chainOid.oid));
+        null, ReadAllContactsRequest(chainId: chainId));
     print('response2.contacts ${response2.contacts.length}');
     expect(response2.contacts.first.firstName, 'Lili');
   });
 
   test('test deleteOne ', () async {
-    final contactRequest =
-        ContactRequest(chainOid: chainOid.oid, contact: contactDummy);
+    final contactRequest = ContactRequest(
+      chainId: chainId,
+      contact: contactDummy,
+      contactuserId: Dummy.userInfo.userId,
+    );
     // ignore: unused_local_variable
     final response = await contactService.deleteOne(null, contactRequest);
 
     final response2 = await contactService.readAll(
-        null, ReadAllContactsRequest(chainOid: chainOid.oid));
+        null, ReadAllContactsRequest(chainId: chainId));
     expect(response2.contacts.length, 0);
   });
 }

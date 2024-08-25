@@ -1,28 +1,25 @@
-import 'package:user_service/user_service.dart';
-import 'package:user_service/user_testing.dart';
+import 'package:fence_service/fence_service.dart';
+import 'package:fence_service/user_testing.dart';
 
 void main(List<String> args) async {
-  final userPermission = UserPrivateDummy.adminPermission;
+  final userPermission = Dummy.adminPermission;
   var jwt = JsonWebToken();
   final payload = userPermission.toProto3Json() as Map<String, dynamic>?;
   jwt.createPayload(
-    userPermission.userOid,
+    userPermission.userId,
     expireIn: const Duration(days: 999),
     payload: payload,
   );
   jwt.sign();
   final accessToken = jwt.sign();
   jwt = JsonWebToken();
-  // * payload.userOid == userId why ????
+  // * userId is also added in the payload for commodity
   jwt.createPayload(
-    userPermission.userOid,
+    userPermission.userId,
     expireIn: Duration(days: 30),
-    payload: {
-      'userOid': userPermission.userOid,
-      'firmOid': userPermission.firmOid
-    },
+    payload: {'userId': userPermission.userId, 'firmId': userPermission.firmId},
   );
-  // refresh token only contains userOid & firmOid
+  // refresh token only contains userId & firmId
   final resfreshToken = jwt.sign();
   print('accessToken $accessToken');
   print('refreshToken: $resfreshToken');

@@ -23,10 +23,10 @@ use same port (8080)
 
 # dummy data
 // no longer used in unit test since mongodb handles _id
-firmOid = 665e12f798357783e8000000
-chainOid = 665e12f798357783e8000001
-boutiqueOid = 665e12f798357783e8000002
-userOid = chainOid = 665e12f798357783e8000008
+firmId = 665e12f798357783e8000000
+chainId = 665e12f798357783e8000001
+boutiqueId = 665e12f798357783e8000002
+userId = chainId = 665e12f798357783e8000008
 
 
 https://github.com/fullstorydev/grpcurl

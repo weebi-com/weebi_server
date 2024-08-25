@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package weebi.contact.service;
+
+import "contact/contact.proto";
+
+import "common/address.proto";
+import "common/phone.proto";
+import "common/g_common.proto";
+
+message FindContactRequest {
+  // string firmId = 1 [json_name = 'firmId']; // deduced from bearer token
+  string contactChainId = 1 [json_name = 'contactChainId'];
+  string contactUserId = 2 [json_name = 'contactUserId'];
+  int32 contactNonUniqueId = 3 [json_name = 'contactNonUniqueId'];
+  optional string firstName =  4 [json_name = 'firstName'];
+  optional string lastName =  5 [json_name = 'lastName'];
+  optional string mail =  6 [json_name = 'mail'];
+  optional weebi.common.phone.Phone phone =  7 [json_name = 'phone'];
+  optional weebi.common.address.Address address = 8 [json_name = 'addressFull'];
+}
+
+message ReadAllContactsRequest {
+  string firmId = 1 [json_name = 'firmId'];
+  string chainId = 2 [json_name = 'chainId'];;
+}
+
+message ContactRequest {
+  string chainId = 1;
+  string contactuserId = 2;
+  weebi.contact.ContactPb contact = 3;
+}
+
+message ContactsResponse {
+  repeated weebi.contact.ContactPb contacts = 1;
+}
+
+service ContactService {
+  rpc readAll (ReadAllContactsRequest) returns  (ContactsResponse);
+  rpc readOne (FindContactRequest) returns (weebi.contact.ContactPb);
+  rpc createOne (ContactRequest) returns (google.retail.common.StatusResponse);
+  rpc replaceOne (ContactRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOne (ContactRequest) returns (google.retail.common.StatusResponse);
+}

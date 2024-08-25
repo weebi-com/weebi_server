@@ -7,11 +7,10 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/grpc.dart' show Server;
 import 'package:article_service/article_service.dart';
 import 'package:contact_service/contact_service.dart';
-import 'package:boutique_service/boutique_service.dart';
 import 'package:ticket_service/ticket_service.dart';
-import 'package:user_service/user_service.dart';
-// import 'package:user_service/user_testing.dart';
-import 'package:user_service/weebi_app_service.dart';
+import 'package:fence_service/fence_service.dart';
+// import 'package:fence_service/user_testing.dart';
+import 'package:fence_service/weebi_app_service.dart';
 
 void main(List<String> arguments) async {
   Logger.root.level = Level.ALL;
@@ -51,8 +50,7 @@ void main(List<String> arguments) async {
   final articleService = ArticleService(db);
   final contactService = ContactService(db);
   final ticketService = TicketService(db);
-  final firmService = BoutiqueService(db);
-  final userService = UserService(db, firmService);
+  final fenceService = FenceService(db);
   final weebiAppService = WeebiAppService(db);
 
   final server = Server.create(
@@ -60,8 +58,7 @@ void main(List<String> arguments) async {
       articleService,
       contactService,
       ticketService,
-      firmService,
-      userService,
+      fenceService,
       weebiAppService
     ],
     interceptors: interceptors,

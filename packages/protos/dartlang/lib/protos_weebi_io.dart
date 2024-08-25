@@ -1,52 +1,51 @@
 library protos_weebi_io;
 
-export 'package:protos_weebi/src/generated/article.pb.dart';
-export 'package:protos_weebi/src/generated/article.pbenum.dart';
-export 'package:protos_weebi/src/generated/article.pbjson.dart';
+export 'package:protos_weebi/src/generated/article/article.pb.dart';
+export 'package:protos_weebi/src/generated/article/article.pbenum.dart';
+export 'package:protos_weebi/src/generated/article/article.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/article_service.pb.dart';
-export 'package:protos_weebi/src/generated/article_service.pbenum.dart';
-export 'package:protos_weebi/src/generated/article_service.pbgrpc.dart';
-export 'package:protos_weebi/src/generated/article_service.pbjson.dart';
+export 'package:protos_weebi/src/generated/article/article_service.pb.dart';
+export 'package:protos_weebi/src/generated/article/article_service.pbenum.dart';
+export 'package:protos_weebi/src/generated/article/article_service.pbgrpc.dart';
+export 'package:protos_weebi/src/generated/article/article_service.pbjson.dart';
 
 export 'package:protos_weebi/src/generated/boutique.pb.dart';
 export 'package:protos_weebi/src/generated/boutique.pbenum.dart';
 export 'package:protos_weebi/src/generated/boutique.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/boutique_chain.pb.dart';
-export 'package:protos_weebi/src/generated/boutique_chain.pbenum.dart';
-export 'package:protos_weebi/src/generated/boutique_chain.pbjson.dart';
+export 'package:protos_weebi/src/generated/btq_chain.pb.dart';
+export 'package:protos_weebi/src/generated/btq_chain.pbenum.dart';
+export 'package:protos_weebi/src/generated/btq_chain.pbjson.dart';
 
 export 'package:protos_weebi/src/generated/firm.pb.dart';
 export 'package:protos_weebi/src/generated/firm.pbenum.dart';
 export 'package:protos_weebi/src/generated/firm.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/boutique_service.pb.dart';
-export 'package:protos_weebi/src/generated/boutique_service.pbenum.dart';
-export 'package:protos_weebi/src/generated/boutique_service.pbgrpc.dart';
-export 'package:protos_weebi/src/generated/boutique_service.pbjson.dart';
+export 'package:protos_weebi/src/generated/device.pb.dart';
+export 'package:protos_weebi/src/generated/device.pbenum.dart';
+export 'package:protos_weebi/src/generated/device.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/contact.pb.dart';
-export 'package:protos_weebi/src/generated/contact.pbenum.dart';
-export 'package:protos_weebi/src/generated/contact.pbjson.dart';
+export 'package:protos_weebi/src/generated/contact/contact.pb.dart';
+export 'package:protos_weebi/src/generated/contact/contact.pbenum.dart';
+export 'package:protos_weebi/src/generated/contact/contact.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/contact_service.pb.dart';
-export 'package:protos_weebi/src/generated/contact_service.pbenum.dart';
-export 'package:protos_weebi/src/generated/contact_service.pbgrpc.dart';
-export 'package:protos_weebi/src/generated/contact_service.pbjson.dart';
+export 'package:protos_weebi/src/generated/contact/contact_service.pb.dart';
+export 'package:protos_weebi/src/generated/contact/contact_service.pbenum.dart';
+export 'package:protos_weebi/src/generated/contact/contact_service.pbgrpc.dart';
+export 'package:protos_weebi/src/generated/contact/contact_service.pbjson.dart';
 
 export 'package:protos_weebi/src/generated/user.pb.dart';
 export 'package:protos_weebi/src/generated/user.pbenum.dart';
 export 'package:protos_weebi/src/generated/user.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/user_permission.pb.dart';
-export 'package:protos_weebi/src/generated/user_permission.pbenum.dart';
-export 'package:protos_weebi/src/generated/user_permission.pbjson.dart';
+export 'package:protos_weebi/src/generated/user_permissions.pb.dart';
+export 'package:protos_weebi/src/generated/user_permissions.pbenum.dart';
+export 'package:protos_weebi/src/generated/user_permissions.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/user_service.pb.dart';
-export 'package:protos_weebi/src/generated/user_service.pbenum.dart';
-export 'package:protos_weebi/src/generated/user_service.pbgrpc.dart';
-export 'package:protos_weebi/src/generated/user_service.pbjson.dart';
+export 'package:protos_weebi/src/generated/fence_service.pb.dart';
+export 'package:protos_weebi/src/generated/fence_service.pbenum.dart';
+export 'package:protos_weebi/src/generated/fence_service.pbgrpc.dart';
+export 'package:protos_weebi/src/generated/fence_service.pbjson.dart';
 
 export 'package:protos_weebi/src/generated/common/empty.pb.dart';
 export 'package:protos_weebi/src/generated/common/empty.pbenum.dart';
@@ -68,9 +67,9 @@ export 'package:protos_weebi/src/generated/common/phone.pb.dart';
 export 'package:protos_weebi/src/generated/common/phone.pbenum.dart';
 export 'package:protos_weebi/src/generated/common/phone.pbjson.dart';
 
-export 'package:protos_weebi/src/generated/common/mongo.pb.dart';
-export 'package:protos_weebi/src/generated/common/mongo.pbenum.dart';
-export 'package:protos_weebi/src/generated/common/mongo.pbjson.dart';
+export 'package:protos_weebi/src/generated/common/chained_ids.pb.dart';
+export 'package:protos_weebi/src/generated/common/chained_ids.pbenum.dart';
+export 'package:protos_weebi/src/generated/common/chained_ids.pbjson.dart';
 
 export 'package:protos_weebi/src/generated/common/g_common.pb.dart';
 export 'package:protos_weebi/src/generated/common/g_common.pbenum.dart';
