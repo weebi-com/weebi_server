@@ -12,29 +12,50 @@
 
 ## explain chains
 
-A chain is a group of boutiques
-Boutiques in a chain share the same article catalog and contact directory
+A Chain is a group of boutiques
+Boutiques in a chain share the same __article catalog__ and __contact directory__
 A boutique belongs to a single chain
-Users who have permissions over two chains need two devices or will need to download articles and contacts every time
- _______                         _______  
-| Chain1 |        _______        | Chain3|
-| BTQ1   |       | Chain2|       |       |
-| BTQ2   |       | BTQ4  |       |  XXX  |
-| BTQ3   |       | BTQ5  |       |       |
-_________        |_______|       _________
+ _______                          
+| Chain1 |        _______        
+| BTQ1   |       | Chain2|       
+|   Dev1 |       |       |       
+| BTQ2   |       | BTQ4  |       
+|   Dev2 |       |  Dev4 |
+| BTQ3   |       | BTQ5  |       
+|   Dev3 |       |  Dev5 |
+|________|       |_______|       
 
+User 'Lili', being the boss, can access Chain1 and Chain2 and their boutiques
+To create tickets in a boutique she can either : 
+    - Log into a boutique's device (i.e. being physically in the boutique)
+    - Log in the web app and select the chain and the boutique
+
+User 'Michael' is Chain1's manager
+He has permissions over BTQ1, BTQ2 and BTQ3, but not in Boutique4 nor Boutique5
+Like Lili he can create tickets by login to a boutique's device, e.g. go to boutique1 and use device1
+Or using weebi_web
 
 ## explain devices
 
 A device (e.g. android phone) is like a cash register
-It needs to be assigned to a chain because it keeps in local storage :
-articles, contacts and (most) tickets
+It needs to be assigned to a chain __and__ a boutique
 
+Why such constraints ?
+
+First, manipulating the same device for different businesses is very error prone,
+switching boutiques is also error prone
+
+The device (weebi_app) keeps in local storage : articles, contacts and the boutique's tickets
 login in and out of each chains would burn data uselessy redownloading the same things
-manipulating the same device for different businesses is error prone
 
-it can be used by each chain's boutiques
+What about the boutique constraint ?
+1 device == 1 boutique limits edge use cases for the weebi_app
+The PoS app is designed to be used in a single boutique, 
+Changing this behaviour would require rewriting logic around ticket creation
+This constraint also brings more ticket traceability (1 ticket == 1 device)
 
+If the manager / the boss need to create tickets from different boutiques, chains
+They will be able to do it from the web_app, which is designed to handle multiple chains and boutiques
 
 ### Timestamps ?
 
@@ -67,9 +88,9 @@ With permissions set manually at first.
 ### ObjectId vs ids
 
 - Since mongodb does not create _id for nested objects we still need to create ids manually
-- making the case for a simple milliseconds since epoch
-- Besides I did not find a simple way to parse Mongo ObjectId using .mergeFromProto3Json()
-- Which made it clear that using simple id was clearer and as safe for objects such as firm and user 
+- making the case for a simple handmade id, i.e. milliseconds since epoch saved as a string
+- Also I did not find a simple way to parse Mongo ObjectId using .mergeFromProto3Json()
+- Which incentivized me to use my own id based for objects such as firm and user 
 
 ### mongodb mongodart
 stange error message on update "getLastError"

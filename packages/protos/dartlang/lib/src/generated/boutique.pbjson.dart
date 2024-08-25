@@ -30,11 +30,12 @@ const Boutique$json = {
     {'1': 'promo', '3': 11, '4': 1, '5': 1, '10': 'promo'},
     {'1': 'promoStart', '3': 12, '4': 1, '5': 9, '10': 'promoStart'},
     {'1': 'promoEnd', '3': 13, '4': 1, '5': 9, '10': 'promoEnd'},
+    {'1': 'devices', '3': 14, '4': 3, '5': 11, '6': '.weebi.device.Device', '10': 'devices'},
     {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.Boutique.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
   '3': [Boutique_AdditionalAttributesEntry$json],
   '9': [
-    {'1': 14, '2': 99},
+    {'1': 15, '2': 99},
   ],
 };
 
@@ -57,9 +58,10 @@ final $typed_data.Uint8List boutiqueDescriptor = $convert.base64Decode(
     'EhIKBG5hbWUYCCABKAlSBG5hbWUSLwoFcGhvbmUYCSABKAsyGS53ZWViaS5jb21tb24ucGhvbm'
     'UuUGhvbmVSBXBob25lEjsKB2FkZHJlc3MYCiABKAsyHS53ZWViaS5jb21tb24uYWRkcmVzcy5B'
     'ZGRyZXNzUgthZGRyZXNzRnVsbBIUCgVwcm9tbxgLIAEoAVIFcHJvbW8SHgoKcHJvbW9TdGFydB'
-    'gMIAEoCVIKcHJvbW9TdGFydBIaCghwcm9tb0VuZBgNIAEoCVIIcHJvbW9FbmQSaAoVYWRkaXRp'
-    'b25hbF9hdHRyaWJ1dGVzGGMgAygLMjIud2VlYmkuYm91dGlxdWUuQm91dGlxdWUuQWRkaXRpb2'
-    '5hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb25hbF9hdHRyaWJ1dGVzGkcKGUFkZGl0aW9uYWxB'
-    'dHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOg'
-    'I4AUoECA4QYw==');
+    'gMIAEoCVIKcHJvbW9TdGFydBIaCghwcm9tb0VuZBgNIAEoCVIIcHJvbW9FbmQSLgoHZGV2aWNl'
+    'cxgOIAMoCzIULndlZWJpLmRldmljZS5EZXZpY2VSB2RldmljZXMSaAoVYWRkaXRpb25hbF9hdH'
+    'RyaWJ1dGVzGGMgAygLMjIud2VlYmkuYm91dGlxdWUuQm91dGlxdWUuQWRkaXRpb25hbEF0dHJp'
+    'YnV0ZXNFbnRyeVIVYWRkaXRpb25hbF9hdHRyaWJ1dGVzGkcKGUFkZGl0aW9uYWxBdHRyaWJ1dG'
+    'VzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AUoECA8Q'
+    'Yw==');
 

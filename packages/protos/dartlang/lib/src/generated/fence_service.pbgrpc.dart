@@ -20,6 +20,7 @@ import 'btq_chain.pb.dart' as $10;
 import 'common/chained_ids.pb.dart' as $12;
 import 'common/empty.pb.dart' as $0;
 import 'common/g_common.pb.dart' as $1;
+import 'device.pb.dart' as $13;
 import 'fence_service.pb.dart' as $7;
 import 'firm.pb.dart' as $9;
 import 'user.pb.dart' as $6;
@@ -105,10 +106,10 @@ class FenceServiceClient extends $grpc.Client {
       '/weebi.fence.service.FenceService/authenticateWithDevice',
       ($7.DeviceCredentials value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $7.Tokens.fromBuffer(value));
-  static final _$readDevices = $grpc.ClientMethod<$7.ReadDeviceRequest, $10.Devices>(
+  static final _$readDevices = $grpc.ClientMethod<$7.ReadDevicesRequest, $13.Devices>(
       '/weebi.fence.service.FenceService/readDevices',
-      ($7.ReadDeviceRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $10.Devices.fromBuffer(value));
+      ($7.ReadDevicesRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $13.Devices.fromBuffer(value));
   static final _$updateDeviceDefaultPassword = $grpc.ClientMethod<$7.UpdateDevicePasswordRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/updateDeviceDefaultPassword',
       ($7.UpdateDevicePasswordRequest value) => value.writeToBuffer(),
@@ -200,7 +201,7 @@ class FenceServiceClient extends $grpc.Client {
     return $createUnaryCall(_$authenticateWithDevice, request, options: options);
   }
 
-  $grpc.ResponseFuture<$10.Devices> readDevices($7.ReadDeviceRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$13.Devices> readDevices($7.ReadDevicesRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readDevices, request, options: options);
   }
 
@@ -351,13 +352,13 @@ abstract class FenceServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $7.DeviceCredentials.fromBuffer(value),
         ($7.Tokens value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.ReadDeviceRequest, $10.Devices>(
+    $addMethod($grpc.ServiceMethod<$7.ReadDevicesRequest, $13.Devices>(
         'readDevices',
         readDevices_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.ReadDeviceRequest.fromBuffer(value),
-        ($10.Devices value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) => $7.ReadDevicesRequest.fromBuffer(value),
+        ($13.Devices value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$7.UpdateDevicePasswordRequest, $1.StatusResponse>(
         'updateDeviceDefaultPassword',
         updateDeviceDefaultPassword_Pre,
@@ -450,7 +451,7 @@ abstract class FenceServiceBase extends $grpc.Service {
     return authenticateWithDevice(call, await request);
   }
 
-  $async.Future<$10.Devices> readDevices_Pre($grpc.ServiceCall call, $async.Future<$7.ReadDeviceRequest> request) async {
+  $async.Future<$13.Devices> readDevices_Pre($grpc.ServiceCall call, $async.Future<$7.ReadDevicesRequest> request) async {
     return readDevices(call, await request);
   }
 
@@ -481,7 +482,7 @@ abstract class FenceServiceBase extends $grpc.Service {
   $async.Future<$1.StatusResponse> createPendingDevice($grpc.ServiceCall call, $7.PendingDeviceRequest request);
   $async.Future<$1.StatusResponse> approveDevice($grpc.ServiceCall call, $7.ApproveDeviceRequest request);
   $async.Future<$7.Tokens> authenticateWithDevice($grpc.ServiceCall call, $7.DeviceCredentials request);
-  $async.Future<$10.Devices> readDevices($grpc.ServiceCall call, $7.ReadDeviceRequest request);
+  $async.Future<$13.Devices> readDevices($grpc.ServiceCall call, $7.ReadDevicesRequest request);
   $async.Future<$1.StatusResponse> updateDeviceDefaultPassword($grpc.ServiceCall call, $7.UpdateDevicePasswordRequest request);
   $async.Future<$1.StatusResponse> deleteOneDevice($grpc.ServiceCall call, $7.DeleteDeviceRequest request);
 }

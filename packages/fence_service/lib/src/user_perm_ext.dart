@@ -6,31 +6,21 @@ extension UserPermissionsExtension on UserPermissions {
       (fullAccess.hasFullAccess == false ||
           limitedAccess.boutiqueIds.ids.contains(boutiqueId) == false);
 
+  bool isChainAccessible(String chainId) => fullAccess.hasFullAccess == false &&
+          this
+              .limitedAccess
+              .chainIds
+              .ids
+              .none((accessiblechainId) => accessiblechainId == chainId)
+      ? false
+      : true;
+
   bool isFirmAndChainAccessible(String firmId, String chainId) {
     if (this.firmId.isEmpty || this.firmId != firmId) {
       return false;
     }
-    if (fullAccess.hasFullAccess == false &&
-        this
-            .limitedAccess
-            .chainIds
-            .ids
-            .none((accessiblechainId) => accessiblechainId == chainId)) {
-      return false;
-    }
-    return true;
+    return isChainAccessible(chainId);
   }
-}
-
-extension UserPermExt on String {
-  bool isFirmAccessible(UserPermissions userPermission) =>
-      this.isEmpty ? false : this == userPermission.firmId;
-
-  bool isChainAccessible(UserPermissions userPermission) =>
-      userPermission.fullAccess.hasFullAccess
-          ? true
-          : userPermission.limitedAccess.chainIds.ids
-              .any((accessiblechainId) => accessiblechainId == this);
 }
 
 extension UserPermExt2 on ChainIds {

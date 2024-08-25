@@ -6,3 +6,8 @@ message ChainIdAndboutiqueId {
   string chainId = 1;
   string boutiqueId = 2;
 }
+
+message BoutiqueIndexAndDeviceIndex {
+  int32 boutiqueIndex = 1;
+  int32 deviceIndex = 2;
+}

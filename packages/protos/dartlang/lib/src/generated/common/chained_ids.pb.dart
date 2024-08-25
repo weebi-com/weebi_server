@@ -77,6 +77,70 @@ class ChainIdAndboutiqueId extends $pb.GeneratedMessage {
   void clearBoutiqueId() => clearField(2);
 }
 
+class BoutiqueIndexAndDeviceIndex extends $pb.GeneratedMessage {
+  factory BoutiqueIndexAndDeviceIndex({
+    $core.int? boutiqueIndex,
+    $core.int? deviceIndex,
+  }) {
+    final $result = create();
+    if (boutiqueIndex != null) {
+      $result.boutiqueIndex = boutiqueIndex;
+    }
+    if (deviceIndex != null) {
+      $result.deviceIndex = deviceIndex;
+    }
+    return $result;
+  }
+  BoutiqueIndexAndDeviceIndex._() : super();
+  factory BoutiqueIndexAndDeviceIndex.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BoutiqueIndexAndDeviceIndex.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueIndexAndDeviceIndex', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.common.chained_ids'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'boutiqueIndex', $pb.PbFieldType.O3, protoName: 'boutiqueIndex')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'deviceIndex', $pb.PbFieldType.O3, protoName: 'deviceIndex')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BoutiqueIndexAndDeviceIndex clone() => BoutiqueIndexAndDeviceIndex()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BoutiqueIndexAndDeviceIndex copyWith(void Function(BoutiqueIndexAndDeviceIndex) updates) => super.copyWith((message) => updates(message as BoutiqueIndexAndDeviceIndex)) as BoutiqueIndexAndDeviceIndex;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static BoutiqueIndexAndDeviceIndex create() => BoutiqueIndexAndDeviceIndex._();
+  BoutiqueIndexAndDeviceIndex createEmptyInstance() => create();
+  static $pb.PbList<BoutiqueIndexAndDeviceIndex> createRepeated() => $pb.PbList<BoutiqueIndexAndDeviceIndex>();
+  @$core.pragma('dart2js:noInline')
+  static BoutiqueIndexAndDeviceIndex getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BoutiqueIndexAndDeviceIndex>(create);
+  static BoutiqueIndexAndDeviceIndex? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get boutiqueIndex => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set boutiqueIndex($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasBoutiqueIndex() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBoutiqueIndex() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get deviceIndex => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set deviceIndex($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasDeviceIndex() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDeviceIndex() => clearField(2);
+}
+
 
 const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
 const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');

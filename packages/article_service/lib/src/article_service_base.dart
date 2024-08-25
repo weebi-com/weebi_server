@@ -31,7 +31,7 @@ class ArticleService extends ArticleServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
@@ -87,7 +87,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update articles');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
@@ -135,7 +135,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete article');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
@@ -163,7 +163,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read articles');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
@@ -199,7 +199,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read article');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }

@@ -12,7 +12,6 @@ void main() async {
 
   final connection = Connection(ConnectionManager(db));
 
-  late Firm firm;
   late Chain chain;
 
   late FenceService fenceService;
@@ -55,7 +54,6 @@ void main() async {
     expect(response.subscriptionPlan, Dummy.firmNoId.subscriptionPlan);
     expect(
         response.lastUpdateTimestampUTC, Dummy.firmNoId.lastUpdateTimestampUTC);
-    firm = response;
   });
   test('test upsertOneChain', () async {
     final responseReadChains = await fenceService.readAllChains(null, Empty());

@@ -153,14 +153,14 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read tickets');
     }
-    if (request.ticketchainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.ticketChainId) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.ticketchainId}');
+          'user cannot access data from chain ${request.ticketChainId}');
     }
 
     final selector = where
         .eq('firmId', userPermission.firmId)
-        .eq('chainId', request.ticketchainId)
+        .eq('chainId', request.ticketChainId)
         .eq('ticketNonUniqueId', request.ticketNonUniqueId);
     try {
       final ticket = await collection.findOne(selector);

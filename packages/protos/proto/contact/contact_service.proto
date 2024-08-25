@@ -10,8 +10,8 @@ import "common/g_common.proto";
 
 message FindContactRequest {
   // string firmId = 1 [json_name = 'firmId']; // deduced from bearer token
-  string contactchainId = 1 [json_name = 'contactchainId'];
-  string contactuserId = 2 [json_name = 'contactuserId'];
+  string contactChainId = 1 [json_name = 'contactChainId'];
+  string contactUserId = 2 [json_name = 'contactUserId'];
   int32 contactNonUniqueId = 3 [json_name = 'contactNonUniqueId'];
   optional string firstName =  4 [json_name = 'firstName'];
   optional string lastName =  5 [json_name = 'lastName'];

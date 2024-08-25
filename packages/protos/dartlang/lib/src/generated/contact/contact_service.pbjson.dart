@@ -17,8 +17,8 @@ import 'dart:typed_data' as $typed_data;
 const FindContactRequest$json = {
   '1': 'FindContactRequest',
   '2': [
-    {'1': 'contactchainId', '3': 1, '4': 1, '5': 9, '10': 'contactchainId'},
-    {'1': 'contactuserId', '3': 2, '4': 1, '5': 9, '10': 'contactuserId'},
+    {'1': 'contactChainId', '3': 1, '4': 1, '5': 9, '10': 'contactChainId'},
+    {'1': 'contactUserId', '3': 2, '4': 1, '5': 9, '10': 'contactUserId'},
     {'1': 'contactNonUniqueId', '3': 3, '4': 1, '5': 5, '10': 'contactNonUniqueId'},
     {'1': 'firstName', '3': 4, '4': 1, '5': 9, '9': 0, '10': 'firstName', '17': true},
     {'1': 'lastName', '3': 5, '4': 1, '5': 9, '9': 1, '10': 'lastName', '17': true},
@@ -37,8 +37,8 @@ const FindContactRequest$json = {
 
 /// Descriptor for `FindContactRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List findContactRequestDescriptor = $convert.base64Decode(
-    'ChJGaW5kQ29udGFjdFJlcXVlc3QSJgoOY29udGFjdGNoYWluSWQYASABKAlSDmNvbnRhY3RjaG'
-    'FpbklkEiQKDWNvbnRhY3R1c2VySWQYAiABKAlSDWNvbnRhY3R1c2VySWQSLgoSY29udGFjdE5v'
+    'ChJGaW5kQ29udGFjdFJlcXVlc3QSJgoOY29udGFjdENoYWluSWQYASABKAlSDmNvbnRhY3RDaG'
+    'FpbklkEiQKDWNvbnRhY3RVc2VySWQYAiABKAlSDWNvbnRhY3RVc2VySWQSLgoSY29udGFjdE5v'
     'blVuaXF1ZUlkGAMgASgFUhJjb250YWN0Tm9uVW5pcXVlSWQSIQoJZmlyc3ROYW1lGAQgASgJSA'
     'BSCWZpcnN0TmFtZYgBARIfCghsYXN0TmFtZRgFIAEoCUgBUghsYXN0TmFtZYgBARIXCgRtYWls'
     'GAYgASgJSAJSBG1haWyIAQESNAoFcGhvbmUYByABKAsyGS53ZWViaS5jb21tb24ucGhvbmUuUG'

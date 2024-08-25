@@ -21,6 +21,10 @@ export 'package:protos_weebi/src/generated/firm.pb.dart';
 export 'package:protos_weebi/src/generated/firm.pbenum.dart';
 export 'package:protos_weebi/src/generated/firm.pbjson.dart';
 
+export 'package:protos_weebi/src/generated/device.pb.dart';
+export 'package:protos_weebi/src/generated/device.pbenum.dart';
+export 'package:protos_weebi/src/generated/device.pbjson.dart';
+
 export 'package:protos_weebi/src/generated/contact/contact.pb.dart';
 export 'package:protos_weebi/src/generated/contact/contact.pbenum.dart';
 export 'package:protos_weebi/src/generated/contact/contact.pbjson.dart';

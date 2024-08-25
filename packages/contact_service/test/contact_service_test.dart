@@ -55,8 +55,8 @@ void main() async {
     final response = await contactService.readOne(
       null,
       FindContactRequest(
-        contactchainId: chainId,
-        contactuserId: Dummy.userInfo.permissions.userId,
+        contactChainId: chainId,
+        contactUserId: Dummy.userInfo.permissions.userId,
         contactNonUniqueId: 1,
       ),
     );

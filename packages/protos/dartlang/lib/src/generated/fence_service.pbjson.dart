@@ -26,31 +26,31 @@ final $typed_data.Uint8List readAllChainsResponseDescriptor = $convert.base64Dec
     'ChVSZWFkQWxsQ2hhaW5zUmVzcG9uc2USKgoGY2hhaW5zGAEgAygLMhIud2VlYmkuY2hhaW4uQ2'
     'hhaW5SBmNoYWlucw==');
 
-@$core.Deprecated('Use readDeviceRequestDescriptor instead')
-const ReadDeviceRequest$json = {
-  '1': 'ReadDeviceRequest',
+@$core.Deprecated('Use readDevicesRequestDescriptor instead')
+const ReadDevicesRequest$json = {
+  '1': 'ReadDevicesRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
   ],
 };
 
-/// Descriptor for `ReadDeviceRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List readDeviceRequestDescriptor = $convert.base64Decode(
-    'ChFSZWFkRGV2aWNlUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklk');
+/// Descriptor for `ReadDevicesRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readDevicesRequestDescriptor = $convert.base64Decode(
+    'ChJSZWFkRGV2aWNlc1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZA==');
 
 @$core.Deprecated('Use deleteDeviceRequestDescriptor instead')
 const DeleteDeviceRequest$json = {
   '1': 'DeleteDeviceRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'device', '3': 2, '4': 1, '5': 11, '6': '.weebi.chain.Device', '10': 'device'},
+    {'1': 'device', '3': 2, '4': 1, '5': 11, '6': '.weebi.device.Device', '10': 'device'},
   ],
 };
 
 /// Descriptor for `DeleteDeviceRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deleteDeviceRequestDescriptor = $convert.base64Decode(
-    'ChNEZWxldGVEZXZpY2VSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQSKwoGZGV2aW'
-    'NlGAIgASgLMhMud2VlYmkuY2hhaW4uRGV2aWNlUgZkZXZpY2U=');
+    'ChNEZWxldGVEZXZpY2VSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQSLAoGZGV2aW'
+    'NlGAIgASgLMhQud2VlYmkuZGV2aWNlLkRldmljZVIGZGV2aWNl');
 
 @$core.Deprecated('Use mailAndEncyptedPasswordDescriptor instead')
 const MailAndEncyptedPassword$json = {
@@ -114,7 +114,7 @@ const DeviceCredentials$json = {
     {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'boutiqueId', '3': 3, '4': 1, '5': 9, '10': 'boutiqueId'},
-    {'1': 'deviceOid', '3': 4, '4': 1, '5': 9, '10': 'deviceOid'},
+    {'1': 'deviceId', '3': 4, '4': 1, '5': 9, '10': 'deviceId'},
     {'1': 'password', '3': 5, '4': 1, '5': 9, '10': 'password'},
   ],
 };
@@ -122,8 +122,8 @@ const DeviceCredentials$json = {
 /// Descriptor for `DeviceCredentials`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List deviceCredentialsDescriptor = $convert.base64Decode(
     'ChFEZXZpY2VDcmVkZW50aWFscxIWCgZmaXJtSWQYASABKAlSBmZpcm1JZBIYCgdjaGFpbklkGA'
-    'IgASgJUgdjaGFpbklkEh4KCmJvdXRpcXVlSWQYAyABKAlSCmJvdXRpcXVlSWQSHAoJZGV2aWNl'
-    'T2lkGAQgASgJUglkZXZpY2VPaWQSGgoIcGFzc3dvcmQYBSABKAlSCHBhc3N3b3Jk');
+    'IgASgJUgdjaGFpbklkEh4KCmJvdXRpcXVlSWQYAyABKAlSCmJvdXRpcXVlSWQSGgoIZGV2aWNl'
+    'SWQYBCABKAlSCGRldmljZUlkEhoKCHBhc3N3b3JkGAUgASgJUghwYXNzd29yZA==');
 
 @$core.Deprecated('Use refreshTokenDescriptor instead')
 const RefreshToken$json = {
@@ -156,14 +156,14 @@ const UpdateDevicePasswordRequest$json = {
   '1': 'UpdateDevicePasswordRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'device', '3': 2, '4': 1, '5': 11, '6': '.weebi.chain.Device', '10': 'device'},
+    {'1': 'device', '3': 2, '4': 1, '5': 11, '6': '.weebi.device.Device', '10': 'device'},
   ],
 };
 
 /// Descriptor for `UpdateDevicePasswordRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List updateDevicePasswordRequestDescriptor = $convert.base64Decode(
     'ChtVcGRhdGVEZXZpY2VQYXNzd29yZFJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZB'
-    'IrCgZkZXZpY2UYAiABKAsyEy53ZWViaS5jaGFpbi5EZXZpY2VSBmRldmljZQ==');
+    'IsCgZkZXZpY2UYAiABKAsyFC53ZWViaS5kZXZpY2UuRGV2aWNlUgZkZXZpY2U=');
 
 @$core.Deprecated('Use passwordUpdateRequestDescriptor instead')
 const PasswordUpdateRequest$json = {
@@ -183,15 +183,15 @@ final $typed_data.Uint8List passwordUpdateRequestDescriptor = $convert.base64Dec
 const PendingDeviceRequest$json = {
   '1': 'PendingDeviceRequest',
   '2': [
-    {'1': 'device', '3': 1, '4': 1, '5': 11, '6': '.weebi.chain.Device', '10': 'device'},
+    {'1': 'device', '3': 1, '4': 1, '5': 11, '6': '.weebi.device.Device', '10': 'device'},
     {'1': 'code', '3': 2, '4': 1, '5': 5, '10': 'code'},
   ],
 };
 
 /// Descriptor for `PendingDeviceRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List pendingDeviceRequestDescriptor = $convert.base64Decode(
-    'ChRQZW5kaW5nRGV2aWNlUmVxdWVzdBIrCgZkZXZpY2UYASABKAsyEy53ZWViaS5jaGFpbi5EZX'
-    'ZpY2VSBmRldmljZRISCgRjb2RlGAIgASgFUgRjb2Rl');
+    'ChRQZW5kaW5nRGV2aWNlUmVxdWVzdBIsCgZkZXZpY2UYASABKAsyFC53ZWViaS5kZXZpY2UuRG'
+    'V2aWNlUgZkZXZpY2USEgoEY29kZRgCIAEoBVIEY29kZQ==');
 
 @$core.Deprecated('Use devicePairingResponseDescriptor instead')
 const DevicePairingResponse$json = {
@@ -217,15 +217,12 @@ final $typed_data.Uint8List devicePairingResponseDescriptor = $convert.base64Dec
 const ApproveDeviceRequest$json = {
   '1': 'ApproveDeviceRequest',
   '2': [
-    {'1': 'ChainIdAndboutiqueId', '3': 1, '4': 1, '5': 11, '6': '.weebi.common.chained_ids.ChainIdAndboutiqueId', '10': 'ChainIdAndboutiqueId'},
-    {'1': 'device', '3': 2, '4': 1, '5': 11, '6': '.weebi.chain.Device', '10': 'device'},
+    {'1': 'device', '3': 1, '4': 1, '5': 11, '6': '.weebi.device.Device', '10': 'device'},
   ],
 };
 
 /// Descriptor for `ApproveDeviceRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List approveDeviceRequestDescriptor = $convert.base64Decode(
-    'ChRBcHByb3ZlRGV2aWNlUmVxdWVzdBJiChRDaGFpbklkQW5kYm91dGlxdWVJZBgBIAEoCzIuLn'
-    'dlZWJpLmNvbW1vbi5jaGFpbmVkX2lkcy5DaGFpbklkQW5kYm91dGlxdWVJZFIUQ2hhaW5JZEFu'
-    'ZGJvdXRpcXVlSWQSKwoGZGV2aWNlGAIgASgLMhMud2VlYmkuY2hhaW4uRGV2aWNlUgZkZXZpY2'
-    'U=');
+    'ChRBcHByb3ZlRGV2aWNlUmVxdWVzdBIsCgZkZXZpY2UYASABKAsyFC53ZWViaS5kZXZpY2UuRG'
+    'V2aWNlUgZkZXZpY2U=');
 

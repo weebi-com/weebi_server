@@ -379,29 +379,42 @@ class FenceService extends FenceServiceBase {
     if (request.chainId.isEmpty) {
       throw GrpcError.invalidArgument('chainId.isEmpty');
     }
-    if (request.deviceOid.isEmpty) {
-      throw GrpcError.invalidArgument('deviceOid.isEmpty');
+    if (request.deviceId.isEmpty) {
+      throw GrpcError.invalidArgument('deviceId.isEmpty');
     }
     try {
       final chain =
           await _checkOneChainAndProtoIt(request.firmId, request.chainId);
 
       // TODO fetch device from boutique
-      final deviceNullable = chain.devices.firstWhereOrNull((d) =>
-          d.id == request.deviceOid && d.boutiqueId == request.boutiqueId);
-      if (deviceNullable == null) {
+      final boutique = chain.boutiques.firstWhereOrNull((btq) =>
+          btq.boutiqueId == request.boutiqueId &&
+          btq.chainId == request.chainId &&
+          btq.firmId == request.firmId);
+
+      if (boutique == null) {
+        throw GrpcError.notFound(
+            'did not find boutique matching device firmId,chainId,boutiqueId');
+      }
+
+      final device = boutique.devices.firstWhereOrNull((d) =>
+          d.chainId == request.chainId &&
+          d.boutiqueId == request.boutiqueId &&
+          d.deviceId == request.deviceId);
+
+      if (device == null) {
         throw GrpcError.notFound();
       }
-      if (deviceNullable.password != request.password) {
+      if (device.password != request.password) {
         throw GrpcError.invalidArgument('incorrect password');
       }
-      if (deviceNullable.status != true) {
+      if (device.status != true) {
         throw GrpcError.failedPrecondition('deactivated device');
       }
 
-      // now that we know for sure that this device is linked with a boutique
-      // TODO remove below code and simply ready userpermission using deviceId (== userId)
-      final user = await _readUserByUserId(request.deviceOid);
+      // now that we know for sure this device is linked with a boutique
+      // we can load the default cashier user available for this device
+      final user = await _readUserByUserId(request.deviceId);
 
       var jwt = JsonWebToken();
       final payload = user.permissions.toProto3Json() as Map<String, dynamic>?;
@@ -441,7 +454,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to pair device (missing chainRights)');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
@@ -504,9 +517,9 @@ class FenceService extends FenceServiceBase {
   /// authent is not checked since no user is authentified on device
   /// (in packages/fence_service/lib/src/auth_interceptor.dart)
   /// this eases pairing remotely
-  /// it also imposes that a device be paired before anyone can log in, which is structuring
+  /// this means that a device needs to be paired before anyone can log in
   /// the device will still need to be approved by admin on the web (pending)
-  /// thus the risk is very low
+  /// mitigating the risk of a device added without admin consent
   @override
   Future<StatusResponse> createPendingDevice(
       ServiceCall? call, PendingDeviceRequest request) async {
@@ -517,38 +530,32 @@ class FenceService extends FenceServiceBase {
         ..message = 'no match'
         ..timestamp = DateTime.now().timestampProto;
     }
-    // We create the device in the boutique's chain with a false status
     try {
+      // get chain info
       final chain = await _checkOneChainAndProtoIt(
           pairingResp.firmId, pairingResp.chainId);
 
+      final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
+          btq.chainId == request.device.chainId &&
+          btq.boutiqueId == request.device.boutiqueId);
+
+      if (boutiqueIndex == -1) {
+        throw GrpcError.notFound('no boutique found with this device info');
+      }
+      // We create the device in the boutique's chain with a false status
       // admin still need to approve device in case code leaked or else
       request.device.status = false;
       // set the boutiqueId selected by web admin
       request.device.boutiqueId = pairingResp.boutiqueId;
-      request.device.id = DateTime.now().objectIdString;
+      request.device.deviceId = DateTime.now().objectIdString;
 
-      // TODO we will assign the device to a boutique
-      chain.devices.add(request.device);
+      chain.boutiques[boutiqueIndex].devices.add(request.device);
 
-      final result = await userCollection.replaceOne(
-        where
-            .eq('firmId', pairingResp.firmId)
-            .eq('chainId', pairingResp.chainId),
-        chain.toProto3Json() as Map<String, dynamic>,
-        upsert: true,
-      );
-      if (result.hasWriteErrors) {
-        throw GrpcError.internal('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      if (result.ok != 1) {
-        throw GrpcError.unknown(
-            'update != 1 ${result.document} ${result.serverResponses}');
-      }
+      final result = await _updateOneChainDBExec(chain);
 
+      // _cleanPairingCodes
       // delete the already used code
       await pairingCodesCollection.deleteOne(where.eq('code', request.code));
-
       // if 10% of the numbers are attributed
       // clean codes older than 10 days
       final countCodes = await pairingCodesCollection.count();
@@ -559,8 +566,8 @@ class FenceService extends FenceServiceBase {
       }
 
       return StatusResponse()
-        ..type = StatusResponse_Type.UPDATED
-        ..timestamp = DateTime.now().timestampProto;
+        ..type = result.type
+        ..timestamp = result.timestamp;
     } on GrpcError catch (e) {
       print('pairOneDevice error $e');
       rethrow;
@@ -582,59 +589,38 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to pair device (missing chainRights)');
     }
-    if (request.chainIdAndboutiqueId.chainId
-            .isChainAccessible(userPermission) ==
-        false) {
+    if (userPermission.isChainAccessible(request.device.chainId) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainIdAndboutiqueId.chainId}');
+          'user cannot access data from chain ${request.device.chainId}');
     }
-    // TODO here we want to do x2 things
+    // here we do x2 things :
     // 1. create the device in the chain's boutique
     // 2. create the user with the same deviceId
-    try {
-      final chain = await _checkOneChainAndProtoIt(
-          userPermission.firmId, request.chainIdAndboutiqueId.chainId);
+    final chain = await _checkOneChainAndProtoIt(
+        userPermission.firmId, request.device.chainId);
 
-      // TODO boutique instead of chainonly
-      final deviceIndex = chain.devices.indexWhere((d) =>
-          d.id == request.device.id &&
-          d.boutiqueId == request.device.boutiqueId);
-      if (deviceIndex == -1) {
-        throw GrpcError.unknown('no device found');
-      }
-      chain.devices[deviceIndex].status = true;
+    final btqIndexDeviceIndex =
+        chain.boutiqueIndexAndDeviceIndex(request.device);
 
-      final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', chain.firmId).eq('chainId', chain.chainId),
-        chain.toProto3Json() as Map<String, dynamic>,
-        upsert: true,
-      );
-      if (result.hasWriteErrors) {
-        throw GrpcError.internal('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      if (result.ok != 1) {
-        throw GrpcError.unknown(
-            'update != 1 ${result.document} ${result.serverResponses}');
-      }
-    } on GrpcError catch (e) {
-      print('pairOneDevice error $e');
-      rethrow;
-    }
+    chain.boutiques[btqIndexDeviceIndex.boutiqueIndex]
+        .devices[btqIndexDeviceIndex.deviceIndex].status = true;
+
+    await _updateOneChainDBExec(chain);
 
     // create user for simple
-
     return await _createDefaultDeviceCashier(
         userPermission.firmId,
-        request.chainIdAndboutiqueId.chainId,
-        request.chainIdAndboutiqueId.boutiqueId);
+        request.device.chainId,
+        request.device.boutiqueId,
+        request.device.deviceId);
   }
 
   Future<StatusResponse> _createDefaultDeviceCashier(
-      String firmId, String chainId, String boutiqueId) async {
-    String userId = DateTime.now().objectIdString;
+      String firmId, String chainId, String boutiqueId, String deviceId) async {
+    /// we use same value for deviceId and userId, making it easy to track "default cashier users"
     try {
       final permissions = UserPermissions.create()
-        ..userId = userId
+        ..userId = deviceId
         ..limitedAccess = AccessLimited(
             boutiqueIds: BoutiqueIds(ids: [boutiqueId]),
             chainIds: ChainIds(ids: [chainId]))
@@ -646,7 +632,7 @@ class FenceService extends FenceServiceBase {
         // no password for simple cashier
         // since it won't pass password verification cannot use createOneUser so inserting in db below
         ..firmId = firmId
-        ..userId = userId
+        ..userId = deviceId
         ..permissions = permissions;
       final result = await userCollection
           .insertOne(userPrivate.toProto3Json as Map<String, dynamic>);
@@ -686,20 +672,22 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to pair device (missing chainRights)');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    try {
-      final chain = await _checkOneChainAndProtoIt(
-          userPermission.firmId, request.chainId);
-      final deviceIndex =
-          chain.devices.indexWhere((d) => d.id == request.device.id);
-      if (deviceIndex == -1) {
-        throw GrpcError.unavailable('no device found');
-      }
-      chain.devices[deviceIndex].password = request.device.password;
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
+    final boutiqueIndexAndDeviceIndex =
+        chain.boutiqueIndexAndDeviceIndex(request.device);
+
+    chain
+        .boutiques[boutiqueIndexAndDeviceIndex.boutiqueIndex]
+        .devices[boutiqueIndexAndDeviceIndex.deviceIndex]
+        .password = request.device.password;
+
+    try {
       final result = await userCollection.replaceOne(
         where.eq('firmId', chain.firmId).eq('chainid', chain.chainId),
         chain.toProto3Json() as Map<String, dynamic>,
@@ -792,14 +780,6 @@ class FenceService extends FenceServiceBase {
     // set the appropriate ids
 
     final firmId = DateTime.now().objectIdString;
-    final chain =
-        Chain(firmId: firmId, chainId: firmId, name: request.name, boutiques: [
-      Boutique.create()
-        ..firmId = firmId
-        ..chainId = firmId
-        ..boutiqueId = firmId
-        ..name = request.name
-    ]);
 
     final firm = Firm(firmId: firmId, name: request.name);
     try {
@@ -826,7 +806,26 @@ class FenceService extends FenceServiceBase {
           await _updateUserFirmIdAndPermissionsDBExec(
               userPermission.userId, firmId, permissions);
         } on GrpcError catch (e) {
-          print(e);
+          print('createFirm _updateUserFirmIdAndPermissionsDBExec error $e');
+          rethrow;
+        }
+
+        try {
+          final chain = Chain(
+              firmId: firmId,
+              chainId: firmId,
+              name: request.name,
+              boutiques: [
+                Boutique.create()
+                  ..firmId = firmId
+                  ..chainId = firmId
+                  ..boutiqueId = firmId
+                  ..name = request.name
+              ]);
+
+          await _createOneChainDBExec(chain);
+        } on GrpcError catch (e) {
+          print('createFirm _createOneChainDBExec error $e');
           rethrow;
         }
 
@@ -1018,35 +1017,15 @@ class FenceService extends FenceServiceBase {
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
     chain.boutiques.add(request);
-    try {
-      final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', request.firmId).eq('chainId', request.chainId),
-        chain.toProto3Json() as Map<String, dynamic>,
-        upsert: true,
-      );
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      if (result.ok == 1 && result.document != null) {
-        print(result.document.toString());
-        final mongoChainId = result.document!['_id'] as ObjectId;
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.CREATED
-          ..id = mongoChainId.oid
-          ..timestamp = DateTime.now().timestampProto;
-      } else {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.ERROR
-          ..message = 'result.ok != 1 || result.document == null'
-          ..timestamp = DateTime.now().timestampProto;
-      }
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
-      rethrow;
+
+    final result = await _updateOneChainDBExec(chain);
+
+    if (result.type == StatusResponse_Type.UPDATED) {
+      return StatusResponse.create()
+        ..type = StatusResponse_Type.CREATED
+        ..timestamp = DateTime.now().timestampProto;
+    } else {
+      throw GrpcError.unknown('createOneBoutique chainUpdate error $result');
     }
   }
 
@@ -1072,10 +1051,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access firm ${request.firmId}');
     }
+    return await _createOneChainDBExec(request);
+  }
 
+  Future<StatusResponse> _createOneChainDBExec(Chain chain) async {
     try {
       final result = await boutiqueCollection
-          .insertOne(request.toProto3Json() as Map<String, dynamic>);
+          .insertOne(chain.toProto3Json() as Map<String, dynamic>);
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
@@ -1124,39 +1106,16 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from firm ${request.firmId} or chain ${request.chainId}');
     }
 
-    try {
-      final chain =
-          await _checkOneChainAndProtoIt(request.firmId, request.chainId);
-      final boutiqueIndex =
-          chain.boutiques.indexWhere((e) => e.boutiqueId == request.boutiqueId);
-      if (boutiqueIndex == -1) {
-        throw GrpcError.notFound('boutique not found');
-      }
-      chain.boutiques[boutiqueIndex] = request;
-
-      final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', request.firmId).eq('chainId', request.chainId),
-        chain.toProto3Json() as Map<String, dynamic>,
-        upsert: true,
-      );
-      if (result.hasWriteErrors) {
-        throw GrpcError.internal('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      if (result.ok != 1) {
-        throw GrpcError.unknown(
-            'update != 1 ${result.document} ${result.serverResponses}');
-      }
-      return StatusResponse()
-        ..type = StatusResponse_Type.UPDATED
-        ..timestamp = DateTime.now().timestampProto;
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      // the whole stacktrace is heavy
-      print(stacktrace);
-      rethrow;
+    final chain =
+        await _checkOneChainAndProtoIt(request.firmId, request.chainId);
+    final boutiqueIndex =
+        chain.boutiques.indexWhere((e) => e.boutiqueId == request.boutiqueId);
+    if (boutiqueIndex == -1) {
+      throw GrpcError.notFound('boutique not found');
     }
+    chain.boutiques[boutiqueIndex] = request;
+
+    return await _updateOneChainDBExec(chain);
   }
 
   @override
@@ -1181,11 +1140,13 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from firm ${request.firmId} or chain ${request.chainId}');
     }
 
+    return await _updateOneChainDBExec(request);
+  }
+
+  Future<StatusResponse> _updateOneChainDBExec(Chain chain) async {
     try {
-      final chain =
-          await _checkOneChainAndProtoIt(request.firmId, request.chainId);
       final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', request.firmId).eq('chainId', request.chainId),
+        where.eq('firmId', chain.firmId).eq('chainId', chain.chainId),
         chain.toProto3Json() as Map<String, dynamic>,
         upsert: true,
       );
@@ -1222,67 +1183,54 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete device');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    try {
-      final chain = await _checkOneChainAndProtoIt(
-          userPermission.firmId, request.chainId);
-//TODO use boutique here instead
-      final deviceIndex = chain.devices.indexWhere((d) =>
-          d.serialNumber == request.device.serialNumber &&
-          d.boutiqueId == request.device.boutiqueId);
-      if (deviceIndex == -1) {
-        throw GrpcError.unavailable('no device found');
-      }
-      chain.devices.removeAt(deviceIndex);
-      final result = await boutiqueCollection.replaceOne(
-        where
-            .eq('firmId', userPermission.firmId)
-            .eq('chainId', request.chainId),
-        chain.toProto3Json() as Map<String, dynamic>,
-        upsert: true,
-      );
-      if (result.hasWriteErrors) {
-        throw GrpcError.internal('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      if (result.ok != 1) {
-        throw GrpcError.unknown(
-            'update != 1 ${result.document} ${result.serverResponses}');
-      }
-      return StatusResponse()
-        ..type = StatusResponse_Type.DELETED
-        ..timestamp = DateTime.now().timestampProto;
-    } on GrpcError catch (e) {
-      print('delete OneDevice error $e');
-      rethrow;
-    }
+
+    // get Chain
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+    // find the device
+    final btqIndexDeviceIndex =
+        chain.boutiqueIndexAndDeviceIndex(request.device);
+    // remove device
+    chain.boutiques[btqIndexDeviceIndex.boutiqueIndex].devices
+        .removeAt(btqIndexDeviceIndex.deviceIndex);
+    // update chain in db
+
+    return await _updateOneChainDBExec(chain);
   }
 
   @override
   Future<Devices> readDevices(
-      ServiceCall? call, ReadDeviceRequest request) async {
+      ServiceCall? call, ReadDevicesRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    // TODO: device rights are not simple/clear
+
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to read devices');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+
     try {
-      final chain = await _checkOneChainAndProtoIt(
-          userPermission.firmId, request.chainId);
       final devices = <Device>[];
-      for (final device in chain.devices) {
-        devices.add(device);
+      for (final boutique in chain.boutiques) {
+        if (userPermission.isBoutiqueAccessible(boutique.boutiqueId)) {
+          for (final device in boutique.devices) {
+            devices.add(device);
+          }
+        }
       }
       return Devices(devices: devices);
     } on GrpcError catch (e) {

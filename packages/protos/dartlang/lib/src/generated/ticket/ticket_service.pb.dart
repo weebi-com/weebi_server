@@ -13,20 +13,20 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'ticket.pb.dart' as $13;
+import 'ticket.pb.dart' as $14;
 
 class FindTicketRequest extends $pb.GeneratedMessage {
   factory FindTicketRequest({
-    $core.String? ticketchainId,
-    $core.String? ticketuserId,
+    $core.String? ticketChainId,
+    $core.String? ticketUserId,
     $core.int? ticketNonUniqueId,
   }) {
     final $result = create();
-    if (ticketchainId != null) {
-      $result.ticketchainId = ticketchainId;
+    if (ticketChainId != null) {
+      $result.ticketChainId = ticketChainId;
     }
-    if (ticketuserId != null) {
-      $result.ticketuserId = ticketuserId;
+    if (ticketUserId != null) {
+      $result.ticketUserId = ticketUserId;
     }
     if (ticketNonUniqueId != null) {
       $result.ticketNonUniqueId = ticketNonUniqueId;
@@ -38,8 +38,8 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   factory FindTicketRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FindTicketRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'ticketchainId', protoName: 'ticketchainId')
-    ..aOS(2, _omitFieldNames ? '' : 'ticketuserId', protoName: 'ticketuserId')
+    ..aOS(1, _omitFieldNames ? '' : 'ticketChainId', protoName: 'ticketChainId')
+    ..aOS(2, _omitFieldNames ? '' : 'ticketUserId', protoName: 'ticketUserId')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'ticketNonUniqueId', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
     ..hasRequiredFields = false
   ;
@@ -68,22 +68,22 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   /// weebi.common.chained_ids.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
   /// string firmId = 1 [json_name = 'firmId']; deduced from bearer token
   @$pb.TagNumber(1)
-  $core.String get ticketchainId => $_getSZ(0);
+  $core.String get ticketChainId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set ticketchainId($core.String v) { $_setString(0, v); }
+  set ticketChainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasTicketchainId() => $_has(0);
+  $core.bool hasTicketChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTicketchainId() => clearField(1);
+  void clearTicketChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get ticketuserId => $_getSZ(1);
+  $core.String get ticketUserId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set ticketuserId($core.String v) { $_setString(1, v); }
+  set ticketUserId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasTicketuserId() => $_has(1);
+  $core.bool hasTicketUserId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTicketuserId() => clearField(2);
+  void clearTicketUserId() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.int get ticketNonUniqueId => $_getIZ(2);
@@ -97,7 +97,7 @@ class FindTicketRequest extends $pb.GeneratedMessage {
 
 class TicketRequest extends $pb.GeneratedMessage {
   factory TicketRequest({
-    $13.TicketPb? ticket,
+    $14.TicketPb? ticket,
   }) {
     final $result = create();
     if (ticket != null) {
@@ -110,7 +110,7 @@ class TicketRequest extends $pb.GeneratedMessage {
   factory TicketRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
-    ..aOM<$13.TicketPb>(2, _omitFieldNames ? '' : 'ticket', subBuilder: $13.TicketPb.create)
+    ..aOM<$14.TicketPb>(2, _omitFieldNames ? '' : 'ticket', subBuilder: $14.TicketPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -138,20 +138,20 @@ class TicketRequest extends $pb.GeneratedMessage {
   /// / restrict request on a single boutique to ease access verification
   ///   weebi.common.chained_ids.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
   @$pb.TagNumber(2)
-  $13.TicketPb get ticket => $_getN(0);
+  $14.TicketPb get ticket => $_getN(0);
   @$pb.TagNumber(2)
-  set ticket($13.TicketPb v) { setField(2, v); }
+  set ticket($14.TicketPb v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasTicket() => $_has(0);
   @$pb.TagNumber(2)
   void clearTicket() => clearField(2);
   @$pb.TagNumber(2)
-  $13.TicketPb ensureTicket() => $_ensure(0);
+  $14.TicketPb ensureTicket() => $_ensure(0);
 }
 
 class TicketsResponse extends $pb.GeneratedMessage {
   factory TicketsResponse({
-    $core.Iterable<$13.TicketPb>? tickets,
+    $core.Iterable<$14.TicketPb>? tickets,
   }) {
     final $result = create();
     if (tickets != null) {
@@ -164,7 +164,7 @@ class TicketsResponse extends $pb.GeneratedMessage {
   factory TicketsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketsResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
-    ..pc<$13.TicketPb>(1, _omitFieldNames ? '' : 'tickets', $pb.PbFieldType.PM, subBuilder: $13.TicketPb.create)
+    ..pc<$14.TicketPb>(1, _omitFieldNames ? '' : 'tickets', $pb.PbFieldType.PM, subBuilder: $14.TicketPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -190,7 +190,7 @@ class TicketsResponse extends $pb.GeneratedMessage {
   static TicketsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$13.TicketPb> get tickets => $_getList(0);
+  $core.List<$14.TicketPb> get tickets => $_getList(0);
 }
 
 

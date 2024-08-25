@@ -27,3 +27,17 @@ final $typed_data.Uint8List chainIdAndboutiqueIdDescriptor = $convert.base64Deco
     'ChRDaGFpbklkQW5kYm91dGlxdWVJZBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEh4KCmJvdX'
     'RpcXVlSWQYAiABKAlSCmJvdXRpcXVlSWQ=');
 
+@$core.Deprecated('Use boutiqueIndexAndDeviceIndexDescriptor instead')
+const BoutiqueIndexAndDeviceIndex$json = {
+  '1': 'BoutiqueIndexAndDeviceIndex',
+  '2': [
+    {'1': 'boutiqueIndex', '3': 1, '4': 1, '5': 5, '10': 'boutiqueIndex'},
+    {'1': 'deviceIndex', '3': 2, '4': 1, '5': 5, '10': 'deviceIndex'},
+  ],
+};
+
+/// Descriptor for `BoutiqueIndexAndDeviceIndex`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List boutiqueIndexAndDeviceIndexDescriptor = $convert.base64Decode(
+    'ChtCb3V0aXF1ZUluZGV4QW5kRGV2aWNlSW5kZXgSJAoNYm91dGlxdWVJbmRleBgBIAEoBVINYm'
+    '91dGlxdWVJbmRleBIgCgtkZXZpY2VJbmRleBgCIAEoBVILZGV2aWNlSW5kZXg=');
+

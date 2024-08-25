@@ -8,8 +8,8 @@ import "common/g_common.proto";
 message FindTicketRequest {
   // weebi.common.chained_ids.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
   // string firmId = 1 [json_name = 'firmId']; deduced from bearer token
-  string ticketchainId = 1 [json_name = 'ticketchainId'];
-  string ticketuserId = 2 [json_name = 'ticketuserId'];
+  string ticketChainId = 1 [json_name = 'ticketChainId'];
+  string ticketUserId = 2 [json_name = 'ticketUserId'];
   int32 ticketNonUniqueId = 3 [json_name = 'ticketNonUniqueId'];
 }
 

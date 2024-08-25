@@ -10,9 +10,10 @@ import "common/g_timestamp.proto";
 import "user.proto";
 import "user_permissions.proto";
 
-import "boutique.proto";
-import "btq_chain.proto";
 import "firm.proto";
+import "btq_chain.proto";
+import "boutique.proto";
+import "device.proto";
 
 service FenceService {
   rpc signUp(weebi.user.SignUpRequest) returns (weebi.user.SignUpResponse);
@@ -58,7 +59,7 @@ service FenceService {
   // TODO rework DeviceCredentials semantics : no oid please
 
   // Device belong to boutique 
-  rpc readDevices(ReadDeviceRequest) returns (weebi.chain.Devices);
+  rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
   rpc updateDeviceDefaultPassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
   /// weak auth hack to ease app access to cashiers with very low rights
@@ -69,13 +70,13 @@ message ReadAllChainsResponse {
   repeated weebi.chain.Chain chains = 1;
 }
 
-message ReadDeviceRequest {
+message ReadDevicesRequest {
   string chainId = 1;
 }
 
 message DeleteDeviceRequest {
   string chainId = 1; 
-  weebi.chain.Device device = 2 ;
+  weebi.device.Device device = 2 ;
 }
 
 message MailAndEncyptedPassword {
@@ -101,7 +102,7 @@ message DeviceCredentials {
   string firmId = 1 ;
   string chainId = 2 ;
   string boutiqueId = 3;
-  string deviceOid = 4 ; 
+  string deviceId = 4 ; 
   string password = 5 ;
 }
 
@@ -116,7 +117,7 @@ message Tokens {
 
 message UpdateDevicePasswordRequest {
   string chainId = 1; 
-  weebi.chain.Device device = 2 ;
+  weebi.device.Device device = 2 ;
 }
 
 message PasswordUpdateRequest {
@@ -125,7 +126,7 @@ message PasswordUpdateRequest {
 }
 
 message PendingDeviceRequest {
-  weebi.chain.Device device = 1 ;
+  weebi.device.Device device = 1 ;
   int32 code = 2;
 }
 
@@ -138,7 +139,6 @@ message DevicePairingResponse {
   google.protobuf.Timestamp timestampUTC = 6 [json_name = 'timestampUTC'];
 }
 
-message ApproveDeviceRequest {
-  weebi.common.chained_ids.ChainIdAndboutiqueId ChainIdAndboutiqueId = 1; 
-  weebi.chain.Device device = 2 ;
+message ApproveDeviceRequest { 
+  weebi.device.Device device = 1 ;
 }

@@ -35,7 +35,7 @@ class ContactService extends ContactServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
@@ -88,7 +88,7 @@ class ContactService extends ContactServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
@@ -146,7 +146,7 @@ class ContactService extends ContactServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete contact');
     }
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
@@ -171,7 +171,7 @@ class ContactService extends ContactServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.chainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
@@ -206,9 +206,9 @@ class ContactService extends ContactServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.contactchainId.isChainAccessible(userPermission) == false) {
+    if (userPermission.isChainAccessible(request.contactChainId) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.contactchainId}');
+          'user cannot access data from chain ${request.contactChainId}');
     }
 
     if (userPermission.contactRights.rights.any((e) => e == Right.read) ==
@@ -218,8 +218,8 @@ class ContactService extends ContactServiceBase {
     }
     try {
       final selector = where
-          .eq('chainId', request.contactchainId)
-          .eq('userId', request.contactuserId)
+          .eq('chainId', request.contactChainId)
+          .eq('userId', request.contactUserId)
           .eq('contactNonUniqueId', request.contactNonUniqueId);
       // TOBE completed with firstname, lastname and all that jazz
       final contact = await collection.findOne(selector);

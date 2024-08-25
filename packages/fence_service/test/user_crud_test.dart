@@ -1,7 +1,3 @@
-// import 'dart:io';
-
-import 'dart:math';
-
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/user_testing.dart';
 

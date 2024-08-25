@@ -14,15 +14,17 @@ abstract class Dummy {
     ..code = 'code'
     ..country = Country(code2Letters: 'fr');
 
-  static final boutiqueNoId = Boutique.create()
-    ..address = Dummy.address
-    ..name = 'dummy boutique'
-    ..phone = Phone(countryCode: 33, number: '773116767');
+  static final boutiqueNoId = Boutique(
+    address: Dummy.address,
+    name: 'dummy boutique',
+    phone: Phone(countryCode: 33, number: '773116767'),
+    devices: <Device>[Dummy.device],
+  );
 
   static final boutique = boutiqueNoId..boutiqueId = '665e12f798357783e8000002';
 
   static final device = Device()
-    ..id = '665e12f798357783e8000009'
+    ..deviceId = '665e12f798357783e8000009'
     ..name = 'dummy device'
     ..serialNumber = 'unique';
 
@@ -32,7 +34,6 @@ abstract class Dummy {
 
   static final chainNoId = Chain(
     boutiques: <Boutique>[Dummy.boutique],
-    devices: <Device>[Dummy.device],
   );
   static final chain = chainNoId..chainId = '665e12f798357783e8000001',
       firmId = '665e12f798357783e8000000';
