@@ -36,7 +36,7 @@ abstract class Dummy {
     boutiques: <Boutique>[Dummy.boutique],
   );
   static final chain = chainNoId..chainId = '665e12f798357783e8000001',
-      firmId = '665e12f798357783e8000000';
+      firmId = '123456789';
 
   static final firmNoId = Firm(
     name: 'firmDummy',
@@ -50,20 +50,22 @@ abstract class Dummy {
     lastUpdatedByuserId: '1',
   );
 
-  static final firm = firmNoId..firmId = '665e12f798357783e8000000';
+  static final firm = firmNoId..firmId = '123456789';
 
   static final userInfo = UserPublic(
     mail: 'dev@weebi.com',
     firstname: 'dev',
     lastname: 'tester',
-    userId: '665e12f798357783e8000008',
+    userId: '987654321',
     phone: Phone(countryCode: 33, number: '145711299'),
     permissions: adminPermission
-      ..firmId = '665e12f798357783e8000000'
-      ..userId = '665e12f798357783e8000008',
+      ..firmId = '123456789'
+      ..userId = '987654321',
   );
 
   static final adminPermission = UserPermissions.create()
+    ..firmId = '123456789'
+    ..userId = '987654321'
     ..articleRights = RightsAdmin.article
     ..boutiqueRights = RightsAdmin.boutique
     ..contactRights = RightsAdmin.contact
@@ -75,9 +77,6 @@ abstract class Dummy {
     ..billingRights = RightsAdmin.billing
     ..fullAccess = AccessFull(hasFullAccess: true);
 
-  /// hardcoded ids will not work with tests with mongodb
-  /// since the _ids logic is handled by mongodb
-  /// this permission will be cloned without ids
   static final salesPersonPermissionNoId = UserPermissions.create()
     ..articleRights = RightSalesperson.article
     ..boutiqueRights = RightSalesperson.boutique
@@ -90,6 +89,6 @@ abstract class Dummy {
     );
 
   static final salesPersonPermission = salesPersonPermissionNoId
-    ..userId = '665e12f798357783e8000008'
+    ..userId = '987654321'
     ..firmId = userInfo.permissions.firmId;
 }

@@ -62,9 +62,17 @@ class FenceServiceClient extends $grpc.Client {
       '/weebi.fence.service.FenceService/readOneUser',
       ($7.UserId value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $6.UserPublic.fromBuffer(value));
+  static final _$readAllUsers = $grpc.ClientMethod<$0.Empty, $7.UsersPublic>(
+      '/weebi.fence.service.FenceService/readAllUsers',
+      ($0.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $7.UsersPublic.fromBuffer(value));
   static final _$updateOneUser = $grpc.ClientMethod<$6.UserPublic, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/updateOneUser',
       ($6.UserPublic value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$updateUserPassword = $grpc.ClientMethod<$7.PasswordUpdateRequest, $1.StatusResponse>(
+      '/weebi.fence.service.FenceService/updateUserPassword',
+      ($7.PasswordUpdateRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
   static final _$deleteOneUser = $grpc.ClientMethod<$7.UserId, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/deleteOneUser',
@@ -157,8 +165,16 @@ class FenceServiceClient extends $grpc.Client {
     return $createUnaryCall(_$readOneUser, request, options: options);
   }
 
+  $grpc.ResponseFuture<$7.UsersPublic> readAllUsers($0.Empty request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$readAllUsers, request, options: options);
+  }
+
   $grpc.ResponseFuture<$1.StatusResponse> updateOneUser($6.UserPublic request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateOneUser, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.StatusResponse> updateUserPassword($7.PasswordUpdateRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateUserPassword, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.StatusResponse> deleteOneUser($7.UserId request, {$grpc.CallOptions? options}) {
@@ -275,12 +291,26 @@ abstract class FenceServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $7.UserId.fromBuffer(value),
         ($6.UserPublic value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $7.UsersPublic>(
+        'readAllUsers',
+        readAllUsers_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($7.UsersPublic value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$6.UserPublic, $1.StatusResponse>(
         'updateOneUser',
         updateOneUser_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $6.UserPublic.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$7.PasswordUpdateRequest, $1.StatusResponse>(
+        'updateUserPassword',
+        updateUserPassword_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $7.PasswordUpdateRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$7.UserId, $1.StatusResponse>(
         'deleteOneUser',
@@ -407,8 +437,16 @@ abstract class FenceServiceBase extends $grpc.Service {
     return readOneUser(call, await request);
   }
 
+  $async.Future<$7.UsersPublic> readAllUsers_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+    return readAllUsers(call, await request);
+  }
+
   $async.Future<$1.StatusResponse> updateOneUser_Pre($grpc.ServiceCall call, $async.Future<$6.UserPublic> request) async {
     return updateOneUser(call, await request);
+  }
+
+  $async.Future<$1.StatusResponse> updateUserPassword_Pre($grpc.ServiceCall call, $async.Future<$7.PasswordUpdateRequest> request) async {
+    return updateUserPassword(call, await request);
   }
 
   $async.Future<$1.StatusResponse> deleteOneUser_Pre($grpc.ServiceCall call, $async.Future<$7.UserId> request) async {
@@ -471,7 +509,9 @@ abstract class FenceServiceBase extends $grpc.Service {
   $async.Future<$9.Firm> readOneFirm($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$6.PendingUserResponse> createPendingUser($grpc.ServiceCall call, $6.PendingUserRequest request);
   $async.Future<$6.UserPublic> readOneUser($grpc.ServiceCall call, $7.UserId request);
+  $async.Future<$7.UsersPublic> readAllUsers($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$1.StatusResponse> updateOneUser($grpc.ServiceCall call, $6.UserPublic request);
+  $async.Future<$1.StatusResponse> updateUserPassword($grpc.ServiceCall call, $7.PasswordUpdateRequest request);
   $async.Future<$1.StatusResponse> deleteOneUser($grpc.ServiceCall call, $7.UserId request);
   $async.Future<$1.StatusResponse> createOneChain($grpc.ServiceCall call, $10.Chain request);
   $async.Future<$7.ReadAllChainsResponse> readAllChains($grpc.ServiceCall call, $0.Empty request);

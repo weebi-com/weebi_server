@@ -20,15 +20,20 @@ void main() async {
 
     await db.createCollection(fenceService.userCollection.collectionName);
     await db.createCollection(fenceService.boutiqueCollection.collectionName);
+    await db.createCollection(fenceService.firmCollection.collectionName);
   });
 
   tearDownAll(() async {
     await db.collection(fenceService.userCollection.collectionName).drop();
     await db.collection(fenceService.boutiqueCollection.collectionName).drop();
+    await db.collection(fenceService.firmCollection.collectionName).drop();
     await connection.close();
   });
 
-  test('signup', () async {
+  test('''signup createFirm 
+      createPendingUser and then have user signup and authent
+      let user signup and then createPendingUser and then have user authent
+      ''', () async {
     // boss signs up
     final response = await fenceService.signUp(
       null,
@@ -68,19 +73,19 @@ void main() async {
     final tokensBoss2 = await fenceService.authenticateWithRefreshToken(
         null, RefreshToken(refreshToken: tokensBoss.refreshToken));
 
-    final permissions2 = await fenceService.readUserPermissionsByToken(
+    final liliPermissions2 = await fenceService.readUserPermissionsByToken(
         ServiceCallTest(tokensBoss2.accessToken), Empty());
 
-    expect(permissions2.firmRights.rights.length, 3);
-    expect(permissions2.firmRights.rights.contains(Right.create), isFalse);
-    expect(permissions2.firmId, createFirmResponse.firm.firmId);
+    expect(liliPermissions2.firmRights.rights.length, 3);
+    expect(liliPermissions2.firmRights.rights.contains(Right.create), isFalse);
+    expect(liliPermissions2.firmId, createFirmResponse.firm.firmId);
 
     // boss creates alice
     final alice = await fenceService.createPendingUser(
       ServiceCallTest(tokensBoss2.accessToken),
       PendingUserRequest(
           mail: 'alice@weebi.com',
-          firstname: 'alice',
+          firstname: 'Alice',
           lastname: 'nonyabusiness',
           phone: Phone(countryCode: 1, number: '123456789'),
           permissions: Dummy.salesPersonPermissionNoId
@@ -89,7 +94,7 @@ void main() async {
     );
 
     expect(alice.statusResponse.type, StatusResponse_Type.CREATED);
-    expect(alice.userPublic.firstname, 'alice');
+    expect(alice.userPublic.firstname, 'Alice');
     expect(alice.userPublic.mail, 'alice@weebi.com');
     expect(alice.userPublic.phone.countryCode, 1);
     expect(alice.userPublic.phone.number, '123456789');
@@ -147,7 +152,7 @@ void main() async {
     expect(bossCreateJohnResponse.userPublic.permissions.userId,
         johnSignUp.userId);
 
-    // john logins with the appropriate access and rights
+    // john logs-in with the appropriate access and rights
     final johnToken = await fenceService.authenticateWithCredentials(null,
         Credentials(mail: 'john@weebi.com', password: 'iDontMindWaiting'));
 
@@ -158,5 +163,47 @@ void main() async {
     expect(johnPermission.firmId, createFirmResponse.firm.firmId);
     expect(johnPermission.articleRights,
         Dummy.salesPersonPermissionNoId.articleRights);
+
+    // Alice tries to authent with wrong password
+    try {
+      await fenceService.authenticateWithCredentials(
+          null, Credentials(mail: 'alice@weebi.com', password: 'ILostIt!!'));
+    } on GrpcError catch (e) {
+      expect(e.message, 'incorrect password');
+      expect(e.code, 3);
+    }
+
+    //  Alice lost her password and asks Lili the boss to reset it
+    // Lili first readAllUsers
+    final allUsers = await fenceService.readAllUsers(
+        ServiceCallTest(tokensBoss2.accessToken), Empty());
+
+    // Lili does not need to look very far!
+    expect(allUsers.users.length, 2);
+    final aliceUser = allUsers.users.firstWhere((u) => u.firstname == 'Alice');
+
+    final passwordUpdaeResponse = await fenceService.updateUserPassword(
+        ServiceCallTest(tokensBoss2.accessToken),
+        PasswordUpdateRequest(
+            userId: aliceUser.userId,
+            firmId: liliPermissions2.firmId,
+            password: 'alice2024'));
+    expect(passwordUpdaeResponse.type, StatusResponse_Type.UPDATED);
+
+    // Alice authents with new password
+
+    final aliceToken2 = await fenceService.authenticateWithCredentials(
+        null, Credentials(mail: 'alice@weebi.com', password: 'alice2024'));
+
+    expect(aliceToken2.accessToken.isNotEmpty, isTrue);
+
+    // A couple days later Alice forgot her password again
+    // Lili is fed up with Alice, fires her and deletes her account
+
+    final deleteUserResponse = await fenceService.deleteOneUser(
+        ServiceCallTest(tokensBoss2.accessToken),
+        UserId(userId: aliceUser.userId));
+
+    expect(deleteUserResponse.type, StatusResponse_Type.DELETED);
   });
 }

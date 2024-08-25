@@ -2,25 +2,21 @@ import 'package:collection/collection.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 extension UserPermissionsExtension on UserPermissions {
-  bool isBoutiqueAccessible(String boutiqueId) =>
-      (fullAccess.hasFullAccess == false ||
-          limitedAccess.boutiqueIds.ids.contains(boutiqueId) == false);
+  bool isFirmAccessible(String firmId) =>
+      firmId.isEmpty || this.firmId != firmId ? false : true;
+
+  bool isFirmAndChainAccessible(String firmId, String chainId) =>
+      isFirmAccessible(firmId) ? isChainAccessible(chainId) : false;
 
   bool isChainAccessible(String chainId) => fullAccess.hasFullAccess == false &&
-          this
-              .limitedAccess
-              .chainIds
-              .ids
+          limitedAccess.chainIds.ids
               .none((accessiblechainId) => accessiblechainId == chainId)
       ? false
       : true;
 
-  bool isFirmAndChainAccessible(String firmId, String chainId) {
-    if (this.firmId.isEmpty || this.firmId != firmId) {
-      return false;
-    }
-    return isChainAccessible(chainId);
-  }
+  bool isBoutiqueAccessible(String boutiqueId) =>
+      (fullAccess.hasFullAccess == false ||
+          limitedAccess.boutiqueIds.ids.contains(boutiqueId) == false);
 }
 
 extension UserPermExt2 on ChainIds {

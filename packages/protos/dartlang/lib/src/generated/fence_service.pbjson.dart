@@ -13,6 +13,19 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use usersPublicDescriptor instead')
+const UsersPublic$json = {
+  '1': 'UsersPublic',
+  '2': [
+    {'1': 'users', '3': 1, '4': 3, '5': 11, '6': '.weebi.user.UserPublic', '10': 'users'},
+  ],
+};
+
+/// Descriptor for `UsersPublic`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List usersPublicDescriptor = $convert.base64Decode(
+    'CgtVc2Vyc1B1YmxpYxIsCgV1c2VycxgBIAMoCzIWLndlZWJpLnVzZXIuVXNlclB1YmxpY1IFdX'
+    'NlcnM=');
+
 @$core.Deprecated('Use readAllChainsResponseDescriptor instead')
 const ReadAllChainsResponse$json = {
   '1': 'ReadAllChainsResponse',
@@ -171,13 +184,14 @@ const PasswordUpdateRequest$json = {
   '2': [
     {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'password', '3': 3, '4': 1, '5': 9, '10': 'password'},
   ],
 };
 
 /// Descriptor for `PasswordUpdateRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List passwordUpdateRequestDescriptor = $convert.base64Decode(
     'ChVQYXNzd29yZFVwZGF0ZVJlcXVlc3QSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQSFgoGZmlybU'
-    'lkGAIgASgJUgZmaXJtSWQ=');
+    'lkGAIgASgJUgZmaXJtSWQSGgoIcGFzc3dvcmQYAyABKAlSCHBhc3N3b3Jk');
 
 @$core.Deprecated('Use pendingDeviceRequestDescriptor instead')
 const PendingDeviceRequest$json = {

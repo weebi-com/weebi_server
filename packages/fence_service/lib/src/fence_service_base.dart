@@ -12,11 +12,6 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:fence_service/fence_service.dart';
 
-// TODO : create updateUserPassword rpc admins only
-
-// TODO : sortir chain de firm pour + de sécurité
-// TODO : déplacer le device dans la boutique pour plus de lisibilité
-
 class FenceService extends FenceServiceBase {
   // ignore: unused_field
   final Db _db;
@@ -73,7 +68,7 @@ class FenceService extends FenceServiceBase {
             statusResponse: status, userPublic: userPublic);
       } else {
         // user signed it at least once
-        throw GrpcError.failedPrecondition('mail is alreadyUsed');
+        throw GrpcError.invalidArgument('mail is alreadyUsed');
       }
     }
 
@@ -131,7 +126,7 @@ class FenceService extends FenceServiceBase {
   Future<Tokens> authenticateWithCredentials(
       ServiceCall? call, Credentials request) async {
     try {
-      final mailAndEncyptedPassword = await _checkCredentials(request);
+      final mailAndEncyptedPassword = _checkCredentials(request);
 
       // * here we will eventually check the subscription validity (1 month free or paid sub)
 
@@ -157,7 +152,7 @@ class FenceService extends FenceServiceBase {
       );
       // refresh token only contains userId & firmId
       final resfreshToken = jwt.sign();
-      await _updateUserLastSignIn;
+      _updateUserLastSignIn;
       return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
     } on GrpcError catch (e) {
       log('authenticate error $e');
@@ -176,7 +171,7 @@ class FenceService extends FenceServiceBase {
       );
     } catch (e) {
       log('eroor $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -199,7 +194,7 @@ class FenceService extends FenceServiceBase {
 
   String _checkAndEncryptPassword(String password) {
     if (password.isEmpty || password.length < 3) {
-      throw GrpcError.failedPrecondition('password is a bit too short');
+      throw GrpcError.invalidArgument('password is a bit too short');
     }
     return Encrypter(password).encrypted;
   }
@@ -248,7 +243,6 @@ class FenceService extends FenceServiceBase {
     try {
       final userPrivate = await userCollection.findOne(
         where.eq('userId', userId),
-        // .eq('firmId', firmId).
       );
       if (userPrivate == null) {
         throw GrpcError.notFound('userId $userId');
@@ -311,10 +305,10 @@ class FenceService extends FenceServiceBase {
   Future<StatusResponse> updateOneUser(
       ServiceCall? call, UserPublic request) async {
     if (request.userId.isEmpty) {
-      throw GrpcError.failedPrecondition('userId cannot be empty');
+      throw GrpcError.invalidArgument('userId cannot be empty');
     }
     if (request.userId != request.permissions.userId) {
-      throw GrpcError.failedPrecondition(
+      throw GrpcError.invalidArgument(
           'request.userId != user.permissions.userId');
     }
     _db.isConnected ? null : await _db.open();
@@ -354,12 +348,10 @@ class FenceService extends FenceServiceBase {
       if (userMongo == null) {
         throw GrpcError.notFound('user not found');
       }
-      final user = UserPrivate()
-        ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
+
+      // password will not be passed because does not exist in Userpublic
       final userInfo = UserPublic.create()
-        ..firstname = user.firstname
-        ..lastname = user.lastname
-        ..mail = user.mail;
+        ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
       return userInfo;
     } on GrpcError catch (e) {
       print('readOne error $e');
@@ -410,7 +402,7 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.invalidArgument('incorrect password');
       }
       if (device.status != true) {
-        throw GrpcError.failedPrecondition('deactivated device');
+        throw GrpcError.invalidArgument('deactivated device');
       }
 
       // now that we know for sure this device is linked with a boutique
@@ -714,7 +706,7 @@ class FenceService extends FenceServiceBase {
   Future<StatusResponse> deleteOneUser(
       ServiceCall? call, UserId request) async {
     if (request.userId.isEmpty) {
-      throw GrpcError.failedPrecondition('user oid cannot be empty');
+      throw GrpcError.invalidArgument('user oid cannot be empty');
     }
     _db.isConnected ? null : await _db.open();
     final userPermission = isMock
@@ -881,7 +873,7 @@ class FenceService extends FenceServiceBase {
 
   Future<StatusResponse> _updateUserDBExec(UserPublic user) async {
     try {
-      final result = await userCollection.update(
+      await userCollection.update(
         where.eq('userId', user.userId),
         ModifierBuilder()
             .set('firstname', user.firstname)
@@ -891,7 +883,6 @@ class FenceService extends FenceServiceBase {
             .set('permissions',
                 user.permissions.toProto3Json() as Map<String, dynamic>),
       );
-      print('_updateUserDBExec result $result');
       return StatusResponse()
         ..type = StatusResponse_Type.UPDATED
         ..timestamp = DateTime.now().timestampProto;
@@ -946,7 +937,7 @@ class FenceService extends FenceServiceBase {
           .find(where.eq('firmId', userPermissions.firmId))
           .toList();
       if (chainsMongo.isEmpty) {
-        throw GrpcError.notFound('chain(s) not found');
+        return [];
       }
       final chains = <Chain>[];
       for (final chainMongo in chainsMongo) {
@@ -1030,7 +1021,7 @@ class FenceService extends FenceServiceBase {
     }
   }
 
-  /// the client will need to provide firmId
+  // TODO : update response so client knows the chainId
   @override
   Future<StatusResponse> createOneChain(
       ServiceCall? call, Chain request) async {
@@ -1046,7 +1037,7 @@ class FenceService extends FenceServiceBase {
     }
 
     if (request.firmId.isEmpty) {
-      throw GrpcError.failedPrecondition('request.firmId cannot be empty');
+      throw GrpcError.invalidArgument('request.firmId cannot be empty');
     }
     if (request.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied(
@@ -1089,7 +1080,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, Boutique request) async {
     _db.isConnected ? null : await _db.open();
     if (request.boutiqueId.isEmpty) {
-      throw GrpcError.failedPrecondition('boutique id cannot be empty');
+      throw GrpcError.invalidArgument('boutique id cannot be empty');
     }
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -1127,7 +1118,7 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
     if (request.chainId.isEmpty) {
-      throw GrpcError.failedPrecondition('chain id cannot be empty');
+      throw GrpcError.invalidArgument('chain id cannot be empty');
     }
     if (userPermission.chainRights.rights.any((e) => e == Right.update) ==
         false) {
@@ -1214,7 +1205,7 @@ class FenceService extends FenceServiceBase {
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user does not have right to read devices');
+          'user does not have right to read boutiques/devices');
     }
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
@@ -1254,7 +1245,7 @@ class FenceService extends FenceServiceBase {
             user, mailAndEncyptedPassword.passwordEncrypted);
       } else {
         // user signed it at least once
-        throw GrpcError.failedPrecondition('mail is not available');
+        throw GrpcError.invalidArgument('mail is not available');
       }
     }
     try {
@@ -1308,7 +1299,7 @@ class FenceService extends FenceServiceBase {
       }
     } catch (e) {
       log('isMailAlreadyUsed $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -1335,7 +1326,7 @@ class FenceService extends FenceServiceBase {
           userId: user.userId);
     } catch (e) {
       log('error $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -1354,5 +1345,82 @@ class FenceService extends FenceServiceBase {
 
     final chains = await _checkChainsAndProtoThem(userPermission);
     return ReadAllChainsResponse(chains: chains);
+  }
+
+  @override
+  Future<StatusResponse> updateUserPassword(
+      ServiceCall? call, PasswordUpdateRequest request) async {
+    if (request.firmId.isEmpty ||
+        request.userId.isEmpty ||
+        request.password.isEmpty) {
+      throw GrpcError.invalidArgument(
+          'firmId / userId / password cannot be empty');
+    }
+
+    _db.isConnected ? null : await _db.open();
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermission;
+
+    if (userPermission.userManagementRights.rights
+            .any((e) => e == Right.update) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to update user');
+    }
+    if (userPermission.isFirmAccessible(request.firmId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from firm ${request.firmId}');
+    }
+
+    final passwordEncrypted = _checkAndEncryptPassword(request.password);
+
+    try {
+      await userCollection.update(
+          where.eq('firmId', request.firmId).eq('userId', request.userId),
+          ModifierBuilder().set('password', passwordEncrypted));
+      return StatusResponse()
+        ..type = StatusResponse_Type.UPDATED
+        ..timestamp = DateTime.now().timestampProto;
+    } on GrpcError catch (e) {
+      print(e);
+      rethrow;
+    } catch (e, stacktrace) {
+      // the whole stacktrace is heavy
+      print(stacktrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<UsersPublic> readAllUsers(ServiceCall call, Empty request) async {
+    _db.isConnected ? null : await _db.open();
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermission;
+
+    if (userPermission.userManagementRights.rights
+            .any((e) => e == Right.read) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to read users');
+    }
+    try {
+      final usersMongo = await userCollection
+          .find(where.eq('firmId', userPermission.firmId))
+          .toList();
+      if (usersMongo.isEmpty) {
+        return UsersPublic(users: []);
+      }
+      final users = <UserPublic>[];
+      for (final userMongo in usersMongo) {
+        users.add(UserPublic.create()
+          ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true));
+      }
+      return UsersPublic(users: users);
+    } on GrpcError catch (e) {
+      print('readOne error $e');
+      rethrow;
+    }
   }
 }

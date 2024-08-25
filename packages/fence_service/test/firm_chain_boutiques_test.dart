@@ -26,23 +26,20 @@ void main() async {
     await db.collection(fenceService.boutiqueCollection.collectionName).drop();
     await db.collection(fenceService.userCollection.collectionName).drop();
     await db.createCollection(fenceService.boutiqueCollection.collectionName);
+    await db.createCollection(fenceService.firmCollection.collectionName);
+    // firm cannot be created with admin permission so i do it manually below
+    final dd = await db
+        .collection(fenceService.firmCollection.collectionName)
+        .insertOne(Dummy.firm.toProto3Json() as Map<String, dynamic>);
   });
 
   tearDownAll(() async {
     await db.collection(fenceService.boutiqueCollection.collectionName).drop();
     await db.collection(fenceService.userCollection.collectionName).drop();
+    await db.collection(fenceService.firmCollection.collectionName).drop();
     await connection.close();
   });
 
-  test('test createOneFirm ', () async {
-    // ignore: unused_local_variable
-    final response = await fenceService.createFirm(
-        null, CreateFirmRequest(name: Dummy.firm.name));
-    expect(response.statusResponse.type, StatusResponse_Type.CREATED);
-    final userPermissionsUpdated = Dummy.adminPermission;
-    userPermissionsUpdated.firmId = response.firm.firmId;
-    fenceService..userPermissionIfTest = userPermissionsUpdated;
-  });
   test('test readOneFirm', () async {
     final response = await fenceService.readOneFirm(null, Empty());
     expect(response.isMailVerified, Dummy.firmNoId.isMailVerified);
@@ -55,7 +52,12 @@ void main() async {
     expect(
         response.lastUpdateTimestampUTC, Dummy.firmNoId.lastUpdateTimestampUTC);
   });
-  test('test upsertOneChain', () async {
+
+  test('create oneChain', () async {
+    final status = await fenceService.createOneChain(null, Dummy.chainNoId);
+    expect(status.type, StatusResponse_Type.CREATED);
+  });
+  test('test updateOneChain', () async {
     final responseReadChains = await fenceService.readAllChains(null, Empty());
     final liliChain = responseReadChains.chains.first..name = 'Lili chain';
     final response = await fenceService.updateOneChain(null, liliChain);

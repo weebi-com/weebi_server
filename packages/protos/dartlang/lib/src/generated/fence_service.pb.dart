@@ -16,7 +16,52 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'btq_chain.pb.dart' as $10;
 import 'common/g_timestamp.pb.dart' as $18;
 import 'device.pb.dart' as $13;
+import 'user.pb.dart' as $6;
 import 'user_permissions.pb.dart' as $8;
+
+class UsersPublic extends $pb.GeneratedMessage {
+  factory UsersPublic({
+    $core.Iterable<$6.UserPublic>? users,
+  }) {
+    final $result = create();
+    if (users != null) {
+      $result.users.addAll(users);
+    }
+    return $result;
+  }
+  UsersPublic._() : super();
+  factory UsersPublic.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UsersPublic.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UsersPublic', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..pc<$6.UserPublic>(1, _omitFieldNames ? '' : 'users', $pb.PbFieldType.PM, subBuilder: $6.UserPublic.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UsersPublic clone() => UsersPublic()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UsersPublic copyWith(void Function(UsersPublic) updates) => super.copyWith((message) => updates(message as UsersPublic)) as UsersPublic;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UsersPublic create() => UsersPublic._();
+  UsersPublic createEmptyInstance() => create();
+  static $pb.PbList<UsersPublic> createRepeated() => $pb.PbList<UsersPublic>();
+  @$core.pragma('dart2js:noInline')
+  static UsersPublic getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UsersPublic>(create);
+  static UsersPublic? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<$6.UserPublic> get users => $_getList(0);
+}
 
 class ReadAllChainsResponse extends $pb.GeneratedMessage {
   factory ReadAllChainsResponse({
@@ -715,6 +760,7 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   factory PasswordUpdateRequest({
     $core.String? userId,
     $core.String? firmId,
+    $core.String? password,
   }) {
     final $result = create();
     if (userId != null) {
@@ -722,6 +768,9 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
     }
     if (firmId != null) {
       $result.firmId = firmId;
+    }
+    if (password != null) {
+      $result.password = password;
     }
     return $result;
   }
@@ -732,6 +781,7 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasswordUpdateRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(3, _omitFieldNames ? '' : 'password')
     ..hasRequiredFields = false
   ;
 
@@ -773,6 +823,15 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   $core.bool hasFirmId() => $_has(1);
   @$pb.TagNumber(2)
   void clearFirmId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get password => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set password($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasPassword() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearPassword() => clearField(3);
 }
 
 class PendingDeviceRequest extends $pb.GeneratedMessage {

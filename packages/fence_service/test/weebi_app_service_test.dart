@@ -17,7 +17,7 @@ void main() async {
     weebiAppService = WeebiAppService(db);
     await db.createCollection(weebiAppService.collection.collectionName);
     await db.collection(weebiAppService.collection.collectionName).insertOne(
-        {'app': 'weebi_app', 'version': 279, 'isUpgradeImperative': false});
+        {'app': 'weebi_app', 'minVersion': 279, 'isUpgradeImperative': false});
   });
 
   tearDownAll(() async {
@@ -30,7 +30,7 @@ void main() async {
       null,
       AppMinVersionRequest(),
     );
-    expect(response.minVersion, 280);
+    expect(response.minVersion, 279);
     expect(response.isUpgradeImperative, false);
   });
 }
