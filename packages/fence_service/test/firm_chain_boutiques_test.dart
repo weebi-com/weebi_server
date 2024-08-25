@@ -12,8 +12,8 @@ void main() async {
 
   final connection = Connection(ConnectionManager(db));
 
+  late String chainId;
   late Chain chain;
-
   late FenceService fenceService;
 
   setUpAll(() async {
@@ -28,7 +28,7 @@ void main() async {
     await db.createCollection(fenceService.boutiqueCollection.collectionName);
     await db.createCollection(fenceService.firmCollection.collectionName);
     // firm cannot be created with admin permission so i do it manually below
-    final dd = await db
+    await db
         .collection(fenceService.firmCollection.collectionName)
         .insertOne(Dummy.firm.toProto3Json() as Map<String, dynamic>);
   });
@@ -52,11 +52,13 @@ void main() async {
     expect(
         response.lastUpdateTimestampUTC, Dummy.firmNoId.lastUpdateTimestampUTC);
   });
-
   test('create oneChain', () async {
     final status = await fenceService.createOneChain(null, Dummy.chainNoId);
     expect(status.type, StatusResponse_Type.CREATED);
+    expect(status.id.isNotEmpty, isTrue);
+    chainId = status.id;
   });
+
   test('test updateOneChain', () async {
     final responseReadChains = await fenceService.readAllChains(null, Empty());
     final liliChain = responseReadChains.chains.first..name = 'Lili chain';

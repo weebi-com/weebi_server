@@ -96,8 +96,8 @@ class FenceService extends FenceServiceBase {
       }
       final timestamp = DateTime.now().timestampProto;
       if (result.ok == 1 && result.document != null) {
-        final _id = result.document!['_id'] as ObjectId;
-        print('userId.runtimeType ${userId.runtimeType}');
+        final userId = result.document!['userId'];
+        //print('userId.runtimeType ${userId.runtimeType}');
 
         final userPublic = UserPublic.create()
           ..mergeFromProto3Json(
@@ -106,7 +106,7 @@ class FenceService extends FenceServiceBase {
 
         return PendingUserResponse(
             statusResponse: StatusResponse()
-              ..id = _id.oid
+              ..id = userId
               ..type = StatusResponse_Type.CREATED
               ..timestamp = timestamp,
             userPublic: userPublic);
@@ -634,9 +634,9 @@ class FenceService extends FenceServiceBase {
       }
       final timestamp = DateTime.now().timestampProto;
       if (result.ok == 1 && result.document != null) {
-        final userOid = result.document!['_id'] as ObjectId;
+        final userOid = result.document!['userId'];
         return StatusResponse()
-          ..id = userOid.oid
+          ..id = userOid
           ..type = StatusResponse_Type
               .CREATED // approving device is an updated but let's consider it is a creation
           ..timestamp = timestamp;
@@ -821,13 +821,11 @@ class FenceService extends FenceServiceBase {
           print('createFirm _createOneChainDBExec error $e');
           rethrow;
         }
-
-        //TODO : make token invalid to force new auth
-        final _id = result.document!['_id'] as ObjectId;
+        final firm = result.document!['firmId'];
         return CreateFirmResponse(
           statusResponse: StatusResponse.create()
             ..type = StatusResponse_Type.CREATED
-            ..id = _id.oid
+            ..id = firm
             ..timestamp = DateTime.now().timestampProto,
           firm: firm,
         );
@@ -1021,7 +1019,6 @@ class FenceService extends FenceServiceBase {
     }
   }
 
-  // TODO : update response so client knows the chainId
   @override
   Future<StatusResponse> createOneChain(
       ServiceCall? call, Chain request) async {
@@ -1054,10 +1051,10 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final chainOid = result.document!['_id'] as ObjectId;
+        final chainId = result.document!['chainId'];
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..id = chainOid.oid
+          ..id = chainId
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -1268,10 +1265,10 @@ class FenceService extends FenceServiceBase {
       }
       final timestamp = DateTime.now().timestampProto;
       if (result.ok == 1 && result.document != null) {
-        final _id = result.document!['_id'] as ObjectId;
+        final userId = result.document!['userId'];
         return SignUpResponse(
             statusResponse: StatusResponse()
-              ..id = _id.oid
+              ..id = userId
               ..type = StatusResponse_Type.CREATED
               ..timestamp = timestamp,
             userId: userId);
