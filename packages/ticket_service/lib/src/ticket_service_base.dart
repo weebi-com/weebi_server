@@ -1,5 +1,6 @@
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
+import 'package:protos_weebi/extensions.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 

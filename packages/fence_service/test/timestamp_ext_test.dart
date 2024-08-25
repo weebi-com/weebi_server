@@ -1,5 +1,5 @@
 import 'package:fixnum/fixnum.dart';
-import 'package:protos_weebi/src/snippet.dart';
+import 'package:protos_weebi/extensions.dart';
 import 'package:test/test.dart';
 
 void main() {
