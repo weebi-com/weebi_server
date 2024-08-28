@@ -1,17 +1,11 @@
 import 'dart:convert';
-//import 'dart:io';
 
 import 'package:crypto/crypto.dart';
+import 'package:fence_service/src/constants/app_environment.dart';
 // import 'package:protos_weebi/protos_weebi_io.dart' show UserPermissions;
 
 String _defaultJwtSecretKeyFactory() {
-  // TODO set SECRET KEY IN GITHUB
-  // final secretKey = Platform.environment['JWT_SECRET_KEY'];
-  final secretKey = 'test';
-  // ignore: unnecessary_null_comparison
-  if (secretKey == null) {
-    throw Exception("JWT_SECRET_KEY environment variable is not set");
-  }
+  final secretKey = AppEnvironment.jwtSecretKey;
   return secretKey;
 }
 
