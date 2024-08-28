@@ -2,7 +2,7 @@ import 'dart:io';
 
 class AppEnvironment {
   static int get port {
-    return int.parse(Platform.environment['PORT']!);
+    return int.parse(Platform.environment['PORT'] ?? '8080');
   }
 
   static String get mongoDbUri {
