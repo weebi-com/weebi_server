@@ -17,7 +17,7 @@ dependencies:
   logging: ^1.2.0
   mongo_dart: ^0.10.1
   protos_weebi:
-    path: ../protos/dartlang
+    path: ../protos/protos_weebi
 
 dev_dependencies:
   lints: ^3.0.0

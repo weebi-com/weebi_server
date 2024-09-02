@@ -12,7 +12,7 @@ dependencies:
   mongo_dart: ^0.10.1
   models_weebi: ^1.1.4
   protos_weebi:
-    path: ../protos/dartlang
+    path: ../protos/protos_weebi
   fence_service:
     path: ../fence_service
   #fixnum: ^1.1.0

@@ -20,7 +20,7 @@ dependencies:
     path: ../../packages/fence_service
   #
   protos_weebi:
-    path: ../../packages/protos/dartlang
+    path: ../../packages/protos/protos_weebi
   logging: ^1.2.0
 
 dev_dependencies:
