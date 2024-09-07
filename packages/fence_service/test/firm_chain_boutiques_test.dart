@@ -12,7 +12,7 @@ void main() async {
 
   final connection = Connection(ConnectionManager(db));
 
-  late String chainId;
+  String firmId = '';
   late Chain chain;
   late FenceService fenceService;
 
@@ -51,12 +51,14 @@ void main() async {
     expect(response.subscriptionPlan, Dummy.firmNoId.subscriptionPlan);
     expect(
         response.lastUpdateTimestampUTC, Dummy.firmNoId.lastUpdateTimestampUTC);
+    firmId = response.firmId;
   });
   test('create oneChain', () async {
-    final status = await fenceService.createOneChain(null, Dummy.chainNoId);
+    final chainDummy = Dummy.chainNoId;
+    chainDummy..firmId = firmId;
+    final status = await fenceService.createOneChain(null, chainDummy);
     expect(status.type, StatusResponse_Type.CREATED);
     expect(status.id.isNotEmpty, isTrue);
-    chainId = status.id;
   });
 
   test('test updateOneChain', () async {

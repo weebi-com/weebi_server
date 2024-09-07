@@ -33,7 +33,7 @@ abstract class Dummy {
     ..serialNumber = 'unique';
 
   static final chainNoId = Chain(
-    boutiques: <Boutique>[Dummy.boutique],
+    boutiques: <Boutique>[Dummy.boutiqueNoId],
   );
   static final chain = chainNoId..chainId = '665e12f798357783e8000001',
       firmId = '123456789';

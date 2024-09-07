@@ -379,7 +379,6 @@ class FenceService extends FenceServiceBase {
       final chain =
           await _checkOneChainAndProtoIt(request.firmId, request.chainId);
 
-      // TODO fetch device from boutique
       final boutique = chain.boutiques.firstWhereOrNull((btq) =>
           btq.boutiqueId == request.boutiqueId &&
           btq.chainId == request.chainId &&
@@ -803,29 +802,28 @@ class FenceService extends FenceServiceBase {
           rethrow;
         }
 
-        try {
-          final chain = Chain(
-              firmId: firmId,
-              chainId: firmId,
-              name: request.name,
-              boutiques: [
-                Boutique.create()
-                  ..firmId = firmId
-                  ..chainId = firmId
-                  ..boutiqueId = firmId
-                  ..name = request.name
-              ]);
+        final chain = Chain(
+            firmId: firmId,
+            chainId: firmId,
+            name: request.name,
+            boutiques: [
+              Boutique.create()
+                ..firmId = firmId
+                ..chainId = firmId
+                ..boutiqueId = firmId
+                ..name = request.name
+            ]);
 
+        try {
           await _createOneChainDBExec(chain);
         } on GrpcError catch (e) {
           print('createFirm _createOneChainDBExec error $e');
           rethrow;
         }
-        final firm = result.document!['firmId'];
         return CreateFirmResponse(
           statusResponse: StatusResponse.create()
             ..type = StatusResponse_Type.CREATED
-            ..id = firm
+            ..id = firmId
             ..timestamp = DateTime.now().timestampProto,
           firm: firm,
         );
@@ -1022,24 +1020,41 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> createOneChain(
       ServiceCall? call, Chain request) async {
+    if (request.firmId.isEmpty) {
+      throw GrpcError.invalidArgument('request.firmId cannot be empty');
+    }
+    if (request.boutiques.length > 1) {
+      throw GrpcError.invalidArgument('create chain with 1 boutique only');
+    }
+    if (request.boutiques.first.firmId != request.firmId) {
+      throw GrpcError.invalidArgument(
+          'boutique.firmId must match the chain.firmId');
+    }
+    if (request.boutiques.first.chainId != request.chainId) {
+      throw GrpcError.invalidArgument(
+          'boutique.chainId must match the chainId');
+    }
+
     _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-
+    // check permissions
     if (userPermission.chainRights.rights.any((e) => e == Right.create) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to create chain');
     }
-
-    if (request.firmId.isEmpty) {
-      throw GrpcError.invalidArgument('request.firmId cannot be empty');
-    }
     if (request.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied(
           'user cannot access firm ${request.firmId}');
     }
+    final chainId = DateTime.now().objectIdString;
+    request.chainId = chainId;
+    request.boutiques.first
+      ..firmId = request.firmId
+      ..chainId = chainId
+      ..boutiqueId = chainId;
     return await _createOneChainDBExec(request);
   }
 
@@ -1077,7 +1092,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, Boutique request) async {
     _db.isConnected ? null : await _db.open();
     if (request.boutiqueId.isEmpty) {
-      throw GrpcError.invalidArgument('boutique id cannot be empty');
+      throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -1110,6 +1125,18 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> updateOneChain(
       ServiceCall? call, Chain request) async {
+    if (request.firmId.isEmpty) {
+      throw GrpcError.invalidArgument('request.firmId cannot be empty');
+    }
+    if (request.boutiques.any((b) => b.firmId != request.firmId)) {
+      throw GrpcError.invalidArgument(
+          'each boutique.firmId must match the chain.firmId');
+    }
+    if (request.boutiques.any((b) => b.chainId != request.chainId)) {
+      throw GrpcError.invalidArgument(
+          'each boutique.chainId must match the chainId');
+    }
+
     _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -1128,7 +1155,6 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.firmId} or chain ${request.chainId}');
     }
-
     return await _updateOneChainDBExec(request);
   }
 
