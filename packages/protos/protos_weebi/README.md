@@ -21,6 +21,8 @@ find a way to learn how to go back to line with linux file format
 export PATH="$PATH:$HOME/.pub-cache/bin"
 sh protos_weebi/tool/generate_protos.sh
 
+include_imports --include_source_info --descriptor_set_out
+
 ***
 
 note that id are used as key for offline first objects made in the weebi app, 

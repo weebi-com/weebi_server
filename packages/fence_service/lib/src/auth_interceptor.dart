@@ -12,6 +12,9 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
   if (call.clientMetadata![':path']!.toLowerCase().contains('authenticate')) {
     return null; // allow all authenticate RPC calls
   }
+  if (call.clientMetadata![':path']!.toLowerCase().contains('signup')) {
+    return null; // allow all signup RPC calls
+  }
   if (call.clientMetadata![':path']!
       .toLowerCase()
       .contains('readappminimumversion')) {
@@ -21,9 +24,9 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
     return null; // allow all pair one device RPC calls
   }
   try {
-    final jwt2 = call.clientMetadata!['authorization'];
-    print('jwt2');
-    print(jwt2);
+    // final jwt2 = call.clientMetadata!['authorization'];
+    // print('jwt2');
+    // print(jwt2);
     // * front app will also use an interceptor to add the token
     // * the method can only add metadata, parse in the bearer getter below
     // * then removing the potential Bearer + trailing space that could be added
@@ -38,7 +41,7 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
     }
     return null; // authenticated by signed JWT
   } on GrpcError catch (e) {
-    print('authInterceptor $e');
+    print('authInterceptor error $e');
     rethrow;
   }
 }
