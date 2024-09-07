@@ -1026,6 +1026,14 @@ class FenceService extends FenceServiceBase {
     if (request.boutiques.length > 1) {
       throw GrpcError.invalidArgument('create chain with 1 boutique only');
     }
+    if (request.boutiques.first.firmId != request.firmId) {
+      throw GrpcError.invalidArgument(
+          'boutique.firmId must match the chain.firmId');
+    }
+    if (request.boutiques.first.chainId != request.chainId) {
+      throw GrpcError.invalidArgument(
+          'boutique.chainId must match the chainId');
+    }
 
     _db.isConnected ? null : await _db.open();
     final userPermission = isMock
@@ -1117,12 +1125,15 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> updateOneChain(
       ServiceCall? call, Chain request) async {
+    if (request.firmId.isEmpty) {
+      throw GrpcError.invalidArgument('request.firmId cannot be empty');
+    }
     if (request.boutiques.any((b) => b.firmId != request.firmId)) {
-      throw GrpcError.failedPrecondition(
+      throw GrpcError.invalidArgument(
           'each boutique.firmId must match the chain.firmId');
     }
     if (request.boutiques.any((b) => b.chainId != request.chainId)) {
-      throw GrpcError.failedPrecondition(
+      throw GrpcError.invalidArgument(
           'each boutique.chainId must match the chainId');
     }
 
