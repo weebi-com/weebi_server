@@ -1,4 +1,5 @@
 // import 'dart:io';
+import 'package:fence_service/fence_service.dart';
 import 'package:test/test.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -20,7 +21,22 @@ void main() async {
     );
 
   setUpAll(() async {
-    final counterfoil = await TestHelper.ticketSetUp(db, connection);
+    await db.open();
+    await connection.connect();
+    var fenceService = FenceService(
+      db,
+      isMock: true,
+      userPermissionIfTest: Dummy.adminPermission,
+    );
+    await db.createCollection(fenceService.userCollection.collectionName);
+    await db.createCollection(fenceService.boutiqueCollection.collectionName);
+
+    fenceService..userPermissionIfTest = Dummy.adminPermission;
+    final counterfoil = Counterfoil.create()
+      ..firmId = Dummy.firm.firmId
+      ..chainId = Dummy.chain.chainId
+      ..boutiqueId = Dummy.chain.boutiques.first.boutiqueId
+      ..userId = Dummy.userInfo.userId;
 
     await db.open();
     ticketService = TicketService(
