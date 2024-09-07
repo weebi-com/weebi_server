@@ -36,7 +36,7 @@ void main() async {
       ''', () async {
     // boss signs up
     final response = await fenceService.signUp(
-      null,
+      ServiceCallTest('', path: 'signUp'),
       SignUpRequest(
           firstname: 'lili',
           lastname: 'D. Boss',
@@ -101,7 +101,8 @@ void main() async {
 
     // alice signs up and is linked to boss' firm
     final aliceSignUp = await fenceService.signUp(
-        null, SignUpRequest(mail: 'alice@weebi.com', password: '987654321'));
+        ServiceCallTest('', path: 'signUp'),
+        SignUpRequest(mail: 'alice@weebi.com', password: '987654321'));
 
     expect(aliceSignUp.statusResponse.type, StatusResponse_Type.UPDATED);
     // indeed update since alice was already created by boss
@@ -123,7 +124,7 @@ void main() async {
 
     // user john signs up and awaits
     final johnSignUp = await fenceService.signUp(
-        null,
+        ServiceCallTest('', path: 'signUp'),
         SignUpRequest(
             mail: 'john@weebi.com',
             password: 'iDontMindWaiting',

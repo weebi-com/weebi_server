@@ -1255,8 +1255,7 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
-  Future<SignUpResponse> signUp(
-      ServiceCall? call, SignUpRequest request) async {
+  Future<SignUpResponse> signUp(ServiceCall call, SignUpRequest request) async {
     final mailAndEncyptedPassword = _checkCredentials(
         Credentials(mail: request.mail, password: request.password));
     _db.isConnected ? null : await _db.open();

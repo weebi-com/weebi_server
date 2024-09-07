@@ -3,7 +3,8 @@ import 'package:grpc/service_api.dart';
 
 class ServiceCallTest implements ServiceCall {
   final String jwt;
-  ServiceCallTest(this.jwt);
+  final String path;
+  ServiceCallTest(this.jwt, {this.path = ''});
   @override
   // TODO: implement clientCertificate
   X509Certificate? get clientCertificate => throw UnimplementedError();
@@ -11,7 +12,7 @@ class ServiceCallTest implements ServiceCall {
   @override
   // TODO: implement clientMetadata
   Map<String, String>? get clientMetadata =>
-      <String, String>{'authorization': jwt};
+      <String, String>{'authorization': jwt, 'path': path};
 
   @override
   // TODO: implement deadline
