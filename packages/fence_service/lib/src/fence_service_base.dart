@@ -329,7 +329,8 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
-  Future<UserPublic> readOneUser(ServiceCall? call, UserId request) async {
+  Future<ReadOneUserResponse> readOneUser(
+      ServiceCall? call, UserId request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -338,6 +339,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read other users');
     }
+
     try {
       final userMongo =
           await userCollection.findOne(where.eq('userId', request.userId));
@@ -345,10 +347,47 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.notFound('user not found');
       }
 
-      // password will not be passed because does not exist in Userpublic
-      final userInfo = UserPublic.create()
+      final userFound = UserPublic.create()
         ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
-      return userInfo;
+
+      // if requestor has limited access we check that the userFound belongs to his/her fence
+      if (userPermission.fullAccess.hasFullAccess == false) {
+        // if userFound has no access then it is visible and will be returned
+        // allowing managers to easily redefine their accesses
+        if (userFound.permissions.limitedAccess.chainIds.ids.isNotEmpty ||
+            userFound.permissions.limitedAccess.boutiqueIds.ids.isNotEmpty) {
+          // need to filter to display only users that are within requestor's "fence"
+          // iterator over requestor's chains
+          for (final visibleChain
+              in userPermission.limitedAccess.chainIds.ids) {
+            if (userFound.permissions.limitedAccess.chainIds.ids
+                .none((chainId) => chainId == visibleChain)) {
+              return ReadOneUserResponse.create()
+                ..statusResponse = StatusResponse(
+                    type: StatusResponse_Type.ERROR,
+                    message: 'one user found but belong to a different chain');
+            } else {
+              // userFound && request share at least one chain
+              // we iterate over the requestor available boutiques
+              for (final visibleBoutiques
+                  in userPermission.limitedAccess.boutiqueIds.ids) {
+                if (userFound.permissions.limitedAccess.boutiqueIds.ids
+                    .none((id) => id == visibleBoutiques)) {
+                  return ReadOneUserResponse.create()
+                    ..statusResponse = StatusResponse(
+                        type: StatusResponse_Type.ERROR,
+                        message:
+                            'one user found in the same chain but in a boutique beyond your access');
+                }
+              }
+            }
+          }
+        }
+      }
+      // password will not be passed because does not exist in Userpublic
+      return ReadOneUserResponse(
+          user: userFound,
+          statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
     } on GrpcError catch (e) {
       print('readOne error $e');
       rethrow;
@@ -1421,7 +1460,38 @@ class FenceService extends FenceServiceBase {
         users.add(UserPublic.create()
           ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true));
       }
-      return UsersPublic(users: users);
+
+      if (userPermission.fullAccess.hasFullAccess) {
+        return UsersPublic(users: users);
+      }
+      // if requestor has limitedAccess we retain only users that belong to his/her "fence"
+      final usersFiltered = users
+        ..retainWhere((userFound) {
+          // userFound without any access are included
+          // allowing managers to easily redefine their accesses
+          if (userFound.permissions.limitedAccess.chainIds.ids.isNotEmpty ||
+              userFound.permissions.limitedAccess.boutiqueIds.ids.isNotEmpty) {
+            return true;
+          }
+          // iterate over requestor's chains
+          for (final visibleChain
+              in userPermission.limitedAccess.chainIds.ids) {
+            if (userFound.permissions.limitedAccess.chainIds.ids
+                .any((chainId) => chainId == visibleChain)) {
+              // userFound && requestor share at least one chain
+              // we iterate over the requestor's boutiques
+              for (final visibleBoutiques
+                  in userPermission.limitedAccess.boutiqueIds.ids) {
+                if (userFound.permissions.limitedAccess.boutiqueIds.ids
+                    .any((id) => id == visibleBoutiques)) {
+                  return true;
+                }
+              }
+            }
+          }
+          return false;
+        });
+      return UsersPublic(users: usersFiltered);
     } on GrpcError catch (e) {
       print('readOne error $e');
       rethrow;

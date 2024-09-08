@@ -13,6 +13,21 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use readOneUserResponseDescriptor instead')
+const ReadOneUserResponse$json = {
+  '1': 'ReadOneUserResponse',
+  '2': [
+    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
+    {'1': 'user', '3': 2, '4': 1, '5': 11, '6': '.weebi.user.UserPublic', '10': 'user'},
+  ],
+};
+
+/// Descriptor for `ReadOneUserResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readOneUserResponseDescriptor = $convert.base64Decode(
+    'ChNSZWFkT25lVXNlclJlc3BvbnNlEkwKDnN0YXR1c1Jlc3BvbnNlGAEgASgLMiQuZ29vZ2xlLn'
+    'JldGFpbC5jb21tb24uU3RhdHVzUmVzcG9uc2VSDnN0YXR1c1Jlc3BvbnNlEioKBHVzZXIYAiAB'
+    'KAsyFi53ZWViaS51c2VyLlVzZXJQdWJsaWNSBHVzZXI=');
+
 @$core.Deprecated('Use usersPublicDescriptor instead')
 const UsersPublic$json = {
   '1': 'UsersPublic',

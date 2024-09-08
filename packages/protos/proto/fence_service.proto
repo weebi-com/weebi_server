@@ -36,7 +36,7 @@ service FenceService {
   // TODO add deleteFirm
 
   rpc createPendingUser(weebi.user.PendingUserRequest) returns (weebi.user.PendingUserResponse);
-  rpc readOneUser(UserId) returns (weebi.user.UserPublic);
+  rpc readOneUser(UserId) returns (ReadOneUserResponse);
   
   /// Presumably, until 2030 firms will have max 9 users, why bother filter ?
   rpc readAllUsers(weebi.common.empty.Empty) returns (UsersPublic);
@@ -75,6 +75,10 @@ service FenceService {
   /// weak auth hack to ease app access to cashiers with very low rights
 }
 
+message ReadOneUserResponse {
+  google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
+  weebi.user.UserPublic user = 2 [json_name = 'user'];
+}
 
 message UsersPublic {
   repeated weebi.user.UserPublic users = 1 [json_name = 'users'];

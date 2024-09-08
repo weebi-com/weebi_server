@@ -11,7 +11,7 @@ message CalibreMongo {
   string userId = 5 [json_name = 'userId']; 
 }
 
-/// Wrapping articles, using Pb to != from Calibre Dart in models weebi 
+/// Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi 
 message CalibrePb {
   enum StockUnit {
     unknown = 0 ;

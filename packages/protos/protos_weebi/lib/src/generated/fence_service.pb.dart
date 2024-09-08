@@ -14,10 +14,79 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'btq_chain.pb.dart' as $10;
+import 'common/g_common.pb.dart' as $1;
 import 'common/g_timestamp.pb.dart' as $18;
 import 'device.pb.dart' as $13;
 import 'user.pb.dart' as $6;
 import 'user_permissions.pb.dart' as $8;
+
+class ReadOneUserResponse extends $pb.GeneratedMessage {
+  factory ReadOneUserResponse({
+    $1.StatusResponse? statusResponse,
+    $6.UserPublic? user,
+  }) {
+    final $result = create();
+    if (statusResponse != null) {
+      $result.statusResponse = statusResponse;
+    }
+    if (user != null) {
+      $result.user = user;
+    }
+    return $result;
+  }
+  ReadOneUserResponse._() : super();
+  factory ReadOneUserResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadOneUserResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadOneUserResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOM<$1.StatusResponse>(1, _omitFieldNames ? '' : 'statusResponse', protoName: 'statusResponse', subBuilder: $1.StatusResponse.create)
+    ..aOM<$6.UserPublic>(2, _omitFieldNames ? '' : 'user', subBuilder: $6.UserPublic.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ReadOneUserResponse clone() => ReadOneUserResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ReadOneUserResponse copyWith(void Function(ReadOneUserResponse) updates) => super.copyWith((message) => updates(message as ReadOneUserResponse)) as ReadOneUserResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReadOneUserResponse create() => ReadOneUserResponse._();
+  ReadOneUserResponse createEmptyInstance() => create();
+  static $pb.PbList<ReadOneUserResponse> createRepeated() => $pb.PbList<ReadOneUserResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ReadOneUserResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadOneUserResponse>(create);
+  static ReadOneUserResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.StatusResponse get statusResponse => $_getN(0);
+  @$pb.TagNumber(1)
+  set statusResponse($1.StatusResponse v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStatusResponse() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStatusResponse() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.StatusResponse ensureStatusResponse() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $6.UserPublic get user => $_getN(1);
+  @$pb.TagNumber(2)
+  set user($6.UserPublic v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasUser() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUser() => clearField(2);
+  @$pb.TagNumber(2)
+  $6.UserPublic ensureUser() => $_ensure(1);
+}
 
 class UsersPublic extends $pb.GeneratedMessage {
   factory UsersPublic({
