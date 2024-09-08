@@ -22,10 +22,11 @@ const Device$json = {
     {'1': 'boutiqueId', '3': 3, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'status', '3': 4, '4': 1, '5': 8, '10': 'status'},
     {'1': 'password', '3': 5, '4': 1, '5': 9, '10': 'password'},
-    {'1': 'name', '3': 6, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'serialNumber', '3': 7, '4': 1, '5': 9, '10': 'serialNumber'},
-    {'1': 'baseOS', '3': 8, '4': 1, '5': 9, '10': 'baseOS'},
-    {'1': 'brand', '3': 9, '4': 1, '5': 9, '10': 'brand'},
+    {'1': 'dateCreation', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'dateCreation'},
+    {'1': 'name', '3': 7, '4': 1, '5': 9, '10': 'name'},
+    {'1': 'serialNumber', '3': 8, '4': 1, '5': 9, '10': 'serialNumber'},
+    {'1': 'baseOS', '3': 9, '4': 1, '5': 9, '10': 'baseOS'},
+    {'1': 'brand', '3': 10, '4': 1, '5': 9, '10': 'brand'},
   ],
 };
 
@@ -33,9 +34,10 @@ const Device$json = {
 final $typed_data.Uint8List deviceDescriptor = $convert.base64Decode(
     'CgZEZXZpY2USGgoIZGV2aWNlSWQYASABKAlSCGRldmljZUlkEhgKB2NoYWluSWQYAiABKAlSB2'
     'NoYWluSWQSHgoKYm91dGlxdWVJZBgDIAEoCVIKYm91dGlxdWVJZBIWCgZzdGF0dXMYBCABKAhS'
-    'BnN0YXR1cxIaCghwYXNzd29yZBgFIAEoCVIIcGFzc3dvcmQSEgoEbmFtZRgGIAEoCVIEbmFtZR'
-    'IiCgxzZXJpYWxOdW1iZXIYByABKAlSDHNlcmlhbE51bWJlchIWCgZiYXNlT1MYCCABKAlSBmJh'
-    'c2VPUxIUCgVicmFuZBgJIAEoCVIFYnJhbmQ=');
+    'BnN0YXR1cxIaCghwYXNzd29yZBgFIAEoCVIIcGFzc3dvcmQSPgoMZGF0ZUNyZWF0aW9uGAYgAS'
+    'gLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIMZGF0ZUNyZWF0aW9uEhIKBG5hbWUYByAB'
+    'KAlSBG5hbWUSIgoMc2VyaWFsTnVtYmVyGAggASgJUgxzZXJpYWxOdW1iZXISFgoGYmFzZU9TGA'
+    'kgASgJUgZiYXNlT1MSFAoFYnJhbmQYCiABKAlSBWJyYW5k');
 
 @$core.Deprecated('Use devicesDescriptor instead')
 const Devices$json = {

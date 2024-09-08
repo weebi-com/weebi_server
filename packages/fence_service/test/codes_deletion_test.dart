@@ -1,6 +1,6 @@
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
 import 'package:protos_weebi/extensions.dart';
-import 'package:protos_weebi/protos_weebi_io.dart' show DevicePairingResponse;
+import 'package:protos_weebi/protos_weebi_io.dart' show CodeForPairingDevice;
 import 'package:test/test.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/user_testing.dart';
@@ -16,7 +16,7 @@ void main() {
 
     print(timestamp.toProto3Json());
 
-    final dd = DevicePairingResponse(
+    final dd = CodeForPairingDevice(
         code: 123456,
         firmId: '',
         chainId: '',

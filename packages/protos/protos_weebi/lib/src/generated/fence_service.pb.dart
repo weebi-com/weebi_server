@@ -158,6 +158,70 @@ class ReadDevicesRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 }
 
+class ReadDeviceBtqRequest extends $pb.GeneratedMessage {
+  factory ReadDeviceBtqRequest({
+    $core.String? chainId,
+    $core.String? boutiqueId,
+  }) {
+    final $result = create();
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (boutiqueId != null) {
+      $result.boutiqueId = boutiqueId;
+    }
+    return $result;
+  }
+  ReadDeviceBtqRequest._() : super();
+  factory ReadDeviceBtqRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadDeviceBtqRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadDeviceBtqRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(2, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ReadDeviceBtqRequest clone() => ReadDeviceBtqRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ReadDeviceBtqRequest copyWith(void Function(ReadDeviceBtqRequest) updates) => super.copyWith((message) => updates(message as ReadDeviceBtqRequest)) as ReadDeviceBtqRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReadDeviceBtqRequest create() => ReadDeviceBtqRequest._();
+  ReadDeviceBtqRequest createEmptyInstance() => create();
+  static $pb.PbList<ReadDeviceBtqRequest> createRepeated() => $pb.PbList<ReadDeviceBtqRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ReadDeviceBtqRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadDeviceBtqRequest>(create);
+  static ReadDeviceBtqRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get boutiqueId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set boutiqueId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasBoutiqueId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBoutiqueId() => clearField(2);
+}
+
 class DeleteDeviceRequest extends $pb.GeneratedMessage {
   factory DeleteDeviceRequest({
     $core.String? chainId,
@@ -900,8 +964,8 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
   void clearCode() => clearField(2);
 }
 
-class DevicePairingResponse extends $pb.GeneratedMessage {
-  factory DevicePairingResponse({
+class CodeForPairingDevice extends $pb.GeneratedMessage {
+  factory CodeForPairingDevice({
     $core.String? firmId,
     $core.String? chainId,
     $core.String? boutiqueId,
@@ -930,11 +994,11 @@ class DevicePairingResponse extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  DevicePairingResponse._() : super();
-  factory DevicePairingResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory DevicePairingResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  CodeForPairingDevice._() : super();
+  factory CodeForPairingDevice.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CodeForPairingDevice.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DevicePairingResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CodeForPairingDevice', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
@@ -948,22 +1012,22 @@ class DevicePairingResponse extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  DevicePairingResponse clone() => DevicePairingResponse()..mergeFromMessage(this);
+  CodeForPairingDevice clone() => CodeForPairingDevice()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  DevicePairingResponse copyWith(void Function(DevicePairingResponse) updates) => super.copyWith((message) => updates(message as DevicePairingResponse)) as DevicePairingResponse;
+  CodeForPairingDevice copyWith(void Function(CodeForPairingDevice) updates) => super.copyWith((message) => updates(message as CodeForPairingDevice)) as CodeForPairingDevice;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static DevicePairingResponse create() => DevicePairingResponse._();
-  DevicePairingResponse createEmptyInstance() => create();
-  static $pb.PbList<DevicePairingResponse> createRepeated() => $pb.PbList<DevicePairingResponse>();
+  static CodeForPairingDevice create() => CodeForPairingDevice._();
+  CodeForPairingDevice createEmptyInstance() => create();
+  static $pb.PbList<CodeForPairingDevice> createRepeated() => $pb.PbList<CodeForPairingDevice>();
   @$core.pragma('dart2js:noInline')
-  static DevicePairingResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DevicePairingResponse>(create);
-  static DevicePairingResponse? _defaultInstance;
+  static CodeForPairingDevice getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CodeForPairingDevice>(create);
+  static CodeForPairingDevice? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get firmId => $_getSZ(0);
