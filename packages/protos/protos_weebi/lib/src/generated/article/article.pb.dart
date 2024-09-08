@@ -126,7 +126,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
   void clearUserId() => clearField(5);
 }
 
-/// / Wrapping articles, using Pb to != from Calibre Dart in models weebi
+/// / Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi
 class CalibrePb extends $pb.GeneratedMessage {
   factory CalibrePb({
     $core.int? id,

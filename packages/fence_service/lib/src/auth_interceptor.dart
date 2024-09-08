@@ -20,8 +20,10 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
       .contains('readappminimumversion')) {
     return null; // allow all read app min version RPC calls
   }
-  if (call.clientMetadata![':path']!.toLowerCase().contains('paironedevice')) {
-    return null; // allow all pair one device RPC calls
+  if (call.clientMetadata![':path']!
+      .toLowerCase()
+      .contains('createPendingDevice')) {
+    return null; // allow all createPendingDevice RPC calls
   }
   try {
     // final jwt2 = call.clientMetadata!['authorization'];

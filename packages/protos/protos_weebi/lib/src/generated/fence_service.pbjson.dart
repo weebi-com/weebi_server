@@ -13,6 +13,21 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use readOneUserResponseDescriptor instead')
+const ReadOneUserResponse$json = {
+  '1': 'ReadOneUserResponse',
+  '2': [
+    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
+    {'1': 'user', '3': 2, '4': 1, '5': 11, '6': '.weebi.user.UserPublic', '10': 'user'},
+  ],
+};
+
+/// Descriptor for `ReadOneUserResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readOneUserResponseDescriptor = $convert.base64Decode(
+    'ChNSZWFkT25lVXNlclJlc3BvbnNlEkwKDnN0YXR1c1Jlc3BvbnNlGAEgASgLMiQuZ29vZ2xlLn'
+    'JldGFpbC5jb21tb24uU3RhdHVzUmVzcG9uc2VSDnN0YXR1c1Jlc3BvbnNlEioKBHVzZXIYAiAB'
+    'KAsyFi53ZWViaS51c2VyLlVzZXJQdWJsaWNSBHVzZXI=');
+
 @$core.Deprecated('Use usersPublicDescriptor instead')
 const UsersPublic$json = {
   '1': 'UsersPublic',
@@ -50,6 +65,20 @@ const ReadDevicesRequest$json = {
 /// Descriptor for `ReadDevicesRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List readDevicesRequestDescriptor = $convert.base64Decode(
     'ChJSZWFkRGV2aWNlc1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZA==');
+
+@$core.Deprecated('Use readDeviceBtqRequestDescriptor instead')
+const ReadDeviceBtqRequest$json = {
+  '1': 'ReadDeviceBtqRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'boutiqueId', '3': 2, '4': 1, '5': 9, '10': 'boutiqueId'},
+  ],
+};
+
+/// Descriptor for `ReadDeviceBtqRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readDeviceBtqRequestDescriptor = $convert.base64Decode(
+    'ChRSZWFkRGV2aWNlQnRxUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEh4KCmJvdX'
+    'RpcXVlSWQYAiABKAlSCmJvdXRpcXVlSWQ=');
 
 @$core.Deprecated('Use deleteDeviceRequestDescriptor instead')
 const DeleteDeviceRequest$json = {
@@ -207,9 +236,9 @@ final $typed_data.Uint8List pendingDeviceRequestDescriptor = $convert.base64Deco
     'ChRQZW5kaW5nRGV2aWNlUmVxdWVzdBIsCgZkZXZpY2UYASABKAsyFC53ZWViaS5kZXZpY2UuRG'
     'V2aWNlUgZkZXZpY2USEgoEY29kZRgCIAEoBVIEY29kZQ==');
 
-@$core.Deprecated('Use devicePairingResponseDescriptor instead')
-const DevicePairingResponse$json = {
-  '1': 'DevicePairingResponse',
+@$core.Deprecated('Use codeForPairingDeviceDescriptor instead')
+const CodeForPairingDevice$json = {
+  '1': 'CodeForPairingDevice',
   '2': [
     {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
@@ -220,12 +249,12 @@ const DevicePairingResponse$json = {
   ],
 };
 
-/// Descriptor for `DevicePairingResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List devicePairingResponseDescriptor = $convert.base64Decode(
-    'ChVEZXZpY2VQYWlyaW5nUmVzcG9uc2USFgoGZmlybUlkGAEgASgJUgZmaXJtSWQSGAoHY2hhaW'
-    '5JZBgCIAEoCVIHY2hhaW5JZBIeCgpib3V0aXF1ZUlkGAMgASgJUgpib3V0aXF1ZUlkEhYKBnVz'
-    'ZXJJZBgEIAEoCVIGdXNlcklkEhIKBGNvZGUYBSABKAVSBGNvZGUSPgoMdGltZXN0YW1wVVRDGA'
-    'YgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIMdGltZXN0YW1wVVRD');
+/// Descriptor for `CodeForPairingDevice`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List codeForPairingDeviceDescriptor = $convert.base64Decode(
+    'ChRDb2RlRm9yUGFpcmluZ0RldmljZRIWCgZmaXJtSWQYASABKAlSBmZpcm1JZBIYCgdjaGFpbk'
+    'lkGAIgASgJUgdjaGFpbklkEh4KCmJvdXRpcXVlSWQYAyABKAlSCmJvdXRpcXVlSWQSFgoGdXNl'
+    'cklkGAQgASgJUgZ1c2VySWQSEgoEY29kZRgFIAEoBVIEY29kZRI+Cgx0aW1lc3RhbXBVVEMYBi'
+    'ABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgx0aW1lc3RhbXBVVEM=');
 
 @$core.Deprecated('Use approveDeviceRequestDescriptor instead')
 const ApproveDeviceRequest$json = {
