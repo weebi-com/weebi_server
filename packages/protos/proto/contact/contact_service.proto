@@ -27,7 +27,7 @@ message ReadAllContactsRequest {
 
 message ContactRequest {
   string chainId = 1;
-  string contactuserId = 2;
+  string contactUserId = 2;
   weebi.contact.ContactPb contact = 3;
 }
 

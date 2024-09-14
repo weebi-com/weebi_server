@@ -132,11 +132,15 @@ class ReadAllRequest extends $pb.GeneratedMessage {
 class ArticleRequest extends $pb.GeneratedMessage {
   factory ArticleRequest({
     $core.String? chainId,
+    $core.String? articleUserId,
     $3.CalibrePb? calibre,
   }) {
     final $result = create();
     if (chainId != null) {
       $result.chainId = chainId;
+    }
+    if (articleUserId != null) {
+      $result.articleUserId = articleUserId;
     }
     if (calibre != null) {
       $result.calibre = calibre;
@@ -149,7 +153,8 @@ class ArticleRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticleRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$3.CalibrePb>(2, _omitFieldNames ? '' : 'calibre', subBuilder: $3.CalibrePb.create)
+    ..aOS(2, _omitFieldNames ? '' : 'articleUserId', protoName: 'articleUserId')
+    ..aOM<$3.CalibrePb>(3, _omitFieldNames ? '' : 'calibre', subBuilder: $3.CalibrePb.create)
     ..hasRequiredFields = false
   ;
 
@@ -185,15 +190,24 @@ class ArticleRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $3.CalibrePb get calibre => $_getN(1);
+  $core.String get articleUserId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set calibre($3.CalibrePb v) { setField(2, v); }
+  set articleUserId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasCalibre() => $_has(1);
+  $core.bool hasArticleUserId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCalibre() => clearField(2);
-  @$pb.TagNumber(2)
-  $3.CalibrePb ensureCalibre() => $_ensure(1);
+  void clearArticleUserId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $3.CalibrePb get calibre => $_getN(2);
+  @$pb.TagNumber(3)
+  set calibre($3.CalibrePb v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasCalibre() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearCalibre() => clearField(3);
+  @$pb.TagNumber(3)
+  $3.CalibrePb ensureCalibre() => $_ensure(2);
 }
 
 class ArticlesResponse extends $pb.GeneratedMessage {

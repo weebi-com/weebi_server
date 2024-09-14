@@ -65,15 +65,15 @@ const ContactRequest$json = {
   '1': 'ContactRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'contactuserId', '3': 2, '4': 1, '5': 9, '10': 'contactuserId'},
+    {'1': 'contactUserId', '3': 2, '4': 1, '5': 9, '10': 'contactUserId'},
     {'1': 'contact', '3': 3, '4': 1, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contact'},
   ],
 };
 
 /// Descriptor for `ContactRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactRequestDescriptor = $convert.base64Decode(
-    'Cg5Db250YWN0UmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEiQKDWNvbnRhY3R1c2'
-    'VySWQYAiABKAlSDWNvbnRhY3R1c2VySWQSMgoHY29udGFjdBgDIAEoCzIYLndlZWJpLmNvbnRh'
+    'Cg5Db250YWN0UmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEiQKDWNvbnRhY3RVc2'
+    'VySWQYAiABKAlSDWNvbnRhY3RVc2VySWQSMgoHY29udGFjdBgDIAEoCzIYLndlZWJpLmNvbnRh'
     'Y3QuQ29udGFjdFBiUgdjb250YWN0');
 
 @$core.Deprecated('Use contactsResponseDescriptor instead')

@@ -8,7 +8,8 @@ abstract class _Helpers {
   static SelectorBuilder select(String firmId, ArticleRequest request) => where
       .eq('firmId', firmId)
       .eq('chainId', request.chainId)
-      .eq('calibreId', request.calibre.id);
+      .eq('userId', request.articleUserId)
+      .eq('calibreNonUniqueId', request.calibre.id);
 }
 
 class ArticleService extends ArticleServiceBase {
@@ -44,7 +45,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
-        ..calibreId = request.calibre.id
+        ..calibreNonUniqueId = request.calibre.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
         ..userId = userPermission.userId;
@@ -55,10 +56,11 @@ class ArticleService extends ArticleServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final calibreId = result.document!['calibreId'] as int;
+        final calibreNonUniqueId =
+            result.document!['calibreNonUniqueId'] as int;
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..id = calibreId.toString()
+          ..id = calibreNonUniqueId.toString()
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -95,7 +97,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
-        ..calibreId = request.calibre.id
+        ..calibreNonUniqueId = request.calibre.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
         ..userId = userPermission.userId;
