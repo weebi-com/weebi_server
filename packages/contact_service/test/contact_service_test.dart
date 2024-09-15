@@ -41,7 +41,7 @@ void main() async {
     final contactRequest = ContactRequest(
         contact: contactDummy,
         chainId: chainId,
-        contactuserId: Dummy.userPublic.permissions.userId);
+        contactUserId: Dummy.userPublic.permissions.userId);
     final response = await contactService.createOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.CREATED);
   });
@@ -76,7 +76,7 @@ void main() async {
     final contactRequest = ContactRequest(
       chainId: chainId,
       contact: contactLili,
-      contactuserId: Dummy.userPublic.userId,
+      contactUserId: Dummy.userPublic.userId,
     );
     // ignore: unused_local_variable
     final response = await contactService.replaceOne(null, contactRequest);
@@ -92,7 +92,7 @@ void main() async {
     final contactRequest = ContactRequest(
       chainId: chainId,
       contact: contactDummy,
-      contactuserId: Dummy.userPublic.userId,
+      contactUserId: Dummy.userPublic.userId,
     );
     // ignore: unused_local_variable
     final response = await contactService.deleteOne(null, contactRequest);

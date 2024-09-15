@@ -110,7 +110,7 @@ class ContactService extends ContactServiceBase {
           _Helpers.selectContact(
             userPermission.firmId,
             request.chainId,
-            request.contactuserId,
+            request.contactUserId,
             request.contact.contactNonUniqueId,
           ),
           contactMongo.toProto3Json() as Map<String, dynamic>,
@@ -154,7 +154,7 @@ class ContactService extends ContactServiceBase {
     try {
       await collection.deleteOne(
         _Helpers.selectContact(userPermission.firmId, request.chainId,
-            request.contactuserId, request.contact.contactNonUniqueId),
+            request.contactUserId, request.contact.contactNonUniqueId),
       );
       return StatusResponse()
         ..type = StatusResponse_Type.DELETED
