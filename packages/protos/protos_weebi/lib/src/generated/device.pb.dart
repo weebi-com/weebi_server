@@ -13,6 +13,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'common/g_timestamp.pb.dart' as $18;
+
 /// / a Device == cash register, assigned to a boutique,
 /// / by default once enrolled there is a cashier access that can always log in
 class Device extends $pb.GeneratedMessage {
@@ -22,6 +24,7 @@ class Device extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.bool? status,
     $core.String? password,
+    $18.Timestamp? dateCreation,
     $core.String? name,
     $core.String? serialNumber,
     $core.String? baseOS,
@@ -42,6 +45,9 @@ class Device extends $pb.GeneratedMessage {
     }
     if (password != null) {
       $result.password = password;
+    }
+    if (dateCreation != null) {
+      $result.dateCreation = dateCreation;
     }
     if (name != null) {
       $result.name = name;
@@ -67,10 +73,11 @@ class Device extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOB(4, _omitFieldNames ? '' : 'status')
     ..aOS(5, _omitFieldNames ? '' : 'password')
-    ..aOS(6, _omitFieldNames ? '' : 'name')
-    ..aOS(7, _omitFieldNames ? '' : 'serialNumber', protoName: 'serialNumber')
-    ..aOS(8, _omitFieldNames ? '' : 'baseOS', protoName: 'baseOS')
-    ..aOS(9, _omitFieldNames ? '' : 'brand')
+    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'dateCreation', protoName: 'dateCreation', subBuilder: $18.Timestamp.create)
+    ..aOS(7, _omitFieldNames ? '' : 'name')
+    ..aOS(8, _omitFieldNames ? '' : 'serialNumber', protoName: 'serialNumber')
+    ..aOS(9, _omitFieldNames ? '' : 'baseOS', protoName: 'baseOS')
+    ..aOS(10, _omitFieldNames ? '' : 'brand')
     ..hasRequiredFields = false
   ;
 
@@ -95,6 +102,7 @@ class Device extends $pb.GeneratedMessage {
   static Device getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Device>(create);
   static Device? _defaultInstance;
 
+  /// / deviceId is set by the server
   @$pb.TagNumber(1)
   $core.String get deviceId => $_getSZ(0);
   @$pb.TagNumber(1)
@@ -140,42 +148,54 @@ class Device extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearPassword() => clearField(5);
 
-  /// below comes from device
+  /// / dateCreation is set by the server
   @$pb.TagNumber(6)
-  $core.String get name => $_getSZ(5);
+  $18.Timestamp get dateCreation => $_getN(5);
   @$pb.TagNumber(6)
-  set name($core.String v) { $_setString(5, v); }
+  set dateCreation($18.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
-  $core.bool hasName() => $_has(5);
+  $core.bool hasDateCreation() => $_has(5);
   @$pb.TagNumber(6)
-  void clearName() => clearField(6);
+  void clearDateCreation() => clearField(6);
+  @$pb.TagNumber(6)
+  $18.Timestamp ensureDateCreation() => $_ensure(5);
 
+  /// / attributes below come from device
   @$pb.TagNumber(7)
-  $core.String get serialNumber => $_getSZ(6);
+  $core.String get name => $_getSZ(6);
   @$pb.TagNumber(7)
-  set serialNumber($core.String v) { $_setString(6, v); }
+  set name($core.String v) { $_setString(6, v); }
   @$pb.TagNumber(7)
-  $core.bool hasSerialNumber() => $_has(6);
+  $core.bool hasName() => $_has(6);
   @$pb.TagNumber(7)
-  void clearSerialNumber() => clearField(7);
+  void clearName() => clearField(7);
 
   @$pb.TagNumber(8)
-  $core.String get baseOS => $_getSZ(7);
+  $core.String get serialNumber => $_getSZ(7);
   @$pb.TagNumber(8)
-  set baseOS($core.String v) { $_setString(7, v); }
+  set serialNumber($core.String v) { $_setString(7, v); }
   @$pb.TagNumber(8)
-  $core.bool hasBaseOS() => $_has(7);
+  $core.bool hasSerialNumber() => $_has(7);
   @$pb.TagNumber(8)
-  void clearBaseOS() => clearField(8);
+  void clearSerialNumber() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.String get brand => $_getSZ(8);
+  $core.String get baseOS => $_getSZ(8);
   @$pb.TagNumber(9)
-  set brand($core.String v) { $_setString(8, v); }
+  set baseOS($core.String v) { $_setString(8, v); }
   @$pb.TagNumber(9)
-  $core.bool hasBrand() => $_has(8);
+  $core.bool hasBaseOS() => $_has(8);
   @$pb.TagNumber(9)
-  void clearBrand() => clearField(9);
+  void clearBaseOS() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.String get brand => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set brand($core.String v) { $_setString(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasBrand() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearBrand() => clearField(10);
 }
 
 class Devices extends $pb.GeneratedMessage {

@@ -5,13 +5,13 @@ package weebi.article;
 message CalibreMongo {
   // faster object read
   weebi.article.CalibrePb calibre = 1 [json_name = 'calibre'] ;
-  int32 calibreId = 2 [json_name = 'calibreId'];
+  int32 calibreNonUniqueId = 2 [json_name = 'calibreNonUniqueId'];
   string firmId = 3 [json_name = 'firmId'];
   string chainId = 4 [json_name = 'chainId'];
   string userId = 5 [json_name = 'userId']; 
 }
 
-/// Wrapping articles, using Pb to != from Calibre Dart in models weebi 
+/// Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi 
 message CalibrePb {
   enum StockUnit {
     unknown = 0 ;

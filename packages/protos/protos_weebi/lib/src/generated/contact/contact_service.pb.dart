@@ -237,15 +237,15 @@ class ReadAllContactsRequest extends $pb.GeneratedMessage {
 class ContactRequest extends $pb.GeneratedMessage {
   factory ContactRequest({
     $core.String? chainId,
-    $core.String? contactuserId,
+    $core.String? contactUserId,
     $5.ContactPb? contact,
   }) {
     final $result = create();
     if (chainId != null) {
       $result.chainId = chainId;
     }
-    if (contactuserId != null) {
-      $result.contactuserId = contactuserId;
+    if (contactUserId != null) {
+      $result.contactUserId = contactUserId;
     }
     if (contact != null) {
       $result.contact = contact;
@@ -258,7 +258,7 @@ class ContactRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOS(2, _omitFieldNames ? '' : 'contactuserId', protoName: 'contactuserId')
+    ..aOS(2, _omitFieldNames ? '' : 'contactUserId', protoName: 'contactUserId')
     ..aOM<$5.ContactPb>(3, _omitFieldNames ? '' : 'contact', subBuilder: $5.ContactPb.create)
     ..hasRequiredFields = false
   ;
@@ -294,13 +294,13 @@ class ContactRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get contactuserId => $_getSZ(1);
+  $core.String get contactUserId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set contactuserId($core.String v) { $_setString(1, v); }
+  set contactUserId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasContactuserId() => $_has(1);
+  $core.bool hasContactUserId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearContactuserId() => clearField(2);
+  void clearContactUserId() => clearField(2);
 
   @$pb.TagNumber(3)
   $5.ContactPb get contact => $_getN(2);

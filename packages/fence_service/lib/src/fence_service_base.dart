@@ -31,7 +31,9 @@ class FenceService extends FenceServiceBase {
       : pairingCodesCollection = _db.collection(pairingCodesCollectionName),
         userCollection = _db.collection(userCollectionName),
         boutiqueCollection = _db.collection(boutiqueCollectionName),
-        firmCollection = _db.collection(firmCollectionName);
+        firmCollection = _db.collection(firmCollectionName) {
+    _db.isConnected ? null : _db.open();
+  }
 
   @override
   Future<PendingUserResponse> createPendingUser(
@@ -41,8 +43,6 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-
-    _db.isConnected ? null : await _db.open();
 
     if (userPermission.firmId != request.permissions.firmId) {
       throw GrpcError.permissionDenied(
@@ -239,7 +239,6 @@ class FenceService extends FenceServiceBase {
   }
 
   Future<UserPrivate> _readUserByUserId(String userId) async {
-    _db.isConnected ? null : await _db.open();
     try {
       final userPrivate = await userCollection.findOne(
         where.eq('userId', userId),
@@ -257,7 +256,6 @@ class FenceService extends FenceServiceBase {
 
   Future<UserPermissions> _readUserPermissionsByMailAndPassword(
       ServiceCall? call, MailAndEncyptedPassword request) async {
-    _db.isConnected ? null : await _db.open();
     try {
       final selector = where
           .eq('mail', request.mail.trim())
@@ -311,7 +309,6 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.invalidArgument(
           'request.userId != user.permissions.userId');
     }
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -332,8 +329,8 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
-  Future<UserPublic> readOneUser(ServiceCall? call, UserId request) async {
-    _db.isConnected ? null : await _db.open();
+  Future<ReadOneUserResponse> readOneUser(
+      ServiceCall? call, UserId request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -342,6 +339,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read other users');
     }
+
     try {
       final userMongo =
           await userCollection.findOne(where.eq('userId', request.userId));
@@ -349,10 +347,47 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.notFound('user not found');
       }
 
-      // password will not be passed because does not exist in Userpublic
-      final userInfo = UserPublic.create()
+      final userFound = UserPublic.create()
         ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
-      return userInfo;
+
+      // if requestor has limited access we check that the userFound belongs to his/her fence
+      if (userPermission.fullAccess.hasFullAccess == false) {
+        // if userFound has no access then it is visible and will be returned
+        // allowing managers to easily redefine their accesses
+        if (userFound.permissions.limitedAccess.chainIds.ids.isNotEmpty ||
+            userFound.permissions.limitedAccess.boutiqueIds.ids.isNotEmpty) {
+          // need to filter to display only users that are within requestor's "fence"
+          // iterator over requestor's chains
+          for (final visibleChain
+              in userPermission.limitedAccess.chainIds.ids) {
+            if (userFound.permissions.limitedAccess.chainIds.ids
+                .none((chainId) => chainId == visibleChain)) {
+              return ReadOneUserResponse.create()
+                ..statusResponse = StatusResponse(
+                    type: StatusResponse_Type.ERROR,
+                    message: 'one user found but belong to a different chain');
+            } else {
+              // userFound && request share at least one chain
+              // we iterate over the requestor available boutiques
+              for (final visibleBoutiques
+                  in userPermission.limitedAccess.boutiqueIds.ids) {
+                if (userFound.permissions.limitedAccess.boutiqueIds.ids
+                    .none((id) => id == visibleBoutiques)) {
+                  return ReadOneUserResponse.create()
+                    ..statusResponse = StatusResponse(
+                        type: StatusResponse_Type.ERROR,
+                        message:
+                            'one user found in the same chain but in a boutique beyond your access');
+                }
+              }
+            }
+          }
+        }
+      }
+      // password will not be passed because does not exist in Userpublic
+      return ReadOneUserResponse(
+          user: userFound,
+          statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
     } on GrpcError catch (e) {
       print('readOne error $e');
       rethrow;
@@ -365,7 +400,6 @@ class FenceService extends FenceServiceBase {
   @override
   Future<Tokens> authenticateWithDevice(
       ServiceCall? call, DeviceCredentials request) async {
-    _db.isConnected ? null : await _db.open();
     if (request.firmId.isEmpty) {
       throw GrpcError.invalidArgument('firmId.isEmpty');
     }
@@ -434,9 +468,8 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
-  Future<DevicePairingResponse> generateCodeForPairingDevice(
+  Future<CodeForPairingDevice> generateCodeForPairingDevice(
       ServiceCall? call, ChainIdAndboutiqueId request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -453,7 +486,7 @@ class FenceService extends FenceServiceBase {
     try {
       /// make sure we do not use an already existing code
       var code = 0;
-      var d = DevicePairingResponse.create();
+      var d = CodeForPairingDevice.create();
       do {
         code = _createCode();
         d = await _findCode(code);
@@ -463,7 +496,7 @@ class FenceService extends FenceServiceBase {
       final timestamp = Timestamp()
         ..seconds = Int64(millis)
         ..nanos = (millis % 1000) * 1000000;
-      final temp = DevicePairingResponse.create()
+      final temp = CodeForPairingDevice.create()
         ..userId = userPermission.userId
         ..firmId = userPermission.firmId
         ..chainId = request.chainId
@@ -495,10 +528,10 @@ class FenceService extends FenceServiceBase {
     return random.nextInt(900000) + 100000;
   }
 
-  Future<DevicePairingResponse> _findCode(int code) async {
+  Future<CodeForPairingDevice> _findCode(int code) async {
     try {
       final d = await pairingCodesCollection.findOne(where.eq('code', code));
-      return DevicePairingResponse.create()
+      return CodeForPairingDevice.create()
         ..mergeFromProto3Json(d, ignoreUnknownFields: true);
     } on MongoDartError catch (e) {
       print('_isCodeInDb error $e');
@@ -537,6 +570,7 @@ class FenceService extends FenceServiceBase {
       // We create the device in the boutique's chain with a false status
       // admin still need to approve device in case code leaked or else
       request.device.status = false;
+      request.device.dateCreation = DateTime.now().timestampProto;
       // set the boutiqueId selected by web admin
       request.device.boutiqueId = pairingResp.boutiqueId;
       request.device.deviceId = DateTime.now().objectIdString;
@@ -558,7 +592,7 @@ class FenceService extends FenceServiceBase {
       }
 
       return StatusResponse()
-        ..type = result.type
+        ..type = StatusResponse_Type.CREATED
         ..timestamp = result.timestamp;
     } on GrpcError catch (e) {
       print('pairOneDevice error $e');
@@ -567,11 +601,10 @@ class FenceService extends FenceServiceBase {
   }
 
   // once approved a device == user with minimum rights to ease app handling
-  // see UserService.authenticateWithDevice & UserService.updateDeviceDefaultPassword
+  // see UserService.authenticateWithDevice & UserService.updateDevicePassword
   @override
   Future<StatusResponse> approveDevice(
       ServiceCall? call, ApproveDeviceRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -597,14 +630,14 @@ class FenceService extends FenceServiceBase {
     chain.boutiques[btqIndexDeviceIndex.boutiqueIndex]
         .devices[btqIndexDeviceIndex.deviceIndex].status = true;
 
-    await _updateOneChainDBExec(chain);
-
-    // create user for simple
-    return await _createDefaultDeviceCashier(
+    // create user for simple auth
+    await _createDefaultDeviceCashier(
         userPermission.firmId,
         request.device.chainId,
         request.device.boutiqueId,
         request.device.deviceId);
+
+    return await _updateOneChainDBExec(chain);
   }
 
   Future<StatusResponse> _createDefaultDeviceCashier(
@@ -626,8 +659,9 @@ class FenceService extends FenceServiceBase {
         ..firmId = firmId
         ..userId = deviceId
         ..permissions = permissions;
-      final result = await userCollection
-          .insertOne(userPrivate.toProto3Json as Map<String, dynamic>);
+      final userPrivateJson =
+          userPrivate.toProto3Json() as Map<String, dynamic>;
+      final result = await userCollection.insertOne(userPrivateJson);
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
@@ -652,9 +686,8 @@ class FenceService extends FenceServiceBase {
 
   //
   @override
-  Future<StatusResponse> updateDeviceDefaultPassword(
+  Future<StatusResponse> updateDevicePassword(
       ServiceCall? call, UpdateDevicePasswordRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -707,7 +740,6 @@ class FenceService extends FenceServiceBase {
     if (request.userId.isEmpty) {
       throw GrpcError.invalidArgument('user oid cannot be empty');
     }
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -753,7 +785,6 @@ class FenceService extends FenceServiceBase {
   @override
   Future<CreateFirmResponse> createFirm(
       ServiceCall? call, CreateFirmRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -894,7 +925,6 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<Firm> readOneFirm(ServiceCall? call, Empty request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -952,18 +982,18 @@ class FenceService extends FenceServiceBase {
       final chainMongo = await boutiqueCollection
           .findOne(where.eq('firmId', firmId).eq('chainId', chainId));
       if (chainMongo == null) {
-        throw GrpcError.notFound('chain not found');
+        throw GrpcError.notFound(
+            'chain not found firmId: $firmId chainId:$chainId');
       }
       return Chain.create()
         ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
     } on GrpcError catch (e) {
-      print('_findChainsAndProtoThem $e');
+      print('_checkOneChainAndProtoIt $e');
       rethrow;
     }
   }
 
   Future<List<String>> _readAllBoutiquesInChain(UserPrivate user) async {
-    _db.isConnected ? null : await _db.open();
     final chains = await _checkChainsAndProtoThem(user.permissions);
     final boutiques = <Boutique>[];
     for (final requestchainId in user.permissions.limitedAccess.chainIds.ids) {
@@ -984,7 +1014,6 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> createOneBoutique(
       ServiceCall? call, Boutique request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1035,7 +1064,6 @@ class FenceService extends FenceServiceBase {
           'boutique.chainId must match the chainId');
     }
 
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1090,7 +1118,6 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> updateOneBoutique(
       ServiceCall? call, Boutique request) async {
-    _db.isConnected ? null : await _db.open();
     if (request.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }
@@ -1137,7 +1164,6 @@ class FenceService extends FenceServiceBase {
           'each boutique.chainId must match the chainId');
     }
 
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1188,7 +1214,6 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> deleteOneDevice(
       ServiceCall? call, DeleteDeviceRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1220,7 +1245,9 @@ class FenceService extends FenceServiceBase {
   @override
   Future<Devices> readDevices(
       ServiceCall? call, ReadDevicesRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    if (request.chainId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId cannot be empty');
+    }
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1238,27 +1265,24 @@ class FenceService extends FenceServiceBase {
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
-    try {
-      final devices = <Device>[];
-      for (final boutique in chain.boutiques) {
-        if (userPermission.isBoutiqueAccessible(boutique.boutiqueId)) {
-          for (final device in boutique.devices) {
+    final devices = <Device>[];
+    for (final boutique in chain.boutiques) {
+      if (userPermission.isBoutiqueAccessible(boutique.boutiqueId)) {
+        for (final device in boutique.devices) {
+          if (device.chainId == request.chainId &&
+              device.boutiqueId == boutique.boutiqueId) {
             devices.add(device);
           }
         }
       }
-      return Devices(devices: devices);
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
     }
+    return Devices(devices: devices);
   }
 
   @override
   Future<SignUpResponse> signUp(ServiceCall call, SignUpRequest request) async {
     final mailAndEncyptedPassword = _checkCredentials(
         Credentials(mail: request.mail, password: request.password));
-    _db.isConnected ? null : await _db.open();
 
     final user = await _isMailAlreadyUsed(mailAndEncyptedPassword.mail);
     if (user.userId.isNotEmpty) {
@@ -1355,7 +1379,6 @@ class FenceService extends FenceServiceBase {
   @override
   Future<ReadAllChainsResponse> readAllChains(
       ServiceCall? call, Empty request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1379,7 +1402,6 @@ class FenceService extends FenceServiceBase {
           'firmId / userId / password cannot be empty');
     }
 
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1416,7 +1438,6 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<UsersPublic> readAllUsers(ServiceCall call, Empty request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1439,10 +1460,155 @@ class FenceService extends FenceServiceBase {
         users.add(UserPublic.create()
           ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true));
       }
-      return UsersPublic(users: users);
+
+      if (userPermission.fullAccess.hasFullAccess) {
+        return UsersPublic(users: users);
+      }
+      // if requestor has limitedAccess we retain only users that belong to his/her "fence"
+      final usersFiltered = users
+        ..retainWhere((userFound) {
+          // userFound without any access are included
+          // allowing managers to easily redefine their accesses
+          if (userFound.permissions.limitedAccess.chainIds.ids.isNotEmpty ||
+              userFound.permissions.limitedAccess.boutiqueIds.ids.isNotEmpty) {
+            return true;
+          }
+          // iterate over requestor's chains
+          for (final visibleChain
+              in userPermission.limitedAccess.chainIds.ids) {
+            if (userFound.permissions.limitedAccess.chainIds.ids
+                .any((chainId) => chainId == visibleChain)) {
+              // userFound && requestor share at least one chain
+              // we iterate over the requestor's boutiques
+              for (final visibleBoutiques
+                  in userPermission.limitedAccess.boutiqueIds.ids) {
+                if (userFound.permissions.limitedAccess.boutiqueIds.ids
+                    .any((id) => id == visibleBoutiques)) {
+                  return true;
+                }
+              }
+            }
+          }
+          return false;
+        });
+      return UsersPublic(users: usersFiltered);
     } on GrpcError catch (e) {
       print('readOne error $e');
       rethrow;
+    }
+  }
+
+  /// webApp admin listens to this stream awaiting pendingDevice to be created
+  /// during 2 minutes as is arbitrarily chosen
+  @override
+  Future<Device> readOnePendingDevice(
+      ServiceCall call, ReadDeviceBtqRequest request) async {
+    if (request.chainId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId cannot be empty');
+    }
+    if (request.boutiqueId.isEmpty) {
+      throw GrpcError.invalidArgument('boutiqueId cannot be empty');
+    }
+
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermission;
+    if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to read boutiques/devices');
+    }
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
+    if (userPermission.isBoutiqueAccessible(request.boutiqueId) == false) {
+      throw GrpcError.permissionDenied(
+          'user does not have access to read boutique ${request.boutiqueId}');
+    }
+
+    /// ***IMPORTANT ***
+    /// As the change stream return a "fullDocument" and all
+    /// checks are made on this document, all field names must be prefixed
+    /// with "fullDocument" (see below: 'fullDocument.custId')
+    ///
+    /// Inside the Match stage there is the query operator "oneFrom" that corresponds to "$in"
+    ///
+    /// *** Note***
+    /// If you use a SelectorBuilder the Match stage requires a Map,
+    /// so you have to extract the map with ".map['\$query']"
+    final pipeline = AggregationPipelineBuilder().addStage(Match(
+        where.eq('fullDocument.chainId', request.chainId).map['\$query']));
+
+    /// If you look for updates is better to set "fullDocument" to "updateLookup"
+    /// otherwise the returned document will contain only the changed fields
+    /// also, since the pipeline control is made on the document processed,
+    /// If the document does not contains the field to be verified the event vill not be fired.
+    /// In our case, if we do not specify 'updateLookup' the returned document
+    /// will not contain the 'chainId' field and the match will not be performed (no event returned)
+    final stream = boutiqueCollection.watch(pipeline,
+        changeStreamOptions: ChangeStreamOptions(fullDocument: 'updateLookup'));
+
+    bool pleaseClose = false;
+
+    /// As the stream does not end until it is closed, do not use .toList()
+    /// or you will wait indefinitely
+    Device device = Device.create();
+    Chain chainUpdated = Chain.create();
+    final controller = stream.listen((changeEvent) {
+      final fullDocument = changeEvent.fullDocument ?? <String, dynamic>{};
+
+      print('Detected change for "chainId" '
+          '${fullDocument['chainId']}: "${fullDocument['name']}"');
+      chainUpdated.mergeFromProto3Json(fullDocument, ignoreUnknownFields: true);
+
+      if (chainUpdated.boutiques.isNotEmpty) {
+        final boutique = chainUpdated.boutiques
+            .firstWhereOrNull((b) => b.boutiqueId == request.boutiqueId);
+        if (boutique != null) {
+          final devices = boutique.devices.where((d) =>
+              d.chainId == request.chainId &&
+              d.boutiqueId == request.boutiqueId &&
+              d.status == false);
+          if (devices.isEmpty) {
+            // another event first occured on chain, too bad really
+            // since adding recursity here would be far-fetched
+            // we will simply redirect webapp to devices page
+          } else if (devices.length == 1) {
+            device = devices.first;
+          } else {
+            /// latest device prevails, high chance the other ones are not pending but disabled
+            devices.toList().sort((a, b) =>
+                a.dateCreation.seconds.compareTo(b.dateCreation.seconds));
+            device = devices.first;
+          }
+        }
+      }
+      pleaseClose = true;
+    });
+
+    var waitingCount = 0;
+    await Future.doWhile(() async {
+      if (pleaseClose) {
+        print('Change detected, closing stream and db.');
+
+        /// This is the correct way to cancel the watch subscription
+        await controller.cancel();
+        return false;
+      }
+      print('Waiting for change to be detected...');
+      await Future.delayed(Duration(seconds: 2));
+      waitingCount++;
+      if (waitingCount > 60) {
+        throw GrpcError.deadlineExceeded(
+            'no change on chainId ${request.chainId} for the past 2 minutes, retry');
+      }
+      return true;
+    });
+    if (device.boutiqueId.isNotEmpty) {
+      return device;
+    } else {
+      throw GrpcError.notFound('no pendingDevice found');
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:fence_service/src/password_encrypter.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:fence_service/src/data/roles_default.dart';
@@ -21,22 +22,33 @@ abstract class Dummy {
     devices: <Device>[Dummy.device],
   );
 
-  static final boutique = boutiqueNoId..boutiqueId = '665e12f798357783e8000002';
+  static final boutique = boutiqueNoId
+    ..boutiqueId = '665e12f798357783e8000002'
+    ..firmId = firm.firmId
+    ..chainId = chain.chainId;
 
   static final device = Device()
+    ..chainId = '665e12f798357783e8000001'
+    ..boutiqueId = '665e12f798357783e8000002'
     ..deviceId = '665e12f798357783e8000009'
     ..name = 'dummy device'
     ..serialNumber = 'unique';
 
   static final deviceNoId = Device()
+    ..chainId = chain.chainId
+    ..boutiqueId = boutique.boutiqueId
     ..name = 'dummy device'
     ..serialNumber = 'unique';
 
   static final chainNoId = Chain(
     boutiques: <Boutique>[Dummy.boutiqueNoId],
   );
-  static final chain = chainNoId..chainId = '665e12f798357783e8000001',
-      firmId = '123456789';
+  static final chain = chainNoId
+    ..chainId = '665e12f798357783e8000001'
+    ..firmId = '123456789'
+    ..boutiques.first.boutiqueId = '665e12f798357783e8000002'
+    ..boutiques.first.chainId = '665e12f798357783e8000001'
+    ..boutiques.first.firmId = '123456789';
 
   static final firmNoId = Firm(
     name: 'firmDummy',
@@ -52,7 +64,7 @@ abstract class Dummy {
 
   static final firm = firmNoId..firmId = '123456789';
 
-  static final userInfo = UserPublic(
+  static final userPublic = UserPublic(
     mail: 'dev@weebi.com',
     firstname: 'dev',
     lastname: 'tester',
@@ -62,6 +74,10 @@ abstract class Dummy {
       ..firmId = '123456789'
       ..userId = '987654321',
   );
+
+  static final userPrivate = UserPrivate.create()
+    ..mergeFromProto3Json(userPublic.toProto3Json(), ignoreUnknownFields: true)
+    ..passwordEncrypted = Encrypter('1234').encrypted;
 
   static final adminPermission = UserPermissions.create()
     ..firmId = '123456789'
@@ -90,5 +106,5 @@ abstract class Dummy {
 
   static final salesPersonPermission = salesPersonPermissionNoId
     ..userId = '987654321'
-    ..firmId = userInfo.permissions.firmId;
+    ..firmId = userPublic.permissions.firmId;
 }

@@ -41,30 +41,24 @@ class ChainIds extends $pb.GeneratedMessage {
     return $result;
   }
   ChainIds._() : super();
-  factory ChainIds.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ChainIds.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory ChainIds.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ChainIds.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'ChainIds',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChainIds', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
     ..pPS(1, _omitFieldNames ? '' : 'ids')
-    ..hasRequiredFields = false;
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   ChainIds clone() => ChainIds()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ChainIds copyWith(void Function(ChainIds) updates) =>
-      super.copyWith((message) => updates(message as ChainIds)) as ChainIds;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ChainIds copyWith(void Function(ChainIds) updates) => super.copyWith((message) => updates(message as ChainIds)) as ChainIds;
 
   $pb.BuilderInfo get info_ => _i;
 
@@ -73,8 +67,7 @@ class ChainIds extends $pb.GeneratedMessage {
   ChainIds createEmptyInstance() => create();
   static $pb.PbList<ChainIds> createRepeated() => $pb.PbList<ChainIds>();
   @$core.pragma('dart2js:noInline')
-  static ChainIds getDefault() =>
-      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChainIds>(create);
+  static ChainIds getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChainIds>(create);
   static ChainIds? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -92,31 +85,24 @@ class BoutiqueIds extends $pb.GeneratedMessage {
     return $result;
   }
   BoutiqueIds._() : super();
-  factory BoutiqueIds.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory BoutiqueIds.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory BoutiqueIds.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BoutiqueIds.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'BoutiqueIds',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueIds', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
     ..pPS(1, _omitFieldNames ? '' : 'ids')
-    ..hasRequiredFields = false;
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   BoutiqueIds clone() => BoutiqueIds()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  BoutiqueIds copyWith(void Function(BoutiqueIds) updates) =>
-      super.copyWith((message) => updates(message as BoutiqueIds))
-          as BoutiqueIds;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BoutiqueIds copyWith(void Function(BoutiqueIds) updates) => super.copyWith((message) => updates(message as BoutiqueIds)) as BoutiqueIds;
 
   $pb.BuilderInfo get info_ => _i;
 
@@ -125,8 +111,7 @@ class BoutiqueIds extends $pb.GeneratedMessage {
   BoutiqueIds createEmptyInstance() => create();
   static $pb.PbList<BoutiqueIds> createRepeated() => $pb.PbList<BoutiqueIds>();
   @$core.pragma('dart2js:noInline')
-  static BoutiqueIds getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<BoutiqueIds>(create);
+  static BoutiqueIds getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BoutiqueIds>(create);
   static BoutiqueIds? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -148,54 +133,40 @@ class AccessLimited extends $pb.GeneratedMessage {
     return $result;
   }
   AccessLimited._() : super();
-  factory AccessLimited.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory AccessLimited.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory AccessLimited.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AccessLimited.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'AccessLimited',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
-    ..aOM<ChainIds>(1, _omitFieldNames ? '' : 'chainIds',
-        protoName: 'chainIds', subBuilder: ChainIds.create)
-    ..aOM<BoutiqueIds>(2, _omitFieldNames ? '' : 'boutiqueIds',
-        protoName: 'boutiqueIds', subBuilder: BoutiqueIds.create)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AccessLimited', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..aOM<ChainIds>(1, _omitFieldNames ? '' : 'chainIds', protoName: 'chainIds', subBuilder: ChainIds.create)
+    ..aOM<BoutiqueIds>(2, _omitFieldNames ? '' : 'boutiqueIds', protoName: 'boutiqueIds', subBuilder: BoutiqueIds.create)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   AccessLimited clone() => AccessLimited()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  AccessLimited copyWith(void Function(AccessLimited) updates) =>
-      super.copyWith((message) => updates(message as AccessLimited))
-          as AccessLimited;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AccessLimited copyWith(void Function(AccessLimited) updates) => super.copyWith((message) => updates(message as AccessLimited)) as AccessLimited;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static AccessLimited create() => AccessLimited._();
   AccessLimited createEmptyInstance() => create();
-  static $pb.PbList<AccessLimited> createRepeated() =>
-      $pb.PbList<AccessLimited>();
+  static $pb.PbList<AccessLimited> createRepeated() => $pb.PbList<AccessLimited>();
   @$core.pragma('dart2js:noInline')
-  static AccessLimited getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<AccessLimited>(create);
+  static AccessLimited getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AccessLimited>(create);
   static AccessLimited? _defaultInstance;
 
   @$pb.TagNumber(1)
   ChainIds get chainIds => $_getN(0);
   @$pb.TagNumber(1)
-  set chainIds(ChainIds v) {
-    setField(1, v);
-  }
-
+  set chainIds(ChainIds v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasChainIds() => $_has(0);
   @$pb.TagNumber(1)
@@ -206,10 +177,7 @@ class AccessLimited extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   BoutiqueIds get boutiqueIds => $_getN(1);
   @$pb.TagNumber(2)
-  set boutiqueIds(BoutiqueIds v) {
-    setField(2, v);
-  }
-
+  set boutiqueIds(BoutiqueIds v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBoutiqueIds() => $_has(1);
   @$pb.TagNumber(2)
@@ -229,30 +197,24 @@ class AccessFull extends $pb.GeneratedMessage {
     return $result;
   }
   AccessFull._() : super();
-  factory AccessFull.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory AccessFull.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory AccessFull.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AccessFull.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'AccessFull',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AccessFull', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'hasFullAccess', protoName: 'hasFullAccess')
-    ..hasRequiredFields = false;
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   AccessFull clone() => AccessFull()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  AccessFull copyWith(void Function(AccessFull) updates) =>
-      super.copyWith((message) => updates(message as AccessFull)) as AccessFull;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AccessFull copyWith(void Function(AccessFull) updates) => super.copyWith((message) => updates(message as AccessFull)) as AccessFull;
 
   $pb.BuilderInfo get info_ => _i;
 
@@ -261,24 +223,24 @@ class AccessFull extends $pb.GeneratedMessage {
   AccessFull createEmptyInstance() => create();
   static $pb.PbList<AccessFull> createRepeated() => $pb.PbList<AccessFull>();
   @$core.pragma('dart2js:noInline')
-  static AccessFull getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<AccessFull>(create);
+  static AccessFull getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AccessFull>(create);
   static AccessFull? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.bool get hasFullAccess => $_getBF(0);
   @$pb.TagNumber(1)
-  set hasFullAccess($core.bool v) {
-    $_setBool(0, v);
-  }
-
+  set hasFullAccess($core.bool v) { $_setBool(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasHasFullAccess() => $_has(0);
   @$pb.TagNumber(1)
   void clearHasFullAccess() => clearField(1);
 }
 
-enum UserPermissions_Access { limitedAccess, fullAccess, notSet }
+enum UserPermissions_Access {
+  limitedAccess, 
+  fullAccess, 
+  notSet
+}
 
 class UserPermissions extends $pb.GeneratedMessage {
   factory UserPermissions({
@@ -339,87 +301,60 @@ class UserPermissions extends $pb.GeneratedMessage {
     return $result;
   }
   UserPermissions._() : super();
-  factory UserPermissions.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory UserPermissions.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory UserPermissions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UserPermissions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static const $core.Map<$core.int, UserPermissions_Access>
-      _UserPermissions_AccessByTag = {
-    3: UserPermissions_Access.limitedAccess,
-    4: UserPermissions_Access.fullAccess,
-    0: UserPermissions_Access.notSet
+  static const $core.Map<$core.int, UserPermissions_Access> _UserPermissions_AccessByTag = {
+    3 : UserPermissions_Access.limitedAccess,
+    4 : UserPermissions_Access.fullAccess,
+    0 : UserPermissions_Access.notSet
   };
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UserPermissions',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserPermissions', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
     ..oo(0, [3, 4])
     ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
-    ..aOM<AccessLimited>(3, _omitFieldNames ? '' : 'limitedAccess',
-        protoName: 'limitedAccess', subBuilder: AccessLimited.create)
-    ..aOM<AccessFull>(4, _omitFieldNames ? '' : 'fullAccess',
-        protoName: 'fullAccess', subBuilder: AccessFull.create)
-    ..aOM<TicketRights>(6, _omitFieldNames ? '' : 'ticketRights',
-        protoName: 'ticketRights', subBuilder: TicketRights.create)
-    ..aOM<ContactRights>(7, _omitFieldNames ? '' : 'contactRights',
-        protoName: 'contactRights', subBuilder: ContactRights.create)
-    ..aOM<ArticleRights>(8, _omitFieldNames ? '' : 'articleRights',
-        protoName: 'articleRights', subBuilder: ArticleRights.create)
-    ..aOM<BoutiqueRights>(9, _omitFieldNames ? '' : 'boutiqueRights',
-        protoName: 'boutiqueRights', subBuilder: BoutiqueRights.create)
-    ..aOM<ChainRights>(10, _omitFieldNames ? '' : 'chainRights',
-        protoName: 'chainRights', subBuilder: ChainRights.create)
-    ..aOM<FirmRights>(11, _omitFieldNames ? '' : 'firmRights',
-        protoName: 'firmRights', subBuilder: FirmRights.create)
-    ..aOM<UserManagementRights>(
-        12, _omitFieldNames ? '' : 'userManagementRights',
-        protoName: 'userManagementRights',
-        subBuilder: UserManagementRights.create)
-    ..aOM<BillingRights>(13, _omitFieldNames ? '' : 'billingRights',
-        protoName: 'billingRights', subBuilder: BillingRights.create)
-    ..aOM<BoolRights>(14, _omitFieldNames ? '' : 'boolRights',
-        protoName: 'boolRights', subBuilder: BoolRights.create)
-    ..hasRequiredFields = false;
+    ..aOM<AccessLimited>(3, _omitFieldNames ? '' : 'limitedAccess', protoName: 'limitedAccess', subBuilder: AccessLimited.create)
+    ..aOM<AccessFull>(4, _omitFieldNames ? '' : 'fullAccess', protoName: 'fullAccess', subBuilder: AccessFull.create)
+    ..aOM<TicketRights>(6, _omitFieldNames ? '' : 'ticketRights', protoName: 'ticketRights', subBuilder: TicketRights.create)
+    ..aOM<ContactRights>(7, _omitFieldNames ? '' : 'contactRights', protoName: 'contactRights', subBuilder: ContactRights.create)
+    ..aOM<ArticleRights>(8, _omitFieldNames ? '' : 'articleRights', protoName: 'articleRights', subBuilder: ArticleRights.create)
+    ..aOM<BoutiqueRights>(9, _omitFieldNames ? '' : 'boutiqueRights', protoName: 'boutiqueRights', subBuilder: BoutiqueRights.create)
+    ..aOM<ChainRights>(10, _omitFieldNames ? '' : 'chainRights', protoName: 'chainRights', subBuilder: ChainRights.create)
+    ..aOM<FirmRights>(11, _omitFieldNames ? '' : 'firmRights', protoName: 'firmRights', subBuilder: FirmRights.create)
+    ..aOM<UserManagementRights>(12, _omitFieldNames ? '' : 'userManagementRights', protoName: 'userManagementRights', subBuilder: UserManagementRights.create)
+    ..aOM<BillingRights>(13, _omitFieldNames ? '' : 'billingRights', protoName: 'billingRights', subBuilder: BillingRights.create)
+    ..aOM<BoolRights>(14, _omitFieldNames ? '' : 'boolRights', protoName: 'boolRights', subBuilder: BoolRights.create)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   UserPermissions clone() => UserPermissions()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  UserPermissions copyWith(void Function(UserPermissions) updates) =>
-      super.copyWith((message) => updates(message as UserPermissions))
-          as UserPermissions;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UserPermissions copyWith(void Function(UserPermissions) updates) => super.copyWith((message) => updates(message as UserPermissions)) as UserPermissions;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static UserPermissions create() => UserPermissions._();
   UserPermissions createEmptyInstance() => create();
-  static $pb.PbList<UserPermissions> createRepeated() =>
-      $pb.PbList<UserPermissions>();
+  static $pb.PbList<UserPermissions> createRepeated() => $pb.PbList<UserPermissions>();
   @$core.pragma('dart2js:noInline')
-  static UserPermissions getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UserPermissions>(create);
+  static UserPermissions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserPermissions>(create);
   static UserPermissions? _defaultInstance;
 
-  UserPermissions_Access whichAccess() =>
-      _UserPermissions_AccessByTag[$_whichOneof(0)]!;
+  UserPermissions_Access whichAccess() => _UserPermissions_AccessByTag[$_whichOneof(0)]!;
   void clearAccess() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
   $core.String get userId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set userId($core.String v) {
-    $_setString(0, v);
-  }
-
+  set userId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
@@ -428,10 +363,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get firmId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set firmId($core.String v) {
-    $_setString(1, v);
-  }
-
+  set firmId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasFirmId() => $_has(1);
   @$pb.TagNumber(2)
@@ -440,10 +372,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   AccessLimited get limitedAccess => $_getN(2);
   @$pb.TagNumber(3)
-  set limitedAccess(AccessLimited v) {
-    setField(3, v);
-  }
-
+  set limitedAccess(AccessLimited v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasLimitedAccess() => $_has(2);
   @$pb.TagNumber(3)
@@ -454,10 +383,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   AccessFull get fullAccess => $_getN(3);
   @$pb.TagNumber(4)
-  set fullAccess(AccessFull v) {
-    setField(4, v);
-  }
-
+  set fullAccess(AccessFull v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasFullAccess() => $_has(3);
   @$pb.TagNumber(4)
@@ -468,10 +394,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   TicketRights get ticketRights => $_getN(4);
   @$pb.TagNumber(6)
-  set ticketRights(TicketRights v) {
-    setField(6, v);
-  }
-
+  set ticketRights(TicketRights v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasTicketRights() => $_has(4);
   @$pb.TagNumber(6)
@@ -482,10 +405,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   ContactRights get contactRights => $_getN(5);
   @$pb.TagNumber(7)
-  set contactRights(ContactRights v) {
-    setField(7, v);
-  }
-
+  set contactRights(ContactRights v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasContactRights() => $_has(5);
   @$pb.TagNumber(7)
@@ -496,10 +416,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   ArticleRights get articleRights => $_getN(6);
   @$pb.TagNumber(8)
-  set articleRights(ArticleRights v) {
-    setField(8, v);
-  }
-
+  set articleRights(ArticleRights v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasArticleRights() => $_has(6);
   @$pb.TagNumber(8)
@@ -510,10 +427,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   BoutiqueRights get boutiqueRights => $_getN(7);
   @$pb.TagNumber(9)
-  set boutiqueRights(BoutiqueRights v) {
-    setField(9, v);
-  }
-
+  set boutiqueRights(BoutiqueRights v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasBoutiqueRights() => $_has(7);
   @$pb.TagNumber(9)
@@ -521,13 +435,12 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   BoutiqueRights ensureBoutiqueRights() => $_ensure(7);
 
+  /// TODO: think about a deviceRights or at least something about device boolRights
+  /// TODO reanme below
   @$pb.TagNumber(10)
   ChainRights get chainRights => $_getN(8);
   @$pb.TagNumber(10)
-  set chainRights(ChainRights v) {
-    setField(10, v);
-  }
-
+  set chainRights(ChainRights v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasChainRights() => $_has(8);
   @$pb.TagNumber(10)
@@ -538,10 +451,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   FirmRights get firmRights => $_getN(9);
   @$pb.TagNumber(11)
-  set firmRights(FirmRights v) {
-    setField(11, v);
-  }
-
+  set firmRights(FirmRights v) { setField(11, v); }
   @$pb.TagNumber(11)
   $core.bool hasFirmRights() => $_has(9);
   @$pb.TagNumber(11)
@@ -552,10 +462,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   UserManagementRights get userManagementRights => $_getN(10);
   @$pb.TagNumber(12)
-  set userManagementRights(UserManagementRights v) {
-    setField(12, v);
-  }
-
+  set userManagementRights(UserManagementRights v) { setField(12, v); }
   @$pb.TagNumber(12)
   $core.bool hasUserManagementRights() => $_has(10);
   @$pb.TagNumber(12)
@@ -566,10 +473,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   BillingRights get billingRights => $_getN(11);
   @$pb.TagNumber(13)
-  set billingRights(BillingRights v) {
-    setField(13, v);
-  }
-
+  set billingRights(BillingRights v) { setField(13, v); }
   @$pb.TagNumber(13)
   $core.bool hasBillingRights() => $_has(11);
   @$pb.TagNumber(13)
@@ -580,10 +484,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   BoolRights get boolRights => $_getN(12);
   @$pb.TagNumber(14)
-  set boolRights(BoolRights v) {
-    setField(14, v);
-  }
-
+  set boolRights(BoolRights v) { setField(14, v); }
   @$pb.TagNumber(14)
   $core.bool hasBoolRights() => $_has(12);
   @$pb.TagNumber(14)
@@ -603,46 +504,33 @@ class ArticleRights extends $pb.GeneratedMessage {
     return $result;
   }
   ArticleRights._() : super();
-  factory ArticleRights.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ArticleRights.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory ArticleRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ArticleRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'ArticleRights',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
-    ..pc<Right>(1, _omitFieldNames ? '' : 'articleRights', $pb.PbFieldType.KE,
-        protoName: 'rights',
-        valueOf: Right.valueOf,
-        enumValues: Right.values,
-        defaultEnumValue: Right.unknown)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticleRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..pc<Right>(1, _omitFieldNames ? '' : 'articleRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   ArticleRights clone() => ArticleRights()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ArticleRights copyWith(void Function(ArticleRights) updates) =>
-      super.copyWith((message) => updates(message as ArticleRights))
-          as ArticleRights;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ArticleRights copyWith(void Function(ArticleRights) updates) => super.copyWith((message) => updates(message as ArticleRights)) as ArticleRights;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static ArticleRights create() => ArticleRights._();
   ArticleRights createEmptyInstance() => create();
-  static $pb.PbList<ArticleRights> createRepeated() =>
-      $pb.PbList<ArticleRights>();
+  static $pb.PbList<ArticleRights> createRepeated() => $pb.PbList<ArticleRights>();
   @$core.pragma('dart2js:noInline')
-  static ArticleRights getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ArticleRights>(create);
+  static ArticleRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ArticleRights>(create);
   static ArticleRights? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -660,46 +548,33 @@ class BoutiqueRights extends $pb.GeneratedMessage {
     return $result;
   }
   BoutiqueRights._() : super();
-  factory BoutiqueRights.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory BoutiqueRights.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory BoutiqueRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BoutiqueRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'BoutiqueRights',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
-    ..pc<Right>(1, _omitFieldNames ? '' : 'boutiqueRights', $pb.PbFieldType.KE,
-        protoName: 'rights',
-        valueOf: Right.valueOf,
-        enumValues: Right.values,
-        defaultEnumValue: Right.unknown)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..pc<Right>(1, _omitFieldNames ? '' : 'boutiqueRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   BoutiqueRights clone() => BoutiqueRights()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  BoutiqueRights copyWith(void Function(BoutiqueRights) updates) =>
-      super.copyWith((message) => updates(message as BoutiqueRights))
-          as BoutiqueRights;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BoutiqueRights copyWith(void Function(BoutiqueRights) updates) => super.copyWith((message) => updates(message as BoutiqueRights)) as BoutiqueRights;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static BoutiqueRights create() => BoutiqueRights._();
   BoutiqueRights createEmptyInstance() => create();
-  static $pb.PbList<BoutiqueRights> createRepeated() =>
-      $pb.PbList<BoutiqueRights>();
+  static $pb.PbList<BoutiqueRights> createRepeated() => $pb.PbList<BoutiqueRights>();
   @$core.pragma('dart2js:noInline')
-  static BoutiqueRights getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<BoutiqueRights>(create);
+  static BoutiqueRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BoutiqueRights>(create);
   static BoutiqueRights? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -717,35 +592,24 @@ class ChainRights extends $pb.GeneratedMessage {
     return $result;
   }
   ChainRights._() : super();
-  factory ChainRights.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ChainRights.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory ChainRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ChainRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'ChainRights',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
-    ..pc<Right>(1, _omitFieldNames ? '' : 'chainRights', $pb.PbFieldType.KE,
-        protoName: 'rights',
-        valueOf: Right.valueOf,
-        enumValues: Right.values,
-        defaultEnumValue: Right.unknown)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChainRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..pc<Right>(1, _omitFieldNames ? '' : 'chainRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   ChainRights clone() => ChainRights()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ChainRights copyWith(void Function(ChainRights) updates) =>
-      super.copyWith((message) => updates(message as ChainRights))
-          as ChainRights;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ChainRights copyWith(void Function(ChainRights) updates) => super.copyWith((message) => updates(message as ChainRights)) as ChainRights;
 
   $pb.BuilderInfo get info_ => _i;
 
@@ -754,8 +618,7 @@ class ChainRights extends $pb.GeneratedMessage {
   ChainRights createEmptyInstance() => create();
   static $pb.PbList<ChainRights> createRepeated() => $pb.PbList<ChainRights>();
   @$core.pragma('dart2js:noInline')
-  static ChainRights getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ChainRights>(create);
+  static ChainRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChainRights>(create);
   static ChainRights? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -773,34 +636,24 @@ class FirmRights extends $pb.GeneratedMessage {
     return $result;
   }
   FirmRights._() : super();
-  factory FirmRights.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory FirmRights.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory FirmRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory FirmRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'FirmRights',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
-    ..pc<Right>(1, _omitFieldNames ? '' : 'firmRights', $pb.PbFieldType.KE,
-        protoName: 'rights',
-        valueOf: Right.valueOf,
-        enumValues: Right.values,
-        defaultEnumValue: Right.unknown)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FirmRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..pc<Right>(1, _omitFieldNames ? '' : 'firmRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   FirmRights clone() => FirmRights()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  FirmRights copyWith(void Function(FirmRights) updates) =>
-      super.copyWith((message) => updates(message as FirmRights)) as FirmRights;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  FirmRights copyWith(void Function(FirmRights) updates) => super.copyWith((message) => updates(message as FirmRights)) as FirmRights;
 
   $pb.BuilderInfo get info_ => _i;
 
@@ -809,8 +662,7 @@ class FirmRights extends $pb.GeneratedMessage {
   FirmRights createEmptyInstance() => create();
   static $pb.PbList<FirmRights> createRepeated() => $pb.PbList<FirmRights>();
   @$core.pragma('dart2js:noInline')
-  static FirmRights getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<FirmRights>(create);
+  static FirmRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FirmRights>(create);
   static FirmRights? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -828,46 +680,33 @@ class ContactRights extends $pb.GeneratedMessage {
     return $result;
   }
   ContactRights._() : super();
-  factory ContactRights.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory ContactRights.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory ContactRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ContactRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'ContactRights',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
-    ..pc<Right>(1, _omitFieldNames ? '' : 'contactRights', $pb.PbFieldType.KE,
-        protoName: 'rights',
-        valueOf: Right.valueOf,
-        enumValues: Right.values,
-        defaultEnumValue: Right.unknown)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..pc<Right>(1, _omitFieldNames ? '' : 'contactRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   ContactRights clone() => ContactRights()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  ContactRights copyWith(void Function(ContactRights) updates) =>
-      super.copyWith((message) => updates(message as ContactRights))
-          as ContactRights;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ContactRights copyWith(void Function(ContactRights) updates) => super.copyWith((message) => updates(message as ContactRights)) as ContactRights;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static ContactRights create() => ContactRights._();
   ContactRights createEmptyInstance() => create();
-  static $pb.PbList<ContactRights> createRepeated() =>
-      $pb.PbList<ContactRights>();
+  static $pb.PbList<ContactRights> createRepeated() => $pb.PbList<ContactRights>();
   @$core.pragma('dart2js:noInline')
-  static ContactRights getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<ContactRights>(create);
+  static ContactRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ContactRights>(create);
   static ContactRights? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -887,46 +726,33 @@ class TicketRights extends $pb.GeneratedMessage {
     return $result;
   }
   TicketRights._() : super();
-  factory TicketRights.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory TicketRights.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory TicketRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory TicketRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'TicketRights',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
-    ..pc<Right>(1, _omitFieldNames ? '' : 'ticketRights', $pb.PbFieldType.KE,
-        protoName: 'rights',
-        valueOf: Right.valueOf,
-        enumValues: Right.values,
-        defaultEnumValue: Right.unknown)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..pc<Right>(1, _omitFieldNames ? '' : 'ticketRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   TicketRights clone() => TicketRights()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  TicketRights copyWith(void Function(TicketRights) updates) =>
-      super.copyWith((message) => updates(message as TicketRights))
-          as TicketRights;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  TicketRights copyWith(void Function(TicketRights) updates) => super.copyWith((message) => updates(message as TicketRights)) as TicketRights;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static TicketRights create() => TicketRights._();
   TicketRights createEmptyInstance() => create();
-  static $pb.PbList<TicketRights> createRepeated() =>
-      $pb.PbList<TicketRights>();
+  static $pb.PbList<TicketRights> createRepeated() => $pb.PbList<TicketRights>();
   @$core.pragma('dart2js:noInline')
-  static TicketRights getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<TicketRights>(create);
+  static TicketRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TicketRights>(create);
   static TicketRights? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -944,48 +770,33 @@ class UserManagementRights extends $pb.GeneratedMessage {
     return $result;
   }
   UserManagementRights._() : super();
-  factory UserManagementRights.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory UserManagementRights.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory UserManagementRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory UserManagementRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'UserManagementRights',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
-    ..pc<Right>(
-        1, _omitFieldNames ? '' : 'userManagementRights', $pb.PbFieldType.KE,
-        protoName: 'rights',
-        valueOf: Right.valueOf,
-        enumValues: Right.values,
-        defaultEnumValue: Right.unknown)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserManagementRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..pc<Right>(1, _omitFieldNames ? '' : 'userManagementRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
-  UserManagementRights clone() =>
-      UserManagementRights()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  UserManagementRights copyWith(void Function(UserManagementRights) updates) =>
-      super.copyWith((message) => updates(message as UserManagementRights))
-          as UserManagementRights;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  UserManagementRights clone() => UserManagementRights()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  UserManagementRights copyWith(void Function(UserManagementRights) updates) => super.copyWith((message) => updates(message as UserManagementRights)) as UserManagementRights;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static UserManagementRights create() => UserManagementRights._();
   UserManagementRights createEmptyInstance() => create();
-  static $pb.PbList<UserManagementRights> createRepeated() =>
-      $pb.PbList<UserManagementRights>();
+  static $pb.PbList<UserManagementRights> createRepeated() => $pb.PbList<UserManagementRights>();
   @$core.pragma('dart2js:noInline')
-  static UserManagementRights getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<UserManagementRights>(create);
+  static UserManagementRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UserManagementRights>(create);
   static UserManagementRights? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1003,46 +814,33 @@ class BillingRights extends $pb.GeneratedMessage {
     return $result;
   }
   BillingRights._() : super();
-  factory BillingRights.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory BillingRights.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory BillingRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BillingRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'BillingRights',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
-    ..pc<Right>(1, _omitFieldNames ? '' : 'billingRights', $pb.PbFieldType.KE,
-        protoName: 'rights',
-        valueOf: Right.valueOf,
-        enumValues: Right.values,
-        defaultEnumValue: Right.unknown)
-    ..hasRequiredFields = false;
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BillingRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
+    ..pc<Right>(1, _omitFieldNames ? '' : 'billingRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   BillingRights clone() => BillingRights()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  BillingRights copyWith(void Function(BillingRights) updates) =>
-      super.copyWith((message) => updates(message as BillingRights))
-          as BillingRights;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BillingRights copyWith(void Function(BillingRights) updates) => super.copyWith((message) => updates(message as BillingRights)) as BillingRights;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static BillingRights create() => BillingRights._();
   BillingRights createEmptyInstance() => create();
-  static $pb.PbList<BillingRights> createRepeated() =>
-      $pb.PbList<BillingRights>();
+  static $pb.PbList<BillingRights> createRepeated() => $pb.PbList<BillingRights>();
   @$core.pragma('dart2js:noInline')
-  static BillingRights getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<BillingRights>(create);
+  static BillingRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BillingRights>(create);
   static BillingRights? _defaultInstance;
 
   @$pb.TagNumber(1)
@@ -1092,42 +890,32 @@ class BoolRights extends $pb.GeneratedMessage {
     return $result;
   }
   BoolRights._() : super();
-  factory BoolRights.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
-  factory BoolRights.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+  factory BoolRights.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BoolRights.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
-      _omitMessageNames ? '' : 'BoolRights',
-      package: const $pb.PackageName(
-          _omitMessageNames ? '' : 'weebi.user.permissions'),
-      createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoolRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'canSeeStats', protoName: 'canSeeStats')
     ..aOB(2, _omitFieldNames ? '' : 'canExportData', protoName: 'canExportData')
-    ..aOB(3, _omitFieldNames ? '' : 'canGiveDiscount',
-        protoName: 'canGiveDiscount')
+    ..aOB(3, _omitFieldNames ? '' : 'canGiveDiscount', protoName: 'canGiveDiscount')
     ..aOB(4, _omitFieldNames ? '' : 'canSetPromo', protoName: 'canSetPromo')
-    ..aOB(5, _omitFieldNames ? '' : 'canStockMovement',
-        protoName: 'canStockMovement')
-    ..aOB(6, _omitFieldNames ? '' : 'canStockInventory',
-        protoName: 'canStockInventory')
+    ..aOB(5, _omitFieldNames ? '' : 'canStockMovement', protoName: 'canStockMovement')
+    ..aOB(6, _omitFieldNames ? '' : 'canStockInventory', protoName: 'canStockInventory')
     ..aOB(7, _omitFieldNames ? '' : 'canQuickSpend', protoName: 'canQuickSpend')
     ..aOB(8, _omitFieldNames ? '' : 'canPurchase', protoName: 'canPurchase')
-    ..aOB(9, _omitFieldNames ? '' : 'canImportTickets',
-        protoName: 'canImportTickets')
-    ..hasRequiredFields = false;
+    ..aOB(9, _omitFieldNames ? '' : 'canImportTickets', protoName: 'canImportTickets')
+    ..hasRequiredFields = false
+  ;
 
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-      'Will be removed in next major version')
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
   BoolRights clone() => BoolRights()..mergeFromMessage(this);
-  @$core.Deprecated('Using this can add significant overhead to your binary. '
-      'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-      'Will be removed in next major version')
-  BoolRights copyWith(void Function(BoolRights) updates) =>
-      super.copyWith((message) => updates(message as BoolRights)) as BoolRights;
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BoolRights copyWith(void Function(BoolRights) updates) => super.copyWith((message) => updates(message as BoolRights)) as BoolRights;
 
   $pb.BuilderInfo get info_ => _i;
 
@@ -1136,17 +924,13 @@ class BoolRights extends $pb.GeneratedMessage {
   BoolRights createEmptyInstance() => create();
   static $pb.PbList<BoolRights> createRepeated() => $pb.PbList<BoolRights>();
   @$core.pragma('dart2js:noInline')
-  static BoolRights getDefault() => _defaultInstance ??=
-      $pb.GeneratedMessage.$_defaultFor<BoolRights>(create);
+  static BoolRights getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BoolRights>(create);
   static BoolRights? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.bool get canSeeStats => $_getBF(0);
   @$pb.TagNumber(1)
-  set canSeeStats($core.bool v) {
-    $_setBool(0, v);
-  }
-
+  set canSeeStats($core.bool v) { $_setBool(0, v); }
   @$pb.TagNumber(1)
   $core.bool hasCanSeeStats() => $_has(0);
   @$pb.TagNumber(1)
@@ -1155,10 +939,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool get canExportData => $_getBF(1);
   @$pb.TagNumber(2)
-  set canExportData($core.bool v) {
-    $_setBool(1, v);
-  }
-
+  set canExportData($core.bool v) { $_setBool(1, v); }
   @$pb.TagNumber(2)
   $core.bool hasCanExportData() => $_has(1);
   @$pb.TagNumber(2)
@@ -1167,10 +948,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool get canGiveDiscount => $_getBF(2);
   @$pb.TagNumber(3)
-  set canGiveDiscount($core.bool v) {
-    $_setBool(2, v);
-  }
-
+  set canGiveDiscount($core.bool v) { $_setBool(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasCanGiveDiscount() => $_has(2);
   @$pb.TagNumber(3)
@@ -1179,10 +957,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool get canSetPromo => $_getBF(3);
   @$pb.TagNumber(4)
-  set canSetPromo($core.bool v) {
-    $_setBool(3, v);
-  }
-
+  set canSetPromo($core.bool v) { $_setBool(3, v); }
   @$pb.TagNumber(4)
   $core.bool hasCanSetPromo() => $_has(3);
   @$pb.TagNumber(4)
@@ -1191,10 +966,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool get canStockMovement => $_getBF(4);
   @$pb.TagNumber(5)
-  set canStockMovement($core.bool v) {
-    $_setBool(4, v);
-  }
-
+  set canStockMovement($core.bool v) { $_setBool(4, v); }
   @$pb.TagNumber(5)
   $core.bool hasCanStockMovement() => $_has(4);
   @$pb.TagNumber(5)
@@ -1203,10 +975,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool get canStockInventory => $_getBF(5);
   @$pb.TagNumber(6)
-  set canStockInventory($core.bool v) {
-    $_setBool(5, v);
-  }
-
+  set canStockInventory($core.bool v) { $_setBool(5, v); }
   @$pb.TagNumber(6)
   $core.bool hasCanStockInventory() => $_has(5);
   @$pb.TagNumber(6)
@@ -1215,10 +984,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.bool get canQuickSpend => $_getBF(6);
   @$pb.TagNumber(7)
-  set canQuickSpend($core.bool v) {
-    $_setBool(6, v);
-  }
-
+  set canQuickSpend($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(7)
   $core.bool hasCanQuickSpend() => $_has(6);
   @$pb.TagNumber(7)
@@ -1227,10 +993,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $core.bool get canPurchase => $_getBF(7);
   @$pb.TagNumber(8)
-  set canPurchase($core.bool v) {
-    $_setBool(7, v);
-  }
-
+  set canPurchase($core.bool v) { $_setBool(7, v); }
   @$pb.TagNumber(8)
   $core.bool hasCanPurchase() => $_has(7);
   @$pb.TagNumber(8)
@@ -1239,16 +1002,13 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   $core.bool get canImportTickets => $_getBF(8);
   @$pb.TagNumber(9)
-  set canImportTickets($core.bool v) {
-    $_setBool(8, v);
-  }
-
+  set canImportTickets($core.bool v) { $_setBool(8, v); }
   @$pb.TagNumber(9)
   $core.bool hasCanImportTickets() => $_has(8);
   @$pb.TagNumber(9)
   void clearCanImportTickets() => clearField(9);
 }
 
+
 const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const _omitMessageNames =
-    $core.bool.fromEnvironment('protobuf.omit_message_names');
+const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');

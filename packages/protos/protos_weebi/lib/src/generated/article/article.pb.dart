@@ -20,7 +20,7 @@ export 'article.pbenum.dart';
 class CalibreMongo extends $pb.GeneratedMessage {
   factory CalibreMongo({
     CalibrePb? calibre,
-    $core.int? calibreId,
+    $core.int? calibreNonUniqueId,
     $core.String? firmId,
     $core.String? chainId,
     $core.String? userId,
@@ -29,8 +29,8 @@ class CalibreMongo extends $pb.GeneratedMessage {
     if (calibre != null) {
       $result.calibre = calibre;
     }
-    if (calibreId != null) {
-      $result.calibreId = calibreId;
+    if (calibreNonUniqueId != null) {
+      $result.calibreNonUniqueId = calibreNonUniqueId;
     }
     if (firmId != null) {
       $result.firmId = firmId;
@@ -49,7 +49,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibreMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article'), createEmptyInstance: create)
     ..aOM<CalibrePb>(1, _omitFieldNames ? '' : 'calibre', subBuilder: CalibrePb.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'calibreNonUniqueId', $pb.PbFieldType.O3, protoName: 'calibreNonUniqueId')
     ..aOS(3, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(4, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(5, _omitFieldNames ? '' : 'userId', protoName: 'userId')
@@ -90,13 +90,13 @@ class CalibreMongo extends $pb.GeneratedMessage {
   CalibrePb ensureCalibre() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get calibreId => $_getIZ(1);
+  $core.int get calibreNonUniqueId => $_getIZ(1);
   @$pb.TagNumber(2)
-  set calibreId($core.int v) { $_setSignedInt32(1, v); }
+  set calibreNonUniqueId($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasCalibreId() => $_has(1);
+  $core.bool hasCalibreNonUniqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCalibreId() => clearField(2);
+  void clearCalibreNonUniqueId() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get firmId => $_getSZ(2);
@@ -126,7 +126,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
   void clearUserId() => clearField(5);
 }
 
-/// / Wrapping articles, using Pb to != from Calibre Dart in models weebi
+/// / Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi
 class CalibrePb extends $pb.GeneratedMessage {
   factory CalibrePb({
     $core.int? id,

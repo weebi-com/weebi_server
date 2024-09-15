@@ -36,7 +36,7 @@ void main() async {
       ..firmId = Dummy.firm.firmId
       ..chainId = Dummy.chain.chainId
       ..boutiqueId = Dummy.chain.boutiques.first.boutiqueId
-      ..userId = Dummy.userInfo.userId;
+      ..userId = Dummy.userPublic.userId;
 
     await db.open();
     ticketService = TicketService(
