@@ -546,14 +546,15 @@ class FenceService extends FenceServiceBase {
   /// the device will still need to be approved by admin on the web (pending)
   /// mitigating the risk of a device added without admin consent
   @override
-  Future<StatusResponse> createPendingDevice(
+  Future<CreatePendingDeviceResponse> createPendingDevice(
       ServiceCall? call, PendingDeviceRequest request) async {
     final pairingResp = await _findCode(request.code);
     if (pairingResp.code == 0) {
-      return StatusResponse()
-        ..type = StatusResponse_Type.ERROR
-        ..message = 'no match'
-        ..timestamp = DateTime.now().timestampProto;
+      return CreatePendingDeviceResponse(
+          statusResponse: StatusResponse(
+              type: StatusResponse_Type.ERROR,
+              message: 'no match',
+              timestamp: DateTime.now().timestampProto));
     }
     try {
       // get chain info
@@ -570,6 +571,7 @@ class FenceService extends FenceServiceBase {
       // We create the device in the boutique's chain with a false status
       // admin still need to approve device in case code leaked or else
       request.device.status = false;
+      request.device.password = '';
       request.device.dateCreation = DateTime.now().timestampProto;
       // set the boutiqueId selected by web admin
       request.device.boutiqueId = pairingResp.boutiqueId;
@@ -590,10 +592,13 @@ class FenceService extends FenceServiceBase {
             DateTime.now().subtract(Duration(days: 10)).toIso8601String());
         await pairingCodesCollection.deleteMany(selector);
       }
-
-      return StatusResponse()
-        ..type = StatusResponse_Type.CREATED
-        ..timestamp = result.timestamp;
+      return CreatePendingDeviceResponse(
+          statusResponse: StatusResponse(
+              type: StatusResponse_Type.CREATED, timestamp: result.timestamp),
+          firmId: chain.firmId,
+          chainId: chain.chainId,
+          boutiqueId: request.device.boutiqueId,
+          deviceId: request.device.deviceId);
     } on GrpcError catch (e) {
       print('pairOneDevice error $e');
       rethrow;

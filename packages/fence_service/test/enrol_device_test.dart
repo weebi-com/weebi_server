@@ -58,7 +58,8 @@ void main() {
 
     /// right after creating the code, the web app displays a circularProgressIndicator and listens to changes
     /// which should trigger a response in the webapp request
-    /// for simplicity here we do not test this and instead assume the webapp user goes to device screen and refreshes accordingly
+    /// since this is hard to include in the test
+    /// here we assume the webapp user goes to device screen and refreshes accordingly
 //    final device = await fenceService.readOnePendingDevice(
 //        ServiceCallTest(bearer.accessToken),
 //        ReadDeviceBtqRequest(
@@ -72,7 +73,8 @@ void main() {
             ServiceCallTest('', path: 'createPendingDevice'),
             PendingDeviceRequest(
                 code: codeResponse.code, device: Dummy.device));
-    expect(createPendingDeviceStatusResponse.type, StatusResponse_Type.CREATED);
+    expect(createPendingDeviceStatusResponse.statusResponse.type,
+        StatusResponse_Type.CREATED);
 
     //
     final devices = await fenceService.readDevices(
