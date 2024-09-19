@@ -570,6 +570,7 @@ class FenceService extends FenceServiceBase {
       // We create the device in the boutique's chain with a false status
       // admin still need to approve device in case code leaked or else
       request.device.status = false;
+      request.device.password = '';
       request.device.dateCreation = DateTime.now().timestampProto;
       // set the boutiqueId selected by web admin
       request.device.boutiqueId = pairingResp.boutiqueId;
