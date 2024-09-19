@@ -13,6 +13,25 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use createPendingDeviceResponseDescriptor instead')
+const CreatePendingDeviceResponse$json = {
+  '1': 'CreatePendingDeviceResponse',
+  '2': [
+    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
+    {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'chainId', '3': 3, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'boutiqueId', '3': 4, '4': 1, '5': 9, '10': 'boutiqueId'},
+    {'1': 'deviceId', '3': 5, '4': 1, '5': 9, '10': 'deviceId'},
+  ],
+};
+
+/// Descriptor for `CreatePendingDeviceResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createPendingDeviceResponseDescriptor = $convert.base64Decode(
+    'ChtDcmVhdGVQZW5kaW5nRGV2aWNlUmVzcG9uc2USTAoOc3RhdHVzUmVzcG9uc2UYASABKAsyJC'
+    '5nb29nbGUucmV0YWlsLmNvbW1vbi5TdGF0dXNSZXNwb25zZVIOc3RhdHVzUmVzcG9uc2USFgoG'
+    'ZmlybUlkGAIgASgJUgZmaXJtSWQSGAoHY2hhaW5JZBgDIAEoCVIHY2hhaW5JZBIeCgpib3V0aX'
+    'F1ZUlkGAQgASgJUgpib3V0aXF1ZUlkEhoKCGRldmljZUlkGAUgASgJUghkZXZpY2VJZA==');
+
 @$core.Deprecated('Use readOneUserResponseDescriptor instead')
 const ReadOneUserResponse$json = {
   '1': 'ReadOneUserResponse',

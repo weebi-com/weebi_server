@@ -73,7 +73,8 @@ void main() {
             ServiceCallTest('', path: 'createPendingDevice'),
             PendingDeviceRequest(
                 code: codeResponse.code, device: Dummy.device));
-    expect(createPendingDeviceStatusResponse.type, StatusResponse_Type.CREATED);
+    expect(createPendingDeviceStatusResponse.statusResponse.type,
+        StatusResponse_Type.CREATED);
 
     //
     final devices = await fenceService.readDevices(
