@@ -7,6 +7,7 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/grpc.dart' show Server;
 import 'package:article_service/article_service.dart';
 import 'package:contact_service/contact_service.dart';
+import 'package:server/server_interceptors.dart';
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
 // import 'package:fence_service/user_testing.dart';

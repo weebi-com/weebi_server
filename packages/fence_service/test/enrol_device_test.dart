@@ -68,11 +68,12 @@ void main() {
 //
 
     /// From the PoS app the user types the code which == creating the pending device
+
+    final pendingDevice =
+        PendingDeviceRequest(code: codeResponse.code, device: Dummy.device);
     final createPendingDeviceStatusResponse =
         await fenceService.createPendingDevice(
-            ServiceCallTest('', path: 'createPendingDevice'),
-            PendingDeviceRequest(
-                code: codeResponse.code, device: Dummy.device));
+            ServiceCallTest('', path: 'createPendingDevice'), pendingDevice);
     expect(createPendingDeviceStatusResponse.statusResponse.type,
         StatusResponse_Type.CREATED);
 

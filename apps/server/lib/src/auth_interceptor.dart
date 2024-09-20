@@ -22,7 +22,7 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
   }
   if (call.clientMetadata![':path']!
       .toLowerCase()
-      .contains('createPendingDevice')) {
+      .contains('creatependingdevice')) {
     return null; // allow all createPendingDevice RPC calls
   }
   try {
