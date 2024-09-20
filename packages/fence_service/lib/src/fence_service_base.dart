@@ -570,20 +570,22 @@ class FenceService extends FenceServiceBase {
           pairingResp.firmId, pairingResp.chainId);
 
       final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
-          btq.chainId == request.device.chainId &&
-          btq.boutiqueId == request.device.boutiqueId);
+          btq.chainId == pairingResp.chainId &&
+          btq.boutiqueId == pairingResp.boutiqueId);
 
       if (boutiqueIndex == -1) {
         throw GrpcError.notFound('no boutique found with this device info');
       }
       // We create the device in the boutique's chain with a false status
       // admin still need to approve device in case code leaked or else
-      request.device.status = false;
-      request.device.password = '';
-      request.device.dateCreation = DateTime.now().timestampProto;
       // set the boutiqueId selected by web admin
-      request.device.boutiqueId = pairingResp.boutiqueId;
-      request.device.deviceId = DateTime.now().objectIdString;
+      request.device
+        ..status = false
+        ..password = ''
+        ..dateCreation = DateTime.now().timestampProto
+        ..boutiqueId = pairingResp.boutiqueId
+        ..chainId = pairingResp.chainId
+        ..deviceId = DateTime.now().objectIdString;
 
       chain.boutiques[boutiqueIndex].devices.add(request.device);
 
@@ -1002,7 +1004,7 @@ class FenceService extends FenceServiceBase {
           .findOne(where.eq('firmId', firmId).eq('chainId', chainId));
       if (chainMongo == null) {
         throw GrpcError.notFound(
-            'chain not found firmId: $firmId chainId:$chainId');
+            'firm/chain not found firmId: $firmId chainId:$chainId');
       }
       return Chain.create()
         ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
