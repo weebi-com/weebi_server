@@ -61,14 +61,14 @@ service FenceService {
   /// createPendingDevice is called by mobile/desktop app  
   rpc createPendingDevice(PendingDeviceRequest) returns (CreatePendingDeviceResponse);
   /// webapp listens to deviceStream awaiting PoS app to create pendingDevice
-  /// stream lasts for 2 minutes (to be tested) 
+  /// await lasts for 2 minutes (to be tested) 
   rpc readOnePendingDevice(ReadDeviceBtqRequest) returns (weebi.device.Device);
-  /// approveDevice is called by web
+  /// approveDevice is called by web from a view with all devices (used in case readOnePendingDevice timeout/postponed)
   rpc approveDevice(ApproveDeviceRequest) returns (google.retail.common.StatusResponse);
-
-
   rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
-  /// a different auth method to avoid
+
+  /// a different auth method to avoid locking PoS
+  /// for first authent after device
   rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
   rpc updateDevicePassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
@@ -158,7 +158,7 @@ message PasswordUpdateRequest {
   string firmId = 2 [json_name = 'firmId'];
   string password = 3 [json_name = 'password'];
 }
-
+/// deviceId && status && password && dateCreation will be set by server, ignore them in front
 message PendingDeviceRequest {
   weebi.device.Device device = 1 ;
   int32 code = 2;
