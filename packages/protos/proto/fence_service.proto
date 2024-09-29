@@ -160,7 +160,7 @@ message PasswordUpdateRequest {
 }
 /// deviceId && status && password && dateCreation will be set by server, ignore them in front
 message PendingDeviceRequest {
-  weebi.device.Device device = 1 ;
+  weebi.device.HardwareInfo hardwareInfo = 1 ;
   int32 code = 2;
 }
 

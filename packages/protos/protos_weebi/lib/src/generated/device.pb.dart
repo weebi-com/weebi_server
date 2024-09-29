@@ -15,7 +15,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'common/g_timestamp.pb.dart' as $18;
 
-/// / a Device == cash register, assigned to a boutique,
+/// / a device == cash register, assigned to a boutique,
 /// / by default once enrolled there is a cashier access that can always log in
 class Device extends $pb.GeneratedMessage {
   factory Device({
@@ -25,10 +25,7 @@ class Device extends $pb.GeneratedMessage {
     $core.bool? status,
     $core.String? password,
     $18.Timestamp? dateCreation,
-    $core.String? name,
-    $core.String? serialNumber,
-    $core.String? baseOS,
-    $core.String? brand,
+    HardwareInfo? hardwareInfo,
   }) {
     final $result = create();
     if (deviceId != null) {
@@ -49,17 +46,8 @@ class Device extends $pb.GeneratedMessage {
     if (dateCreation != null) {
       $result.dateCreation = dateCreation;
     }
-    if (name != null) {
-      $result.name = name;
-    }
-    if (serialNumber != null) {
-      $result.serialNumber = serialNumber;
-    }
-    if (baseOS != null) {
-      $result.baseOS = baseOS;
-    }
-    if (brand != null) {
-      $result.brand = brand;
+    if (hardwareInfo != null) {
+      $result.hardwareInfo = hardwareInfo;
     }
     return $result;
   }
@@ -74,10 +62,7 @@ class Device extends $pb.GeneratedMessage {
     ..aOB(4, _omitFieldNames ? '' : 'status')
     ..aOS(5, _omitFieldNames ? '' : 'password')
     ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'dateCreation', protoName: 'dateCreation', subBuilder: $18.Timestamp.create)
-    ..aOS(7, _omitFieldNames ? '' : 'name')
-    ..aOS(8, _omitFieldNames ? '' : 'serialNumber', protoName: 'serialNumber')
-    ..aOS(9, _omitFieldNames ? '' : 'baseOS', protoName: 'baseOS')
-    ..aOS(10, _omitFieldNames ? '' : 'brand')
+    ..aOM<HardwareInfo>(7, _omitFieldNames ? '' : 'hardwareInfo', protoName: 'hardwareInfo', subBuilder: HardwareInfo.create)
     ..hasRequiredFields = false
   ;
 
@@ -160,42 +145,16 @@ class Device extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $18.Timestamp ensureDateCreation() => $_ensure(5);
 
-  /// / attributes below come from device
   @$pb.TagNumber(7)
-  $core.String get name => $_getSZ(6);
+  HardwareInfo get hardwareInfo => $_getN(6);
   @$pb.TagNumber(7)
-  set name($core.String v) { $_setString(6, v); }
+  set hardwareInfo(HardwareInfo v) { setField(7, v); }
   @$pb.TagNumber(7)
-  $core.bool hasName() => $_has(6);
+  $core.bool hasHardwareInfo() => $_has(6);
   @$pb.TagNumber(7)
-  void clearName() => clearField(7);
-
-  @$pb.TagNumber(8)
-  $core.String get serialNumber => $_getSZ(7);
-  @$pb.TagNumber(8)
-  set serialNumber($core.String v) { $_setString(7, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasSerialNumber() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearSerialNumber() => clearField(8);
-
-  @$pb.TagNumber(9)
-  $core.String get baseOS => $_getSZ(8);
-  @$pb.TagNumber(9)
-  set baseOS($core.String v) { $_setString(8, v); }
-  @$pb.TagNumber(9)
-  $core.bool hasBaseOS() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearBaseOS() => clearField(9);
-
-  @$pb.TagNumber(10)
-  $core.String get brand => $_getSZ(9);
-  @$pb.TagNumber(10)
-  set brand($core.String v) { $_setString(9, v); }
-  @$pb.TagNumber(10)
-  $core.bool hasBrand() => $_has(9);
-  @$pb.TagNumber(10)
-  void clearBrand() => clearField(10);
+  void clearHardwareInfo() => clearField(7);
+  @$pb.TagNumber(7)
+  HardwareInfo ensureHardwareInfo() => $_ensure(6);
 }
 
 class Devices extends $pb.GeneratedMessage {
@@ -240,6 +199,99 @@ class Devices extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<Device> get devices => $_getList(0);
+}
+
+/// / come from weebi_app, not set by web
+class HardwareInfo extends $pb.GeneratedMessage {
+  factory HardwareInfo({
+    $core.String? name,
+    $core.String? serialNumber,
+    $core.String? baseOS,
+    $core.String? brand,
+  }) {
+    final $result = create();
+    if (name != null) {
+      $result.name = name;
+    }
+    if (serialNumber != null) {
+      $result.serialNumber = serialNumber;
+    }
+    if (baseOS != null) {
+      $result.baseOS = baseOS;
+    }
+    if (brand != null) {
+      $result.brand = brand;
+    }
+    return $result;
+  }
+  HardwareInfo._() : super();
+  factory HardwareInfo.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory HardwareInfo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'HardwareInfo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.device'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'name')
+    ..aOS(2, _omitFieldNames ? '' : 'serialNumber', protoName: 'serialNumber')
+    ..aOS(3, _omitFieldNames ? '' : 'baseOS', protoName: 'baseOS')
+    ..aOS(4, _omitFieldNames ? '' : 'brand')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  HardwareInfo clone() => HardwareInfo()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  HardwareInfo copyWith(void Function(HardwareInfo) updates) => super.copyWith((message) => updates(message as HardwareInfo)) as HardwareInfo;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static HardwareInfo create() => HardwareInfo._();
+  HardwareInfo createEmptyInstance() => create();
+  static $pb.PbList<HardwareInfo> createRepeated() => $pb.PbList<HardwareInfo>();
+  @$core.pragma('dart2js:noInline')
+  static HardwareInfo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<HardwareInfo>(create);
+  static HardwareInfo? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get name => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set name($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearName() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get serialNumber => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set serialNumber($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSerialNumber() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSerialNumber() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get baseOS => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set baseOS($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasBaseOS() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearBaseOS() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get brand => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set brand($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasBrand() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearBrand() => clearField(4);
 }
 
 

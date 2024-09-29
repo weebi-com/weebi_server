@@ -574,20 +574,23 @@ class FenceService extends FenceServiceBase {
           btq.boutiqueId == pairingResp.boutiqueId);
 
       if (boutiqueIndex == -1) {
-        throw GrpcError.notFound('no boutique found with this device info');
+        throw GrpcError.notFound(
+            'no boutique found with this info chainId ${pairingResp.chainId} btqId ${pairingResp.boutiqueId}');
       }
       // We create the device in the boutique's chain with a false status
       // admin still need to approve device in case code leaked or else
       // set the boutiqueId selected by web admin
-      request.device
+
+      final device = Device.create()
         ..status = false
         ..password = ''
         ..dateCreation = DateTime.now().timestampProto
         ..boutiqueId = pairingResp.boutiqueId
         ..chainId = pairingResp.chainId
-        ..deviceId = DateTime.now().objectIdString;
+        ..deviceId = DateTime.now().objectIdString
+        ..hardwareInfo = request.hardwareInfo;
 
-      chain.boutiques[boutiqueIndex].devices.add(request.device);
+      chain.boutiques[boutiqueIndex].devices.add(device);
 
       final result = await _updateOneChainDBExec(chain);
 
@@ -607,8 +610,8 @@ class FenceService extends FenceServiceBase {
               type: StatusResponse_Type.CREATED, timestamp: result.timestamp),
           firmId: chain.firmId,
           chainId: chain.chainId,
-          boutiqueId: request.device.boutiqueId,
-          deviceId: request.device.deviceId);
+          boutiqueId: device.boutiqueId,
+          deviceId: device.deviceId);
     } on GrpcError catch (e) {
       print('pairOneDevice error $e');
       rethrow;

@@ -31,14 +31,14 @@ abstract class Dummy {
     ..chainId = '665e12f798357783e8000001'
     ..boutiqueId = '665e12f798357783e8000002'
     ..deviceId = '665e12f798357783e8000009'
-    ..name = 'dummy device'
-    ..serialNumber = 'unique';
+    ..hardwareInfo.name = 'dummy device'
+    ..hardwareInfo.serialNumber = 'unique';
 
   static final deviceNoId = Device()
     ..chainId = chain.chainId
     ..boutiqueId = boutique.boutiqueId
-    ..name = 'dummy device'
-    ..serialNumber = 'unique';
+    ..hardwareInfo.name = 'dummy device'
+    ..hardwareInfo.serialNumber = 'unique';
 
   static final chainNoId = Chain(
     boutiques: <Boutique>[Dummy.boutiqueNoId],
