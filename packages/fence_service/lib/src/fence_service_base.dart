@@ -842,7 +842,8 @@ class FenceService extends FenceServiceBase {
           ..userManagementRights = RightsAdmin.userManagement
           ..billingRights = RightsAdmin.billing
           ..firmId = firmId
-          ..userId = userPermission.userId;
+          ..userId = userPermission.userId
+          ..fullAccess = AccessFull(hasFullAccess: true);
 
         try {
           await _updateUserFirmIdAndPermissionsDBExec(
