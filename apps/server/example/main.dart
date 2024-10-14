@@ -3,10 +3,9 @@ import 'dart:developer';
 import 'package:logging/logging.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/grpc.dart';
-import 'package:fence_service/src/auth_interceptor.dart';
-import 'package:fence_service/src/log_interceptor.dart';
 import 'package:fence_service/src/fence_service_base.dart';
 import 'package:fence_service/mongo_local_testing.dart';
+import 'package:server/server_interceptors.dart';
 
 void main(List<String> args) async {
   Logger.root.level = Level.ALL;

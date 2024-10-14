@@ -1,11 +1,13 @@
-import 'package:logging/logging.dart';
+// import 'package:logging/logging.dart';
 import 'package:protos_weebi/grpc.dart';
 
+// below is just for example, re-implement on your own client
+
 class RequestLogInterceptor extends ClientInterceptor {
-  late Logger logger;
+  //late Logger logger;
 
   RequestLogInterceptor() {
-    logger = Logger('RequestLoggingInterceptor');
+    //logger = Logger('RequestLoggingInterceptor');
   }
 
   @override
@@ -15,7 +17,7 @@ class RequestLogInterceptor extends ClientInterceptor {
     CallOptions options,
     ClientStreamingInvoker<Q, R> invoker,
   ) {
-    logger.info(method.path);
+    //logger.info(method.path);
     return super.interceptStreaming(method, requests, options, invoker);
   }
 
@@ -26,8 +28,8 @@ class RequestLogInterceptor extends ClientInterceptor {
     CallOptions options,
     ClientUnaryInvoker<Q, R> invoker,
   ) {
-    logger.info(method.path);
-    logger.info(options.metadata);
+    //logger.info(method.path);
+    //logger.info(options.metadata);
     return super.interceptUnary(method, request, options, invoker);
   }
 }

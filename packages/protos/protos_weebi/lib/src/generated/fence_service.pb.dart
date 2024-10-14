@@ -20,6 +20,115 @@ import 'device.pb.dart' as $13;
 import 'user.pb.dart' as $6;
 import 'user_permissions.pb.dart' as $8;
 
+/// / deviceId == userId, so front can reuse deviceId to try login in
+class CreatePendingDeviceResponse extends $pb.GeneratedMessage {
+  factory CreatePendingDeviceResponse({
+    $1.StatusResponse? statusResponse,
+    $core.String? firmId,
+    $core.String? chainId,
+    $core.String? boutiqueId,
+    $core.String? deviceId,
+  }) {
+    final $result = create();
+    if (statusResponse != null) {
+      $result.statusResponse = statusResponse;
+    }
+    if (firmId != null) {
+      $result.firmId = firmId;
+    }
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (boutiqueId != null) {
+      $result.boutiqueId = boutiqueId;
+    }
+    if (deviceId != null) {
+      $result.deviceId = deviceId;
+    }
+    return $result;
+  }
+  CreatePendingDeviceResponse._() : super();
+  factory CreatePendingDeviceResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreatePendingDeviceResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreatePendingDeviceResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOM<$1.StatusResponse>(1, _omitFieldNames ? '' : 'statusResponse', protoName: 'statusResponse', subBuilder: $1.StatusResponse.create)
+    ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(3, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(4, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
+    ..aOS(5, _omitFieldNames ? '' : 'deviceId', protoName: 'deviceId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreatePendingDeviceResponse clone() => CreatePendingDeviceResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreatePendingDeviceResponse copyWith(void Function(CreatePendingDeviceResponse) updates) => super.copyWith((message) => updates(message as CreatePendingDeviceResponse)) as CreatePendingDeviceResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreatePendingDeviceResponse create() => CreatePendingDeviceResponse._();
+  CreatePendingDeviceResponse createEmptyInstance() => create();
+  static $pb.PbList<CreatePendingDeviceResponse> createRepeated() => $pb.PbList<CreatePendingDeviceResponse>();
+  @$core.pragma('dart2js:noInline')
+  static CreatePendingDeviceResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreatePendingDeviceResponse>(create);
+  static CreatePendingDeviceResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $1.StatusResponse get statusResponse => $_getN(0);
+  @$pb.TagNumber(1)
+  set statusResponse($1.StatusResponse v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStatusResponse() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStatusResponse() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.StatusResponse ensureStatusResponse() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get firmId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set firmId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasFirmId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearFirmId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get chainId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set chainId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasChainId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearChainId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get boutiqueId => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set boutiqueId($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasBoutiqueId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearBoutiqueId() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get deviceId => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set deviceId($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasDeviceId() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearDeviceId() => clearField(5);
+}
+
 class ReadOneUserResponse extends $pb.GeneratedMessage {
   factory ReadOneUserResponse({
     $1.StatusResponse? statusResponse,
@@ -967,6 +1076,7 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   void clearPassword() => clearField(3);
 }
 
+/// / deviceId && status && password && dateCreation will be set by server, ignore them in front
 class PendingDeviceRequest extends $pb.GeneratedMessage {
   factory PendingDeviceRequest({
     $13.Device? device,

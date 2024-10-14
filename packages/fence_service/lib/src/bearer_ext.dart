@@ -1,6 +1,6 @@
+import 'package:fence_service/src/jwt.dart';
 import 'package:protos_weebi/grpc.dart' show ServiceCall, GrpcError;
 import 'package:protos_weebi/protos_weebi_io.dart' show UserPermissions;
-import 'package:fence_service/src/jwt.dart';
 
 extension BearerExt on String {
   UserPermissions get userPermission {
