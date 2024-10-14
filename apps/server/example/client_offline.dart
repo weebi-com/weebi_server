@@ -6,7 +6,7 @@ import 'package:protos_weebi/grpc.dart'
         ChannelOptions,
         CallOptions;
 import 'package:protos_weebi/protos_weebi_io.dart';
-import 'package:fence_service/client_interceptors.dart';
+import 'package:server/client_interceptor_example.dart';
 
 void main(List<String> args) async {
   final channelOptions = ChannelOptions(

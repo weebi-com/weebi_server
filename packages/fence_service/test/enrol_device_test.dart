@@ -1,5 +1,6 @@
 import 'package:fence_service/fence_service.dart';
-import 'package:fence_service/user_testing.dart';
+import 'package:fence_service/mongo_local_testing.dart';
+import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/grpc.dart';
 
 import 'package:test/test.dart';
@@ -58,7 +59,8 @@ void main() {
 
     /// right after creating the code, the web app displays a circularProgressIndicator and listens to changes
     /// which should trigger a response in the webapp request
-    /// for simplicity here we do not test this and instead assume the webapp user goes to device screen and refreshes accordingly
+    /// since this is hard to include in the test
+    /// here we assume the webapp user goes to device screen and refreshes accordingly
 //    final device = await fenceService.readOnePendingDevice(
 //        ServiceCallTest(bearer.accessToken),
 //        ReadDeviceBtqRequest(
@@ -67,12 +69,14 @@ void main() {
 //
 
     /// From the PoS app the user types the code which == creating the pending device
+
+    final pendingDevice =
+        PendingDeviceRequest(code: codeResponse.code, device: Dummy.device);
     final createPendingDeviceStatusResponse =
         await fenceService.createPendingDevice(
-            ServiceCallTest('', path: 'createPendingDevice'),
-            PendingDeviceRequest(
-                code: codeResponse.code, device: Dummy.device));
-    expect(createPendingDeviceStatusResponse.type, StatusResponse_Type.CREATED);
+            ServiceCallTest('', path: 'createPendingDevice'), pendingDevice);
+    expect(createPendingDeviceStatusResponse.statusResponse.type,
+        StatusResponse_Type.CREATED);
 
     //
     final devices = await fenceService.readDevices(
@@ -86,12 +90,12 @@ void main() {
     final device =
         devices.devices.firstWhere((d) => d.dateCreation.seconds != 0);
 
-    /// webapp user will need to approve the device
-    final approveDeviceStatus = await fenceService.approveDevice(
-        ServiceCallTest(bearer.accessToken),
-        ApproveDeviceRequest(device: device));
-
-    expect(approveDeviceStatus.type, StatusResponse_Type.UPDATED);
+    /// 14 oct 2024 no need to approve the device to make it faster and simpler
+//    final approveDeviceStatus = await fenceService.approveDevice(
+//        ServiceCallTest(bearer.accessToken),
+//        ApproveDeviceRequest(device: device));
+//
+//    expect(approveDeviceStatus.type, StatusResponse_Type.UPDATED);
 
     /// now user from PoS app can authent with min. permission available
     /// allowing them to sync articles, contacts, boutiqueInfo etc.

@@ -1,4 +1,5 @@
 // import 'dart:io';
+import 'package:protos_weebi/data_dummy.dart';
 import 'package:test/test.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
@@ -6,7 +7,7 @@ import 'package:models_weebi/models.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:contact_service/contact_service.dart';
-import 'package:fence_service/user_testing.dart';
+import 'package:fence_service/mongo_local_testing.dart';
 
 void main() async {
   final db = TestHelper.localDb;
