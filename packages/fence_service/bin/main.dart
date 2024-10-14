@@ -6,7 +6,7 @@ import 'package:protos_weebi/grpc.dart';
 import 'package:fence_service/src/auth_interceptor.dart';
 import 'package:fence_service/src/log_interceptor.dart';
 import 'package:fence_service/src/fence_service_base.dart';
-import 'package:fence_service/user_testing.dart';
+import 'package:fence_service/mongo_local_testing.dart';
 
 void main(List<String> args) async {
   Logger.root.level = Level.ALL;

@@ -1,7 +1,8 @@
 import 'package:mongo_dart/mongo_dart.dart';
 
 import 'package:fence_service/fence_service.dart';
-import 'package:fence_service/user_testing.dart';
+import 'package:fence_service/mongo_local_testing.dart';
+import 'package:protos_weebi/data_dummy.dart';
 
 void main() async {
   final db = TestHelper.localDb;

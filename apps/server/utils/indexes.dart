@@ -4,7 +4,7 @@ import 'package:contact_service/contact_service.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
-import 'package:fence_service/user_testing.dart';
+import 'package:fence_service/mongo_local_testing.dart';
 
 main() async {
   final db = TestHelper.localDb;
