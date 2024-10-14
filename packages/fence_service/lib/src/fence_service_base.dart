@@ -569,9 +569,10 @@ class FenceService extends FenceServiceBase {
       if (boutiqueIndex == -1) {
         throw GrpcError.notFound('no boutique found with this device info');
       }
-      // We create the device in the boutique's chain with a false status
-      // admin still need to approve device in case code leaked or else
-      request.device.status = false;
+      // We create the device in the boutique's chain with a true status
+      // so admin will not need to approve device 
+      // in case code leaked admin can still disable/delete device
+      request.device.status = true;
       request.device.dateCreation = DateTime.now().timestampProto;
       // set the boutiqueId selected by web admin
       request.device.boutiqueId = pairingResp.boutiqueId;
