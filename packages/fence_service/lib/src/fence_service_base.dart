@@ -5,6 +5,8 @@ import 'dart:math' show Random;
 import 'package:collection/collection.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
+import 'package:protos_weebi/data_dummy.dart';
+import 'package:protos_weebi/encrypter.dart';
 import 'package:protos_weebi/extensions.dart';
 
 import 'package:protos_weebi/grpc.dart';
@@ -576,9 +578,10 @@ class FenceService extends FenceServiceBase {
       if (boutiqueIndex == -1) {
         throw GrpcError.notFound('no boutique found with this device info');
       }
-      // We create the device in the boutique's chain with a false status
-      // admin still need to approve device in case code leaked or else
-      request.device.status = false;
+      // We create the device in the boutique's chain with a true status
+      // so admin will not need to approve device 
+      // in case code leaked admin can still disable/delete device
+      request.device.status = true;
       request.device.password = '';
       request.device.dateCreation = DateTime.now().timestampProto;
       // set the boutiqueId selected by web admin

@@ -1,7 +1,7 @@
-import 'package:fence_service/src/password_encrypter.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
-import 'package:fence_service/src/data/roles_default.dart';
+import 'package:protos_weebi/src/data/roles_default.dart';
+import 'package:protos_weebi/src/password_encrypter.dart';
 
 /// hardcoded ids can hide gaps in real actual process
 /// since the _ids logic is no longer handled by mongodb, some of below could be simplified..

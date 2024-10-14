@@ -3,7 +3,7 @@ import 'package:fence_service/src/weebi_app_service/weebi_app_service_base.dart'
 import 'package:test/test.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
-import 'package:fence_service/user_testing.dart';
+import 'package:fence_service/mongo_local_testing.dart';
 
 void main() async {
   final db = TestHelper.localDb;
