@@ -1079,12 +1079,12 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
 /// / deviceId && status && password && dateCreation will be set by server, ignore them in front
 class PendingDeviceRequest extends $pb.GeneratedMessage {
   factory PendingDeviceRequest({
-    $13.Device? device,
+    $13.HardwareInfo? hardwareInfo,
     $core.int? code,
   }) {
     final $result = create();
-    if (device != null) {
-      $result.device = device;
+    if (hardwareInfo != null) {
+      $result.hardwareInfo = hardwareInfo;
     }
     if (code != null) {
       $result.code = code;
@@ -1096,7 +1096,7 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
   factory PendingDeviceRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PendingDeviceRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOM<$13.Device>(1, _omitFieldNames ? '' : 'device', subBuilder: $13.Device.create)
+    ..aOM<$13.HardwareInfo>(1, _omitFieldNames ? '' : 'hardwareInfo', protoName: 'hardwareInfo', subBuilder: $13.HardwareInfo.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
@@ -1123,15 +1123,15 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
   static PendingDeviceRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $13.Device get device => $_getN(0);
+  $13.HardwareInfo get hardwareInfo => $_getN(0);
   @$pb.TagNumber(1)
-  set device($13.Device v) { setField(1, v); }
+  set hardwareInfo($13.HardwareInfo v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasDevice() => $_has(0);
+  $core.bool hasHardwareInfo() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDevice() => clearField(1);
+  void clearHardwareInfo() => clearField(1);
   @$pb.TagNumber(1)
-  $13.Device ensureDevice() => $_ensure(0);
+  $13.HardwareInfo ensureHardwareInfo() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.int get code => $_getIZ(1);

@@ -2,7 +2,8 @@ syntax = "proto3";
 
 package weebi.device;
 import "common/g_timestamp.proto";
-/// a Device == cash register, assigned to a boutique, 
+
+/// a device == cash register, assigned to a boutique, 
 /// by default once enrolled there is a cashier access that can always log in 
 message Device {
     /// deviceId is set by the server
@@ -13,14 +14,18 @@ message Device {
     string password = 5 [json_name = 'password'];
     /// dateCreation is set by the server
     google.protobuf.Timestamp dateCreation = 6 [json_name = 'dateCreation'];
-
-    /// attributes below come from device
-    string name = 7 [json_name = 'name'];
-    string serialNumber = 8 [json_name = 'serialNumber'];
-    string baseOS = 9 [json_name = 'baseOS'];
-    string brand = 10 [json_name = 'brand'];
+    HardwareInfo hardwareInfo = 7 [json_name = 'hardwareInfo'];
   }
   
   message Devices {
     repeated Device devices = 1 [json_name = 'devices']; 
+  }
+  
+  /// come from weebi_app, not set by web
+  message HardwareInfo {
+    string name = 1 [json_name = 'name'];
+    string serialNumber = 2 [json_name = 'serialNumber'];
+    string baseOS = 3 [json_name = 'baseOS'];
+    string brand = 4 [json_name = 'brand'];
+
   }

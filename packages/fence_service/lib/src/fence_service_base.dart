@@ -572,23 +572,27 @@ class FenceService extends FenceServiceBase {
           pairingResp.firmId, pairingResp.chainId);
 
       final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
-          btq.chainId == request.device.chainId &&
-          btq.boutiqueId == request.device.boutiqueId);
+          btq.chainId == pairingResp.chainId &&
+          btq.boutiqueId == pairingResp.boutiqueId);
 
       if (boutiqueIndex == -1) {
-        throw GrpcError.notFound('no boutique found with this device info');
+        throw GrpcError.notFound(
+            'no boutique found with this info chainId ${pairingResp.chainId} btqId ${pairingResp.boutiqueId}');
       }
       // We create the device in the boutique's chain with a true status
-      // so admin will not need to approve device 
+      // so admin will not need to approve device
       // in case code leaked admin can still disable/delete device
-      request.device.status = true;
-      request.device.password = '';
-      request.device.dateCreation = DateTime.now().timestampProto;
-      // set the boutiqueId selected by web admin
-      request.device.boutiqueId = pairingResp.boutiqueId;
-      request.device.deviceId = DateTime.now().objectIdString;
 
-      chain.boutiques[boutiqueIndex].devices.add(request.device);
+      final device = Device.create()
+        ..status = true
+        ..password = ''
+        ..dateCreation = DateTime.now().timestampProto
+        ..boutiqueId = pairingResp.boutiqueId
+        ..chainId = pairingResp.chainId
+        ..deviceId = DateTime.now().objectIdString
+        ..hardwareInfo = request.hardwareInfo;
+
+      chain.boutiques[boutiqueIndex].devices.add(device);
 
       final result = await _updateOneChainDBExec(chain);
 
@@ -608,8 +612,8 @@ class FenceService extends FenceServiceBase {
               type: StatusResponse_Type.CREATED, timestamp: result.timestamp),
           firmId: chain.firmId,
           chainId: chain.chainId,
-          boutiqueId: request.device.boutiqueId,
-          deviceId: request.device.deviceId);
+          boutiqueId: device.boutiqueId,
+          deviceId: device.deviceId);
     } on GrpcError catch (e) {
       print('pairOneDevice error $e');
       rethrow;
@@ -1006,7 +1010,7 @@ class FenceService extends FenceServiceBase {
           .findOne(where.eq('firmId', firmId).eq('chainId', chainId));
       if (chainMongo == null) {
         throw GrpcError.notFound(
-            'chain not found firmId: $firmId chainId:$chainId');
+            'firm/chain not found firmId: $firmId chainId:$chainId');
       }
       return Chain.create()
         ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
