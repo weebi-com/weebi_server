@@ -1,5 +1,6 @@
 import 'package:fence_service/fence_service.dart';
-import 'package:fence_service/user_testing.dart';
+import 'package:fence_service/mongo_local_testing.dart';
+import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/grpc.dart';
 
 import 'package:test/test.dart';
@@ -90,12 +91,12 @@ void main() {
     final device =
         devices.devices.firstWhere((d) => d.dateCreation.seconds != 0);
 
-    /// webapp user will need to approve the device
-    final approveDeviceStatus = await fenceService.approveDevice(
-        ServiceCallTest(bearer.accessToken),
-        ApproveDeviceRequest(device: device));
-
-    expect(approveDeviceStatus.type, StatusResponse_Type.UPDATED);
+    /// 14 oct 2024 no need to approve the device to make it faster and simpler
+//    final approveDeviceStatus = await fenceService.approveDevice(
+//        ServiceCallTest(bearer.accessToken),
+//        ApproveDeviceRequest(device: device));
+//
+//    expect(approveDeviceStatus.type, StatusResponse_Type.UPDATED);
 
     /// now user from PoS app can authent with min. permission available
     /// allowing them to sync articles, contacts, boutiqueInfo etc.

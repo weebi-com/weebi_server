@@ -1,4 +1,5 @@
-import 'package:fence_service/user_testing.dart';
+import 'package:fence_service/fence_service.dart';
+import 'package:protos_weebi/data_dummy.dart';
 import 'package:fence_service/src/jwt.dart';
 
 void main(List<String> args) async {
