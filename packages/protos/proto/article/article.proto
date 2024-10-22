@@ -9,6 +9,7 @@ message CalibreMongo {
   string firmId = 3 [json_name = 'firmId'];
   string chainId = 4 [json_name = 'chainId'];
   string userId = 5 [json_name = 'userId']; 
+  string dateCreation = 6 [json_name = 'dateCreation'];
 }
 
 /// Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi 

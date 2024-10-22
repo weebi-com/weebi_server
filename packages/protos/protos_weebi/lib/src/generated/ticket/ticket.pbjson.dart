@@ -23,6 +23,7 @@ const TicketMongo$json = {
     {'1': 'boutiqueId', '3': 4, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'firmId', '3': 5, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 6, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'dateCreation', '3': 7, '4': 1, '5': 9, '10': 'date'},
   ],
 };
 
@@ -31,7 +32,8 @@ final $typed_data.Uint8List ticketMongoDescriptor = $convert.base64Decode(
     'CgtUaWNrZXRNb25nbxIuCgZ0aWNrZXQYASABKAsyFi53ZWViaS50aWNrZXQuVGlja2V0UGJSBn'
     'RpY2tldBIsChF0aWNrZXROb25VbmlxdWVJZBgCIAEoBVIRdGlja2V0Tm9uVW5pcXVlSWQSFgoG'
     'dXNlcklkGAMgASgJUgZ1c2VySWQSHgoKYm91dGlxdWVJZBgEIAEoCVIKYm91dGlxdWVJZBIWCg'
-    'ZmaXJtSWQYBSABKAlSBmZpcm1JZBIYCgdjaGFpbklkGAYgASgJUgdjaGFpbklk');
+    'ZmaXJtSWQYBSABKAlSBmZpcm1JZBIYCgdjaGFpbklkGAYgASgJUgdjaGFpbklkEhoKDGRhdGVD'
+    'cmVhdGlvbhgHIAEoCVIEZGF0ZQ==');
 
 @$core.Deprecated('Use ticketPbDescriptor instead')
 const TicketPb$json = {

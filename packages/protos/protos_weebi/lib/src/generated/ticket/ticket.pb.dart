@@ -29,6 +29,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.String? firmId,
     $core.String? chainId,
+    $core.String? dateCreation,
   }) {
     final $result = create();
     if (ticket != null) {
@@ -49,6 +50,9 @@ class TicketMongo extends $pb.GeneratedMessage {
     if (chainId != null) {
       $result.chainId = chainId;
     }
+    if (dateCreation != null) {
+      $result.dateCreation = dateCreation;
+    }
     return $result;
   }
   TicketMongo._() : super();
@@ -62,6 +66,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(5, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(6, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(7, _omitFieldNames ? '' : 'date', protoName: 'dateCreation')
     ..hasRequiredFields = false
   ;
 
@@ -141,6 +146,15 @@ class TicketMongo extends $pb.GeneratedMessage {
   $core.bool hasChainId() => $_has(5);
   @$pb.TagNumber(6)
   void clearChainId() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get dateCreation => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set dateCreation($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasDateCreation() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearDateCreation() => clearField(7);
 }
 
 class TicketPb extends $pb.GeneratedMessage {

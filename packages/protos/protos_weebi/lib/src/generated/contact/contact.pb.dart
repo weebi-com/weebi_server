@@ -25,6 +25,7 @@ class ContactMongo extends $pb.GeneratedMessage {
     $core.String? userId,
     $core.String? firmId,
     $core.String? chainId,
+    $core.String? dateCreation,
   }) {
     final $result = create();
     if (contact != null) {
@@ -42,6 +43,9 @@ class ContactMongo extends $pb.GeneratedMessage {
     if (chainId != null) {
       $result.chainId = chainId;
     }
+    if (dateCreation != null) {
+      $result.dateCreation = dateCreation;
+    }
     return $result;
   }
   ContactMongo._() : super();
@@ -54,6 +58,7 @@ class ContactMongo extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(4, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(5, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(6, _omitFieldNames ? '' : 'dateCreation', protoName: 'dateCreation')
     ..hasRequiredFields = false
   ;
 
@@ -124,6 +129,15 @@ class ContactMongo extends $pb.GeneratedMessage {
   $core.bool hasChainId() => $_has(4);
   @$pb.TagNumber(5)
   void clearChainId() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get dateCreation => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set dateCreation($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasDateCreation() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearDateCreation() => clearField(6);
 }
 
 class ContactPb extends $pb.GeneratedMessage {

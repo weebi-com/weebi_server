@@ -2,6 +2,7 @@ name: server_weebi
 
 packages:
   - packages/*
+  - packages/protos/protos_weebi
   - apps/*
 # The packages list should contain paths to the individual packages within your project. 
 

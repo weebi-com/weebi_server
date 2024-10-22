@@ -38,6 +38,7 @@ const CalibreMongo$json = {
     {'1': 'firmId', '3': 3, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 4, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'userId', '3': 5, '4': 1, '5': 9, '10': 'userId'},
+    {'1': 'dateCreation', '3': 6, '4': 1, '5': 9, '10': 'date'},
   ],
 };
 
@@ -46,7 +47,7 @@ final $typed_data.Uint8List calibreMongoDescriptor = $convert.base64Decode(
     'CgxDYWxpYnJlTW9uZ28SMgoHY2FsaWJyZRgBIAEoCzIYLndlZWJpLmFydGljbGUuQ2FsaWJyZV'
     'BiUgdjYWxpYnJlEi4KEmNhbGlicmVOb25VbmlxdWVJZBgCIAEoBVISY2FsaWJyZU5vblVuaXF1'
     'ZUlkEhYKBmZpcm1JZBgDIAEoCVIGZmlybUlkEhgKB2NoYWluSWQYBCABKAlSB2NoYWluSWQSFg'
-    'oGdXNlcklkGAUgASgJUgZ1c2VySWQ=');
+    'oGdXNlcklkGAUgASgJUgZ1c2VySWQSGgoMZGF0ZUNyZWF0aW9uGAYgASgJUgRkYXRl');
 
 @$core.Deprecated('Use calibrePbDescriptor instead')
 const CalibrePb$json = {
