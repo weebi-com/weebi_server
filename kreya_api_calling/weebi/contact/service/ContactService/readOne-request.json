@@ -1,0 +1,23 @@
+{
+  "contactChainId": "{{ faker.random.uuid }}",
+  "contactUserId": "{{ faker.random.uuid }}",
+  "contactNonUniqueId": 163,
+  "firstName": "{{ faker.name.first_name }}",
+  "lastName": "{{ faker.name.last_name }}",
+  "mail": "Auto Loan Account",
+  "phone": {
+    "countryCode": 525,
+    "number": "{{ faker.random.ushort }}"
+  },
+  "addressFull": {
+    "street": "{{ faker.address.street_name }}",
+    "code": "monitoring mobile Swaziland",
+    "city": "{{ faker.address.city }}",
+    "country": {
+      "code2Letters": "invoice",
+      "namel10n": "Bedfordshire Senior"
+    },
+    "latitude": 970.4373587632476,
+    "longitude": 765.7721664898984
+  }
+}

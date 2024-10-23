@@ -1,0 +1,36 @@
+{
+  "settings": [
+    {
+      "options": {
+        "grpc": {
+          "endpoint": "https://serverweebi-hl64k4kfzq-od.a.run.app"
+        },
+        "rest": {
+          "pathParams": []
+        }
+      }
+    },
+    {
+      "environmentId": "0fabc67c-4a92-446b-909d-eb705c8c5920",
+      "options": {
+        "grpc": {
+          "endpoint": "https://serverweebi-29758828833.europe-west9.run.app"
+        },
+        "rest": {
+          "pathParams": []
+        }
+      }
+    },
+    {
+      "environmentId": "43fe0c07-1860-4e5d-aa21-30e686a88734",
+      "options": {
+        "grpc": {
+          "endpoint": "https://weebi-server-prod-29758828833.europe-west9.run.app"
+        },
+        "rest": {
+          "pathParams": []
+        }
+      }
+    }
+  ]
+}

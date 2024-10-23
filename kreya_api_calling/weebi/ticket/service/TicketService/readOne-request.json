@@ -1,0 +1,5 @@
+{
+  "ticketChainId": "{{ faker.random.uuid }}",
+  "ticketUserId": "{{ faker.random.uuid }}",
+  "ticketNonUniqueId": 10
+}

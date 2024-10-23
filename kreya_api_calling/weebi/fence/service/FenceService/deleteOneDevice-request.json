@@ -1,0 +1,20 @@
+{
+  "chainId": "{{ faker.random.uuid }}",
+  "device": {
+    "deviceId": "{{ faker.random.uuid }}",
+    "chainId": "{{ faker.random.uuid }}",
+    "boutiqueId": "{{ faker.random.uuid }}",
+    "status": true,
+    "password": "{{ faker.internet.password }}",
+    "dateCreation": {
+      "seconds": "408",
+      "nanos": 684
+    },
+    "hardwareInfo": {
+      "name": "{{ faker.name.last_name }}",
+      "serialNumber": "{{ faker.random.ushort }}",
+      "baseOS": "Forward",
+      "brand": "deposit turquoise"
+    }
+  }
+}

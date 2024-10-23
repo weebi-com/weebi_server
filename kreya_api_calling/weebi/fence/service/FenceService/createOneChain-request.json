@@ -1,0 +1,142 @@
+{
+  "chainId": "{{ faker.random.uuid }}",
+  "firmId": "{{ faker.random.uuid }}",
+  "name": "{{ faker.name.last_name }}",
+  "boutiques": [
+    {
+      "boutiqueId": "{{ faker.random.uuid }}",
+      "firmId": "{{ faker.random.uuid }}",
+      "chainId": "{{ faker.random.uuid }}",
+      "creationDate": "Incredible Soft Shirt Israel Maine",
+      "updateDate": "B2B",
+      "statusUpdateDate": "Fantastic Frozen Bike",
+      "status": true,
+      "name": "{{ faker.name.last_name }}",
+      "phone": {
+        "countryCode": 995,
+        "number": "{{ faker.random.ushort }}"
+      },
+      "addressFull": {
+        "street": "{{ faker.address.street_name }}",
+        "code": "Supervisor Quality Robust",
+        "city": "{{ faker.address.city }}",
+        "country": {
+          "code2Letters": "Borders calculating",
+          "namel10n": "primary"
+        },
+        "latitude": 499.3626997686647,
+        "longitude": 330.85368464817276
+      },
+      "promo": 680.704549985461,
+      "promoStart": "Specialist",
+      "promoEnd": "cyan Gorgeous Granite Bacon",
+      "devices": [
+        {
+          "deviceId": "{{ faker.random.uuid }}",
+          "chainId": "{{ faker.random.uuid }}",
+          "boutiqueId": "{{ faker.random.uuid }}",
+          "status": false,
+          "password": "{{ faker.internet.password }}",
+          "dateCreation": {
+            "seconds": "633",
+            "nanos": 604
+          },
+          "hardwareInfo": {
+            "name": "{{ faker.name.last_name }}",
+            "serialNumber": "{{ faker.random.ushort }}",
+            "baseOS": "pixel US Dollar",
+            "brand": "Buckinghamshire Marketing Response"
+          }
+        },
+        {
+          "deviceId": "{{ faker.random.uuid }}",
+          "chainId": "{{ faker.random.uuid }}",
+          "boutiqueId": "{{ faker.random.uuid }}",
+          "status": true,
+          "password": "{{ faker.internet.password }}",
+          "dateCreation": {
+            "seconds": "941",
+            "nanos": 457
+          },
+          "hardwareInfo": {
+            "name": "{{ faker.name.last_name }}",
+            "serialNumber": "{{ faker.random.ushort }}",
+            "baseOS": "Handcrafted Granite Towels Tasty Auto Loan Account",
+            "brand": "Intuitive Oval Savings Account"
+          }
+        }
+      ],
+      "additional_attributes": {
+        "copy Home Loan Account": "Avon Berkshire Concrete"
+      }
+    },
+    {
+      "boutiqueId": "{{ faker.random.uuid }}",
+      "firmId": "{{ faker.random.uuid }}",
+      "chainId": "{{ faker.random.uuid }}",
+      "creationDate": "Greece",
+      "updateDate": "Mount invoice executive",
+      "statusUpdateDate": "Unbranded Plastic Cheese Arkansas",
+      "status": false,
+      "name": "{{ faker.name.last_name }}",
+      "phone": {
+        "countryCode": 584,
+        "number": "{{ faker.random.ushort }}"
+      },
+      "addressFull": {
+        "street": "{{ faker.address.street_name }}",
+        "code": "maximized solid state",
+        "city": "{{ faker.address.city }}",
+        "country": {
+          "code2Letters": "payment Credit Card Account",
+          "namel10n": "Extension Frozen"
+        },
+        "latitude": 908.8715821831426,
+        "longitude": 750.3018846362485
+      },
+      "promo": 422.354729364019,
+      "promoStart": "mission-critical Incredible",
+      "promoEnd": "Borders",
+      "devices": [
+        {
+          "deviceId": "{{ faker.random.uuid }}",
+          "chainId": "{{ faker.random.uuid }}",
+          "boutiqueId": "{{ faker.random.uuid }}",
+          "status": true,
+          "password": "{{ faker.internet.password }}",
+          "dateCreation": {
+            "seconds": "195",
+            "nanos": 36
+          },
+          "hardwareInfo": {
+            "name": "{{ faker.name.last_name }}",
+            "serialNumber": "{{ faker.random.ushort }}",
+            "baseOS": "Ergonomic protocol Awesome",
+            "brand": "parsing Throughway Generic Rubber Hat"
+          }
+        },
+        {
+          "deviceId": "{{ faker.random.uuid }}",
+          "chainId": "{{ faker.random.uuid }}",
+          "boutiqueId": "{{ faker.random.uuid }}",
+          "status": true,
+          "password": "{{ faker.internet.password }}",
+          "dateCreation": {
+            "seconds": "439",
+            "nanos": 969
+          },
+          "hardwareInfo": {
+            "name": "{{ faker.name.last_name }}",
+            "serialNumber": "{{ faker.random.ushort }}",
+            "baseOS": "open-source",
+            "brand": "turn-key solutions Agent"
+          }
+        }
+      ],
+      "additional_attributes": {
+        "Research world-class Music": "Beauty, Sports & Music"
+      }
+    }
+  ],
+  "lastUpdatedByuserId": "{{ faker.random.uuid }}"
+}

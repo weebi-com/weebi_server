@@ -1,0 +1,37 @@
+{
+  "chainId": "{{ faker.random.uuid }}",
+  "contactUserId": "{{ faker.random.uuid }}",
+  "contact": {
+    "id": 815,
+    "creationDate": "invoice Mobility Fields",
+    "updateDate": "back-end",
+    "statusUpdateDate": "Implementation connect clear-thinking",
+    "status": false,
+    "firstName": "{{ faker.name.first_name }}",
+    "lastName": "{{ faker.name.last_name }}",
+    "mail": "Center",
+    "phone": {
+      "countryCode": 418,
+      "number": "{{ faker.random.ushort }}"
+    },
+    "addressFull": {
+      "street": "{{ faker.address.street_name }}",
+      "code": "withdrawal",
+      "city": "{{ faker.address.city }}",
+      "country": {
+        "code2Letters": "parse Common hard drive",
+        "namel10n": "Buckinghamshire Ergonomic Soft Soap Awesome Soft Mouse"
+      },
+      "latitude": 948.4945745239336,
+      "longitude": 369.2821561503287
+    },
+    "overdraft": 953,
+    "categories": [
+      "Awesome Global",
+      "program"
+    ],
+    "othersAttributes": {
+      "Fresh": "Checking Account optical"
+    }
+  }
+}

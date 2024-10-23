@@ -1,0 +1,168 @@
+{
+  "ticket": {
+    "id": 973,
+    "counterfoil": {
+      "firmId": "{{ faker.random.uuid }}",
+      "firmName": "frame standardization",
+      "chainId": "{{ faker.random.uuid }}",
+      "chainName": "index HDD",
+      "deviceOid": "{{ faker.random.uuid }}",
+      "deviceName": "Strategist Handcrafted cyan",
+      "boutiqueId": "{{ faker.random.uuid }}",
+      "boutiqueName": "Bulgarian Lev networks Cambridgeshire",
+      "userId": "{{ faker.random.uuid }}",
+      "userName": "{{ faker.internet.user_name }}"
+    },
+    "date": "coherent",
+    "statusUpdateDate": "brand Mobility",
+    "status": false,
+    "items": [
+      {
+        "articleRetail": {
+          "calibreId": 514,
+          "id": 579,
+          "designation": "sky blue",
+          "price": 105.16872660669125,
+          "cost": 208.85942373914557,
+          "unitsInOnePiece": 362.18335161301485
+        },
+        "articleBasket": {
+          "calibreId": 673,
+          "id": 614,
+          "designation": "withdrawal",
+          "proxies": [
+            {
+              "calibreId": 108,
+              "articleId": 447,
+              "id": 355,
+              "status": true,
+              "proxyCalibreId": 497,
+              "proxyArticleId": 841,
+              "minimumUnitPerBasket": 140.89390341310332,
+              "articleWeight": 138.3379119141619
+            },
+            {
+              "calibreId": 831,
+              "articleId": 237,
+              "id": 456,
+              "status": true,
+              "proxyCalibreId": 956,
+              "proxyArticleId": 963,
+              "minimumUnitPerBasket": 389.8784301142635,
+              "articleWeight": 664.2583096392057
+            }
+          ],
+          "discountAmountSalesOnly": 904.4178751957762,
+          "markupAmountSalesOnly": 840.2651954279211
+        },
+        "quantity": 59.148463193954356,
+        "proxiesWorth": [
+          {
+            "calibreId": 391,
+            "articleId": 98,
+            "id": 337,
+            "status": true,
+            "proxyCalibreId": 268,
+            "proxyArticleId": 100,
+            "minimumUnitPerBasket": 408.41910395339585,
+            "articleWeight": 841.5887469109275,
+            "price": 748.243895724537,
+            "cost": 220.99980275028847
+          },
+          {
+            "calibreId": 387,
+            "articleId": 385,
+            "id": 904,
+            "status": true,
+            "proxyCalibreId": 570,
+            "proxyArticleId": 969,
+            "minimumUnitPerBasket": 403.202617836619,
+            "articleWeight": 529.9960508482969,
+            "price": 943.1754895079794,
+            "cost": 893.6954614175825
+          }
+        ],
+        "inventoryAbsoluteQt": 492.0122578914453
+      },
+      {
+        "articleRetail": {
+          "calibreId": 879,
+          "id": 665,
+          "designation": "moratorium",
+          "price": 701.2242733682564,
+          "cost": 746.3177818115859,
+          "unitsInOnePiece": 348.77114210917296
+        },
+        "articleBasket": {
+          "calibreId": 130,
+          "id": 664,
+          "designation": "Costa Rican Colon",
+          "proxies": [
+            {
+              "calibreId": 48,
+              "articleId": 301,
+              "id": 993,
+              "status": true,
+              "proxyCalibreId": 84,
+              "proxyArticleId": 560,
+              "minimumUnitPerBasket": 143.1815907869971,
+              "articleWeight": 896.6676265338406
+            },
+            {
+              "calibreId": 713,
+              "articleId": 568,
+              "id": 644,
+              "status": true,
+              "proxyCalibreId": 24,
+              "proxyArticleId": 164,
+              "minimumUnitPerBasket": 424.6929606240897,
+              "articleWeight": 194.443998987455
+            }
+          ],
+          "discountAmountSalesOnly": 830.2259975445669,
+          "markupAmountSalesOnly": 764.7098068334117
+        },
+        "quantity": 441.32150736457965,
+        "proxiesWorth": [
+          {
+            "calibreId": 60,
+            "articleId": 75,
+            "id": 433,
+            "status": false,
+            "proxyCalibreId": 210,
+            "proxyArticleId": 340,
+            "minimumUnitPerBasket": 470.1564600212868,
+            "articleWeight": 132.60045187533075,
+            "price": 615.6428336526386,
+            "cost": 746.6706745986423
+          },
+          {
+            "calibreId": 109,
+            "articleId": 699,
+            "id": 179,
+            "status": true,
+            "proxyCalibreId": 764,
+            "proxyArticleId": 332,
+            "minimumUnitPerBasket": 708.2423349658297,
+            "articleWeight": 893.4126724111022,
+            "price": 838.9813342745075,
+            "cost": 744.3069115326255
+          }
+        ],
+        "inventoryAbsoluteQt": 298.17397652133116
+      }
+    ],
+    "ticketType": "sellCovered",
+    "paymentType": "nope",
+    "contactId": 530,
+    "taxe": {
+      "id": "{{ faker.random.uuid }}",
+      "name": "{{ faker.name.last_name }}",
+      "percentage": 794.1242970806073
+    },
+    "promo": 108.44068077210329,
+    "received": 751.1884147959361,
+    "discountAmount": 367.4472812273932,
+    "comment": "Markets Investment Account"
+  }
+}

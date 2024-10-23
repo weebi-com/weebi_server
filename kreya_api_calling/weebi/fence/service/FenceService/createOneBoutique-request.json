@@ -1,0 +1,67 @@
+{
+  "boutiqueId": "{{ faker.random.uuid }}",
+  "firmId": "{{ faker.random.uuid }}",
+  "chainId": "{{ faker.random.uuid }}",
+  "creationDate": "Pa'anga PCI Spurs",
+  "updateDate": "Handmade Fresh Car Awesome Senior",
+  "statusUpdateDate": "distributed silver THX",
+  "status": false,
+  "name": "{{ faker.name.last_name }}",
+  "phone": {
+    "countryCode": 21,
+    "number": "{{ faker.random.ushort }}"
+  },
+  "addressFull": {
+    "street": "{{ faker.address.street_name }}",
+    "code": "Kentucky",
+    "city": "{{ faker.address.city }}",
+    "country": {
+      "code2Letters": "reinvent software",
+      "namel10n": "Assistant Forward override"
+    },
+    "latitude": 207.17923098401687,
+    "longitude": 427.5444148626581
+  },
+  "promo": 603.0946135147204,
+  "promoStart": "structure alarm",
+  "promoEnd": "mobile violet",
+  "devices": [
+    {
+      "deviceId": "{{ faker.random.uuid }}",
+      "chainId": "{{ faker.random.uuid }}",
+      "boutiqueId": "{{ faker.random.uuid }}",
+      "status": false,
+      "password": "{{ faker.internet.password }}",
+      "dateCreation": {
+        "seconds": "226",
+        "nanos": 412
+      },
+      "hardwareInfo": {
+        "name": "{{ faker.name.last_name }}",
+        "serialNumber": "{{ faker.random.ushort }}",
+        "baseOS": "Internal deposit",
+        "brand": "Way Canada"
+      }
+    },
+    {
+      "deviceId": "{{ faker.random.uuid }}",
+      "chainId": "{{ faker.random.uuid }}",
+      "boutiqueId": "{{ faker.random.uuid }}",
+      "status": false,
+      "password": "{{ faker.internet.password }}",
+      "dateCreation": {
+        "seconds": "280",
+        "nanos": 777
+      },
+      "hardwareInfo": {
+        "name": "{{ faker.name.last_name }}",
+        "serialNumber": "{{ faker.random.ushort }}",
+        "baseOS": "granular",
+        "brand": "Principal array"
+      }
+    }
+  ],
+  "additional_attributes": {
+    "IB Developer dedicated": "innovative Administrator"
+  }
+}
