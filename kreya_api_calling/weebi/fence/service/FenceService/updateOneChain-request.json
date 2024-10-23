@@ -1,0 +1,142 @@
+{
+  "chainId": "{{ faker.random.uuid }}",
+  "firmId": "{{ faker.random.uuid }}",
+  "name": "{{ faker.name.last_name }}",
+  "boutiques": [
+    {
+      "boutiqueId": "{{ faker.random.uuid }}",
+      "firmId": "{{ faker.random.uuid }}",
+      "chainId": "{{ faker.random.uuid }}",
+      "creationDate": "extensible Integration",
+      "updateDate": "Cameroon",
+      "statusUpdateDate": "Internal",
+      "status": false,
+      "name": "{{ faker.name.last_name }}",
+      "phone": {
+        "countryCode": 697,
+        "number": "{{ faker.random.ushort }}"
+      },
+      "addressFull": {
+        "street": "{{ faker.address.street_name }}",
+        "code": "Pakistan",
+        "city": "{{ faker.address.city }}",
+        "country": {
+          "code2Letters": "Syrian Pound reboot Home Loan Account",
+          "namel10n": "International strategic Concrete"
+        },
+        "latitude": 228.09911741841447,
+        "longitude": 899.1534875189492
+      },
+      "promo": 879.5038115421345,
+      "promoStart": "granular Home Loan Account",
+      "promoEnd": "Intelligent Rubber Bacon",
+      "devices": [
+        {
+          "deviceId": "{{ faker.random.uuid }}",
+          "chainId": "{{ faker.random.uuid }}",
+          "boutiqueId": "{{ faker.random.uuid }}",
+          "status": false,
+          "password": "{{ faker.internet.password }}",
+          "dateCreation": {
+            "seconds": "777",
+            "nanos": 556
+          },
+          "hardwareInfo": {
+            "name": "{{ faker.name.last_name }}",
+            "serialNumber": "{{ faker.random.ushort }}",
+            "baseOS": "Fords optical",
+            "brand": "action-items Outdoors & Sports"
+          }
+        },
+        {
+          "deviceId": "{{ faker.random.uuid }}",
+          "chainId": "{{ faker.random.uuid }}",
+          "boutiqueId": "{{ faker.random.uuid }}",
+          "status": true,
+          "password": "{{ faker.internet.password }}",
+          "dateCreation": {
+            "seconds": "670",
+            "nanos": 571
+          },
+          "hardwareInfo": {
+            "name": "{{ faker.name.last_name }}",
+            "serialNumber": "{{ faker.random.ushort }}",
+            "baseOS": "strategic",
+            "brand": "transmitting"
+          }
+        }
+      ],
+      "additional_attributes": {
+        "next-generation Auto Loan Account": "Cotton revolutionary payment"
+      }
+    },
+    {
+      "boutiqueId": "{{ faker.random.uuid }}",
+      "firmId": "{{ faker.random.uuid }}",
+      "chainId": "{{ faker.random.uuid }}",
+      "creationDate": "Checking Account Path Implementation",
+      "updateDate": "Handmade integrated",
+      "statusUpdateDate": "open-source",
+      "status": false,
+      "name": "{{ faker.name.last_name }}",
+      "phone": {
+        "countryCode": 223,
+        "number": "{{ faker.random.ushort }}"
+      },
+      "addressFull": {
+        "street": "{{ faker.address.street_name }}",
+        "code": "hack",
+        "city": "{{ faker.address.city }}",
+        "country": {
+          "code2Letters": "deposit Representative",
+          "namel10n": "parsing"
+        },
+        "latitude": 896.923057232665,
+        "longitude": 934.0438331315704
+      },
+      "promo": 46.79000683119633,
+      "promoStart": "Extended",
+      "promoEnd": "Argentine Peso Granite system-worthy",
+      "devices": [
+        {
+          "deviceId": "{{ faker.random.uuid }}",
+          "chainId": "{{ faker.random.uuid }}",
+          "boutiqueId": "{{ faker.random.uuid }}",
+          "status": false,
+          "password": "{{ faker.internet.password }}",
+          "dateCreation": {
+            "seconds": "442",
+            "nanos": 593
+          },
+          "hardwareInfo": {
+            "name": "{{ faker.name.last_name }}",
+            "serialNumber": "{{ faker.random.ushort }}",
+            "baseOS": "protocol Auto Loan Account",
+            "brand": "Tokelau web services"
+          }
+        },
+        {
+          "deviceId": "{{ faker.random.uuid }}",
+          "chainId": "{{ faker.random.uuid }}",
+          "boutiqueId": "{{ faker.random.uuid }}",
+          "status": true,
+          "password": "{{ faker.internet.password }}",
+          "dateCreation": {
+            "seconds": "170",
+            "nanos": 613
+          },
+          "hardwareInfo": {
+            "name": "{{ faker.name.last_name }}",
+            "serialNumber": "{{ faker.random.ushort }}",
+            "baseOS": "exploit Fantastic Wooden Pizza",
+            "brand": "invoice deposit content"
+          }
+        }
+      ],
+      "additional_attributes": {
+        "Gorgeous Wooden Fish": "Personal Loan Account sensor impactful"
+      }
+    }
+  ],
+  "lastUpdatedByuserId": "{{ faker.random.uuid }}"
+}

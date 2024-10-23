@@ -15,6 +15,7 @@ message TicketMongo {
     string boutiqueId = 4 [json_name = 'boutiqueId'];
     string firmId = 5 [json_name = 'firmId'];
     string chainId = 6 [json_name = 'chainId'];
+    string dateCreation = 7 [json_name = 'dateCreation'];
 }
 // string uploadByuserId = 3 [json_name = 'uploadByuserId'];
 // string uploadByUsername = 4 [json_name = 'uploadByUsername'];

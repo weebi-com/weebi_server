@@ -1,0 +1,23 @@
+{
+  "id": "710d1de9-7a1d-4b45-ab5e-2295234f2789",
+  "importStreams": [
+    {
+      "id": "8ba10a52-399c-4e1a-80f0-edc3f44dc3cf",
+      "name": "weebi",
+      "importerName": "ProtoFile",
+      "createMissingOperations": true,
+      "options": {
+        "files": [
+          "../packages/protos/proto/article/article_service.proto",
+          "../packages/protos/proto/contact/contact_service.proto",
+          "../packages/protos/proto/fence_service.proto",
+          "../packages/protos/proto/ticket/ticket_service.proto",
+          "../packages/protos/proto/weebi_app_service.proto"
+        ],
+        "importPaths": []
+      }
+    }
+  ],
+  "authConfigs": [],
+  "certificates": []
+}

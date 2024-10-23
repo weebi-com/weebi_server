@@ -1,0 +1,89 @@
+{
+  "mail": "Saudi Riyal Port",
+  "firstname": "knowledge base Advanced",
+  "lastname": "Avon",
+  "permissions": {
+    "userId": "{{ faker.random.uuid }}",
+    "firmId": "{{ faker.random.uuid }}",
+    "limitedAccess": {
+      "chainIds": {
+        "ids": [
+          "ADP",
+          "capacitor Factors"
+        ]
+      },
+      "boutiqueIds": {
+        "ids": [
+          "Washington",
+          "SMS visionary open-source"
+        ]
+      }
+    },
+    "ticketRights": {
+      "ticketRights": [
+        "read",
+        "read"
+      ]
+    },
+    "contactRights": {
+      "contactRights": [
+        "read",
+        "unknown"
+      ]
+    },
+    "articleRights": {
+      "articleRights": [
+        "update",
+        "unknown"
+      ]
+    },
+    "boutiqueRights": {
+      "boutiqueRights": [
+        "read",
+        "delete"
+      ]
+    },
+    "chainRights": {
+      "chainRights": [
+        "unknown",
+        "delete"
+      ]
+    },
+    "firmRights": {
+      "firmRights": [
+        "delete",
+        "read"
+      ]
+    },
+    "userManagementRights": {
+      "userManagementRights": [
+        "update",
+        "delete"
+      ]
+    },
+    "billingRights": {
+      "billingRights": [
+        "create",
+        "create"
+      ]
+    },
+    "boolRights": {
+      "canSeeStats": true,
+      "canExportData": false,
+      "canGiveDiscount": true,
+      "canSetPromo": false,
+      "canStockMovement": true,
+      "canStockInventory": true,
+      "canQuickSpend": false,
+      "canPurchase": false,
+      "canImportTickets": false
+    }
+  },
+  "phone": {
+    "countryCode": 647,
+    "number": "{{ faker.random.ushort }}"
+  },
+  "othersAttributes": {
+    "wireless Via wireless": "Grocery Directives"
+  }
+}

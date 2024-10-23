@@ -22,6 +22,7 @@ const ContactMongo$json = {
     {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'firmId', '3': 4, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 5, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'dateCreation', '3': 6, '4': 1, '5': 9, '10': 'dateCreation'},
   ],
 };
 
@@ -30,7 +31,8 @@ final $typed_data.Uint8List contactMongoDescriptor = $convert.base64Decode(
     'CgxDb250YWN0TW9uZ28SMgoHY29udGFjdBgBIAEoCzIYLndlZWJpLmNvbnRhY3QuQ29udGFjdF'
     'BiUgdjb250YWN0Ei4KEmNvbnRhY3ROb25VbmlxdWVJZBgCIAEoBVISY29udGFjdE5vblVuaXF1'
     'ZUlkEhYKBnVzZXJJZBgDIAEoCVIGdXNlcklkEhYKBmZpcm1JZBgEIAEoCVIGZmlybUlkEhgKB2'
-    'NoYWluSWQYBSABKAlSB2NoYWluSWQ=');
+    'NoYWluSWQYBSABKAlSB2NoYWluSWQSIgoMZGF0ZUNyZWF0aW9uGAYgASgJUgxkYXRlQ3JlYXRp'
+    'b24=');
 
 @$core.Deprecated('Use contactPbDescriptor instead')
 const ContactPb$json = {

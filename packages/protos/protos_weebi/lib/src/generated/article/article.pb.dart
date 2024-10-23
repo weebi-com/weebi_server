@@ -24,6 +24,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
     $core.String? firmId,
     $core.String? chainId,
     $core.String? userId,
+    $core.String? dateCreation,
   }) {
     final $result = create();
     if (calibre != null) {
@@ -41,6 +42,9 @@ class CalibreMongo extends $pb.GeneratedMessage {
     if (userId != null) {
       $result.userId = userId;
     }
+    if (dateCreation != null) {
+      $result.dateCreation = dateCreation;
+    }
     return $result;
   }
   CalibreMongo._() : super();
@@ -53,6 +57,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(4, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(5, _omitFieldNames ? '' : 'userId', protoName: 'userId')
+    ..aOS(6, _omitFieldNames ? '' : 'date', protoName: 'dateCreation')
     ..hasRequiredFields = false
   ;
 
@@ -124,6 +129,15 @@ class CalibreMongo extends $pb.GeneratedMessage {
   $core.bool hasUserId() => $_has(4);
   @$pb.TagNumber(5)
   void clearUserId() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get dateCreation => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set dateCreation($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasDateCreation() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearDateCreation() => clearField(6);
 }
 
 /// / Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi

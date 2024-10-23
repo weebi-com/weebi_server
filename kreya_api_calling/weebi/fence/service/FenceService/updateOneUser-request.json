@@ -1,0 +1,94 @@
+{
+  "userId": "{{ faker.random.uuid }}",
+  "mail": "European Unit of Account 17(E.U.A.-17) interface Ethiopia",
+  "firstname": "payment Maryland",
+  "lastname": "Proactive",
+  "phone": {
+    "countryCode": 781,
+    "number": "{{ faker.random.ushort }}"
+  },
+  "lastSignIn": {
+    "seconds": "953",
+    "nanos": 616
+  },
+  "permissions": {
+    "userId": "{{ faker.random.uuid }}",
+    "firmId": "{{ faker.random.uuid }}",
+    "limitedAccess": {
+      "chainIds": {
+        "ids": [
+          "generating",
+          "Practical Rubber Computer Investment Account bypass"
+        ]
+      },
+      "boutiqueIds": {
+        "ids": [
+          "Optimization",
+          "Mandatory"
+        ]
+      }
+    },
+    "ticketRights": {
+      "ticketRights": [
+        "read",
+        "unknown"
+      ]
+    },
+    "contactRights": {
+      "contactRights": [
+        "create",
+        "unknown"
+      ]
+    },
+    "articleRights": {
+      "articleRights": [
+        "unknown",
+        "delete"
+      ]
+    },
+    "boutiqueRights": {
+      "boutiqueRights": [
+        "read",
+        "create"
+      ]
+    },
+    "chainRights": {
+      "chainRights": [
+        "unknown",
+        "unknown"
+      ]
+    },
+    "firmRights": {
+      "firmRights": [
+        "read",
+        "create"
+      ]
+    },
+    "userManagementRights": {
+      "userManagementRights": [
+        "delete",
+        "create"
+      ]
+    },
+    "billingRights": {
+      "billingRights": [
+        "update",
+        "update"
+      ]
+    },
+    "boolRights": {
+      "canSeeStats": false,
+      "canExportData": true,
+      "canGiveDiscount": true,
+      "canSetPromo": false,
+      "canStockMovement": false,
+      "canStockInventory": false,
+      "canQuickSpend": false,
+      "canPurchase": true,
+      "canImportTickets": true
+    }
+  },
+  "othersAttributes": {
+    "deposit Radial Books & Outdoors": "teal full-range primary"
+  }
+}

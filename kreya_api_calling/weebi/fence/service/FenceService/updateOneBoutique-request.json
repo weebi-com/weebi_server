@@ -1,0 +1,67 @@
+{
+  "boutiqueId": "{{ faker.random.uuid }}",
+  "firmId": "{{ faker.random.uuid }}",
+  "chainId": "{{ faker.random.uuid }}",
+  "creationDate": "Borders matrix",
+  "updateDate": "deposit",
+  "statusUpdateDate": "Mobility Ouguiya",
+  "status": true,
+  "name": "{{ faker.name.last_name }}",
+  "phone": {
+    "countryCode": 906,
+    "number": "{{ faker.random.ushort }}"
+  },
+  "addressFull": {
+    "street": "{{ faker.address.street_name }}",
+    "code": "Future-proofed",
+    "city": "{{ faker.address.city }}",
+    "country": {
+      "code2Letters": "Fall transition North Dakota",
+      "namel10n": "Industrial, Grocery & Computers SCSI convergence"
+    },
+    "latitude": 979.5835625347906,
+    "longitude": 2.5973447734197324
+  },
+  "promo": 217.93164887997517,
+  "promoStart": "synergize",
+  "promoEnd": "Awesome Concrete Pizza strategy",
+  "devices": [
+    {
+      "deviceId": "{{ faker.random.uuid }}",
+      "chainId": "{{ faker.random.uuid }}",
+      "boutiqueId": "{{ faker.random.uuid }}",
+      "status": true,
+      "password": "{{ faker.internet.password }}",
+      "dateCreation": {
+        "seconds": "343",
+        "nanos": 288
+      },
+      "hardwareInfo": {
+        "name": "{{ faker.name.last_name }}",
+        "serialNumber": "{{ faker.random.ushort }}",
+        "baseOS": "withdrawal",
+        "brand": "scale Integration withdrawal"
+      }
+    },
+    {
+      "deviceId": "{{ faker.random.uuid }}",
+      "chainId": "{{ faker.random.uuid }}",
+      "boutiqueId": "{{ faker.random.uuid }}",
+      "status": true,
+      "password": "{{ faker.internet.password }}",
+      "dateCreation": {
+        "seconds": "971",
+        "nanos": 132
+      },
+      "hardwareInfo": {
+        "name": "{{ faker.name.last_name }}",
+        "serialNumber": "{{ faker.random.ushort }}",
+        "baseOS": "Tasty enterprise Lodge",
+        "brand": "Sleek Plastic Fish"
+      }
+    }
+  ],
+  "additional_attributes": {
+    "bleeding-edge deposit optical": "withdrawal"
+  }
+}

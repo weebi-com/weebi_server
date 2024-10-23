@@ -7,11 +7,12 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectContact(String firmId, String chainId,
-          String contactuserId, int contactNonUniqueId) =>
+          String contactuserId, int contactNonUniqueId, String dateCreation) =>
       where
           .eq('firmId', firmId)
           .eq('chainId', chainId)
           .eq('userId', contactuserId)
+          .eq('dateCreation', dateCreation)
           .eq('contactNonUniqueId', contactNonUniqueId);
 }
 
@@ -48,6 +49,7 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
+        ..dateCreation = request.contact.dateCreation
         ..contactNonUniqueId = request.contact.contactNonUniqueId
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
@@ -101,6 +103,7 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
+        ..dateCreation = request.contact.dateCreation
         ..contactNonUniqueId = request.contact.contactNonUniqueId
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
@@ -112,6 +115,7 @@ class ContactService extends ContactServiceBase {
             request.chainId,
             request.contactUserId,
             request.contact.contactNonUniqueId,
+            request.contact.dateCreation,
           ),
           contactMongo.toProto3Json() as Map<String, dynamic>,
           upsert: true);
@@ -153,8 +157,13 @@ class ContactService extends ContactServiceBase {
     }
     try {
       await collection.deleteOne(
-        _Helpers.selectContact(userPermission.firmId, request.chainId,
-            request.contactUserId, request.contact.contactNonUniqueId),
+        _Helpers.selectContact(
+          userPermission.firmId,
+          request.chainId,
+          request.contactUserId,
+          request.contact.contactNonUniqueId,
+          request.contact.dateCreation,
+        ),
       );
       return StatusResponse()
         ..type = StatusResponse_Type.DELETED

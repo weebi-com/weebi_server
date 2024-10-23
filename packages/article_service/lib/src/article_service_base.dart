@@ -9,6 +9,7 @@ abstract class _Helpers {
       .eq('firmId', firmId)
       .eq('chainId', request.chainId)
       .eq('userId', request.articleUserId)
+      .eq('dateCreation', request.calibre.dateCreation)
       .eq('calibreNonUniqueId', request.calibre.id);
 }
 
@@ -45,6 +46,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
+        ..dateCreation = request.calibre.dateCreation
         ..calibreNonUniqueId = request.calibre.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
@@ -97,6 +99,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
+        ..dateCreation = request.calibre.dateCreation
         ..calibreNonUniqueId = request.calibre.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
