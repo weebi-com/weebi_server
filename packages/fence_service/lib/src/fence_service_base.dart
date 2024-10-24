@@ -586,7 +586,7 @@ class FenceService extends FenceServiceBase {
       final device = Device.create()
         ..status = true
         ..password = ''
-        ..dateCreation = DateTime.now().timestampProto
+        ..timestamp = DateTime.now().timestampProto
         ..boutiqueId = pairingResp.boutiqueId
         ..chainId = pairingResp.chainId
         ..deviceId = DateTime.now().objectIdString
@@ -1610,8 +1610,8 @@ class FenceService extends FenceServiceBase {
             device = devices.first;
           } else {
             /// latest device prevails, high chance the other ones are not pending but disabled
-            devices.toList().sort((a, b) =>
-                a.dateCreation.seconds.compareTo(b.dateCreation.seconds));
+            devices.toList().sort(
+                (a, b) => a.timestamp.seconds.compareTo(b.timestamp.seconds));
             device = devices.first;
           }
         }

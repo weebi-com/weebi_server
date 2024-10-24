@@ -88,8 +88,7 @@ void main() {
     expect(devices.devices.length,
         2); // one device already included in Dummy.boutique
 
-    final device =
-        devices.devices.firstWhere((d) => d.dateCreation.seconds != 0);
+    final device = devices.devices.firstWhere((d) => d.timestamp.seconds != 0);
 
     /// 14 oct 2024 no need to approve the device to make it faster and simpler
 //    final approveDeviceStatus = await fenceService.approveDevice(

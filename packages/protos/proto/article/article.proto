@@ -9,7 +9,7 @@ message CalibreMongo {
   string firmId = 3 [json_name = 'firmId'];
   string chainId = 4 [json_name = 'chainId'];
   string userId = 5 [json_name = 'userId']; 
-  string dateCreation = 6 [json_name = 'dateCreation'];
+  string creationDate = 6 [json_name = 'creationDate'];
 }
 
 /// Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi 
@@ -25,9 +25,9 @@ message CalibrePb {
     unit =  7;
   }
   int32 id = 1 [json_name = 'id'];
-  string dateCreation = 2 [json_name = 'creationDate'];
-  string dateUpdate = 3 [json_name = 'updateDate'];
-  string dateStatus = 4 [json_name = 'statusUpdateDate'];
+  string creationDate = 2 [json_name = 'creationDate'];
+  string updateDate = 3 [json_name = 'updateDate'];
+  string statusUpdateDate = 4 [json_name = 'statusUpdateDate'];
   bool status = 5 [json_name = 'status'];
   string title = 6 [json_name = 'title'];
   StockUnit stockUnit = 7 [json_name = 'stockUnit'];
@@ -70,9 +70,9 @@ message ArticleRetailPb {
   ArticleKindPb kind = 4 [json_name = 'kind'];
   bool status = 5 [json_name = 'status'];
   int32 codeShortcut = 6 [json_name = 'articleCode'];
-  string dateCreation = 7 [json_name = 'creationDate'];
-  string dateUpdate = 8 [json_name = 'updateDate'];
-  string dateStatus = 9 [json_name = 'statusUpdateDate'];
+  string creationDate = 7 [json_name = 'creationDate'];
+  string updateDate = 8 [json_name = 'updateDate'];
+  string statusUpdateDate = 9 [json_name = 'statusUpdateDate'];
   double price = 10 [json_name = 'price'];
   double cost = 11 [json_name = 'cost'];
   double unitsInOnePiece = 12 [json_name = 'unitsInOnePiece'];
@@ -87,9 +87,9 @@ message ArticleBasketPb {
   ArticleKindPb kind = 4 [json_name = 'kind'];
   bool status = 5 [json_name = 'status'];
   int32 codeShortcut = 6 [json_name = 'articleCode'];
-  string dateCreation = 7 [json_name = 'creationDate'];
-  string dateUpdate = 8 [json_name = 'updateDate'];
-  string dateStatus = 9 [json_name = 'statusUpdateDate'];
+  string creationDate = 7 [json_name = 'creationDate'];
+  string updateDate = 8 [json_name = 'updateDate'];
+  string statusUpdateDate = 9 [json_name = 'statusUpdateDate'];
   repeated ProxyArticlePb proxies = 10 [json_name = 'proxies'];
   double discountAmount = 11 [json_name = 'discountAmountSalesOnly'];
   double markupAmount = 12 [json_name = 'markupAmountSalesOnly'];

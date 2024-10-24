@@ -25,7 +25,7 @@ class ContactMongo extends $pb.GeneratedMessage {
     $core.String? userId,
     $core.String? firmId,
     $core.String? chainId,
-    $core.String? dateCreation,
+    $core.String? creationDate,
   }) {
     final $result = create();
     if (contact != null) {
@@ -43,8 +43,8 @@ class ContactMongo extends $pb.GeneratedMessage {
     if (chainId != null) {
       $result.chainId = chainId;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
     }
     return $result;
   }
@@ -58,7 +58,7 @@ class ContactMongo extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(4, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(5, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOS(6, _omitFieldNames ? '' : 'dateCreation', protoName: 'dateCreation')
+    ..aOS(6, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..hasRequiredFields = false
   ;
 
@@ -131,27 +131,27 @@ class ContactMongo extends $pb.GeneratedMessage {
   void clearChainId() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.String get dateCreation => $_getSZ(5);
+  $core.String get creationDate => $_getSZ(5);
   @$pb.TagNumber(6)
-  set dateCreation($core.String v) { $_setString(5, v); }
+  set creationDate($core.String v) { $_setString(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasDateCreation() => $_has(5);
+  $core.bool hasCreationDate() => $_has(5);
   @$pb.TagNumber(6)
-  void clearDateCreation() => clearField(6);
+  void clearCreationDate() => clearField(6);
 }
 
 class ContactPb extends $pb.GeneratedMessage {
   factory ContactPb({
     $core.int? contactNonUniqueId,
-    $core.String? dateCreation,
-    $core.String? dateUpdate,
-    $core.String? dateStatus,
+    $core.String? creationDate,
+    $core.String? updateDate,
+    $core.String? statusUpdateDate,
     $core.bool? status,
     $core.String? firstName,
     $core.String? lastName,
     $core.String? mail,
     $19.Phone? phone,
-    $20.Address? address,
+    $20.Address? addressFull,
     $core.int? overdraft,
     $core.Iterable<$core.String>? tags,
     $core.Map<$core.String, $core.String>? othersAttributes,
@@ -160,14 +160,14 @@ class ContactPb extends $pb.GeneratedMessage {
     if (contactNonUniqueId != null) {
       $result.contactNonUniqueId = contactNonUniqueId;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
     }
-    if (dateUpdate != null) {
-      $result.dateUpdate = dateUpdate;
+    if (updateDate != null) {
+      $result.updateDate = updateDate;
     }
-    if (dateStatus != null) {
-      $result.dateStatus = dateStatus;
+    if (statusUpdateDate != null) {
+      $result.statusUpdateDate = statusUpdateDate;
     }
     if (status != null) {
       $result.status = status;
@@ -184,8 +184,8 @@ class ContactPb extends $pb.GeneratedMessage {
     if (phone != null) {
       $result.phone = phone;
     }
-    if (address != null) {
-      $result.address = address;
+    if (addressFull != null) {
+      $result.addressFull = addressFull;
     }
     if (overdraft != null) {
       $result.overdraft = overdraft;
@@ -204,15 +204,15 @@ class ContactPb extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'contactNonUniqueId')
-    ..aOS(2, _omitFieldNames ? '' : 'creationDate', protoName: 'dateCreation')
-    ..aOS(3, _omitFieldNames ? '' : 'updateDate', protoName: 'dateUpdate')
-    ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
+    ..aOS(2, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOS(3, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
+    ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..aOB(5, _omitFieldNames ? '' : 'status')
     ..aOS(6, _omitFieldNames ? '' : 'firstName', protoName: 'firstName')
     ..aOS(7, _omitFieldNames ? '' : 'lastName', protoName: 'lastName')
     ..aOS(8, _omitFieldNames ? '' : 'mail')
     ..aOM<$19.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
-    ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'address', subBuilder: $20.Address.create)
+    ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $20.Address.create)
     ..a<$core.int>(11, _omitFieldNames ? '' : 'overdraft', $pb.PbFieldType.O3)
     ..pPS(12, _omitFieldNames ? '' : 'categories', protoName: 'tags')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'ContactPb.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.contact'))
@@ -250,31 +250,31 @@ class ContactPb extends $pb.GeneratedMessage {
   void clearContactNonUniqueId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get dateCreation => $_getSZ(1);
+  $core.String get creationDate => $_getSZ(1);
   @$pb.TagNumber(2)
-  set dateCreation($core.String v) { $_setString(1, v); }
+  set creationDate($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasDateCreation() => $_has(1);
+  $core.bool hasCreationDate() => $_has(1);
   @$pb.TagNumber(2)
-  void clearDateCreation() => clearField(2);
+  void clearCreationDate() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get dateUpdate => $_getSZ(2);
+  $core.String get updateDate => $_getSZ(2);
   @$pb.TagNumber(3)
-  set dateUpdate($core.String v) { $_setString(2, v); }
+  set updateDate($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasDateUpdate() => $_has(2);
+  $core.bool hasUpdateDate() => $_has(2);
   @$pb.TagNumber(3)
-  void clearDateUpdate() => clearField(3);
+  void clearUpdateDate() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get dateStatus => $_getSZ(3);
+  $core.String get statusUpdateDate => $_getSZ(3);
   @$pb.TagNumber(4)
-  set dateStatus($core.String v) { $_setString(3, v); }
+  set statusUpdateDate($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasDateStatus() => $_has(3);
+  $core.bool hasStatusUpdateDate() => $_has(3);
   @$pb.TagNumber(4)
-  void clearDateStatus() => clearField(4);
+  void clearStatusUpdateDate() => clearField(4);
 
   @$pb.TagNumber(5)
   $core.bool get status => $_getBF(4);
@@ -324,15 +324,15 @@ class ContactPb extends $pb.GeneratedMessage {
   $19.Phone ensurePhone() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $20.Address get address => $_getN(9);
+  $20.Address get addressFull => $_getN(9);
   @$pb.TagNumber(10)
-  set address($20.Address v) { setField(10, v); }
+  set addressFull($20.Address v) { setField(10, v); }
   @$pb.TagNumber(10)
-  $core.bool hasAddress() => $_has(9);
+  $core.bool hasAddressFull() => $_has(9);
   @$pb.TagNumber(10)
-  void clearAddress() => clearField(10);
+  void clearAddressFull() => clearField(10);
   @$pb.TagNumber(10)
-  $20.Address ensureAddress() => $_ensure(9);
+  $20.Address ensureAddressFull() => $_ensure(9);
 
   @$pb.TagNumber(11)
   $core.int get overdraft => $_getIZ(10);

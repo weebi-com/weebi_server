@@ -22,7 +22,7 @@ const Device$json = {
     {'1': 'boutiqueId', '3': 3, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'status', '3': 4, '4': 1, '5': 8, '10': 'status'},
     {'1': 'password', '3': 5, '4': 1, '5': 9, '10': 'password'},
-    {'1': 'dateCreation', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'dateCreation'},
+    {'1': 'timestamp', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'timestamp'},
     {'1': 'hardwareInfo', '3': 7, '4': 1, '5': 11, '6': '.weebi.device.HardwareInfo', '10': 'hardwareInfo'},
   ],
 };
@@ -31,9 +31,9 @@ const Device$json = {
 final $typed_data.Uint8List deviceDescriptor = $convert.base64Decode(
     'CgZEZXZpY2USGgoIZGV2aWNlSWQYASABKAlSCGRldmljZUlkEhgKB2NoYWluSWQYAiABKAlSB2'
     'NoYWluSWQSHgoKYm91dGlxdWVJZBgDIAEoCVIKYm91dGlxdWVJZBIWCgZzdGF0dXMYBCABKAhS'
-    'BnN0YXR1cxIaCghwYXNzd29yZBgFIAEoCVIIcGFzc3dvcmQSPgoMZGF0ZUNyZWF0aW9uGAYgAS'
-    'gLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIMZGF0ZUNyZWF0aW9uEj4KDGhhcmR3YXJl'
-    'SW5mbxgHIAEoCzIaLndlZWJpLmRldmljZS5IYXJkd2FyZUluZm9SDGhhcmR3YXJlSW5mbw==');
+    'BnN0YXR1cxIaCghwYXNzd29yZBgFIAEoCVIIcGFzc3dvcmQSOAoJdGltZXN0YW1wGAYgASgLMh'
+    'ouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIJdGltZXN0YW1wEj4KDGhhcmR3YXJlSW5mbxgH'
+    'IAEoCzIaLndlZWJpLmRldmljZS5IYXJkd2FyZUluZm9SDGhhcmR3YXJlSW5mbw==');
 
 @$core.Deprecated('Use devicesDescriptor instead')
 const Devices$json = {

@@ -89,7 +89,7 @@ void main() async {
     print('response2 ${response2.tickets.length}');
     expect(response2.tickets.first.status, false);
     expect(
-        DateTime.parse(response2.tickets.first.dateStatus)
+        DateTime.parse(response2.tickets.first.statusUpdateDate)
             .isAfter(DateTime(2023)),
         isTrue);
   });

@@ -16,7 +16,7 @@ abstract class Dummy {
     ..country = Country(code2Letters: 'fr');
 
   static final boutiqueNoId = Boutique(
-    address: Dummy.address,
+    addressFull: Dummy.address,
     name: 'dummy boutique',
     phone: Phone(countryCode: 33, number: '773116767'),
     devices: <Device>[Dummy.device],

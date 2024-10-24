@@ -24,7 +24,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
     $core.String? firmId,
     $core.String? chainId,
     $core.String? userId,
-    $core.String? dateCreation,
+    $core.String? creationDate,
   }) {
     final $result = create();
     if (calibre != null) {
@@ -42,8 +42,8 @@ class CalibreMongo extends $pb.GeneratedMessage {
     if (userId != null) {
       $result.userId = userId;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
     }
     return $result;
   }
@@ -57,7 +57,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(4, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(5, _omitFieldNames ? '' : 'userId', protoName: 'userId')
-    ..aOS(6, _omitFieldNames ? '' : 'date', protoName: 'dateCreation')
+    ..aOS(6, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..hasRequiredFields = false
   ;
 
@@ -131,22 +131,22 @@ class CalibreMongo extends $pb.GeneratedMessage {
   void clearUserId() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.String get dateCreation => $_getSZ(5);
+  $core.String get creationDate => $_getSZ(5);
   @$pb.TagNumber(6)
-  set dateCreation($core.String v) { $_setString(5, v); }
+  set creationDate($core.String v) { $_setString(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasDateCreation() => $_has(5);
+  $core.bool hasCreationDate() => $_has(5);
   @$pb.TagNumber(6)
-  void clearDateCreation() => clearField(6);
+  void clearCreationDate() => clearField(6);
 }
 
 /// / Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi
 class CalibrePb extends $pb.GeneratedMessage {
   factory CalibrePb({
     $core.int? id,
-    $core.String? dateCreation,
-    $core.String? dateUpdate,
-    $core.String? dateStatus,
+    $core.String? creationDate,
+    $core.String? updateDate,
+    $core.String? statusUpdateDate,
     $core.bool? status,
     $core.String? title,
     CalibrePb_StockUnit? stockUnit,
@@ -159,14 +159,14 @@ class CalibrePb extends $pb.GeneratedMessage {
     if (id != null) {
       $result.id = id;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
     }
-    if (dateUpdate != null) {
-      $result.dateUpdate = dateUpdate;
+    if (updateDate != null) {
+      $result.updateDate = updateDate;
     }
-    if (dateStatus != null) {
-      $result.dateStatus = dateStatus;
+    if (statusUpdateDate != null) {
+      $result.statusUpdateDate = statusUpdateDate;
     }
     if (status != null) {
       $result.status = status;
@@ -197,9 +197,9 @@ class CalibrePb extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibrePb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
-    ..aOS(2, _omitFieldNames ? '' : 'creationDate', protoName: 'dateCreation')
-    ..aOS(3, _omitFieldNames ? '' : 'updateDate', protoName: 'dateUpdate')
-    ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
+    ..aOS(2, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOS(3, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
+    ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..aOB(5, _omitFieldNames ? '' : 'status')
     ..aOS(6, _omitFieldNames ? '' : 'title')
     ..e<CalibrePb_StockUnit>(7, _omitFieldNames ? '' : 'stockUnit', $pb.PbFieldType.OE, protoName: 'stockUnit', defaultOrMaker: CalibrePb_StockUnit.unknown, valueOf: CalibrePb_StockUnit.valueOf, enumValues: CalibrePb_StockUnit.values)
@@ -241,31 +241,31 @@ class CalibrePb extends $pb.GeneratedMessage {
   void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get dateCreation => $_getSZ(1);
+  $core.String get creationDate => $_getSZ(1);
   @$pb.TagNumber(2)
-  set dateCreation($core.String v) { $_setString(1, v); }
+  set creationDate($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasDateCreation() => $_has(1);
+  $core.bool hasCreationDate() => $_has(1);
   @$pb.TagNumber(2)
-  void clearDateCreation() => clearField(2);
+  void clearCreationDate() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get dateUpdate => $_getSZ(2);
+  $core.String get updateDate => $_getSZ(2);
   @$pb.TagNumber(3)
-  set dateUpdate($core.String v) { $_setString(2, v); }
+  set updateDate($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasDateUpdate() => $_has(2);
+  $core.bool hasUpdateDate() => $_has(2);
   @$pb.TagNumber(3)
-  void clearDateUpdate() => clearField(3);
+  void clearUpdateDate() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get dateStatus => $_getSZ(3);
+  $core.String get statusUpdateDate => $_getSZ(3);
   @$pb.TagNumber(4)
-  set dateStatus($core.String v) { $_setString(3, v); }
+  set statusUpdateDate($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasDateStatus() => $_has(3);
+  $core.bool hasStatusUpdateDate() => $_has(3);
   @$pb.TagNumber(4)
-  void clearDateStatus() => clearField(4);
+  void clearStatusUpdateDate() => clearField(4);
 
   @$pb.TagNumber(5)
   $core.bool get status => $_getBF(4);
@@ -507,9 +507,9 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
     ArticleKindPb? kind,
     $core.bool? status,
     $core.int? codeShortcut,
-    $core.String? dateCreation,
-    $core.String? dateUpdate,
-    $core.String? dateStatus,
+    $core.String? creationDate,
+    $core.String? updateDate,
+    $core.String? statusUpdateDate,
     $core.double? price,
     $core.double? cost,
     $core.double? unitsInOnePiece,
@@ -534,14 +534,14 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
     if (codeShortcut != null) {
       $result.codeShortcut = codeShortcut;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
     }
-    if (dateUpdate != null) {
-      $result.dateUpdate = dateUpdate;
+    if (updateDate != null) {
+      $result.updateDate = updateDate;
     }
-    if (dateStatus != null) {
-      $result.dateStatus = dateStatus;
+    if (statusUpdateDate != null) {
+      $result.statusUpdateDate = statusUpdateDate;
     }
     if (price != null) {
       $result.price = price;
@@ -568,9 +568,9 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
     ..e<ArticleKindPb>(4, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: ArticleKindPb.unknown, valueOf: ArticleKindPb.valueOf, enumValues: ArticleKindPb.values)
     ..aOB(5, _omitFieldNames ? '' : 'status')
     ..a<$core.int>(6, _omitFieldNames ? '' : 'articleCode', $pb.PbFieldType.O3, protoName: 'codeShortcut')
-    ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'dateCreation')
-    ..aOS(8, _omitFieldNames ? '' : 'updateDate', protoName: 'dateUpdate')
-    ..aOS(9, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
+    ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOS(8, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
+    ..aOS(9, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..a<$core.double>(10, _omitFieldNames ? '' : 'price', $pb.PbFieldType.OD)
     ..a<$core.double>(11, _omitFieldNames ? '' : 'cost', $pb.PbFieldType.OD)
     ..a<$core.double>(12, _omitFieldNames ? '' : 'unitsInOnePiece', $pb.PbFieldType.OD, protoName: 'unitsInOnePiece')
@@ -654,31 +654,31 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
   void clearCodeShortcut() => clearField(6);
 
   @$pb.TagNumber(7)
-  $core.String get dateCreation => $_getSZ(6);
+  $core.String get creationDate => $_getSZ(6);
   @$pb.TagNumber(7)
-  set dateCreation($core.String v) { $_setString(6, v); }
+  set creationDate($core.String v) { $_setString(6, v); }
   @$pb.TagNumber(7)
-  $core.bool hasDateCreation() => $_has(6);
+  $core.bool hasCreationDate() => $_has(6);
   @$pb.TagNumber(7)
-  void clearDateCreation() => clearField(7);
+  void clearCreationDate() => clearField(7);
 
   @$pb.TagNumber(8)
-  $core.String get dateUpdate => $_getSZ(7);
+  $core.String get updateDate => $_getSZ(7);
   @$pb.TagNumber(8)
-  set dateUpdate($core.String v) { $_setString(7, v); }
+  set updateDate($core.String v) { $_setString(7, v); }
   @$pb.TagNumber(8)
-  $core.bool hasDateUpdate() => $_has(7);
+  $core.bool hasUpdateDate() => $_has(7);
   @$pb.TagNumber(8)
-  void clearDateUpdate() => clearField(8);
+  void clearUpdateDate() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.String get dateStatus => $_getSZ(8);
+  $core.String get statusUpdateDate => $_getSZ(8);
   @$pb.TagNumber(9)
-  set dateStatus($core.String v) { $_setString(8, v); }
+  set statusUpdateDate($core.String v) { $_setString(8, v); }
   @$pb.TagNumber(9)
-  $core.bool hasDateStatus() => $_has(8);
+  $core.bool hasStatusUpdateDate() => $_has(8);
   @$pb.TagNumber(9)
-  void clearDateStatus() => clearField(9);
+  void clearStatusUpdateDate() => clearField(9);
 
   @$pb.TagNumber(10)
   $core.double get price => $_getN(9);
@@ -726,9 +726,9 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
     ArticleKindPb? kind,
     $core.bool? status,
     $core.int? codeShortcut,
-    $core.String? dateCreation,
-    $core.String? dateUpdate,
-    $core.String? dateStatus,
+    $core.String? creationDate,
+    $core.String? updateDate,
+    $core.String? statusUpdateDate,
     $core.Iterable<ProxyArticlePb>? proxies,
     $core.double? discountAmount,
     $core.double? markupAmount,
@@ -752,14 +752,14 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
     if (codeShortcut != null) {
       $result.codeShortcut = codeShortcut;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
     }
-    if (dateUpdate != null) {
-      $result.dateUpdate = dateUpdate;
+    if (updateDate != null) {
+      $result.updateDate = updateDate;
     }
-    if (dateStatus != null) {
-      $result.dateStatus = dateStatus;
+    if (statusUpdateDate != null) {
+      $result.statusUpdateDate = statusUpdateDate;
     }
     if (proxies != null) {
       $result.proxies.addAll(proxies);
@@ -783,9 +783,9 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
     ..e<ArticleKindPb>(4, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: ArticleKindPb.unknown, valueOf: ArticleKindPb.valueOf, enumValues: ArticleKindPb.values)
     ..aOB(5, _omitFieldNames ? '' : 'status')
     ..a<$core.int>(6, _omitFieldNames ? '' : 'articleCode', $pb.PbFieldType.O3, protoName: 'codeShortcut')
-    ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'dateCreation')
-    ..aOS(8, _omitFieldNames ? '' : 'updateDate', protoName: 'dateUpdate')
-    ..aOS(9, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
+    ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOS(8, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
+    ..aOS(9, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..pc<ProxyArticlePb>(10, _omitFieldNames ? '' : 'proxies', $pb.PbFieldType.PM, subBuilder: ProxyArticlePb.create)
     ..a<$core.double>(11, _omitFieldNames ? '' : 'discountAmountSalesOnly', $pb.PbFieldType.OD, protoName: 'discountAmount')
     ..a<$core.double>(12, _omitFieldNames ? '' : 'markupAmountSalesOnly', $pb.PbFieldType.OD, protoName: 'markupAmount')
@@ -868,31 +868,31 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
   void clearCodeShortcut() => clearField(6);
 
   @$pb.TagNumber(7)
-  $core.String get dateCreation => $_getSZ(6);
+  $core.String get creationDate => $_getSZ(6);
   @$pb.TagNumber(7)
-  set dateCreation($core.String v) { $_setString(6, v); }
+  set creationDate($core.String v) { $_setString(6, v); }
   @$pb.TagNumber(7)
-  $core.bool hasDateCreation() => $_has(6);
+  $core.bool hasCreationDate() => $_has(6);
   @$pb.TagNumber(7)
-  void clearDateCreation() => clearField(7);
+  void clearCreationDate() => clearField(7);
 
   @$pb.TagNumber(8)
-  $core.String get dateUpdate => $_getSZ(7);
+  $core.String get updateDate => $_getSZ(7);
   @$pb.TagNumber(8)
-  set dateUpdate($core.String v) { $_setString(7, v); }
+  set updateDate($core.String v) { $_setString(7, v); }
   @$pb.TagNumber(8)
-  $core.bool hasDateUpdate() => $_has(7);
+  $core.bool hasUpdateDate() => $_has(7);
   @$pb.TagNumber(8)
-  void clearDateUpdate() => clearField(8);
+  void clearUpdateDate() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.String get dateStatus => $_getSZ(8);
+  $core.String get statusUpdateDate => $_getSZ(8);
   @$pb.TagNumber(9)
-  set dateStatus($core.String v) { $_setString(8, v); }
+  set statusUpdateDate($core.String v) { $_setString(8, v); }
   @$pb.TagNumber(9)
-  $core.bool hasDateStatus() => $_has(8);
+  $core.bool hasStatusUpdateDate() => $_has(8);
   @$pb.TagNumber(9)
-  void clearDateStatus() => clearField(9);
+  void clearStatusUpdateDate() => clearField(9);
 
   @$pb.TagNumber(10)
   $core.List<ProxyArticlePb> get proxies => $_getList(9);

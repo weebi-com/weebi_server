@@ -22,13 +22,13 @@ class Boutique extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.String? firmId,
     $core.String? chainId,
-    $core.String? dateCreation,
-    $core.String? dateUpdate,
-    $core.String? dateStatus,
+    $core.String? creationDate,
+    $core.String? updateDate,
+    $core.String? statusUpdateDate,
     $core.bool? status,
     $core.String? name,
     $19.Phone? phone,
-    $20.Address? address,
+    $20.Address? addressFull,
     $core.double? promo,
     $core.String? promoStart,
     $core.String? promoEnd,
@@ -45,14 +45,14 @@ class Boutique extends $pb.GeneratedMessage {
     if (chainId != null) {
       $result.chainId = chainId;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
     }
-    if (dateUpdate != null) {
-      $result.dateUpdate = dateUpdate;
+    if (updateDate != null) {
+      $result.updateDate = updateDate;
     }
-    if (dateStatus != null) {
-      $result.dateStatus = dateStatus;
+    if (statusUpdateDate != null) {
+      $result.statusUpdateDate = statusUpdateDate;
     }
     if (status != null) {
       $result.status = status;
@@ -63,8 +63,8 @@ class Boutique extends $pb.GeneratedMessage {
     if (phone != null) {
       $result.phone = phone;
     }
-    if (address != null) {
-      $result.address = address;
+    if (addressFull != null) {
+      $result.addressFull = addressFull;
     }
     if (promo != null) {
       $result.promo = promo;
@@ -91,13 +91,13 @@ class Boutique extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(3, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOS(4, _omitFieldNames ? '' : 'creationDate', protoName: 'dateCreation')
-    ..aOS(5, _omitFieldNames ? '' : 'updateDate', protoName: 'dateUpdate')
-    ..aOS(6, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
+    ..aOS(4, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOS(5, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
+    ..aOS(6, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..aOB(7, _omitFieldNames ? '' : 'status')
     ..aOS(8, _omitFieldNames ? '' : 'name')
     ..aOM<$19.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
-    ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'address', subBuilder: $20.Address.create)
+    ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $20.Address.create)
     ..a<$core.double>(11, _omitFieldNames ? '' : 'promo', $pb.PbFieldType.OD)
     ..aOS(12, _omitFieldNames ? '' : 'promoStart', protoName: 'promoStart')
     ..aOS(13, _omitFieldNames ? '' : 'promoEnd', protoName: 'promoEnd')
@@ -155,31 +155,31 @@ class Boutique extends $pb.GeneratedMessage {
   void clearChainId() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get dateCreation => $_getSZ(3);
+  $core.String get creationDate => $_getSZ(3);
   @$pb.TagNumber(4)
-  set dateCreation($core.String v) { $_setString(3, v); }
+  set creationDate($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasDateCreation() => $_has(3);
+  $core.bool hasCreationDate() => $_has(3);
   @$pb.TagNumber(4)
-  void clearDateCreation() => clearField(4);
+  void clearCreationDate() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get dateUpdate => $_getSZ(4);
+  $core.String get updateDate => $_getSZ(4);
   @$pb.TagNumber(5)
-  set dateUpdate($core.String v) { $_setString(4, v); }
+  set updateDate($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasDateUpdate() => $_has(4);
+  $core.bool hasUpdateDate() => $_has(4);
   @$pb.TagNumber(5)
-  void clearDateUpdate() => clearField(5);
+  void clearUpdateDate() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.String get dateStatus => $_getSZ(5);
+  $core.String get statusUpdateDate => $_getSZ(5);
   @$pb.TagNumber(6)
-  set dateStatus($core.String v) { $_setString(5, v); }
+  set statusUpdateDate($core.String v) { $_setString(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasDateStatus() => $_has(5);
+  $core.bool hasStatusUpdateDate() => $_has(5);
   @$pb.TagNumber(6)
-  void clearDateStatus() => clearField(6);
+  void clearStatusUpdateDate() => clearField(6);
 
   @$pb.TagNumber(7)
   $core.bool get status => $_getBF(6);
@@ -211,15 +211,15 @@ class Boutique extends $pb.GeneratedMessage {
   $19.Phone ensurePhone() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $20.Address get address => $_getN(9);
+  $20.Address get addressFull => $_getN(9);
   @$pb.TagNumber(10)
-  set address($20.Address v) { setField(10, v); }
+  set addressFull($20.Address v) { setField(10, v); }
   @$pb.TagNumber(10)
-  $core.bool hasAddress() => $_has(9);
+  $core.bool hasAddressFull() => $_has(9);
   @$pb.TagNumber(10)
-  void clearAddress() => clearField(10);
+  void clearAddressFull() => clearField(10);
   @$pb.TagNumber(10)
-  $20.Address ensureAddress() => $_ensure(9);
+  $20.Address ensureAddressFull() => $_ensure(9);
 
   @$pb.TagNumber(11)
   $core.double get promo => $_getN(10);

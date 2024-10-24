@@ -48,7 +48,7 @@ class TicketService extends TicketServiceBase {
     try {
       final ticketMongo = TicketMongo.create()
         ..ticket = request.ticket
-        ..dateCreation = request.ticket.dateCreation
+        ..creationDate = request.ticket.date
         ..ticketNonUniqueId = request.ticket.ticketNonUniqueId
         ..boutiqueId = request.ticket.counterfoil.boutiqueId
         ..chainId = request.ticket.counterfoil.chainId
@@ -203,7 +203,7 @@ class TicketService extends TicketServiceBase {
       request.ticket.counterfoil.firmId,
       request.ticket.counterfoil.userId,
       request.ticket.ticketNonUniqueId,
-      request.ticket.dateCreation,
+      request.ticket.date,
     );
 
     try {
@@ -264,7 +264,7 @@ class TicketService extends TicketServiceBase {
       request.ticket.counterfoil.firmId,
       request.ticket.counterfoil.userId,
       request.ticket.ticketNonUniqueId,
-      request.ticket.dateCreation,
+      request.ticket.date,
     );
 
     try {

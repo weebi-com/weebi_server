@@ -29,7 +29,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.String? firmId,
     $core.String? chainId,
-    $core.String? dateCreation,
+    $core.String? creationDate,
   }) {
     final $result = create();
     if (ticket != null) {
@@ -50,8 +50,8 @@ class TicketMongo extends $pb.GeneratedMessage {
     if (chainId != null) {
       $result.chainId = chainId;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
     }
     return $result;
   }
@@ -66,7 +66,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(5, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(6, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOS(7, _omitFieldNames ? '' : 'date', protoName: 'dateCreation')
+    ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..hasRequiredFields = false
   ;
 
@@ -148,21 +148,21 @@ class TicketMongo extends $pb.GeneratedMessage {
   void clearChainId() => clearField(6);
 
   @$pb.TagNumber(7)
-  $core.String get dateCreation => $_getSZ(6);
+  $core.String get creationDate => $_getSZ(6);
   @$pb.TagNumber(7)
-  set dateCreation($core.String v) { $_setString(6, v); }
+  set creationDate($core.String v) { $_setString(6, v); }
   @$pb.TagNumber(7)
-  $core.bool hasDateCreation() => $_has(6);
+  $core.bool hasCreationDate() => $_has(6);
   @$pb.TagNumber(7)
-  void clearDateCreation() => clearField(7);
+  void clearCreationDate() => clearField(7);
 }
 
 class TicketPb extends $pb.GeneratedMessage {
   factory TicketPb({
     $core.int? ticketNonUniqueId,
     Counterfoil? counterfoil,
-    $core.String? dateCreation,
-    $core.String? dateStatus,
+    $core.String? date,
+    $core.String? statusUpdateDate,
     $core.bool? status,
     $core.Iterable<ItemCartPb>? items,
     $21.TicketTypePb? ticketType,
@@ -181,11 +181,11 @@ class TicketPb extends $pb.GeneratedMessage {
     if (counterfoil != null) {
       $result.counterfoil = counterfoil;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (date != null) {
+      $result.date = date;
     }
-    if (dateStatus != null) {
-      $result.dateStatus = dateStatus;
+    if (statusUpdateDate != null) {
+      $result.statusUpdateDate = statusUpdateDate;
     }
     if (status != null) {
       $result.status = status;
@@ -226,8 +226,8 @@ class TicketPb extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
     ..aOM<Counterfoil>(2, _omitFieldNames ? '' : 'counterfoil', subBuilder: Counterfoil.create)
-    ..aOS(3, _omitFieldNames ? '' : 'date', protoName: 'dateCreation')
-    ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'dateStatus')
+    ..aOS(3, _omitFieldNames ? '' : 'date')
+    ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..aOB(5, _omitFieldNames ? '' : 'status')
     ..pc<ItemCartPb>(6, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM, subBuilder: ItemCartPb.create)
     ..e<$21.TicketTypePb>(7, _omitFieldNames ? '' : 'ticketType', $pb.PbFieldType.OE, protoName: 'ticketType', defaultOrMaker: $21.TicketTypePb.unknown, valueOf: $21.TicketTypePb.valueOf, enumValues: $21.TicketTypePb.values)
@@ -283,22 +283,22 @@ class TicketPb extends $pb.GeneratedMessage {
   Counterfoil ensureCounterfoil() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $core.String get dateCreation => $_getSZ(2);
+  $core.String get date => $_getSZ(2);
   @$pb.TagNumber(3)
-  set dateCreation($core.String v) { $_setString(2, v); }
+  set date($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasDateCreation() => $_has(2);
+  $core.bool hasDate() => $_has(2);
   @$pb.TagNumber(3)
-  void clearDateCreation() => clearField(3);
+  void clearDate() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get dateStatus => $_getSZ(3);
+  $core.String get statusUpdateDate => $_getSZ(3);
   @$pb.TagNumber(4)
-  set dateStatus($core.String v) { $_setString(3, v); }
+  set statusUpdateDate($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasDateStatus() => $_has(3);
+  $core.bool hasStatusUpdateDate() => $_has(3);
   @$pb.TagNumber(4)
-  void clearDateStatus() => clearField(4);
+  void clearStatusUpdateDate() => clearField(4);
 
   @$pb.TagNumber(5)
   $core.bool get status => $_getBF(4);

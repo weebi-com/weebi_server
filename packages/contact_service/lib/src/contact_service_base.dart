@@ -49,7 +49,7 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
-        ..dateCreation = request.contact.dateCreation
+        ..creationDate = request.contact.creationDate
         ..contactNonUniqueId = request.contact.contactNonUniqueId
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
@@ -103,7 +103,7 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
-        ..dateCreation = request.contact.dateCreation
+        ..creationDate = request.contact.creationDate
         ..contactNonUniqueId = request.contact.contactNonUniqueId
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
@@ -115,7 +115,7 @@ class ContactService extends ContactServiceBase {
             request.chainId,
             request.contactUserId,
             request.contact.contactNonUniqueId,
-            request.contact.dateCreation,
+            request.contact.creationDate,
           ),
           contactMongo.toProto3Json() as Map<String, dynamic>,
           upsert: true);
@@ -162,7 +162,7 @@ class ContactService extends ContactServiceBase {
           request.chainId,
           request.contactUserId,
           request.contact.contactNonUniqueId,
-          request.contact.dateCreation,
+          request.contact.creationDate,
         ),
       );
       return StatusResponse()
