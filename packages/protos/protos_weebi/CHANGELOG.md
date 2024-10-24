@@ -1,3 +1,8 @@
+## 1.0.3
+
+- add creationDate to distinguish ids in article, contact, ticket
+- bump versions
+
 ## 1.0.2
 
 - add hardwareInfo

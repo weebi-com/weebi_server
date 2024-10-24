@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:protos_weebi/grpc.dart';
-import 'package:fence_service/src/bearer_ext.dart';
-import 'package:fence_service/src/jwt.dart';
+import 'package:fence_service/fence_service.dart';
 
 FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
   if (call.clientMetadata?[':path'] == null) {
