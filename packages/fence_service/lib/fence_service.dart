@@ -1,4 +1,4 @@
-library fence_service;
+library;
 
 export 'src/fence_service_base.dart';
 export 'src/jwt.dart';

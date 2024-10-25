@@ -7,9 +7,10 @@ publish_to: none
 environment:
   sdk: ^3.3.3
 
-# Add regular dependencies here.
 dependencies:
-  mongo_dart: ^0.10.3
+  #mongo_dart: ^0.10.3 comes from fence_service
+  logging: ^1.2.0
+  # weebi's
   article_service:
     path: ../../packages/article_service
   contact_service:
@@ -18,10 +19,6 @@ dependencies:
     path: ../../packages/ticket_service
   fence_service:
     path: ../../packages/fence_service
-  #
-  protos_weebi:
-    path: ../../packages/protos/protos_weebi
-  logging: ^1.2.0
 
 dev_dependencies:
   test: ^1.25.8

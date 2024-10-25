@@ -1,5 +1,6 @@
 {
   "details": {
+    "endpoint": "http://localhost:8080",
     "methodFqn": "weebi.weebi_app.service.WeebiAppService.readAppMinimumVersion"
   },
   "requests": [

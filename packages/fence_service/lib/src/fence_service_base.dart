@@ -501,17 +501,13 @@ class FenceService extends FenceServiceBase {
         d = await _findCode(code);
       } while (code == d.code);
 
-      final millis = DateTime.now().millisecond;
-      final timestamp = Timestamp()
-        ..seconds = Int64(millis)
-        ..nanos = (millis % 1000) * 1000000;
       final temp = CodeForPairingDevice.create()
         ..userId = userPermission.userId
         ..firmId = userPermission.firmId
         ..chainId = request.chainId
         ..boutiqueId = request.boutiqueId
         ..code = code
-        ..timestampUTC = timestamp;
+        ..timestampUTC = DateTime.now().timestampProto;
       final result = await pairingCodesCollection
           .insertOne(temp.toProto3Json() as Map<String, dynamic>);
       if (result.hasWriteErrors) {

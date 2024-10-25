@@ -1,9 +1,7 @@
-// import 'package:fixnum/fixnum.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
-import 'package:protos_weebi/extensions.dart';
-import 'package:protos_weebi/grpc.dart';
-import 'package:protos_weebi/protos_weebi_io.dart';
+import 'package:fence_service/grpc.dart';
+import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectContact(String firmId, String chainId,

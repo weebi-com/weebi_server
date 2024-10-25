@@ -9,10 +9,7 @@ environment:
   sdk: ^3.3.3
 
 dependencies:
-  mongo_dart: ^0.10.3
-  models_weebi: ^1.1.4
-  protos_weebi:
-    path: ../protos/protos_weebi
+  #mongo_dart: ^0.10.3 comes from fence_service
   fence_service:
     path: ../fence_service
   #fixnum: ^1.1.0

@@ -1,16 +1,34 @@
 # mongo running tests
 ## mongo macos
+``` shell
 $ sudo mongod --dbpath /System/Volumes/Data/data/db
-
-if need to interact with mondb, then in another terminal
-$ mongosh
+```
+then in another terminal to interact with mongodb, 
+``` shell
+mongosh
+```
 
 ## mongo windows
-$ mongosh
+```shell
+mongosh
+```
 
 # running server
-$ cd packages/server
-$ dart bin/main.dart
+## macos
+``` shell
+cd packages/server
+export MONGO_DB_URI=mongodb://localhost:27017/local
+dart bin/main.dart
+```
+
+## windows
+``` shell
+$Env:MONGO_DB_URI="mongodb://localhost:27017/local"
+dart bin/main.dart
+```
+
+The term 'KEY="hello"' is not recognized as the name of a cmdlet,
+
 should print : Server running on ip InternetAddress('0.0.0.0', IPv4) port 8080
 
 on the flutter app side, do not set 0.0.0.0 or local host but instead the IP of your machine

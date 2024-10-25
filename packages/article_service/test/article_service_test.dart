@@ -1,12 +1,9 @@
-// import 'dart:io';
-import 'package:article_service/article_service.dart';
-import 'package:protos_weebi/data_dummy.dart';
 import 'package:test/test.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
-import 'package:models_weebi/models.dart';
-import 'package:protos_weebi/protos_weebi_io.dart';
-
+import 'package:article_service/article_service.dart';
+import 'package:fence_service/models_weebi.dart';
+import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 
 void main() async {
@@ -18,7 +15,7 @@ void main() async {
 
   final calibreDummy = CalibrePb.create()
     ..mergeFromProto3Json(
-      Calibre.dummyRetail.toMap(),
+      CalibreWeebi.dummyRetail.toMap(),
       ignoreUnknownFields: true,
     );
 
@@ -51,7 +48,7 @@ void main() async {
     expect(response.calibres.length, 1);
   });
   test('test replaceOne ', () async {
-    final lili = Calibre.dummyRetail.copyWith(title: 'Lili biscuit');
+    final lili = CalibreWeebi.dummyRetail.copyWith(title: 'Lili biscuit');
     print('lili.title');
     print(lili.title);
 
