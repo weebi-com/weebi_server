@@ -2,45 +2,45 @@
   "boutiqueId": "{{ faker.random.uuid }}",
   "firmId": "{{ faker.random.uuid }}",
   "chainId": "{{ faker.random.uuid }}",
-  "creationDate": "Borders matrix",
-  "updateDate": "deposit",
-  "statusUpdateDate": "Mobility Ouguiya",
+  "creationDate": "AGP auxiliary AI",
+  "updateDate": "Marketing dynamic Analyst",
+  "statusUpdateDate": "Cambridgeshire",
   "status": true,
   "name": "{{ faker.name.last_name }}",
   "phone": {
-    "countryCode": 906,
+    "countryCode": 677,
     "number": "{{ faker.random.ushort }}"
   },
   "addressFull": {
     "street": "{{ faker.address.street_name }}",
-    "code": "Future-proofed",
+    "code": "lime Tactics",
     "city": "{{ faker.address.city }}",
     "country": {
-      "code2Letters": "Fall transition North Dakota",
-      "namel10n": "Industrial, Grocery & Computers SCSI convergence"
+      "code2Letters": "maximized Handcrafted",
+      "namel10n": "leverage Wisconsin Cambridgeshire"
     },
-    "latitude": 979.5835625347906,
-    "longitude": 2.5973447734197324
+    "latitude": 417.33443882191705,
+    "longitude": 62.95979340744581
   },
-  "promo": 217.93164887997517,
-  "promoStart": "synergize",
-  "promoEnd": "Awesome Concrete Pizza strategy",
+  "promo": 936.1386297204675,
+  "promoStart": "deposit Pitcairn Islands",
+  "promoEnd": "Views copy",
   "devices": [
     {
       "deviceId": "{{ faker.random.uuid }}",
       "chainId": "{{ faker.random.uuid }}",
       "boutiqueId": "{{ faker.random.uuid }}",
-      "status": true,
+      "status": false,
       "password": "{{ faker.internet.password }}",
-      "dateCreation": {
-        "seconds": "343",
-        "nanos": 288
+      "timestamp": {
+        "seconds": "808",
+        "nanos": 880
       },
       "hardwareInfo": {
         "name": "{{ faker.name.last_name }}",
         "serialNumber": "{{ faker.random.ushort }}",
-        "baseOS": "withdrawal",
-        "brand": "scale Integration withdrawal"
+        "baseOS": "Plastic Fresh out-of-the-box",
+        "brand": "AI Mountains"
       }
     },
     {
@@ -49,19 +49,19 @@
       "boutiqueId": "{{ faker.random.uuid }}",
       "status": true,
       "password": "{{ faker.internet.password }}",
-      "dateCreation": {
-        "seconds": "971",
-        "nanos": 132
+      "timestamp": {
+        "seconds": "980",
+        "nanos": 580
       },
       "hardwareInfo": {
         "name": "{{ faker.name.last_name }}",
         "serialNumber": "{{ faker.random.ushort }}",
-        "baseOS": "Tasty enterprise Lodge",
-        "brand": "Sleek Plastic Fish"
+        "baseOS": "hack deposit",
+        "brand": "digital Licensed Licensed Cotton Gloves"
       }
     }
   ],
   "additional_attributes": {
-    "bleeding-edge deposit optical": "withdrawal"
+    "enterprise Implementation Personal Loan Account": "Shoal programming Ridges"
   }
 }

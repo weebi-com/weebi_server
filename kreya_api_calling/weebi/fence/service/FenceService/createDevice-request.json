@@ -2,8 +2,8 @@
   "hardwareInfo": {
     "name": "{{ faker.name.last_name }}",
     "serialNumber": "{{ faker.random.ushort }}",
-    "baseOS": "Savings Account neural",
-    "brand": "Small Granite Computer Cloned"
+    "baseOS": "Fantastic Metal",
+    "brand": "Soft Cambridgeshire"
   },
-  "code": 893116
+  "code": 870485
 }

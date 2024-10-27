@@ -1,4 +1,0 @@
-{
-  "chainId": "{{ faker.random.uuid }}",
-  "title": "Islands Belgium"
-}

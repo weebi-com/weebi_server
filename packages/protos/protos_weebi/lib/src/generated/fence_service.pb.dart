@@ -16,7 +16,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 import 'btq_chain.pb.dart' as $10;
 import 'common/g_common.pb.dart' as $1;
 import 'common/g_timestamp.pb.dart' as $18;
-import 'device.pb.dart' as $13;
+import 'device.pb.dart' as $12;
 import 'user.pb.dart' as $6;
 import 'user_permissions.pb.dart' as $8;
 
@@ -403,7 +403,7 @@ class ReadDeviceBtqRequest extends $pb.GeneratedMessage {
 class DeleteDeviceRequest extends $pb.GeneratedMessage {
   factory DeleteDeviceRequest({
     $core.String? chainId,
-    $13.Device? device,
+    $12.Device? device,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -420,7 +420,7 @@ class DeleteDeviceRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteDeviceRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$13.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $13.Device.create)
+    ..aOM<$12.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $12.Device.create)
     ..hasRequiredFields = false
   ;
 
@@ -455,15 +455,15 @@ class DeleteDeviceRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $13.Device get device => $_getN(1);
+  $12.Device get device => $_getN(1);
   @$pb.TagNumber(2)
-  set device($13.Device v) { setField(2, v); }
+  set device($12.Device v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDevice() => $_has(1);
   @$pb.TagNumber(2)
   void clearDevice() => clearField(2);
   @$pb.TagNumber(2)
-  $13.Device ensureDevice() => $_ensure(1);
+  $12.Device ensureDevice() => $_ensure(1);
 }
 
 class MailAndEncyptedPassword extends $pb.GeneratedMessage {
@@ -935,7 +935,7 @@ class Tokens extends $pb.GeneratedMessage {
 class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
   factory UpdateDevicePasswordRequest({
     $core.String? chainId,
-    $13.Device? device,
+    $12.Device? device,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -952,7 +952,7 @@ class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateDevicePasswordRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$13.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $13.Device.create)
+    ..aOM<$12.Device>(2, _omitFieldNames ? '' : 'device', subBuilder: $12.Device.create)
     ..hasRequiredFields = false
   ;
 
@@ -987,15 +987,15 @@ class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $13.Device get device => $_getN(1);
+  $12.Device get device => $_getN(1);
   @$pb.TagNumber(2)
-  set device($13.Device v) { setField(2, v); }
+  set device($12.Device v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDevice() => $_has(1);
   @$pb.TagNumber(2)
   void clearDevice() => clearField(2);
   @$pb.TagNumber(2)
-  $13.Device ensureDevice() => $_ensure(1);
+  $12.Device ensureDevice() => $_ensure(1);
 }
 
 class PasswordUpdateRequest extends $pb.GeneratedMessage {
@@ -1079,7 +1079,7 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
 /// / deviceId && status && password && dateCreation will be set by server, ignore them in front
 class PendingDeviceRequest extends $pb.GeneratedMessage {
   factory PendingDeviceRequest({
-    $13.HardwareInfo? hardwareInfo,
+    $12.HardwareInfo? hardwareInfo,
     $core.int? code,
   }) {
     final $result = create();
@@ -1096,7 +1096,7 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
   factory PendingDeviceRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PendingDeviceRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOM<$13.HardwareInfo>(1, _omitFieldNames ? '' : 'hardwareInfo', protoName: 'hardwareInfo', subBuilder: $13.HardwareInfo.create)
+    ..aOM<$12.HardwareInfo>(1, _omitFieldNames ? '' : 'hardwareInfo', protoName: 'hardwareInfo', subBuilder: $12.HardwareInfo.create)
     ..a<$core.int>(2, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
@@ -1123,15 +1123,15 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
   static PendingDeviceRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $13.HardwareInfo get hardwareInfo => $_getN(0);
+  $12.HardwareInfo get hardwareInfo => $_getN(0);
   @$pb.TagNumber(1)
-  set hardwareInfo($13.HardwareInfo v) { setField(1, v); }
+  set hardwareInfo($12.HardwareInfo v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasHardwareInfo() => $_has(0);
   @$pb.TagNumber(1)
   void clearHardwareInfo() => clearField(1);
   @$pb.TagNumber(1)
-  $13.HardwareInfo ensureHardwareInfo() => $_ensure(0);
+  $12.HardwareInfo ensureHardwareInfo() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.int get code => $_getIZ(1);
@@ -1267,7 +1267,7 @@ class CodeForPairingDevice extends $pb.GeneratedMessage {
 
 class ApproveDeviceRequest extends $pb.GeneratedMessage {
   factory ApproveDeviceRequest({
-    $13.Device? device,
+    $12.Device? device,
   }) {
     final $result = create();
     if (device != null) {
@@ -1280,7 +1280,7 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
   factory ApproveDeviceRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ApproveDeviceRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOM<$13.Device>(1, _omitFieldNames ? '' : 'device', subBuilder: $13.Device.create)
+    ..aOM<$12.Device>(1, _omitFieldNames ? '' : 'device', subBuilder: $12.Device.create)
     ..hasRequiredFields = false
   ;
 
@@ -1306,15 +1306,15 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
   static ApproveDeviceRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $13.Device get device => $_getN(0);
+  $12.Device get device => $_getN(0);
   @$pb.TagNumber(1)
-  set device($13.Device v) { setField(1, v); }
+  set device($12.Device v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasDevice() => $_has(0);
   @$pb.TagNumber(1)
   void clearDevice() => clearField(1);
   @$pb.TagNumber(1)
-  $13.Device ensureDevice() => $_ensure(0);
+  $12.Device ensureDevice() => $_ensure(0);
 }
 
 

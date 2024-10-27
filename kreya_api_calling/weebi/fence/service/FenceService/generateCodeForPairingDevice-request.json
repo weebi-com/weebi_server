@@ -1,4 +1,4 @@
 {
-  "chainId": "1729866289397",
-  "boutiqueId": "1729866289397"
+  "chainId": "{{ faker.random.uuid }}",
+  "boutiqueId": "{{ faker.random.uuid }}"
 }

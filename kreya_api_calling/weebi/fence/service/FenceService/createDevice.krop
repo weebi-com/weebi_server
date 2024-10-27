@@ -1,10 +1,11 @@
 {
   "details": {
-    "methodFqn": "weebi.fence.service.FenceService.updateUserPassword"
+    "endpoint": "http://localhost:8080",
+    "methodFqn": "weebi.fence.service.FenceService.createDevice"
   },
   "requests": [
     {
-      "location": "updateUserPassword-request.json"
+      "location": "createDevice-request.json"
     }
   ],
   "operationType": "unary",

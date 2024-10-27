@@ -15,7 +15,7 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'common/address.pb.dart' as $20;
 import 'common/phone.pb.dart' as $19;
-import 'device.pb.dart' as $13;
+import 'device.pb.dart' as $12;
 
 class Boutique extends $pb.GeneratedMessage {
   factory Boutique({
@@ -32,7 +32,7 @@ class Boutique extends $pb.GeneratedMessage {
     $core.double? promo,
     $core.String? promoStart,
     $core.String? promoEnd,
-    $core.Iterable<$13.Device>? devices,
+    $core.Iterable<$12.Device>? devices,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
@@ -101,7 +101,7 @@ class Boutique extends $pb.GeneratedMessage {
     ..a<$core.double>(11, _omitFieldNames ? '' : 'promo', $pb.PbFieldType.OD)
     ..aOS(12, _omitFieldNames ? '' : 'promoStart', protoName: 'promoStart')
     ..aOS(13, _omitFieldNames ? '' : 'promoEnd', protoName: 'promoEnd')
-    ..pc<$13.Device>(14, _omitFieldNames ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: $13.Device.create)
+    ..pc<$12.Device>(14, _omitFieldNames ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: $12.Device.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'Boutique.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -249,7 +249,7 @@ class Boutique extends $pb.GeneratedMessage {
   void clearPromoEnd() => clearField(13);
 
   @$pb.TagNumber(14)
-  $core.List<$13.Device> get devices => $_getList(13);
+  $core.List<$12.Device> get devices => $_getList(13);
 
   @$pb.TagNumber(99)
   $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(14);

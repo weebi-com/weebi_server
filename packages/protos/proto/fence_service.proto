@@ -53,19 +53,17 @@ service FenceService {
   
   rpc createOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
   rpc updateOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
+  rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
 
   /// device enrolment follows a different process than user enrolment
   /// generateCodeForPairingDevice is called by web app, it includes chainId and boutiqueId
   /// A device belongs to a boutique 
   rpc generateCodeForPairingDevice(weebi.common.chained_ids.ChainIdAndboutiqueId) returns (CodeForPairingDevice);
-  /// createPendingDevice is called by mobile/desktop app  
-  rpc createPendingDevice(PendingDeviceRequest) returns (CreatePendingDeviceResponse);
-  /// webapp listens to deviceStream awaiting PoS app to create pendingDevice
-  /// await lasts for 2 minutes (to be tested) 
+  /// webapp listens to deviceStream awaiting PoS app to createDevice by typing the code
   rpc readOnePendingDevice(ReadDeviceBtqRequest) returns (weebi.device.Device);
-  /// approveDevice is called by web from a view with all devices (used in case readOnePendingDevice timeout/postponed)
-  rpc approveDevice(ApproveDeviceRequest) returns (google.retail.common.StatusResponse);
-  rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
+  /// createDevice is called by mobile/desktop app  
+  /// await lasts for 2 minutes (to be tested)
+  rpc createDevice(PendingDeviceRequest) returns (CreatePendingDeviceResponse);
 
   /// a different auth method to avoid locking PoS
   /// for first authent after device

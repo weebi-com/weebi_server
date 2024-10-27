@@ -73,9 +73,8 @@ void main() {
     final pendingDevice = PendingDeviceRequest(
         code: codeResponse.code,
         hardwareInfo: HardwareInfo(name: 'testDevice', baseOS: 'testOS'));
-    final createPendingDeviceStatusResponse =
-        await fenceService.createPendingDevice(
-            ServiceCallTest('', path: 'createPendingDevice'), pendingDevice);
+    final createPendingDeviceStatusResponse = await fenceService.createDevice(
+        ServiceCallTest('', path: 'createDevice'), pendingDevice);
     expect(createPendingDeviceStatusResponse.statusResponse.type,
         StatusResponse_Type.CREATED);
 

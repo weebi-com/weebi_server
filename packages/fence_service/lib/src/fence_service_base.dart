@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:math' show Random;
 
 import 'package:collection/collection.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
 import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/encrypter.dart';
@@ -490,6 +489,14 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+    // check that chainId exists if not found error thrown by _checkOneChainAndProtoIt
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+    // check that boutiqueid exists
+    if (chain.boutiques.none((b) => b.boutiqueId == request.boutiqueId)) {
+      throw GrpcError.notFound('unknown boutiqueId ${request.boutiqueId}');
+    }
+
     try {
       _db.isConnected ? null : await _db.open();
 
@@ -551,7 +558,7 @@ class FenceService extends FenceServiceBase {
   /// the device will still need to be approved by admin on the web (pending)
   /// mitigating the risk of a device added without admin consent
   @override
-  Future<CreatePendingDeviceResponse> createPendingDevice(
+  Future<CreatePendingDeviceResponse> createDevice(
       ServiceCall? call, PendingDeviceRequest request) async {
     _db.isConnected ? null : await _db.open();
     final pairingResp = await _findCode(request.code);
@@ -603,6 +610,15 @@ class FenceService extends FenceServiceBase {
             DateTime.now().subtract(Duration(days: 10)).toIso8601String());
         await pairingCodesCollection.deleteMany(selector);
       }
+
+      // create the user with the same deviceId
+      final cashierCreationResponse = await _createDefaultDeviceCashier(
+          chain.firmId, device.chainId, device.boutiqueId, device.deviceId);
+
+      if (cashierCreationResponse.type != StatusResponse_Type.CREATED) {
+        // do not block user in case this fails, let them use the appp
+        print('error creating cashier $cashierCreationResponse');
+      }
       return CreatePendingDeviceResponse(
           statusResponse: StatusResponse(
               type: StatusResponse_Type.CREATED, timestamp: result.timestamp),
@@ -614,47 +630,6 @@ class FenceService extends FenceServiceBase {
       print('pairOneDevice error $e');
       rethrow;
     }
-  }
-
-  // once approved a device == user with minimum rights to ease app handling
-  // see UserService.authenticateWithDevice & UserService.updateDevicePassword
-  @override
-  Future<StatusResponse> approveDevice(
-      ServiceCall? call, ApproveDeviceRequest request) async {
-    final userPermission = isMock
-        ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
-    // chain rights encompass device pairing
-    if (userPermission.chainRights.rights.any((e) => e == Right.update) ==
-        false) {
-      throw GrpcError.permissionDenied(
-          'user does not have right to pair device (missing chainRights)');
-    }
-    if (userPermission.isChainAccessible(request.device.chainId) == false) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.device.chainId}');
-    }
-    _db.isConnected ? null : await _db.open();
-    // here we do x2 things :
-    // 1. create the device in the chain's boutique
-    // 2. create the user with the same deviceId
-    final chain = await _checkOneChainAndProtoIt(
-        userPermission.firmId, request.device.chainId);
-
-    final btqIndexDeviceIndex =
-        chain.boutiqueIndexAndDeviceIndex(request.device);
-
-    chain.boutiques[btqIndexDeviceIndex.boutiqueIndex]
-        .devices[btqIndexDeviceIndex.deviceIndex].status = true;
-
-    // create user for simple auth
-    await _createDefaultDeviceCashier(
-        userPermission.firmId,
-        request.device.chainId,
-        request.device.boutiqueId,
-        request.device.deviceId);
-
-    return await _updateOneChainDBExec(chain);
   }
 
   Future<StatusResponse> _createDefaultDeviceCashier(
@@ -1000,6 +975,7 @@ class FenceService extends FenceServiceBase {
     }
   }
 
+  /// if no match whith firmId and chainId throws GrpcError.notFound
   Future<Chain> _checkOneChainAndProtoIt(String firmId, String chainId) async {
     try {
       final chainMongo = await boutiqueCollection

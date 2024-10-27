@@ -1,4 +1,0 @@
-{
-  "firmId": "{{ faker.random.uuid }}",
-  "chainId": "{{ faker.random.uuid }}"
-}
