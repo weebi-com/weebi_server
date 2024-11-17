@@ -606,8 +606,11 @@ class FenceService extends FenceServiceBase {
       // clean codes older than 10 days
       final countCodes = await pairingCodesCollection.count();
       if (countCodes > 10000) {
-        final selector = where.lt('timestampUTC',
-            DateTime.now().subtract(Duration(days: 10)).toIso8601String());
+        final selector = where.lt(
+            'timestampUTC',
+            DateTime.now()
+                .subtract(const Duration(days: 10))
+                .toIso8601String());
         await pairingCodesCollection.deleteMany(selector);
       }
 
