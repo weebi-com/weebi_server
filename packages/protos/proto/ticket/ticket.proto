@@ -85,9 +85,10 @@ message ProxyArticleWorthPb {
 message ItemCartPb {
   weebi.article.ArticleRetailOnTicketPb articleRetail = 1;
   weebi.article.ArticleBasketOnTicketPb articleBasket = 2;
-  double quantity = 3;
-  repeated ProxyArticleWorthPb proxies_worth = 4;
-  double inventoryAbsoluteQt = 5;
+  weebi.article.ArticleUncountableOnTicketPb articleUncountable = 3;
+  double quantity = 4;
+  repeated ProxyArticleWorthPb proxies_worth = 5;
+  double inventoryAbsoluteQt = 6;
 }
 
 
