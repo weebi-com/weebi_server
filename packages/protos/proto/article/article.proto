@@ -131,7 +131,7 @@ message ArticleUncountableOnTicketPb {
 }
 
 /// article uncountable / out of catalog, exemple : electricity bill (-) or grant (+)
-message ArticleRetailPb {
+message ArticleUncountablePb {
   int32 calibreId = 1 [json_name = 'calibreId'];
   int32 id = 2 [json_name = 'id'];
   string designation = 3 [json_name = 'designation'];

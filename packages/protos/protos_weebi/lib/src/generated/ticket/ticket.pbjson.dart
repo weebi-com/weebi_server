@@ -160,9 +160,10 @@ const ItemCartPb$json = {
   '2': [
     {'1': 'articleRetail', '3': 1, '4': 1, '5': 11, '6': '.weebi.article.ArticleRetailOnTicketPb', '10': 'articleRetail'},
     {'1': 'articleBasket', '3': 2, '4': 1, '5': 11, '6': '.weebi.article.ArticleBasketOnTicketPb', '10': 'articleBasket'},
-    {'1': 'quantity', '3': 3, '4': 1, '5': 1, '10': 'quantity'},
-    {'1': 'proxies_worth', '3': 4, '4': 3, '5': 11, '6': '.weebi.ticket.ProxyArticleWorthPb', '10': 'proxiesWorth'},
-    {'1': 'inventoryAbsoluteQt', '3': 5, '4': 1, '5': 1, '10': 'inventoryAbsoluteQt'},
+    {'1': 'articleUncountable', '3': 3, '4': 1, '5': 11, '6': '.weebi.article.ArticleUncountableOnTicketPb', '10': 'articleUncountable'},
+    {'1': 'quantity', '3': 4, '4': 1, '5': 1, '10': 'quantity'},
+    {'1': 'proxies_worth', '3': 5, '4': 3, '5': 11, '6': '.weebi.ticket.ProxyArticleWorthPb', '10': 'proxiesWorth'},
+    {'1': 'inventoryAbsoluteQt', '3': 6, '4': 1, '5': 1, '10': 'inventoryAbsoluteQt'},
   ],
 };
 
@@ -171,7 +172,9 @@ final $typed_data.Uint8List itemCartPbDescriptor = $convert.base64Decode(
     'CgpJdGVtQ2FydFBiEkwKDWFydGljbGVSZXRhaWwYASABKAsyJi53ZWViaS5hcnRpY2xlLkFydG'
     'ljbGVSZXRhaWxPblRpY2tldFBiUg1hcnRpY2xlUmV0YWlsEkwKDWFydGljbGVCYXNrZXQYAiAB'
     'KAsyJi53ZWViaS5hcnRpY2xlLkFydGljbGVCYXNrZXRPblRpY2tldFBiUg1hcnRpY2xlQmFza2'
-    'V0EhoKCHF1YW50aXR5GAMgASgBUghxdWFudGl0eRJGCg1wcm94aWVzX3dvcnRoGAQgAygLMiEu'
-    'd2VlYmkudGlja2V0LlByb3h5QXJ0aWNsZVdvcnRoUGJSDHByb3hpZXNXb3J0aBIwChNpbnZlbn'
-    'RvcnlBYnNvbHV0ZVF0GAUgASgBUhNpbnZlbnRvcnlBYnNvbHV0ZVF0');
+    'V0ElsKEmFydGljbGVVbmNvdW50YWJsZRgDIAEoCzIrLndlZWJpLmFydGljbGUuQXJ0aWNsZVVu'
+    'Y291bnRhYmxlT25UaWNrZXRQYlISYXJ0aWNsZVVuY291bnRhYmxlEhoKCHF1YW50aXR5GAQgAS'
+    'gBUghxdWFudGl0eRJGCg1wcm94aWVzX3dvcnRoGAUgAygLMiEud2VlYmkudGlja2V0LlByb3h5'
+    'QXJ0aWNsZVdvcnRoUGJSDHByb3hpZXNXb3J0aBIwChNpbnZlbnRvcnlBYnNvbHV0ZVF0GAYgAS'
+    'gBUhNpbnZlbnRvcnlBYnNvbHV0ZVF0');
 

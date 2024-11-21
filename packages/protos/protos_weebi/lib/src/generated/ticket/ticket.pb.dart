@@ -821,6 +821,7 @@ class ItemCartPb extends $pb.GeneratedMessage {
   factory ItemCartPb({
     $3.ArticleRetailOnTicketPb? articleRetail,
     $3.ArticleBasketOnTicketPb? articleBasket,
+    $3.ArticleUncountableOnTicketPb? articleUncountable,
     $core.double? quantity,
     $core.Iterable<ProxyArticleWorthPb>? proxiesWorth,
     $core.double? inventoryAbsoluteQt,
@@ -831,6 +832,9 @@ class ItemCartPb extends $pb.GeneratedMessage {
     }
     if (articleBasket != null) {
       $result.articleBasket = articleBasket;
+    }
+    if (articleUncountable != null) {
+      $result.articleUncountable = articleUncountable;
     }
     if (quantity != null) {
       $result.quantity = quantity;
@@ -850,9 +854,10 @@ class ItemCartPb extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ItemCartPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
     ..aOM<$3.ArticleRetailOnTicketPb>(1, _omitFieldNames ? '' : 'articleRetail', protoName: 'articleRetail', subBuilder: $3.ArticleRetailOnTicketPb.create)
     ..aOM<$3.ArticleBasketOnTicketPb>(2, _omitFieldNames ? '' : 'articleBasket', protoName: 'articleBasket', subBuilder: $3.ArticleBasketOnTicketPb.create)
-    ..a<$core.double>(3, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
-    ..pc<ProxyArticleWorthPb>(4, _omitFieldNames ? '' : 'proxiesWorth', $pb.PbFieldType.PM, subBuilder: ProxyArticleWorthPb.create)
-    ..a<$core.double>(5, _omitFieldNames ? '' : 'inventoryAbsoluteQt', $pb.PbFieldType.OD, protoName: 'inventoryAbsoluteQt')
+    ..aOM<$3.ArticleUncountableOnTicketPb>(3, _omitFieldNames ? '' : 'articleUncountable', protoName: 'articleUncountable', subBuilder: $3.ArticleUncountableOnTicketPb.create)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
+    ..pc<ProxyArticleWorthPb>(5, _omitFieldNames ? '' : 'proxiesWorth', $pb.PbFieldType.PM, subBuilder: ProxyArticleWorthPb.create)
+    ..a<$core.double>(6, _omitFieldNames ? '' : 'inventoryAbsoluteQt', $pb.PbFieldType.OD, protoName: 'inventoryAbsoluteQt')
     ..hasRequiredFields = false
   ;
 
@@ -900,25 +905,36 @@ class ItemCartPb extends $pb.GeneratedMessage {
   $3.ArticleBasketOnTicketPb ensureArticleBasket() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $core.double get quantity => $_getN(2);
+  $3.ArticleUncountableOnTicketPb get articleUncountable => $_getN(2);
   @$pb.TagNumber(3)
-  set quantity($core.double v) { $_setDouble(2, v); }
+  set articleUncountable($3.ArticleUncountableOnTicketPb v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasQuantity() => $_has(2);
+  $core.bool hasArticleUncountable() => $_has(2);
   @$pb.TagNumber(3)
-  void clearQuantity() => clearField(3);
+  void clearArticleUncountable() => clearField(3);
+  @$pb.TagNumber(3)
+  $3.ArticleUncountableOnTicketPb ensureArticleUncountable() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $core.List<ProxyArticleWorthPb> get proxiesWorth => $_getList(3);
+  $core.double get quantity => $_getN(3);
+  @$pb.TagNumber(4)
+  set quantity($core.double v) { $_setDouble(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasQuantity() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearQuantity() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.double get inventoryAbsoluteQt => $_getN(4);
-  @$pb.TagNumber(5)
-  set inventoryAbsoluteQt($core.double v) { $_setDouble(4, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasInventoryAbsoluteQt() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearInventoryAbsoluteQt() => clearField(5);
+  $core.List<ProxyArticleWorthPb> get proxiesWorth => $_getList(4);
+
+  @$pb.TagNumber(6)
+  $core.double get inventoryAbsoluteQt => $_getN(5);
+  @$pb.TagNumber(6)
+  set inventoryAbsoluteQt($core.double v) { $_setDouble(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasInventoryAbsoluteQt() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearInventoryAbsoluteQt() => clearField(6);
 }
 
 

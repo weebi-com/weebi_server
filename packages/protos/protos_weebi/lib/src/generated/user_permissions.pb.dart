@@ -858,6 +858,7 @@ class BoolRights extends $pb.GeneratedMessage {
     $core.bool? canQuickSpend,
     $core.bool? canPurchase,
     $core.bool? canImportTickets,
+    $core.bool? canQuickSell,
   }) {
     final $result = create();
     if (canSeeStats != null) {
@@ -887,6 +888,9 @@ class BoolRights extends $pb.GeneratedMessage {
     if (canImportTickets != null) {
       $result.canImportTickets = canImportTickets;
     }
+    if (canQuickSell != null) {
+      $result.canQuickSell = canQuickSell;
+    }
     return $result;
   }
   BoolRights._() : super();
@@ -903,6 +907,7 @@ class BoolRights extends $pb.GeneratedMessage {
     ..aOB(7, _omitFieldNames ? '' : 'canQuickSpend', protoName: 'canQuickSpend')
     ..aOB(8, _omitFieldNames ? '' : 'canPurchase', protoName: 'canPurchase')
     ..aOB(9, _omitFieldNames ? '' : 'canImportTickets', protoName: 'canImportTickets')
+    ..aOB(10, _omitFieldNames ? '' : 'canQuickSell', protoName: 'canQuickSell')
     ..hasRequiredFields = false
   ;
 
@@ -1007,6 +1012,15 @@ class BoolRights extends $pb.GeneratedMessage {
   $core.bool hasCanImportTickets() => $_has(8);
   @$pb.TagNumber(9)
   void clearCanImportTickets() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.bool get canQuickSell => $_getBF(9);
+  @$pb.TagNumber(10)
+  set canQuickSell($core.bool v) { $_setBool(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasCanQuickSell() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearCanQuickSell() => clearField(10);
 }
 
 

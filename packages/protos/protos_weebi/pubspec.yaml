@@ -1,6 +1,6 @@
 name: protos_weebi
 description: protos for weebi
-version: 1.0.3
+version: 1.0.4
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

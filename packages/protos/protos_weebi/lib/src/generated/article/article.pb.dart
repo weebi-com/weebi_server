@@ -154,6 +154,7 @@ class CalibrePb extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? categories,
     $core.Iterable<ArticleRetailPb>? articlesRetail,
     $core.Iterable<ArticleBasketPb>? articlesBasket,
+    $core.Iterable<ArticleUncountablePb>? articlesUncountable,
   }) {
     final $result = create();
     if (id != null) {
@@ -189,6 +190,9 @@ class CalibrePb extends $pb.GeneratedMessage {
     if (articlesBasket != null) {
       $result.articlesBasket.addAll(articlesBasket);
     }
+    if (articlesUncountable != null) {
+      $result.articlesUncountable.addAll(articlesUncountable);
+    }
     return $result;
   }
   CalibrePb._() : super();
@@ -207,6 +211,7 @@ class CalibrePb extends $pb.GeneratedMessage {
     ..pPS(9, _omitFieldNames ? '' : 'categories')
     ..pc<ArticleRetailPb>(10, _omitFieldNames ? '' : 'articlesRetail', $pb.PbFieldType.PM, protoName: 'articlesRetail', subBuilder: ArticleRetailPb.create)
     ..pc<ArticleBasketPb>(11, _omitFieldNames ? '' : 'articlesBasket', $pb.PbFieldType.PM, protoName: 'articlesBasket', subBuilder: ArticleBasketPb.create)
+    ..pc<ArticleUncountablePb>(12, _omitFieldNames ? '' : 'articlesUncountable', $pb.PbFieldType.PM, protoName: 'articlesUncountable', subBuilder: ArticleUncountablePb.create)
     ..hasRequiredFields = false
   ;
 
@@ -311,6 +316,9 @@ class CalibrePb extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(11)
   $core.List<ArticleBasketPb> get articlesBasket => $_getList(10);
+
+  @$pb.TagNumber(12)
+  $core.List<ArticleUncountablePb> get articlesUncountable => $_getList(11);
 }
 
 class ArticleId extends $pb.GeneratedMessage {
@@ -1177,6 +1185,332 @@ class ProxyArticlePb extends $pb.GeneratedMessage {
   $core.bool hasArticleWeight() => $_has(7);
   @$pb.TagNumber(8)
   void clearArticleWeight() => clearField(8);
+}
+
+/// / article uncountable only has price and cost on ticket when it cas assigned
+class ArticleUncountableOnTicketPb extends $pb.GeneratedMessage {
+  factory ArticleUncountableOnTicketPb({
+    $core.int? calibreId,
+    $core.int? id,
+    $core.String? designation,
+    $core.double? price,
+    $core.double? cost,
+  }) {
+    final $result = create();
+    if (calibreId != null) {
+      $result.calibreId = calibreId;
+    }
+    if (id != null) {
+      $result.id = id;
+    }
+    if (designation != null) {
+      $result.designation = designation;
+    }
+    if (price != null) {
+      $result.price = price;
+    }
+    if (cost != null) {
+      $result.cost = cost;
+    }
+    return $result;
+  }
+  ArticleUncountableOnTicketPb._() : super();
+  factory ArticleUncountableOnTicketPb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ArticleUncountableOnTicketPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticleUncountableOnTicketPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
+    ..aOS(3, _omitFieldNames ? '' : 'designation')
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'price', $pb.PbFieldType.OD)
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'cost', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ArticleUncountableOnTicketPb clone() => ArticleUncountableOnTicketPb()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ArticleUncountableOnTicketPb copyWith(void Function(ArticleUncountableOnTicketPb) updates) => super.copyWith((message) => updates(message as ArticleUncountableOnTicketPb)) as ArticleUncountableOnTicketPb;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ArticleUncountableOnTicketPb create() => ArticleUncountableOnTicketPb._();
+  ArticleUncountableOnTicketPb createEmptyInstance() => create();
+  static $pb.PbList<ArticleUncountableOnTicketPb> createRepeated() => $pb.PbList<ArticleUncountableOnTicketPb>();
+  @$core.pragma('dart2js:noInline')
+  static ArticleUncountableOnTicketPb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ArticleUncountableOnTicketPb>(create);
+  static ArticleUncountableOnTicketPb? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get calibreId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set calibreId($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCalibreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCalibreId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get id => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set id($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get designation => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set designation($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDesignation() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDesignation() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.double get price => $_getN(3);
+  @$pb.TagNumber(4)
+  set price($core.double v) { $_setDouble(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPrice() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPrice() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.double get cost => $_getN(4);
+  @$pb.TagNumber(5)
+  set cost($core.double v) { $_setDouble(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasCost() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCost() => clearField(5);
+}
+
+/// / article uncountable / out of catalog, exemple : electricity bill (-) or grant (+)
+class ArticleUncountablePb extends $pb.GeneratedMessage {
+  factory ArticleUncountablePb({
+    $core.int? calibreId,
+    $core.int? id,
+    $core.String? designation,
+    ArticleKindPb? kind,
+    $core.bool? status,
+    $core.int? codeShortcut,
+    $core.String? creationDate,
+    $core.String? updateDate,
+    $core.String? statusUpdateDate,
+    $core.double? price,
+    $core.double? cost,
+    $core.double? unitsInOnePiece,
+    $core.String? barcodeEAN,
+  }) {
+    final $result = create();
+    if (calibreId != null) {
+      $result.calibreId = calibreId;
+    }
+    if (id != null) {
+      $result.id = id;
+    }
+    if (designation != null) {
+      $result.designation = designation;
+    }
+    if (kind != null) {
+      $result.kind = kind;
+    }
+    if (status != null) {
+      $result.status = status;
+    }
+    if (codeShortcut != null) {
+      $result.codeShortcut = codeShortcut;
+    }
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
+    }
+    if (updateDate != null) {
+      $result.updateDate = updateDate;
+    }
+    if (statusUpdateDate != null) {
+      $result.statusUpdateDate = statusUpdateDate;
+    }
+    if (price != null) {
+      $result.price = price;
+    }
+    if (cost != null) {
+      $result.cost = cost;
+    }
+    if (unitsInOnePiece != null) {
+      $result.unitsInOnePiece = unitsInOnePiece;
+    }
+    if (barcodeEAN != null) {
+      $result.barcodeEAN = barcodeEAN;
+    }
+    return $result;
+  }
+  ArticleUncountablePb._() : super();
+  factory ArticleUncountablePb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ArticleUncountablePb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticleUncountablePb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
+    ..aOS(3, _omitFieldNames ? '' : 'designation')
+    ..e<ArticleKindPb>(4, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: ArticleKindPb.unknown, valueOf: ArticleKindPb.valueOf, enumValues: ArticleKindPb.values)
+    ..aOB(5, _omitFieldNames ? '' : 'status')
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'articleCode', $pb.PbFieldType.O3, protoName: 'codeShortcut')
+    ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOS(8, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
+    ..aOS(9, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
+    ..a<$core.double>(10, _omitFieldNames ? '' : 'price', $pb.PbFieldType.OD)
+    ..a<$core.double>(11, _omitFieldNames ? '' : 'cost', $pb.PbFieldType.OD)
+    ..a<$core.double>(12, _omitFieldNames ? '' : 'unitsInOnePiece', $pb.PbFieldType.OD, protoName: 'unitsInOnePiece')
+    ..aOS(13, _omitFieldNames ? '' : 'barcodeEAN', protoName: 'barcodeEAN')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ArticleUncountablePb clone() => ArticleUncountablePb()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ArticleUncountablePb copyWith(void Function(ArticleUncountablePb) updates) => super.copyWith((message) => updates(message as ArticleUncountablePb)) as ArticleUncountablePb;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ArticleUncountablePb create() => ArticleUncountablePb._();
+  ArticleUncountablePb createEmptyInstance() => create();
+  static $pb.PbList<ArticleUncountablePb> createRepeated() => $pb.PbList<ArticleUncountablePb>();
+  @$core.pragma('dart2js:noInline')
+  static ArticleUncountablePb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ArticleUncountablePb>(create);
+  static ArticleUncountablePb? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get calibreId => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set calibreId($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCalibreId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCalibreId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get id => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set id($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get designation => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set designation($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasDesignation() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearDesignation() => clearField(3);
+
+  @$pb.TagNumber(4)
+  ArticleKindPb get kind => $_getN(3);
+  @$pb.TagNumber(4)
+  set kind(ArticleKindPb v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasKind() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearKind() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.bool get status => $_getBF(4);
+  @$pb.TagNumber(5)
+  set status($core.bool v) { $_setBool(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasStatus() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearStatus() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.int get codeShortcut => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set codeShortcut($core.int v) { $_setSignedInt32(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasCodeShortcut() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearCodeShortcut() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get creationDate => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set creationDate($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasCreationDate() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearCreationDate() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get updateDate => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set updateDate($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasUpdateDate() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearUpdateDate() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get statusUpdateDate => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set statusUpdateDate($core.String v) { $_setString(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasStatusUpdateDate() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearStatusUpdateDate() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.double get price => $_getN(9);
+  @$pb.TagNumber(10)
+  set price($core.double v) { $_setDouble(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasPrice() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearPrice() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.double get cost => $_getN(10);
+  @$pb.TagNumber(11)
+  set cost($core.double v) { $_setDouble(10, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasCost() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearCost() => clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.double get unitsInOnePiece => $_getN(11);
+  @$pb.TagNumber(12)
+  set unitsInOnePiece($core.double v) { $_setDouble(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasUnitsInOnePiece() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearUnitsInOnePiece() => clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.String get barcodeEAN => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set barcodeEAN($core.String v) { $_setString(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasBarcodeEAN() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearBarcodeEAN() => clearField(13);
 }
 
 
