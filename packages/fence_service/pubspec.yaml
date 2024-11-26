@@ -14,7 +14,7 @@ dependencies:
   http: ^1.2.1
   # below are exported
   mongo_dart: ^0.10.3
-  protos_weebi: #^1.0.3
+  protos_weebi: #^1.0.4
     path: ../protos/protos_weebi
   models_weebi: ^1.1.6+1
   

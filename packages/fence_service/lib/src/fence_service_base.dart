@@ -339,8 +339,12 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (userPermission.userManagementRights.rights
-        .none((e) => e == Right.read)) {
+
+    final isReadingOwnUser = userPermission.userId == request.userId;
+
+    if (isReadingOwnUser == false &&
+        userPermission.userManagementRights.rights
+            .none((e) => e == Right.read)) {
       throw GrpcError.permissionDenied(
           'user does not have right to read other users');
     }
@@ -354,6 +358,12 @@ class FenceService extends FenceServiceBase {
 
       final userFound = UserPublic.create()
         ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
+
+      if (isReadingOwnUser) {
+        return ReadOneUserResponse(
+            user: userFound,
+            statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
+      }
 
       // if requestor has limited access we check that the userFound belongs to his/her fence
       if (userPermission.fullAccess.hasFullAccess == false) {
@@ -560,6 +570,16 @@ class FenceService extends FenceServiceBase {
   @override
   Future<CreatePendingDeviceResponse> createDevice(
       ServiceCall? call, PendingDeviceRequest request) async {
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermission;
+
+    final userMongo =
+        await userCollection.findOne(where.eq('userId', userPermission.userId));
+    if (userMongo == null) {
+      throw GrpcError.notFound('user ${userPermission.userId} not found');
+    }
+
     _db.isConnected ? null : await _db.open();
     final pairingResp = await _findCode(request.code);
     if (pairingResp.code == 0) {
@@ -569,6 +589,11 @@ class FenceService extends FenceServiceBase {
               message: 'no match',
               timestamp: DateTime.now().timestampProto));
     }
+    if (pairingResp.firmId != userPermission.firmId) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from firmId ${pairingResp.firmId}');
+    }
+
     try {
       // get chain info
       final chain = await _checkOneChainAndProtoIt(
