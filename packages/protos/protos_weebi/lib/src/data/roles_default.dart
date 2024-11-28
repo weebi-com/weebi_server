@@ -36,7 +36,7 @@ abstract class RightSalesperson {
   static final article = ArticleRights(rights: const [Right.read]);
   static final boutique = BoutiqueRights(rights: const [Right.read]);
   static final contact =
-      ContactRights(rights: const [Right.read, Right.update]);
+      ContactRights(rights: const [Right.create, Right.read, Right.update]);
   static final ticket = TicketRights(rights: const [Right.create, Right.read]);
   static final boolRights = BoolRights(
     canExportData: false,

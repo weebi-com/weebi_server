@@ -1,9 +1,7 @@
-// import 'package:fixnum/fixnum.dart';
-import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
-import 'package:protos_weebi/extensions.dart';
-import 'package:protos_weebi/grpc.dart';
-import 'package:protos_weebi/protos_weebi_io.dart';
+import 'package:fence_service/grpc.dart';
+import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectContact(String firmId, String chainId,
@@ -49,7 +47,7 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
-        ..dateCreation = request.contact.dateCreation
+        ..creationDate = request.contact.creationDate
         ..contactNonUniqueId = request.contact.contactNonUniqueId
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
@@ -103,7 +101,7 @@ class ContactService extends ContactServiceBase {
     try {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
-        ..dateCreation = request.contact.dateCreation
+        ..creationDate = request.contact.creationDate
         ..contactNonUniqueId = request.contact.contactNonUniqueId
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
@@ -115,7 +113,7 @@ class ContactService extends ContactServiceBase {
             request.chainId,
             request.contactUserId,
             request.contact.contactNonUniqueId,
-            request.contact.dateCreation,
+            request.contact.creationDate,
           ),
           contactMongo.toProto3Json() as Map<String, dynamic>,
           upsert: true);
@@ -162,7 +160,7 @@ class ContactService extends ContactServiceBase {
           request.chainId,
           request.contactUserId,
           request.contact.contactNonUniqueId,
-          request.contact.dateCreation,
+          request.contact.creationDate,
         ),
       );
       return StatusResponse()

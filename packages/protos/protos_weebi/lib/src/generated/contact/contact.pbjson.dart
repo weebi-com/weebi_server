@@ -22,7 +22,7 @@ const ContactMongo$json = {
     {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'firmId', '3': 4, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 5, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'dateCreation', '3': 6, '4': 1, '5': 9, '10': 'dateCreation'},
+    {'1': 'creationDate', '3': 6, '4': 1, '5': 9, '10': 'creationDate'},
   ],
 };
 
@@ -31,23 +31,23 @@ final $typed_data.Uint8List contactMongoDescriptor = $convert.base64Decode(
     'CgxDb250YWN0TW9uZ28SMgoHY29udGFjdBgBIAEoCzIYLndlZWJpLmNvbnRhY3QuQ29udGFjdF'
     'BiUgdjb250YWN0Ei4KEmNvbnRhY3ROb25VbmlxdWVJZBgCIAEoBVISY29udGFjdE5vblVuaXF1'
     'ZUlkEhYKBnVzZXJJZBgDIAEoCVIGdXNlcklkEhYKBmZpcm1JZBgEIAEoCVIGZmlybUlkEhgKB2'
-    'NoYWluSWQYBSABKAlSB2NoYWluSWQSIgoMZGF0ZUNyZWF0aW9uGAYgASgJUgxkYXRlQ3JlYXRp'
-    'b24=');
+    'NoYWluSWQYBSABKAlSB2NoYWluSWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRh'
+    'dGU=');
 
 @$core.Deprecated('Use contactPbDescriptor instead')
 const ContactPb$json = {
   '1': 'ContactPb',
   '2': [
     {'1': 'contactNonUniqueId', '3': 1, '4': 1, '5': 5, '10': 'id'},
-    {'1': 'dateCreation', '3': 2, '4': 1, '5': 9, '10': 'creationDate'},
-    {'1': 'dateUpdate', '3': 3, '4': 1, '5': 9, '10': 'updateDate'},
-    {'1': 'dateStatus', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
+    {'1': 'creationDate', '3': 2, '4': 1, '5': 9, '10': 'creationDate'},
+    {'1': 'updateDate', '3': 3, '4': 1, '5': 9, '10': 'updateDate'},
+    {'1': 'statusUpdateDate', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
     {'1': 'firstName', '3': 6, '4': 1, '5': 9, '10': 'firstName'},
     {'1': 'lastName', '3': 7, '4': 1, '5': 9, '10': 'lastName'},
     {'1': 'mail', '3': 8, '4': 1, '5': 9, '10': 'mail'},
     {'1': 'phone', '3': 9, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
-    {'1': 'address', '3': 10, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
+    {'1': 'addressFull', '3': 10, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
     {'1': 'overdraft', '3': 11, '4': 1, '5': 5, '10': 'overdraft'},
     {'1': 'tags', '3': 12, '4': 3, '5': 9, '10': 'categories'},
     {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb.OthersAttributesEntry', '10': 'othersAttributes'},
@@ -70,15 +70,15 @@ const ContactPb_OthersAttributesEntry$json = {
 
 /// Descriptor for `ContactPb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactPbDescriptor = $convert.base64Decode(
-    'CglDb250YWN0UGISHgoSY29udGFjdE5vblVuaXF1ZUlkGAEgASgFUgJpZBIiCgxkYXRlQ3JlYX'
-    'Rpb24YAiABKAlSDGNyZWF0aW9uRGF0ZRIeCgpkYXRlVXBkYXRlGAMgASgJUgp1cGRhdGVEYXRl'
-    'EiQKCmRhdGVTdGF0dXMYBCABKAlSEHN0YXR1c1VwZGF0ZURhdGUSFgoGc3RhdHVzGAUgASgIUg'
-    'ZzdGF0dXMSHAoJZmlyc3ROYW1lGAYgASgJUglmaXJzdE5hbWUSGgoIbGFzdE5hbWUYByABKAlS'
-    'CGxhc3ROYW1lEhIKBG1haWwYCCABKAlSBG1haWwSLwoFcGhvbmUYCSABKAsyGS53ZWViaS5jb2'
-    '1tb24ucGhvbmUuUGhvbmVSBXBob25lEjsKB2FkZHJlc3MYCiABKAsyHS53ZWViaS5jb21tb24u'
-    'YWRkcmVzcy5BZGRyZXNzUgthZGRyZXNzRnVsbBIcCglvdmVyZHJhZnQYCyABKAVSCW92ZXJkcm'
-    'FmdBIYCgR0YWdzGAwgAygJUgpjYXRlZ29yaWVzEloKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsy'
-    'Li53ZWViaS5jb250YWN0LkNvbnRhY3RQYi5PdGhlcnNBdHRyaWJ1dGVzRW50cnlSEG90aGVyc0'
-    'F0dHJpYnV0ZXMaQwoVT3RoZXJzQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQK'
-    'BXZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgNEGM=');
+    'CglDb250YWN0UGISHgoSY29udGFjdE5vblVuaXF1ZUlkGAEgASgFUgJpZBIiCgxjcmVhdGlvbk'
+    'RhdGUYAiABKAlSDGNyZWF0aW9uRGF0ZRIeCgp1cGRhdGVEYXRlGAMgASgJUgp1cGRhdGVEYXRl'
+    'EioKEHN0YXR1c1VwZGF0ZURhdGUYBCABKAlSEHN0YXR1c1VwZGF0ZURhdGUSFgoGc3RhdHVzGA'
+    'UgASgIUgZzdGF0dXMSHAoJZmlyc3ROYW1lGAYgASgJUglmaXJzdE5hbWUSGgoIbGFzdE5hbWUY'
+    'ByABKAlSCGxhc3ROYW1lEhIKBG1haWwYCCABKAlSBG1haWwSLwoFcGhvbmUYCSABKAsyGS53ZW'
+    'ViaS5jb21tb24ucGhvbmUuUGhvbmVSBXBob25lEj8KC2FkZHJlc3NGdWxsGAogASgLMh0ud2Vl'
+    'YmkuY29tbW9uLmFkZHJlc3MuQWRkcmVzc1ILYWRkcmVzc0Z1bGwSHAoJb3ZlcmRyYWZ0GAsgAS'
+    'gFUglvdmVyZHJhZnQSGAoEdGFncxgMIAMoCVIKY2F0ZWdvcmllcxJaChBvdGhlcnNBdHRyaWJ1'
+    'dGVzGGMgAygLMi4ud2VlYmkuY29udGFjdC5Db250YWN0UGIuT3RoZXJzQXR0cmlidXRlc0VudH'
+    'J5UhBvdGhlcnNBdHRyaWJ1dGVzGkMKFU90aGVyc0F0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASAB'
+    'KAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBSgQIDRBj');
 

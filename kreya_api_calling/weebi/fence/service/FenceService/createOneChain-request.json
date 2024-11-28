@@ -7,29 +7,29 @@
       "boutiqueId": "{{ faker.random.uuid }}",
       "firmId": "{{ faker.random.uuid }}",
       "chainId": "{{ faker.random.uuid }}",
-      "creationDate": "Incredible Soft Shirt Israel Maine",
-      "updateDate": "B2B",
-      "statusUpdateDate": "Fantastic Frozen Bike",
-      "status": true,
+      "creationDate": "Tools Home Loan Account Utah",
+      "updateDate": "Berkshire",
+      "statusUpdateDate": "redundant",
+      "status": false,
       "name": "{{ faker.name.last_name }}",
       "phone": {
-        "countryCode": 995,
+        "countryCode": 307,
         "number": "{{ faker.random.ushort }}"
       },
       "addressFull": {
         "street": "{{ faker.address.street_name }}",
-        "code": "Supervisor Quality Robust",
+        "code": "program override Auto Loan Account",
         "city": "{{ faker.address.city }}",
         "country": {
-          "code2Letters": "Borders calculating",
-          "namel10n": "primary"
+          "code2Letters": "interactive Tennessee",
+          "namel10n": "Small Metal Chair Corporate calculating"
         },
-        "latitude": 499.3626997686647,
-        "longitude": 330.85368464817276
+        "latitude": 560.2372487991122,
+        "longitude": 225.22391606448411
       },
-      "promo": 680.704549985461,
-      "promoStart": "Specialist",
-      "promoEnd": "cyan Gorgeous Granite Bacon",
+      "promo": 925.1019411464725,
+      "promoStart": "Automotive & Computers",
+      "promoEnd": "applications",
       "devices": [
         {
           "deviceId": "{{ faker.random.uuid }}",
@@ -37,15 +37,15 @@
           "boutiqueId": "{{ faker.random.uuid }}",
           "status": false,
           "password": "{{ faker.internet.password }}",
-          "dateCreation": {
-            "seconds": "633",
-            "nanos": 604
+          "timestamp": {
+            "seconds": "502",
+            "nanos": 861
           },
           "hardwareInfo": {
             "name": "{{ faker.name.last_name }}",
             "serialNumber": "{{ faker.random.ushort }}",
-            "baseOS": "pixel US Dollar",
-            "brand": "Buckinghamshire Marketing Response"
+            "baseOS": "Home Loan Account Junction optimal",
+            "brand": "Gambia Generic Fresh Table Small Cotton Shoes"
           }
         },
         {
@@ -54,65 +54,65 @@
           "boutiqueId": "{{ faker.random.uuid }}",
           "status": true,
           "password": "{{ faker.internet.password }}",
-          "dateCreation": {
-            "seconds": "941",
-            "nanos": 457
+          "timestamp": {
+            "seconds": "942",
+            "nanos": 970
           },
           "hardwareInfo": {
             "name": "{{ faker.name.last_name }}",
             "serialNumber": "{{ faker.random.ushort }}",
-            "baseOS": "Handcrafted Granite Towels Tasty Auto Loan Account",
-            "brand": "Intuitive Oval Savings Account"
+            "baseOS": "Dynamic",
+            "brand": "e-business Fully-configurable"
           }
         }
       ],
       "additional_attributes": {
-        "copy Home Loan Account": "Avon Berkshire Concrete"
+        "next-generation Administrator": "orchestrate Aruba Refined Metal Computer"
       }
     },
     {
       "boutiqueId": "{{ faker.random.uuid }}",
       "firmId": "{{ faker.random.uuid }}",
       "chainId": "{{ faker.random.uuid }}",
-      "creationDate": "Greece",
-      "updateDate": "Mount invoice executive",
-      "statusUpdateDate": "Unbranded Plastic Cheese Arkansas",
-      "status": false,
+      "creationDate": "Ohio Belize Legacy",
+      "updateDate": "Moldovan Leu dot-com deliverables",
+      "statusUpdateDate": "definition Samoa",
+      "status": true,
       "name": "{{ faker.name.last_name }}",
       "phone": {
-        "countryCode": 584,
+        "countryCode": 847,
         "number": "{{ faker.random.ushort }}"
       },
       "addressFull": {
         "street": "{{ faker.address.street_name }}",
-        "code": "maximized solid state",
+        "code": "reciprocal British Indian Ocean Territory (Chagos Archipelago)",
         "city": "{{ faker.address.city }}",
         "country": {
-          "code2Letters": "payment Credit Card Account",
-          "namel10n": "Extension Frozen"
+          "code2Letters": "cultivate explicit Rustic Steel Sausages",
+          "namel10n": "GB Object-based Lakes"
         },
-        "latitude": 908.8715821831426,
-        "longitude": 750.3018846362485
+        "latitude": 147.34362695000476,
+        "longitude": 800.7619772701332
       },
-      "promo": 422.354729364019,
-      "promoStart": "mission-critical Incredible",
-      "promoEnd": "Borders",
+      "promo": 150.24262035101424,
+      "promoStart": "Union Persevering Legacy",
+      "promoEnd": "Exclusive Tasty Rubber Car",
       "devices": [
         {
           "deviceId": "{{ faker.random.uuid }}",
           "chainId": "{{ faker.random.uuid }}",
           "boutiqueId": "{{ faker.random.uuid }}",
-          "status": true,
+          "status": false,
           "password": "{{ faker.internet.password }}",
-          "dateCreation": {
-            "seconds": "195",
-            "nanos": 36
+          "timestamp": {
+            "seconds": "134",
+            "nanos": 144
           },
           "hardwareInfo": {
             "name": "{{ faker.name.last_name }}",
             "serialNumber": "{{ faker.random.ushort }}",
-            "baseOS": "Ergonomic protocol Awesome",
-            "brand": "parsing Throughway Generic Rubber Hat"
+            "baseOS": "Metal withdrawal",
+            "brand": "Indian Rupee Auto Loan Account"
           }
         },
         {
@@ -121,20 +121,20 @@
           "boutiqueId": "{{ faker.random.uuid }}",
           "status": true,
           "password": "{{ faker.internet.password }}",
-          "dateCreation": {
-            "seconds": "439",
-            "nanos": 969
+          "timestamp": {
+            "seconds": "654",
+            "nanos": 513
           },
           "hardwareInfo": {
             "name": "{{ faker.name.last_name }}",
             "serialNumber": "{{ faker.random.ushort }}",
-            "baseOS": "open-source",
-            "brand": "turn-key solutions Agent"
+            "baseOS": "1080p",
+            "brand": "Metal"
           }
         }
       ],
       "additional_attributes": {
-        "Research world-class Music": "Beauty, Sports & Music"
+        "Illinois": "Pula"
       }
     }
   ],

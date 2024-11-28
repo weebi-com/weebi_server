@@ -1,8 +1,7 @@
-import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
-import 'package:protos_weebi/extensions.dart';
-import 'package:protos_weebi/grpc.dart';
-import 'package:protos_weebi/protos_weebi_io.dart';
+import 'package:fence_service/grpc.dart';
+import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectTicket(String firmId, String userId,
@@ -48,7 +47,7 @@ class TicketService extends TicketServiceBase {
     try {
       final ticketMongo = TicketMongo.create()
         ..ticket = request.ticket
-        ..dateCreation = request.ticket.dateCreation
+        ..creationDate = request.ticket.date
         ..ticketNonUniqueId = request.ticket.ticketNonUniqueId
         ..boutiqueId = request.ticket.counterfoil.boutiqueId
         ..chainId = request.ticket.counterfoil.chainId
@@ -203,7 +202,7 @@ class TicketService extends TicketServiceBase {
       request.ticket.counterfoil.firmId,
       request.ticket.counterfoil.userId,
       request.ticket.ticketNonUniqueId,
-      request.ticket.dateCreation,
+      request.ticket.date,
     );
 
     try {
@@ -264,7 +263,7 @@ class TicketService extends TicketServiceBase {
       request.ticket.counterfoil.firmId,
       request.ticket.counterfoil.userId,
       request.ticket.ticketNonUniqueId,
-      request.ticket.dateCreation,
+      request.ticket.date,
     );
 
     try {

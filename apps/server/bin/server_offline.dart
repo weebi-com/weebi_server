@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:fence_service/grpc.dart';
 import 'package:logging/logging.dart';
 
-import 'package:protos_weebi/grpc.dart' show Server;
 import 'package:article_service/article_service.dart';
 import 'package:contact_service/contact_service.dart';
 import 'package:server/server_interceptors.dart';

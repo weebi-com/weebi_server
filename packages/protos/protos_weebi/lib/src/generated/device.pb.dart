@@ -24,7 +24,7 @@ class Device extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.bool? status,
     $core.String? password,
-    $18.Timestamp? dateCreation,
+    $18.Timestamp? timestamp,
     HardwareInfo? hardwareInfo,
   }) {
     final $result = create();
@@ -43,8 +43,8 @@ class Device extends $pb.GeneratedMessage {
     if (password != null) {
       $result.password = password;
     }
-    if (dateCreation != null) {
-      $result.dateCreation = dateCreation;
+    if (timestamp != null) {
+      $result.timestamp = timestamp;
     }
     if (hardwareInfo != null) {
       $result.hardwareInfo = hardwareInfo;
@@ -61,7 +61,7 @@ class Device extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOB(4, _omitFieldNames ? '' : 'status')
     ..aOS(5, _omitFieldNames ? '' : 'password')
-    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'dateCreation', protoName: 'dateCreation', subBuilder: $18.Timestamp.create)
+    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'timestamp', subBuilder: $18.Timestamp.create)
     ..aOM<HardwareInfo>(7, _omitFieldNames ? '' : 'hardwareInfo', protoName: 'hardwareInfo', subBuilder: HardwareInfo.create)
     ..hasRequiredFields = false
   ;
@@ -135,15 +135,15 @@ class Device extends $pb.GeneratedMessage {
 
   /// / dateCreation is set by the server
   @$pb.TagNumber(6)
-  $18.Timestamp get dateCreation => $_getN(5);
+  $18.Timestamp get timestamp => $_getN(5);
   @$pb.TagNumber(6)
-  set dateCreation($18.Timestamp v) { setField(6, v); }
+  set timestamp($18.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
-  $core.bool hasDateCreation() => $_has(5);
+  $core.bool hasTimestamp() => $_has(5);
   @$pb.TagNumber(6)
-  void clearDateCreation() => clearField(6);
+  void clearTimestamp() => clearField(6);
   @$pb.TagNumber(6)
-  $18.Timestamp ensureDateCreation() => $_ensure(5);
+  $18.Timestamp ensureTimestamp() => $_ensure(5);
 
   @$pb.TagNumber(7)
   HardwareInfo get hardwareInfo => $_getN(6);

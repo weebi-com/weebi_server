@@ -6,15 +6,15 @@
     "boutiqueId": "{{ faker.random.uuid }}",
     "status": true,
     "password": "{{ faker.internet.password }}",
-    "dateCreation": {
-      "seconds": "408",
-      "nanos": 684
+    "timestamp": {
+      "seconds": "496",
+      "nanos": 999
     },
     "hardwareInfo": {
       "name": "{{ faker.name.last_name }}",
       "serialNumber": "{{ faker.random.ushort }}",
-      "baseOS": "Forward",
-      "brand": "deposit turquoise"
+      "baseOS": "Consultant Refined Granite Table Refined Frozen Chair",
+      "brand": "Beauty & Books deposit"
     }
   }
 }

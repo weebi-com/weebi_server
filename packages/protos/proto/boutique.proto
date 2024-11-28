@@ -10,13 +10,13 @@ message Boutique {
     string boutiqueId = 1 [json_name = 'boutiqueId'];
     string firmId = 2 [json_name = 'firmId'];
     string chainId = 3 [json_name = 'chainId'];
-    string dateCreation = 4 [json_name = 'creationDate'];
-    string dateUpdate = 5 [json_name = 'updateDate'];
-    string dateStatus = 6 [json_name = 'statusUpdateDate'];
+    string creationDate = 4 [json_name = 'creationDate'];
+    string updateDate = 5 [json_name = 'updateDate'];
+    string statusUpdateDate = 6 [json_name = 'statusUpdateDate'];
     bool status = 7 [json_name = 'status'];
     string name = 8 [json_name = 'name'];
     weebi.common.phone.Phone phone = 9 [json_name = 'phone'];
-    weebi.common.address.Address address = 10 [json_name = 'addressFull'];
+    weebi.common.address.Address addressFull = 10 [json_name = 'addressFull'];
     double promo = 11 [json_name = 'promo'];
     string promoStart =  12 [json_name = 'promoStart'];
     string promoEnd = 13 [json_name = 'promoEnd'];

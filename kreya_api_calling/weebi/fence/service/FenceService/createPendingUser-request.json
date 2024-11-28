@@ -1,28 +1,28 @@
 {
-  "mail": "Saudi Riyal Port",
-  "firstname": "knowledge base Advanced",
-  "lastname": "Avon",
+  "mail": "green next-generation",
+  "firstname": "Cambridgeshire",
+  "lastname": "virtual",
   "permissions": {
     "userId": "{{ faker.random.uuid }}",
     "firmId": "{{ faker.random.uuid }}",
     "limitedAccess": {
       "chainIds": {
         "ids": [
-          "ADP",
-          "capacitor Factors"
+          "cultivate",
+          "one-to-one paradigms"
         ]
       },
       "boutiqueIds": {
         "ids": [
-          "Washington",
-          "SMS visionary open-source"
+          "bus Auto Loan Account bleeding-edge",
+          "Money Market Account Representative"
         ]
       }
     },
     "ticketRights": {
       "ticketRights": [
-        "read",
-        "read"
+        "unknown",
+        "unknown"
       ]
     },
     "contactRights": {
@@ -33,26 +33,26 @@
     },
     "articleRights": {
       "articleRights": [
-        "update",
-        "unknown"
+        "delete",
+        "read"
       ]
     },
     "boutiqueRights": {
       "boutiqueRights": [
         "read",
-        "delete"
+        "create"
       ]
     },
     "chainRights": {
       "chainRights": [
-        "unknown",
-        "delete"
+        "delete",
+        "unknown"
       ]
     },
     "firmRights": {
       "firmRights": [
-        "delete",
-        "read"
+        "create",
+        "create"
       ]
     },
     "userManagementRights": {
@@ -63,27 +63,27 @@
     },
     "billingRights": {
       "billingRights": [
-        "create",
+        "read",
         "create"
       ]
     },
     "boolRights": {
-      "canSeeStats": true,
-      "canExportData": false,
+      "canSeeStats": false,
+      "canExportData": true,
       "canGiveDiscount": true,
       "canSetPromo": false,
-      "canStockMovement": true,
-      "canStockInventory": true,
+      "canStockMovement": false,
+      "canStockInventory": false,
       "canQuickSpend": false,
       "canPurchase": false,
       "canImportTickets": false
     }
   },
   "phone": {
-    "countryCode": 647,
+    "countryCode": 246,
     "number": "{{ faker.random.ushort }}"
   },
   "othersAttributes": {
-    "wireless Via wireless": "Grocery Directives"
+    "program": "Home indexing SQL"
   }
 }

@@ -20,14 +20,14 @@ const ArticleKindPb$json = {
     {'1': 'unknown', '2': 0},
     {'1': 'retail', '2': 1},
     {'1': 'basket', '2': 2},
-    {'1': 'outOfCatalogue', '2': 3},
+    {'1': 'uncountable', '2': 3},
   ],
 };
 
 /// Descriptor for `ArticleKindPb`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List articleKindPbDescriptor = $convert.base64Decode(
-    'Cg1BcnRpY2xlS2luZFBiEgsKB3Vua25vd24QABIKCgZyZXRhaWwQARIKCgZiYXNrZXQQAhISCg'
-    '5vdXRPZkNhdGFsb2d1ZRAD');
+    'Cg1BcnRpY2xlS2luZFBiEgsKB3Vua25vd24QABIKCgZyZXRhaWwQARIKCgZiYXNrZXQQAhIPCg'
+    't1bmNvdW50YWJsZRAD');
 
 @$core.Deprecated('Use calibreMongoDescriptor instead')
 const CalibreMongo$json = {
@@ -38,7 +38,7 @@ const CalibreMongo$json = {
     {'1': 'firmId', '3': 3, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 4, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'userId', '3': 5, '4': 1, '5': 9, '10': 'userId'},
-    {'1': 'dateCreation', '3': 6, '4': 1, '5': 9, '10': 'date'},
+    {'1': 'creationDate', '3': 6, '4': 1, '5': 9, '10': 'creationDate'},
   ],
 };
 
@@ -47,16 +47,17 @@ final $typed_data.Uint8List calibreMongoDescriptor = $convert.base64Decode(
     'CgxDYWxpYnJlTW9uZ28SMgoHY2FsaWJyZRgBIAEoCzIYLndlZWJpLmFydGljbGUuQ2FsaWJyZV'
     'BiUgdjYWxpYnJlEi4KEmNhbGlicmVOb25VbmlxdWVJZBgCIAEoBVISY2FsaWJyZU5vblVuaXF1'
     'ZUlkEhYKBmZpcm1JZBgDIAEoCVIGZmlybUlkEhgKB2NoYWluSWQYBCABKAlSB2NoYWluSWQSFg'
-    'oGdXNlcklkGAUgASgJUgZ1c2VySWQSGgoMZGF0ZUNyZWF0aW9uGAYgASgJUgRkYXRl');
+    'oGdXNlcklkGAUgASgJUgZ1c2VySWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRh'
+    'dGU=');
 
 @$core.Deprecated('Use calibrePbDescriptor instead')
 const CalibrePb$json = {
   '1': 'CalibrePb',
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
-    {'1': 'dateCreation', '3': 2, '4': 1, '5': 9, '10': 'creationDate'},
-    {'1': 'dateUpdate', '3': 3, '4': 1, '5': 9, '10': 'updateDate'},
-    {'1': 'dateStatus', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
+    {'1': 'creationDate', '3': 2, '4': 1, '5': 9, '10': 'creationDate'},
+    {'1': 'updateDate', '3': 3, '4': 1, '5': 9, '10': 'updateDate'},
+    {'1': 'statusUpdateDate', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
     {'1': 'title', '3': 6, '4': 1, '5': 9, '10': 'title'},
     {'1': 'stockUnit', '3': 7, '4': 1, '5': 14, '6': '.weebi.article.CalibrePb.StockUnit', '10': 'stockUnit'},
@@ -64,6 +65,7 @@ const CalibrePb$json = {
     {'1': 'categories', '3': 9, '4': 3, '5': 9, '10': 'categories'},
     {'1': 'articlesRetail', '3': 10, '4': 3, '5': 11, '6': '.weebi.article.ArticleRetailPb', '10': 'articlesRetail'},
     {'1': 'articlesBasket', '3': 11, '4': 3, '5': 11, '6': '.weebi.article.ArticleBasketPb', '10': 'articlesBasket'},
+    {'1': 'articlesUncountable', '3': 12, '4': 3, '5': 11, '6': '.weebi.article.ArticleUncountablePb', '10': 'articlesUncountable'},
   ],
   '4': [CalibrePb_StockUnit$json],
   '9': [
@@ -88,17 +90,19 @@ const CalibrePb_StockUnit$json = {
 
 /// Descriptor for `CalibrePb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List calibrePbDescriptor = $convert.base64Decode(
-    'CglDYWxpYnJlUGISDgoCaWQYASABKAVSAmlkEiIKDGRhdGVDcmVhdGlvbhgCIAEoCVIMY3JlYX'
-    'Rpb25EYXRlEh4KCmRhdGVVcGRhdGUYAyABKAlSCnVwZGF0ZURhdGUSJAoKZGF0ZVN0YXR1cxgE'
-    'IAEoCVIQc3RhdHVzVXBkYXRlRGF0ZRIWCgZzdGF0dXMYBSABKAhSBnN0YXR1cxIUCgV0aXRsZR'
-    'gGIAEoCVIFdGl0bGUSQAoJc3RvY2tVbml0GAcgASgOMiIud2VlYmkuYXJ0aWNsZS5DYWxpYnJl'
-    'UGIuU3RvY2tVbml0UglzdG9ja1VuaXQSMAoEa2luZBgIIAEoDjIcLndlZWJpLmFydGljbGUuQX'
-    'J0aWNsZUtpbmRQYlIEa2luZBIeCgpjYXRlZ29yaWVzGAkgAygJUgpjYXRlZ29yaWVzEkYKDmFy'
-    'dGljbGVzUmV0YWlsGAogAygLMh4ud2VlYmkuYXJ0aWNsZS5BcnRpY2xlUmV0YWlsUGJSDmFydG'
-    'ljbGVzUmV0YWlsEkYKDmFydGljbGVzQmFza2V0GAsgAygLMh4ud2VlYmkuYXJ0aWNsZS5BcnRp'
-    'Y2xlQmFza2V0UGJSDmFydGljbGVzQmFza2V0InAKCVN0b2NrVW5pdBILCgd1bmtub3duEAASDg'
-    'oKY2VudGlsaXRlchABEg4KCmNlbnRpbWV0ZXIQAhIICgRncmFtEAMSDAoIa2lsb2dyYW0QBBIJ'
-    'CgVsaXRlchAFEgkKBW1ldGVyEAYSCAoEdW5pdBAHSgQIDRBj');
+    'CglDYWxpYnJlUGISDgoCaWQYASABKAVSAmlkEiIKDGNyZWF0aW9uRGF0ZRgCIAEoCVIMY3JlYX'
+    'Rpb25EYXRlEh4KCnVwZGF0ZURhdGUYAyABKAlSCnVwZGF0ZURhdGUSKgoQc3RhdHVzVXBkYXRl'
+    'RGF0ZRgEIAEoCVIQc3RhdHVzVXBkYXRlRGF0ZRIWCgZzdGF0dXMYBSABKAhSBnN0YXR1cxIUCg'
+    'V0aXRsZRgGIAEoCVIFdGl0bGUSQAoJc3RvY2tVbml0GAcgASgOMiIud2VlYmkuYXJ0aWNsZS5D'
+    'YWxpYnJlUGIuU3RvY2tVbml0UglzdG9ja1VuaXQSMAoEa2luZBgIIAEoDjIcLndlZWJpLmFydG'
+    'ljbGUuQXJ0aWNsZUtpbmRQYlIEa2luZBIeCgpjYXRlZ29yaWVzGAkgAygJUgpjYXRlZ29yaWVz'
+    'EkYKDmFydGljbGVzUmV0YWlsGAogAygLMh4ud2VlYmkuYXJ0aWNsZS5BcnRpY2xlUmV0YWlsUG'
+    'JSDmFydGljbGVzUmV0YWlsEkYKDmFydGljbGVzQmFza2V0GAsgAygLMh4ud2VlYmkuYXJ0aWNs'
+    'ZS5BcnRpY2xlQmFza2V0UGJSDmFydGljbGVzQmFza2V0ElUKE2FydGljbGVzVW5jb3VudGFibG'
+    'UYDCADKAsyIy53ZWViaS5hcnRpY2xlLkFydGljbGVVbmNvdW50YWJsZVBiUhNhcnRpY2xlc1Vu'
+    'Y291bnRhYmxlInAKCVN0b2NrVW5pdBILCgd1bmtub3duEAASDgoKY2VudGlsaXRlchABEg4KCm'
+    'NlbnRpbWV0ZXIQAhIICgRncmFtEAMSDAoIa2lsb2dyYW0QBBIJCgVsaXRlchAFEgkKBW1ldGVy'
+    'EAYSCAoEdW5pdBAHSgQIDRBj');
 
 @$core.Deprecated('Use articleIdDescriptor instead')
 const ArticleId$json = {
@@ -144,9 +148,9 @@ const ArticleRetailPb$json = {
     {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
     {'1': 'codeShortcut', '3': 6, '4': 1, '5': 5, '10': 'articleCode'},
-    {'1': 'dateCreation', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
-    {'1': 'dateUpdate', '3': 8, '4': 1, '5': 9, '10': 'updateDate'},
-    {'1': 'dateStatus', '3': 9, '4': 1, '5': 9, '10': 'statusUpdateDate'},
+    {'1': 'creationDate', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
+    {'1': 'updateDate', '3': 8, '4': 1, '5': 9, '10': 'updateDate'},
+    {'1': 'statusUpdateDate', '3': 9, '4': 1, '5': 9, '10': 'statusUpdateDate'},
     {'1': 'price', '3': 10, '4': 1, '5': 1, '10': 'price'},
     {'1': 'cost', '3': 11, '4': 1, '5': 1, '10': 'cost'},
     {'1': 'unitsInOnePiece', '3': 12, '4': 1, '5': 1, '10': 'unitsInOnePiece'},
@@ -159,11 +163,11 @@ final $typed_data.Uint8List articleRetailPbDescriptor = $convert.base64Decode(
     'Cg9BcnRpY2xlUmV0YWlsUGISHAoJY2FsaWJyZUlkGAEgASgFUgljYWxpYnJlSWQSDgoCaWQYAi'
     'ABKAVSAmlkEiAKC2Rlc2lnbmF0aW9uGAMgASgJUgtkZXNpZ25hdGlvbhIwCgRraW5kGAQgASgO'
     'Mhwud2VlYmkuYXJ0aWNsZS5BcnRpY2xlS2luZFBiUgRraW5kEhYKBnN0YXR1cxgFIAEoCFIGc3'
-    'RhdHVzEiEKDGNvZGVTaG9ydGN1dBgGIAEoBVILYXJ0aWNsZUNvZGUSIgoMZGF0ZUNyZWF0aW9u'
-    'GAcgASgJUgxjcmVhdGlvbkRhdGUSHgoKZGF0ZVVwZGF0ZRgIIAEoCVIKdXBkYXRlRGF0ZRIkCg'
-    'pkYXRlU3RhdHVzGAkgASgJUhBzdGF0dXNVcGRhdGVEYXRlEhQKBXByaWNlGAogASgBUgVwcmlj'
-    'ZRISCgRjb3N0GAsgASgBUgRjb3N0EigKD3VuaXRzSW5PbmVQaWVjZRgMIAEoAVIPdW5pdHNJbk'
-    '9uZVBpZWNlEh4KCmJhcmNvZGVFQU4YDSABKAlSCmJhcmNvZGVFQU4=');
+    'RhdHVzEiEKDGNvZGVTaG9ydGN1dBgGIAEoBVILYXJ0aWNsZUNvZGUSIgoMY3JlYXRpb25EYXRl'
+    'GAcgASgJUgxjcmVhdGlvbkRhdGUSHgoKdXBkYXRlRGF0ZRgIIAEoCVIKdXBkYXRlRGF0ZRIqCh'
+    'BzdGF0dXNVcGRhdGVEYXRlGAkgASgJUhBzdGF0dXNVcGRhdGVEYXRlEhQKBXByaWNlGAogASgB'
+    'UgVwcmljZRISCgRjb3N0GAsgASgBUgRjb3N0EigKD3VuaXRzSW5PbmVQaWVjZRgMIAEoAVIPdW'
+    '5pdHNJbk9uZVBpZWNlEh4KCmJhcmNvZGVFQU4YDSABKAlSCmJhcmNvZGVFQU4=');
 
 @$core.Deprecated('Use articleBasketPbDescriptor instead')
 const ArticleBasketPb$json = {
@@ -175,9 +179,9 @@ const ArticleBasketPb$json = {
     {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
     {'1': 'codeShortcut', '3': 6, '4': 1, '5': 5, '10': 'articleCode'},
-    {'1': 'dateCreation', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
-    {'1': 'dateUpdate', '3': 8, '4': 1, '5': 9, '10': 'updateDate'},
-    {'1': 'dateStatus', '3': 9, '4': 1, '5': 9, '10': 'statusUpdateDate'},
+    {'1': 'creationDate', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
+    {'1': 'updateDate', '3': 8, '4': 1, '5': 9, '10': 'updateDate'},
+    {'1': 'statusUpdateDate', '3': 9, '4': 1, '5': 9, '10': 'statusUpdateDate'},
     {'1': 'proxies', '3': 10, '4': 3, '5': 11, '6': '.weebi.article.ProxyArticlePb', '10': 'proxies'},
     {'1': 'discountAmount', '3': 11, '4': 1, '5': 1, '10': 'discountAmountSalesOnly'},
     {'1': 'markupAmount', '3': 12, '4': 1, '5': 1, '10': 'markupAmountSalesOnly'},
@@ -189,12 +193,12 @@ final $typed_data.Uint8List articleBasketPbDescriptor = $convert.base64Decode(
     'Cg9BcnRpY2xlQmFza2V0UGISHAoJY2FsaWJyZUlkGAEgASgFUgljYWxpYnJlSWQSDgoCaWQYAi'
     'ABKAVSAmlkEiAKC2Rlc2lnbmF0aW9uGAMgASgJUgtkZXNpZ25hdGlvbhIwCgRraW5kGAQgASgO'
     'Mhwud2VlYmkuYXJ0aWNsZS5BcnRpY2xlS2luZFBiUgRraW5kEhYKBnN0YXR1cxgFIAEoCFIGc3'
-    'RhdHVzEiEKDGNvZGVTaG9ydGN1dBgGIAEoBVILYXJ0aWNsZUNvZGUSIgoMZGF0ZUNyZWF0aW9u'
-    'GAcgASgJUgxjcmVhdGlvbkRhdGUSHgoKZGF0ZVVwZGF0ZRgIIAEoCVIKdXBkYXRlRGF0ZRIkCg'
-    'pkYXRlU3RhdHVzGAkgASgJUhBzdGF0dXNVcGRhdGVEYXRlEjcKB3Byb3hpZXMYCiADKAsyHS53'
-    'ZWViaS5hcnRpY2xlLlByb3h5QXJ0aWNsZVBiUgdwcm94aWVzEi8KDmRpc2NvdW50QW1vdW50GA'
-    'sgASgBUhdkaXNjb3VudEFtb3VudFNhbGVzT25seRIrCgxtYXJrdXBBbW91bnQYDCABKAFSFW1h'
-    'cmt1cEFtb3VudFNhbGVzT25seQ==');
+    'RhdHVzEiEKDGNvZGVTaG9ydGN1dBgGIAEoBVILYXJ0aWNsZUNvZGUSIgoMY3JlYXRpb25EYXRl'
+    'GAcgASgJUgxjcmVhdGlvbkRhdGUSHgoKdXBkYXRlRGF0ZRgIIAEoCVIKdXBkYXRlRGF0ZRIqCh'
+    'BzdGF0dXNVcGRhdGVEYXRlGAkgASgJUhBzdGF0dXNVcGRhdGVEYXRlEjcKB3Byb3hpZXMYCiAD'
+    'KAsyHS53ZWViaS5hcnRpY2xlLlByb3h5QXJ0aWNsZVBiUgdwcm94aWVzEi8KDmRpc2NvdW50QW'
+    '1vdW50GAsgASgBUhdkaXNjb3VudEFtb3VudFNhbGVzT25seRIrCgxtYXJrdXBBbW91bnQYDCAB'
+    'KAFSFW1hcmt1cEFtb3VudFNhbGVzT25seQ==');
 
 @$core.Deprecated('Use articleBasketOnTicketPbDescriptor instead')
 const ArticleBasketOnTicketPb$json = {
@@ -240,4 +244,53 @@ final $typed_data.Uint8List proxyArticlePbDescriptor = $convert.base64Decode(
     'J0aWNsZUlkGAYgASgFUg5wcm94eUFydGljbGVJZBIyChRtaW5pbXVtVW5pdFBlckJhc2tldBgH'
     'IAEoAVIUbWluaW11bVVuaXRQZXJCYXNrZXQSJAoNYXJ0aWNsZVdlaWdodBgIIAEoAVINYXJ0aW'
     'NsZVdlaWdodA==');
+
+@$core.Deprecated('Use articleUncountableOnTicketPbDescriptor instead')
+const ArticleUncountableOnTicketPb$json = {
+  '1': 'ArticleUncountableOnTicketPb',
+  '2': [
+    {'1': 'calibreId', '3': 1, '4': 1, '5': 5, '10': 'calibreId'},
+    {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
+    {'1': 'designation', '3': 3, '4': 1, '5': 9, '10': 'designation'},
+    {'1': 'price', '3': 4, '4': 1, '5': 1, '10': 'price'},
+    {'1': 'cost', '3': 5, '4': 1, '5': 1, '10': 'cost'},
+  ],
+};
+
+/// Descriptor for `ArticleUncountableOnTicketPb`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List articleUncountableOnTicketPbDescriptor = $convert.base64Decode(
+    'ChxBcnRpY2xlVW5jb3VudGFibGVPblRpY2tldFBiEhwKCWNhbGlicmVJZBgBIAEoBVIJY2FsaW'
+    'JyZUlkEg4KAmlkGAIgASgFUgJpZBIgCgtkZXNpZ25hdGlvbhgDIAEoCVILZGVzaWduYXRpb24S'
+    'FAoFcHJpY2UYBCABKAFSBXByaWNlEhIKBGNvc3QYBSABKAFSBGNvc3Q=');
+
+@$core.Deprecated('Use articleUncountablePbDescriptor instead')
+const ArticleUncountablePb$json = {
+  '1': 'ArticleUncountablePb',
+  '2': [
+    {'1': 'calibreId', '3': 1, '4': 1, '5': 5, '10': 'calibreId'},
+    {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
+    {'1': 'designation', '3': 3, '4': 1, '5': 9, '10': 'designation'},
+    {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
+    {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
+    {'1': 'codeShortcut', '3': 6, '4': 1, '5': 5, '10': 'articleCode'},
+    {'1': 'creationDate', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
+    {'1': 'updateDate', '3': 8, '4': 1, '5': 9, '10': 'updateDate'},
+    {'1': 'statusUpdateDate', '3': 9, '4': 1, '5': 9, '10': 'statusUpdateDate'},
+    {'1': 'price', '3': 10, '4': 1, '5': 1, '10': 'price'},
+    {'1': 'cost', '3': 11, '4': 1, '5': 1, '10': 'cost'},
+    {'1': 'unitsInOnePiece', '3': 12, '4': 1, '5': 1, '10': 'unitsInOnePiece'},
+    {'1': 'barcodeEAN', '3': 13, '4': 1, '5': 9, '10': 'barcodeEAN'},
+  ],
+};
+
+/// Descriptor for `ArticleUncountablePb`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List articleUncountablePbDescriptor = $convert.base64Decode(
+    'ChRBcnRpY2xlVW5jb3VudGFibGVQYhIcCgljYWxpYnJlSWQYASABKAVSCWNhbGlicmVJZBIOCg'
+    'JpZBgCIAEoBVICaWQSIAoLZGVzaWduYXRpb24YAyABKAlSC2Rlc2lnbmF0aW9uEjAKBGtpbmQY'
+    'BCABKA4yHC53ZWViaS5hcnRpY2xlLkFydGljbGVLaW5kUGJSBGtpbmQSFgoGc3RhdHVzGAUgAS'
+    'gIUgZzdGF0dXMSIQoMY29kZVNob3J0Y3V0GAYgASgFUgthcnRpY2xlQ29kZRIiCgxjcmVhdGlv'
+    'bkRhdGUYByABKAlSDGNyZWF0aW9uRGF0ZRIeCgp1cGRhdGVEYXRlGAggASgJUgp1cGRhdGVEYX'
+    'RlEioKEHN0YXR1c1VwZGF0ZURhdGUYCSABKAlSEHN0YXR1c1VwZGF0ZURhdGUSFAoFcHJpY2UY'
+    'CiABKAFSBXByaWNlEhIKBGNvc3QYCyABKAFSBGNvc3QSKAoPdW5pdHNJbk9uZVBpZWNlGAwgAS'
+    'gBUg91bml0c0luT25lUGllY2USHgoKYmFyY29kZUVBThgNIAEoCVIKYmFyY29kZUVBTg==');
 

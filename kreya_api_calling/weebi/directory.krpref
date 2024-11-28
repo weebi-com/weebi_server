@@ -14,7 +14,7 @@
       "environmentId": "0fabc67c-4a92-446b-909d-eb705c8c5920",
       "options": {
         "grpc": {
-          "endpoint": "https://serverweebi-29758828833.europe-west9.run.app"
+          "endpoint": "https://dev.weebi.com"
         },
         "rest": {
           "pathParams": []
@@ -25,7 +25,18 @@
       "environmentId": "43fe0c07-1860-4e5d-aa21-30e686a88734",
       "options": {
         "grpc": {
-          "endpoint": "https://weebi-server-prod-29758828833.europe-west9.run.app"
+          "endpoint": "https://prd.weebi.com"
+        },
+        "rest": {
+          "pathParams": []
+        }
+      }
+    },
+    {
+      "environmentId": "b0459e05-f2d0-4eda-910e-7fdaffc1645f",
+      "options": {
+        "grpc": {
+          "endpoint": "https://0.0.0.0"
         },
         "rest": {
           "pathParams": []

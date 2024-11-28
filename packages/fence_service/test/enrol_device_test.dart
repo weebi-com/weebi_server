@@ -57,25 +57,11 @@ void main() {
     expect(codeResponse.code != 0, isTrue);
     // print('codeResponse.code ${codeResponse.code}');
 
-    /// right after creating the code, the web app displays a circularProgressIndicator and listens to changes
-    /// which should trigger a response in the webapp request
-    /// since this is hard to include in the test
-    /// here we assume the webapp user goes to device screen and refreshes accordingly
-//    final device = await fenceService.readOnePendingDevice(
-//        ServiceCallTest(bearer.accessToken),
-//        ReadDeviceBtqRequest(
-//            chainId: Dummy.chain.chainId,
-//            boutiqueId: Dummy.boutique.boutiqueId));
-//
-
-    /// From the PoS app the user types the code which == creating the pending device
-
     final pendingDevice = PendingDeviceRequest(
         code: codeResponse.code,
         hardwareInfo: HardwareInfo(name: 'testDevice', baseOS: 'testOS'));
-    final createPendingDeviceStatusResponse =
-        await fenceService.createPendingDevice(
-            ServiceCallTest('', path: 'createPendingDevice'), pendingDevice);
+    final createPendingDeviceStatusResponse = await fenceService.createDevice(
+        ServiceCallTest('', path: 'createDevice'), pendingDevice);
     expect(createPendingDeviceStatusResponse.statusResponse.type,
         StatusResponse_Type.CREATED);
 
@@ -88,8 +74,7 @@ void main() {
     expect(devices.devices.length,
         2); // one device already included in Dummy.boutique
 
-    final device =
-        devices.devices.firstWhere((d) => d.dateCreation.seconds != 0);
+    final device = devices.devices.firstWhere((d) => d.timestamp.seconds != 0);
 
     /// 14 oct 2024 no need to approve the device to make it faster and simpler
 //    final approveDeviceStatus = await fenceService.approveDevice(

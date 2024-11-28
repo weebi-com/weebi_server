@@ -2,29 +2,29 @@
   "boutiqueId": "{{ faker.random.uuid }}",
   "firmId": "{{ faker.random.uuid }}",
   "chainId": "{{ faker.random.uuid }}",
-  "creationDate": "Pa'anga PCI Spurs",
-  "updateDate": "Handmade Fresh Car Awesome Senior",
-  "statusUpdateDate": "distributed silver THX",
+  "creationDate": "Texas",
+  "updateDate": "leverage",
+  "statusUpdateDate": "leading edge Hawaii methodologies",
   "status": false,
   "name": "{{ faker.name.last_name }}",
   "phone": {
-    "countryCode": 21,
+    "countryCode": 159,
     "number": "{{ faker.random.ushort }}"
   },
   "addressFull": {
     "street": "{{ faker.address.street_name }}",
-    "code": "Kentucky",
+    "code": "Analyst",
     "city": "{{ faker.address.city }}",
     "country": {
-      "code2Letters": "reinvent software",
-      "namel10n": "Assistant Forward override"
+      "code2Letters": "New Mexico solution",
+      "namel10n": "system internet solution deposit"
     },
-    "latitude": 207.17923098401687,
-    "longitude": 427.5444148626581
+    "latitude": 905.8433233430729,
+    "longitude": 965.6380916654687
   },
-  "promo": 603.0946135147204,
-  "promoStart": "structure alarm",
-  "promoEnd": "mobile violet",
+  "promo": 945.548862725132,
+  "promoStart": "Sleek Associate index",
+  "promoEnd": "Licensed Incredible Frozen Ball JBOD",
   "devices": [
     {
       "deviceId": "{{ faker.random.uuid }}",
@@ -32,15 +32,15 @@
       "boutiqueId": "{{ faker.random.uuid }}",
       "status": false,
       "password": "{{ faker.internet.password }}",
-      "dateCreation": {
-        "seconds": "226",
-        "nanos": 412
+      "timestamp": {
+        "seconds": "184",
+        "nanos": 270
       },
       "hardwareInfo": {
         "name": "{{ faker.name.last_name }}",
         "serialNumber": "{{ faker.random.ushort }}",
-        "baseOS": "Internal deposit",
-        "brand": "Way Canada"
+        "baseOS": "Marketing Creek synthesize",
+        "brand": "Concrete cross-media Unbranded Concrete Shirt"
       }
     },
     {
@@ -49,19 +49,19 @@
       "boutiqueId": "{{ faker.random.uuid }}",
       "status": false,
       "password": "{{ faker.internet.password }}",
-      "dateCreation": {
-        "seconds": "280",
-        "nanos": 777
+      "timestamp": {
+        "seconds": "686",
+        "nanos": 785
       },
       "hardwareInfo": {
         "name": "{{ faker.name.last_name }}",
         "serialNumber": "{{ faker.random.ushort }}",
-        "baseOS": "granular",
-        "brand": "Principal array"
+        "baseOS": "Direct online Generic",
+        "brand": "Handmade Plastic Shoes primary"
       }
     }
   ],
   "additional_attributes": {
-    "IB Developer dedicated": "innovative Administrator"
+    "strategize Graphical User Interface": "Cotton"
   }
 }

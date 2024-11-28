@@ -15,7 +15,7 @@ message TicketMongo {
     string boutiqueId = 4 [json_name = 'boutiqueId'];
     string firmId = 5 [json_name = 'firmId'];
     string chainId = 6 [json_name = 'chainId'];
-    string dateCreation = 7 [json_name = 'dateCreation'];
+    string creationDate = 7 [json_name = 'creationDate'];
 }
 // string uploadByuserId = 3 [json_name = 'uploadByuserId'];
 // string uploadByUsername = 4 [json_name = 'uploadByUsername'];
@@ -35,8 +35,8 @@ message TicketPb {
     creditCard = 5 ;
     goods = 6 ;
     }
-  string dateCreation = 3 [json_name = 'date'];
-  string dateStatus = 4 [json_name = 'statusUpdateDate'];
+  string date = 3 [json_name = 'date'];
+  string statusUpdateDate = 4 [json_name = 'statusUpdateDate'];
   bool status = 5 [json_name = 'status'];
   repeated ItemCartPb items = 6 [json_name = 'items'];
   weebi.ticket_type.TicketTypePb ticketType = 7 [json_name = 'ticketType'];
@@ -85,9 +85,10 @@ message ProxyArticleWorthPb {
 message ItemCartPb {
   weebi.article.ArticleRetailOnTicketPb articleRetail = 1;
   weebi.article.ArticleBasketOnTicketPb articleBasket = 2;
-  double quantity = 3;
-  repeated ProxyArticleWorthPb proxies_worth = 4;
-  double inventoryAbsoluteQt = 5;
+  weebi.article.ArticleUncountableOnTicketPb articleUncountable = 3;
+  double quantity = 4;
+  repeated ProxyArticleWorthPb proxies_worth = 5;
+  double inventoryAbsoluteQt = 6;
 }
 
 

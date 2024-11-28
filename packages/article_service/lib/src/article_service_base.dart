@@ -1,15 +1,14 @@
-import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
-import 'package:protos_weebi/extensions.dart';
-import 'package:protos_weebi/grpc.dart';
-import 'package:protos_weebi/protos_weebi_io.dart';
+import 'package:fence_service/grpc.dart';
+import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
   static SelectorBuilder select(String firmId, ArticleRequest request) => where
       .eq('firmId', firmId)
       .eq('chainId', request.chainId)
       .eq('userId', request.articleUserId)
-      .eq('dateCreation', request.calibre.dateCreation)
+      .eq('creationDate', request.calibre.creationDate)
       .eq('calibreNonUniqueId', request.calibre.id);
 }
 
@@ -46,7 +45,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
-        ..dateCreation = request.calibre.dateCreation
+        ..creationDate = request.calibre.creationDate
         ..calibreNonUniqueId = request.calibre.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
@@ -99,7 +98,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
-        ..dateCreation = request.calibre.dateCreation
+        ..creationDate = request.calibre.creationDate
         ..calibreNonUniqueId = request.calibre.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId

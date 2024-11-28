@@ -1,5 +1,6 @@
 // for client app
-import 'package:protos_weebi/grpc.dart';
+
+import 'package:fence_service/grpc.dart';
 
 class AuthInterceptor implements ClientInterceptor {
   final String jwt;
