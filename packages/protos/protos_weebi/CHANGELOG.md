@@ -1,3 +1,7 @@
+## 1.0.5
+
+- createDevice
+
 ## 1.0.4
 
 - ArticleUncounable make a stunning apparition
