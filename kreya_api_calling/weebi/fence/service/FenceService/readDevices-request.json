@@ -1,0 +1,3 @@
+{
+  "chainId": "{{ faker.random.uuid }}"
+}

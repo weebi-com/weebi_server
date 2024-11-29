@@ -245,15 +245,15 @@ final $typed_data.Uint8List passwordUpdateRequestDescriptor = $convert.base64Dec
 const PendingDeviceRequest$json = {
   '1': 'PendingDeviceRequest',
   '2': [
-    {'1': 'device', '3': 1, '4': 1, '5': 11, '6': '.weebi.device.Device', '10': 'device'},
+    {'1': 'hardwareInfo', '3': 1, '4': 1, '5': 11, '6': '.weebi.device.HardwareInfo', '10': 'hardwareInfo'},
     {'1': 'code', '3': 2, '4': 1, '5': 5, '10': 'code'},
   ],
 };
 
 /// Descriptor for `PendingDeviceRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List pendingDeviceRequestDescriptor = $convert.base64Decode(
-    'ChRQZW5kaW5nRGV2aWNlUmVxdWVzdBIsCgZkZXZpY2UYASABKAsyFC53ZWViaS5kZXZpY2UuRG'
-    'V2aWNlUgZkZXZpY2USEgoEY29kZRgCIAEoBVIEY29kZQ==');
+    'ChRQZW5kaW5nRGV2aWNlUmVxdWVzdBI+CgxoYXJkd2FyZUluZm8YASABKAsyGi53ZWViaS5kZX'
+    'ZpY2UuSGFyZHdhcmVJbmZvUgxoYXJkd2FyZUluZm8SEgoEY29kZRgCIAEoBVIEY29kZQ==');
 
 @$core.Deprecated('Use codeForPairingDeviceDescriptor instead')
 const CodeForPairingDevice$json = {

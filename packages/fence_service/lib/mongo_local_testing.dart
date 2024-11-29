@@ -1,3 +1,3 @@
-library mongo_local_testing;
+library;
 
 export 'src/testing/test_helper.dart';

@@ -14,19 +14,20 @@ message ContactMongo {
   string userId = 3 [json_name = 'userId'];
   string firmId = 4 [json_name = 'firmId'];
   string chainId = 5 [json_name = 'chainId'];
+  string creationDate = 6 [json_name = 'creationDate'];
 }
 
 message ContactPb {
     int32 contactNonUniqueId = 1 [json_name = 'id'];
-    string dateCreation =  2 [json_name = 'creationDate'];
-    string dateUpdate =  3 [json_name = 'updateDate'];
-    string dateStatus =  4 [json_name = 'statusUpdateDate'];
+    string creationDate =  2 [json_name = 'creationDate'];
+    string updateDate =  3 [json_name = 'updateDate'];
+    string statusUpdateDate =  4 [json_name = 'statusUpdateDate'];
     bool status =  5 [json_name = 'status'];
     string firstName =  6 [json_name = 'firstName'];
     string lastName =  7 [json_name = 'lastName'];
     string mail =  8 [json_name = 'mail'];
     weebi.common.phone.Phone phone =  9 [json_name = 'phone'];
-    weebi.common.address.Address address =  10 [json_name = 'addressFull'];
+    weebi.common.address.Address addressFull =  10 [json_name = 'addressFull'];
     int32 overdraft =  11 [json_name = 'overdraft'];
     repeated string tags =  12 [json_name = 'categories'];
     reserved 13 to 98;

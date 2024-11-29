@@ -23,6 +23,7 @@ const TicketMongo$json = {
     {'1': 'boutiqueId', '3': 4, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'firmId', '3': 5, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 6, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'creationDate', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
   ],
 };
 
@@ -31,7 +32,8 @@ final $typed_data.Uint8List ticketMongoDescriptor = $convert.base64Decode(
     'CgtUaWNrZXRNb25nbxIuCgZ0aWNrZXQYASABKAsyFi53ZWViaS50aWNrZXQuVGlja2V0UGJSBn'
     'RpY2tldBIsChF0aWNrZXROb25VbmlxdWVJZBgCIAEoBVIRdGlja2V0Tm9uVW5pcXVlSWQSFgoG'
     'dXNlcklkGAMgASgJUgZ1c2VySWQSHgoKYm91dGlxdWVJZBgEIAEoCVIKYm91dGlxdWVJZBIWCg'
-    'ZmaXJtSWQYBSABKAlSBmZpcm1JZBIYCgdjaGFpbklkGAYgASgJUgdjaGFpbklk');
+    'ZmaXJtSWQYBSABKAlSBmZpcm1JZBIYCgdjaGFpbklkGAYgASgJUgdjaGFpbklkEiIKDGNyZWF0'
+    'aW9uRGF0ZRgHIAEoCVIMY3JlYXRpb25EYXRl');
 
 @$core.Deprecated('Use ticketPbDescriptor instead')
 const TicketPb$json = {
@@ -39,8 +41,8 @@ const TicketPb$json = {
   '2': [
     {'1': 'ticketNonUniqueId', '3': 1, '4': 1, '5': 5, '10': 'id'},
     {'1': 'counterfoil', '3': 2, '4': 1, '5': 11, '6': '.weebi.ticket.Counterfoil', '10': 'counterfoil'},
-    {'1': 'dateCreation', '3': 3, '4': 1, '5': 9, '10': 'date'},
-    {'1': 'dateStatus', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
+    {'1': 'date', '3': 3, '4': 1, '5': 9, '10': 'date'},
+    {'1': 'statusUpdateDate', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
     {'1': 'items', '3': 6, '4': 3, '5': 11, '6': '.weebi.ticket.ItemCartPb', '10': 'items'},
     {'1': 'ticketType', '3': 7, '4': 1, '5': 14, '6': '.weebi.ticket_type.TicketTypePb', '10': 'ticketType'},
@@ -72,18 +74,18 @@ const TicketPb_PaymentTypePb$json = {
 /// Descriptor for `TicketPb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List ticketPbDescriptor = $convert.base64Decode(
     'CghUaWNrZXRQYhIdChF0aWNrZXROb25VbmlxdWVJZBgBIAEoBVICaWQSOwoLY291bnRlcmZvaW'
-    'wYAiABKAsyGS53ZWViaS50aWNrZXQuQ291bnRlcmZvaWxSC2NvdW50ZXJmb2lsEhoKDGRhdGVD'
-    'cmVhdGlvbhgDIAEoCVIEZGF0ZRIkCgpkYXRlU3RhdHVzGAQgASgJUhBzdGF0dXNVcGRhdGVEYX'
-    'RlEhYKBnN0YXR1cxgFIAEoCFIGc3RhdHVzEi4KBWl0ZW1zGAYgAygLMhgud2VlYmkudGlja2V0'
-    'Lkl0ZW1DYXJ0UGJSBWl0ZW1zEj8KCnRpY2tldFR5cGUYByABKA4yHy53ZWViaS50aWNrZXRfdH'
-    'lwZS5UaWNrZXRUeXBlUGJSCnRpY2tldFR5cGUSRgoLcGF5bWVudFR5cGUYCCABKA4yJC53ZWVi'
-    'aS50aWNrZXQuVGlja2V0UGIuUGF5bWVudFR5cGVQYlILcGF5bWVudFR5cGUSHAoJY29udGFjdE'
-    'lkGAkgASgFUgljb250YWN0SWQSJwoEdGF4ZRgKIAEoCzITLndlZWJpLnRpY2tldC5UYXhQYlIE'
-    'dGF4ZRIUCgVwcm9tbxgLIAEoAVIFcHJvbW8SGgoIcmVjZWl2ZWQYDCABKAFSCHJlY2VpdmVkEi'
-    'YKDmRpc2NvdW50QW1vdW50GA0gASgBUg5kaXNjb3VudEFtb3VudBIYCgdjb21tZW50GA4gASgJ'
-    'Ugdjb21tZW50ImgKDVBheW1lbnRUeXBlUGISCwoHdW5rbm93bhAAEggKBGNhc2gQARIICgRub3'
-    'BlEAISDwoLbW9iaWxlTW9uZXkQAxIKCgZjaGVxdWUQBBIOCgpjcmVkaXRDYXJkEAUSCQoFZ29v'
-    'ZHMQBg==');
+    'wYAiABKAsyGS53ZWViaS50aWNrZXQuQ291bnRlcmZvaWxSC2NvdW50ZXJmb2lsEhIKBGRhdGUY'
+    'AyABKAlSBGRhdGUSKgoQc3RhdHVzVXBkYXRlRGF0ZRgEIAEoCVIQc3RhdHVzVXBkYXRlRGF0ZR'
+    'IWCgZzdGF0dXMYBSABKAhSBnN0YXR1cxIuCgVpdGVtcxgGIAMoCzIYLndlZWJpLnRpY2tldC5J'
+    'dGVtQ2FydFBiUgVpdGVtcxI/Cgp0aWNrZXRUeXBlGAcgASgOMh8ud2VlYmkudGlja2V0X3R5cG'
+    'UuVGlja2V0VHlwZVBiUgp0aWNrZXRUeXBlEkYKC3BheW1lbnRUeXBlGAggASgOMiQud2VlYmku'
+    'dGlja2V0LlRpY2tldFBiLlBheW1lbnRUeXBlUGJSC3BheW1lbnRUeXBlEhwKCWNvbnRhY3RJZB'
+    'gJIAEoBVIJY29udGFjdElkEicKBHRheGUYCiABKAsyEy53ZWViaS50aWNrZXQuVGF4UGJSBHRh'
+    'eGUSFAoFcHJvbW8YCyABKAFSBXByb21vEhoKCHJlY2VpdmVkGAwgASgBUghyZWNlaXZlZBImCg'
+    '5kaXNjb3VudEFtb3VudBgNIAEoAVIOZGlzY291bnRBbW91bnQSGAoHY29tbWVudBgOIAEoCVIH'
+    'Y29tbWVudCJoCg1QYXltZW50VHlwZVBiEgsKB3Vua25vd24QABIICgRjYXNoEAESCAoEbm9wZR'
+    'ACEg8KC21vYmlsZU1vbmV5EAMSCgoGY2hlcXVlEAQSDgoKY3JlZGl0Q2FyZBAFEgkKBWdvb2Rz'
+    'EAY=');
 
 @$core.Deprecated('Use counterfoilDescriptor instead')
 const Counterfoil$json = {
@@ -158,9 +160,10 @@ const ItemCartPb$json = {
   '2': [
     {'1': 'articleRetail', '3': 1, '4': 1, '5': 11, '6': '.weebi.article.ArticleRetailOnTicketPb', '10': 'articleRetail'},
     {'1': 'articleBasket', '3': 2, '4': 1, '5': 11, '6': '.weebi.article.ArticleBasketOnTicketPb', '10': 'articleBasket'},
-    {'1': 'quantity', '3': 3, '4': 1, '5': 1, '10': 'quantity'},
-    {'1': 'proxies_worth', '3': 4, '4': 3, '5': 11, '6': '.weebi.ticket.ProxyArticleWorthPb', '10': 'proxiesWorth'},
-    {'1': 'inventoryAbsoluteQt', '3': 5, '4': 1, '5': 1, '10': 'inventoryAbsoluteQt'},
+    {'1': 'articleUncountable', '3': 3, '4': 1, '5': 11, '6': '.weebi.article.ArticleUncountableOnTicketPb', '10': 'articleUncountable'},
+    {'1': 'quantity', '3': 4, '4': 1, '5': 1, '10': 'quantity'},
+    {'1': 'proxies_worth', '3': 5, '4': 3, '5': 11, '6': '.weebi.ticket.ProxyArticleWorthPb', '10': 'proxiesWorth'},
+    {'1': 'inventoryAbsoluteQt', '3': 6, '4': 1, '5': 1, '10': 'inventoryAbsoluteQt'},
   ],
 };
 
@@ -169,7 +172,9 @@ final $typed_data.Uint8List itemCartPbDescriptor = $convert.base64Decode(
     'CgpJdGVtQ2FydFBiEkwKDWFydGljbGVSZXRhaWwYASABKAsyJi53ZWViaS5hcnRpY2xlLkFydG'
     'ljbGVSZXRhaWxPblRpY2tldFBiUg1hcnRpY2xlUmV0YWlsEkwKDWFydGljbGVCYXNrZXQYAiAB'
     'KAsyJi53ZWViaS5hcnRpY2xlLkFydGljbGVCYXNrZXRPblRpY2tldFBiUg1hcnRpY2xlQmFza2'
-    'V0EhoKCHF1YW50aXR5GAMgASgBUghxdWFudGl0eRJGCg1wcm94aWVzX3dvcnRoGAQgAygLMiEu'
-    'd2VlYmkudGlja2V0LlByb3h5QXJ0aWNsZVdvcnRoUGJSDHByb3hpZXNXb3J0aBIwChNpbnZlbn'
-    'RvcnlBYnNvbHV0ZVF0GAUgASgBUhNpbnZlbnRvcnlBYnNvbHV0ZVF0');
+    'V0ElsKEmFydGljbGVVbmNvdW50YWJsZRgDIAEoCzIrLndlZWJpLmFydGljbGUuQXJ0aWNsZVVu'
+    'Y291bnRhYmxlT25UaWNrZXRQYlISYXJ0aWNsZVVuY291bnRhYmxlEhoKCHF1YW50aXR5GAQgAS'
+    'gBUghxdWFudGl0eRJGCg1wcm94aWVzX3dvcnRoGAUgAygLMiEud2VlYmkudGlja2V0LlByb3h5'
+    'QXJ0aWNsZVdvcnRoUGJSDHByb3hpZXNXb3J0aBIwChNpbnZlbnRvcnlBYnNvbHV0ZVF0GAYgAS'
+    'gBUhNpbnZlbnRvcnlBYnNvbHV0ZVF0');
 

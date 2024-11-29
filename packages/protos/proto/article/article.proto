@@ -9,6 +9,7 @@ message CalibreMongo {
   string firmId = 3 [json_name = 'firmId'];
   string chainId = 4 [json_name = 'chainId'];
   string userId = 5 [json_name = 'userId']; 
+  string creationDate = 6 [json_name = 'creationDate'];
 }
 
 /// Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi 
@@ -24,9 +25,9 @@ message CalibrePb {
     unit =  7;
   }
   int32 id = 1 [json_name = 'id'];
-  string dateCreation = 2 [json_name = 'creationDate'];
-  string dateUpdate = 3 [json_name = 'updateDate'];
-  string dateStatus = 4 [json_name = 'statusUpdateDate'];
+  string creationDate = 2 [json_name = 'creationDate'];
+  string updateDate = 3 [json_name = 'updateDate'];
+  string statusUpdateDate = 4 [json_name = 'statusUpdateDate'];
   bool status = 5 [json_name = 'status'];
   string title = 6 [json_name = 'title'];
   StockUnit stockUnit = 7 [json_name = 'stockUnit'];
@@ -34,6 +35,7 @@ message CalibrePb {
   repeated string categories = 9 [json_name = 'categories'];
   repeated ArticleRetailPb articlesRetail = 10 [json_name = 'articlesRetail'];
   repeated ArticleBasketPb articlesBasket = 11 [json_name = 'articlesBasket'];
+  repeated ArticleUncountablePb articlesUncountable = 12 [json_name = 'articlesUncountable'];
   reserved 13 to 98;
   // map<string, string> additional_attributes = 99 [json_name = 'additional_attributes'];
 }
@@ -42,7 +44,7 @@ enum ArticleKindPb {
   unknown = 0 ;
   retail = 1 ;
   basket = 2 ;
-  outOfCatalogue = 3 ;
+  uncountable = 3 ; 
 }
 
 
@@ -59,6 +61,7 @@ message ArticleRetailOnTicketPb {
   double price = 4 [json_name = 'price'];
   double cost = 5 [json_name = 'cost'];
   double unitsInOnePiece = 6 [json_name = 'unitsInOnePiece'];
+  // no need to mention kind here, each items has a specific attribute
 }
 
 /// default type of article
@@ -69,9 +72,9 @@ message ArticleRetailPb {
   ArticleKindPb kind = 4 [json_name = 'kind'];
   bool status = 5 [json_name = 'status'];
   int32 codeShortcut = 6 [json_name = 'articleCode'];
-  string dateCreation = 7 [json_name = 'creationDate'];
-  string dateUpdate = 8 [json_name = 'updateDate'];
-  string dateStatus = 9 [json_name = 'statusUpdateDate'];
+  string creationDate = 7 [json_name = 'creationDate'];
+  string updateDate = 8 [json_name = 'updateDate'];
+  string statusUpdateDate = 9 [json_name = 'statusUpdateDate'];
   double price = 10 [json_name = 'price'];
   double cost = 11 [json_name = 'cost'];
   double unitsInOnePiece = 12 [json_name = 'unitsInOnePiece'];
@@ -86,9 +89,9 @@ message ArticleBasketPb {
   ArticleKindPb kind = 4 [json_name = 'kind'];
   bool status = 5 [json_name = 'status'];
   int32 codeShortcut = 6 [json_name = 'articleCode'];
-  string dateCreation = 7 [json_name = 'creationDate'];
-  string dateUpdate = 8 [json_name = 'updateDate'];
-  string dateStatus = 9 [json_name = 'statusUpdateDate'];
+  string creationDate = 7 [json_name = 'creationDate'];
+  string updateDate = 8 [json_name = 'updateDate'];
+  string statusUpdateDate = 9 [json_name = 'statusUpdateDate'];
   repeated ProxyArticlePb proxies = 10 [json_name = 'proxies'];
   double discountAmount = 11 [json_name = 'discountAmountSalesOnly'];
   double markupAmount = 12 [json_name = 'markupAmountSalesOnly'];
@@ -101,6 +104,7 @@ message ArticleBasketOnTicketPb {
   repeated ProxyArticlePb proxies = 4 [json_name = 'proxies'];
   double discountAmount = 5 [json_name = 'discountAmountSalesOnly'];
   double markupAmount = 6 [json_name = 'markupAmountSalesOnly'];
+  // no need to mention kind here, each items has a specific attribute
 }
 
 // each article included in the ArticleBasket is referenced using the proxy
@@ -113,4 +117,32 @@ message ProxyArticlePb {
   int32 proxyArticleId = 6 [json_name = 'proxyArticleId'];
   double minimumUnitPerBasket = 7 [json_name = 'minimumUnitPerBasket'];
   double articleWeight = 8 [json_name = 'articleWeight'];
+}
+
+
+/// article uncountable only has price and cost on ticket when it cas assigned
+message ArticleUncountableOnTicketPb {
+  int32 calibreId = 1 [json_name = 'calibreId'];
+  int32 id = 2 [json_name = 'id'];
+  string designation = 3 [json_name = 'designation'];
+  double price = 4 [json_name = 'price'];
+  double cost = 5 [json_name = 'cost'];
+  // no need to mention kind here, each items has a specific attribute
+}
+
+/// article uncountable / out of catalog, exemple : electricity bill (-) or grant (+)
+message ArticleUncountablePb {
+  int32 calibreId = 1 [json_name = 'calibreId'];
+  int32 id = 2 [json_name = 'id'];
+  string designation = 3 [json_name = 'designation'];
+  ArticleKindPb kind = 4 [json_name = 'kind'];
+  bool status = 5 [json_name = 'status'];
+  int32 codeShortcut = 6 [json_name = 'articleCode'];
+  string creationDate = 7 [json_name = 'creationDate'];
+  string updateDate = 8 [json_name = 'updateDate'];
+  string statusUpdateDate = 9 [json_name = 'statusUpdateDate'];
+  double price = 10 [json_name = 'price'];
+  double cost = 11 [json_name = 'cost'];
+  double unitsInOnePiece = 12 [json_name = 'unitsInOnePiece'];
+  string barcodeEAN = 13 [json_name = 'barcodeEAN'];
 }

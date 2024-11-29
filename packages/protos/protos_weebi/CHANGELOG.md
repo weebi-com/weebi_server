@@ -1,3 +1,21 @@
+## 1.0.5
+
+- createDevice
+
+## 1.0.4
+
+- ArticleUncounable make a stunning apparition
+- canQuickSell is in the place !
+
+## 1.0.3
+
+- add creationDate to distinguish ids in article, contact, ticket
+- bump versions
+
+## 1.0.2
+
+- add hardwareInfo
+
 ## 1.0.1
 
 - complete device enrolment

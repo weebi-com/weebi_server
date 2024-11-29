@@ -1,0 +1,19 @@
+{
+  "details": {
+    "methodFqn": "weebi.fence.service.FenceService.generateCodeForPairingDevice",
+    "metadata": [
+      {
+        "key": "authorization",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNzI5MjQyOTU1NTgzIiwiaWF0IjoxNzMyODE4NTA1LCJleHAiOjE3MzI5MDQ5MDUsInVzZXJJZCI6IjE3MjkyNDI5NTU1ODMiLCJmaXJtSWQiOiIxNzI5NTE0NzQxMDM3IiwiZnVsbEFjY2VzcyI6eyJoYXNGdWxsQWNjZXNzIjp0cnVlfSwidGlja2V0UmlnaHRzIjp7InRpY2tldFJpZ2h0cyI6WyJjcmVhdGUiLCJyZWFkIiwidXBkYXRlIiwiZGVsZXRlIl19LCJjb250YWN0UmlnaHRzIjp7ImNvbnRhY3RSaWdodHMiOlsiY3JlYXRlIiwicmVhZCIsInVwZGF0ZSIsImRlbGV0ZSJdfSwiYXJ0aWNsZVJpZ2h0cyI6eyJhcnRpY2xlUmlnaHRzIjpbImNyZWF0ZSIsInJlYWQiLCJ1cGRhdGUiLCJkZWxldGUiXX0sImJvdXRpcXVlUmlnaHRzIjp7ImJvdXRpcXVlUmlnaHRzIjpbImNyZWF0ZSIsInJlYWQiLCJ1cGRhdGUiLCJkZWxldGUiXX0sImNoYWluUmlnaHRzIjp7ImNoYWluUmlnaHRzIjpbImNyZWF0ZSIsInJlYWQiLCJ1cGRhdGUiLCJkZWxldGUiXX0sImZpcm1SaWdodHMiOnsiZmlybVJpZ2h0cyI6WyJyZWFkIiwidXBkYXRlIiwiZGVsZXRlIl19LCJ1c2VyTWFuYWdlbWVudFJpZ2h0cyI6eyJ1c2VyTWFuYWdlbWVudFJpZ2h0cyI6WyJjcmVhdGUiLCJyZWFkIiwidXBkYXRlIiwiZGVsZXRlIl19LCJiaWxsaW5nUmlnaHRzIjp7ImJpbGxpbmdSaWdodHMiOlsiY3JlYXRlIiwicmVhZCIsInVwZGF0ZSIsImRlbGV0ZSJdfSwiYm9vbFJpZ2h0cyI6eyJjYW5TZWVTdGF0cyI6dHJ1ZSwiY2FuRXhwb3J0RGF0YSI6dHJ1ZSwiY2FuR2l2ZURpc2NvdW50Ijp0cnVlLCJjYW5TZXRQcm9tbyI6dHJ1ZX19.4Ie8isOfRm7CqlbbzG3-b7jSX6q80WeoRt_UroMwn5g="
+      }
+    ]
+  },
+  "requests": [
+    {
+      "location": "generateCodeForPairingDevice-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc",
+  "importStreamId": "7c10a9ae-363a-44bb-8a69-b103703b8bf9"
+}

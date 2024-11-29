@@ -17,10 +17,10 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'boutique.pb.dart' as $11;
 import 'btq_chain.pb.dart' as $10;
-import 'common/chained_ids.pb.dart' as $12;
+import 'common/chained_ids.pb.dart' as $13;
 import 'common/empty.pb.dart' as $0;
 import 'common/g_common.pb.dart' as $1;
-import 'device.pb.dart' as $13;
+import 'device.pb.dart' as $12;
 import 'fence_service.pb.dart' as $7;
 import 'firm.pb.dart' as $9;
 import 'user.pb.dart' as $6;
@@ -98,26 +98,22 @@ class FenceServiceClient extends $grpc.Client {
       '/weebi.fence.service.FenceService/updateOneBoutique',
       ($11.Boutique value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$generateCodeForPairingDevice = $grpc.ClientMethod<$12.ChainIdAndboutiqueId, $7.CodeForPairingDevice>(
-      '/weebi.fence.service.FenceService/generateCodeForPairingDevice',
-      ($12.ChainIdAndboutiqueId value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.CodeForPairingDevice.fromBuffer(value));
-  static final _$createPendingDevice = $grpc.ClientMethod<$7.PendingDeviceRequest, $7.CreatePendingDeviceResponse>(
-      '/weebi.fence.service.FenceService/createPendingDevice',
-      ($7.PendingDeviceRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.CreatePendingDeviceResponse.fromBuffer(value));
-  static final _$readOnePendingDevice = $grpc.ClientMethod<$7.ReadDeviceBtqRequest, $13.Device>(
-      '/weebi.fence.service.FenceService/readOnePendingDevice',
-      ($7.ReadDeviceBtqRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $13.Device.fromBuffer(value));
-  static final _$approveDevice = $grpc.ClientMethod<$7.ApproveDeviceRequest, $1.StatusResponse>(
-      '/weebi.fence.service.FenceService/approveDevice',
-      ($7.ApproveDeviceRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$readDevices = $grpc.ClientMethod<$7.ReadDevicesRequest, $13.Devices>(
+  static final _$readDevices = $grpc.ClientMethod<$7.ReadDevicesRequest, $12.Devices>(
       '/weebi.fence.service.FenceService/readDevices',
       ($7.ReadDevicesRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $13.Devices.fromBuffer(value));
+      ($core.List<$core.int> value) => $12.Devices.fromBuffer(value));
+  static final _$generateCodeForPairingDevice = $grpc.ClientMethod<$13.ChainIdAndboutiqueId, $7.CodeForPairingDevice>(
+      '/weebi.fence.service.FenceService/generateCodeForPairingDevice',
+      ($13.ChainIdAndboutiqueId value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $7.CodeForPairingDevice.fromBuffer(value));
+  static final _$readOnePendingDevice = $grpc.ClientMethod<$7.ReadDeviceBtqRequest, $12.Device>(
+      '/weebi.fence.service.FenceService/readOnePendingDevice',
+      ($7.ReadDeviceBtqRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $12.Device.fromBuffer(value));
+  static final _$createDevice = $grpc.ClientMethod<$7.PendingDeviceRequest, $7.CreatePendingDeviceResponse>(
+      '/weebi.fence.service.FenceService/createDevice',
+      ($7.PendingDeviceRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $7.CreatePendingDeviceResponse.fromBuffer(value));
   static final _$authenticateWithDevice = $grpc.ClientMethod<$7.DeviceCredentials, $7.Tokens>(
       '/weebi.fence.service.FenceService/authenticateWithDevice',
       ($7.DeviceCredentials value) => value.writeToBuffer(),
@@ -205,24 +201,20 @@ class FenceServiceClient extends $grpc.Client {
     return $createUnaryCall(_$updateOneBoutique, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.CodeForPairingDevice> generateCodeForPairingDevice($12.ChainIdAndboutiqueId request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$12.Devices> readDevices($7.ReadDevicesRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$readDevices, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$7.CodeForPairingDevice> generateCodeForPairingDevice($13.ChainIdAndboutiqueId request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$generateCodeForPairingDevice, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.CreatePendingDeviceResponse> createPendingDevice($7.PendingDeviceRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$createPendingDevice, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$13.Device> readOnePendingDevice($7.ReadDeviceBtqRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$12.Device> readOnePendingDevice($7.ReadDeviceBtqRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readOnePendingDevice, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> approveDevice($7.ApproveDeviceRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$approveDevice, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$13.Devices> readDevices($7.ReadDevicesRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$readDevices, request, options: options);
+  $grpc.ResponseFuture<$7.CreatePendingDeviceResponse> createDevice($7.PendingDeviceRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$createDevice, request, options: options);
   }
 
   $grpc.ResponseFuture<$7.Tokens> authenticateWithDevice($7.DeviceCredentials request, {$grpc.CallOptions? options}) {
@@ -362,41 +354,34 @@ abstract class FenceServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $11.Boutique.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$12.ChainIdAndboutiqueId, $7.CodeForPairingDevice>(
-        'generateCodeForPairingDevice',
-        generateCodeForPairingDevice_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $12.ChainIdAndboutiqueId.fromBuffer(value),
-        ($7.CodeForPairingDevice value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.PendingDeviceRequest, $7.CreatePendingDeviceResponse>(
-        'createPendingDevice',
-        createPendingDevice_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $7.PendingDeviceRequest.fromBuffer(value),
-        ($7.CreatePendingDeviceResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.ReadDeviceBtqRequest, $13.Device>(
-        'readOnePendingDevice',
-        readOnePendingDevice_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $7.ReadDeviceBtqRequest.fromBuffer(value),
-        ($13.Device value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.ApproveDeviceRequest, $1.StatusResponse>(
-        'approveDevice',
-        approveDevice_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $7.ApproveDeviceRequest.fromBuffer(value),
-        ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.ReadDevicesRequest, $13.Devices>(
+    $addMethod($grpc.ServiceMethod<$7.ReadDevicesRequest, $12.Devices>(
         'readDevices',
         readDevices_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $7.ReadDevicesRequest.fromBuffer(value),
-        ($13.Devices value) => value.writeToBuffer()));
+        ($12.Devices value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$13.ChainIdAndboutiqueId, $7.CodeForPairingDevice>(
+        'generateCodeForPairingDevice',
+        generateCodeForPairingDevice_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $13.ChainIdAndboutiqueId.fromBuffer(value),
+        ($7.CodeForPairingDevice value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$7.ReadDeviceBtqRequest, $12.Device>(
+        'readOnePendingDevice',
+        readOnePendingDevice_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $7.ReadDeviceBtqRequest.fromBuffer(value),
+        ($12.Device value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$7.PendingDeviceRequest, $7.CreatePendingDeviceResponse>(
+        'createDevice',
+        createDevice_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $7.PendingDeviceRequest.fromBuffer(value),
+        ($7.CreatePendingDeviceResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$7.DeviceCredentials, $7.Tokens>(
         'authenticateWithDevice',
         authenticateWithDevice_Pre,
@@ -488,24 +473,20 @@ abstract class FenceServiceBase extends $grpc.Service {
     return updateOneBoutique(call, await request);
   }
 
-  $async.Future<$7.CodeForPairingDevice> generateCodeForPairingDevice_Pre($grpc.ServiceCall call, $async.Future<$12.ChainIdAndboutiqueId> request) async {
+  $async.Future<$12.Devices> readDevices_Pre($grpc.ServiceCall call, $async.Future<$7.ReadDevicesRequest> request) async {
+    return readDevices(call, await request);
+  }
+
+  $async.Future<$7.CodeForPairingDevice> generateCodeForPairingDevice_Pre($grpc.ServiceCall call, $async.Future<$13.ChainIdAndboutiqueId> request) async {
     return generateCodeForPairingDevice(call, await request);
   }
 
-  $async.Future<$7.CreatePendingDeviceResponse> createPendingDevice_Pre($grpc.ServiceCall call, $async.Future<$7.PendingDeviceRequest> request) async {
-    return createPendingDevice(call, await request);
-  }
-
-  $async.Future<$13.Device> readOnePendingDevice_Pre($grpc.ServiceCall call, $async.Future<$7.ReadDeviceBtqRequest> request) async {
+  $async.Future<$12.Device> readOnePendingDevice_Pre($grpc.ServiceCall call, $async.Future<$7.ReadDeviceBtqRequest> request) async {
     return readOnePendingDevice(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> approveDevice_Pre($grpc.ServiceCall call, $async.Future<$7.ApproveDeviceRequest> request) async {
-    return approveDevice(call, await request);
-  }
-
-  $async.Future<$13.Devices> readDevices_Pre($grpc.ServiceCall call, $async.Future<$7.ReadDevicesRequest> request) async {
-    return readDevices(call, await request);
+  $async.Future<$7.CreatePendingDeviceResponse> createDevice_Pre($grpc.ServiceCall call, $async.Future<$7.PendingDeviceRequest> request) async {
+    return createDevice(call, await request);
   }
 
   $async.Future<$7.Tokens> authenticateWithDevice_Pre($grpc.ServiceCall call, $async.Future<$7.DeviceCredentials> request) async {
@@ -537,11 +518,10 @@ abstract class FenceServiceBase extends $grpc.Service {
   $async.Future<$1.StatusResponse> updateOneChain($grpc.ServiceCall call, $10.Chain request);
   $async.Future<$1.StatusResponse> createOneBoutique($grpc.ServiceCall call, $11.Boutique request);
   $async.Future<$1.StatusResponse> updateOneBoutique($grpc.ServiceCall call, $11.Boutique request);
-  $async.Future<$7.CodeForPairingDevice> generateCodeForPairingDevice($grpc.ServiceCall call, $12.ChainIdAndboutiqueId request);
-  $async.Future<$7.CreatePendingDeviceResponse> createPendingDevice($grpc.ServiceCall call, $7.PendingDeviceRequest request);
-  $async.Future<$13.Device> readOnePendingDevice($grpc.ServiceCall call, $7.ReadDeviceBtqRequest request);
-  $async.Future<$1.StatusResponse> approveDevice($grpc.ServiceCall call, $7.ApproveDeviceRequest request);
-  $async.Future<$13.Devices> readDevices($grpc.ServiceCall call, $7.ReadDevicesRequest request);
+  $async.Future<$12.Devices> readDevices($grpc.ServiceCall call, $7.ReadDevicesRequest request);
+  $async.Future<$7.CodeForPairingDevice> generateCodeForPairingDevice($grpc.ServiceCall call, $13.ChainIdAndboutiqueId request);
+  $async.Future<$12.Device> readOnePendingDevice($grpc.ServiceCall call, $7.ReadDeviceBtqRequest request);
+  $async.Future<$7.CreatePendingDeviceResponse> createDevice($grpc.ServiceCall call, $7.PendingDeviceRequest request);
   $async.Future<$7.Tokens> authenticateWithDevice($grpc.ServiceCall call, $7.DeviceCredentials request);
   $async.Future<$1.StatusResponse> updateDevicePassword($grpc.ServiceCall call, $7.UpdateDevicePasswordRequest request);
   $async.Future<$1.StatusResponse> deleteOneDevice($grpc.ServiceCall call, $7.DeleteDeviceRequest request);

@@ -113,6 +113,7 @@ message BoolRights {
   bool canQuickSpend = 7 [json_name = 'canQuickSpend'];
   bool canPurchase = 8 [json_name = 'canPurchase'];
   bool canImportTickets = 9 [json_name = 'canImportTickets'];
+  bool canQuickSell = 10 [json_name = 'canQuickSell'];
 }
 
 /// all users need to belong at least to a chain to see articles and contact

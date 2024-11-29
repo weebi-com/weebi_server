@@ -17,13 +17,13 @@ class ArticleKindPb extends $pb.ProtobufEnum {
   static const ArticleKindPb unknown = ArticleKindPb._(0, _omitEnumNames ? '' : 'unknown');
   static const ArticleKindPb retail = ArticleKindPb._(1, _omitEnumNames ? '' : 'retail');
   static const ArticleKindPb basket = ArticleKindPb._(2, _omitEnumNames ? '' : 'basket');
-  static const ArticleKindPb outOfCatalogue = ArticleKindPb._(3, _omitEnumNames ? '' : 'outOfCatalogue');
+  static const ArticleKindPb uncountable = ArticleKindPb._(3, _omitEnumNames ? '' : 'uncountable');
 
   static const $core.List<ArticleKindPb> values = <ArticleKindPb> [
     unknown,
     retail,
     basket,
-    outOfCatalogue,
+    uncountable,
   ];
 
   static final $core.Map<$core.int, ArticleKindPb> _byValue = $pb.ProtobufEnum.initByValue(values);

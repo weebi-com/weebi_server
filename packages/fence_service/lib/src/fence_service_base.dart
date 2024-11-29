@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:math' show Random;
 
 import 'package:collection/collection.dart';
-import 'package:fixnum/fixnum.dart';
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
 import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/encrypter.dart';
@@ -340,8 +339,12 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (userPermission.userManagementRights.rights
-        .none((e) => e == Right.read)) {
+
+    final isReadingOwnUser = userPermission.userId == request.userId;
+
+    if (isReadingOwnUser == false &&
+        userPermission.userManagementRights.rights
+            .none((e) => e == Right.read)) {
       throw GrpcError.permissionDenied(
           'user does not have right to read other users');
     }
@@ -355,6 +358,12 @@ class FenceService extends FenceServiceBase {
 
       final userFound = UserPublic.create()
         ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
+
+      if (isReadingOwnUser) {
+        return ReadOneUserResponse(
+            user: userFound,
+            statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
+      }
 
       // if requestor has limited access we check that the userFound belongs to his/her fence
       if (userPermission.fullAccess.hasFullAccess == false) {
@@ -490,6 +499,14 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+    // check that chainId exists if not found error thrown by _checkOneChainAndProtoIt
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+    // check that boutiqueid exists
+    if (chain.boutiques.none((b) => b.boutiqueId == request.boutiqueId)) {
+      throw GrpcError.notFound('unknown boutiqueId ${request.boutiqueId}');
+    }
+
     try {
       _db.isConnected ? null : await _db.open();
 
@@ -501,17 +518,13 @@ class FenceService extends FenceServiceBase {
         d = await _findCode(code);
       } while (code == d.code);
 
-      final millis = DateTime.now().millisecond;
-      final timestamp = Timestamp()
-        ..seconds = Int64(millis)
-        ..nanos = (millis % 1000) * 1000000;
       final temp = CodeForPairingDevice.create()
         ..userId = userPermission.userId
         ..firmId = userPermission.firmId
         ..chainId = request.chainId
         ..boutiqueId = request.boutiqueId
         ..code = code
-        ..timestampUTC = timestamp;
+        ..timestampUTC = DateTime.now().timestampProto;
       final result = await pairingCodesCollection
           .insertOne(temp.toProto3Json() as Map<String, dynamic>);
       if (result.hasWriteErrors) {
@@ -555,8 +568,18 @@ class FenceService extends FenceServiceBase {
   /// the device will still need to be approved by admin on the web (pending)
   /// mitigating the risk of a device added without admin consent
   @override
-  Future<CreatePendingDeviceResponse> createPendingDevice(
+  Future<CreatePendingDeviceResponse> createDevice(
       ServiceCall? call, PendingDeviceRequest request) async {
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermission;
+
+    final userMongo =
+        await userCollection.findOne(where.eq('userId', userPermission.userId));
+    if (userMongo == null) {
+      throw GrpcError.notFound('user ${userPermission.userId} not found');
+    }
+
     _db.isConnected ? null : await _db.open();
     final pairingResp = await _findCode(request.code);
     if (pairingResp.code == 0) {
@@ -566,29 +589,38 @@ class FenceService extends FenceServiceBase {
               message: 'no match',
               timestamp: DateTime.now().timestampProto));
     }
+    if (pairingResp.firmId != userPermission.firmId) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from firmId ${pairingResp.firmId}');
+    }
+
     try {
       // get chain info
       final chain = await _checkOneChainAndProtoIt(
           pairingResp.firmId, pairingResp.chainId);
 
       final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
-          btq.chainId == request.device.chainId &&
-          btq.boutiqueId == request.device.boutiqueId);
+          btq.chainId == pairingResp.chainId &&
+          btq.boutiqueId == pairingResp.boutiqueId);
 
       if (boutiqueIndex == -1) {
-        throw GrpcError.notFound('no boutique found with this device info');
+        throw GrpcError.notFound(
+            'no boutique found with this info chainId ${pairingResp.chainId} btqId ${pairingResp.boutiqueId}');
       }
       // We create the device in the boutique's chain with a true status
-      // so admin will not need to approve device 
+      // so admin will not need to approve device
       // in case code leaked admin can still disable/delete device
-      request.device.status = true;
-      request.device.password = '';
-      request.device.dateCreation = DateTime.now().timestampProto;
-      // set the boutiqueId selected by web admin
-      request.device.boutiqueId = pairingResp.boutiqueId;
-      request.device.deviceId = DateTime.now().objectIdString;
 
-      chain.boutiques[boutiqueIndex].devices.add(request.device);
+      final device = Device.create()
+        ..status = true
+        ..password = ''
+        ..timestamp = DateTime.now().timestampProto
+        ..boutiqueId = pairingResp.boutiqueId
+        ..chainId = pairingResp.chainId
+        ..deviceId = DateTime.now().objectIdString
+        ..hardwareInfo = request.hardwareInfo;
+
+      chain.boutiques[boutiqueIndex].devices.add(device);
 
       final result = await _updateOneChainDBExec(chain);
 
@@ -599,62 +631,33 @@ class FenceService extends FenceServiceBase {
       // clean codes older than 10 days
       final countCodes = await pairingCodesCollection.count();
       if (countCodes > 10000) {
-        final selector = where.lt('timestampUTC',
-            DateTime.now().subtract(Duration(days: 10)).toIso8601String());
+        final selector = where.lt(
+            'timestampUTC',
+            DateTime.now()
+                .subtract(const Duration(days: 10))
+                .toIso8601String());
         await pairingCodesCollection.deleteMany(selector);
+      }
+
+      // create the user with the same deviceId
+      final cashierCreationResponse = await _createDefaultDeviceCashier(
+          chain.firmId, device.chainId, device.boutiqueId, device.deviceId);
+
+      if (cashierCreationResponse.type != StatusResponse_Type.CREATED) {
+        // do not block user in case this fails, let them use the appp
+        print('error creating cashier $cashierCreationResponse');
       }
       return CreatePendingDeviceResponse(
           statusResponse: StatusResponse(
               type: StatusResponse_Type.CREATED, timestamp: result.timestamp),
           firmId: chain.firmId,
           chainId: chain.chainId,
-          boutiqueId: request.device.boutiqueId,
-          deviceId: request.device.deviceId);
+          boutiqueId: device.boutiqueId,
+          deviceId: device.deviceId);
     } on GrpcError catch (e) {
       print('pairOneDevice error $e');
       rethrow;
     }
-  }
-
-  // once approved a device == user with minimum rights to ease app handling
-  // see UserService.authenticateWithDevice & UserService.updateDevicePassword
-  @override
-  Future<StatusResponse> approveDevice(
-      ServiceCall? call, ApproveDeviceRequest request) async {
-    final userPermission = isMock
-        ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
-    // chain rights encompass device pairing
-    if (userPermission.chainRights.rights.any((e) => e == Right.update) ==
-        false) {
-      throw GrpcError.permissionDenied(
-          'user does not have right to pair device (missing chainRights)');
-    }
-    if (userPermission.isChainAccessible(request.device.chainId) == false) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.device.chainId}');
-    }
-    _db.isConnected ? null : await _db.open();
-    // here we do x2 things :
-    // 1. create the device in the chain's boutique
-    // 2. create the user with the same deviceId
-    final chain = await _checkOneChainAndProtoIt(
-        userPermission.firmId, request.device.chainId);
-
-    final btqIndexDeviceIndex =
-        chain.boutiqueIndexAndDeviceIndex(request.device);
-
-    chain.boutiques[btqIndexDeviceIndex.boutiqueIndex]
-        .devices[btqIndexDeviceIndex.deviceIndex].status = true;
-
-    // create user for simple auth
-    await _createDefaultDeviceCashier(
-        userPermission.firmId,
-        request.device.chainId,
-        request.device.boutiqueId,
-        request.device.deviceId);
-
-    return await _updateOneChainDBExec(chain);
   }
 
   Future<StatusResponse> _createDefaultDeviceCashier(
@@ -1000,13 +1003,14 @@ class FenceService extends FenceServiceBase {
     }
   }
 
+  /// if no match whith firmId and chainId throws GrpcError.notFound
   Future<Chain> _checkOneChainAndProtoIt(String firmId, String chainId) async {
     try {
       final chainMongo = await boutiqueCollection
           .findOne(where.eq('firmId', firmId).eq('chainId', chainId));
       if (chainMongo == null) {
         throw GrpcError.notFound(
-            'chain not found firmId: $firmId chainId:$chainId');
+            'firm/chain not found firmId: $firmId chainId:$chainId');
       }
       return Chain.create()
         ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
@@ -1606,8 +1610,8 @@ class FenceService extends FenceServiceBase {
             device = devices.first;
           } else {
             /// latest device prevails, high chance the other ones are not pending but disabled
-            devices.toList().sort((a, b) =>
-                a.dateCreation.seconds.compareTo(b.dateCreation.seconds));
+            devices.toList().sort(
+                (a, b) => a.timestamp.seconds.compareTo(b.timestamp.seconds));
             device = devices.first;
           }
         }

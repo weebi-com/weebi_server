@@ -1,0 +1,94 @@
+{
+  "userId": "{{ faker.random.uuid }}",
+  "mail": "architectures",
+  "firstname": "Dynamic Checking Account",
+  "lastname": "Baby",
+  "phone": {
+    "countryCode": 176,
+    "number": "{{ faker.random.ushort }}"
+  },
+  "lastSignIn": {
+    "seconds": "572",
+    "nanos": 193
+  },
+  "permissions": {
+    "userId": "{{ faker.random.uuid }}",
+    "firmId": "{{ faker.random.uuid }}",
+    "limitedAccess": {
+      "chainIds": {
+        "ids": [
+          "Louisiana Oklahoma Investor",
+          "database Tools, Electronics & Beauty"
+        ]
+      },
+      "boutiqueIds": {
+        "ids": [
+          "Progressive Human",
+          "violet"
+        ]
+      }
+    },
+    "ticketRights": {
+      "ticketRights": [
+        "read",
+        "read"
+      ]
+    },
+    "contactRights": {
+      "contactRights": [
+        "create",
+        "create"
+      ]
+    },
+    "articleRights": {
+      "articleRights": [
+        "update",
+        "create"
+      ]
+    },
+    "boutiqueRights": {
+      "boutiqueRights": [
+        "read",
+        "read"
+      ]
+    },
+    "chainRights": {
+      "chainRights": [
+        "create",
+        "delete"
+      ]
+    },
+    "firmRights": {
+      "firmRights": [
+        "update",
+        "create"
+      ]
+    },
+    "userManagementRights": {
+      "userManagementRights": [
+        "create",
+        "delete"
+      ]
+    },
+    "billingRights": {
+      "billingRights": [
+        "create",
+        "unknown"
+      ]
+    },
+    "boolRights": {
+      "canSeeStats": false,
+      "canExportData": false,
+      "canGiveDiscount": true,
+      "canSetPromo": false,
+      "canStockMovement": false,
+      "canStockInventory": false,
+      "canQuickSpend": false,
+      "canPurchase": false,
+      "canImportTickets": false
+    }
+  },
+  "othersAttributes": {
+    "Markets Nevada invoice": "Minnesota Licensed Granite Pizza Tasty Frozen Tuna"
+  }
+}

@@ -7,7 +7,7 @@ import 'package:protos_weebi/src/password_encrypter.dart';
 /// since the _ids logic is no longer handled by mongodb, some of below could be simplified..
 
 abstract class Dummy {
-  static const password = '1234';
+  static final password = Encrypter('1234').encrypted;
 
   static final address = Address.create()
     ..street = 'str'
@@ -16,7 +16,7 @@ abstract class Dummy {
     ..country = Country(code2Letters: 'fr');
 
   static final boutiqueNoId = Boutique(
-    address: Dummy.address,
+    addressFull: Dummy.address,
     name: 'dummy boutique',
     phone: Phone(countryCode: 33, number: '773116767'),
     devices: <Device>[Dummy.device],
@@ -31,14 +31,14 @@ abstract class Dummy {
     ..chainId = '665e12f798357783e8000001'
     ..boutiqueId = '665e12f798357783e8000002'
     ..deviceId = '665e12f798357783e8000009'
-    ..name = 'dummy device'
-    ..serialNumber = 'unique';
+    ..hardwareInfo.name = 'dummy device'
+    ..hardwareInfo.serialNumber = 'unique';
 
   static final deviceNoId = Device()
     ..chainId = chain.chainId
     ..boutiqueId = boutique.boutiqueId
-    ..name = 'dummy device'
-    ..serialNumber = 'unique';
+    ..hardwareInfo.name = 'dummy device'
+    ..hardwareInfo.serialNumber = 'unique';
 
   static final chainNoId = Chain(
     boutiques: <Boutique>[Dummy.boutiqueNoId],
@@ -65,7 +65,7 @@ abstract class Dummy {
   static final firm = firmNoId..firmId = '123456789';
 
   static final userPublic = UserPublic(
-    mail: 'dev@weebi.com',
+    mail: 'local@weebi.com',
     firstname: 'dev',
     lastname: 'tester',
     userId: '987654321',

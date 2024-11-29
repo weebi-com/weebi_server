@@ -1,0 +1,20 @@
+{
+  "id": "710d1de9-7a1d-4b45-ab5e-2295234f2789",
+  "importStreams": [
+    {
+      "id": "7c10a9ae-363a-44bb-8a69-b103703b8bf9",
+      "name": "weebi",
+      "importerName": "ProtoFile",
+      "createMissingOperations": true,
+      "options": {
+        "files": [
+          "../packages/protos/proto/fence_service.proto",
+          "../packages/protos/proto/weebi_app_service.proto"
+        ],
+        "importPaths": []
+      }
+    }
+  ],
+  "authConfigs": [],
+  "certificates": []
+}

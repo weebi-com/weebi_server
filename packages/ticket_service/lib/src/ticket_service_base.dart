@@ -1,15 +1,15 @@
-import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
-import 'package:protos_weebi/extensions.dart';
-import 'package:protos_weebi/grpc.dart';
-import 'package:protos_weebi/protos_weebi_io.dart';
+import 'package:fence_service/grpc.dart';
+import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder selectTicket(
-          String firmId, String userId, int ticketNonUniqueId) =>
+  static SelectorBuilder selectTicket(String firmId, String userId,
+          int ticketNonUniqueId, String dateCreation) =>
       where
           .eq('firmId', firmId)
           .eq('userId', userId)
+          .eq('dateCreation', dateCreation)
           .eq('ticketNonUniqueId', ticketNonUniqueId);
 }
 
@@ -47,6 +47,7 @@ class TicketService extends TicketServiceBase {
     try {
       final ticketMongo = TicketMongo.create()
         ..ticket = request.ticket
+        ..creationDate = request.ticket.date
         ..ticketNonUniqueId = request.ticket.ticketNonUniqueId
         ..boutiqueId = request.ticket.counterfoil.boutiqueId
         ..chainId = request.ticket.counterfoil.chainId
@@ -126,10 +127,7 @@ class TicketService extends TicketServiceBase {
       final tickets = <TicketPb>[];
       for (final t in list) {
         final ticketMongo = TicketMongo.create()
-          ..mergeFromProto3Json(
-            t, // no need to make oid proper, objects made in flutter app
-            ignoreUnknownFields: true,
-          );
+          ..mergeFromProto3Json(t, ignoreUnknownFields: true);
         tickets.add(ticketMongo.ticket);
       }
       final ticketsBis = TicketsResponse();
@@ -204,6 +202,7 @@ class TicketService extends TicketServiceBase {
       request.ticket.counterfoil.firmId,
       request.ticket.counterfoil.userId,
       request.ticket.ticketNonUniqueId,
+      request.ticket.date,
     );
 
     try {
@@ -260,8 +259,12 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to delete ticket');
     }
-    final selector = _Helpers.selectTicket(request.ticket.counterfoil.firmId,
-        request.ticket.counterfoil.userId, request.ticket.ticketNonUniqueId);
+    final selector = _Helpers.selectTicket(
+      request.ticket.counterfoil.firmId,
+      request.ticket.counterfoil.userId,
+      request.ticket.ticketNonUniqueId,
+      request.ticket.date,
+    );
 
     try {
       await collection.deleteOne(selector);

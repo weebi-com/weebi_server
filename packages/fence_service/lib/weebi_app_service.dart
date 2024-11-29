@@ -1,3 +1,3 @@
-library weebi_app_service;
+library;
 
 export 'src/weebi_app_service/weebi_app_service_base.dart';

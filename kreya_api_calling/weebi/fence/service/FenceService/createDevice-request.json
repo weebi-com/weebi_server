@@ -1,0 +1,9 @@
+{
+  "hardwareInfo": {
+    "name": "{{ faker.name.last_name }}",
+    "serialNumber": "{{ faker.random.ushort }}",
+    "baseOS": "Fantastic Metal",
+    "brand": "Soft Cambridgeshire"
+  },
+  "code": 870485
+}
