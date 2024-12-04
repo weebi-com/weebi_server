@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
 import 'package:fence_service/src/constants/app_environment.dart';
+import 'package:protos_weebi/encrypter.dart';
 // import 'package:protos_weebi/protos_weebi_io.dart' show UserPermissions;
 
 String _defaultJwtSecretKeyFactory() {
