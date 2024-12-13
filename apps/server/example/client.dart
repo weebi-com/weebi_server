@@ -1,11 +1,6 @@
-import 'package:protos_weebi/grpc.dart'
-    show
-        ClientInterceptor,
-        ClientChannel,
-        ChannelCredentials,
-        ChannelOptions,
-        CallOptions;
-import 'package:protos_weebi/protos_weebi_io.dart';
+import 'package:fence_service/grpc.dart';
+import 'package:fence_service/protos_weebi.dart';
+
 import 'package:server/client_interceptor_example.dart';
 
 void main(List<String> args) async {

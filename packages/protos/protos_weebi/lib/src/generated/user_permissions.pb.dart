@@ -855,10 +855,11 @@ class BoolRights extends $pb.GeneratedMessage {
     $core.bool? canSetPromo,
     $core.bool? canStockMovement,
     $core.bool? canStockInventory,
-    $core.bool? canQuickSpend,
+    $core.bool? canSpendOutOfCatalog,
     $core.bool? canPurchase,
     $core.bool? canImportTickets,
-    $core.bool? canQuickSell,
+    $core.bool? canSellOutOfCatalog,
+    $core.bool? canUpdateContactBalanceOffline,
   }) {
     final $result = create();
     if (canSeeStats != null) {
@@ -879,8 +880,8 @@ class BoolRights extends $pb.GeneratedMessage {
     if (canStockInventory != null) {
       $result.canStockInventory = canStockInventory;
     }
-    if (canQuickSpend != null) {
-      $result.canQuickSpend = canQuickSpend;
+    if (canSpendOutOfCatalog != null) {
+      $result.canSpendOutOfCatalog = canSpendOutOfCatalog;
     }
     if (canPurchase != null) {
       $result.canPurchase = canPurchase;
@@ -888,8 +889,11 @@ class BoolRights extends $pb.GeneratedMessage {
     if (canImportTickets != null) {
       $result.canImportTickets = canImportTickets;
     }
-    if (canQuickSell != null) {
-      $result.canQuickSell = canQuickSell;
+    if (canSellOutOfCatalog != null) {
+      $result.canSellOutOfCatalog = canSellOutOfCatalog;
+    }
+    if (canUpdateContactBalanceOffline != null) {
+      $result.canUpdateContactBalanceOffline = canUpdateContactBalanceOffline;
     }
     return $result;
   }
@@ -904,10 +908,11 @@ class BoolRights extends $pb.GeneratedMessage {
     ..aOB(4, _omitFieldNames ? '' : 'canSetPromo', protoName: 'canSetPromo')
     ..aOB(5, _omitFieldNames ? '' : 'canStockMovement', protoName: 'canStockMovement')
     ..aOB(6, _omitFieldNames ? '' : 'canStockInventory', protoName: 'canStockInventory')
-    ..aOB(7, _omitFieldNames ? '' : 'canQuickSpend', protoName: 'canQuickSpend')
+    ..aOB(7, _omitFieldNames ? '' : 'canSpendOutOfCatalog', protoName: 'canSpendOutOfCatalog')
     ..aOB(8, _omitFieldNames ? '' : 'canPurchase', protoName: 'canPurchase')
     ..aOB(9, _omitFieldNames ? '' : 'canImportTickets', protoName: 'canImportTickets')
-    ..aOB(10, _omitFieldNames ? '' : 'canQuickSell', protoName: 'canQuickSell')
+    ..aOB(10, _omitFieldNames ? '' : 'canSellOutOfCatalog', protoName: 'canSellOutOfCatalog')
+    ..aOB(11, _omitFieldNames ? '' : 'canUpdateContactBalanceOffline', protoName: 'canUpdateContactBalanceOffline')
     ..hasRequiredFields = false
   ;
 
@@ -987,13 +992,13 @@ class BoolRights extends $pb.GeneratedMessage {
   void clearCanStockInventory() => clearField(6);
 
   @$pb.TagNumber(7)
-  $core.bool get canQuickSpend => $_getBF(6);
+  $core.bool get canSpendOutOfCatalog => $_getBF(6);
   @$pb.TagNumber(7)
-  set canQuickSpend($core.bool v) { $_setBool(6, v); }
+  set canSpendOutOfCatalog($core.bool v) { $_setBool(6, v); }
   @$pb.TagNumber(7)
-  $core.bool hasCanQuickSpend() => $_has(6);
+  $core.bool hasCanSpendOutOfCatalog() => $_has(6);
   @$pb.TagNumber(7)
-  void clearCanQuickSpend() => clearField(7);
+  void clearCanSpendOutOfCatalog() => clearField(7);
 
   @$pb.TagNumber(8)
   $core.bool get canPurchase => $_getBF(7);
@@ -1014,13 +1019,22 @@ class BoolRights extends $pb.GeneratedMessage {
   void clearCanImportTickets() => clearField(9);
 
   @$pb.TagNumber(10)
-  $core.bool get canQuickSell => $_getBF(9);
+  $core.bool get canSellOutOfCatalog => $_getBF(9);
   @$pb.TagNumber(10)
-  set canQuickSell($core.bool v) { $_setBool(9, v); }
+  set canSellOutOfCatalog($core.bool v) { $_setBool(9, v); }
   @$pb.TagNumber(10)
-  $core.bool hasCanQuickSell() => $_has(9);
+  $core.bool hasCanSellOutOfCatalog() => $_has(9);
   @$pb.TagNumber(10)
-  void clearCanQuickSell() => clearField(10);
+  void clearCanSellOutOfCatalog() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.bool get canUpdateContactBalanceOffline => $_getBF(10);
+  @$pb.TagNumber(11)
+  set canUpdateContactBalanceOffline($core.bool v) { $_setBool(10, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasCanUpdateContactBalanceOffline() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearCanUpdateContactBalanceOffline() => clearField(11);
 }
 
 

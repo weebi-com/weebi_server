@@ -14,9 +14,9 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'common/g_common.pb.dart' as $1;
-import 'common/g_timestamp.pb.dart' as $18;
-import 'common/phone.pb.dart' as $19;
-import 'user_permissions.pb.dart' as $8;
+import 'common/g_timestamp.pb.dart' as $20;
+import 'common/phone.pb.dart' as $21;
+import 'user_permissions.pb.dart' as $10;
 
 class UserPublic extends $pb.GeneratedMessage {
   factory UserPublic({
@@ -24,9 +24,9 @@ class UserPublic extends $pb.GeneratedMessage {
     $core.String? mail,
     $core.String? firstname,
     $core.String? lastname,
-    $19.Phone? phone,
-    $18.Timestamp? lastSignIn,
-    $8.UserPermissions? permissions,
+    $21.Phone? phone,
+    $20.Timestamp? lastSignIn,
+    $10.UserPermissions? permissions,
     $core.Map<$core.String, $core.String>? othersAttributes,
   }) {
     final $result = create();
@@ -65,9 +65,9 @@ class UserPublic extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'mail')
     ..aOS(3, _omitFieldNames ? '' : 'firstname')
     ..aOS(4, _omitFieldNames ? '' : 'lastname')
-    ..aOM<$19.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
-    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $18.Timestamp.create)
-    ..aOM<$8.UserPermissions>(7, _omitFieldNames ? '' : 'permissions', subBuilder: $8.UserPermissions.create)
+    ..aOM<$21.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $21.Phone.create)
+    ..aOM<$20.Timestamp>(6, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $20.Timestamp.create)
+    ..aOM<$10.UserPermissions>(7, _omitFieldNames ? '' : 'permissions', subBuilder: $10.UserPermissions.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'UserPublic.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
@@ -130,37 +130,37 @@ class UserPublic extends $pb.GeneratedMessage {
   void clearLastname() => clearField(4);
 
   @$pb.TagNumber(5)
-  $19.Phone get phone => $_getN(4);
+  $21.Phone get phone => $_getN(4);
   @$pb.TagNumber(5)
-  set phone($19.Phone v) { setField(5, v); }
+  set phone($21.Phone v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasPhone() => $_has(4);
   @$pb.TagNumber(5)
   void clearPhone() => clearField(5);
   @$pb.TagNumber(5)
-  $19.Phone ensurePhone() => $_ensure(4);
+  $21.Phone ensurePhone() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $18.Timestamp get lastSignIn => $_getN(5);
+  $20.Timestamp get lastSignIn => $_getN(5);
   @$pb.TagNumber(6)
-  set lastSignIn($18.Timestamp v) { setField(6, v); }
+  set lastSignIn($20.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasLastSignIn() => $_has(5);
   @$pb.TagNumber(6)
   void clearLastSignIn() => clearField(6);
   @$pb.TagNumber(6)
-  $18.Timestamp ensureLastSignIn() => $_ensure(5);
+  $20.Timestamp ensureLastSignIn() => $_ensure(5);
 
   @$pb.TagNumber(7)
-  $8.UserPermissions get permissions => $_getN(6);
+  $10.UserPermissions get permissions => $_getN(6);
   @$pb.TagNumber(7)
-  set permissions($8.UserPermissions v) { setField(7, v); }
+  set permissions($10.UserPermissions v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasPermissions() => $_has(6);
   @$pb.TagNumber(7)
   void clearPermissions() => clearField(7);
   @$pb.TagNumber(7)
-  $8.UserPermissions ensurePermissions() => $_ensure(6);
+  $10.UserPermissions ensurePermissions() => $_ensure(6);
 
   @$pb.TagNumber(99)
   $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(7);
@@ -175,13 +175,13 @@ class UserPrivate extends $pb.GeneratedMessage {
     $core.String? mail,
     $core.String? firstname,
     $core.String? lastname,
-    $19.Phone? phone,
+    $21.Phone? phone,
     $core.String? passwordEncrypted,
     $core.String? firmId,
-    $8.UserPermissions? permissions,
-    $18.Timestamp? lastSignIn,
+    $10.UserPermissions? permissions,
+    $20.Timestamp? lastSignIn,
     $core.String? lastUpdatedByuserId,
-    $18.Timestamp? lastUpdateTimestampUTC,
+    $20.Timestamp? lastUpdateTimestampUTC,
     $core.Map<$core.String, $core.String>? othersAttributes,
   }) {
     final $result = create();
@@ -232,13 +232,13 @@ class UserPrivate extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'mail')
     ..aOS(3, _omitFieldNames ? '' : 'firstname')
     ..aOS(4, _omitFieldNames ? '' : 'lastname')
-    ..aOM<$19.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
+    ..aOM<$21.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $21.Phone.create)
     ..aOS(6, _omitFieldNames ? '' : 'password', protoName: 'passwordEncrypted')
     ..aOS(7, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
-    ..aOM<$8.UserPermissions>(8, _omitFieldNames ? '' : 'permissions', subBuilder: $8.UserPermissions.create)
-    ..aOM<$18.Timestamp>(9, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $18.Timestamp.create)
+    ..aOM<$10.UserPermissions>(8, _omitFieldNames ? '' : 'permissions', subBuilder: $10.UserPermissions.create)
+    ..aOM<$20.Timestamp>(9, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $20.Timestamp.create)
     ..aOS(10, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
-    ..aOM<$18.Timestamp>(11, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$20.Timestamp>(11, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $20.Timestamp.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'UserPrivate.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
@@ -302,15 +302,15 @@ class UserPrivate extends $pb.GeneratedMessage {
   void clearLastname() => clearField(4);
 
   @$pb.TagNumber(5)
-  $19.Phone get phone => $_getN(4);
+  $21.Phone get phone => $_getN(4);
   @$pb.TagNumber(5)
-  set phone($19.Phone v) { setField(5, v); }
+  set phone($21.Phone v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasPhone() => $_has(4);
   @$pb.TagNumber(5)
   void clearPhone() => clearField(5);
   @$pb.TagNumber(5)
-  $19.Phone ensurePhone() => $_ensure(4);
+  $21.Phone ensurePhone() => $_ensure(4);
 
   @$pb.TagNumber(6)
   $core.String get passwordEncrypted => $_getSZ(5);
@@ -331,26 +331,26 @@ class UserPrivate extends $pb.GeneratedMessage {
   void clearFirmId() => clearField(7);
 
   @$pb.TagNumber(8)
-  $8.UserPermissions get permissions => $_getN(7);
+  $10.UserPermissions get permissions => $_getN(7);
   @$pb.TagNumber(8)
-  set permissions($8.UserPermissions v) { setField(8, v); }
+  set permissions($10.UserPermissions v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasPermissions() => $_has(7);
   @$pb.TagNumber(8)
   void clearPermissions() => clearField(8);
   @$pb.TagNumber(8)
-  $8.UserPermissions ensurePermissions() => $_ensure(7);
+  $10.UserPermissions ensurePermissions() => $_ensure(7);
 
   @$pb.TagNumber(9)
-  $18.Timestamp get lastSignIn => $_getN(8);
+  $20.Timestamp get lastSignIn => $_getN(8);
   @$pb.TagNumber(9)
-  set lastSignIn($18.Timestamp v) { setField(9, v); }
+  set lastSignIn($20.Timestamp v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasLastSignIn() => $_has(8);
   @$pb.TagNumber(9)
   void clearLastSignIn() => clearField(9);
   @$pb.TagNumber(9)
-  $18.Timestamp ensureLastSignIn() => $_ensure(8);
+  $20.Timestamp ensureLastSignIn() => $_ensure(8);
 
   @$pb.TagNumber(10)
   $core.String get lastUpdatedByuserId => $_getSZ(9);
@@ -362,15 +362,15 @@ class UserPrivate extends $pb.GeneratedMessage {
   void clearLastUpdatedByuserId() => clearField(10);
 
   @$pb.TagNumber(11)
-  $18.Timestamp get lastUpdateTimestampUTC => $_getN(10);
+  $20.Timestamp get lastUpdateTimestampUTC => $_getN(10);
   @$pb.TagNumber(11)
-  set lastUpdateTimestampUTC($18.Timestamp v) { setField(11, v); }
+  set lastUpdateTimestampUTC($20.Timestamp v) { setField(11, v); }
   @$pb.TagNumber(11)
   $core.bool hasLastUpdateTimestampUTC() => $_has(10);
   @$pb.TagNumber(11)
   void clearLastUpdateTimestampUTC() => clearField(11);
   @$pb.TagNumber(11)
-  $18.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(10);
+  $20.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(10);
 
   @$pb.TagNumber(99)
   $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(11);
@@ -540,8 +540,8 @@ class PendingUserRequest extends $pb.GeneratedMessage {
     $core.String? mail,
     $core.String? firstname,
     $core.String? lastname,
-    $8.UserPermissions? permissions,
-    $19.Phone? phone,
+    $10.UserPermissions? permissions,
+    $21.Phone? phone,
     $core.Map<$core.String, $core.String>? othersAttributes,
   }) {
     final $result = create();
@@ -573,8 +573,8 @@ class PendingUserRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'mail')
     ..aOS(2, _omitFieldNames ? '' : 'firstname')
     ..aOS(3, _omitFieldNames ? '' : 'lastname')
-    ..aOM<$8.UserPermissions>(4, _omitFieldNames ? '' : 'permissions', subBuilder: $8.UserPermissions.create)
-    ..aOM<$19.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
+    ..aOM<$10.UserPermissions>(4, _omitFieldNames ? '' : 'permissions', subBuilder: $10.UserPermissions.create)
+    ..aOM<$21.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $21.Phone.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'PendingUserRequest.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
@@ -628,26 +628,26 @@ class PendingUserRequest extends $pb.GeneratedMessage {
   void clearLastname() => clearField(3);
 
   @$pb.TagNumber(4)
-  $8.UserPermissions get permissions => $_getN(3);
+  $10.UserPermissions get permissions => $_getN(3);
   @$pb.TagNumber(4)
-  set permissions($8.UserPermissions v) { setField(4, v); }
+  set permissions($10.UserPermissions v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasPermissions() => $_has(3);
   @$pb.TagNumber(4)
   void clearPermissions() => clearField(4);
   @$pb.TagNumber(4)
-  $8.UserPermissions ensurePermissions() => $_ensure(3);
+  $10.UserPermissions ensurePermissions() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $19.Phone get phone => $_getN(4);
+  $21.Phone get phone => $_getN(4);
   @$pb.TagNumber(5)
-  set phone($19.Phone v) { setField(5, v); }
+  set phone($21.Phone v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasPhone() => $_has(4);
   @$pb.TagNumber(5)
   void clearPhone() => clearField(5);
   @$pb.TagNumber(5)
-  $19.Phone ensurePhone() => $_ensure(4);
+  $21.Phone ensurePhone() => $_ensure(4);
 
   @$pb.TagNumber(99)
   $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(5);

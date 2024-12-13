@@ -18,7 +18,7 @@ const ContactMongo$json = {
   '1': 'ContactMongo',
   '2': [
     {'1': 'contact', '3': 1, '4': 1, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contact'},
-    {'1': 'contactNonUniqueId', '3': 2, '4': 1, '5': 5, '10': 'contactNonUniqueId'},
+    {'1': 'contactId', '3': 2, '4': 1, '5': 5, '10': 'contactId'},
     {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'firmId', '3': 4, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 5, '4': 1, '5': 9, '10': 'chainId'},
@@ -29,16 +29,15 @@ const ContactMongo$json = {
 /// Descriptor for `ContactMongo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactMongoDescriptor = $convert.base64Decode(
     'CgxDb250YWN0TW9uZ28SMgoHY29udGFjdBgBIAEoCzIYLndlZWJpLmNvbnRhY3QuQ29udGFjdF'
-    'BiUgdjb250YWN0Ei4KEmNvbnRhY3ROb25VbmlxdWVJZBgCIAEoBVISY29udGFjdE5vblVuaXF1'
-    'ZUlkEhYKBnVzZXJJZBgDIAEoCVIGdXNlcklkEhYKBmZpcm1JZBgEIAEoCVIGZmlybUlkEhgKB2'
-    'NoYWluSWQYBSABKAlSB2NoYWluSWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRh'
-    'dGU=');
+    'BiUgdjb250YWN0EhwKCWNvbnRhY3RJZBgCIAEoBVIJY29udGFjdElkEhYKBnVzZXJJZBgDIAEo'
+    'CVIGdXNlcklkEhYKBmZpcm1JZBgEIAEoCVIGZmlybUlkEhgKB2NoYWluSWQYBSABKAlSB2NoYW'
+    'luSWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRhdGU=');
 
 @$core.Deprecated('Use contactPbDescriptor instead')
 const ContactPb$json = {
   '1': 'ContactPb',
   '2': [
-    {'1': 'contactNonUniqueId', '3': 1, '4': 1, '5': 5, '10': 'id'},
+    {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
     {'1': 'creationDate', '3': 2, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'updateDate', '3': 3, '4': 1, '5': 9, '10': 'updateDate'},
     {'1': 'statusUpdateDate', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
@@ -70,15 +69,15 @@ const ContactPb_OthersAttributesEntry$json = {
 
 /// Descriptor for `ContactPb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactPbDescriptor = $convert.base64Decode(
-    'CglDb250YWN0UGISHgoSY29udGFjdE5vblVuaXF1ZUlkGAEgASgFUgJpZBIiCgxjcmVhdGlvbk'
-    'RhdGUYAiABKAlSDGNyZWF0aW9uRGF0ZRIeCgp1cGRhdGVEYXRlGAMgASgJUgp1cGRhdGVEYXRl'
-    'EioKEHN0YXR1c1VwZGF0ZURhdGUYBCABKAlSEHN0YXR1c1VwZGF0ZURhdGUSFgoGc3RhdHVzGA'
-    'UgASgIUgZzdGF0dXMSHAoJZmlyc3ROYW1lGAYgASgJUglmaXJzdE5hbWUSGgoIbGFzdE5hbWUY'
-    'ByABKAlSCGxhc3ROYW1lEhIKBG1haWwYCCABKAlSBG1haWwSLwoFcGhvbmUYCSABKAsyGS53ZW'
-    'ViaS5jb21tb24ucGhvbmUuUGhvbmVSBXBob25lEj8KC2FkZHJlc3NGdWxsGAogASgLMh0ud2Vl'
-    'YmkuY29tbW9uLmFkZHJlc3MuQWRkcmVzc1ILYWRkcmVzc0Z1bGwSHAoJb3ZlcmRyYWZ0GAsgAS'
-    'gFUglvdmVyZHJhZnQSGAoEdGFncxgMIAMoCVIKY2F0ZWdvcmllcxJaChBvdGhlcnNBdHRyaWJ1'
-    'dGVzGGMgAygLMi4ud2VlYmkuY29udGFjdC5Db250YWN0UGIuT3RoZXJzQXR0cmlidXRlc0VudH'
-    'J5UhBvdGhlcnNBdHRyaWJ1dGVzGkMKFU90aGVyc0F0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASAB'
-    'KAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBSgQIDRBj');
+    'CglDb250YWN0UGISDgoCaWQYASABKAVSAmlkEiIKDGNyZWF0aW9uRGF0ZRgCIAEoCVIMY3JlYX'
+    'Rpb25EYXRlEh4KCnVwZGF0ZURhdGUYAyABKAlSCnVwZGF0ZURhdGUSKgoQc3RhdHVzVXBkYXRl'
+    'RGF0ZRgEIAEoCVIQc3RhdHVzVXBkYXRlRGF0ZRIWCgZzdGF0dXMYBSABKAhSBnN0YXR1cxIcCg'
+    'lmaXJzdE5hbWUYBiABKAlSCWZpcnN0TmFtZRIaCghsYXN0TmFtZRgHIAEoCVIIbGFzdE5hbWUS'
+    'EgoEbWFpbBgIIAEoCVIEbWFpbBIvCgVwaG9uZRgJIAEoCzIZLndlZWJpLmNvbW1vbi5waG9uZS'
+    '5QaG9uZVIFcGhvbmUSPwoLYWRkcmVzc0Z1bGwYCiABKAsyHS53ZWViaS5jb21tb24uYWRkcmVz'
+    'cy5BZGRyZXNzUgthZGRyZXNzRnVsbBIcCglvdmVyZHJhZnQYCyABKAVSCW92ZXJkcmFmdBIYCg'
+    'R0YWdzGAwgAygJUgpjYXRlZ29yaWVzEloKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsyLi53ZWVi'
+    'aS5jb250YWN0LkNvbnRhY3RQYi5PdGhlcnNBdHRyaWJ1dGVzRW50cnlSEG90aGVyc0F0dHJpYn'
+    'V0ZXMaQwoVT3RoZXJzQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVl'
+    'GAIgASgJUgV2YWx1ZToCOAFKBAgNEGM=');
 

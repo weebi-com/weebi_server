@@ -5,7 +5,7 @@ package weebi.article;
 message CalibreMongo {
   // faster object read
   weebi.article.CalibrePb calibre = 1 [json_name = 'calibre'] ;
-  int32 calibreNonUniqueId = 2 [json_name = 'calibreNonUniqueId'];
+  int32 calibreId = 2 [json_name = 'calibreId']; // unique id
   string firmId = 3 [json_name = 'firmId'];
   string chainId = 4 [json_name = 'chainId'];
   string userId = 5 [json_name = 'userId']; 
@@ -32,10 +32,9 @@ message CalibrePb {
   string title = 6 [json_name = 'title'];
   StockUnit stockUnit = 7 [json_name = 'stockUnit'];
   ArticleKindPb kind = 8 [json_name = 'kind'];
-  repeated string categories = 9 [json_name = 'categories'];
-  repeated ArticleRetailPb articlesRetail = 10 [json_name = 'articlesRetail'];
-  repeated ArticleBasketPb articlesBasket = 11 [json_name = 'articlesBasket'];
-  repeated ArticleUncountablePb articlesUncountable = 12 [json_name = 'articlesUncountable'];
+  repeated ArticleRetailPb articlesRetail = 9 [json_name = 'articlesRetail'];
+  repeated ArticleBasketPb articlesBasket = 10 [json_name = 'articlesBasket'];
+  repeated ArticleUncountablePb articlesUncountable = 11 [json_name = 'articlesUncountable'];
   reserved 13 to 98;
   // map<string, string> additional_attributes = 99 [json_name = 'additional_attributes'];
 }

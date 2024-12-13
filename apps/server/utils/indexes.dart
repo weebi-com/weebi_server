@@ -1,7 +1,7 @@
 import 'package:article_service/article_service.dart';
 import 'package:contact_service/contact_service.dart';
+import 'package:fence_service/mongo_dart.dart';
 
-import 'package:mongo_dart/mongo_dart.dart';
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/mongo_local_testing.dart';
@@ -12,9 +12,6 @@ main() async {
   await db.open();
   final isConnected = await connection.connect();
   print(isConnected);
-
-  // TODO ? check if need to create index for _id
-  // and if better to have specific indexes
 
   // TODO check meaning of
   // unique index

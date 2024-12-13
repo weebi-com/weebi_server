@@ -56,7 +56,7 @@ void main() async {
   });
   test('create oneChain', () async {
     final chainDummy = Dummy.chain;
-    chainDummy..firmId = firmId;
+    chainDummy.firmId = firmId;
     final status = await fenceService.createOneChain(null, chainDummy);
     expect(status.type, StatusResponse_Type.CREATED);
     expect(status.id.isNotEmpty, isTrue);

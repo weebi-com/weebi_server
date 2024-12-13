@@ -4,22 +4,21 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder select(String firmId, ArticleRequest request) => where
+  static SelectorBuilder select(String firmId, CategoryRequest request) => where
       .eq('firmId', firmId)
       .eq('chainId', request.chainId)
-      .eq('calibreId', request.calibre.id)
-      .eq('creationDate', request.calibre.creationDate);
+      .eq('title', request.category.title);
 }
 
-class ArticleService extends ArticleServiceBase {
+class CategoryService extends CategoryServiceBase {
   final Db _db;
   final DbCollection collection;
   // for unit tests only
   final bool isTest;
   final UserPermissions? userPermissionIfTest;
-  static const String collectionName = 'article';
+  static const String collectionName = 'category';
 
-  ArticleService(
+  CategoryService(
     this._db, {
     this.isTest = false,
     this.userPermissionIfTest,
@@ -27,7 +26,7 @@ class ArticleService extends ArticleServiceBase {
 
   @override
   Future<StatusResponse> createOne(
-      ServiceCall? call, ArticleRequest request) async {
+      ServiceCall? call, CategoryRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -39,16 +38,15 @@ class ArticleService extends ArticleServiceBase {
     if (userPermission.articleRights.rights.any((e) => e == Right.create) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user does not have right to create article');
+          'user does not have right to create category');
     }
     try {
-      final calibreMongo = CalibreMongo.create()
-        ..calibre = request.calibre
-        ..creationDate = request.calibre.creationDate
-        ..calibreId = request.calibre.id
+      final calibreMongo = CategoryMongo.create()
+        ..title = request.category.title
+        ..category = request.category
+        ..userId = userPermission.userId
         ..chainId = request.chainId
-        ..firmId = userPermission.firmId
-        ..userId = userPermission.userId;
+        ..firmId = userPermission.firmId;
 
       final result = await collection
           .insertOne(calibreMongo.toProto3Json() as Map<String, dynamic>);
@@ -56,10 +54,10 @@ class ArticleService extends ArticleServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final calibreId = result.document!['calibreId'] as int;
+        final title = result.document!['title'] as String;
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..id = calibreId.toString()
+          ..id = title
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -79,7 +77,7 @@ class ArticleService extends ArticleServiceBase {
 
   @override
   Future<StatusResponse> replaceOne(
-      ServiceCall? call, ArticleRequest request) async {
+      ServiceCall? call, CategoryRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -87,17 +85,16 @@ class ArticleService extends ArticleServiceBase {
     if (userPermission.articleRights.rights.any((e) => e == Right.update) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user does not have right to update articles');
+          'user does not have right to update categories');
     }
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
     try {
-      final calibreMongo = CalibreMongo.create()
-        ..calibre = request.calibre
-        ..creationDate = request.calibre.creationDate
-        ..calibreId = request.calibre.id
+      final calibreMongo = CategoryMongo.create()
+        ..category = request.category
+        ..title = request.category.title
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
         ..userId = userPermission.userId;
@@ -128,7 +125,7 @@ class ArticleService extends ArticleServiceBase {
 
   @override
   Future<StatusResponse> deleteOne(
-      ServiceCall? call, ArticleRequest request) async {
+      ServiceCall? call, CategoryRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -136,7 +133,7 @@ class ArticleService extends ArticleServiceBase {
     if (userPermission.articleRights.rights.any((e) => e == Right.delete) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user does not have right to delete article');
+          'user does not have right to delete categories');
     }
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
@@ -155,8 +152,8 @@ class ArticleService extends ArticleServiceBase {
   }
 
   @override
-  Future<ArticlesResponse> readAll(
-      ServiceCall? call, ReadAllRequest request) async {
+  Future<CategoriesResponse> readAll(
+      ServiceCall? call, ReadCategoriesRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -164,7 +161,7 @@ class ArticleService extends ArticleServiceBase {
     if (userPermission.articleRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user does not have right to read articles');
+          'user does not have right to read categories');
     }
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
@@ -173,17 +170,18 @@ class ArticleService extends ArticleServiceBase {
     //
     try {
       final list = await collection.find().toList();
-      final calibres = <CalibrePb>[];
+      final categories = <CategoryPb>[];
       for (final e in list) {
-        final calibreMongo = CalibreMongo.create()
+        final categoryMongo = CategoryMongo.create()
           ..mergeFromProto3Json(e, ignoreUnknownFields: true);
-        calibres.add(calibreMongo.calibre);
+        categories.add(categoryMongo.category);
       }
-      final calibresBis = ArticlesResponse();
-      calibresBis.calibres
+
+      final categoriesBis = CategoriesResponse();
+      categoriesBis.categories
         ..clear()
-        ..addAll(calibres);
-      return calibresBis;
+        ..addAll(categories);
+      return categoriesBis;
     } on GrpcError catch (e) {
       print('readAll article error $e');
       rethrow;
@@ -191,8 +189,8 @@ class ArticleService extends ArticleServiceBase {
   }
 
   @override
-  Future<CalibrePb> readOne(
-      ServiceCall call, FindArticleRequest request) async {
+  Future<CategoryPb> readOne(
+      ServiceCall call, FindCategoryRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -200,7 +198,7 @@ class ArticleService extends ArticleServiceBase {
     if (userPermission.articleRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user does not have right to read article');
+          'user does not have right to read category');
     }
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
@@ -209,13 +207,13 @@ class ArticleService extends ArticleServiceBase {
     try {
       final selector =
           where.eq('chainId', request.chainId).eq('title', request.title);
-      final calibre = await collection.findOne(selector);
-      if (calibre != null) {
-        final calibreMongo = CalibreMongo.create()
-          ..mergeFromProto3Json(calibre, ignoreUnknownFields: true);
-        return calibreMongo.calibre;
+      final category = await collection.findOne(selector);
+      if (category != null) {
+        final categoryMongo = CategoryMongo.create()
+          ..mergeFromProto3Json(category, ignoreUnknownFields: true);
+        return categoryMongo.category;
       } else {
-        return CalibrePb.getDefault();
+        return CategoryPb.getDefault();
       }
     } on GrpcError catch (e) {
       print(e);

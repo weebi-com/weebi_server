@@ -1,6 +1,6 @@
 // import 'dart:io';
+import 'package:fence_service/mongo_dart.dart';
 import 'package:test/test.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/models_weebi.dart';
@@ -38,9 +38,9 @@ void main() async {
 
   test('test insertOne', () async {
     final contactRequest = ContactRequest(
-        contact: contactDummy,
-        chainId: chainId,
-        contactUserId: Dummy.userPublic.permissions.userId);
+      contact: contactDummy,
+      chainId: chainId,
+    );
     final response = await contactService.createOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.CREATED);
   });
@@ -55,8 +55,7 @@ void main() async {
       null,
       FindContactRequest(
         contactChainId: chainId,
-        contactUserId: Dummy.userPublic.permissions.userId,
-        contactNonUniqueId: 1,
+        contactId: 1,
       ),
     );
     expect(response.firstName, 'John');
@@ -75,7 +74,6 @@ void main() async {
     final contactRequest = ContactRequest(
       chainId: chainId,
       contact: contactLili,
-      contactUserId: Dummy.userPublic.userId,
     );
     // ignore: unused_local_variable
     final response = await contactService.replaceOne(null, contactRequest);
@@ -91,7 +89,6 @@ void main() async {
     final contactRequest = ContactRequest(
       chainId: chainId,
       contact: contactDummy,
-      contactUserId: Dummy.userPublic.userId,
     );
     // ignore: unused_local_variable
     final response = await contactService.deleteOne(null, contactRequest);

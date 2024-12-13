@@ -4,14 +4,13 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder selectContact(String firmId, String chainId,
-          String contactuserId, int contactNonUniqueId, String dateCreation) =>
+  static SelectorBuilder selectContact(
+          String firmId, String chainId, int contactId, String dateCreation) =>
       where
           .eq('firmId', firmId)
           .eq('chainId', chainId)
-          .eq('userId', contactuserId)
-          .eq('dateCreation', dateCreation)
-          .eq('contactNonUniqueId', contactNonUniqueId);
+          .eq('contactId', contactId)
+          .eq('dateCreation', dateCreation);
 }
 
 class ContactService extends ContactServiceBase {
@@ -48,7 +47,7 @@ class ContactService extends ContactServiceBase {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
         ..creationDate = request.contact.creationDate
-        ..contactNonUniqueId = request.contact.contactNonUniqueId
+        ..contactId = request.contact.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
         ..userId = userPermission.userId;
@@ -59,12 +58,11 @@ class ContactService extends ContactServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       if (result.ok == 1 && result.document != null) {
-        final contactNonUniqueId =
-            result.document!['contactNonUniqueId'] as int;
+        final contactId = result.document!['contactId'] as int;
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..id = contactNonUniqueId.toString()
+          ..id = contactId.toString()
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -102,7 +100,7 @@ class ContactService extends ContactServiceBase {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
         ..creationDate = request.contact.creationDate
-        ..contactNonUniqueId = request.contact.contactNonUniqueId
+        ..contactId = request.contact.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
         ..userId = userPermission.userId;
@@ -111,8 +109,7 @@ class ContactService extends ContactServiceBase {
           _Helpers.selectContact(
             userPermission.firmId,
             request.chainId,
-            request.contactUserId,
-            request.contact.contactNonUniqueId,
+            request.contact.id,
             request.contact.creationDate,
           ),
           contactMongo.toProto3Json() as Map<String, dynamic>,
@@ -158,8 +155,7 @@ class ContactService extends ContactServiceBase {
         _Helpers.selectContact(
           userPermission.firmId,
           request.chainId,
-          request.contactUserId,
-          request.contact.contactNonUniqueId,
+          request.contact.id,
           request.contact.creationDate,
         ),
       );
@@ -227,8 +223,7 @@ class ContactService extends ContactServiceBase {
     try {
       final selector = where
           .eq('chainId', request.contactChainId)
-          .eq('userId', request.contactUserId)
-          .eq('contactNonUniqueId', request.contactNonUniqueId);
+          .eq('contactId', request.contactId);
       // TOBE completed with firstname, lastname and all that jazz
       final contact = await collection.findOne(selector);
       if (contact != null) {

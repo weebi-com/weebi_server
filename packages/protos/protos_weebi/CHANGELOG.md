@@ -1,3 +1,11 @@
+## 1.0.6+1
+
+- new offline permission: canUpdateContactBalanceOffline
+- new object for article : categories
+
+breaking change : 
+- canSpendOutOfCatalog & canSelldOutOfCatalog
+
 ## 1.0.5
 
 - createDevice

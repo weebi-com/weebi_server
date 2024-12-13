@@ -20,7 +20,7 @@ export 'article.pbenum.dart';
 class CalibreMongo extends $pb.GeneratedMessage {
   factory CalibreMongo({
     CalibrePb? calibre,
-    $core.int? calibreNonUniqueId,
+    $core.int? calibreId,
     $core.String? firmId,
     $core.String? chainId,
     $core.String? userId,
@@ -30,8 +30,8 @@ class CalibreMongo extends $pb.GeneratedMessage {
     if (calibre != null) {
       $result.calibre = calibre;
     }
-    if (calibreNonUniqueId != null) {
-      $result.calibreNonUniqueId = calibreNonUniqueId;
+    if (calibreId != null) {
+      $result.calibreId = calibreId;
     }
     if (firmId != null) {
       $result.firmId = firmId;
@@ -53,7 +53,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibreMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article'), createEmptyInstance: create)
     ..aOM<CalibrePb>(1, _omitFieldNames ? '' : 'calibre', subBuilder: CalibrePb.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'calibreNonUniqueId', $pb.PbFieldType.O3, protoName: 'calibreNonUniqueId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
     ..aOS(3, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(4, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(5, _omitFieldNames ? '' : 'userId', protoName: 'userId')
@@ -95,13 +95,13 @@ class CalibreMongo extends $pb.GeneratedMessage {
   CalibrePb ensureCalibre() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get calibreNonUniqueId => $_getIZ(1);
+  $core.int get calibreId => $_getIZ(1);
   @$pb.TagNumber(2)
-  set calibreNonUniqueId($core.int v) { $_setSignedInt32(1, v); }
+  set calibreId($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasCalibreNonUniqueId() => $_has(1);
+  $core.bool hasCalibreId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCalibreNonUniqueId() => clearField(2);
+  void clearCalibreId() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get firmId => $_getSZ(2);
@@ -151,7 +151,6 @@ class CalibrePb extends $pb.GeneratedMessage {
     $core.String? title,
     CalibrePb_StockUnit? stockUnit,
     ArticleKindPb? kind,
-    $core.Iterable<$core.String>? categories,
     $core.Iterable<ArticleRetailPb>? articlesRetail,
     $core.Iterable<ArticleBasketPb>? articlesBasket,
     $core.Iterable<ArticleUncountablePb>? articlesUncountable,
@@ -181,9 +180,6 @@ class CalibrePb extends $pb.GeneratedMessage {
     if (kind != null) {
       $result.kind = kind;
     }
-    if (categories != null) {
-      $result.categories.addAll(categories);
-    }
     if (articlesRetail != null) {
       $result.articlesRetail.addAll(articlesRetail);
     }
@@ -208,10 +204,9 @@ class CalibrePb extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'title')
     ..e<CalibrePb_StockUnit>(7, _omitFieldNames ? '' : 'stockUnit', $pb.PbFieldType.OE, protoName: 'stockUnit', defaultOrMaker: CalibrePb_StockUnit.unknown, valueOf: CalibrePb_StockUnit.valueOf, enumValues: CalibrePb_StockUnit.values)
     ..e<ArticleKindPb>(8, _omitFieldNames ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: ArticleKindPb.unknown, valueOf: ArticleKindPb.valueOf, enumValues: ArticleKindPb.values)
-    ..pPS(9, _omitFieldNames ? '' : 'categories')
-    ..pc<ArticleRetailPb>(10, _omitFieldNames ? '' : 'articlesRetail', $pb.PbFieldType.PM, protoName: 'articlesRetail', subBuilder: ArticleRetailPb.create)
-    ..pc<ArticleBasketPb>(11, _omitFieldNames ? '' : 'articlesBasket', $pb.PbFieldType.PM, protoName: 'articlesBasket', subBuilder: ArticleBasketPb.create)
-    ..pc<ArticleUncountablePb>(12, _omitFieldNames ? '' : 'articlesUncountable', $pb.PbFieldType.PM, protoName: 'articlesUncountable', subBuilder: ArticleUncountablePb.create)
+    ..pc<ArticleRetailPb>(9, _omitFieldNames ? '' : 'articlesRetail', $pb.PbFieldType.PM, protoName: 'articlesRetail', subBuilder: ArticleRetailPb.create)
+    ..pc<ArticleBasketPb>(10, _omitFieldNames ? '' : 'articlesBasket', $pb.PbFieldType.PM, protoName: 'articlesBasket', subBuilder: ArticleBasketPb.create)
+    ..pc<ArticleUncountablePb>(11, _omitFieldNames ? '' : 'articlesUncountable', $pb.PbFieldType.PM, protoName: 'articlesUncountable', subBuilder: ArticleUncountablePb.create)
     ..hasRequiredFields = false
   ;
 
@@ -309,16 +304,13 @@ class CalibrePb extends $pb.GeneratedMessage {
   void clearKind() => clearField(8);
 
   @$pb.TagNumber(9)
-  $core.List<$core.String> get categories => $_getList(8);
+  $core.List<ArticleRetailPb> get articlesRetail => $_getList(8);
 
   @$pb.TagNumber(10)
-  $core.List<ArticleRetailPb> get articlesRetail => $_getList(9);
+  $core.List<ArticleBasketPb> get articlesBasket => $_getList(9);
 
   @$pb.TagNumber(11)
-  $core.List<ArticleBasketPb> get articlesBasket => $_getList(10);
-
-  @$pb.TagNumber(12)
-  $core.List<ArticleUncountablePb> get articlesUncountable => $_getList(11);
+  $core.List<ArticleUncountablePb> get articlesUncountable => $_getList(10);
 }
 
 class ArticleId extends $pb.GeneratedMessage {
