@@ -9,6 +9,15 @@ export 'package:protos_weebi/src/generated/article/article_service.pbenum.dart';
 export 'package:protos_weebi/src/generated/article/article_service.pbgrpc.dart';
 export 'package:protos_weebi/src/generated/article/article_service.pbjson.dart';
 
+export 'package:protos_weebi/src/generated/article/category.pb.dart';
+export 'package:protos_weebi/src/generated/article/category.pbenum.dart';
+export 'package:protos_weebi/src/generated/article/category.pbjson.dart';
+
+export 'package:protos_weebi/src/generated/article/category_service.pb.dart';
+export 'package:protos_weebi/src/generated/article/category_service.pbenum.dart';
+export 'package:protos_weebi/src/generated/article/category_service.pbgrpc.dart';
+export 'package:protos_weebi/src/generated/article/category_service.pbjson.dart';
+
 export 'package:protos_weebi/src/generated/boutique.pb.dart';
 export 'package:protos_weebi/src/generated/boutique.pbenum.dart';
 export 'package:protos_weebi/src/generated/boutique.pbjson.dart';

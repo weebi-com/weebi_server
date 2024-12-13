@@ -1,8 +1,9 @@
 import 'dart:developer';
 
+import 'package:fence_service/grpc.dart';
+import 'package:fence_service/mongo_dart.dart';
 import 'package:logging/logging.dart';
-import 'package:mongo_dart/mongo_dart.dart';
-import 'package:protos_weebi/grpc.dart';
+
 import 'package:fence_service/src/fence_service_base.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:server/server_interceptors.dart';

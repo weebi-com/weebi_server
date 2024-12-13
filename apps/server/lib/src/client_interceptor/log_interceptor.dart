@@ -1,7 +1,8 @@
 // import 'package:logging/logging.dart';
-import 'package:protos_weebi/grpc.dart';
 
 // below is just for example, re-implement on your own client
+
+import 'package:fence_service/grpc.dart';
 
 class RequestLogInterceptor extends ClientInterceptor {
   //late Logger logger;

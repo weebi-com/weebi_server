@@ -1,6 +1,6 @@
 // import 'dart:io';
+import 'package:fence_service/mongo_dart.dart';
 import 'package:test/test.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/protos_weebi.dart';
@@ -31,7 +31,7 @@ void main() async {
     await db.createCollection(fenceService.userCollection.collectionName);
     await db.createCollection(fenceService.boutiqueCollection.collectionName);
 
-    fenceService..userPermissionIfTest = Dummy.adminPermission;
+    fenceService.userPermissionIfTest = Dummy.adminPermission;
     final counterfoil = Counterfoil.create()
       ..firmId = Dummy.firm.firmId
       ..chainId = Dummy.chain.chainId

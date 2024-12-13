@@ -859,6 +859,7 @@ class BoolRights extends $pb.GeneratedMessage {
     $core.bool? canPurchase,
     $core.bool? canImportTickets,
     $core.bool? canQuickSell,
+    $core.bool? canUpdateContactBalanceOffline,
   }) {
     final $result = create();
     if (canSeeStats != null) {
@@ -891,6 +892,9 @@ class BoolRights extends $pb.GeneratedMessage {
     if (canQuickSell != null) {
       $result.canQuickSell = canQuickSell;
     }
+    if (canUpdateContactBalanceOffline != null) {
+      $result.canUpdateContactBalanceOffline = canUpdateContactBalanceOffline;
+    }
     return $result;
   }
   BoolRights._() : super();
@@ -908,6 +912,7 @@ class BoolRights extends $pb.GeneratedMessage {
     ..aOB(8, _omitFieldNames ? '' : 'canPurchase', protoName: 'canPurchase')
     ..aOB(9, _omitFieldNames ? '' : 'canImportTickets', protoName: 'canImportTickets')
     ..aOB(10, _omitFieldNames ? '' : 'canQuickSell', protoName: 'canQuickSell')
+    ..aOB(11, _omitFieldNames ? '' : 'canUpdateContactBalanceOffline', protoName: 'canUpdateContactBalanceOffline')
     ..hasRequiredFields = false
   ;
 
@@ -1021,6 +1026,15 @@ class BoolRights extends $pb.GeneratedMessage {
   $core.bool hasCanQuickSell() => $_has(9);
   @$pb.TagNumber(10)
   void clearCanQuickSell() => clearField(10);
+
+  @$pb.TagNumber(11)
+  $core.bool get canUpdateContactBalanceOffline => $_getBF(10);
+  @$pb.TagNumber(11)
+  set canUpdateContactBalanceOffline($core.bool v) { $_setBool(10, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasCanUpdateContactBalanceOffline() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearCanUpdateContactBalanceOffline() => clearField(11);
 }
 
 

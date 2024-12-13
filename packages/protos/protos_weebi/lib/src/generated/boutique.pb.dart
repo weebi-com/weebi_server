@@ -13,9 +13,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'common/address.pb.dart' as $20;
-import 'common/phone.pb.dart' as $19;
-import 'device.pb.dart' as $12;
+import 'common/address.pb.dart' as $22;
+import 'common/phone.pb.dart' as $21;
+import 'device.pb.dart' as $14;
 
 class Boutique extends $pb.GeneratedMessage {
   factory Boutique({
@@ -27,12 +27,12 @@ class Boutique extends $pb.GeneratedMessage {
     $core.String? statusUpdateDate,
     $core.bool? status,
     $core.String? name,
-    $19.Phone? phone,
-    $20.Address? addressFull,
+    $21.Phone? phone,
+    $22.Address? addressFull,
     $core.double? promo,
     $core.String? promoStart,
     $core.String? promoEnd,
-    $core.Iterable<$12.Device>? devices,
+    $core.Iterable<$14.Device>? devices,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
@@ -96,12 +96,12 @@ class Boutique extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..aOB(7, _omitFieldNames ? '' : 'status')
     ..aOS(8, _omitFieldNames ? '' : 'name')
-    ..aOM<$19.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
-    ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $20.Address.create)
+    ..aOM<$21.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $21.Phone.create)
+    ..aOM<$22.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $22.Address.create)
     ..a<$core.double>(11, _omitFieldNames ? '' : 'promo', $pb.PbFieldType.OD)
     ..aOS(12, _omitFieldNames ? '' : 'promoStart', protoName: 'promoStart')
     ..aOS(13, _omitFieldNames ? '' : 'promoEnd', protoName: 'promoEnd')
-    ..pc<$12.Device>(14, _omitFieldNames ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: $12.Device.create)
+    ..pc<$14.Device>(14, _omitFieldNames ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: $14.Device.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'Boutique.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -200,26 +200,26 @@ class Boutique extends $pb.GeneratedMessage {
   void clearName() => clearField(8);
 
   @$pb.TagNumber(9)
-  $19.Phone get phone => $_getN(8);
+  $21.Phone get phone => $_getN(8);
   @$pb.TagNumber(9)
-  set phone($19.Phone v) { setField(9, v); }
+  set phone($21.Phone v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasPhone() => $_has(8);
   @$pb.TagNumber(9)
   void clearPhone() => clearField(9);
   @$pb.TagNumber(9)
-  $19.Phone ensurePhone() => $_ensure(8);
+  $21.Phone ensurePhone() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $20.Address get addressFull => $_getN(9);
+  $22.Address get addressFull => $_getN(9);
   @$pb.TagNumber(10)
-  set addressFull($20.Address v) { setField(10, v); }
+  set addressFull($22.Address v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasAddressFull() => $_has(9);
   @$pb.TagNumber(10)
   void clearAddressFull() => clearField(10);
   @$pb.TagNumber(10)
-  $20.Address ensureAddressFull() => $_ensure(9);
+  $22.Address ensureAddressFull() => $_ensure(9);
 
   @$pb.TagNumber(11)
   $core.double get promo => $_getN(10);
@@ -249,7 +249,7 @@ class Boutique extends $pb.GeneratedMessage {
   void clearPromoEnd() => clearField(13);
 
   @$pb.TagNumber(14)
-  $core.List<$12.Device> get devices => $_getList(13);
+  $core.List<$14.Device> get devices => $_getList(13);
 
   @$pb.TagNumber(99)
   $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(14);

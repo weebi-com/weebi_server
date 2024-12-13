@@ -6,11 +6,10 @@ import "common/address.proto";
 import "common/phone.proto";
 
 
-/// contactNonUniqueId is to be combined with userId
-/// local ids can lead to duplicates as each sellers from its own device can create contact 
+/// contactId is unique
 message ContactMongo {
   ContactPb contact = 1 [json_name = 'contact'] ;
-  int32 contactNonUniqueId = 2 [json_name = 'contactNonUniqueId']; 
+  int32 contactId = 2 [json_name = 'contactId']; // unique id 
   string userId = 3 [json_name = 'userId'];
   string firmId = 4 [json_name = 'firmId'];
   string chainId = 5 [json_name = 'chainId'];
@@ -18,7 +17,7 @@ message ContactMongo {
 }
 
 message ContactPb {
-    int32 contactNonUniqueId = 1 [json_name = 'id'];
+    int32 id = 1 [json_name = 'id'];
     string creationDate =  2 [json_name = 'creationDate'];
     string updateDate =  3 [json_name = 'updateDate'];
     string statusUpdateDate =  4 [json_name = 'statusUpdateDate'];

@@ -1,5 +1,4 @@
-import 'package:fixnum/fixnum.dart';
-import 'package:protos_weebi/extensions.dart';
+import 'package:fence_service/protos_weebi.dart';
 import 'package:test/test.dart';
 
 void main() {

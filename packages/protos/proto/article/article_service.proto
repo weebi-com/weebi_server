@@ -26,8 +26,7 @@ message ReadAllRequest {
 message ArticleRequest {
   // below in case mutiple chains, permission check will still be applied to verify 
   string chainId = 1; 
-  string articleUserId = 2;
-  weebi.article.CalibrePb calibre = 3;
+  weebi.article.CalibrePb calibre = 2;
 }
 
 message ArticlesResponse {

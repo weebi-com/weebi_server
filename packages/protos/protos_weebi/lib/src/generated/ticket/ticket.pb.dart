@@ -13,9 +13,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../article/article.pb.dart' as $3;
+import '../article/article.pb.dart' as $5;
 import 'ticket.pbenum.dart';
-import 'ticket_type.pbenum.dart' as $21;
+import 'ticket_type.pbenum.dart' as $23;
 
 export 'ticket.pbenum.dart';
 
@@ -165,7 +165,7 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? statusUpdateDate,
     $core.bool? status,
     $core.Iterable<ItemCartPb>? items,
-    $21.TicketTypePb? ticketType,
+    $23.TicketTypePb? ticketType,
     TicketPb_PaymentTypePb? paymentType,
     $core.int? contactId,
     TaxPb? taxe,
@@ -230,7 +230,7 @@ class TicketPb extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..aOB(5, _omitFieldNames ? '' : 'status')
     ..pc<ItemCartPb>(6, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM, subBuilder: ItemCartPb.create)
-    ..e<$21.TicketTypePb>(7, _omitFieldNames ? '' : 'ticketType', $pb.PbFieldType.OE, protoName: 'ticketType', defaultOrMaker: $21.TicketTypePb.unknown, valueOf: $21.TicketTypePb.valueOf, enumValues: $21.TicketTypePb.values)
+    ..e<$23.TicketTypePb>(7, _omitFieldNames ? '' : 'ticketType', $pb.PbFieldType.OE, protoName: 'ticketType', defaultOrMaker: $23.TicketTypePb.unknown, valueOf: $23.TicketTypePb.valueOf, enumValues: $23.TicketTypePb.values)
     ..e<TicketPb_PaymentTypePb>(8, _omitFieldNames ? '' : 'paymentType', $pb.PbFieldType.OE, protoName: 'paymentType', defaultOrMaker: TicketPb_PaymentTypePb.unknown, valueOf: TicketPb_PaymentTypePb.valueOf, enumValues: TicketPb_PaymentTypePb.values)
     ..a<$core.int>(9, _omitFieldNames ? '' : 'contactId', $pb.PbFieldType.O3, protoName: 'contactId')
     ..aOM<TaxPb>(10, _omitFieldNames ? '' : 'taxe', subBuilder: TaxPb.create)
@@ -313,9 +313,9 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.List<ItemCartPb> get items => $_getList(5);
 
   @$pb.TagNumber(7)
-  $21.TicketTypePb get ticketType => $_getN(6);
+  $23.TicketTypePb get ticketType => $_getN(6);
   @$pb.TagNumber(7)
-  set ticketType($21.TicketTypePb v) { setField(7, v); }
+  set ticketType($23.TicketTypePb v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasTicketType() => $_has(6);
   @$pb.TagNumber(7)
@@ -819,9 +819,9 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
 
 class ItemCartPb extends $pb.GeneratedMessage {
   factory ItemCartPb({
-    $3.ArticleRetailOnTicketPb? articleRetail,
-    $3.ArticleBasketOnTicketPb? articleBasket,
-    $3.ArticleUncountableOnTicketPb? articleUncountable,
+    $5.ArticleRetailOnTicketPb? articleRetail,
+    $5.ArticleBasketOnTicketPb? articleBasket,
+    $5.ArticleUncountableOnTicketPb? articleUncountable,
     $core.double? quantity,
     $core.Iterable<ProxyArticleWorthPb>? proxiesWorth,
     $core.double? inventoryAbsoluteQt,
@@ -852,9 +852,9 @@ class ItemCartPb extends $pb.GeneratedMessage {
   factory ItemCartPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ItemCartPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
-    ..aOM<$3.ArticleRetailOnTicketPb>(1, _omitFieldNames ? '' : 'articleRetail', protoName: 'articleRetail', subBuilder: $3.ArticleRetailOnTicketPb.create)
-    ..aOM<$3.ArticleBasketOnTicketPb>(2, _omitFieldNames ? '' : 'articleBasket', protoName: 'articleBasket', subBuilder: $3.ArticleBasketOnTicketPb.create)
-    ..aOM<$3.ArticleUncountableOnTicketPb>(3, _omitFieldNames ? '' : 'articleUncountable', protoName: 'articleUncountable', subBuilder: $3.ArticleUncountableOnTicketPb.create)
+    ..aOM<$5.ArticleRetailOnTicketPb>(1, _omitFieldNames ? '' : 'articleRetail', protoName: 'articleRetail', subBuilder: $5.ArticleRetailOnTicketPb.create)
+    ..aOM<$5.ArticleBasketOnTicketPb>(2, _omitFieldNames ? '' : 'articleBasket', protoName: 'articleBasket', subBuilder: $5.ArticleBasketOnTicketPb.create)
+    ..aOM<$5.ArticleUncountableOnTicketPb>(3, _omitFieldNames ? '' : 'articleUncountable', protoName: 'articleUncountable', subBuilder: $5.ArticleUncountableOnTicketPb.create)
     ..a<$core.double>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..pc<ProxyArticleWorthPb>(5, _omitFieldNames ? '' : 'proxiesWorth', $pb.PbFieldType.PM, subBuilder: ProxyArticleWorthPb.create)
     ..a<$core.double>(6, _omitFieldNames ? '' : 'inventoryAbsoluteQt', $pb.PbFieldType.OD, protoName: 'inventoryAbsoluteQt')
@@ -883,37 +883,37 @@ class ItemCartPb extends $pb.GeneratedMessage {
   static ItemCartPb? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $3.ArticleRetailOnTicketPb get articleRetail => $_getN(0);
+  $5.ArticleRetailOnTicketPb get articleRetail => $_getN(0);
   @$pb.TagNumber(1)
-  set articleRetail($3.ArticleRetailOnTicketPb v) { setField(1, v); }
+  set articleRetail($5.ArticleRetailOnTicketPb v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasArticleRetail() => $_has(0);
   @$pb.TagNumber(1)
   void clearArticleRetail() => clearField(1);
   @$pb.TagNumber(1)
-  $3.ArticleRetailOnTicketPb ensureArticleRetail() => $_ensure(0);
+  $5.ArticleRetailOnTicketPb ensureArticleRetail() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $3.ArticleBasketOnTicketPb get articleBasket => $_getN(1);
+  $5.ArticleBasketOnTicketPb get articleBasket => $_getN(1);
   @$pb.TagNumber(2)
-  set articleBasket($3.ArticleBasketOnTicketPb v) { setField(2, v); }
+  set articleBasket($5.ArticleBasketOnTicketPb v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasArticleBasket() => $_has(1);
   @$pb.TagNumber(2)
   void clearArticleBasket() => clearField(2);
   @$pb.TagNumber(2)
-  $3.ArticleBasketOnTicketPb ensureArticleBasket() => $_ensure(1);
+  $5.ArticleBasketOnTicketPb ensureArticleBasket() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $3.ArticleUncountableOnTicketPb get articleUncountable => $_getN(2);
+  $5.ArticleUncountableOnTicketPb get articleUncountable => $_getN(2);
   @$pb.TagNumber(3)
-  set articleUncountable($3.ArticleUncountableOnTicketPb v) { setField(3, v); }
+  set articleUncountable($5.ArticleUncountableOnTicketPb v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasArticleUncountable() => $_has(2);
   @$pb.TagNumber(3)
   void clearArticleUncountable() => clearField(3);
   @$pb.TagNumber(3)
-  $3.ArticleUncountableOnTicketPb ensureArticleUncountable() => $_ensure(2);
+  $5.ArticleUncountableOnTicketPb ensureArticleUncountable() => $_ensure(2);
 
   @$pb.TagNumber(4)
   $core.double get quantity => $_getN(3);

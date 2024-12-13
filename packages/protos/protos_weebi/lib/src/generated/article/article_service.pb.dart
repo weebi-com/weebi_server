@@ -13,7 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'article.pb.dart' as $3;
+import 'article.pb.dart' as $5;
 
 class FindArticleRequest extends $pb.GeneratedMessage {
   factory FindArticleRequest({
@@ -132,15 +132,11 @@ class ReadAllRequest extends $pb.GeneratedMessage {
 class ArticleRequest extends $pb.GeneratedMessage {
   factory ArticleRequest({
     $core.String? chainId,
-    $core.String? articleUserId,
-    $3.CalibrePb? calibre,
+    $5.CalibrePb? calibre,
   }) {
     final $result = create();
     if (chainId != null) {
       $result.chainId = chainId;
-    }
-    if (articleUserId != null) {
-      $result.articleUserId = articleUserId;
     }
     if (calibre != null) {
       $result.calibre = calibre;
@@ -153,8 +149,7 @@ class ArticleRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticleRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOS(2, _omitFieldNames ? '' : 'articleUserId', protoName: 'articleUserId')
-    ..aOM<$3.CalibrePb>(3, _omitFieldNames ? '' : 'calibre', subBuilder: $3.CalibrePb.create)
+    ..aOM<$5.CalibrePb>(2, _omitFieldNames ? '' : 'calibre', subBuilder: $5.CalibrePb.create)
     ..hasRequiredFields = false
   ;
 
@@ -190,29 +185,20 @@ class ArticleRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get articleUserId => $_getSZ(1);
+  $5.CalibrePb get calibre => $_getN(1);
   @$pb.TagNumber(2)
-  set articleUserId($core.String v) { $_setString(1, v); }
+  set calibre($5.CalibrePb v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasArticleUserId() => $_has(1);
+  $core.bool hasCalibre() => $_has(1);
   @$pb.TagNumber(2)
-  void clearArticleUserId() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $3.CalibrePb get calibre => $_getN(2);
-  @$pb.TagNumber(3)
-  set calibre($3.CalibrePb v) { setField(3, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasCalibre() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearCalibre() => clearField(3);
-  @$pb.TagNumber(3)
-  $3.CalibrePb ensureCalibre() => $_ensure(2);
+  void clearCalibre() => clearField(2);
+  @$pb.TagNumber(2)
+  $5.CalibrePb ensureCalibre() => $_ensure(1);
 }
 
 class ArticlesResponse extends $pb.GeneratedMessage {
   factory ArticlesResponse({
-    $core.Iterable<$3.CalibrePb>? calibres,
+    $core.Iterable<$5.CalibrePb>? calibres,
   }) {
     final $result = create();
     if (calibres != null) {
@@ -225,7 +211,7 @@ class ArticlesResponse extends $pb.GeneratedMessage {
   factory ArticlesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticlesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
-    ..pc<$3.CalibrePb>(1, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $3.CalibrePb.create)
+    ..pc<$5.CalibrePb>(1, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $5.CalibrePb.create)
     ..hasRequiredFields = false
   ;
 
@@ -251,7 +237,7 @@ class ArticlesResponse extends $pb.GeneratedMessage {
   static ArticlesResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$3.CalibrePb> get calibres => $_getList(0);
+  $core.List<$5.CalibrePb> get calibres => $_getList(0);
 }
 
 

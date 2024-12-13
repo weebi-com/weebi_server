@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package weebi.category.service;
+
+import "article/category.proto";
+import "common/g_common.proto";
+
+
+service CategoryService {
+  rpc createOne (CategoryRequest) returns (google.retail.common.StatusResponse);
+  rpc readOne (FindCategoryRequest) returns (weebi.category.CategoryPb);
+  rpc readAll (ReadCategoriesRequest) returns  (CategoriesResponse);
+  rpc replaceOne (CategoryRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOne (CategoryRequest) returns (google.retail.common.StatusResponse);
+}
+
+message FindCategoryRequest {
+  string chainId = 1;
+  string title = 2 ;
+}
+
+message ReadCategoriesRequest {
+  string chainId = 1;
+}
+
+message CategoryRequest {
+  // below in case mutiple chains, permission check will still be applied to verify 
+  string chainId = 1; 
+  weebi.category.CategoryPb category = 2;
+}
+
+message CategoriesResponse {
+  repeated weebi.category.CategoryPb categories = 1;
+}

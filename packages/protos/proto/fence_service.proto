@@ -19,6 +19,8 @@ service FenceService {
   rpc signUp(weebi.user.SignUpRequest) returns (weebi.user.SignUpResponse);
   rpc authenticateWithCredentials (Credentials) returns (Tokens);
   rpc authenticateWithRefreshToken (RefreshToken) returns (Tokens);
+
+  // TODO : remove below useless
   rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.permissions.UserPermissions);
   // TODO: add quit / droit à l'oubli like
   // allowing user added in an existing firm by mistake to signup again and start his/her own firm
