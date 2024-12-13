@@ -1,3 +1,8 @@
+## 1.0.6
+
+- new offline permission: canUpdateContactBalanceOffline
+- new object for article : categories
+
 ## 1.0.5
 
 - createDevice
