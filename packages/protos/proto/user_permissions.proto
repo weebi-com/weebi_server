@@ -110,10 +110,10 @@ message BoolRights {
   bool canSetPromo = 4 [json_name = 'canSetPromo'];
   bool canStockMovement = 5 [json_name = 'canStockMovement'];
   bool canStockInventory = 6 [json_name = 'canStockInventory'];
-  bool canQuickSpend = 7 [json_name = 'canQuickSpend'];
+  bool canSpendOutOfCatalog = 7 [json_name = 'canSpendOutOfCatalog'];
   bool canPurchase = 8 [json_name = 'canPurchase'];
   bool canImportTickets = 9 [json_name = 'canImportTickets'];
-  bool canQuickSell = 10 [json_name = 'canQuickSell'];
+  bool canSellOutOfCatalog = 10 [json_name = 'canSellOutOfCatalog'];
   bool canUpdateContactBalanceOffline = 11 [json_name = 'canUpdateContactBalanceOffline'];
 }
 

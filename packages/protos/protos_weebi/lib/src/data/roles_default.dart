@@ -29,6 +29,13 @@ abstract class RightsAdmin {
     canGiveDiscount: true,
     canSeeStats: true,
     canSetPromo: true,
+    canStockMovement: true,
+    canStockInventory: true,
+    canSellOutOfCatalog: true,
+    canSpendOutOfCatalog: true,
+    canPurchase: true,
+    canImportTickets: true,
+    canUpdateContactBalanceOffline: true,
   );
 }
 
