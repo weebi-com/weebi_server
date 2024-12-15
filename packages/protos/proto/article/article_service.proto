@@ -3,6 +3,7 @@ syntax = "proto3";
 package weebi.article.service;
 
 import "article/article.proto";
+import "article/category.proto";
 import "common/g_common.proto";
 
 
@@ -12,6 +13,13 @@ service ArticleService {
   rpc readAll (ReadAllRequest) returns  (ArticlesResponse);
   rpc replaceOne (ArticleRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOne (ArticleRequest) returns (google.retail.common.StatusResponse);
+
+  // category
+  rpc createOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
+  rpc readOneCategory (FindCategoryRequest) returns (weebi.category.CategoryPb);
+  rpc readAllCategories (ReadCategoriesRequest) returns  (CategoriesResponse);
+  rpc replaceOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
 }
 
 message FindArticleRequest {
@@ -31,4 +39,25 @@ message ArticleRequest {
 
 message ArticlesResponse {
   repeated weebi.article.CalibrePb calibres = 1;
+}
+
+message FindCategoryRequest {
+  string chainId = 1;
+  string title = 2 ;
+}
+
+
+/// categories
+message ReadCategoriesRequest {
+  string chainId = 1;
+}
+
+message CategoryRequest {
+  // below in case mutiple chains, permission check will still be applied to verify 
+  string chainId = 1; 
+  weebi.category.CategoryPb category = 2;
+}
+
+message CategoriesResponse {
+  repeated weebi.category.CategoryPb categories = 1;
 }

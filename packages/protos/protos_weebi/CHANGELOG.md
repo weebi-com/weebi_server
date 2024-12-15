@@ -1,3 +1,7 @@
+## 1.0.6+2
+
+- keep categories within articleservice
+
 ## 1.0.6+1
 
 - new offline permission: canUpdateContactBalanceOffline

@@ -13,8 +13,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/address.pb.dart' as $22;
-import '../common/phone.pb.dart' as $21;
+import '../common/address.pb.dart' as $21;
+import '../common/phone.pb.dart' as $20;
 
 /// / contactId is unique
 class ContactMongo extends $pb.GeneratedMessage {
@@ -149,8 +149,8 @@ class ContactPb extends $pb.GeneratedMessage {
     $core.String? firstName,
     $core.String? lastName,
     $core.String? mail,
-    $21.Phone? phone,
-    $22.Address? addressFull,
+    $20.Phone? phone,
+    $21.Address? addressFull,
     $core.int? overdraft,
     $core.Iterable<$core.String>? tags,
     $core.Map<$core.String, $core.String>? othersAttributes,
@@ -210,8 +210,8 @@ class ContactPb extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'firstName', protoName: 'firstName')
     ..aOS(7, _omitFieldNames ? '' : 'lastName', protoName: 'lastName')
     ..aOS(8, _omitFieldNames ? '' : 'mail')
-    ..aOM<$21.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $21.Phone.create)
-    ..aOM<$22.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $22.Address.create)
+    ..aOM<$20.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $20.Phone.create)
+    ..aOM<$21.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $21.Address.create)
     ..a<$core.int>(11, _omitFieldNames ? '' : 'overdraft', $pb.PbFieldType.O3)
     ..pPS(12, _omitFieldNames ? '' : 'categories', protoName: 'tags')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'ContactPb.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.contact'))
@@ -312,26 +312,26 @@ class ContactPb extends $pb.GeneratedMessage {
   void clearMail() => clearField(8);
 
   @$pb.TagNumber(9)
-  $21.Phone get phone => $_getN(8);
+  $20.Phone get phone => $_getN(8);
   @$pb.TagNumber(9)
-  set phone($21.Phone v) { setField(9, v); }
+  set phone($20.Phone v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasPhone() => $_has(8);
   @$pb.TagNumber(9)
   void clearPhone() => clearField(9);
   @$pb.TagNumber(9)
-  $21.Phone ensurePhone() => $_ensure(8);
+  $20.Phone ensurePhone() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $22.Address get addressFull => $_getN(9);
+  $21.Address get addressFull => $_getN(9);
   @$pb.TagNumber(10)
-  set addressFull($22.Address v) { setField(10, v); }
+  set addressFull($21.Address v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasAddressFull() => $_has(9);
   @$pb.TagNumber(10)
   void clearAddressFull() => clearField(10);
   @$pb.TagNumber(10)
-  $22.Address ensureAddressFull() => $_ensure(9);
+  $21.Address ensureAddressFull() => $_ensure(9);
 
   @$pb.TagNumber(11)
   $core.int get overdraft => $_getIZ(10);
