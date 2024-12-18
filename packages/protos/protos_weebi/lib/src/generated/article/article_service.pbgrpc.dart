@@ -36,8 +36,8 @@ class ArticleServiceClient extends $grpc.Client {
       '/weebi.article.service.ArticleService/readAll',
       ($2.ReadAllRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $2.ArticlesResponse.fromBuffer(value));
-  static final _$replaceOne = $grpc.ClientMethod<$2.ArticleRequest, $1.StatusResponse>(
-      '/weebi.article.service.ArticleService/replaceOne',
+  static final _$updateOne = $grpc.ClientMethod<$2.ArticleRequest, $1.StatusResponse>(
+      '/weebi.article.service.ArticleService/updateOne',
       ($2.ArticleRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
   static final _$deleteOne = $grpc.ClientMethod<$2.ArticleRequest, $1.StatusResponse>(
@@ -56,8 +56,8 @@ class ArticleServiceClient extends $grpc.Client {
       '/weebi.article.service.ArticleService/readAllCategories',
       ($2.ReadCategoriesRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $2.CategoriesResponse.fromBuffer(value));
-  static final _$replaceOneCategory = $grpc.ClientMethod<$2.CategoryRequest, $1.StatusResponse>(
-      '/weebi.article.service.ArticleService/replaceOneCategory',
+  static final _$updateOneCategory = $grpc.ClientMethod<$2.CategoryRequest, $1.StatusResponse>(
+      '/weebi.article.service.ArticleService/updateOneCategory',
       ($2.CategoryRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
   static final _$deleteOneCategory = $grpc.ClientMethod<$2.CategoryRequest, $1.StatusResponse>(
@@ -83,8 +83,8 @@ class ArticleServiceClient extends $grpc.Client {
     return $createUnaryCall(_$readAll, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> replaceOne($2.ArticleRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$replaceOne, request, options: options);
+  $grpc.ResponseFuture<$1.StatusResponse> updateOne($2.ArticleRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateOne, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.StatusResponse> deleteOne($2.ArticleRequest request, {$grpc.CallOptions? options}) {
@@ -103,8 +103,8 @@ class ArticleServiceClient extends $grpc.Client {
     return $createUnaryCall(_$readAllCategories, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> replaceOneCategory($2.CategoryRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$replaceOneCategory, request, options: options);
+  $grpc.ResponseFuture<$1.StatusResponse> updateOneCategory($2.CategoryRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateOneCategory, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.StatusResponse> deleteOneCategory($2.CategoryRequest request, {$grpc.CallOptions? options}) {
@@ -139,8 +139,8 @@ abstract class ArticleServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) => $2.ReadAllRequest.fromBuffer(value),
         ($2.ArticlesResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.ArticleRequest, $1.StatusResponse>(
-        'replaceOne',
-        replaceOne_Pre,
+        'updateOne',
+        updateOne_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $2.ArticleRequest.fromBuffer(value),
@@ -174,8 +174,8 @@ abstract class ArticleServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) => $2.ReadCategoriesRequest.fromBuffer(value),
         ($2.CategoriesResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.CategoryRequest, $1.StatusResponse>(
-        'replaceOneCategory',
-        replaceOneCategory_Pre,
+        'updateOneCategory',
+        updateOneCategory_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $2.CategoryRequest.fromBuffer(value),
@@ -201,8 +201,8 @@ abstract class ArticleServiceBase extends $grpc.Service {
     return readAll(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> replaceOne_Pre($grpc.ServiceCall call, $async.Future<$2.ArticleRequest> request) async {
-    return replaceOne(call, await request);
+  $async.Future<$1.StatusResponse> updateOne_Pre($grpc.ServiceCall call, $async.Future<$2.ArticleRequest> request) async {
+    return updateOne(call, await request);
   }
 
   $async.Future<$1.StatusResponse> deleteOne_Pre($grpc.ServiceCall call, $async.Future<$2.ArticleRequest> request) async {
@@ -221,8 +221,8 @@ abstract class ArticleServiceBase extends $grpc.Service {
     return readAllCategories(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> replaceOneCategory_Pre($grpc.ServiceCall call, $async.Future<$2.CategoryRequest> request) async {
-    return replaceOneCategory(call, await request);
+  $async.Future<$1.StatusResponse> updateOneCategory_Pre($grpc.ServiceCall call, $async.Future<$2.CategoryRequest> request) async {
+    return updateOneCategory(call, await request);
   }
 
   $async.Future<$1.StatusResponse> deleteOneCategory_Pre($grpc.ServiceCall call, $async.Future<$2.CategoryRequest> request) async {
@@ -232,11 +232,11 @@ abstract class ArticleServiceBase extends $grpc.Service {
   $async.Future<$1.StatusResponse> createOne($grpc.ServiceCall call, $2.ArticleRequest request);
   $async.Future<$3.CalibrePb> readOne($grpc.ServiceCall call, $2.FindArticleRequest request);
   $async.Future<$2.ArticlesResponse> readAll($grpc.ServiceCall call, $2.ReadAllRequest request);
-  $async.Future<$1.StatusResponse> replaceOne($grpc.ServiceCall call, $2.ArticleRequest request);
+  $async.Future<$1.StatusResponse> updateOne($grpc.ServiceCall call, $2.ArticleRequest request);
   $async.Future<$1.StatusResponse> deleteOne($grpc.ServiceCall call, $2.ArticleRequest request);
   $async.Future<$1.StatusResponse> createOneCategory($grpc.ServiceCall call, $2.CategoryRequest request);
   $async.Future<$4.CategoryPb> readOneCategory($grpc.ServiceCall call, $2.FindCategoryRequest request);
   $async.Future<$2.CategoriesResponse> readAllCategories($grpc.ServiceCall call, $2.ReadCategoriesRequest request);
-  $async.Future<$1.StatusResponse> replaceOneCategory($grpc.ServiceCall call, $2.CategoryRequest request);
+  $async.Future<$1.StatusResponse> updateOneCategory($grpc.ServiceCall call, $2.CategoryRequest request);
   $async.Future<$1.StatusResponse> deleteOneCategory($grpc.ServiceCall call, $2.CategoryRequest request);
 }

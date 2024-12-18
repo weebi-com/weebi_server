@@ -81,7 +81,7 @@ class ContactService extends ContactServiceBase {
   }
 
   @override
-  Future<StatusResponse> replaceOne(
+  Future<StatusResponse> updateOne(
       ServiceCall? call, ContactRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest

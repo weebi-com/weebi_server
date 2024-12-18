@@ -14,14 +14,152 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'common/address.pb.dart' as $21;
+import 'common/g_timestamp.pb.dart' as $19;
 import 'common/phone.pb.dart' as $20;
 import 'device.pb.dart' as $13;
 
-class Boutique extends $pb.GeneratedMessage {
-  factory Boutique({
+class BoutiqueMongo extends $pb.GeneratedMessage {
+  factory BoutiqueMongo({
+    BoutiquePb? boutique,
     $core.String? boutiqueId,
     $core.String? firmId,
     $core.String? chainId,
+    $19.Timestamp? creationDateUTC,
+    $core.String? name,
+    $core.Iterable<$13.Device>? devices,
+    $core.Map<$core.String, $core.String>? additionalAttributes,
+  }) {
+    final $result = create();
+    if (boutique != null) {
+      $result.boutique = boutique;
+    }
+    if (boutiqueId != null) {
+      $result.boutiqueId = boutiqueId;
+    }
+    if (firmId != null) {
+      $result.firmId = firmId;
+    }
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (creationDateUTC != null) {
+      $result.creationDateUTC = creationDateUTC;
+    }
+    if (name != null) {
+      $result.name = name;
+    }
+    if (devices != null) {
+      $result.devices.addAll(devices);
+    }
+    if (additionalAttributes != null) {
+      $result.additionalAttributes.addAll(additionalAttributes);
+    }
+    return $result;
+  }
+  BoutiqueMongo._() : super();
+  factory BoutiqueMongo.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BoutiqueMongo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
+    ..aOM<BoutiquePb>(1, _omitFieldNames ? '' : 'boutique', subBuilder: BoutiquePb.create)
+    ..aOS(2, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
+    ..aOS(3, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(4, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOM<$19.Timestamp>(5, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $19.Timestamp.create)
+    ..aOS(6, _omitFieldNames ? '' : 'name')
+    ..pc<$13.Device>(7, _omitFieldNames ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: $13.Device.create)
+    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiqueMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BoutiqueMongo clone() => BoutiqueMongo()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BoutiqueMongo copyWith(void Function(BoutiqueMongo) updates) => super.copyWith((message) => updates(message as BoutiqueMongo)) as BoutiqueMongo;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static BoutiqueMongo create() => BoutiqueMongo._();
+  BoutiqueMongo createEmptyInstance() => create();
+  static $pb.PbList<BoutiqueMongo> createRepeated() => $pb.PbList<BoutiqueMongo>();
+  @$core.pragma('dart2js:noInline')
+  static BoutiqueMongo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BoutiqueMongo>(create);
+  static BoutiqueMongo? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  BoutiquePb get boutique => $_getN(0);
+  @$pb.TagNumber(1)
+  set boutique(BoutiquePb v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasBoutique() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBoutique() => clearField(1);
+  @$pb.TagNumber(1)
+  BoutiquePb ensureBoutique() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  $core.String get boutiqueId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set boutiqueId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasBoutiqueId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBoutiqueId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get firmId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set firmId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasFirmId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearFirmId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get chainId => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set chainId($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasChainId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearChainId() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $19.Timestamp get creationDateUTC => $_getN(4);
+  @$pb.TagNumber(5)
+  set creationDateUTC($19.Timestamp v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasCreationDateUTC() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCreationDateUTC() => clearField(5);
+  @$pb.TagNumber(5)
+  $19.Timestamp ensureCreationDateUTC() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $core.String get name => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set name($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasName() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearName() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.List<$13.Device> get devices => $_getList(6);
+
+  @$pb.TagNumber(99)
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(7);
+}
+
+class BoutiquePb extends $pb.GeneratedMessage {
+  factory BoutiquePb({
     $core.String? creationDate,
     $core.String? updateDate,
     $core.String? statusUpdateDate,
@@ -32,19 +170,9 @@ class Boutique extends $pb.GeneratedMessage {
     $core.double? promo,
     $core.String? promoStart,
     $core.String? promoEnd,
-    $core.Iterable<$13.Device>? devices,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
-    if (boutiqueId != null) {
-      $result.boutiqueId = boutiqueId;
-    }
-    if (firmId != null) {
-      $result.firmId = firmId;
-    }
-    if (chainId != null) {
-      $result.chainId = chainId;
-    }
     if (creationDate != null) {
       $result.creationDate = creationDate;
     }
@@ -75,34 +203,27 @@ class Boutique extends $pb.GeneratedMessage {
     if (promoEnd != null) {
       $result.promoEnd = promoEnd;
     }
-    if (devices != null) {
-      $result.devices.addAll(devices);
-    }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addAll(additionalAttributes);
     }
     return $result;
   }
-  Boutique._() : super();
-  factory Boutique.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Boutique.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  BoutiquePb._() : super();
+  factory BoutiquePb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BoutiquePb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Boutique', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
-    ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
-    ..aOS(3, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOS(4, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
-    ..aOS(5, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
-    ..aOS(6, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
-    ..aOB(7, _omitFieldNames ? '' : 'status')
-    ..aOS(8, _omitFieldNames ? '' : 'name')
-    ..aOM<$20.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $20.Phone.create)
-    ..aOM<$21.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $21.Address.create)
-    ..a<$core.double>(11, _omitFieldNames ? '' : 'promo', $pb.PbFieldType.OD)
-    ..aOS(12, _omitFieldNames ? '' : 'promoStart', protoName: 'promoStart')
-    ..aOS(13, _omitFieldNames ? '' : 'promoEnd', protoName: 'promoEnd')
-    ..pc<$13.Device>(14, _omitFieldNames ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: $13.Device.create)
-    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'Boutique.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiquePb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
+    ..aOS(2, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOS(3, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
+    ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
+    ..aOB(5, _omitFieldNames ? '' : 'status')
+    ..aOS(6, _omitFieldNames ? '' : 'name')
+    ..aOM<$20.Phone>(7, _omitFieldNames ? '' : 'phone', subBuilder: $20.Phone.create)
+    ..aOM<$21.Address>(8, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $21.Address.create)
+    ..a<$core.double>(9, _omitFieldNames ? '' : 'promo', $pb.PbFieldType.OD)
+    ..aOS(10, _omitFieldNames ? '' : 'promoStart', protoName: 'promoStart')
+    ..aOS(11, _omitFieldNames ? '' : 'promoEnd', protoName: 'promoEnd')
+    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiquePb.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
 
@@ -110,149 +231,119 @@ class Boutique extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  Boutique clone() => Boutique()..mergeFromMessage(this);
+  BoutiquePb clone() => BoutiquePb()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  Boutique copyWith(void Function(Boutique) updates) => super.copyWith((message) => updates(message as Boutique)) as Boutique;
+  BoutiquePb copyWith(void Function(BoutiquePb) updates) => super.copyWith((message) => updates(message as BoutiquePb)) as BoutiquePb;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static Boutique create() => Boutique._();
-  Boutique createEmptyInstance() => create();
-  static $pb.PbList<Boutique> createRepeated() => $pb.PbList<Boutique>();
+  static BoutiquePb create() => BoutiquePb._();
+  BoutiquePb createEmptyInstance() => create();
+  static $pb.PbList<BoutiquePb> createRepeated() => $pb.PbList<BoutiquePb>();
   @$core.pragma('dart2js:noInline')
-  static Boutique getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Boutique>(create);
-  static Boutique? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get boutiqueId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set boutiqueId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasBoutiqueId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearBoutiqueId() => clearField(1);
+  static BoutiquePb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BoutiquePb>(create);
+  static BoutiquePb? _defaultInstance;
 
   @$pb.TagNumber(2)
-  $core.String get firmId => $_getSZ(1);
+  $core.String get creationDate => $_getSZ(0);
   @$pb.TagNumber(2)
-  set firmId($core.String v) { $_setString(1, v); }
+  set creationDate($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(2)
-  $core.bool hasFirmId() => $_has(1);
+  $core.bool hasCreationDate() => $_has(0);
   @$pb.TagNumber(2)
-  void clearFirmId() => clearField(2);
+  void clearCreationDate() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get chainId => $_getSZ(2);
+  $core.String get updateDate => $_getSZ(1);
   @$pb.TagNumber(3)
-  set chainId($core.String v) { $_setString(2, v); }
+  set updateDate($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(3)
-  $core.bool hasChainId() => $_has(2);
+  $core.bool hasUpdateDate() => $_has(1);
   @$pb.TagNumber(3)
-  void clearChainId() => clearField(3);
+  void clearUpdateDate() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get creationDate => $_getSZ(3);
+  $core.String get statusUpdateDate => $_getSZ(2);
   @$pb.TagNumber(4)
-  set creationDate($core.String v) { $_setString(3, v); }
+  set statusUpdateDate($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(4)
-  $core.bool hasCreationDate() => $_has(3);
+  $core.bool hasStatusUpdateDate() => $_has(2);
   @$pb.TagNumber(4)
-  void clearCreationDate() => clearField(4);
+  void clearStatusUpdateDate() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get updateDate => $_getSZ(4);
+  $core.bool get status => $_getBF(3);
   @$pb.TagNumber(5)
-  set updateDate($core.String v) { $_setString(4, v); }
+  set status($core.bool v) { $_setBool(3, v); }
   @$pb.TagNumber(5)
-  $core.bool hasUpdateDate() => $_has(4);
+  $core.bool hasStatus() => $_has(3);
   @$pb.TagNumber(5)
-  void clearUpdateDate() => clearField(5);
+  void clearStatus() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.String get statusUpdateDate => $_getSZ(5);
+  $core.String get name => $_getSZ(4);
   @$pb.TagNumber(6)
-  set statusUpdateDate($core.String v) { $_setString(5, v); }
+  set name($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(6)
-  $core.bool hasStatusUpdateDate() => $_has(5);
+  $core.bool hasName() => $_has(4);
   @$pb.TagNumber(6)
-  void clearStatusUpdateDate() => clearField(6);
+  void clearName() => clearField(6);
 
   @$pb.TagNumber(7)
-  $core.bool get status => $_getBF(6);
+  $20.Phone get phone => $_getN(5);
   @$pb.TagNumber(7)
-  set status($core.bool v) { $_setBool(6, v); }
+  set phone($20.Phone v) { setField(7, v); }
   @$pb.TagNumber(7)
-  $core.bool hasStatus() => $_has(6);
+  $core.bool hasPhone() => $_has(5);
   @$pb.TagNumber(7)
-  void clearStatus() => clearField(7);
+  void clearPhone() => clearField(7);
+  @$pb.TagNumber(7)
+  $20.Phone ensurePhone() => $_ensure(5);
 
   @$pb.TagNumber(8)
-  $core.String get name => $_getSZ(7);
+  $21.Address get addressFull => $_getN(6);
   @$pb.TagNumber(8)
-  set name($core.String v) { $_setString(7, v); }
+  set addressFull($21.Address v) { setField(8, v); }
   @$pb.TagNumber(8)
-  $core.bool hasName() => $_has(7);
+  $core.bool hasAddressFull() => $_has(6);
   @$pb.TagNumber(8)
-  void clearName() => clearField(8);
+  void clearAddressFull() => clearField(8);
+  @$pb.TagNumber(8)
+  $21.Address ensureAddressFull() => $_ensure(6);
 
   @$pb.TagNumber(9)
-  $20.Phone get phone => $_getN(8);
+  $core.double get promo => $_getN(7);
   @$pb.TagNumber(9)
-  set phone($20.Phone v) { setField(9, v); }
+  set promo($core.double v) { $_setDouble(7, v); }
   @$pb.TagNumber(9)
-  $core.bool hasPhone() => $_has(8);
+  $core.bool hasPromo() => $_has(7);
   @$pb.TagNumber(9)
-  void clearPhone() => clearField(9);
-  @$pb.TagNumber(9)
-  $20.Phone ensurePhone() => $_ensure(8);
+  void clearPromo() => clearField(9);
 
   @$pb.TagNumber(10)
-  $21.Address get addressFull => $_getN(9);
+  $core.String get promoStart => $_getSZ(8);
   @$pb.TagNumber(10)
-  set addressFull($21.Address v) { setField(10, v); }
+  set promoStart($core.String v) { $_setString(8, v); }
   @$pb.TagNumber(10)
-  $core.bool hasAddressFull() => $_has(9);
+  $core.bool hasPromoStart() => $_has(8);
   @$pb.TagNumber(10)
-  void clearAddressFull() => clearField(10);
-  @$pb.TagNumber(10)
-  $21.Address ensureAddressFull() => $_ensure(9);
+  void clearPromoStart() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.double get promo => $_getN(10);
+  $core.String get promoEnd => $_getSZ(9);
   @$pb.TagNumber(11)
-  set promo($core.double v) { $_setDouble(10, v); }
+  set promoEnd($core.String v) { $_setString(9, v); }
   @$pb.TagNumber(11)
-  $core.bool hasPromo() => $_has(10);
+  $core.bool hasPromoEnd() => $_has(9);
   @$pb.TagNumber(11)
-  void clearPromo() => clearField(11);
-
-  @$pb.TagNumber(12)
-  $core.String get promoStart => $_getSZ(11);
-  @$pb.TagNumber(12)
-  set promoStart($core.String v) { $_setString(11, v); }
-  @$pb.TagNumber(12)
-  $core.bool hasPromoStart() => $_has(11);
-  @$pb.TagNumber(12)
-  void clearPromoStart() => clearField(12);
-
-  @$pb.TagNumber(13)
-  $core.String get promoEnd => $_getSZ(12);
-  @$pb.TagNumber(13)
-  set promoEnd($core.String v) { $_setString(12, v); }
-  @$pb.TagNumber(13)
-  $core.bool hasPromoEnd() => $_has(12);
-  @$pb.TagNumber(13)
-  void clearPromoEnd() => clearField(13);
-
-  @$pb.TagNumber(14)
-  $core.List<$13.Device> get devices => $_getList(13);
+  void clearPromoEnd() => clearField(11);
 
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(14);
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(10);
 }
 
 

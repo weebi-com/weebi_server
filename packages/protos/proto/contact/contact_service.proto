@@ -40,6 +40,6 @@ service ContactService {
   rpc readAll (ReadAllContactsRequest) returns  (ContactsResponse);
   rpc readOne (FindContactRequest) returns (weebi.contact.ContactPb);
   rpc createOne (ContactRequest) returns (google.retail.common.StatusResponse);
-  rpc replaceOne (ContactRequest) returns (google.retail.common.StatusResponse);
+  rpc updateOne (ContactRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOne (ContactRequest) returns (google.retail.common.StatusResponse);
 }

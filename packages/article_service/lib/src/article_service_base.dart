@@ -89,7 +89,7 @@ class ArticleService extends ArticleServiceBase {
   }
 
   @override
-  Future<StatusResponse> replaceOne(
+  Future<StatusResponse> updateOne(
       ServiceCall? call, ArticleRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
@@ -289,7 +289,7 @@ class ArticleService extends ArticleServiceBase {
   }
 
   @override
-  Future<StatusResponse> replaceOneCategory(
+  Future<StatusResponse> updateOneCategory(
       ServiceCall? call, CategoryRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest

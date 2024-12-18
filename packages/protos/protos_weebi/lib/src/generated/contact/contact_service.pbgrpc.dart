@@ -35,8 +35,8 @@ class ContactServiceClient extends $grpc.Client {
       '/weebi.contact.service.ContactService/createOne',
       ($5.ContactRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$replaceOne = $grpc.ClientMethod<$5.ContactRequest, $1.StatusResponse>(
-      '/weebi.contact.service.ContactService/replaceOne',
+  static final _$updateOne = $grpc.ClientMethod<$5.ContactRequest, $1.StatusResponse>(
+      '/weebi.contact.service.ContactService/updateOne',
       ($5.ContactRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
   static final _$deleteOne = $grpc.ClientMethod<$5.ContactRequest, $1.StatusResponse>(
@@ -62,8 +62,8 @@ class ContactServiceClient extends $grpc.Client {
     return $createUnaryCall(_$createOne, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> replaceOne($5.ContactRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$replaceOne, request, options: options);
+  $grpc.ResponseFuture<$1.StatusResponse> updateOne($5.ContactRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateOne, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.StatusResponse> deleteOne($5.ContactRequest request, {$grpc.CallOptions? options}) {
@@ -98,8 +98,8 @@ abstract class ContactServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) => $5.ContactRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$5.ContactRequest, $1.StatusResponse>(
-        'replaceOne',
-        replaceOne_Pre,
+        'updateOne',
+        updateOne_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $5.ContactRequest.fromBuffer(value),
@@ -125,8 +125,8 @@ abstract class ContactServiceBase extends $grpc.Service {
     return createOne(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> replaceOne_Pre($grpc.ServiceCall call, $async.Future<$5.ContactRequest> request) async {
-    return replaceOne(call, await request);
+  $async.Future<$1.StatusResponse> updateOne_Pre($grpc.ServiceCall call, $async.Future<$5.ContactRequest> request) async {
+    return updateOne(call, await request);
   }
 
   $async.Future<$1.StatusResponse> deleteOne_Pre($grpc.ServiceCall call, $async.Future<$5.ContactRequest> request) async {
@@ -136,6 +136,6 @@ abstract class ContactServiceBase extends $grpc.Service {
   $async.Future<$5.ContactsResponse> readAll($grpc.ServiceCall call, $5.ReadAllContactsRequest request);
   $async.Future<$6.ContactPb> readOne($grpc.ServiceCall call, $5.FindContactRequest request);
   $async.Future<$1.StatusResponse> createOne($grpc.ServiceCall call, $5.ContactRequest request);
-  $async.Future<$1.StatusResponse> replaceOne($grpc.ServiceCall call, $5.ContactRequest request);
+  $async.Future<$1.StatusResponse> updateOne($grpc.ServiceCall call, $5.ContactRequest request);
   $async.Future<$1.StatusResponse> deleteOne($grpc.ServiceCall call, $5.ContactRequest request);
 }

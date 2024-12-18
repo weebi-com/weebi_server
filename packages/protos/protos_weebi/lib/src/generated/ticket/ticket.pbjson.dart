@@ -95,7 +95,7 @@ const Counterfoil$json = {
     {'1': 'firmName', '3': 2, '4': 1, '5': 9, '10': 'firmName'},
     {'1': 'chainId', '3': 3, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'chainName', '3': 4, '4': 1, '5': 9, '10': 'chainName'},
-    {'1': 'deviceOid', '3': 5, '4': 1, '5': 9, '10': 'deviceOid'},
+    {'1': 'deviceId', '3': 5, '4': 1, '5': 9, '10': 'deviceId'},
     {'1': 'deviceName', '3': 6, '4': 1, '5': 9, '10': 'deviceName'},
     {'1': 'boutiqueId', '3': 7, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'boutiqueName', '3': 8, '4': 1, '5': 9, '10': 'boutiqueName'},
@@ -108,10 +108,10 @@ const Counterfoil$json = {
 final $typed_data.Uint8List counterfoilDescriptor = $convert.base64Decode(
     'CgtDb3VudGVyZm9pbBIWCgZmaXJtSWQYASABKAlSBmZpcm1JZBIaCghmaXJtTmFtZRgCIAEoCV'
     'IIZmlybU5hbWUSGAoHY2hhaW5JZBgDIAEoCVIHY2hhaW5JZBIcCgljaGFpbk5hbWUYBCABKAlS'
-    'CWNoYWluTmFtZRIcCglkZXZpY2VPaWQYBSABKAlSCWRldmljZU9pZBIeCgpkZXZpY2VOYW1lGA'
-    'YgASgJUgpkZXZpY2VOYW1lEh4KCmJvdXRpcXVlSWQYByABKAlSCmJvdXRpcXVlSWQSIgoMYm91'
-    'dGlxdWVOYW1lGAggASgJUgxib3V0aXF1ZU5hbWUSFgoGdXNlcklkGAkgASgJUgZ1c2VySWQSGg'
-    'oIdXNlck5hbWUYCiABKAlSCHVzZXJOYW1l');
+    'CWNoYWluTmFtZRIaCghkZXZpY2VJZBgFIAEoCVIIZGV2aWNlSWQSHgoKZGV2aWNlTmFtZRgGIA'
+    'EoCVIKZGV2aWNlTmFtZRIeCgpib3V0aXF1ZUlkGAcgASgJUgpib3V0aXF1ZUlkEiIKDGJvdXRp'
+    'cXVlTmFtZRgIIAEoCVIMYm91dGlxdWVOYW1lEhYKBnVzZXJJZBgJIAEoCVIGdXNlcklkEhoKCH'
+    'VzZXJOYW1lGAogASgJUgh1c2VyTmFtZQ==');
 
 @$core.Deprecated('Use taxPbDescriptor instead')
 const TaxPb$json = {

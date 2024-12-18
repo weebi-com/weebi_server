@@ -393,7 +393,7 @@ class Counterfoil extends $pb.GeneratedMessage {
     $core.String? firmName,
     $core.String? chainId,
     $core.String? chainName,
-    $core.String? deviceOid,
+    $core.String? deviceId,
     $core.String? deviceName,
     $core.String? boutiqueId,
     $core.String? boutiqueName,
@@ -413,8 +413,8 @@ class Counterfoil extends $pb.GeneratedMessage {
     if (chainName != null) {
       $result.chainName = chainName;
     }
-    if (deviceOid != null) {
-      $result.deviceOid = deviceOid;
+    if (deviceId != null) {
+      $result.deviceId = deviceId;
     }
     if (deviceName != null) {
       $result.deviceName = deviceName;
@@ -442,7 +442,7 @@ class Counterfoil extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'firmName', protoName: 'firmName')
     ..aOS(3, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(4, _omitFieldNames ? '' : 'chainName', protoName: 'chainName')
-    ..aOS(5, _omitFieldNames ? '' : 'deviceOid', protoName: 'deviceOid')
+    ..aOS(5, _omitFieldNames ? '' : 'deviceId', protoName: 'deviceId')
     ..aOS(6, _omitFieldNames ? '' : 'deviceName', protoName: 'deviceName')
     ..aOS(7, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(8, _omitFieldNames ? '' : 'boutiqueName', protoName: 'boutiqueName')
@@ -509,13 +509,13 @@ class Counterfoil extends $pb.GeneratedMessage {
   void clearChainName() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get deviceOid => $_getSZ(4);
+  $core.String get deviceId => $_getSZ(4);
   @$pb.TagNumber(5)
-  set deviceOid($core.String v) { $_setString(4, v); }
+  set deviceId($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasDeviceOid() => $_has(4);
+  $core.bool hasDeviceId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearDeviceOid() => clearField(5);
+  void clearDeviceId() => clearField(5);
 
   @$pb.TagNumber(6)
   $core.String get deviceName => $_getSZ(5);

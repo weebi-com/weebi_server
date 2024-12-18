@@ -828,8 +828,16 @@ class FenceService extends FenceServiceBase {
     // set the appropriate ids
 
     _db.isConnected ? null : await _db.open();
+
+    final nowProtoUTC = DateTime.now().toUtc().timestampProto;
+
     final firmId = DateTime.now().objectIdString;
-    final firm = Firm(firmId: firmId, name: request.name);
+    final firm = Firm(
+        firmId: firmId,
+        name: request.name,
+        status: true,
+        creationDateUTC: nowProtoUTC);
+
     try {
       final result = await firmCollection
           .insertOne(firm.toProto3Json() as Map<String, dynamic>);
@@ -863,12 +871,14 @@ class FenceService extends FenceServiceBase {
             firmId: firmId,
             chainId: firmId,
             name: request.name,
+            creationDateUTC: nowProtoUTC,
             boutiques: [
-              Boutique.create()
+              BoutiqueMongo.create()
                 ..firmId = firmId
                 ..chainId = firmId
                 ..boutiqueId = firmId
                 ..name = request.name
+                ..creationDateUTC = nowProtoUTC
             ]);
 
         try {
@@ -1040,7 +1050,7 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<StatusResponse> createOneBoutique(
-      ServiceCall? call, Boutique request) async {
+      ServiceCall? call, BoutiqueCreateRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1051,16 +1061,26 @@ class FenceService extends FenceServiceBase {
           'user does not have right to create boutique');
     }
     if (userPermission.isFirmAndChainAccessible(
-            request.firmId, request.chainId) ==
+            userPermission.firmId, request.chainId) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user cannot create data for firm ${request.firmId} or chain ${request.chainId}');
+          'user cannot create data for firm ${userPermission.firmId} or chain ${request.chainId}');
     }
     _db.isConnected ? null : await _db.open();
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
-    chain.boutiques.add(request);
+    final nowProtoUTC = DateTime.now().toUtc().timestampProto;
+    final boutiqueId = DateTime.now().objectIdString;
+    final boutiqueMongo = BoutiqueMongo.create()
+      ..firmId = userPermission.firmId
+      ..chainId = request.chainId
+      ..boutiqueId = boutiqueId
+      ..name = request.boutique.name
+      ..creationDateUTC = nowProtoUTC
+      ..boutique = request.boutique;
+
+    chain.boutiques.add(boutiqueMongo);
 
     final result = await _updateOneChainDBExec(chain);
 
@@ -1145,7 +1165,7 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<StatusResponse> updateOneBoutique(
-      ServiceCall? call, Boutique request) async {
+      ServiceCall? call, BoutiqueUpdateRequest request) async {
     if (request.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }
@@ -1159,21 +1179,21 @@ class FenceService extends FenceServiceBase {
           'user does not have right to update boutique');
     }
     if (userPermission.isFirmAndChainAccessible(
-            request.firmId, request.chainId) ==
+            userPermission.firmId, request.chainId) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from firm ${request.firmId} or chain ${request.chainId}');
+          'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
 
     _db.isConnected ? null : await _db.open();
     final chain =
-        await _checkOneChainAndProtoIt(request.firmId, request.chainId);
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
     final boutiqueIndex =
         chain.boutiques.indexWhere((e) => e.boutiqueId == request.boutiqueId);
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('boutique not found');
     }
-    chain.boutiques[boutiqueIndex] = request;
+    chain.boutiques[boutiqueIndex].boutique = request.boutique;
 
     return await _updateOneChainDBExec(chain);
   }
@@ -1642,5 +1662,102 @@ class FenceService extends FenceServiceBase {
     } else {
       throw GrpcError.notFound('no pendingDevice found');
     }
+  }
+
+  @override
+  Future<StatusResponse> deleteOneBoutique(
+      ServiceCall call, BoutiqueRequest request) async {
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermission;
+    if (request.boutiqueId.isEmpty) {
+      throw GrpcError.invalidArgument('boutiqueId cannot be empty');
+    }
+    if (userPermission.boutiqueRights.rights.any((e) => e == Right.delete) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to delete boutique');
+    }
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
+    _db.isConnected ? null : await _db.open();
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+
+    final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
+        btq.chainId == request.chainId && btq.boutiqueId == request.boutiqueId);
+    if (boutiqueIndex == -1) {
+      throw GrpcError.notFound('no boutique match found');
+    }
+    // remove device
+    chain.boutiques.removeAt(boutiqueIndex);
+    // update chain in db
+    return await _updateOneChainDBExec(chain);
+  }
+
+  @override
+  Future<StatusResponse> deleteOneChain(ServiceCall call, Chain request) async {
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermission;
+    if (request.chainId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId cannot be empty');
+    }
+    if (userPermission.chainRights.rights.any((e) => e == Right.delete) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to delete chain');
+    }
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
+    _db.isConnected ? null : await _db.open();
+
+// request.chainId
+    try {
+      await boutiqueCollection.deleteOne(where
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId));
+      return StatusResponse()
+        ..type = StatusResponse_Type.DELETED
+        ..timestamp = DateTime.now().timestampProto;
+    } on GrpcError catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<BoutiquePb> readOneBoutique(
+      ServiceCall call, BoutiqueRequest request) async {
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermission;
+    if (request.boutiqueId.isEmpty) {
+      throw GrpcError.invalidArgument('boutiqueId cannot be empty');
+    }
+    if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to read boutique');
+    }
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
+    _db.isConnected ? null : await _db.open();
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+
+    final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
+        btq.chainId == request.chainId && btq.boutiqueId == request.boutiqueId);
+    if (boutiqueIndex == -1) {
+      throw GrpcError.notFound('no boutique match found');
+    }
+
+    return chain.boutiques[boutiqueIndex].boutique;
   }
 }

@@ -135,8 +135,6 @@ class TicketRequest extends $pb.GeneratedMessage {
   static TicketRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TicketRequest>(create);
   static TicketRequest? _defaultInstance;
 
-  /// / restrict request on a single boutique to ease access verification
-  ///   weebi.common.chained_ids.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
   @$pb.TagNumber(2)
   $15.TicketPb get ticket => $_getN(0);
   @$pb.TagNumber(2)

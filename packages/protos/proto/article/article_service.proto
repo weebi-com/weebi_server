@@ -11,14 +11,14 @@ service ArticleService {
   rpc createOne (ArticleRequest) returns (google.retail.common.StatusResponse);
   rpc readOne (FindArticleRequest) returns (weebi.article.CalibrePb);
   rpc readAll (ReadAllRequest) returns  (ArticlesResponse);
-  rpc replaceOne (ArticleRequest) returns (google.retail.common.StatusResponse);
+  rpc updateOne (ArticleRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOne (ArticleRequest) returns (google.retail.common.StatusResponse);
 
   // category
   rpc createOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
   rpc readOneCategory (FindCategoryRequest) returns (weebi.category.CategoryPb);
   rpc readAllCategories (ReadCategoriesRequest) returns  (CategoriesResponse);
-  rpc replaceOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
+  rpc updateOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
 }
 

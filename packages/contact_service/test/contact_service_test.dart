@@ -76,7 +76,7 @@ void main() async {
       contact: contactLili,
     );
     // ignore: unused_local_variable
-    final response = await contactService.replaceOne(null, contactRequest);
+    final response = await contactService.updateOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.UPDATED);
 
     final response2 = await contactService.readAll(

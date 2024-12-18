@@ -49,14 +49,18 @@ service FenceService {
   rpc createOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
   rpc readAllChains(weebi.common.empty.Empty) returns (ReadAllChainsResponse);
   rpc updateOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
-  // TODO add replacechain
-  // TODO add deletechain
-  // TODO add readchains
+  rpc deleteOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
   
-  rpc createOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
-  rpc updateOneBoutique(weebi.boutique.Boutique) returns (google.retail.common.StatusResponse);
-  rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
+  rpc createOneBoutique(BoutiqueCreateRequest) returns (google.retail.common.StatusResponse);
+  rpc readOneBoutique(BoutiqueRequest) returns (weebi.boutique.BoutiquePb);
+  rpc updateOneBoutique(BoutiqueUpdateRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
+  // readBoutiques is not relevant since they are provided in readAllChains
+   
 
+
+  /// devices are sensitive
+  rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
   /// device enrolment follows a different process than user enrolment
   /// generateCodeForPairingDevice is called by web app, it includes chainId and boutiqueId
   /// A device belongs to a boutique 
@@ -66,7 +70,6 @@ service FenceService {
   /// createDevice is called by mobile/desktop app  
   /// await lasts for 2 minutes (to be tested)
   rpc createDevice(PendingDeviceRequest) returns (CreatePendingDeviceResponse);
-
   /// a different auth method to avoid locking PoS
   /// for first authent after device
   rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
@@ -74,6 +77,27 @@ service FenceService {
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
   /// weak auth hack to ease app access to cashiers with very low rights
 }
+
+// used mostly by mobile
+message BoutiqueCreateRequest {
+  string chainId = 1;
+  weebi.boutique.BoutiquePb boutique = 2;
+}
+
+
+/// can only be called by an admin, from web, so the String boutiqueId is known
+message BoutiqueRequest {
+  string chainId = 1 ;
+  string boutiqueId = 2 ; // server given
+}
+
+/// can only be called by an admin, from web, so the String boutiqueId is known
+message BoutiqueUpdateRequest {
+  string chainId = 1 ;
+  string boutiqueId = 2 ; // server given
+  weebi.boutique.BoutiquePb boutique = 3;
+}
+
 
 /// deviceId == userId, so front can reuse deviceId to try login in
 message CreatePendingDeviceResponse {

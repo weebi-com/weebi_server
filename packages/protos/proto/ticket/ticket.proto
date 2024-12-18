@@ -55,7 +55,7 @@ message Counterfoil {
   string firmName = 2;
   string chainId = 3;
   string chainName = 4;
-  string deviceOid = 5;
+  string deviceId = 5;
   string deviceName = 6;
   string boutiqueId = 7;
   string boutiqueName = 8;

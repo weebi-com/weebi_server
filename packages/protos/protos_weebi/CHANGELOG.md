@@ -1,3 +1,7 @@
+## 1.0.6+3
+
+- boutique also needs to be decomposed in BoutiquePb and BoutiqueMongo 
+
 ## 1.0.6+2
 
 - keep categories within articleservice

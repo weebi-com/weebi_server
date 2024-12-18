@@ -14,8 +14,7 @@ message FindTicketRequest {
 }
 
 message TicketRequest {
-  /// restrict request on a single boutique to ease access verification
-  //  weebi.common.chained_ids.MallAndboutiqueIds chainAndboutiqueIds = 1 [json_name = 'mallAndboutiqueIds'];
+  
   weebi.ticket.TicketPb ticket = 2 [json_name = 'ticket'];
 }
 
