@@ -28,6 +28,7 @@ service TicketService {
   rpc readAll (weebi.ticket.Counterfoil) returns  (TicketsResponse);
   rpc readOne (FindTicketRequest) returns (weebi.ticket.TicketPb);
   rpc createOne (TicketRequest) returns (google.retail.common.StatusResponse);
+  // TODO : do a createMany
   rpc updateStatusOne (TicketRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOne (TicketRequest) returns (google.retail.common.StatusResponse);
 }

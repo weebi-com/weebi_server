@@ -76,10 +76,8 @@ void main() async {
     final boutiqueLili = chain.boutiques.first..name = 'Lili boutique test';
     final response = await fenceService.updateOneBoutique(
         null,
-        BoutiqueUpdateRequest(
-            chainId: boutiqueLili.chainId,
-            boutiqueId: boutiqueLili.boutiqueId,
-            boutique: boutiqueLili.boutique));
+        BoutiqueRequest(
+            chainId: boutiqueLili.chainId, boutique: boutiqueLili.boutique));
     expect(response.type, StatusResponse_Type.UPDATED);
     final response2 = await fenceService.readAllChains(null, Empty());
     expect(response2.chains.first.boutiques.first.name, 'Lili boutique test');

@@ -1050,7 +1050,7 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<StatusResponse> createOneBoutique(
-      ServiceCall? call, BoutiqueCreateRequest request) async {
+      ServiceCall? call, BoutiqueRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
@@ -1165,8 +1165,8 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<StatusResponse> updateOneBoutique(
-      ServiceCall? call, BoutiqueUpdateRequest request) async {
-    if (request.boutiqueId.isEmpty) {
+      ServiceCall? call, BoutiqueRequest request) async {
+    if (request.boutique.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }
     final userPermission = isMock
@@ -1188,8 +1188,8 @@ class FenceService extends FenceServiceBase {
     _db.isConnected ? null : await _db.open();
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
-    final boutiqueIndex =
-        chain.boutiques.indexWhere((e) => e.boutiqueId == request.boutiqueId);
+    final boutiqueIndex = chain.boutiques
+        .indexWhere((e) => e.boutiqueId == request.boutique.boutiqueId);
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('boutique not found');
     }
@@ -1670,7 +1670,7 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.boutiqueId.isEmpty) {
+    if (request.boutique.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.delete) ==
@@ -1687,7 +1687,8 @@ class FenceService extends FenceServiceBase {
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
     final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
-        btq.chainId == request.chainId && btq.boutiqueId == request.boutiqueId);
+        btq.chainId == request.chainId &&
+        btq.boutiqueId == request.boutique.boutiqueId);
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('no boutique match found');
     }
@@ -1736,7 +1737,7 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermission;
-    if (request.boutiqueId.isEmpty) {
+    if (request.boutique.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
@@ -1753,7 +1754,8 @@ class FenceService extends FenceServiceBase {
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
     final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
-        btq.chainId == request.chainId && btq.boutiqueId == request.boutiqueId);
+        btq.chainId == request.chainId &&
+        btq.boutiqueId == request.boutique.boutiqueId);
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('no boutique match found');
     }

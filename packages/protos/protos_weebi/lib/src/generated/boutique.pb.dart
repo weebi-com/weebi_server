@@ -160,6 +160,7 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
 
 class BoutiquePb extends $pb.GeneratedMessage {
   factory BoutiquePb({
+    $core.String? boutiqueId,
     $core.String? creationDate,
     $core.String? updateDate,
     $core.String? statusUpdateDate,
@@ -173,6 +174,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
+    if (boutiqueId != null) {
+      $result.boutiqueId = boutiqueId;
+    }
     if (creationDate != null) {
       $result.creationDate = creationDate;
     }
@@ -213,6 +217,7 @@ class BoutiquePb extends $pb.GeneratedMessage {
   factory BoutiquePb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiquePb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(2, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..aOS(3, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
     ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
@@ -248,102 +253,111 @@ class BoutiquePb extends $pb.GeneratedMessage {
   static BoutiquePb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BoutiquePb>(create);
   static BoutiquePb? _defaultInstance;
 
+  @$pb.TagNumber(1)
+  $core.String get boutiqueId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set boutiqueId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasBoutiqueId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearBoutiqueId() => clearField(1);
+
   @$pb.TagNumber(2)
-  $core.String get creationDate => $_getSZ(0);
+  $core.String get creationDate => $_getSZ(1);
   @$pb.TagNumber(2)
-  set creationDate($core.String v) { $_setString(0, v); }
+  set creationDate($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasCreationDate() => $_has(0);
+  $core.bool hasCreationDate() => $_has(1);
   @$pb.TagNumber(2)
   void clearCreationDate() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get updateDate => $_getSZ(1);
+  $core.String get updateDate => $_getSZ(2);
   @$pb.TagNumber(3)
-  set updateDate($core.String v) { $_setString(1, v); }
+  set updateDate($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasUpdateDate() => $_has(1);
+  $core.bool hasUpdateDate() => $_has(2);
   @$pb.TagNumber(3)
   void clearUpdateDate() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get statusUpdateDate => $_getSZ(2);
+  $core.String get statusUpdateDate => $_getSZ(3);
   @$pb.TagNumber(4)
-  set statusUpdateDate($core.String v) { $_setString(2, v); }
+  set statusUpdateDate($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasStatusUpdateDate() => $_has(2);
+  $core.bool hasStatusUpdateDate() => $_has(3);
   @$pb.TagNumber(4)
   void clearStatusUpdateDate() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.bool get status => $_getBF(3);
+  $core.bool get status => $_getBF(4);
   @$pb.TagNumber(5)
-  set status($core.bool v) { $_setBool(3, v); }
+  set status($core.bool v) { $_setBool(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasStatus() => $_has(3);
+  $core.bool hasStatus() => $_has(4);
   @$pb.TagNumber(5)
   void clearStatus() => clearField(5);
 
   @$pb.TagNumber(6)
-  $core.String get name => $_getSZ(4);
+  $core.String get name => $_getSZ(5);
   @$pb.TagNumber(6)
-  set name($core.String v) { $_setString(4, v); }
+  set name($core.String v) { $_setString(5, v); }
   @$pb.TagNumber(6)
-  $core.bool hasName() => $_has(4);
+  $core.bool hasName() => $_has(5);
   @$pb.TagNumber(6)
   void clearName() => clearField(6);
 
   @$pb.TagNumber(7)
-  $20.Phone get phone => $_getN(5);
+  $20.Phone get phone => $_getN(6);
   @$pb.TagNumber(7)
   set phone($20.Phone v) { setField(7, v); }
   @$pb.TagNumber(7)
-  $core.bool hasPhone() => $_has(5);
+  $core.bool hasPhone() => $_has(6);
   @$pb.TagNumber(7)
   void clearPhone() => clearField(7);
   @$pb.TagNumber(7)
-  $20.Phone ensurePhone() => $_ensure(5);
+  $20.Phone ensurePhone() => $_ensure(6);
 
   @$pb.TagNumber(8)
-  $21.Address get addressFull => $_getN(6);
+  $21.Address get addressFull => $_getN(7);
   @$pb.TagNumber(8)
   set addressFull($21.Address v) { setField(8, v); }
   @$pb.TagNumber(8)
-  $core.bool hasAddressFull() => $_has(6);
+  $core.bool hasAddressFull() => $_has(7);
   @$pb.TagNumber(8)
   void clearAddressFull() => clearField(8);
   @$pb.TagNumber(8)
-  $21.Address ensureAddressFull() => $_ensure(6);
+  $21.Address ensureAddressFull() => $_ensure(7);
 
   @$pb.TagNumber(9)
-  $core.double get promo => $_getN(7);
+  $core.double get promo => $_getN(8);
   @$pb.TagNumber(9)
-  set promo($core.double v) { $_setDouble(7, v); }
+  set promo($core.double v) { $_setDouble(8, v); }
   @$pb.TagNumber(9)
-  $core.bool hasPromo() => $_has(7);
+  $core.bool hasPromo() => $_has(8);
   @$pb.TagNumber(9)
   void clearPromo() => clearField(9);
 
   @$pb.TagNumber(10)
-  $core.String get promoStart => $_getSZ(8);
+  $core.String get promoStart => $_getSZ(9);
   @$pb.TagNumber(10)
-  set promoStart($core.String v) { $_setString(8, v); }
+  set promoStart($core.String v) { $_setString(9, v); }
   @$pb.TagNumber(10)
-  $core.bool hasPromoStart() => $_has(8);
+  $core.bool hasPromoStart() => $_has(9);
   @$pb.TagNumber(10)
   void clearPromoStart() => clearField(10);
 
   @$pb.TagNumber(11)
-  $core.String get promoEnd => $_getSZ(9);
+  $core.String get promoEnd => $_getSZ(10);
   @$pb.TagNumber(11)
-  set promoEnd($core.String v) { $_setString(9, v); }
+  set promoEnd($core.String v) { $_setString(10, v); }
   @$pb.TagNumber(11)
-  $core.bool hasPromoEnd() => $_has(9);
+  $core.bool hasPromoEnd() => $_has(10);
   @$pb.TagNumber(11)
   void clearPromoEnd() => clearField(11);
 
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(10);
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(11);
 }
 
 

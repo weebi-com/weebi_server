@@ -21,9 +21,9 @@ import 'device.pb.dart' as $13;
 import 'user.pb.dart' as $7;
 import 'user_permissions.pb.dart' as $9;
 
-/// used mostly by mobile
-class BoutiqueCreateRequest extends $pb.GeneratedMessage {
-  factory BoutiqueCreateRequest({
+/// / one boutique creation the server will assign the boutiqueId
+class BoutiqueRequest extends $pb.GeneratedMessage {
+  factory BoutiqueRequest({
     $core.String? chainId,
     $12.BoutiquePb? boutique,
   }) {
@@ -36,80 +36,13 @@ class BoutiqueCreateRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  BoutiqueCreateRequest._() : super();
-  factory BoutiqueCreateRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory BoutiqueCreateRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueCreateRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$12.BoutiquePb>(2, _omitFieldNames ? '' : 'boutique', subBuilder: $12.BoutiquePb.create)
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  BoutiqueCreateRequest clone() => BoutiqueCreateRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  BoutiqueCreateRequest copyWith(void Function(BoutiqueCreateRequest) updates) => super.copyWith((message) => updates(message as BoutiqueCreateRequest)) as BoutiqueCreateRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static BoutiqueCreateRequest create() => BoutiqueCreateRequest._();
-  BoutiqueCreateRequest createEmptyInstance() => create();
-  static $pb.PbList<BoutiqueCreateRequest> createRepeated() => $pb.PbList<BoutiqueCreateRequest>();
-  @$core.pragma('dart2js:noInline')
-  static BoutiqueCreateRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BoutiqueCreateRequest>(create);
-  static BoutiqueCreateRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get chainId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set chainId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasChainId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $12.BoutiquePb get boutique => $_getN(1);
-  @$pb.TagNumber(2)
-  set boutique($12.BoutiquePb v) { setField(2, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasBoutique() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearBoutique() => clearField(2);
-  @$pb.TagNumber(2)
-  $12.BoutiquePb ensureBoutique() => $_ensure(1);
-}
-
-/// / can only be called by an admin, from web, so the String boutiqueId is known
-class BoutiqueRequest extends $pb.GeneratedMessage {
-  factory BoutiqueRequest({
-    $core.String? chainId,
-    $core.String? boutiqueId,
-  }) {
-    final $result = create();
-    if (chainId != null) {
-      $result.chainId = chainId;
-    }
-    if (boutiqueId != null) {
-      $result.boutiqueId = boutiqueId;
-    }
-    return $result;
-  }
   BoutiqueRequest._() : super();
   factory BoutiqueRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory BoutiqueRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOS(2, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
+    ..aOM<$12.BoutiquePb>(2, _omitFieldNames ? '' : 'boutique', subBuilder: $12.BoutiquePb.create)
     ..hasRequiredFields = false
   ;
 
@@ -144,94 +77,15 @@ class BoutiqueRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get boutiqueId => $_getSZ(1);
+  $12.BoutiquePb get boutique => $_getN(1);
   @$pb.TagNumber(2)
-  set boutiqueId($core.String v) { $_setString(1, v); }
+  set boutique($12.BoutiquePb v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasBoutiqueId() => $_has(1);
+  $core.bool hasBoutique() => $_has(1);
   @$pb.TagNumber(2)
-  void clearBoutiqueId() => clearField(2);
-}
-
-/// / can only be called by an admin, from web, so the String boutiqueId is known
-class BoutiqueUpdateRequest extends $pb.GeneratedMessage {
-  factory BoutiqueUpdateRequest({
-    $core.String? chainId,
-    $core.String? boutiqueId,
-    $12.BoutiquePb? boutique,
-  }) {
-    final $result = create();
-    if (chainId != null) {
-      $result.chainId = chainId;
-    }
-    if (boutiqueId != null) {
-      $result.boutiqueId = boutiqueId;
-    }
-    if (boutique != null) {
-      $result.boutique = boutique;
-    }
-    return $result;
-  }
-  BoutiqueUpdateRequest._() : super();
-  factory BoutiqueUpdateRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory BoutiqueUpdateRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueUpdateRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOS(2, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
-    ..aOM<$12.BoutiquePb>(3, _omitFieldNames ? '' : 'boutique', subBuilder: $12.BoutiquePb.create)
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  BoutiqueUpdateRequest clone() => BoutiqueUpdateRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  BoutiqueUpdateRequest copyWith(void Function(BoutiqueUpdateRequest) updates) => super.copyWith((message) => updates(message as BoutiqueUpdateRequest)) as BoutiqueUpdateRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static BoutiqueUpdateRequest create() => BoutiqueUpdateRequest._();
-  BoutiqueUpdateRequest createEmptyInstance() => create();
-  static $pb.PbList<BoutiqueUpdateRequest> createRepeated() => $pb.PbList<BoutiqueUpdateRequest>();
-  @$core.pragma('dart2js:noInline')
-  static BoutiqueUpdateRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BoutiqueUpdateRequest>(create);
-  static BoutiqueUpdateRequest? _defaultInstance;
-
-  @$pb.TagNumber(1)
-  $core.String get chainId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set chainId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasChainId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
-
+  void clearBoutique() => clearField(2);
   @$pb.TagNumber(2)
-  $core.String get boutiqueId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set boutiqueId($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasBoutiqueId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearBoutiqueId() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $12.BoutiquePb get boutique => $_getN(2);
-  @$pb.TagNumber(3)
-  set boutique($12.BoutiquePb v) { setField(3, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasBoutique() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearBoutique() => clearField(3);
-  @$pb.TagNumber(3)
-  $12.BoutiquePb ensureBoutique() => $_ensure(2);
+  $12.BoutiquePb ensureBoutique() => $_ensure(1);
 }
 
 /// / deviceId == userId, so front can reuse deviceId to try login in

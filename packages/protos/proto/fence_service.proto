@@ -15,6 +15,7 @@ import "btq_chain.proto";
 import "boutique.proto";
 import "device.proto";
 
+/// boutiques & users 
 service FenceService {
   rpc signUp(weebi.user.SignUpRequest) returns (weebi.user.SignUpResponse);
   rpc authenticateWithCredentials (Credentials) returns (Tokens);
@@ -51,14 +52,12 @@ service FenceService {
   rpc updateOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
   rpc deleteOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
   
-  rpc createOneBoutique(BoutiqueCreateRequest) returns (google.retail.common.StatusResponse);
+  rpc createOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   rpc readOneBoutique(BoutiqueRequest) returns (weebi.boutique.BoutiquePb);
-  rpc updateOneBoutique(BoutiqueUpdateRequest) returns (google.retail.common.StatusResponse);
+  rpc updateOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   // readBoutiques is not relevant since they are provided in readAllChains
    
-
-
   /// devices are sensitive
   rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
   /// device enrolment follows a different process than user enrolment
@@ -78,25 +77,12 @@ service FenceService {
   /// weak auth hack to ease app access to cashiers with very low rights
 }
 
-// used mostly by mobile
-message BoutiqueCreateRequest {
-  string chainId = 1;
+/// one boutique creation the server will assign the boutiqueId
+message BoutiqueRequest {
+  string chainId = 1 ;
   weebi.boutique.BoutiquePb boutique = 2;
 }
 
-
-/// can only be called by an admin, from web, so the String boutiqueId is known
-message BoutiqueRequest {
-  string chainId = 1 ;
-  string boutiqueId = 2 ; // server given
-}
-
-/// can only be called by an admin, from web, so the String boutiqueId is known
-message BoutiqueUpdateRequest {
-  string chainId = 1 ;
-  string boutiqueId = 2 ; // server given
-  weebi.boutique.BoutiquePb boutique = 3;
-}
 
 
 /// deviceId == userId, so front can reuse deviceId to try login in

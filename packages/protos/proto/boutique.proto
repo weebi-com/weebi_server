@@ -9,7 +9,7 @@ import "common/g_timestamp.proto";
 
 message BoutiqueMongo {
     BoutiquePb boutique = 1 [json_name = 'boutique']; 
-    string boutiqueId = 2 [json_name = 'boutiqueId']; // server given
+    string boutiqueId = 2 [json_name = 'boutiqueId']; // assigned by the server
     string firmId = 3 [json_name = 'firmId'];
     string chainId = 4 [json_name = 'chainId'];
     google.protobuf.Timestamp creationDateUTC = 5 [json_name = 'creationDateUTC'];
@@ -21,6 +21,7 @@ message BoutiqueMongo {
 
 
 message BoutiquePb {
+    string boutiqueId = 1 [json_name = 'boutiqueId'];
     string creationDate = 2 [json_name = 'creationDate'];
     string updateDate = 3 [json_name = 'updateDate'];
     string statusUpdateDate = 4 [json_name = 'statusUpdateDate'];
@@ -36,9 +37,5 @@ message BoutiquePb {
    }
    
 
-//  required super.serverStatus,
-//  required super.serverStatusUpdateDate,
-//  required super.isProd,
-//  required super.isLocked,
 //  this.logoSource = PhotoSource.unknown,
 //  this.logoPath = '',

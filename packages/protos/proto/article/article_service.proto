@@ -16,6 +16,8 @@ service ArticleService {
 
   // category
   rpc createOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
+  // TODO : do a createMany
+  
   rpc readOneCategory (FindCategoryRequest) returns (weebi.category.CategoryPb);
   rpc readAllCategories (ReadCategoriesRequest) returns  (CategoriesResponse);
   rpc updateOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);

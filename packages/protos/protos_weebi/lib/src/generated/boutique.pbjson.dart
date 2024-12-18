@@ -58,6 +58,7 @@ final $typed_data.Uint8List boutiqueMongoDescriptor = $convert.base64Decode(
 const BoutiquePb$json = {
   '1': 'BoutiquePb',
   '2': [
+    {'1': 'boutiqueId', '3': 1, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'creationDate', '3': 2, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'updateDate', '3': 3, '4': 1, '5': 9, '10': 'updateDate'},
     {'1': 'statusUpdateDate', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
@@ -88,14 +89,15 @@ const BoutiquePb_AdditionalAttributesEntry$json = {
 
 /// Descriptor for `BoutiquePb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
-    'CgpCb3V0aXF1ZVBiEiIKDGNyZWF0aW9uRGF0ZRgCIAEoCVIMY3JlYXRpb25EYXRlEh4KCnVwZG'
-    'F0ZURhdGUYAyABKAlSCnVwZGF0ZURhdGUSKgoQc3RhdHVzVXBkYXRlRGF0ZRgEIAEoCVIQc3Rh'
-    'dHVzVXBkYXRlRGF0ZRIWCgZzdGF0dXMYBSABKAhSBnN0YXR1cxISCgRuYW1lGAYgASgJUgRuYW'
-    '1lEi8KBXBob25lGAcgASgLMhkud2VlYmkuY29tbW9uLnBob25lLlBob25lUgVwaG9uZRI/Cgth'
-    'ZGRyZXNzRnVsbBgIIAEoCzIdLndlZWJpLmNvbW1vbi5hZGRyZXNzLkFkZHJlc3NSC2FkZHJlc3'
-    'NGdWxsEhQKBXByb21vGAkgASgBUgVwcm9tbxIeCgpwcm9tb1N0YXJ0GAogASgJUgpwcm9tb1N0'
-    'YXJ0EhoKCHByb21vRW5kGAsgASgJUghwcm9tb0VuZBJqChVhZGRpdGlvbmFsX2F0dHJpYnV0ZX'
-    'MYYyADKAsyNC53ZWViaS5ib3V0aXF1ZS5Cb3V0aXF1ZVBiLkFkZGl0aW9uYWxBdHRyaWJ1dGVz'
-    'RW50cnlSFWFkZGl0aW9uYWxfYXR0cmlidXRlcxpHChlBZGRpdGlvbmFsQXR0cmlidXRlc0VudH'
-    'J5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgMEGM=');
+    'CgpCb3V0aXF1ZVBiEh4KCmJvdXRpcXVlSWQYASABKAlSCmJvdXRpcXVlSWQSIgoMY3JlYXRpb2'
+    '5EYXRlGAIgASgJUgxjcmVhdGlvbkRhdGUSHgoKdXBkYXRlRGF0ZRgDIAEoCVIKdXBkYXRlRGF0'
+    'ZRIqChBzdGF0dXNVcGRhdGVEYXRlGAQgASgJUhBzdGF0dXNVcGRhdGVEYXRlEhYKBnN0YXR1cx'
+    'gFIAEoCFIGc3RhdHVzEhIKBG5hbWUYBiABKAlSBG5hbWUSLwoFcGhvbmUYByABKAsyGS53ZWVi'
+    'aS5jb21tb24ucGhvbmUuUGhvbmVSBXBob25lEj8KC2FkZHJlc3NGdWxsGAggASgLMh0ud2VlYm'
+    'kuY29tbW9uLmFkZHJlc3MuQWRkcmVzc1ILYWRkcmVzc0Z1bGwSFAoFcHJvbW8YCSABKAFSBXBy'
+    'b21vEh4KCnByb21vU3RhcnQYCiABKAlSCnByb21vU3RhcnQSGgoIcHJvbW9FbmQYCyABKAlSCH'
+    'Byb21vRW5kEmoKFWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI0LndlZWJpLmJvdXRpcXVl'
+    'LkJvdXRpcXVlUGIuQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb25hbF9hdHRyaW'
+    'J1dGVzGkcKGUFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoF'
+    'dmFsdWUYAiABKAlSBXZhbHVlOgI4AUoECAwQYw==');
 
