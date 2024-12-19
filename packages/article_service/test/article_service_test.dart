@@ -39,7 +39,7 @@ void main() async {
 
   test('test insertOne ', () async {
     final request =
-        ArticleRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
+        CalibreRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
     // ignore: unused_local_variable
     final response = await articleService.createOne(null, request);
     expect(response.type, StatusResponse_Type.CREATED);
@@ -61,7 +61,7 @@ void main() async {
       );
 
     final request =
-        ArticleRequest(chainId: Dummy.chain.chainId, calibre: calibreLili);
+        CalibreRequest(chainId: Dummy.chain.chainId, calibre: calibreLili);
     // ignore: unused_local_variable
     final response = await articleService.updateOne(null, request);
     expect(response.type, StatusResponse_Type.UPDATED);
@@ -73,7 +73,7 @@ void main() async {
 
   test('test deleteOne ', () async {
     final request =
-        ArticleRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
+        CalibreRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
     // ignore: unused_local_variable
     final response = await articleService.deleteOne(null, request);
 

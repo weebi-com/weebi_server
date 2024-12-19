@@ -48,15 +48,16 @@ final $typed_data.Uint8List findContactRequestDescriptor = $convert.base64Decode
 const ReadAllContactsRequest$json = {
   '1': 'ReadAllContactsRequest',
   '2': [
-    {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
-    {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'lastFetchTimestampUTC', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastFetchTimestampUTC'},
   ],
 };
 
 /// Descriptor for `ReadAllContactsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List readAllContactsRequestDescriptor = $convert.base64Decode(
-    'ChZSZWFkQWxsQ29udGFjdHNSZXF1ZXN0EhYKBmZpcm1JZBgBIAEoCVIGZmlybUlkEhgKB2NoYW'
-    'luSWQYAiABKAlSB2NoYWluSWQ=');
+    'ChZSZWFkQWxsQ29udGFjdHNSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQSUAoVbG'
+    'FzdEZldGNoVGltZXN0YW1wVVRDGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIV'
+    'bGFzdEZldGNoVGltZXN0YW1wVVRD');
 
 @$core.Deprecated('Use contactRequestDescriptor instead')
 const ContactRequest$json = {
@@ -71,6 +72,20 @@ const ContactRequest$json = {
 final $typed_data.Uint8List contactRequestDescriptor = $convert.base64Decode(
     'Cg5Db250YWN0UmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEjIKB2NvbnRhY3QYAi'
     'ABKAsyGC53ZWViaS5jb250YWN0LkNvbnRhY3RQYlIHY29udGFjdA==');
+
+@$core.Deprecated('Use contactsRequestDescriptor instead')
+const ContactsRequest$json = {
+  '1': 'ContactsRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'contacts', '3': 2, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contacts'},
+  ],
+};
+
+/// Descriptor for `ContactsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List contactsRequestDescriptor = $convert.base64Decode(
+    'Cg9Db250YWN0c1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBI0Cghjb250YWN0cx'
+    'gCIAMoCzIYLndlZWJpLmNvbnRhY3QuQ29udGFjdFBiUghjb250YWN0cw==');
 
 @$core.Deprecated('Use contactsResponseDescriptor instead')
 const ContactsResponse$json = {

@@ -23,7 +23,23 @@ const ContactMongo$json = {
     {'1': 'firmId', '3': 4, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 5, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'creationDate', '3': 6, '4': 1, '5': 9, '10': 'creationDate'},
+    {'1': 'lastTouchTimestampUTC', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
+    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.contact.ContactMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
+  '3': [ContactMongo_AdditionalAttributesEntry$json],
+  '9': [
+    {'1': 8, '2': 99},
+  ],
+};
+
+@$core.Deprecated('Use contactMongoDescriptor instead')
+const ContactMongo_AdditionalAttributesEntry$json = {
+  '1': 'AdditionalAttributesEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': {'7': true},
 };
 
 /// Descriptor for `ContactMongo`. Decode as a `google.protobuf.DescriptorProto`.
@@ -31,7 +47,12 @@ final $typed_data.Uint8List contactMongoDescriptor = $convert.base64Decode(
     'CgxDb250YWN0TW9uZ28SMgoHY29udGFjdBgBIAEoCzIYLndlZWJpLmNvbnRhY3QuQ29udGFjdF'
     'BiUgdjb250YWN0EhwKCWNvbnRhY3RJZBgCIAEoBVIJY29udGFjdElkEhYKBnVzZXJJZBgDIAEo'
     'CVIGdXNlcklkEhYKBmZpcm1JZBgEIAEoCVIGZmlybUlkEhgKB2NoYWluSWQYBSABKAlSB2NoYW'
-    'luSWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRhdGU=');
+    'luSWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRhdGUSUAoVbGFzdFRvdWNoVGlt'
+    'ZXN0YW1wVVRDGAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIVbGFzdFRvdWNoVG'
+    'ltZXN0YW1wVVRDEmsKFWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI1LndlZWJpLmNvbnRh'
+    'Y3QuQ29udGFjdE1vbmdvLkFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnlSFWFkZGl0aW9uYWxfYX'
+    'R0cmlidXRlcxpHChlBZGRpdGlvbmFsQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5'
+    'EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgIEGM=');
 
 @$core.Deprecated('Use contactPbDescriptor instead')
 const ContactPb$json = {

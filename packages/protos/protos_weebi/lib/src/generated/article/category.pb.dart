@@ -13,6 +13,133 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../common/g_timestamp.pb.dart' as $20;
+
+class CategoryMongo extends $pb.GeneratedMessage {
+  factory CategoryMongo({
+    $core.String? firmId,
+    $core.String? chainId,
+    $core.String? userId,
+    $core.String? title,
+    CategoryPb? category,
+    $20.Timestamp? lastTouchTimestampUTC,
+  }) {
+    final $result = create();
+    if (firmId != null) {
+      $result.firmId = firmId;
+    }
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (userId != null) {
+      $result.userId = userId;
+    }
+    if (title != null) {
+      $result.title = title;
+    }
+    if (category != null) {
+      $result.category = category;
+    }
+    if (lastTouchTimestampUTC != null) {
+      $result.lastTouchTimestampUTC = lastTouchTimestampUTC;
+    }
+    return $result;
+  }
+  CategoryMongo._() : super();
+  factory CategoryMongo.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CategoryMongo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CategoryMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.category'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
+    ..aOS(4, _omitFieldNames ? '' : 'title')
+    ..aOM<CategoryPb>(5, _omitFieldNames ? '' : 'category', subBuilder: CategoryPb.create)
+    ..aOM<$20.Timestamp>(6, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $20.Timestamp.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CategoryMongo clone() => CategoryMongo()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CategoryMongo copyWith(void Function(CategoryMongo) updates) => super.copyWith((message) => updates(message as CategoryMongo)) as CategoryMongo;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CategoryMongo create() => CategoryMongo._();
+  CategoryMongo createEmptyInstance() => create();
+  static $pb.PbList<CategoryMongo> createRepeated() => $pb.PbList<CategoryMongo>();
+  @$core.pragma('dart2js:noInline')
+  static CategoryMongo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CategoryMongo>(create);
+  static CategoryMongo? _defaultInstance;
+
+  /// faster object read
+  @$pb.TagNumber(1)
+  $core.String get firmId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set firmId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasFirmId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFirmId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get chainId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set chainId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasChainId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearChainId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get userId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set userId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasUserId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearUserId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get title => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set title($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasTitle() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearTitle() => clearField(4);
+
+  @$pb.TagNumber(5)
+  CategoryPb get category => $_getN(4);
+  @$pb.TagNumber(5)
+  set category(CategoryPb v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasCategory() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCategory() => clearField(5);
+  @$pb.TagNumber(5)
+  CategoryPb ensureCategory() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $20.Timestamp get lastTouchTimestampUTC => $_getN(5);
+  @$pb.TagNumber(6)
+  set lastTouchTimestampUTC($20.Timestamp v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasLastTouchTimestampUTC() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearLastTouchTimestampUTC() => clearField(6);
+  @$pb.TagNumber(6)
+  $20.Timestamp ensureLastTouchTimestampUTC() => $_ensure(5);
+}
+
 class CategoryPb extends $pb.GeneratedMessage {
   factory CategoryPb({
     $core.Iterable<$core.int>? calibresIds,
@@ -111,115 +238,6 @@ class CategoryPb extends $pb.GeneratedMessage {
   $core.bool hasUpdateDate() => $_has(4);
   @$pb.TagNumber(5)
   void clearUpdateDate() => clearField(5);
-}
-
-class CategoryMongo extends $pb.GeneratedMessage {
-  factory CategoryMongo({
-    $core.String? firmId,
-    $core.String? chainId,
-    $core.String? userId,
-    $core.String? title,
-    CategoryPb? category,
-  }) {
-    final $result = create();
-    if (firmId != null) {
-      $result.firmId = firmId;
-    }
-    if (chainId != null) {
-      $result.chainId = chainId;
-    }
-    if (userId != null) {
-      $result.userId = userId;
-    }
-    if (title != null) {
-      $result.title = title;
-    }
-    if (category != null) {
-      $result.category = category;
-    }
-    return $result;
-  }
-  CategoryMongo._() : super();
-  factory CategoryMongo.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CategoryMongo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CategoryMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.category'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
-    ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
-    ..aOS(4, _omitFieldNames ? '' : 'title')
-    ..aOM<CategoryPb>(5, _omitFieldNames ? '' : 'category', subBuilder: CategoryPb.create)
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  CategoryMongo clone() => CategoryMongo()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  CategoryMongo copyWith(void Function(CategoryMongo) updates) => super.copyWith((message) => updates(message as CategoryMongo)) as CategoryMongo;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CategoryMongo create() => CategoryMongo._();
-  CategoryMongo createEmptyInstance() => create();
-  static $pb.PbList<CategoryMongo> createRepeated() => $pb.PbList<CategoryMongo>();
-  @$core.pragma('dart2js:noInline')
-  static CategoryMongo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CategoryMongo>(create);
-  static CategoryMongo? _defaultInstance;
-
-  /// faster object read
-  @$pb.TagNumber(1)
-  $core.String get firmId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set firmId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasFirmId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearFirmId() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.String get chainId => $_getSZ(1);
-  @$pb.TagNumber(2)
-  set chainId($core.String v) { $_setString(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasChainId() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearChainId() => clearField(2);
-
-  @$pb.TagNumber(3)
-  $core.String get userId => $_getSZ(2);
-  @$pb.TagNumber(3)
-  set userId($core.String v) { $_setString(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasUserId() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearUserId() => clearField(3);
-
-  @$pb.TagNumber(4)
-  $core.String get title => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set title($core.String v) { $_setString(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasTitle() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearTitle() => clearField(4);
-
-  @$pb.TagNumber(5)
-  CategoryPb get category => $_getN(4);
-  @$pb.TagNumber(5)
-  set category(CategoryPb v) { setField(5, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasCategory() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearCategory() => clearField(5);
-  @$pb.TagNumber(5)
-  CategoryPb ensureCategory() => $_ensure(4);
 }
 
 

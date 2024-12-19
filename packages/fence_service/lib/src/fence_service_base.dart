@@ -97,7 +97,7 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       final timestamp = DateTime.now().timestampProto;
-      if (result.ok == 1 && result.document != null) {
+      if (result.success && result.document != null) {
         final userId = result.document!['userId'];
         //print('userId.runtimeType ${userId.runtimeType}');
 
@@ -530,7 +530,7 @@ class FenceService extends FenceServiceBase {
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
-      if (result.ok == 1 && result.document != null) {
+      if (result.success && result.document != null) {
         return temp;
       } else {
         throw GrpcError.unknown('mongo error generateCodeForPairingDevice');
@@ -568,7 +568,7 @@ class FenceService extends FenceServiceBase {
   /// the device will still need to be approved by admin on the web (pending)
   /// mitigating the risk of a device added without admin consent
   @override
-  Future<CreatePendingDeviceResponse> createDevice(
+  Future<CreateDeviceResponse> createDevice(
       ServiceCall? call, PendingDeviceRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -583,7 +583,7 @@ class FenceService extends FenceServiceBase {
     _db.isConnected ? null : await _db.open();
     final pairingResp = await _findCode(request.code);
     if (pairingResp.code == 0) {
-      return CreatePendingDeviceResponse(
+      return CreateDeviceResponse(
           statusResponse: StatusResponse(
               type: StatusResponse_Type.ERROR,
               message: 'no match',
@@ -647,7 +647,7 @@ class FenceService extends FenceServiceBase {
         // do not block user in case this fails, let them use the appp
         print('error creating cashier $cashierCreationResponse');
       }
-      return CreatePendingDeviceResponse(
+      return CreateDeviceResponse(
           statusResponse: StatusResponse(
               type: StatusResponse_Type.CREATED, timestamp: result.timestamp),
           firmId: chain.firmId,
@@ -686,7 +686,7 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       final timestamp = DateTime.now().timestampProto;
-      if (result.ok == 1 && result.document != null) {
+      if (result.success && result.document != null) {
         final userOid = result.document!['userId'];
         return StatusResponse()
           ..id = userOid
@@ -844,7 +844,7 @@ class FenceService extends FenceServiceBase {
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
-      if (result.ok == 1 && result.document != null) {
+      if (result.success && result.document != null) {
         final permissions = UserPermissions.create()
           ..articleRights = RightsAdmin.article
           ..boutiqueRights = RightsAdmin.boutique
@@ -878,7 +878,7 @@ class FenceService extends FenceServiceBase {
                 ..chainId = firmId
                 ..boutiqueId = firmId
                 ..name = request.name
-                ..creationDateUTC = nowProtoUTC
+                ..creationTimestampUTC = nowProtoUTC
             ]);
 
         try {
@@ -1077,7 +1077,7 @@ class FenceService extends FenceServiceBase {
       ..chainId = request.chainId
       ..boutiqueId = boutiqueId
       ..name = request.boutique.name
-      ..creationDateUTC = nowProtoUTC
+      ..creationTimestampUTC = nowProtoUTC
       ..boutique = request.boutique;
 
     chain.boutiques.add(boutiqueMongo);
@@ -1141,7 +1141,7 @@ class FenceService extends FenceServiceBase {
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
-      if (result.ok == 1 && result.document != null) {
+      if (result.success && result.document != null) {
         final chainId = result.document!['chainId'];
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
@@ -1362,7 +1362,7 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
       final timestamp = DateTime.now().timestampProto;
-      if (result.ok == 1 && result.document != null) {
+      if (result.success && result.document != null) {
         final userId = result.document!['userId'];
         return SignUpResponse(
             statusResponse: StatusResponse()

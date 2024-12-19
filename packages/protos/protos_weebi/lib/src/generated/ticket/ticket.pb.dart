@@ -14,8 +14,9 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../article/article.pb.dart' as $3;
+import '../common/g_timestamp.pb.dart' as $20;
 import 'ticket.pbenum.dart';
-import 'ticket_type.pbenum.dart' as $22;
+import 'ticket_type.pbenum.dart' as $23;
 
 export 'ticket.pbenum.dart';
 
@@ -24,19 +25,21 @@ export 'ticket.pbenum.dart';
 class TicketMongo extends $pb.GeneratedMessage {
   factory TicketMongo({
     TicketPb? ticket,
-    $core.int? ticketNonUniqueId,
+    $core.int? nonUniqueId,
     $core.String? userId,
     $core.String? boutiqueId,
     $core.String? firmId,
     $core.String? chainId,
     $core.String? creationDate,
+    $20.Timestamp? lastTouchTimestampUTC,
+    $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
     if (ticket != null) {
       $result.ticket = ticket;
     }
-    if (ticketNonUniqueId != null) {
-      $result.ticketNonUniqueId = ticketNonUniqueId;
+    if (nonUniqueId != null) {
+      $result.nonUniqueId = nonUniqueId;
     }
     if (userId != null) {
       $result.userId = userId;
@@ -53,6 +56,12 @@ class TicketMongo extends $pb.GeneratedMessage {
     if (creationDate != null) {
       $result.creationDate = creationDate;
     }
+    if (lastTouchTimestampUTC != null) {
+      $result.lastTouchTimestampUTC = lastTouchTimestampUTC;
+    }
+    if (additionalAttributes != null) {
+      $result.additionalAttributes.addAll(additionalAttributes);
+    }
     return $result;
   }
   TicketMongo._() : super();
@@ -61,12 +70,14 @@ class TicketMongo extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
     ..aOM<TicketPb>(1, _omitFieldNames ? '' : 'ticket', subBuilder: TicketPb.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'ticketNonUniqueId', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'nonUniqueId', $pb.PbFieldType.O3, protoName: 'nonUniqueId')
     ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(4, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(5, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(6, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOM<$20.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $20.Timestamp.create)
+    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'TicketMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.ticket'))
     ..hasRequiredFields = false
   ;
 
@@ -103,13 +114,13 @@ class TicketMongo extends $pb.GeneratedMessage {
   TicketPb ensureTicket() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get ticketNonUniqueId => $_getIZ(1);
+  $core.int get nonUniqueId => $_getIZ(1);
   @$pb.TagNumber(2)
-  set ticketNonUniqueId($core.int v) { $_setSignedInt32(1, v); }
+  set nonUniqueId($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasTicketNonUniqueId() => $_has(1);
+  $core.bool hasNonUniqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTicketNonUniqueId() => clearField(2);
+  void clearNonUniqueId() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get userId => $_getSZ(2);
@@ -155,17 +166,31 @@ class TicketMongo extends $pb.GeneratedMessage {
   $core.bool hasCreationDate() => $_has(6);
   @$pb.TagNumber(7)
   void clearCreationDate() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $20.Timestamp get lastTouchTimestampUTC => $_getN(7);
+  @$pb.TagNumber(8)
+  set lastTouchTimestampUTC($20.Timestamp v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasLastTouchTimestampUTC() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearLastTouchTimestampUTC() => clearField(8);
+  @$pb.TagNumber(8)
+  $20.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
+
+  @$pb.TagNumber(99)
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(8);
 }
 
 class TicketPb extends $pb.GeneratedMessage {
   factory TicketPb({
-    $core.int? ticketNonUniqueId,
+    $core.int? nonUniqueId,
     Counterfoil? counterfoil,
     $core.String? date,
     $core.String? statusUpdateDate,
     $core.bool? status,
     $core.Iterable<ItemCartPb>? items,
-    $22.TicketTypePb? ticketType,
+    $23.TicketTypePb? ticketType,
     TicketPb_PaymentTypePb? paymentType,
     $core.int? contactId,
     TaxPb? taxe,
@@ -175,8 +200,8 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? comment,
   }) {
     final $result = create();
-    if (ticketNonUniqueId != null) {
-      $result.ticketNonUniqueId = ticketNonUniqueId;
+    if (nonUniqueId != null) {
+      $result.nonUniqueId = nonUniqueId;
     }
     if (counterfoil != null) {
       $result.counterfoil = counterfoil;
@@ -224,13 +249,13 @@ class TicketPb extends $pb.GeneratedMessage {
   factory TicketPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'nonUniqueId')
     ..aOM<Counterfoil>(2, _omitFieldNames ? '' : 'counterfoil', subBuilder: Counterfoil.create)
     ..aOS(3, _omitFieldNames ? '' : 'date')
     ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..aOB(5, _omitFieldNames ? '' : 'status')
     ..pc<ItemCartPb>(6, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM, subBuilder: ItemCartPb.create)
-    ..e<$22.TicketTypePb>(7, _omitFieldNames ? '' : 'ticketType', $pb.PbFieldType.OE, protoName: 'ticketType', defaultOrMaker: $22.TicketTypePb.unknown, valueOf: $22.TicketTypePb.valueOf, enumValues: $22.TicketTypePb.values)
+    ..e<$23.TicketTypePb>(7, _omitFieldNames ? '' : 'ticketType', $pb.PbFieldType.OE, protoName: 'ticketType', defaultOrMaker: $23.TicketTypePb.unknown, valueOf: $23.TicketTypePb.valueOf, enumValues: $23.TicketTypePb.values)
     ..e<TicketPb_PaymentTypePb>(8, _omitFieldNames ? '' : 'paymentType', $pb.PbFieldType.OE, protoName: 'paymentType', defaultOrMaker: TicketPb_PaymentTypePb.unknown, valueOf: TicketPb_PaymentTypePb.valueOf, enumValues: TicketPb_PaymentTypePb.values)
     ..a<$core.int>(9, _omitFieldNames ? '' : 'contactId', $pb.PbFieldType.O3, protoName: 'contactId')
     ..aOM<TaxPb>(10, _omitFieldNames ? '' : 'taxe', subBuilder: TaxPb.create)
@@ -263,14 +288,17 @@ class TicketPb extends $pb.GeneratedMessage {
   static TicketPb? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get ticketNonUniqueId => $_getIZ(0);
+  $core.int get nonUniqueId => $_getIZ(0);
   @$pb.TagNumber(1)
-  set ticketNonUniqueId($core.int v) { $_setSignedInt32(0, v); }
+  set nonUniqueId($core.int v) { $_setSignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasTicketNonUniqueId() => $_has(0);
+  $core.bool hasNonUniqueId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTicketNonUniqueId() => clearField(1);
+  void clearNonUniqueId() => clearField(1);
 
+  /// different from article and contact
+  /// a ticket must include a firm/chain/boutique/user
+  /// the server will check they fit the permissions
   @$pb.TagNumber(2)
   Counterfoil get counterfoil => $_getN(1);
   @$pb.TagNumber(2)
@@ -313,9 +341,9 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.List<ItemCartPb> get items => $_getList(5);
 
   @$pb.TagNumber(7)
-  $22.TicketTypePb get ticketType => $_getN(6);
+  $23.TicketTypePb get ticketType => $_getN(6);
   @$pb.TagNumber(7)
-  set ticketType($22.TicketTypePb v) { setField(7, v); }
+  set ticketType($23.TicketTypePb v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasTicketType() => $_has(6);
   @$pb.TagNumber(7)

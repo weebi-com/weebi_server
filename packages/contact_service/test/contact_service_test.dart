@@ -10,7 +10,6 @@ import 'package:contact_service/contact_service.dart';
 void main() async {
   final db = TestHelper.localDb;
   final connection = Connection(ConnectionManager(db));
-  final firmId = Dummy.firm.firmId;
   final chainId = Dummy.chain.chainId;
   late ContactService contactService;
 
@@ -46,7 +45,7 @@ void main() async {
   });
   test('test readAll', () async {
     final response = await contactService.readAll(
-        null, ReadAllContactsRequest(firmId: firmId, chainId: chainId));
+        null, ReadAllContactsRequest(chainId: chainId));
     expect(response.contacts.length, 1);
   });
 

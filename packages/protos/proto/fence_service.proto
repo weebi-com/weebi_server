@@ -68,7 +68,9 @@ service FenceService {
   rpc readOnePendingDevice(ReadDeviceBtqRequest) returns (weebi.device.Device);
   /// createDevice is called by mobile/desktop app  
   /// await lasts for 2 minutes (to be tested)
-  rpc createDevice(PendingDeviceRequest) returns (CreatePendingDeviceResponse);
+  /// remove pending
+  rpc createDevice(PendingDeviceRequest) returns (CreateDeviceResponse);
+  
   /// a different auth method to avoid locking PoS
   /// for first authent after device
   rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
@@ -86,7 +88,8 @@ message BoutiqueRequest {
 
 
 /// deviceId == userId, so front can reuse deviceId to try login in
-message CreatePendingDeviceResponse {
+/// remove pending
+message CreateDeviceResponse {
   google.retail.common.StatusResponse statusResponse = 1 [json_name = 'statusResponse'];
   string firmId = 2 [json_name = 'firmId'];
   string chainId = 3 [json_name = 'chainId'];

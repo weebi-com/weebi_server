@@ -12,10 +12,11 @@ message BoutiqueMongo {
     string boutiqueId = 2 [json_name = 'boutiqueId']; // assigned by the server
     string firmId = 3 [json_name = 'firmId'];
     string chainId = 4 [json_name = 'chainId'];
-    google.protobuf.Timestamp creationDateUTC = 5 [json_name = 'creationDateUTC'];
+    google.protobuf.Timestamp creationTimestampUTC = 5 [json_name = 'creationTimestampUTC'];
     string name = 6 [json_name = 'name'];
     repeated weebi.device.Device devices = 7 [json_name = 'devices'];
-    reserved 8 to 98;
+    google.protobuf.Timestamp lastTouchTimestampUTC =  8 [json_name = 'lastTouchTimestampUTC']; 
+    reserved 9 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
 }
 
@@ -36,6 +37,13 @@ message BoutiquePb {
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
    }
    
+   // think about boutique sync
+   message BoutiqueLogo {
+    string firmId = 1;
+    string chainId = 2;
+    string boutiqueId = 3;
+    bytes logo = 5;
+  }
 
 //  this.logoSource = PhotoSource.unknown,
 //  this.logoPath = '',

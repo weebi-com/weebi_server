@@ -13,11 +13,14 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../common/g_timestamp.pb.dart' as $20;
 import 'article.pb.dart' as $3;
 import 'category.pb.dart' as $4;
+import 'photo.pb.dart' as $5;
 
-class FindArticleRequest extends $pb.GeneratedMessage {
-  factory FindArticleRequest({
+/// / A Calibre includes Articles
+class FindCalibreRequest extends $pb.GeneratedMessage {
+  factory FindCalibreRequest({
     $core.String? chainId,
     $core.String? title,
   }) {
@@ -30,11 +33,11 @@ class FindArticleRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  FindArticleRequest._() : super();
-  factory FindArticleRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory FindArticleRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  FindCalibreRequest._() : super();
+  factory FindCalibreRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory FindCalibreRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FindArticleRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FindCalibreRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(2, _omitFieldNames ? '' : 'title')
     ..hasRequiredFields = false
@@ -44,22 +47,22 @@ class FindArticleRequest extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  FindArticleRequest clone() => FindArticleRequest()..mergeFromMessage(this);
+  FindCalibreRequest clone() => FindCalibreRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  FindArticleRequest copyWith(void Function(FindArticleRequest) updates) => super.copyWith((message) => updates(message as FindArticleRequest)) as FindArticleRequest;
+  FindCalibreRequest copyWith(void Function(FindCalibreRequest) updates) => super.copyWith((message) => updates(message as FindCalibreRequest)) as FindCalibreRequest;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static FindArticleRequest create() => FindArticleRequest._();
-  FindArticleRequest createEmptyInstance() => create();
-  static $pb.PbList<FindArticleRequest> createRepeated() => $pb.PbList<FindArticleRequest>();
+  static FindCalibreRequest create() => FindCalibreRequest._();
+  FindCalibreRequest createEmptyInstance() => create();
+  static $pb.PbList<FindCalibreRequest> createRepeated() => $pb.PbList<FindCalibreRequest>();
   @$core.pragma('dart2js:noInline')
-  static FindArticleRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FindArticleRequest>(create);
-  static FindArticleRequest? _defaultInstance;
+  static FindCalibreRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FindCalibreRequest>(create);
+  static FindCalibreRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get chainId => $_getSZ(0);
@@ -83,10 +86,14 @@ class FindArticleRequest extends $pb.GeneratedMessage {
 class ReadAllRequest extends $pb.GeneratedMessage {
   factory ReadAllRequest({
     $core.String? chainId,
+    $20.Timestamp? lastFetchTimestampUTC,
   }) {
     final $result = create();
     if (chainId != null) {
       $result.chainId = chainId;
+    }
+    if (lastFetchTimestampUTC != null) {
+      $result.lastFetchTimestampUTC = lastFetchTimestampUTC;
     }
     return $result;
   }
@@ -96,6 +103,7 @@ class ReadAllRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOM<$20.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $20.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -128,10 +136,22 @@ class ReadAllRequest extends $pb.GeneratedMessage {
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
   void clearChainId() => clearField(1);
+
+  /// optional used for weebi_app device back online
+  @$pb.TagNumber(2)
+  $20.Timestamp get lastFetchTimestampUTC => $_getN(1);
+  @$pb.TagNumber(2)
+  set lastFetchTimestampUTC($20.Timestamp v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLastFetchTimestampUTC() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLastFetchTimestampUTC() => clearField(2);
+  @$pb.TagNumber(2)
+  $20.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
 }
 
-class ArticleRequest extends $pb.GeneratedMessage {
-  factory ArticleRequest({
+class CalibreRequest extends $pb.GeneratedMessage {
+  factory CalibreRequest({
     $core.String? chainId,
     $3.CalibrePb? calibre,
   }) {
@@ -144,11 +164,11 @@ class ArticleRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  ArticleRequest._() : super();
-  factory ArticleRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ArticleRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  CalibreRequest._() : super();
+  factory CalibreRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CalibreRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticleRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibreRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOM<$3.CalibrePb>(2, _omitFieldNames ? '' : 'calibre', subBuilder: $3.CalibrePb.create)
     ..hasRequiredFields = false
@@ -158,22 +178,22 @@ class ArticleRequest extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  ArticleRequest clone() => ArticleRequest()..mergeFromMessage(this);
+  CalibreRequest clone() => CalibreRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  ArticleRequest copyWith(void Function(ArticleRequest) updates) => super.copyWith((message) => updates(message as ArticleRequest)) as ArticleRequest;
+  CalibreRequest copyWith(void Function(CalibreRequest) updates) => super.copyWith((message) => updates(message as CalibreRequest)) as CalibreRequest;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ArticleRequest create() => ArticleRequest._();
-  ArticleRequest createEmptyInstance() => create();
-  static $pb.PbList<ArticleRequest> createRepeated() => $pb.PbList<ArticleRequest>();
+  static CalibreRequest create() => CalibreRequest._();
+  CalibreRequest createEmptyInstance() => create();
+  static $pb.PbList<CalibreRequest> createRepeated() => $pb.PbList<CalibreRequest>();
   @$core.pragma('dart2js:noInline')
-  static ArticleRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ArticleRequest>(create);
-  static ArticleRequest? _defaultInstance;
+  static CalibreRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CalibreRequest>(create);
+  static CalibreRequest? _defaultInstance;
 
   /// below in case mutiple chains, permission check will still be applied to verify
   @$pb.TagNumber(1)
@@ -197,8 +217,67 @@ class ArticleRequest extends $pb.GeneratedMessage {
   $3.CalibrePb ensureCalibre() => $_ensure(1);
 }
 
-class ArticlesResponse extends $pb.GeneratedMessage {
-  factory ArticlesResponse({
+class CalibresRequest extends $pb.GeneratedMessage {
+  factory CalibresRequest({
+    $core.String? chainId,
+    $core.Iterable<$3.CalibrePb>? calibres,
+  }) {
+    final $result = create();
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (calibres != null) {
+      $result.calibres.addAll(calibres);
+    }
+    return $result;
+  }
+  CalibresRequest._() : super();
+  factory CalibresRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CalibresRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibresRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..pc<$3.CalibrePb>(2, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $3.CalibrePb.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CalibresRequest clone() => CalibresRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CalibresRequest copyWith(void Function(CalibresRequest) updates) => super.copyWith((message) => updates(message as CalibresRequest)) as CalibresRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CalibresRequest create() => CalibresRequest._();
+  CalibresRequest createEmptyInstance() => create();
+  static $pb.PbList<CalibresRequest> createRepeated() => $pb.PbList<CalibresRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CalibresRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CalibresRequest>(create);
+  static CalibresRequest? _defaultInstance;
+
+  /// below in case mutiple chains, permission check will still be applied to verify
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.List<$3.CalibrePb> get calibres => $_getList(1);
+}
+
+class CalibresResponse extends $pb.GeneratedMessage {
+  factory CalibresResponse({
     $core.Iterable<$3.CalibrePb>? calibres,
   }) {
     final $result = create();
@@ -207,11 +286,11 @@ class ArticlesResponse extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  ArticlesResponse._() : super();
-  factory ArticlesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ArticlesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  CalibresResponse._() : super();
+  factory CalibresResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CalibresResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticlesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibresResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..pc<$3.CalibrePb>(1, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $3.CalibrePb.create)
     ..hasRequiredFields = false
   ;
@@ -220,27 +299,28 @@ class ArticlesResponse extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  ArticlesResponse clone() => ArticlesResponse()..mergeFromMessage(this);
+  CalibresResponse clone() => CalibresResponse()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  ArticlesResponse copyWith(void Function(ArticlesResponse) updates) => super.copyWith((message) => updates(message as ArticlesResponse)) as ArticlesResponse;
+  CalibresResponse copyWith(void Function(CalibresResponse) updates) => super.copyWith((message) => updates(message as CalibresResponse)) as CalibresResponse;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static ArticlesResponse create() => ArticlesResponse._();
-  ArticlesResponse createEmptyInstance() => create();
-  static $pb.PbList<ArticlesResponse> createRepeated() => $pb.PbList<ArticlesResponse>();
+  static CalibresResponse create() => CalibresResponse._();
+  CalibresResponse createEmptyInstance() => create();
+  static $pb.PbList<CalibresResponse> createRepeated() => $pb.PbList<CalibresResponse>();
   @$core.pragma('dart2js:noInline')
-  static ArticlesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ArticlesResponse>(create);
-  static ArticlesResponse? _defaultInstance;
+  static CalibresResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CalibresResponse>(create);
+  static CalibresResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.List<$3.CalibrePb> get calibres => $_getList(0);
 }
 
+/// / categories
 class FindCategoryRequest extends $pb.GeneratedMessage {
   factory FindCategoryRequest({
     $core.String? chainId,
@@ -305,7 +385,6 @@ class FindCategoryRequest extends $pb.GeneratedMessage {
   void clearTitle() => clearField(2);
 }
 
-/// / categories
 class ReadCategoriesRequest extends $pb.GeneratedMessage {
   factory ReadCategoriesRequest({
     $core.String? chainId,
@@ -465,6 +544,319 @@ class CategoriesResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<$4.CategoryPb> get categories => $_getList(0);
+}
+
+/// / Photos
+class FindPhotoRequest extends $pb.GeneratedMessage {
+  factory FindPhotoRequest({
+    $core.String? chainId,
+    $core.String? calibreId,
+    $core.String? id,
+  }) {
+    final $result = create();
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (calibreId != null) {
+      $result.calibreId = calibreId;
+    }
+    if (id != null) {
+      $result.id = id;
+    }
+    return $result;
+  }
+  FindPhotoRequest._() : super();
+  factory FindPhotoRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory FindPhotoRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FindPhotoRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(2, _omitFieldNames ? '' : 'calibreId', protoName: 'calibreId')
+    ..aOS(3, _omitFieldNames ? '' : 'id')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  FindPhotoRequest clone() => FindPhotoRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  FindPhotoRequest copyWith(void Function(FindPhotoRequest) updates) => super.copyWith((message) => updates(message as FindPhotoRequest)) as FindPhotoRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FindPhotoRequest create() => FindPhotoRequest._();
+  FindPhotoRequest createEmptyInstance() => create();
+  static $pb.PbList<FindPhotoRequest> createRepeated() => $pb.PbList<FindPhotoRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FindPhotoRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FindPhotoRequest>(create);
+  static FindPhotoRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get calibreId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set calibreId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCalibreId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCalibreId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get id => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set id($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearId() => clearField(3);
+}
+
+class ReadPhotosRequest extends $pb.GeneratedMessage {
+  factory ReadPhotosRequest({
+    $core.String? chainId,
+    $20.Timestamp? lastFetchTimestampUTC,
+  }) {
+    final $result = create();
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (lastFetchTimestampUTC != null) {
+      $result.lastFetchTimestampUTC = lastFetchTimestampUTC;
+    }
+    return $result;
+  }
+  ReadPhotosRequest._() : super();
+  factory ReadPhotosRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadPhotosRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadPhotosRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOM<$20.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $20.Timestamp.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ReadPhotosRequest clone() => ReadPhotosRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ReadPhotosRequest copyWith(void Function(ReadPhotosRequest) updates) => super.copyWith((message) => updates(message as ReadPhotosRequest)) as ReadPhotosRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReadPhotosRequest create() => ReadPhotosRequest._();
+  ReadPhotosRequest createEmptyInstance() => create();
+  static $pb.PbList<ReadPhotosRequest> createRepeated() => $pb.PbList<ReadPhotosRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ReadPhotosRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadPhotosRequest>(create);
+  static ReadPhotosRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $20.Timestamp get lastFetchTimestampUTC => $_getN(1);
+  @$pb.TagNumber(2)
+  set lastFetchTimestampUTC($20.Timestamp v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLastFetchTimestampUTC() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLastFetchTimestampUTC() => clearField(2);
+  @$pb.TagNumber(2)
+  $20.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
+}
+
+class PhotoRequest extends $pb.GeneratedMessage {
+  factory PhotoRequest({
+    $core.String? chainId,
+    $5.ArticlePhotoPb? photo,
+  }) {
+    final $result = create();
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (photo != null) {
+      $result.photo = photo;
+    }
+    return $result;
+  }
+  PhotoRequest._() : super();
+  factory PhotoRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PhotoRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PhotoRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOM<$5.ArticlePhotoPb>(2, _omitFieldNames ? '' : 'photo', subBuilder: $5.ArticlePhotoPb.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PhotoRequest clone() => PhotoRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PhotoRequest copyWith(void Function(PhotoRequest) updates) => super.copyWith((message) => updates(message as PhotoRequest)) as PhotoRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PhotoRequest create() => PhotoRequest._();
+  PhotoRequest createEmptyInstance() => create();
+  static $pb.PbList<PhotoRequest> createRepeated() => $pb.PbList<PhotoRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PhotoRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PhotoRequest>(create);
+  static PhotoRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $5.ArticlePhotoPb get photo => $_getN(1);
+  @$pb.TagNumber(2)
+  set photo($5.ArticlePhotoPb v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPhoto() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPhoto() => clearField(2);
+  @$pb.TagNumber(2)
+  $5.ArticlePhotoPb ensurePhoto() => $_ensure(1);
+}
+
+class PhotosRequest extends $pb.GeneratedMessage {
+  factory PhotosRequest({
+    $core.String? chainId,
+    $core.Iterable<$5.ArticlePhotoPb>? photos,
+  }) {
+    final $result = create();
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (photos != null) {
+      $result.photos.addAll(photos);
+    }
+    return $result;
+  }
+  PhotosRequest._() : super();
+  factory PhotosRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PhotosRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PhotosRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..pc<$5.ArticlePhotoPb>(2, _omitFieldNames ? '' : 'photos', $pb.PbFieldType.PM, subBuilder: $5.ArticlePhotoPb.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PhotosRequest clone() => PhotosRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PhotosRequest copyWith(void Function(PhotosRequest) updates) => super.copyWith((message) => updates(message as PhotosRequest)) as PhotosRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PhotosRequest create() => PhotosRequest._();
+  PhotosRequest createEmptyInstance() => create();
+  static $pb.PbList<PhotosRequest> createRepeated() => $pb.PbList<PhotosRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PhotosRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PhotosRequest>(create);
+  static PhotosRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.List<$5.ArticlePhotoPb> get photos => $_getList(1);
+}
+
+class PhotosResponse extends $pb.GeneratedMessage {
+  factory PhotosResponse({
+    $core.Iterable<$5.ArticlePhotoPb>? photos,
+  }) {
+    final $result = create();
+    if (photos != null) {
+      $result.photos.addAll(photos);
+    }
+    return $result;
+  }
+  PhotosResponse._() : super();
+  factory PhotosResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PhotosResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PhotosResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
+    ..pc<$5.ArticlePhotoPb>(1, _omitFieldNames ? '' : 'photos', $pb.PbFieldType.PM, subBuilder: $5.ArticlePhotoPb.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PhotosResponse clone() => PhotosResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PhotosResponse copyWith(void Function(PhotosResponse) updates) => super.copyWith((message) => updates(message as PhotosResponse)) as PhotosResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PhotosResponse create() => PhotosResponse._();
+  PhotosResponse createEmptyInstance() => create();
+  static $pb.PbList<PhotosResponse> createRepeated() => $pb.PbList<PhotosResponse>();
+  @$core.pragma('dart2js:noInline')
+  static PhotosResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PhotosResponse>(create);
+  static PhotosResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<$5.ArticlePhotoPb> get photos => $_getList(0);
 }
 
 

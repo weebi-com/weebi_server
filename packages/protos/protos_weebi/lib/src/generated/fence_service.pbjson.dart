@@ -27,9 +27,9 @@ final $typed_data.Uint8List boutiqueRequestDescriptor = $convert.base64Decode(
     'Cg9Cb3V0aXF1ZVJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBI2Cghib3V0aXF1ZR'
     'gCIAEoCzIaLndlZWJpLmJvdXRpcXVlLkJvdXRpcXVlUGJSCGJvdXRpcXVl');
 
-@$core.Deprecated('Use createPendingDeviceResponseDescriptor instead')
-const CreatePendingDeviceResponse$json = {
-  '1': 'CreatePendingDeviceResponse',
+@$core.Deprecated('Use createDeviceResponseDescriptor instead')
+const CreateDeviceResponse$json = {
+  '1': 'CreateDeviceResponse',
   '2': [
     {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
     {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
@@ -39,12 +39,12 @@ const CreatePendingDeviceResponse$json = {
   ],
 };
 
-/// Descriptor for `CreatePendingDeviceResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createPendingDeviceResponseDescriptor = $convert.base64Decode(
-    'ChtDcmVhdGVQZW5kaW5nRGV2aWNlUmVzcG9uc2USTAoOc3RhdHVzUmVzcG9uc2UYASABKAsyJC'
-    '5nb29nbGUucmV0YWlsLmNvbW1vbi5TdGF0dXNSZXNwb25zZVIOc3RhdHVzUmVzcG9uc2USFgoG'
-    'ZmlybUlkGAIgASgJUgZmaXJtSWQSGAoHY2hhaW5JZBgDIAEoCVIHY2hhaW5JZBIeCgpib3V0aX'
-    'F1ZUlkGAQgASgJUgpib3V0aXF1ZUlkEhoKCGRldmljZUlkGAUgASgJUghkZXZpY2VJZA==');
+/// Descriptor for `CreateDeviceResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createDeviceResponseDescriptor = $convert.base64Decode(
+    'ChRDcmVhdGVEZXZpY2VSZXNwb25zZRJMCg5zdGF0dXNSZXNwb25zZRgBIAEoCzIkLmdvb2dsZS'
+    '5yZXRhaWwuY29tbW9uLlN0YXR1c1Jlc3BvbnNlUg5zdGF0dXNSZXNwb25zZRIWCgZmaXJtSWQY'
+    'AiABKAlSBmZpcm1JZBIYCgdjaGFpbklkGAMgASgJUgdjaGFpbklkEh4KCmJvdXRpcXVlSWQYBC'
+    'ABKAlSCmJvdXRpcXVlSWQSGgoIZGV2aWNlSWQYBSABKAlSCGRldmljZUlk');
 
 @$core.Deprecated('Use readOneUserResponseDescriptor instead')
 const ReadOneUserResponse$json = {
