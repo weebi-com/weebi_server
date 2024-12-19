@@ -1,3 +1,9 @@
+## 1.0.7
+
+- addMany for article, contact, ticket
+- handle photo for articles
+- lastTouchTimestampUTC for lighter sync
+
 ## 1.0.6+3
 
 - boutique also needs to be decomposed in BoutiquePb and BoutiqueMongo 
