@@ -21,8 +21,8 @@ service FenceService {
   rpc authenticateWithCredentials (Credentials) returns (Tokens);
   rpc authenticateWithRefreshToken (RefreshToken) returns (Tokens);
 
-  // TODO : remove below useless
-  rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.permissions.UserPermissions);
+  // removed below useless 2024 dec
+  // rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.permissions.UserPermissions);
   // TODO: add quit / droit à l'oubli like
   // allowing user added in an existing firm by mistake to signup again and start his/her own firm
 
@@ -71,9 +71,8 @@ service FenceService {
   /// remove pending
   rpc createDevice(PendingDeviceRequest) returns (CreateDeviceResponse);
   
-  /// a different auth method to avoid locking PoS
-  /// for first authent after device
-  rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
+  /// removed as it brings a security risk
+  /// rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
   rpc updateDevicePassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
   /// weak auth hack to ease app access to cashiers with very low rights

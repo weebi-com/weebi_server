@@ -44,7 +44,7 @@ class FenceService extends FenceServiceBase {
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     if (userPermission.firmId != request.permissions.firmId) {
       throw GrpcError.permissionDenied(
@@ -286,14 +286,6 @@ class FenceService extends FenceServiceBase {
     }
   }
 
-  @override
-  Future<UserPermissions> readUserPermissionsByToken(
-      ServiceCall? call, Empty request) async {
-    return isMock
-        ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
-  }
-
   Future<UserPrivate> _checkUserAndProtoIt(String userId) async {
     final userMongo = await userCollection.findOne(where.eq('userId', userId));
     if (userMongo == null) {
@@ -315,7 +307,7 @@ class FenceService extends FenceServiceBase {
     }
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.update) ==
@@ -338,7 +330,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, UserId request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     final isReadingOwnUser = userPermission.userId == request.userId;
 
@@ -409,86 +401,12 @@ class FenceService extends FenceServiceBase {
     }
   }
 
-  /// using boutique service check that we have a device with status == true
-  /// also check the password (not encrypted yet)
-  /// forge a bearer token for the default user on this boutique
-  @override
-  Future<Tokens> authenticateWithDevice(
-      ServiceCall? call, DeviceCredentials request) async {
-    if (request.firmId.isEmpty) {
-      throw GrpcError.invalidArgument('firmId.isEmpty');
-    }
-    if (request.chainId.isEmpty) {
-      throw GrpcError.invalidArgument('chainId.isEmpty');
-    }
-    if (request.deviceId.isEmpty) {
-      throw GrpcError.invalidArgument('deviceId.isEmpty');
-    }
-    try {
-      _db.isConnected ? null : await _db.open();
-      final chain =
-          await _checkOneChainAndProtoIt(request.firmId, request.chainId);
-
-      final boutique = chain.boutiques.firstWhereOrNull((btq) =>
-          btq.boutiqueId == request.boutiqueId &&
-          btq.chainId == request.chainId &&
-          btq.firmId == request.firmId);
-
-      if (boutique == null) {
-        throw GrpcError.notFound(
-            'did not find boutique matching device firmId,chainId,boutiqueId');
-      }
-
-      final device = boutique.devices.firstWhereOrNull((d) =>
-          d.chainId == request.chainId &&
-          d.boutiqueId == request.boutiqueId &&
-          d.deviceId == request.deviceId);
-
-      if (device == null) {
-        throw GrpcError.notFound();
-      }
-      if (device.password != request.password) {
-        throw GrpcError.invalidArgument('incorrect password');
-      }
-      if (device.status != true) {
-        throw GrpcError.invalidArgument('deactivated device');
-      }
-
-      // now that we know for sure this device is linked with a boutique
-      // we can load the default cashier user available for this device
-      final user = await _readUserByUserId(request.deviceId);
-
-      var jwt = JsonWebToken();
-      final payload = user.permissions.toProto3Json() as Map<String, dynamic>?;
-      jwt.createPayload(
-        user.userId,
-        expireIn: const Duration(days: 1),
-        payload: payload,
-      );
-      jwt.sign();
-      final accessToken = jwt.sign();
-      jwt = JsonWebToken();
-      jwt.createPayload(
-        user.userId,
-        expireIn: Duration(days: 30),
-        payload: {'userId': user.userId, 'firmId': user.firmId},
-      );
-      // refresh token only contains userId & firmId
-      final resfreshToken = jwt.sign();
-      await _updateUserLastSignIn(user.userId);
-      return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
-    } on GrpcError catch (e) {
-      print('authenticateWithDevice error $e');
-      rethrow;
-    }
-  }
-
   @override
   Future<CodeForPairingDevice> generateCodeForPairingDevice(
       ServiceCall? call, ChainIdAndboutiqueId request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     // chain rights encompass device pairing
     if (userPermission.chainRights.rights.any((e) => e == Right.update) ==
         false) {
@@ -561,18 +479,17 @@ class FenceService extends FenceServiceBase {
     }
   }
 
-  /// authent is not checked since no user is authentified on device
-  /// (in packages/fence_service/lib/src/auth_interceptor.dart)
-  /// this eases pairing remotely
-  /// this means that a device needs to be paired before anyone can log in
-  /// the device will still need to be approved by admin on the web (pending)
+  /// needs a code from generateCodeForPairingDevice, that should be called by admin on web back office
   /// mitigating the risk of a device added without admin consent
+  /// The device is created in the boutique's chain with a true status
+  /// so admin will not need to re-approve device
+  /// in case of unlikely code leak admin can still disable/delete device
   @override
   Future<CreateDeviceResponse> createDevice(
       ServiceCall? call, PendingDeviceRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     final userMongo =
         await userCollection.findOne(where.eq('userId', userPermission.userId));
@@ -607,9 +524,6 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.notFound(
             'no boutique found with this info chainId ${pairingResp.chainId} btqId ${pairingResp.boutiqueId}');
       }
-      // We create the device in the boutique's chain with a true status
-      // so admin will not need to approve device
-      // in case code leaked admin can still disable/delete device
 
       final device = Device.create()
         ..status = true
@@ -639,14 +553,6 @@ class FenceService extends FenceServiceBase {
         await pairingCodesCollection.deleteMany(selector);
       }
 
-      // create the user with the same deviceId
-      final cashierCreationResponse = await _createDefaultDeviceCashier(
-          chain.firmId, device.chainId, device.boutiqueId, device.deviceId);
-
-      if (cashierCreationResponse.type != StatusResponse_Type.CREATED) {
-        // do not block user in case this fails, let them use the appp
-        print('error creating cashier $cashierCreationResponse');
-      }
       return CreateDeviceResponse(
           statusResponse: StatusResponse(
               type: StatusResponse_Type.CREATED, timestamp: result.timestamp),
@@ -655,51 +561,7 @@ class FenceService extends FenceServiceBase {
           boutiqueId: device.boutiqueId,
           deviceId: device.deviceId);
     } on GrpcError catch (e) {
-      print('pairOneDevice error $e');
-      rethrow;
-    }
-  }
-
-  Future<StatusResponse> _createDefaultDeviceCashier(
-      String firmId, String chainId, String boutiqueId, String deviceId) async {
-    /// we use same value for deviceId and userId, making it easy to track "default cashier users"
-    try {
-      final permissions = UserPermissions.create()
-        ..userId = deviceId
-        ..limitedAccess = AccessLimited(
-            boutiqueIds: BoutiqueIds(ids: [boutiqueId]),
-            chainIds: ChainIds(ids: [chainId]))
-        ..articleRights = RightSalesperson.article
-        ..boutiqueRights = RightSalesperson.boutique
-        ..contactRights = ContactRights(rights: [Right.read])
-        ..ticketRights = RightSalesperson.ticket;
-      final userPrivate = UserPrivate.create()
-        // no password for simple cashier
-        // since it won't pass password verification cannot use createOneUser so inserting in db below
-        ..firmId = firmId
-        ..userId = deviceId
-        ..permissions = permissions;
-      final userPrivateJson =
-          userPrivate.toProto3Json() as Map<String, dynamic>;
-      final result = await userCollection.insertOne(userPrivateJson);
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      final timestamp = DateTime.now().timestampProto;
-      if (result.success && result.document != null) {
-        final userOid = result.document!['userId'];
-        return StatusResponse()
-          ..id = userOid
-          ..type = StatusResponse_Type
-              .CREATED // approving device is an updated but let's consider it is a creation
-          ..timestamp = timestamp;
-      } else {
-        return StatusResponse()
-          ..type = StatusResponse_Type.ERROR
-          ..timestamp = timestamp;
-      }
-    } on GrpcError catch (e) {
-      log('device creation error: $e on firmId $firmId, chainId $chainId, boutiqueId $boutiqueId');
+      print('createDevice error $e');
       rethrow;
     }
   }
@@ -710,7 +572,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, UpdateDevicePasswordRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     // chain rights encompass device pairing
     if (userPermission.chainRights.rights.any((e) => e == Right.update) ==
         false) {
@@ -763,7 +625,7 @@ class FenceService extends FenceServiceBase {
     }
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.delete) ==
         false) {
@@ -808,7 +670,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, CreateFirmRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     // so we assign its own userId to firmOid
     // this same id will be used to create the firm in the following call
@@ -962,7 +824,7 @@ class FenceService extends FenceServiceBase {
   Future<Firm> readOneFirm(ServiceCall? call, Empty request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.firmRights.rights.any((e) => e == Right.read) == false) {
       throw GrpcError.permissionDenied('user does not have right to read firm');
     }
@@ -1053,7 +915,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, BoutiqueRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.create) ==
         false) {
@@ -1113,7 +975,7 @@ class FenceService extends FenceServiceBase {
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     // check permissions
     if (userPermission.chainRights.rights.any((e) => e == Right.create) ==
         false) {
@@ -1171,7 +1033,7 @@ class FenceService extends FenceServiceBase {
     }
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.update) ==
         false) {
@@ -1215,7 +1077,7 @@ class FenceService extends FenceServiceBase {
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (request.chainId.isEmpty) {
       throw GrpcError.invalidArgument('chain id cannot be empty');
     }
@@ -1266,7 +1128,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, DeleteDeviceRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     // chain rights encompass device pairing
     if (userPermission.chainRights.rights.any((e) => e == Right.delete) ==
         false) {
@@ -1299,7 +1161,7 @@ class FenceService extends FenceServiceBase {
     }
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
         false) {
@@ -1430,7 +1292,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, Empty request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -1453,7 +1315,7 @@ class FenceService extends FenceServiceBase {
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.update) ==
@@ -1490,7 +1352,7 @@ class FenceService extends FenceServiceBase {
   Future<UsersPublic> readAllUsers(ServiceCall call, Empty request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.read) ==
@@ -1563,7 +1425,7 @@ class FenceService extends FenceServiceBase {
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -1669,7 +1531,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall call, BoutiqueRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (request.boutique.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }
@@ -1702,7 +1564,7 @@ class FenceService extends FenceServiceBase {
   Future<StatusResponse> deleteOneChain(ServiceCall call, Chain request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (request.chainId.isEmpty) {
       throw GrpcError.invalidArgument('chainId cannot be empty');
     }
@@ -1736,7 +1598,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall call, BoutiqueRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (request.boutique.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }

@@ -53,8 +53,8 @@ void main() async {
     expect(tokensBoss.accessToken.isNotEmpty, isTrue);
 
     // read permissions to check them
-    final permissions = await fenceService.readUserPermissionsByToken(
-        ServiceCallTest(tokensBoss.accessToken), Empty());
+
+    final permissions = tokensBoss.accessToken.userPermissions;
 
     expect(permissions.firmId.isEmpty, isTrue);
     expect(permissions.userId, response.userId);
@@ -74,8 +74,7 @@ void main() async {
     final tokensBoss2 = await fenceService.authenticateWithRefreshToken(
         null, RefreshToken(refreshToken: tokensBoss.refreshToken));
 
-    final liliPermissions2 = await fenceService.readUserPermissionsByToken(
-        ServiceCallTest(tokensBoss2.accessToken), Empty());
+    final liliPermissions2 = tokensBoss2.accessToken.userPermissions;
 
     expect(liliPermissions2.firmRights.rights.length, 3);
     expect(liliPermissions2.firmRights.rights.contains(Right.create), isFalse);
@@ -115,7 +114,7 @@ void main() async {
 
     expect(aliceToken.accessToken.isNotEmpty, isTrue);
 
-    final alicePermission = aliceToken.accessToken.userPermission;
+    final alicePermission = aliceToken.accessToken.userPermissions;
     // final alicePermission = await fenceService.readUserPermissionsByToken(null, Empty());
     expect(alicePermission.firmRights.rights.contains(Right.create), isFalse);
     expect(alicePermission.userId, aliceSignUp.userId);
@@ -158,7 +157,7 @@ void main() async {
     final johnToken = await fenceService.authenticateWithCredentials(null,
         Credentials(mail: 'john@weebi.com', password: 'iDontMindWaiting'));
 
-    final johnPermission = johnToken.accessToken.userPermission;
+    final johnPermission = johnToken.accessToken.userPermissions;
     // final alicePermission = await fenceService.readUserPermissionsByToken(null, Empty());
     expect(johnPermission.firmRights.rights.contains(Right.create), isFalse);
     expect(johnPermission.userId, johnSignUp.userId);

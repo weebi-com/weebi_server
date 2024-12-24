@@ -51,7 +51,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -104,7 +104,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.update) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -154,7 +154,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.delete) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -182,7 +182,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -227,7 +227,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -263,7 +263,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -315,7 +315,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.update) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -364,7 +364,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.delete) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -392,7 +392,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -429,7 +429,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -462,7 +462,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -526,7 +526,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -586,7 +586,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -638,7 +638,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.delete) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -666,7 +666,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -711,7 +711,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -745,7 +745,7 @@ class ArticleService extends ArticleServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.articleRights.rights.any((e) => e == Right.update) ==
         false) {
       throw GrpcError.permissionDenied(

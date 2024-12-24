@@ -32,7 +32,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (!request.ticket.counterfoil.isFirmAndChainAccessible(userPermission)) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.ticket.counterfoil.chainName} ${request.ticket.counterfoil.chainId} / boutique ${request.ticket.counterfoil.boutiqueName} ${request.ticket.counterfoil.boutiqueId}');
@@ -89,7 +89,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.ticketRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -151,7 +151,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.ticketRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -197,7 +197,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (!request.ticket.counterfoil.isFirmAndChainAccessible(userPermission)) {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
@@ -263,7 +263,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (!request.ticket.counterfoil.isFirmAndChainAccessible(userPermission)) {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
@@ -303,7 +303,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
 
     if (request.tickets.any((t) =>
         t.counterfoil.isFirmAndChainAccessible(userPermission) == false)) {

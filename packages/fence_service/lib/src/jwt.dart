@@ -36,6 +36,9 @@ class JsonWebToken {
 
   Map<String, dynamic> get payload => _payload;
 
+  // UserPermissions get userPermissions => UserPermissions.create()
+  //   ..mergeFromProto3Json(_payload, ignoreUnknownFields: true);
+
   void createPayload(
     String userId, {
     Map<String, dynamic>? payload,

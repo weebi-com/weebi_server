@@ -3,7 +3,7 @@ import 'package:protos_weebi/grpc.dart' show ServiceCall, GrpcError;
 import 'package:protos_weebi/protos_weebi_io.dart' show UserPermissions;
 
 extension BearerExt on String {
-  UserPermissions get userPermission {
+  UserPermissions get userPermissions {
     if (isEmpty) {
       return UserPermissions.create();
     } else {

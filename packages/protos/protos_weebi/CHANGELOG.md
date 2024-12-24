@@ -1,8 +1,14 @@
-## 1.0.7
+## 1.0.7+2
 
+- removed authenticateWithDevice
+- removed readUserPermissionsByToken
+
+
+## 1.0.7+1
 - addMany for article, contact, ticket
 - handle photo for articles
 - lastTouchTimestampUTC for lighter sync
+- breaking change on articleService ArticleRequest->CalibreRequest for more coherence
 
 ## 1.0.6+3
 
