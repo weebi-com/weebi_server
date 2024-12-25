@@ -663,6 +663,7 @@ class FenceService extends FenceServiceBase {
   /// 2. either
   ///     - A. user create a firm
   ///     - B. user joins a firm
+  /// we give firmId the userId
   /// Chain and Boutique will be created by default and will use the same firmId
   /// Since createFirm also updates user permission, clientApp needs to reauthent using refresh right after
   @override
@@ -671,10 +672,6 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-
-    // so we assign its own userId to firmOid
-    // this same id will be used to create the firm in the following call
-    // and will avoid re-forging a bearer token
 
     if (userPermission.firmRights.rights.any((e) => e == Right.create) ==
         false) {
