@@ -4,18 +4,21 @@ package weebi.ticket;
 
 import "article/article.proto";
 import "ticket/ticket_type.proto";
-// import "common/g_timestamp.proto";
+import "common/g_timestamp.proto";
 
 /// ticketNonUniqueId is to be combined with userId
 /// local ids can lead to duplicates as each sellers from its own device can create contact 
 message TicketMongo {
     weebi.ticket.TicketPb ticket = 1 [json_name = 'ticket'];
-    int32 ticketNonUniqueId = 2 [json_name = 'ticketNonUniqueId'];
+    int32 nonUniqueId = 2 [json_name = 'nonUniqueId'];
     string userId = 3 [json_name = 'userId'];
     string boutiqueId = 4 [json_name = 'boutiqueId'];
     string firmId = 5 [json_name = 'firmId'];
     string chainId = 6 [json_name = 'chainId'];
     string creationDate = 7 [json_name = 'creationDate'];
+    google.protobuf.Timestamp lastTouchTimestampUTC =  8 [json_name = 'lastTouchTimestampUTC']; 
+    reserved 9 to 98;
+    map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
 }
 // string uploadByuserId = 3 [json_name = 'uploadByuserId'];
 // string uploadByUsername = 4 [json_name = 'uploadByUsername'];
@@ -24,7 +27,10 @@ message TicketMongo {
 // string lastTouchedByUsername = 7 [json_name = 'lastTouchedByUsername'];
 
 message TicketPb {
-  int32 ticketNonUniqueId = 1 [json_name = 'id'];
+  int32 nonUniqueId = 1 [json_name = 'id'];
+  // different from article and contact
+  // a ticket must include a firm/chain/boutique/user
+  // the server will check they fit the permissions
   Counterfoil counterfoil = 2 [json_name = 'counterfoil'];
   enum PaymentTypePb {
     unknown = 0;
@@ -55,7 +61,7 @@ message Counterfoil {
   string firmName = 2;
   string chainId = 3;
   string chainName = 4;
-  string deviceOid = 5;
+  string deviceId = 5;
   string deviceName = 6;
   string boutiqueId = 7;
   string boutiqueName = 8;

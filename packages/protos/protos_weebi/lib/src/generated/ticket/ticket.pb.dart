@@ -13,7 +13,8 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../article/article.pb.dart' as $5;
+import '../article/article.pb.dart' as $3;
+import '../common/g_timestamp.pb.dart' as $19;
 import 'ticket.pbenum.dart';
 import 'ticket_type.pbenum.dart' as $23;
 
@@ -24,19 +25,21 @@ export 'ticket.pbenum.dart';
 class TicketMongo extends $pb.GeneratedMessage {
   factory TicketMongo({
     TicketPb? ticket,
-    $core.int? ticketNonUniqueId,
+    $core.int? nonUniqueId,
     $core.String? userId,
     $core.String? boutiqueId,
     $core.String? firmId,
     $core.String? chainId,
     $core.String? creationDate,
+    $19.Timestamp? lastTouchTimestampUTC,
+    $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
     if (ticket != null) {
       $result.ticket = ticket;
     }
-    if (ticketNonUniqueId != null) {
-      $result.ticketNonUniqueId = ticketNonUniqueId;
+    if (nonUniqueId != null) {
+      $result.nonUniqueId = nonUniqueId;
     }
     if (userId != null) {
       $result.userId = userId;
@@ -53,6 +56,12 @@ class TicketMongo extends $pb.GeneratedMessage {
     if (creationDate != null) {
       $result.creationDate = creationDate;
     }
+    if (lastTouchTimestampUTC != null) {
+      $result.lastTouchTimestampUTC = lastTouchTimestampUTC;
+    }
+    if (additionalAttributes != null) {
+      $result.additionalAttributes.addAll(additionalAttributes);
+    }
     return $result;
   }
   TicketMongo._() : super();
@@ -61,12 +70,14 @@ class TicketMongo extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
     ..aOM<TicketPb>(1, _omitFieldNames ? '' : 'ticket', subBuilder: TicketPb.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'ticketNonUniqueId', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'nonUniqueId', $pb.PbFieldType.O3, protoName: 'nonUniqueId')
     ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(4, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(5, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(6, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOM<$19.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'TicketMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.ticket'))
     ..hasRequiredFields = false
   ;
 
@@ -103,13 +114,13 @@ class TicketMongo extends $pb.GeneratedMessage {
   TicketPb ensureTicket() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get ticketNonUniqueId => $_getIZ(1);
+  $core.int get nonUniqueId => $_getIZ(1);
   @$pb.TagNumber(2)
-  set ticketNonUniqueId($core.int v) { $_setSignedInt32(1, v); }
+  set nonUniqueId($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasTicketNonUniqueId() => $_has(1);
+  $core.bool hasNonUniqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTicketNonUniqueId() => clearField(2);
+  void clearNonUniqueId() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get userId => $_getSZ(2);
@@ -155,11 +166,25 @@ class TicketMongo extends $pb.GeneratedMessage {
   $core.bool hasCreationDate() => $_has(6);
   @$pb.TagNumber(7)
   void clearCreationDate() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $19.Timestamp get lastTouchTimestampUTC => $_getN(7);
+  @$pb.TagNumber(8)
+  set lastTouchTimestampUTC($19.Timestamp v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasLastTouchTimestampUTC() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearLastTouchTimestampUTC() => clearField(8);
+  @$pb.TagNumber(8)
+  $19.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
+
+  @$pb.TagNumber(99)
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(8);
 }
 
 class TicketPb extends $pb.GeneratedMessage {
   factory TicketPb({
-    $core.int? ticketNonUniqueId,
+    $core.int? nonUniqueId,
     Counterfoil? counterfoil,
     $core.String? date,
     $core.String? statusUpdateDate,
@@ -175,8 +200,8 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? comment,
   }) {
     final $result = create();
-    if (ticketNonUniqueId != null) {
-      $result.ticketNonUniqueId = ticketNonUniqueId;
+    if (nonUniqueId != null) {
+      $result.nonUniqueId = nonUniqueId;
     }
     if (counterfoil != null) {
       $result.counterfoil = counterfoil;
@@ -224,7 +249,7 @@ class TicketPb extends $pb.GeneratedMessage {
   factory TicketPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'ticketNonUniqueId')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'nonUniqueId')
     ..aOM<Counterfoil>(2, _omitFieldNames ? '' : 'counterfoil', subBuilder: Counterfoil.create)
     ..aOS(3, _omitFieldNames ? '' : 'date')
     ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
@@ -263,14 +288,17 @@ class TicketPb extends $pb.GeneratedMessage {
   static TicketPb? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get ticketNonUniqueId => $_getIZ(0);
+  $core.int get nonUniqueId => $_getIZ(0);
   @$pb.TagNumber(1)
-  set ticketNonUniqueId($core.int v) { $_setSignedInt32(0, v); }
+  set nonUniqueId($core.int v) { $_setSignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasTicketNonUniqueId() => $_has(0);
+  $core.bool hasNonUniqueId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTicketNonUniqueId() => clearField(1);
+  void clearNonUniqueId() => clearField(1);
 
+  /// different from article and contact
+  /// a ticket must include a firm/chain/boutique/user
+  /// the server will check they fit the permissions
   @$pb.TagNumber(2)
   Counterfoil get counterfoil => $_getN(1);
   @$pb.TagNumber(2)
@@ -393,7 +421,7 @@ class Counterfoil extends $pb.GeneratedMessage {
     $core.String? firmName,
     $core.String? chainId,
     $core.String? chainName,
-    $core.String? deviceOid,
+    $core.String? deviceId,
     $core.String? deviceName,
     $core.String? boutiqueId,
     $core.String? boutiqueName,
@@ -413,8 +441,8 @@ class Counterfoil extends $pb.GeneratedMessage {
     if (chainName != null) {
       $result.chainName = chainName;
     }
-    if (deviceOid != null) {
-      $result.deviceOid = deviceOid;
+    if (deviceId != null) {
+      $result.deviceId = deviceId;
     }
     if (deviceName != null) {
       $result.deviceName = deviceName;
@@ -442,7 +470,7 @@ class Counterfoil extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'firmName', protoName: 'firmName')
     ..aOS(3, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(4, _omitFieldNames ? '' : 'chainName', protoName: 'chainName')
-    ..aOS(5, _omitFieldNames ? '' : 'deviceOid', protoName: 'deviceOid')
+    ..aOS(5, _omitFieldNames ? '' : 'deviceId', protoName: 'deviceId')
     ..aOS(6, _omitFieldNames ? '' : 'deviceName', protoName: 'deviceName')
     ..aOS(7, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(8, _omitFieldNames ? '' : 'boutiqueName', protoName: 'boutiqueName')
@@ -509,13 +537,13 @@ class Counterfoil extends $pb.GeneratedMessage {
   void clearChainName() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get deviceOid => $_getSZ(4);
+  $core.String get deviceId => $_getSZ(4);
   @$pb.TagNumber(5)
-  set deviceOid($core.String v) { $_setString(4, v); }
+  set deviceId($core.String v) { $_setString(4, v); }
   @$pb.TagNumber(5)
-  $core.bool hasDeviceOid() => $_has(4);
+  $core.bool hasDeviceId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearDeviceOid() => clearField(5);
+  void clearDeviceId() => clearField(5);
 
   @$pb.TagNumber(6)
   $core.String get deviceName => $_getSZ(5);
@@ -819,9 +847,9 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
 
 class ItemCartPb extends $pb.GeneratedMessage {
   factory ItemCartPb({
-    $5.ArticleRetailOnTicketPb? articleRetail,
-    $5.ArticleBasketOnTicketPb? articleBasket,
-    $5.ArticleUncountableOnTicketPb? articleUncountable,
+    $3.ArticleRetailOnTicketPb? articleRetail,
+    $3.ArticleBasketOnTicketPb? articleBasket,
+    $3.ArticleUncountableOnTicketPb? articleUncountable,
     $core.double? quantity,
     $core.Iterable<ProxyArticleWorthPb>? proxiesWorth,
     $core.double? inventoryAbsoluteQt,
@@ -852,9 +880,9 @@ class ItemCartPb extends $pb.GeneratedMessage {
   factory ItemCartPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ItemCartPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
-    ..aOM<$5.ArticleRetailOnTicketPb>(1, _omitFieldNames ? '' : 'articleRetail', protoName: 'articleRetail', subBuilder: $5.ArticleRetailOnTicketPb.create)
-    ..aOM<$5.ArticleBasketOnTicketPb>(2, _omitFieldNames ? '' : 'articleBasket', protoName: 'articleBasket', subBuilder: $5.ArticleBasketOnTicketPb.create)
-    ..aOM<$5.ArticleUncountableOnTicketPb>(3, _omitFieldNames ? '' : 'articleUncountable', protoName: 'articleUncountable', subBuilder: $5.ArticleUncountableOnTicketPb.create)
+    ..aOM<$3.ArticleRetailOnTicketPb>(1, _omitFieldNames ? '' : 'articleRetail', protoName: 'articleRetail', subBuilder: $3.ArticleRetailOnTicketPb.create)
+    ..aOM<$3.ArticleBasketOnTicketPb>(2, _omitFieldNames ? '' : 'articleBasket', protoName: 'articleBasket', subBuilder: $3.ArticleBasketOnTicketPb.create)
+    ..aOM<$3.ArticleUncountableOnTicketPb>(3, _omitFieldNames ? '' : 'articleUncountable', protoName: 'articleUncountable', subBuilder: $3.ArticleUncountableOnTicketPb.create)
     ..a<$core.double>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..pc<ProxyArticleWorthPb>(5, _omitFieldNames ? '' : 'proxiesWorth', $pb.PbFieldType.PM, subBuilder: ProxyArticleWorthPb.create)
     ..a<$core.double>(6, _omitFieldNames ? '' : 'inventoryAbsoluteQt', $pb.PbFieldType.OD, protoName: 'inventoryAbsoluteQt')
@@ -883,37 +911,37 @@ class ItemCartPb extends $pb.GeneratedMessage {
   static ItemCartPb? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $5.ArticleRetailOnTicketPb get articleRetail => $_getN(0);
+  $3.ArticleRetailOnTicketPb get articleRetail => $_getN(0);
   @$pb.TagNumber(1)
-  set articleRetail($5.ArticleRetailOnTicketPb v) { setField(1, v); }
+  set articleRetail($3.ArticleRetailOnTicketPb v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasArticleRetail() => $_has(0);
   @$pb.TagNumber(1)
   void clearArticleRetail() => clearField(1);
   @$pb.TagNumber(1)
-  $5.ArticleRetailOnTicketPb ensureArticleRetail() => $_ensure(0);
+  $3.ArticleRetailOnTicketPb ensureArticleRetail() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $5.ArticleBasketOnTicketPb get articleBasket => $_getN(1);
+  $3.ArticleBasketOnTicketPb get articleBasket => $_getN(1);
   @$pb.TagNumber(2)
-  set articleBasket($5.ArticleBasketOnTicketPb v) { setField(2, v); }
+  set articleBasket($3.ArticleBasketOnTicketPb v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasArticleBasket() => $_has(1);
   @$pb.TagNumber(2)
   void clearArticleBasket() => clearField(2);
   @$pb.TagNumber(2)
-  $5.ArticleBasketOnTicketPb ensureArticleBasket() => $_ensure(1);
+  $3.ArticleBasketOnTicketPb ensureArticleBasket() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $5.ArticleUncountableOnTicketPb get articleUncountable => $_getN(2);
+  $3.ArticleUncountableOnTicketPb get articleUncountable => $_getN(2);
   @$pb.TagNumber(3)
-  set articleUncountable($5.ArticleUncountableOnTicketPb v) { setField(3, v); }
+  set articleUncountable($3.ArticleUncountableOnTicketPb v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasArticleUncountable() => $_has(2);
   @$pb.TagNumber(3)
   void clearArticleUncountable() => clearField(3);
   @$pb.TagNumber(3)
-  $5.ArticleUncountableOnTicketPb ensureArticleUncountable() => $_ensure(2);
+  $3.ArticleUncountableOnTicketPb ensureArticleUncountable() => $_ensure(2);
 
   @$pb.TagNumber(4)
   $core.double get quantity => $_getN(3);

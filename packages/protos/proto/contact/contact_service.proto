@@ -7,6 +7,17 @@ import "contact/contact.proto";
 import "common/address.proto";
 import "common/phone.proto";
 import "common/g_common.proto";
+import "common/g_timestamp.proto";
+
+service ContactService {
+  rpc readAll (ReadAllContactsRequest) returns  (ContactsResponse);
+  rpc readOne (FindContactRequest) returns (weebi.contact.ContactPb);
+  rpc createOne (ContactRequest) returns (google.retail.common.StatusResponse);
+  rpc createMany (ContactsRequest) returns (google.retail.common.StatusResponse);
+  
+  rpc updateOne (ContactRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOne (ContactRequest) returns (google.retail.common.StatusResponse);
+}
 
 message FindContactRequest {
   // string firmId = 1 [json_name = 'firmId']; // deduced from bearer token
@@ -22,24 +33,22 @@ message FindContactRequest {
   //  string contactUserId = 2 [json_name = 'contactUserId'];
 }
 
+// optional used for weebi_app device back online
 message ReadAllContactsRequest {
-  string firmId = 1 [json_name = 'firmId'];
-  string chainId = 2 [json_name = 'chainId'];;
+  string chainId = 1 [json_name = 'chainId'];
+  // optional used for weebi_app device back online
+  google.protobuf.Timestamp lastFetchTimestampUTC =  2 [json_name = 'lastFetchTimestampUTC']; 
 }
 
 message ContactRequest {
   string chainId = 1;
   weebi.contact.ContactPb contact = 2;
 }
+message ContactsRequest {
+  string chainId = 1;
+  repeated weebi.contact.ContactPb contacts = 2;
+}
 
 message ContactsResponse {
   repeated weebi.contact.ContactPb contacts = 1;
-}
-
-service ContactService {
-  rpc readAll (ReadAllContactsRequest) returns  (ContactsResponse);
-  rpc readOne (FindContactRequest) returns (weebi.contact.ContactPb);
-  rpc createOne (ContactRequest) returns (google.retail.common.StatusResponse);
-  rpc replaceOne (ContactRequest) returns (google.retail.common.StatusResponse);
-  rpc deleteOne (ContactRequest) returns (google.retail.common.StatusResponse);
 }

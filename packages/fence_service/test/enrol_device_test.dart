@@ -74,7 +74,7 @@ void main() {
     expect(devices.devices.length,
         2); // one device already included in Dummy.boutique
 
-    final device = devices.devices.firstWhere((d) => d.timestamp.seconds != 0);
+    //final device = devices.devices.firstWhere((d) => d.timestamp.seconds != 0);
 
     /// 14 oct 2024 no need to approve the device to make it faster and simpler
 //    final approveDeviceStatus = await fenceService.approveDevice(
@@ -83,18 +83,8 @@ void main() {
 //
 //    expect(approveDeviceStatus.type, StatusResponse_Type.UPDATED);
 
-    /// now user from PoS app can authent with min. permission available
-    /// allowing them to sync articles, contacts, boutiqueInfo etc.
-    final tokens = await fenceService.authenticateWithDevice(
-      ServiceCallTest('', path: 'authenticateWithDevice'),
-      DeviceCredentials(
-          firmId: Dummy.firm.firmId,
-          chainId: Dummy.chain.chainId,
-          boutiqueId: Dummy.boutique.boutiqueId,
-          deviceId: device.deviceId,
-          password: ''),
-    );
-
-    expect(tokens.accessToken.isNotEmpty, isTrue);
+    /// now user from PoS app can login
+    /// or if offline use app with min. permission available
+    /// allowing them to read articles, read contacts, read boutiqueInfo, read and create tickets
   });
 }

@@ -3,32 +3,105 @@ syntax = "proto3";
 package weebi.article.service;
 
 import "article/article.proto";
-import "common/g_common.proto";
+import "article/category.proto";
+import "article/photo.proto";
 
+import "common/g_common.proto";
+import "common/g_timestamp.proto";
 
 service ArticleService {
-  rpc createOne (ArticleRequest) returns (google.retail.common.StatusResponse);
-  rpc readOne (FindArticleRequest) returns (weebi.article.CalibrePb);
-  rpc readAll (ReadAllRequest) returns  (ArticlesResponse);
-  rpc replaceOne (ArticleRequest) returns (google.retail.common.StatusResponse);
-  rpc deleteOne (ArticleRequest) returns (google.retail.common.StatusResponse);
+  rpc createOne (CalibreRequest) returns (google.retail.common.StatusResponse);
+  rpc createMany (CalibresRequest) returns (google.retail.common.StatusResponse);
+  rpc readOne (FindCalibreRequest) returns (weebi.article.CalibrePb);
+  rpc readAll (ReadAllRequest) returns  (CalibresResponse);
+  rpc updateOne (CalibreRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOne (CalibreRequest) returns (google.retail.common.StatusResponse);
+  
+  // category
+  rpc createOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
+  rpc readOneCategory (FindCategoryRequest) returns (weebi.category.CategoryPb);
+  rpc readAllCategories (ReadCategoriesRequest) returns  (CategoriesResponse);
+  rpc updateOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
+  
+  rpc createOnePhoto (PhotoRequest) returns (google.retail.common.StatusResponse);
+  rpc createManyPhotos (PhotosRequest) returns (google.retail.common.StatusResponse);
+  rpc readOnePhoto (FindPhotoRequest) returns (weebi.photo.ArticlePhotoPb);
+  rpc readAllPhotos (ReadPhotosRequest) returns  (PhotosResponse);
+  rpc updateOnePhoto (PhotoRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOnePhoto (PhotoRequest) returns (google.retail.common.StatusResponse);
+
 }
 
-message FindArticleRequest {
+/// A Calibre includes Articles
+message FindCalibreRequest {
   string chainId = 1;
-  string title = 2 [json_name = 'title'];
+  string title = 2 ;
 }
 
 message ReadAllRequest {
   string chainId = 1;
+  // optional used for weebi_app device back online
+  google.protobuf.Timestamp lastFetchTimestampUTC =  2 ; 
 }
 
-message ArticleRequest {
+message CalibreRequest {
   // below in case mutiple chains, permission check will still be applied to verify 
   string chainId = 1; 
   weebi.article.CalibrePb calibre = 2;
 }
+message CalibresRequest {
+  // below in case mutiple chains, permission check will still be applied to verify 
+  string chainId = 1; 
+  repeated weebi.article.CalibrePb calibres = 2;
+}
 
-message ArticlesResponse {
+message CalibresResponse {
   repeated weebi.article.CalibrePb calibres = 1;
+}
+
+/// categories
+message FindCategoryRequest {
+  string chainId = 1;
+  string title = 2 ;
+}
+
+message ReadCategoriesRequest {
+  string chainId = 1;
+}
+
+message CategoryRequest {
+  // below in case mutiple chains, permission check will still be applied to verify 
+  string chainId = 1; 
+  weebi.category.CategoryPb category = 2;
+}
+
+message CategoriesResponse {
+  repeated weebi.category.CategoryPb categories = 1;
+}
+
+
+/// Photos
+message FindPhotoRequest {
+  string chainId = 1;
+  string calibreId = 2;
+  string id = 3;
+}
+
+message ReadPhotosRequest {
+  string chainId = 1;
+  google.protobuf.Timestamp lastFetchTimestampUTC =  2 ; 
+}
+
+message PhotoRequest {
+  string chainId = 1; 
+  weebi.photo.ArticlePhotoPb photo = 2;
+}
+message PhotosRequest {
+  string chainId = 1; 
+  repeated weebi.photo.ArticlePhotoPb photos = 2;
+}
+
+message PhotosResponse {
+  repeated weebi.photo.ArticlePhotoPb photos = 1;
 }

@@ -6,6 +6,8 @@ import 'package:fence_service/models_weebi.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 
+// TODO : same categorie CRUD tests please
+
 void main() async {
   final db = TestHelper.localDb;
 
@@ -37,7 +39,7 @@ void main() async {
 
   test('test insertOne ', () async {
     final request =
-        ArticleRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
+        CalibreRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
     // ignore: unused_local_variable
     final response = await articleService.createOne(null, request);
     expect(response.type, StatusResponse_Type.CREATED);
@@ -59,9 +61,9 @@ void main() async {
       );
 
     final request =
-        ArticleRequest(chainId: Dummy.chain.chainId, calibre: calibreLili);
+        CalibreRequest(chainId: Dummy.chain.chainId, calibre: calibreLili);
     // ignore: unused_local_variable
-    final response = await articleService.replaceOne(null, request);
+    final response = await articleService.updateOne(null, request);
     expect(response.type, StatusResponse_Type.UPDATED);
     final response2 = await articleService.readAll(
         null, ReadAllRequest(chainId: Dummy.chain.chainId));
@@ -71,7 +73,7 @@ void main() async {
 
   test('test deleteOne ', () async {
     final request =
-        ArticleRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
+        CalibreRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
     // ignore: unused_local_variable
     final response = await articleService.deleteOne(null, request);
 

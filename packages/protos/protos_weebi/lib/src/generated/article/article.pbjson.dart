@@ -39,7 +39,23 @@ const CalibreMongo$json = {
     {'1': 'chainId', '3': 4, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'userId', '3': 5, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'creationDate', '3': 6, '4': 1, '5': 9, '10': 'creationDate'},
+    {'1': 'lastTouchTimestampUTC', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
+    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.article.CalibreMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
+  '3': [CalibreMongo_AdditionalAttributesEntry$json],
+  '9': [
+    {'1': 8, '2': 99},
+  ],
+};
+
+@$core.Deprecated('Use calibreMongoDescriptor instead')
+const CalibreMongo_AdditionalAttributesEntry$json = {
+  '1': 'AdditionalAttributesEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': {'7': true},
 };
 
 /// Descriptor for `CalibreMongo`. Decode as a `google.protobuf.DescriptorProto`.
@@ -47,7 +63,12 @@ final $typed_data.Uint8List calibreMongoDescriptor = $convert.base64Decode(
     'CgxDYWxpYnJlTW9uZ28SMgoHY2FsaWJyZRgBIAEoCzIYLndlZWJpLmFydGljbGUuQ2FsaWJyZV'
     'BiUgdjYWxpYnJlEhwKCWNhbGlicmVJZBgCIAEoBVIJY2FsaWJyZUlkEhYKBmZpcm1JZBgDIAEo'
     'CVIGZmlybUlkEhgKB2NoYWluSWQYBCABKAlSB2NoYWluSWQSFgoGdXNlcklkGAUgASgJUgZ1c2'
-    'VySWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRhdGU=');
+    'VySWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRhdGUSUAoVbGFzdFRvdWNoVGlt'
+    'ZXN0YW1wVVRDGAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIVbGFzdFRvdWNoVG'
+    'ltZXN0YW1wVVRDEmsKFWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI1LndlZWJpLmFydGlj'
+    'bGUuQ2FsaWJyZU1vbmdvLkFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnlSFWFkZGl0aW9uYWxfYX'
+    'R0cmlidXRlcxpHChlBZGRpdGlvbmFsQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5'
+    'EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgIEGM=');
 
 @$core.Deprecated('Use calibrePbDescriptor instead')
 const CalibrePb$json = {

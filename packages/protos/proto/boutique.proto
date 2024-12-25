@@ -5,29 +5,45 @@ package weebi.boutique;
 import "common/phone.proto";
 import "common/address.proto";
 import "device.proto";
+import "common/g_timestamp.proto";
 
-message Boutique {
+message BoutiqueMongo {
+    BoutiquePb boutique = 1 [json_name = 'boutique']; 
+    string boutiqueId = 2 [json_name = 'boutiqueId']; // assigned by the server
+    string firmId = 3 [json_name = 'firmId'];
+    string chainId = 4 [json_name = 'chainId'];
+    google.protobuf.Timestamp creationTimestampUTC = 5 [json_name = 'creationTimestampUTC'];
+    string name = 6 [json_name = 'name'];
+    repeated weebi.device.Device devices = 7 [json_name = 'devices'];
+    google.protobuf.Timestamp lastTouchTimestampUTC =  8 [json_name = 'lastTouchTimestampUTC']; 
+    reserved 9 to 98;
+    map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
+}
+
+
+message BoutiquePb {
     string boutiqueId = 1 [json_name = 'boutiqueId'];
-    string firmId = 2 [json_name = 'firmId'];
-    string chainId = 3 [json_name = 'chainId'];
-    string creationDate = 4 [json_name = 'creationDate'];
-    string updateDate = 5 [json_name = 'updateDate'];
-    string statusUpdateDate = 6 [json_name = 'statusUpdateDate'];
-    bool status = 7 [json_name = 'status'];
-    string name = 8 [json_name = 'name'];
-    weebi.common.phone.Phone phone = 9 [json_name = 'phone'];
-    weebi.common.address.Address addressFull = 10 [json_name = 'addressFull'];
-    double promo = 11 [json_name = 'promo'];
-    string promoStart =  12 [json_name = 'promoStart'];
-    string promoEnd = 13 [json_name = 'promoEnd'];
-    repeated weebi.device.Device devices = 14 [json_name = 'devices'];
-    reserved 15 to 98;
+    string creationDate = 2 [json_name = 'creationDate'];
+    string updateDate = 3 [json_name = 'updateDate'];
+    string statusUpdateDate = 4 [json_name = 'statusUpdateDate'];
+    bool status = 5 [json_name = 'status'];
+    string name = 6 [json_name = 'name'];
+    weebi.common.phone.Phone phone = 7 [json_name = 'phone'];
+    weebi.common.address.Address addressFull = 8 [json_name = 'addressFull'];
+    double promo = 9 [json_name = 'promo'];
+    string promoStart = 10 [json_name = 'promoStart'];
+    string promoEnd = 11 [json_name = 'promoEnd'];
+    reserved 12 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
    }
+   
+   // think about boutique sync
+   message BoutiqueLogo {
+    string firmId = 1;
+    string chainId = 2;
+    string boutiqueId = 3;
+    bytes logo = 5;
+  }
 
-//  required super.serverStatus,
-//  required super.serverStatusUpdateDate,
-//  required super.isProd,
-//  required super.isLocked,
 //  this.logoSource = PhotoSource.unknown,
 //  this.logoPath = '',

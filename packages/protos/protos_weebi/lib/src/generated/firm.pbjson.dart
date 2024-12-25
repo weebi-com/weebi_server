@@ -28,6 +28,7 @@ const Firm$json = {
     {'1': 'lastUpdateTimestampUTC', '3': 9, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
     {'1': 'lastUpdatedByuserId', '3': 10, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
     {'1': 'isMailVerified', '3': 11, '4': 1, '5': 8, '10': 'isMailVerified'},
+    {'1': 'creationDateUTC', '3': 12, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationDateUTC'},
   ],
 };
 
@@ -44,7 +45,8 @@ final $typed_data.Uint8List firmDescriptor = $convert.base64Decode(
     'ElIKFmxhc3RVcGRhdGVUaW1lc3RhbXBVVEMYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZX'
     'N0YW1wUhZsYXN0VXBkYXRlVGltZXN0YW1wVVRDEjAKE2xhc3RVcGRhdGVkQnl1c2VySWQYCiAB'
     'KAlSE2xhc3RVcGRhdGVkQnl1c2VySWQSJgoOaXNNYWlsVmVyaWZpZWQYCyABKAhSDmlzTWFpbF'
-    'ZlcmlmaWVk');
+    'ZlcmlmaWVkEkQKD2NyZWF0aW9uRGF0ZVVUQxgMIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1l'
+    'c3RhbXBSD2NyZWF0aW9uRGF0ZVVUQw==');
 
 @$core.Deprecated('Use createFirmRequestDescriptor instead')
 const CreateFirmRequest$json = {

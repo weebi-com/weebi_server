@@ -15,10 +15,13 @@ abstract class Dummy {
     ..code = 'code'
     ..country = Country(code2Letters: 'fr');
 
-  static final boutiqueNoId = Boutique(
+  static final boutiquePb = BoutiquePb(
     addressFull: Dummy.address,
     name: 'dummy boutique',
     phone: Phone(countryCode: 33, number: '773116767'),
+  );
+  static final boutiqueNoId = BoutiqueMongo(
+    boutique: boutiquePb,
     devices: <Device>[Dummy.device],
   );
 
@@ -41,7 +44,7 @@ abstract class Dummy {
     ..hardwareInfo.serialNumber = 'unique';
 
   static final chainNoId = Chain(
-    boutiques: <Boutique>[Dummy.boutiqueNoId],
+    boutiques: <BoutiqueMongo>[Dummy.boutiqueNoId],
   );
   static final chain = chainNoId
     ..chainId = '665e12f798357783e8000001'

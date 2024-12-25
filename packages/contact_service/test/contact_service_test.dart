@@ -10,7 +10,6 @@ import 'package:contact_service/contact_service.dart';
 void main() async {
   final db = TestHelper.localDb;
   final connection = Connection(ConnectionManager(db));
-  final firmId = Dummy.firm.firmId;
   final chainId = Dummy.chain.chainId;
   late ContactService contactService;
 
@@ -46,7 +45,7 @@ void main() async {
   });
   test('test readAll', () async {
     final response = await contactService.readAll(
-        null, ReadAllContactsRequest(firmId: firmId, chainId: chainId));
+        null, ReadAllContactsRequest(chainId: chainId));
     expect(response.contacts.length, 1);
   });
 
@@ -76,7 +75,7 @@ void main() async {
       contact: contactLili,
     );
     // ignore: unused_local_variable
-    final response = await contactService.replaceOne(null, contactRequest);
+    final response = await contactService.updateOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.UPDATED);
 
     final response2 = await contactService.readAll(

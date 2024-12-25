@@ -13,8 +13,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/address.pb.dart' as $22;
-import '../common/phone.pb.dart' as $21;
+import '../common/address.pb.dart' as $21;
+import '../common/g_timestamp.pb.dart' as $19;
+import '../common/phone.pb.dart' as $20;
 
 /// / contactId is unique
 class ContactMongo extends $pb.GeneratedMessage {
@@ -25,6 +26,8 @@ class ContactMongo extends $pb.GeneratedMessage {
     $core.String? firmId,
     $core.String? chainId,
     $core.String? creationDate,
+    $19.Timestamp? lastTouchTimestampUTC,
+    $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
     if (contact != null) {
@@ -45,6 +48,12 @@ class ContactMongo extends $pb.GeneratedMessage {
     if (creationDate != null) {
       $result.creationDate = creationDate;
     }
+    if (lastTouchTimestampUTC != null) {
+      $result.lastTouchTimestampUTC = lastTouchTimestampUTC;
+    }
+    if (additionalAttributes != null) {
+      $result.additionalAttributes.addAll(additionalAttributes);
+    }
     return $result;
   }
   ContactMongo._() : super();
@@ -58,6 +67,8 @@ class ContactMongo extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(5, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(6, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOM<$19.Timestamp>(7, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'ContactMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.contact'))
     ..hasRequiredFields = false
   ;
 
@@ -137,6 +148,20 @@ class ContactMongo extends $pb.GeneratedMessage {
   $core.bool hasCreationDate() => $_has(5);
   @$pb.TagNumber(6)
   void clearCreationDate() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $19.Timestamp get lastTouchTimestampUTC => $_getN(6);
+  @$pb.TagNumber(7)
+  set lastTouchTimestampUTC($19.Timestamp v) { setField(7, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasLastTouchTimestampUTC() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearLastTouchTimestampUTC() => clearField(7);
+  @$pb.TagNumber(7)
+  $19.Timestamp ensureLastTouchTimestampUTC() => $_ensure(6);
+
+  @$pb.TagNumber(99)
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(7);
 }
 
 class ContactPb extends $pb.GeneratedMessage {
@@ -149,8 +174,8 @@ class ContactPb extends $pb.GeneratedMessage {
     $core.String? firstName,
     $core.String? lastName,
     $core.String? mail,
-    $21.Phone? phone,
-    $22.Address? addressFull,
+    $20.Phone? phone,
+    $21.Address? addressFull,
     $core.int? overdraft,
     $core.Iterable<$core.String>? tags,
     $core.Map<$core.String, $core.String>? othersAttributes,
@@ -210,8 +235,8 @@ class ContactPb extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'firstName', protoName: 'firstName')
     ..aOS(7, _omitFieldNames ? '' : 'lastName', protoName: 'lastName')
     ..aOS(8, _omitFieldNames ? '' : 'mail')
-    ..aOM<$21.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $21.Phone.create)
-    ..aOM<$22.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $22.Address.create)
+    ..aOM<$20.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $20.Phone.create)
+    ..aOM<$21.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $21.Address.create)
     ..a<$core.int>(11, _omitFieldNames ? '' : 'overdraft', $pb.PbFieldType.O3)
     ..pPS(12, _omitFieldNames ? '' : 'categories', protoName: 'tags')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'ContactPb.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.contact'))
@@ -312,26 +337,26 @@ class ContactPb extends $pb.GeneratedMessage {
   void clearMail() => clearField(8);
 
   @$pb.TagNumber(9)
-  $21.Phone get phone => $_getN(8);
+  $20.Phone get phone => $_getN(8);
   @$pb.TagNumber(9)
-  set phone($21.Phone v) { setField(9, v); }
+  set phone($20.Phone v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasPhone() => $_has(8);
   @$pb.TagNumber(9)
   void clearPhone() => clearField(9);
   @$pb.TagNumber(9)
-  $21.Phone ensurePhone() => $_ensure(8);
+  $20.Phone ensurePhone() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $22.Address get addressFull => $_getN(9);
+  $21.Address get addressFull => $_getN(9);
   @$pb.TagNumber(10)
-  set addressFull($22.Address v) { setField(10, v); }
+  set addressFull($21.Address v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasAddressFull() => $_has(9);
   @$pb.TagNumber(10)
   void clearAddressFull() => clearField(10);
   @$pb.TagNumber(10)
-  $22.Address ensureAddressFull() => $_ensure(9);
+  $21.Address ensureAddressFull() => $_ensure(9);
 
   @$pb.TagNumber(11)
   $core.int get overdraft => $_getIZ(10);

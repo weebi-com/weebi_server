@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package weebi.article;
 
+import "common/g_timestamp.proto";
+
 message CalibreMongo {
   // faster object read
   weebi.article.CalibrePb calibre = 1 [json_name = 'calibre'] ;
@@ -10,6 +12,9 @@ message CalibreMongo {
   string chainId = 4 [json_name = 'chainId'];
   string userId = 5 [json_name = 'userId']; 
   string creationDate = 6 [json_name = 'creationDate'];
+  google.protobuf.Timestamp lastTouchTimestampUTC =  7 [json_name = 'lastTouchTimestampUTC']; 
+  reserved 8 to 98;
+  map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
 }
 
 /// Wrapping articles, using Pb to differentiate from Calibre Dart in models weebi 
