@@ -18,7 +18,8 @@ extension ServiceCallExt on ServiceCall? {
   String get bearer {
     if (this == null ||
         this!.clientMetadata == null ||
-        this!.clientMetadata!['authorization'] == null) {
+        this!.clientMetadata!['authorization'] == null ||
+        this!.clientMetadata!['authorization']!.isEmpty) {
       throw GrpcError.unauthenticated();
     } else {
       return this!.clientMetadata!['authorization']!;
