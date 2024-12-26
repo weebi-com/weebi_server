@@ -1,6 +1,12 @@
 {
   "details": {
-    "methodFqn": "weebi.fence.service.FenceService.createFirm"
+    "methodFqn": "weebi.fence.service.FenceService.createFirm",
+    "metadata": [
+      {
+        "key": "authorization",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNzM1MTY1MDM5MzkzIiwiaWF0IjoxNzM1MTY1MDM5LCJleHAiOjE3MzUyNTE0MzksInVzZXJJZCI6IjE3MzUxNjUwMzkzOTMiLCJmaXJtUmlnaHRzIjp7ImZpcm1SaWdodHMiOlsiY3JlYXRlIl19fQ==.YX9HYgbOYtD5aynQFsvEKLmflgfu62Jb2GD0HL4mux0="
+      }
+    ]
   },
   "requests": [
     {

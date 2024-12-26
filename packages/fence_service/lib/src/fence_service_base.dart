@@ -761,10 +761,10 @@ class FenceService extends FenceServiceBase {
               ..timestamp = DateTime.now().timestampProto);
       }
     } on GrpcError catch (e) {
-      print(e);
+      print('createFirm $e');
       rethrow;
     } catch (e, stacktrace) {
-      print(e);
+      print('createFirm $e');
       print(stacktrace);
       rethrow;
     }
@@ -783,9 +783,10 @@ class FenceService extends FenceServiceBase {
         ..type = StatusResponse_Type.UPDATED
         ..timestamp = DateTime.now().timestampProto;
     } on GrpcError catch (e) {
-      print(e);
+      print('_updateUserFirmIdAndPermissionsDBExec $e');
       rethrow;
     } catch (e, stacktrace) {
+      print('_updateUserFirmIdAndPermissionsDBExec $e');
       // the whole stacktrace is heavy
       print(stacktrace);
       rethrow;
