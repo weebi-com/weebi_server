@@ -13,17 +13,17 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'boutique.pb.dart' as $12;
-import 'common/g_timestamp.pb.dart' as $19;
+import 'boutique.pb.dart' as $21;
+import 'common/g_timestamp.pb.dart' as $18;
 
 class Chain extends $pb.GeneratedMessage {
   factory Chain({
     $core.String? chainId,
     $core.String? firmId,
     $core.String? name,
-    $core.Iterable<$12.BoutiqueMongo>? boutiques,
-    $19.Timestamp? creationDateUTC,
-    $19.Timestamp? lastUpdateTimestampUTC,
+    $core.Iterable<$21.BoutiqueMongo>? boutiques,
+    $18.Timestamp? creationDateUTC,
+    $18.Timestamp? lastUpdateTimestampUTC,
     $core.String? lastUpdatedByuserId,
   }) {
     final $result = create();
@@ -58,9 +58,9 @@ class Chain extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(3, _omitFieldNames ? '' : 'name')
-    ..pc<$12.BoutiqueMongo>(4, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $12.BoutiqueMongo.create)
-    ..aOM<$19.Timestamp>(5, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $19.Timestamp.create)
-    ..aOM<$19.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..pc<$21.BoutiqueMongo>(4, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $21.BoutiqueMongo.create)
+    ..aOM<$18.Timestamp>(5, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $18.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
     ..hasRequiredFields = false
   ;
@@ -114,29 +114,29 @@ class Chain extends $pb.GeneratedMessage {
   void clearName() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.List<$12.BoutiqueMongo> get boutiques => $_getList(3);
+  $core.List<$21.BoutiqueMongo> get boutiques => $_getList(3);
 
   @$pb.TagNumber(5)
-  $19.Timestamp get creationDateUTC => $_getN(4);
+  $18.Timestamp get creationDateUTC => $_getN(4);
   @$pb.TagNumber(5)
-  set creationDateUTC($19.Timestamp v) { setField(5, v); }
+  set creationDateUTC($18.Timestamp v) { setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasCreationDateUTC() => $_has(4);
   @$pb.TagNumber(5)
   void clearCreationDateUTC() => clearField(5);
   @$pb.TagNumber(5)
-  $19.Timestamp ensureCreationDateUTC() => $_ensure(4);
+  $18.Timestamp ensureCreationDateUTC() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $19.Timestamp get lastUpdateTimestampUTC => $_getN(5);
+  $18.Timestamp get lastUpdateTimestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set lastUpdateTimestampUTC($19.Timestamp v) { setField(6, v); }
+  set lastUpdateTimestampUTC($18.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasLastUpdateTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
   void clearLastUpdateTimestampUTC() => clearField(6);
   @$pb.TagNumber(6)
-  $19.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(5);
+  $18.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $core.String get lastUpdatedByuserId => $_getSZ(6);

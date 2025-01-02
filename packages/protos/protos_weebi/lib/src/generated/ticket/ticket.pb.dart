@@ -14,7 +14,7 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../article/article.pb.dart' as $3;
-import '../common/g_timestamp.pb.dart' as $19;
+import '../common/g_timestamp.pb.dart' as $18;
 import 'ticket.pbenum.dart';
 import 'ticket_type.pbenum.dart' as $23;
 
@@ -31,7 +31,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     $core.String? firmId,
     $core.String? chainId,
     $core.String? creationDate,
-    $19.Timestamp? lastTouchTimestampUTC,
+    $18.Timestamp? lastTouchTimestampUTC,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
@@ -76,7 +76,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(6, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
-    ..aOM<$19.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$18.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'TicketMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.ticket'))
     ..hasRequiredFields = false
   ;
@@ -168,15 +168,15 @@ class TicketMongo extends $pb.GeneratedMessage {
   void clearCreationDate() => clearField(7);
 
   @$pb.TagNumber(8)
-  $19.Timestamp get lastTouchTimestampUTC => $_getN(7);
+  $18.Timestamp get lastTouchTimestampUTC => $_getN(7);
   @$pb.TagNumber(8)
-  set lastTouchTimestampUTC($19.Timestamp v) { setField(8, v); }
+  set lastTouchTimestampUTC($18.Timestamp v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasLastTouchTimestampUTC() => $_has(7);
   @$pb.TagNumber(8)
   void clearLastTouchTimestampUTC() => clearField(8);
   @$pb.TagNumber(8)
-  $19.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
+  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
 
   @$pb.TagNumber(99)
   $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(8);

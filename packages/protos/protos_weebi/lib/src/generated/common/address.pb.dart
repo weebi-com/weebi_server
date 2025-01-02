@@ -13,14 +13,14 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'country.pb.dart' as $18;
+import 'country.pb.dart' as $17;
 
 class Address extends $pb.GeneratedMessage {
   factory Address({
     $core.String? street,
     $core.String? code,
     $core.String? city,
-    $18.Country? country,
+    $17.Country? country,
     $core.double? latitude,
     $core.double? longitude,
   }) {
@@ -53,7 +53,7 @@ class Address extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'street')
     ..aOS(2, _omitFieldNames ? '' : 'code')
     ..aOS(3, _omitFieldNames ? '' : 'city')
-    ..aOM<$18.Country>(4, _omitFieldNames ? '' : 'country', subBuilder: $18.Country.create)
+    ..aOM<$17.Country>(4, _omitFieldNames ? '' : 'country', subBuilder: $17.Country.create)
     ..a<$core.double>(5, _omitFieldNames ? '' : 'latitude', $pb.PbFieldType.OD)
     ..a<$core.double>(6, _omitFieldNames ? '' : 'longitude', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
@@ -108,15 +108,15 @@ class Address extends $pb.GeneratedMessage {
   void clearCity() => clearField(3);
 
   @$pb.TagNumber(4)
-  $18.Country get country => $_getN(3);
+  $17.Country get country => $_getN(3);
   @$pb.TagNumber(4)
-  set country($18.Country v) { setField(4, v); }
+  set country($17.Country v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasCountry() => $_has(3);
   @$pb.TagNumber(4)
   void clearCountry() => clearField(4);
   @$pb.TagNumber(4)
-  $18.Country ensureCountry() => $_ensure(3);
+  $17.Country ensureCountry() => $_ensure(3);
 
   @$pb.TagNumber(5)
   $core.double get latitude => $_getN(4);

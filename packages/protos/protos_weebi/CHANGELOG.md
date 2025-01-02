@@ -1,10 +1,15 @@
+## 1.0.7+3
+
+- added logo in boutique and in BoutiqueRequest and in BoutiqueResponse
+- breaking change on readBoutique
+
 ## 1.0.7+2
 
 - removed authenticateWithDevice
 - removed readUserPermissionsByToken
 
-
 ## 1.0.7+1
+
 - addMany for article, contact, ticket
 - handle photo for articles
 - lastTouchTimestampUTC for lighter sync

@@ -19,13 +19,29 @@ const BoutiqueRequest$json = {
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'boutique', '3': 2, '4': 1, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutique'},
+    {'1': 'logo', '3': 3, '4': 1, '5': 12, '10': 'logo'},
   ],
 };
 
 /// Descriptor for `BoutiqueRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List boutiqueRequestDescriptor = $convert.base64Decode(
     'Cg9Cb3V0aXF1ZVJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBI2Cghib3V0aXF1ZR'
-    'gCIAEoCzIaLndlZWJpLmJvdXRpcXVlLkJvdXRpcXVlUGJSCGJvdXRpcXVl');
+    'gCIAEoCzIaLndlZWJpLmJvdXRpcXVlLkJvdXRpcXVlUGJSCGJvdXRpcXVlEhIKBGxvZ28YAyAB'
+    'KAxSBGxvZ28=');
+
+@$core.Deprecated('Use boutiqueResponseDescriptor instead')
+const BoutiqueResponse$json = {
+  '1': 'BoutiqueResponse',
+  '2': [
+    {'1': 'boutique', '3': 1, '4': 1, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutique'},
+    {'1': 'logo', '3': 2, '4': 1, '5': 12, '10': 'logo'},
+  ],
+};
+
+/// Descriptor for `BoutiqueResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List boutiqueResponseDescriptor = $convert.base64Decode(
+    'ChBCb3V0aXF1ZVJlc3BvbnNlEjYKCGJvdXRpcXVlGAEgASgLMhoud2VlYmkuYm91dGlxdWUuQm'
+    '91dGlxdWVQYlIIYm91dGlxdWUSEgoEbG9nbxgCIAEoDFIEbG9nbw==');
 
 @$core.Deprecated('Use createDeviceResponseDescriptor instead')
 const CreateDeviceResponse$json = {

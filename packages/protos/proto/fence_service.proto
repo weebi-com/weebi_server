@@ -53,7 +53,7 @@ service FenceService {
   rpc deleteOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
   
   rpc createOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
-  rpc readOneBoutique(BoutiqueRequest) returns (weebi.boutique.BoutiquePb);
+  rpc readOneBoutique(BoutiqueRequest) returns (BoutiqueResponse);
   rpc updateOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   // readBoutiques is not relevant since they are provided in readAllChains
@@ -82,6 +82,12 @@ service FenceService {
 message BoutiqueRequest {
   string chainId = 1 ;
   weebi.boutique.BoutiquePb boutique = 2;
+  bytes logo = 3 ;
+}
+/// one boutique creation the server will assign the boutiqueId
+message BoutiqueResponse {
+  weebi.boutique.BoutiquePb boutique = 1;
+  bytes logo = 2;
 }
 
 

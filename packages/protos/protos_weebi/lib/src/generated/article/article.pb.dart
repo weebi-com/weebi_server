@@ -13,7 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_timestamp.pb.dart' as $19;
+import '../common/g_timestamp.pb.dart' as $18;
 import 'article.pbenum.dart';
 
 export 'article.pbenum.dart';
@@ -26,7 +26,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
     $core.String? chainId,
     $core.String? userId,
     $core.String? creationDate,
-    $19.Timestamp? lastTouchTimestampUTC,
+    $18.Timestamp? lastTouchTimestampUTC,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
@@ -67,7 +67,7 @@ class CalibreMongo extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(5, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(6, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
-    ..aOM<$19.Timestamp>(7, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$18.Timestamp>(7, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'CalibreMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.article'))
     ..hasRequiredFields = false
   ;
@@ -151,15 +151,15 @@ class CalibreMongo extends $pb.GeneratedMessage {
   void clearCreationDate() => clearField(6);
 
   @$pb.TagNumber(7)
-  $19.Timestamp get lastTouchTimestampUTC => $_getN(6);
+  $18.Timestamp get lastTouchTimestampUTC => $_getN(6);
   @$pb.TagNumber(7)
-  set lastTouchTimestampUTC($19.Timestamp v) { setField(7, v); }
+  set lastTouchTimestampUTC($18.Timestamp v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasLastTouchTimestampUTC() => $_has(6);
   @$pb.TagNumber(7)
   void clearLastTouchTimestampUTC() => clearField(7);
   @$pb.TagNumber(7)
-  $19.Timestamp ensureLastTouchTimestampUTC() => $_ensure(6);
+  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(6);
 
   @$pb.TagNumber(99)
   $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(7);

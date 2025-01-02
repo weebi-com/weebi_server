@@ -25,11 +25,12 @@ const BoutiqueMongo$json = {
     {'1': 'name', '3': 6, '4': 1, '5': 9, '10': 'name'},
     {'1': 'devices', '3': 7, '4': 3, '5': 11, '6': '.weebi.device.Device', '10': 'devices'},
     {'1': 'lastTouchTimestampUTC', '3': 8, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
+    {'1': 'logo', '3': 9, '4': 1, '5': 12, '10': 'logo'},
     {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiqueMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
   '3': [BoutiqueMongo_AdditionalAttributesEntry$json],
   '9': [
-    {'1': 9, '2': 99},
+    {'1': 10, '2': 99},
   ],
 };
 
@@ -51,11 +52,11 @@ final $typed_data.Uint8List boutiqueMongoDescriptor = $convert.base64Decode(
     'ltZXN0YW1wVVRDGAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIUY3JlYXRpb25U'
     'aW1lc3RhbXBVVEMSEgoEbmFtZRgGIAEoCVIEbmFtZRIuCgdkZXZpY2VzGAcgAygLMhQud2VlYm'
     'kuZGV2aWNlLkRldmljZVIHZGV2aWNlcxJQChVsYXN0VG91Y2hUaW1lc3RhbXBVVEMYCCABKAsy'
-    'Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUhVsYXN0VG91Y2hUaW1lc3RhbXBVVEMSbQoVYW'
-    'RkaXRpb25hbF9hdHRyaWJ1dGVzGGMgAygLMjcud2VlYmkuYm91dGlxdWUuQm91dGlxdWVNb25n'
-    'by5BZGRpdGlvbmFsQXR0cmlidXRlc0VudHJ5UhVhZGRpdGlvbmFsX2F0dHJpYnV0ZXMaRwoZQW'
-    'RkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEo'
-    'CVIFdmFsdWU6AjgBSgQICRBj');
+    'Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUhVsYXN0VG91Y2hUaW1lc3RhbXBVVEMSEgoEbG'
+    '9nbxgJIAEoDFIEbG9nbxJtChVhZGRpdGlvbmFsX2F0dHJpYnV0ZXMYYyADKAsyNy53ZWViaS5i'
+    'b3V0aXF1ZS5Cb3V0aXF1ZU1vbmdvLkFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnlSFWFkZGl0aW'
+    '9uYWxfYXR0cmlidXRlcxpHChlBZGRpdGlvbmFsQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEo'
+    'CVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgKEGM=');
 
 @$core.Deprecated('Use boutiquePbDescriptor instead')
 const BoutiquePb$json = {
@@ -103,21 +104,4 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'LkJvdXRpcXVlUGIuQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb25hbF9hdHRyaW'
     'J1dGVzGkcKGUFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoF'
     'dmFsdWUYAiABKAlSBXZhbHVlOgI4AUoECAwQYw==');
-
-@$core.Deprecated('Use boutiqueLogoDescriptor instead')
-const BoutiqueLogo$json = {
-  '1': 'BoutiqueLogo',
-  '2': [
-    {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
-    {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'boutiqueId', '3': 3, '4': 1, '5': 9, '10': 'boutiqueId'},
-    {'1': 'logo', '3': 5, '4': 1, '5': 12, '10': 'logo'},
-  ],
-};
-
-/// Descriptor for `BoutiqueLogo`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List boutiqueLogoDescriptor = $convert.base64Decode(
-    'CgxCb3V0aXF1ZUxvZ28SFgoGZmlybUlkGAEgASgJUgZmaXJtSWQSGAoHY2hhaW5JZBgCIAEoCV'
-    'IHY2hhaW5JZBIeCgpib3V0aXF1ZUlkGAMgASgJUgpib3V0aXF1ZUlkEhIKBGxvZ28YBSABKAxS'
-    'BGxvZ28=');
 
