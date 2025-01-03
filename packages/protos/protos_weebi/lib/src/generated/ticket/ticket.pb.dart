@@ -198,6 +198,7 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.double? received,
     $core.double? discountAmount,
     $core.String? comment,
+    $core.String? creationDate,
   }) {
     final $result = create();
     if (nonUniqueId != null) {
@@ -242,6 +243,9 @@ class TicketPb extends $pb.GeneratedMessage {
     if (comment != null) {
       $result.comment = comment;
     }
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
+    }
     return $result;
   }
   TicketPb._() : super();
@@ -263,6 +267,7 @@ class TicketPb extends $pb.GeneratedMessage {
     ..a<$core.double>(12, _omitFieldNames ? '' : 'received', $pb.PbFieldType.OD)
     ..a<$core.double>(13, _omitFieldNames ? '' : 'discountAmount', $pb.PbFieldType.OD, protoName: 'discountAmount')
     ..aOS(14, _omitFieldNames ? '' : 'comment')
+    ..aOS(15, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..hasRequiredFields = false
   ;
 
@@ -310,6 +315,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   Counterfoil ensureCounterfoil() => $_ensure(1);
 
+  /// / when the ticket should be taken into account accountingly speaking
   @$pb.TagNumber(3)
   $core.String get date => $_getSZ(2);
   @$pb.TagNumber(3)
@@ -413,6 +419,16 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.bool hasComment() => $_has(13);
   @$pb.TagNumber(14)
   void clearComment() => clearField(14);
+
+  /// / when the ticket was created
+  @$pb.TagNumber(15)
+  $core.String get creationDate => $_getSZ(14);
+  @$pb.TagNumber(15)
+  set creationDate($core.String v) { $_setString(14, v); }
+  @$pb.TagNumber(15)
+  $core.bool hasCreationDate() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearCreationDate() => clearField(15);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {
@@ -572,6 +588,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   void clearBoutiqueName() => clearField(8);
 
+  /// / userId is the user who synced the ticket, not necessarily the one who created it
   @$pb.TagNumber(9)
   $core.String get userId => $_getSZ(8);
   @$pb.TagNumber(9)

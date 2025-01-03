@@ -4,13 +4,13 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder selectTicket(String firmId, String userId,
-          int ticketNonUniqueId, String dateCreation) =>
+  static SelectorBuilder selectTicket(String firmId, String boutiqueId,
+          int ticketNonUniqueId, String creationDate) =>
       where
           .eq('firmId', firmId)
-          .eq('userId', userId)
-          .eq('dateCreation', dateCreation)
-          .eq('nonUniqueId', ticketNonUniqueId);
+          .eq('boutiqueId', boutiqueId)
+          .eq('nonUniqueId', ticketNonUniqueId)
+          .eq('creationDate', creationDate);
 }
 
 class TicketService extends TicketServiceBase {
@@ -45,6 +45,14 @@ class TicketService extends TicketServiceBase {
     }
 
     try {
+      final snapshot = await collection.findOne(_Helpers.selectTicket(
+          userPermission.firmId,
+          request.ticket.counterfoil.boutiqueId,
+          request.ticket.nonUniqueId,
+          request.ticket.creationDate));
+      if (snapshot != null) {
+        throw GrpcError.alreadyExists();
+      }
       final ticketMongo = TicketMongo.create()
         ..ticket = request.ticket
         ..creationDate = request.ticket.date
@@ -216,7 +224,7 @@ class TicketService extends TicketServiceBase {
     }
     final selector = _Helpers.selectTicket(
       request.ticket.counterfoil.firmId,
-      request.ticket.counterfoil.userId,
+      request.ticket.counterfoil.boutiqueId,
       request.ticket.nonUniqueId,
       request.ticket.date,
     );
@@ -281,7 +289,7 @@ class TicketService extends TicketServiceBase {
     }
     final selector = _Helpers.selectTicket(
       request.ticket.counterfoil.firmId,
-      request.ticket.counterfoil.userId,
+      request.ticket.counterfoil.boutiqueId,
       request.ticket.nonUniqueId,
       request.ticket.date,
     );
@@ -321,7 +329,17 @@ class TicketService extends TicketServiceBase {
 
     final ticketsMap = <Map<String, dynamic>>[];
     final nowTimestampUtc = DateTime.now().toUtc().timestampProto;
+    int dups = 0;
     for (final ticketPb in request.tickets) {
+      final snapshot = await collection.findOne(_Helpers.selectTicket(
+          userPermission.firmId,
+          ticketPb.counterfoil.boutiqueId,
+          ticketPb.nonUniqueId,
+          ticketPb.creationDate));
+      if (snapshot != null) {
+        dups += 1;
+        continue;
+      }
       final ticketMongo = TicketMongo.create()
         ..ticket = ticketPb
         ..creationDate = ticketPb.date
@@ -332,6 +350,9 @@ class TicketService extends TicketServiceBase {
         ..userId = userPermission.userId
         ..lastTouchTimestampUTC = nowTimestampUtc;
       ticketsMap.add(ticketMongo.toProto3Json() as Map<String, dynamic>);
+    }
+    if (request.tickets.length == dups) {
+      throw GrpcError.alreadyExists();
     }
     try {
       final result = await collection.insertMany(ticketsMap);
@@ -346,7 +367,9 @@ class TicketService extends TicketServiceBase {
       if (result.success) {
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..timestamp = DateTime.now().timestampProto;
+          ..timestamp = DateTime.now().timestampProto
+          ..message =
+              dups > 0 ? 'dups ignored: $dups/${request.tickets.length}' : '';
       } else {
         return StatusResponse.create()
           ..type = StatusResponse_Type.ERROR

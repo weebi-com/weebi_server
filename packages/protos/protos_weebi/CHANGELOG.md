@@ -1,3 +1,7 @@
+## 1.0.7+4 - 2025/01/03
+
+- ticket.creationDate added
+
 ## 1.0.7+3
 
 - added logo in boutique and in BoutiqueRequest and in BoutiqueResponse

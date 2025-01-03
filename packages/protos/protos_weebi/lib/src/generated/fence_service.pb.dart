@@ -1226,7 +1226,6 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   void clearPassword() => clearField(3);
 }
 
-/// / deviceId && status && password && dateCreation will be set by server, ignore them in front
 class PendingDeviceRequest extends $pb.GeneratedMessage {
   factory PendingDeviceRequest({
     $12.HardwareInfo? hardwareInfo,

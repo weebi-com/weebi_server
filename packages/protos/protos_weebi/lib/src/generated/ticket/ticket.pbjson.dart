@@ -74,6 +74,7 @@ const TicketPb$json = {
     {'1': 'received', '3': 12, '4': 1, '5': 1, '10': 'received'},
     {'1': 'discountAmount', '3': 13, '4': 1, '5': 1, '10': 'discountAmount'},
     {'1': 'comment', '3': 14, '4': 1, '5': 9, '10': 'comment'},
+    {'1': 'creationDate', '3': 15, '4': 1, '5': 9, '10': 'creationDate'},
   ],
   '4': [TicketPb_PaymentTypePb$json],
 };
@@ -104,8 +105,9 @@ final $typed_data.Uint8List ticketPbDescriptor = $convert.base64Decode(
     'IJY29udGFjdElkEicKBHRheGUYCiABKAsyEy53ZWViaS50aWNrZXQuVGF4UGJSBHRheGUSFAoF'
     'cHJvbW8YCyABKAFSBXByb21vEhoKCHJlY2VpdmVkGAwgASgBUghyZWNlaXZlZBImCg5kaXNjb3'
     'VudEFtb3VudBgNIAEoAVIOZGlzY291bnRBbW91bnQSGAoHY29tbWVudBgOIAEoCVIHY29tbWVu'
-    'dCJoCg1QYXltZW50VHlwZVBiEgsKB3Vua25vd24QABIICgRjYXNoEAESCAoEbm9wZRACEg8KC2'
-    '1vYmlsZU1vbmV5EAMSCgoGY2hlcXVlEAQSDgoKY3JlZGl0Q2FyZBAFEgkKBWdvb2RzEAY=');
+    'dBIiCgxjcmVhdGlvbkRhdGUYDyABKAlSDGNyZWF0aW9uRGF0ZSJoCg1QYXltZW50VHlwZVBiEg'
+    'sKB3Vua25vd24QABIICgRjYXNoEAESCAoEbm9wZRACEg8KC21vYmlsZU1vbmV5EAMSCgoGY2hl'
+    'cXVlEAQSDgoKY3JlZGl0Q2FyZBAFEgkKBWdvb2RzEAY=');
 
 @$core.Deprecated('Use counterfoilDescriptor instead')
 const Counterfoil$json = {
