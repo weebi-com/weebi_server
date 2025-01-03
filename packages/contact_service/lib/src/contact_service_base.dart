@@ -5,12 +5,12 @@ import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectContact(
-          String firmId, String chainId, int contactId, String dateCreation) =>
+          String firmId, String chainId, int contactId, String creationDate) =>
       where
           .eq('firmId', firmId)
           .eq('chainId', chainId)
           .eq('contactId', contactId)
-          .eq('dateCreation', dateCreation);
+          .eq('creationDate', creationDate);
 }
 
 class ContactService extends ContactServiceBase {
@@ -44,6 +44,14 @@ class ContactService extends ContactServiceBase {
           'user does not have right to create articles');
     }
     try {
+      final snapshot = await collection.findOne(_Helpers.selectContact(
+          userPermission.firmId,
+          request.chainId,
+          request.contact.id,
+          request.contact.creationDate));
+      if (snapshot != null) {
+        throw GrpcError.alreadyExists();
+      }
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
         ..creationDate = request.contact.creationDate
@@ -271,7 +279,17 @@ class ContactService extends ContactServiceBase {
     }
     final nowProto = DateTime.now().toUtc().timestampProto;
     final contactsMap = <Map<String, dynamic>>[];
+    int dups = 0;
     for (final contactPb in request.contacts) {
+      final snapshot = await collection.findOne(_Helpers.selectContact(
+          userPermission.firmId,
+          request.chainId,
+          contactPb.id,
+          contactPb.creationDate));
+      if (snapshot != null) {
+        dups += 1;
+        continue;
+      }
       final contactMongo = ContactMongo.create()
         ..contact = contactPb
         ..creationDate = contactPb.creationDate
@@ -280,10 +298,11 @@ class ContactService extends ContactServiceBase {
         ..firmId = userPermission.firmId
         ..userId = userPermission.userId
         ..lastTouchTimestampUTC = nowProto;
-
       contactsMap.add(contactMongo.toProto3Json() as Map<String, dynamic>);
     }
-
+    if (request.contacts.length == dups) {
+      throw GrpcError.alreadyExists();
+    }
     try {
       final result = await collection.insertMany(contactsMap);
       if (result.hasWriteErrors) {
@@ -297,7 +316,9 @@ class ContactService extends ContactServiceBase {
       if (result.success) {
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..timestamp = DateTime.now().timestampProto;
+          ..timestamp = DateTime.now().timestampProto
+          ..message =
+              dups > 0 ? 'dups ignored: $dups/${request.contacts.length}' : '';
       } else {
         return StatusResponse.create()
           ..type = StatusResponse_Type.ERROR

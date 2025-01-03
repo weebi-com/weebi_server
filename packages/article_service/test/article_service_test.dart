@@ -28,12 +28,12 @@ void main() async {
       isTest: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
-    await db.collection(articleService.collection.collectionName).drop();
-    await db.createCollection(articleService.collection.collectionName);
+    await db.collection(articleService.collectionArticle.collectionName).drop();
+    await db.createCollection(articleService.collectionArticle.collectionName);
   });
 
   tearDownAll(() async {
-    await db.collection(articleService.collection.collectionName).drop();
+    await db.collection(articleService.collectionArticle.collectionName).drop();
     await connection.close();
   });
 

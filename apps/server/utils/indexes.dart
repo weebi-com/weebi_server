@@ -17,7 +17,7 @@ main() async {
   // unique index
   // sparse index
   await db.createCollection(FenceService.userCollectionName);
-  await db.createCollection(ArticleService.collectionName);
+  await db.createCollection(ArticleService.collectionArticleName);
   await db.createCollection(ContactService.collectionName);
   await db.createCollection(TicketService.collectionName);
 
@@ -27,10 +27,10 @@ main() async {
   dd = await db.ensureIndex(FenceService.userCollectionName,
       name: 'user_objectIdEtc', keys: {'_id': 1, 'userId': 1, 'mail': 1});
   print(dd);
-  dd = await db.ensureIndex(ArticleService.collectionName,
+  dd = await db.ensureIndex(ArticleService.collectionArticleName,
       name: 'article_calibreId', keys: {'calibreId': 1});
   print(dd);
-  dd = await db.ensureIndex(ArticleService.collectionName,
+  dd = await db.ensureIndex(ArticleService.collectionArticleName,
       name: 'article_chainId', keys: {'chainId': 1});
   print(dd);
   dd = await db.ensureIndex(ContactService.collectionName,

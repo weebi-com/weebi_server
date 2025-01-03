@@ -938,7 +938,8 @@ class FenceService extends FenceServiceBase {
       ..boutiqueId = boutiqueId
       ..name = request.boutique.name
       ..creationTimestampUTC = nowProtoUTC
-      ..boutique = request.boutique;
+      ..boutique = request.boutique
+      ..logo = request.logo;
 
     chain.boutiques.add(boutiqueMongo);
 
@@ -1054,6 +1055,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.notFound('boutique not found');
     }
     chain.boutiques[boutiqueIndex].boutique = request.boutique;
+    chain.boutiques[boutiqueIndex].logo = request.logo;
 
     return await _updateOneChainDBExec(chain);
   }
@@ -1592,7 +1594,7 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
-  Future<BoutiquePb> readOneBoutique(
+  Future<BoutiqueResponse> readOneBoutique(
       ServiceCall call, BoutiqueRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -1620,6 +1622,8 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.notFound('no boutique match found');
     }
 
-    return chain.boutiques[boutiqueIndex].boutique;
+    return BoutiqueResponse(
+        boutique: chain.boutiques[boutiqueIndex].boutique,
+        logo: chain.boutiques[boutiqueIndex].logo);
   }
 }

@@ -13,7 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_timestamp.pb.dart' as $19;
+import '../common/g_timestamp.pb.dart' as $18;
 import 'article.pb.dart' as $3;
 import 'category.pb.dart' as $4;
 import 'photo.pb.dart' as $5;
@@ -86,7 +86,7 @@ class FindCalibreRequest extends $pb.GeneratedMessage {
 class ReadAllRequest extends $pb.GeneratedMessage {
   factory ReadAllRequest({
     $core.String? chainId,
-    $19.Timestamp? lastFetchTimestampUTC,
+    $18.Timestamp? lastFetchTimestampUTC,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -103,7 +103,7 @@ class ReadAllRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$19.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$18.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $18.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -139,15 +139,15 @@ class ReadAllRequest extends $pb.GeneratedMessage {
 
   /// optional used for weebi_app device back online
   @$pb.TagNumber(2)
-  $19.Timestamp get lastFetchTimestampUTC => $_getN(1);
+  $18.Timestamp get lastFetchTimestampUTC => $_getN(1);
   @$pb.TagNumber(2)
-  set lastFetchTimestampUTC($19.Timestamp v) { setField(2, v); }
+  set lastFetchTimestampUTC($18.Timestamp v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLastFetchTimestampUTC() => $_has(1);
   @$pb.TagNumber(2)
   void clearLastFetchTimestampUTC() => clearField(2);
   @$pb.TagNumber(2)
-  $19.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
+  $18.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
 }
 
 class CalibreRequest extends $pb.GeneratedMessage {
@@ -628,7 +628,7 @@ class FindPhotoRequest extends $pb.GeneratedMessage {
 class ReadPhotosRequest extends $pb.GeneratedMessage {
   factory ReadPhotosRequest({
     $core.String? chainId,
-    $19.Timestamp? lastFetchTimestampUTC,
+    $18.Timestamp? lastFetchTimestampUTC,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -645,7 +645,7 @@ class ReadPhotosRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadPhotosRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$19.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$18.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $18.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -680,15 +680,15 @@ class ReadPhotosRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $19.Timestamp get lastFetchTimestampUTC => $_getN(1);
+  $18.Timestamp get lastFetchTimestampUTC => $_getN(1);
   @$pb.TagNumber(2)
-  set lastFetchTimestampUTC($19.Timestamp v) { setField(2, v); }
+  set lastFetchTimestampUTC($18.Timestamp v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLastFetchTimestampUTC() => $_has(1);
   @$pb.TagNumber(2)
   void clearLastFetchTimestampUTC() => clearField(2);
   @$pb.TagNumber(2)
-  $19.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
+  $18.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
 }
 
 class PhotoRequest extends $pb.GeneratedMessage {

@@ -13,7 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'common/g_timestamp.pb.dart' as $19;
+import 'common/g_timestamp.pb.dart' as $18;
 
 /// / a device == cash register, assigned to a boutique,
 /// / by default once enrolled there is a cashier access that can always log in
@@ -24,7 +24,7 @@ class Device extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.bool? status,
     $core.String? password,
-    $19.Timestamp? timestamp,
+    $18.Timestamp? timestamp,
     HardwareInfo? hardwareInfo,
   }) {
     final $result = create();
@@ -61,7 +61,7 @@ class Device extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOB(4, _omitFieldNames ? '' : 'status')
     ..aOS(5, _omitFieldNames ? '' : 'password')
-    ..aOM<$19.Timestamp>(6, _omitFieldNames ? '' : 'timestamp', subBuilder: $19.Timestamp.create)
+    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'timestamp', subBuilder: $18.Timestamp.create)
     ..aOM<HardwareInfo>(7, _omitFieldNames ? '' : 'hardwareInfo', protoName: 'hardwareInfo', subBuilder: HardwareInfo.create)
     ..hasRequiredFields = false
   ;
@@ -133,17 +133,16 @@ class Device extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearPassword() => clearField(5);
 
-  /// / dateCreation is set by the server
   @$pb.TagNumber(6)
-  $19.Timestamp get timestamp => $_getN(5);
+  $18.Timestamp get timestamp => $_getN(5);
   @$pb.TagNumber(6)
-  set timestamp($19.Timestamp v) { setField(6, v); }
+  set timestamp($18.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasTimestamp() => $_has(5);
   @$pb.TagNumber(6)
   void clearTimestamp() => clearField(6);
   @$pb.TagNumber(6)
-  $19.Timestamp ensureTimestamp() => $_ensure(5);
+  $18.Timestamp ensureTimestamp() => $_ensure(5);
 
   @$pb.TagNumber(7)
   HardwareInfo get hardwareInfo => $_getN(6);

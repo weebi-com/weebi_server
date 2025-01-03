@@ -7,9 +7,16 @@ extension BearerExt on String {
     if (isEmpty) {
       return UserPermissions.create();
     } else {
-      return UserPermissions.create()
-        ..mergeFromProto3Json(JsonWebToken.parse(this).payload,
-            ignoreUnknownFields: true);
+      try {
+        final d = JsonWebToken.parse(this).payload;
+        return UserPermissions.create()
+          ..mergeFromProto3Json(d, ignoreUnknownFields: true);
+      } on FormatException catch (e) {
+        print('BearerExt userPermissions $e');
+        rethrow;
+      } catch (e) {
+        rethrow;
+      }
     }
   }
 }

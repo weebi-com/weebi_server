@@ -41,6 +41,7 @@ message TicketPb {
     creditCard = 5 ;
     goods = 6 ;
     }
+  /// when the ticket should be taken into account accountingly speaking
   string date = 3 [json_name = 'date'];
   string statusUpdateDate = 4 [json_name = 'statusUpdateDate'];
   bool status = 5 [json_name = 'status'];
@@ -53,6 +54,8 @@ message TicketPb {
   double received = 12 [json_name = 'received'];
   double discountAmount = 13 [json_name = 'discountAmount'];
   string comment = 14 [json_name = 'comment'];
+  /// when the ticket was created
+  string creationDate = 15 [json_name = 'creationDate'];
 }
 
 
@@ -65,6 +68,7 @@ message Counterfoil {
   string deviceName = 6;
   string boutiqueId = 7;
   string boutiqueName = 8;
+  /// userId is the user who synced the ticket, not necessarily the one who created it
   string userId = 9;
   string userName = 10;
 }

@@ -13,7 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_timestamp.pb.dart' as $19;
+import '../common/g_timestamp.pb.dart' as $18;
 
 class CategoryMongo extends $pb.GeneratedMessage {
   factory CategoryMongo({
@@ -22,7 +22,7 @@ class CategoryMongo extends $pb.GeneratedMessage {
     $core.String? userId,
     $core.String? title,
     CategoryPb? category,
-    $19.Timestamp? lastTouchTimestampUTC,
+    $18.Timestamp? lastTouchTimestampUTC,
   }) {
     final $result = create();
     if (firmId != null) {
@@ -55,7 +55,7 @@ class CategoryMongo extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(4, _omitFieldNames ? '' : 'title')
     ..aOM<CategoryPb>(5, _omitFieldNames ? '' : 'category', subBuilder: CategoryPb.create)
-    ..aOM<$19.Timestamp>(6, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -129,15 +129,15 @@ class CategoryMongo extends $pb.GeneratedMessage {
   CategoryPb ensureCategory() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $19.Timestamp get lastTouchTimestampUTC => $_getN(5);
+  $18.Timestamp get lastTouchTimestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set lastTouchTimestampUTC($19.Timestamp v) { setField(6, v); }
+  set lastTouchTimestampUTC($18.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasLastTouchTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
   void clearLastTouchTimestampUTC() => clearField(6);
   @$pb.TagNumber(6)
-  $19.Timestamp ensureLastTouchTimestampUTC() => $_ensure(5);
+  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(5);
 }
 
 class CategoryPb extends $pb.GeneratedMessage {

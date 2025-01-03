@@ -14,7 +14,7 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../article/article.pb.dart' as $3;
-import '../common/g_timestamp.pb.dart' as $19;
+import '../common/g_timestamp.pb.dart' as $18;
 import 'ticket.pbenum.dart';
 import 'ticket_type.pbenum.dart' as $23;
 
@@ -31,7 +31,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     $core.String? firmId,
     $core.String? chainId,
     $core.String? creationDate,
-    $19.Timestamp? lastTouchTimestampUTC,
+    $18.Timestamp? lastTouchTimestampUTC,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
@@ -76,7 +76,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(6, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
-    ..aOM<$19.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$18.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'TicketMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.ticket'))
     ..hasRequiredFields = false
   ;
@@ -168,15 +168,15 @@ class TicketMongo extends $pb.GeneratedMessage {
   void clearCreationDate() => clearField(7);
 
   @$pb.TagNumber(8)
-  $19.Timestamp get lastTouchTimestampUTC => $_getN(7);
+  $18.Timestamp get lastTouchTimestampUTC => $_getN(7);
   @$pb.TagNumber(8)
-  set lastTouchTimestampUTC($19.Timestamp v) { setField(8, v); }
+  set lastTouchTimestampUTC($18.Timestamp v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasLastTouchTimestampUTC() => $_has(7);
   @$pb.TagNumber(8)
   void clearLastTouchTimestampUTC() => clearField(8);
   @$pb.TagNumber(8)
-  $19.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
+  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
 
   @$pb.TagNumber(99)
   $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(8);
@@ -198,6 +198,7 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.double? received,
     $core.double? discountAmount,
     $core.String? comment,
+    $core.String? creationDate,
   }) {
     final $result = create();
     if (nonUniqueId != null) {
@@ -242,6 +243,9 @@ class TicketPb extends $pb.GeneratedMessage {
     if (comment != null) {
       $result.comment = comment;
     }
+    if (creationDate != null) {
+      $result.creationDate = creationDate;
+    }
     return $result;
   }
   TicketPb._() : super();
@@ -263,6 +267,7 @@ class TicketPb extends $pb.GeneratedMessage {
     ..a<$core.double>(12, _omitFieldNames ? '' : 'received', $pb.PbFieldType.OD)
     ..a<$core.double>(13, _omitFieldNames ? '' : 'discountAmount', $pb.PbFieldType.OD, protoName: 'discountAmount')
     ..aOS(14, _omitFieldNames ? '' : 'comment')
+    ..aOS(15, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..hasRequiredFields = false
   ;
 
@@ -310,6 +315,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   Counterfoil ensureCounterfoil() => $_ensure(1);
 
+  /// / when the ticket should be taken into account accountingly speaking
   @$pb.TagNumber(3)
   $core.String get date => $_getSZ(2);
   @$pb.TagNumber(3)
@@ -413,6 +419,16 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.bool hasComment() => $_has(13);
   @$pb.TagNumber(14)
   void clearComment() => clearField(14);
+
+  /// / when the ticket was created
+  @$pb.TagNumber(15)
+  $core.String get creationDate => $_getSZ(14);
+  @$pb.TagNumber(15)
+  set creationDate($core.String v) { $_setString(14, v); }
+  @$pb.TagNumber(15)
+  $core.bool hasCreationDate() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearCreationDate() => clearField(15);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {
@@ -572,6 +588,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   void clearBoutiqueName() => clearField(8);
 
+  /// / userId is the user who synced the ticket, not necessarily the one who created it
   @$pb.TagNumber(9)
   $core.String get userId => $_getSZ(8);
   @$pb.TagNumber(9)

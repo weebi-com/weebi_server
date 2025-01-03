@@ -30,8 +30,8 @@ class ArticleService extends ArticleServiceBase {
   final bool isTest;
   final UserPermissions? userPermissionIfTest;
 
-  final DbCollection collection;
-  static const String collectionName = 'article';
+  final DbCollection collectionArticle;
+  static const String collectionArticleName = 'article';
   final DbCollection collectionPhoto;
   static const String collectionPhotoName = 'article_photo';
   final DbCollection collectionCategory;
@@ -41,7 +41,7 @@ class ArticleService extends ArticleServiceBase {
     this._db, {
     this.isTest = false,
     this.userPermissionIfTest,
-  })  : collection = _db.collection(collectionName),
+  })  : collectionArticle = _db.collection(collectionArticleName),
         collectionCategory = _db.collection(collectionCategoryName),
         collectionPhoto = _db.collection(collectionPhotoName);
 
@@ -62,6 +62,11 @@ class ArticleService extends ArticleServiceBase {
           'user does not have right to create article');
     }
     try {
+      final snapshot = await collectionArticle
+          .findOne(_Helpers.select(userPermission.firmId, request));
+      if (snapshot != null) {
+        throw GrpcError.alreadyExists();
+      }
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
         ..creationDate = request.calibre.creationDate
@@ -71,7 +76,7 @@ class ArticleService extends ArticleServiceBase {
         ..userId = userPermission.userId
         ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
-      final result = await collection
+      final result = await collectionArticle
           .insertOne(calibreMongo.toProto3Json() as Map<String, dynamic>);
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
@@ -124,7 +129,7 @@ class ArticleService extends ArticleServiceBase {
         ..userId = userPermission.userId
         ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
-      final result = await collection.replaceOne(
+      final result = await collectionArticle.replaceOne(
           _Helpers.select(userPermission.firmId, request),
           calibreMongo.toProto3Json() as Map<String, dynamic>,
           upsert: true);
@@ -165,7 +170,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     try {
-      await collection
+      await collectionArticle
           .deleteOne(_Helpers.select(userPermission.firmId, request));
       return StatusResponse()
         ..type = StatusResponse_Type.DELETED
@@ -200,7 +205,7 @@ class ArticleService extends ArticleServiceBase {
         selector = where.gte('lastTouchTimestampUTC.seconds',
             request.lastFetchTimestampUTC.seconds);
       }
-      final list = await collection.find(selector).toList();
+      final list = await collectionArticle.find(selector).toList();
       if (list.isEmpty) {
         return CalibresResponse.create();
       }
@@ -240,7 +245,7 @@ class ArticleService extends ArticleServiceBase {
     try {
       final selector =
           where.eq('chainId', request.chainId).eq('title', request.title);
-      final calibre = await collection.findOne(selector);
+      final calibre = await collectionArticle.findOne(selector);
       if (calibre != null) {
         final calibreMongo = CalibreMongo.create()
           ..mergeFromProto3Json(calibre, ignoreUnknownFields: true);
@@ -274,6 +279,11 @@ class ArticleService extends ArticleServiceBase {
           'user does not have right to create category');
     }
     try {
+      final snapshot = await collectionCategory
+          .findOne(_Helpers.selectCategory(userPermission.firmId, request));
+      if (snapshot != null) {
+        throw GrpcError.alreadyExists();
+      }
       final calibreMongo = CategoryMongo.create()
         ..title = request.category.title
         ..category = request.category
@@ -475,7 +485,17 @@ class ArticleService extends ArticleServiceBase {
 
     final calibresMap = <Map<String, dynamic>>[];
     final now = DateTime.now().toUtc().timestampProto;
+    int dups = 0;
     for (final calibre in request.calibres) {
+      final select = _Helpers.select(
+        userPermission.firmId,
+        CalibreRequest(chainId: request.chainId, calibre: calibre),
+      );
+      final snapshot = await collectionArticle.findOne(select);
+      if (snapshot != null) {
+        dups += 1;
+        continue;
+      }
       final calibreMongo = CalibreMongo.create()
         ..calibre = calibre
         ..creationDate = calibre.creationDate
@@ -486,9 +506,12 @@ class ArticleService extends ArticleServiceBase {
         ..lastTouchTimestampUTC = now;
       calibresMap.add(calibreMongo.toProto3Json() as Map<String, dynamic>);
     }
+    if (request.calibres.length == dups) {
+      throw GrpcError.alreadyExists();
+    }
 
     try {
-      final result = await collection.insertMany(calibresMap);
+      final result = await collectionArticle.insertMany(calibresMap);
       if (result.hasWriteErrors) {
         final writeErrorsMessages = <String>[];
         for (final error in result.writeErrors) {
@@ -500,7 +523,9 @@ class ArticleService extends ArticleServiceBase {
       if (result.success) {
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..timestamp = DateTime.now().timestampProto;
+          ..timestamp = DateTime.now().timestampProto
+          ..message =
+              dups > 0 ? 'dups ignored: $dups/${request.calibres.length}' : '';
       } else {
         return StatusResponse.create()
           ..type = StatusResponse_Type.ERROR
@@ -539,7 +564,17 @@ class ArticleService extends ArticleServiceBase {
 
     final map = <Map<String, dynamic>>[];
     final now = DateTime.now().toUtc().timestampProto;
+    int dups = 0;
     for (final photo in request.photos) {
+      final select = _Helpers.selectPhoto(
+        userPermission.firmId,
+        PhotoRequest(chainId: request.chainId, photo: photo),
+      );
+      final snapshot = await collectionPhoto.findOne(select);
+      if (snapshot != null) {
+        dups += 1;
+        continue;
+      }
       final photoMongo = ArticlePhotoMongo.create()
         ..photo = photo
         ..calibreId = photo.calibreId
@@ -549,7 +584,9 @@ class ArticleService extends ArticleServiceBase {
         ..lastTouchTimestampUTC = now;
       map.add(photoMongo.toProto3Json() as Map<String, dynamic>);
     }
-
+    if (request.photos.length == dups) {
+      throw GrpcError.alreadyExists();
+    }
     try {
       final result = await collectionPhoto.insertMany(map);
       if (result.hasWriteErrors) {
@@ -563,7 +600,9 @@ class ArticleService extends ArticleServiceBase {
       if (result.success) {
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..timestamp = DateTime.now().timestampProto;
+          ..timestamp = DateTime.now().timestampProto
+          ..message =
+              dups > 0 ? 'dups ignored: $dups/${request.photos.length}' : '';
       } else {
         return StatusResponse.create()
           ..type = StatusResponse_Type.ERROR
@@ -597,6 +636,11 @@ class ArticleService extends ArticleServiceBase {
           'user does not have right to create article photo');
     }
     try {
+      final snapshot = await collectionPhoto
+          .findOne(_Helpers.selectPhoto(userPermission.firmId, request));
+      if (snapshot != null) {
+        throw GrpcError.alreadyExists();
+      }
       final photoMongo = ArticlePhotoMongo.create()
         ..photo = request.photo
         ..calibreId = request.photo.calibreId
