@@ -178,6 +178,8 @@ class ContactPb extends $pb.GeneratedMessage {
     $20.Address? addressFull,
     $core.int? overdraft,
     $core.Iterable<$core.String>? tags,
+    $core.bool? isClient,
+    $core.bool? isSupplier,
     $core.Map<$core.String, $core.String>? othersAttributes,
   }) {
     final $result = create();
@@ -217,6 +219,12 @@ class ContactPb extends $pb.GeneratedMessage {
     if (tags != null) {
       $result.tags.addAll(tags);
     }
+    if (isClient != null) {
+      $result.isClient = isClient;
+    }
+    if (isSupplier != null) {
+      $result.isSupplier = isSupplier;
+    }
     if (othersAttributes != null) {
       $result.othersAttributes.addAll(othersAttributes);
     }
@@ -239,6 +247,8 @@ class ContactPb extends $pb.GeneratedMessage {
     ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $20.Address.create)
     ..a<$core.int>(11, _omitFieldNames ? '' : 'overdraft', $pb.PbFieldType.O3)
     ..pPS(12, _omitFieldNames ? '' : 'categories', protoName: 'tags')
+    ..aOB(13, _omitFieldNames ? '' : 'isClient', protoName: 'isClient')
+    ..aOB(14, _omitFieldNames ? '' : 'isSupplier', protoName: 'isSupplier')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'ContactPb.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.contact'))
     ..hasRequiredFields = false
   ;
@@ -370,8 +380,26 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   $core.List<$core.String> get tags => $_getList(11);
 
+  @$pb.TagNumber(13)
+  $core.bool get isClient => $_getBF(12);
+  @$pb.TagNumber(13)
+  set isClient($core.bool v) { $_setBool(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasIsClient() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearIsClient() => clearField(13);
+
+  @$pb.TagNumber(14)
+  $core.bool get isSupplier => $_getBF(13);
+  @$pb.TagNumber(14)
+  set isSupplier($core.bool v) { $_setBool(13, v); }
+  @$pb.TagNumber(14)
+  $core.bool hasIsSupplier() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearIsSupplier() => clearField(14);
+
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(12);
+  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(14);
 }
 
 

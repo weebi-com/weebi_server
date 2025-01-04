@@ -1,3 +1,7 @@
+## 1.0.7+5 - 2025/01/04
+
+- added : contact.isClient & contact.isSupplier
+
 ## 1.0.7+4 - 2025/01/03
 
 - ticket.creationDate added
