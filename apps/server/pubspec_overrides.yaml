@@ -10,4 +10,4 @@ dependency_overrides:
   fence_service:
     path: ../../packages/fence_service
   protos_weebi:
-    path: ..\\..\\packages\\protos\\protos_weebi
+    path: ../../packages/protos/protos_weebi

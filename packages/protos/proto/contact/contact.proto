@@ -32,6 +32,8 @@ message ContactPb {
     weebi.common.address.Address addressFull =  10 [json_name = 'addressFull'];
     int32 overdraft =  11 [json_name = 'overdraft'];
     repeated string tags =  12 [json_name = 'categories'];
-    reserved 13 to 98;
+    bool isClient =  13 [json_name = 'isClient'];
+    bool isSupplier =  14 [json_name = 'isSupplier'];
+    reserved 15 to 98;
     map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
   }

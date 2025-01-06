@@ -1,4 +1,4 @@
 # melos_managed_dependency_overrides: protos_weebi
 dependency_overrides:
   protos_weebi:
-    path: ..\\protos\\protos_weebi
+    path: ../protos/protos_weebi

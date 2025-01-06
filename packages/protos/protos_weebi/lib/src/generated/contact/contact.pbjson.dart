@@ -70,11 +70,13 @@ const ContactPb$json = {
     {'1': 'addressFull', '3': 10, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
     {'1': 'overdraft', '3': 11, '4': 1, '5': 5, '10': 'overdraft'},
     {'1': 'tags', '3': 12, '4': 3, '5': 9, '10': 'categories'},
+    {'1': 'isClient', '3': 13, '4': 1, '5': 8, '10': 'isClient'},
+    {'1': 'isSupplier', '3': 14, '4': 1, '5': 8, '10': 'isSupplier'},
     {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb.OthersAttributesEntry', '10': 'othersAttributes'},
   ],
   '3': [ContactPb_OthersAttributesEntry$json],
   '9': [
-    {'1': 13, '2': 99},
+    {'1': 15, '2': 99},
   ],
 };
 
@@ -97,8 +99,9 @@ final $typed_data.Uint8List contactPbDescriptor = $convert.base64Decode(
     'EgoEbWFpbBgIIAEoCVIEbWFpbBIvCgVwaG9uZRgJIAEoCzIZLndlZWJpLmNvbW1vbi5waG9uZS'
     '5QaG9uZVIFcGhvbmUSPwoLYWRkcmVzc0Z1bGwYCiABKAsyHS53ZWViaS5jb21tb24uYWRkcmVz'
     'cy5BZGRyZXNzUgthZGRyZXNzRnVsbBIcCglvdmVyZHJhZnQYCyABKAVSCW92ZXJkcmFmdBIYCg'
-    'R0YWdzGAwgAygJUgpjYXRlZ29yaWVzEloKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsyLi53ZWVi'
-    'aS5jb250YWN0LkNvbnRhY3RQYi5PdGhlcnNBdHRyaWJ1dGVzRW50cnlSEG90aGVyc0F0dHJpYn'
-    'V0ZXMaQwoVT3RoZXJzQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVl'
-    'GAIgASgJUgV2YWx1ZToCOAFKBAgNEGM=');
+    'R0YWdzGAwgAygJUgpjYXRlZ29yaWVzEhoKCGlzQ2xpZW50GA0gASgIUghpc0NsaWVudBIeCgpp'
+    'c1N1cHBsaWVyGA4gASgIUgppc1N1cHBsaWVyEloKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsyLi'
+    '53ZWViaS5jb250YWN0LkNvbnRhY3RQYi5PdGhlcnNBdHRyaWJ1dGVzRW50cnlSEG90aGVyc0F0'
+    'dHJpYnV0ZXMaQwoVT3RoZXJzQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBX'
+    'ZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgPEGM=');
 
