@@ -9,7 +9,6 @@ on mac : brew install protobuf
 from protos dir
 4.  sh protos_weebi/tool/generate_protos.sh
 
-
 # on windows 
 using WSL
 get WSL

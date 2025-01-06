@@ -1,3 +1,4 @@
+# melos_managed_dependency_overrides: protos_weebi
 # melos_managed_dependency_overrides: article_service,boutique_service,contact_service,ticket_service,fence_service
 dependency_overrides:
   article_service:
@@ -8,3 +9,5 @@ dependency_overrides:
     path: ../../packages/ticket_service
   fence_service:
     path: ../../packages/fence_service
+  protos_weebi:
+    path: ../../packages/protos/protos_weebi

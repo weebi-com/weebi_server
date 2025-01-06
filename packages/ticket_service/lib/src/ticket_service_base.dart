@@ -4,13 +4,13 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder selectTicket(String firmId, String userId,
-          int ticketNonUniqueId, String dateCreation) =>
+  static SelectorBuilder selectTicket(String firmId, String boutiqueId,
+          int ticketNonUniqueId, String creationDate) =>
       where
           .eq('firmId', firmId)
-          .eq('userId', userId)
-          .eq('dateCreation', dateCreation)
-          .eq('ticketNonUniqueId', ticketNonUniqueId);
+          .eq('boutiqueId', boutiqueId)
+          .eq('nonUniqueId', ticketNonUniqueId)
+          .eq('creationDate', creationDate);
 }
 
 class TicketService extends TicketServiceBase {
@@ -32,7 +32,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (!request.ticket.counterfoil.isFirmAndChainAccessible(userPermission)) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.ticket.counterfoil.chainName} ${request.ticket.counterfoil.chainId} / boutique ${request.ticket.counterfoil.boutiqueName} ${request.ticket.counterfoil.boutiqueId}');
@@ -45,22 +45,31 @@ class TicketService extends TicketServiceBase {
     }
 
     try {
+      final snapshot = await collection.findOne(_Helpers.selectTicket(
+          userPermission.firmId,
+          request.ticket.counterfoil.boutiqueId,
+          request.ticket.nonUniqueId,
+          request.ticket.creationDate));
+      if (snapshot != null) {
+        throw GrpcError.alreadyExists();
+      }
       final ticketMongo = TicketMongo.create()
         ..ticket = request.ticket
         ..creationDate = request.ticket.date
-        ..ticketNonUniqueId = request.ticket.ticketNonUniqueId
+        ..nonUniqueId = request.ticket.nonUniqueId
         ..boutiqueId = request.ticket.counterfoil.boutiqueId
         ..chainId = request.ticket.counterfoil.chainId
         ..firmId = userPermission.firmId
-        ..userId = userPermission.userId;
+        ..userId = userPermission.userId
+        ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
       final result = await collection
           .insertOne(ticketMongo.toProto3Json() as Map<String, dynamic>);
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
-      if (result.ok == 1 && result.document != null) {
-        final ticketNonUniqueId = result.document!['ticketNonUniqueId'] as int;
+      if (result.success && result.document != null) {
+        final ticketNonUniqueId = result.document!['nonUniqueId'] as int;
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
@@ -84,19 +93,23 @@ class TicketService extends TicketServiceBase {
 
   @override
   Future<TicketsResponse> readAll(
-      ServiceCall? call, Counterfoil request) async {
+      ServiceCall? call, ReadAllTicketsRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.ticketRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to read tickets');
     }
-    if (!request.isFirmAndChainAccessible(userPermission)) {
+    if (userPermission.isFirmAccessible(request.firmId) == false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from firm ${request.firmName} or chain ${request.chainName}');
+          'user cannot access data from firm ${request.firmId}');
+    }
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
     }
 
     // the boss and managers can access tickets from several boutiques
@@ -104,20 +117,20 @@ class TicketService extends TicketServiceBase {
     if (request.boutiqueId.isNotEmpty) {
       if (userPermission.isBoutiqueAccessible(request.boutiqueId) == false) {
         throw GrpcError.permissionDenied(
-            'user cannot access data from boutique ${request.boutiqueName}');
+            'user cannot access data from boutique ${request.boutiqueId}');
       }
       isOneBoutiqueFilter = true;
     }
-    var selector = SelectorBuilder();
+    final selector = where
+        .eq('firmId', userPermission.firmId)
+        .eq('chainId', request.chainId)
+        .eq('boutiqueId', request.boutiqueId);
     if (isOneBoutiqueFilter) {
-      selector = where
-          .eq('firmId', userPermission.firmId)
-          .eq('chainId', request.chainId)
-          .eq('boutiqueId', request.boutiqueId);
-    } else {
-      selector = where
-          .eq('firmId', userPermission.firmId)
-          .eq('chainId', request.chainId);
+      selector.and(where.eq('boutiqueId', request.boutiqueId));
+    }
+    if (request.lastFetchTimestampUTC.hasSeconds()) {
+      selector.and(where.gte('lastTouchTimestampUTC.seconds',
+          request.lastFetchTimestampUTC.seconds));
     }
     try {
       final list = await collection.find(selector).toList();
@@ -136,7 +149,7 @@ class TicketService extends TicketServiceBase {
         ..addAll(tickets);
       return ticketsBis;
     } on GrpcError catch (e) {
-      print('readAll ticket error $e');
+      print('readAll tickets error $e');
       rethrow;
     }
   }
@@ -146,7 +159,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.ticketRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -159,8 +172,19 @@ class TicketService extends TicketServiceBase {
 
     final selector = where
         .eq('firmId', userPermission.firmId)
-        .eq('chainId', request.ticketChainId)
-        .eq('ticketNonUniqueId', request.ticketNonUniqueId);
+        .eq('chainId', request.ticketChainId);
+    if (request.ticketBoutiqueId.isNotEmpty) {
+      selector.and(where.eq('boutiqueId', request.ticketBoutiqueId));
+    }
+    if (request.nonUniqueId != 0) {
+      selector.and(where.eq('nonUniqueId', request.nonUniqueId));
+    }
+    if (request.ticketUserId.isNotEmpty) {
+      selector.and(where.eq('userId', request.ticketUserId));
+    }
+    if (request.creationDate.isNotEmpty) {
+      selector.and(where.eq('creationDate', request.creationDate));
+    }
     try {
       final ticket = await collection.findOne(selector);
       if (ticket == null) {
@@ -181,7 +205,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (!request.ticket.counterfoil.isFirmAndChainAccessible(userPermission)) {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
@@ -200,23 +224,27 @@ class TicketService extends TicketServiceBase {
     }
     final selector = _Helpers.selectTicket(
       request.ticket.counterfoil.firmId,
-      request.ticket.counterfoil.userId,
-      request.ticket.ticketNonUniqueId,
+      request.ticket.counterfoil.boutiqueId,
+      request.ticket.nonUniqueId,
       request.ticket.date,
     );
 
     try {
       final result = await collection.updateOne(
         selector,
-        modify.set('ticket.status', false).set(
+        modify
+            .set('ticket.status', false)
+            .set(
               'ticket.statusUpdateDate',
               DateTime.now().toIso8601String(),
-            ),
+            )
+            .set(
+                'lastTouchTimestampUTC', DateTime.now().toUtc().timestampProto),
       );
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
-      if (result.ok == 1) {
+      if (result.success) {
         return StatusResponse.create()
           ..type = StatusResponse_Type.UPDATED
           // ..id= mongoid
@@ -243,7 +271,7 @@ class TicketService extends TicketServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (!request.ticket.counterfoil.isFirmAndChainAccessible(userPermission)) {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.ticket.counterfoil.firmName} chain ${request.ticket.counterfoil.chainName}');
@@ -261,8 +289,8 @@ class TicketService extends TicketServiceBase {
     }
     final selector = _Helpers.selectTicket(
       request.ticket.counterfoil.firmId,
-      request.ticket.counterfoil.userId,
-      request.ticket.ticketNonUniqueId,
+      request.ticket.counterfoil.boutiqueId,
+      request.ticket.nonUniqueId,
       request.ticket.date,
     );
 
@@ -274,6 +302,87 @@ class TicketService extends TicketServiceBase {
     } on GrpcError catch (e) {
       print(e);
       rethrow;
+    }
+  }
+
+  @override
+  Future<StatusResponse> createMany(
+      ServiceCall call, TicketsRequest request) async {
+    _db.isConnected ? null : await _db.open();
+    final userPermission = isTest
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+
+    if (request.tickets.any((t) =>
+        t.counterfoil.isFirmAndChainAccessible(userPermission) == false)) {
+      final guiltyTicket = request.tickets.firstWhere((t) =>
+          t.counterfoil.isFirmAndChainAccessible(userPermission) == false);
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${guiltyTicket.counterfoil.chainName} ${guiltyTicket.counterfoil.chainId} / boutique ${guiltyTicket.counterfoil.boutiqueName} ${guiltyTicket.counterfoil.boutiqueId}');
+    }
+
+    if (userPermission.ticketRights.rights.any((e) => e == Right.create) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to create ticket');
+    }
+
+    final ticketsMap = <Map<String, dynamic>>[];
+    final nowTimestampUtc = DateTime.now().toUtc().timestampProto;
+    int dups = 0;
+    for (final ticketPb in request.tickets) {
+      final snapshot = await collection.findOne(_Helpers.selectTicket(
+          userPermission.firmId,
+          ticketPb.counterfoil.boutiqueId,
+          ticketPb.nonUniqueId,
+          ticketPb.creationDate));
+      if (snapshot != null) {
+        dups += 1;
+        continue;
+      }
+      final ticketMongo = TicketMongo.create()
+        ..ticket = ticketPb
+        ..creationDate = ticketPb.date
+        ..nonUniqueId = ticketPb.nonUniqueId
+        ..boutiqueId = ticketPb.counterfoil.boutiqueId
+        ..chainId = ticketPb.counterfoil.chainId
+        ..firmId = userPermission.firmId
+        ..userId = userPermission.userId
+        ..lastTouchTimestampUTC = nowTimestampUtc;
+      ticketsMap.add(ticketMongo.toProto3Json() as Map<String, dynamic>);
+    }
+    if (request.tickets.length == dups) {
+      throw GrpcError.alreadyExists();
+    }
+    try {
+      final result = await collection.insertMany(ticketsMap);
+      if (result.hasWriteErrors) {
+        final writeErrorsMessages = <String>[];
+        for (final error in result.writeErrors) {
+          writeErrorsMessages.add(error.toString());
+        }
+        throw GrpcError.unknown(
+            'hasWriteErrors ${writeErrorsMessages.join("\n")}');
+      }
+      if (result.success) {
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.CREATED
+          ..timestamp = DateTime.now().timestampProto
+          ..message =
+              dups > 0 ? 'dups ignored: $dups/${request.tickets.length}' : '';
+      } else {
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.ERROR
+          ..message = 'result.failure but no writeErrorsMessages'
+          ..timestamp = DateTime.now().timestampProto;
+      }
+    } on GrpcError catch (e) {
+      print(e);
+      rethrow;
+    } catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+      throw GrpcError.unknown('$e');
     }
   }
 }

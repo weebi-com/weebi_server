@@ -1,6 +1,6 @@
 // import 'dart:io';
+import 'package:fence_service/mongo_dart.dart';
 import 'package:test/test.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/models_weebi.dart';
@@ -10,7 +10,6 @@ import 'package:contact_service/contact_service.dart';
 void main() async {
   final db = TestHelper.localDb;
   final connection = Connection(ConnectionManager(db));
-  final firmId = Dummy.firm.firmId;
   final chainId = Dummy.chain.chainId;
   late ContactService contactService;
 
@@ -38,15 +37,15 @@ void main() async {
 
   test('test insertOne', () async {
     final contactRequest = ContactRequest(
-        contact: contactDummy,
-        chainId: chainId,
-        contactUserId: Dummy.userPublic.permissions.userId);
+      contact: contactDummy,
+      chainId: chainId,
+    );
     final response = await contactService.createOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.CREATED);
   });
   test('test readAll', () async {
     final response = await contactService.readAll(
-        null, ReadAllContactsRequest(firmId: firmId, chainId: chainId));
+        null, ReadAllContactsRequest(chainId: chainId));
     expect(response.contacts.length, 1);
   });
 
@@ -55,8 +54,7 @@ void main() async {
       null,
       FindContactRequest(
         contactChainId: chainId,
-        contactUserId: Dummy.userPublic.permissions.userId,
-        contactNonUniqueId: 1,
+        contactId: 1,
       ),
     );
     expect(response.firstName, 'John');
@@ -75,10 +73,9 @@ void main() async {
     final contactRequest = ContactRequest(
       chainId: chainId,
       contact: contactLili,
-      contactUserId: Dummy.userPublic.userId,
     );
     // ignore: unused_local_variable
-    final response = await contactService.replaceOne(null, contactRequest);
+    final response = await contactService.updateOne(null, contactRequest);
     expect(response.type, StatusResponse_Type.UPDATED);
 
     final response2 = await contactService.readAll(
@@ -91,7 +88,6 @@ void main() async {
     final contactRequest = ContactRequest(
       chainId: chainId,
       contact: contactDummy,
-      contactUserId: Dummy.userPublic.userId,
     );
     // ignore: unused_local_variable
     final response = await contactService.deleteOne(null, contactRequest);

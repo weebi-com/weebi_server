@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package weebi.photo;
+
+import "common/g_timestamp.proto";
+
+message ArticlePhotoMongo {
+  string firmId = 1 [json_name = 'firmId']; ; 
+  string chainId = 2 [json_name = 'chainId']; ;
+  string userId = 3 [json_name = 'userId']; 
+  int32 calibreId = 4 [json_name = 'calibreId']; ;
+  weebi.photo.ArticlePhotoPb photo = 5 [json_name = 'photo'] ;
+  google.protobuf.Timestamp lastTouchTimestampUTC =  6 [json_name = 'lastTouchTimestampUTC']; 
+}
+
+message ArticlePhotoPb {
+  int32 calibreId = 1;
+  int32 id = 2;
+  bytes data = 3;
+}

@@ -29,6 +29,7 @@ class Firm extends $pb.GeneratedMessage {
     $18.Timestamp? lastUpdateTimestampUTC,
     $core.String? lastUpdatedByuserId,
     $core.bool? isMailVerified,
+    $18.Timestamp? creationDateUTC,
   }) {
     final $result = create();
     if (firmId != null) {
@@ -64,6 +65,9 @@ class Firm extends $pb.GeneratedMessage {
     if (isMailVerified != null) {
       $result.isMailVerified = isMailVerified;
     }
+    if (creationDateUTC != null) {
+      $result.creationDateUTC = creationDateUTC;
+    }
     return $result;
   }
   Firm._() : super();
@@ -82,6 +86,7 @@ class Firm extends $pb.GeneratedMessage {
     ..aOM<$18.Timestamp>(9, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $18.Timestamp.create)
     ..aOS(10, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
     ..aOB(11, _omitFieldNames ? '' : 'isMailVerified', protoName: 'isMailVerified')
+    ..aOM<$18.Timestamp>(12, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $18.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -212,6 +217,17 @@ class Firm extends $pb.GeneratedMessage {
   $core.bool hasIsMailVerified() => $_has(10);
   @$pb.TagNumber(11)
   void clearIsMailVerified() => clearField(11);
+
+  @$pb.TagNumber(12)
+  $18.Timestamp get creationDateUTC => $_getN(11);
+  @$pb.TagNumber(12)
+  set creationDateUTC($18.Timestamp v) { setField(12, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasCreationDateUTC() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearCreationDateUTC() => clearField(12);
+  @$pb.TagNumber(12)
+  $18.Timestamp ensureCreationDateUTC() => $_ensure(11);
 }
 
 class CreateFirmRequest extends $pb.GeneratedMessage {

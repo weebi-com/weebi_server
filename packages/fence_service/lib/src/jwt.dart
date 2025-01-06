@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
 import 'package:fence_service/src/constants/app_environment.dart';
+import 'package:protos_weebi/encrypter.dart';
 // import 'package:protos_weebi/protos_weebi_io.dart' show UserPermissions;
 
 String _defaultJwtSecretKeyFactory() {
@@ -35,6 +35,9 @@ class JsonWebToken {
   String get exp => _payload['exp'];
 
   Map<String, dynamic> get payload => _payload;
+
+  // UserPermissions get userPermissions => UserPermissions.create()
+  //   ..mergeFromProto3Json(_payload, ignoreUnknownFields: true);
 
   void createPayload(
     String userId, {

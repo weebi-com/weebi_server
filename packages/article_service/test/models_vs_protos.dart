@@ -1,5 +1,4 @@
-//import 'package:protos_weebi/data_dummy.dart';
-import 'package:protos_weebi/src/generated/article/article.pb.dart';
+import 'package:fence_service/protos_weebi.dart';
 import 'package:test/test.dart';
 import 'package:fence_service/models_weebi.dart' show CalibreWeebi;
 

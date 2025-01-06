@@ -1,5 +1,5 @@
+import 'package:fence_service/grpc.dart';
 import 'package:logging/logging.dart';
-import 'package:protos_weebi/grpc.dart';
 
 final logger = Logger('LoggingInterceptor');
 Future<GrpcError?> loggingInterceptor(

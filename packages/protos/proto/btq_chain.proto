@@ -28,7 +28,8 @@ message Chain {
   string chainId = 1 [json_name = 'chainId'];
   string firmId = 2 [json_name = 'firmId'];
   string name = 3 [json_name = 'name'];
-  repeated weebi.boutique.Boutique boutiques = 4 [json_name = 'boutiques'];
+  repeated weebi.boutique.BoutiqueMongo boutiques = 4 [json_name = 'boutiques'];
+  google.protobuf.Timestamp creationDateUTC = 5 [json_name = 'creationDateUTC'];
   google.protobuf.Timestamp lastUpdateTimestampUTC = 6 [json_name = 'lastUpdateTimestampUTC'];;
   string lastUpdatedByuserId = 7 [json_name = 'lastUpdatedByuserId'];
 }

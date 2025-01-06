@@ -1,6 +1,6 @@
 // import 'dart:io';
+import 'package:fence_service/mongo_dart.dart';
 import 'package:test/test.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/protos_weebi.dart';
@@ -31,7 +31,7 @@ void main() async {
     await db.createCollection(fenceService.userCollection.collectionName);
     await db.createCollection(fenceService.boutiqueCollection.collectionName);
 
-    fenceService..userPermissionIfTest = Dummy.adminPermission;
+    fenceService.userPermissionIfTest = Dummy.adminPermission;
     final counterfoil = Counterfoil.create()
       ..firmId = Dummy.firm.firmId
       ..chainId = Dummy.chain.chainId
@@ -63,7 +63,13 @@ void main() async {
     expect(response.type, StatusResponse_Type.CREATED);
   });
   test('test readAll', () async {
-    final response = await ticketService.readAll(null, counterfoilDummy);
+    final response = await ticketService.readAll(
+      null,
+      ReadAllTicketsRequest(
+          firmId: counterfoilDummy.firmId,
+          chainId: counterfoilDummy.chainId,
+          boutiqueId: counterfoilDummy.boutiqueId),
+    );
     expect(response.tickets.length, 1);
   });
   test('test updateStatus ', () async {
@@ -84,7 +90,12 @@ void main() async {
     // ignore: unused_local_variable
     final response = await ticketService.updateStatusOne(null, request);
     // expect(response.type, StatusResponse_Type.UPDATED);
-    final response2 = await ticketService.readAll(null, counterfoilDummy);
+    final response2 = await ticketService.readAll(
+        null,
+        ReadAllTicketsRequest(
+            firmId: counterfoilDummy.firmId,
+            chainId: counterfoilDummy.chainId,
+            boutiqueId: counterfoilDummy.boutiqueId));
 //    print('response2 ${response2.tickets.length}');
     expect(response2.tickets.first.status, false);
     expect(
@@ -98,7 +109,12 @@ void main() async {
     // ignore: unused_local_variable
     final response = await ticketService.deleteOne(null, request);
 
-    final response2 = await ticketService.readAll(null, counterfoilDummy);
+    final response2 = await ticketService.readAll(
+        null,
+        ReadAllTicketsRequest(
+            firmId: counterfoilDummy.firmId,
+            chainId: counterfoilDummy.chainId,
+            boutiqueId: counterfoilDummy.boutiqueId));
     expect(response2.tickets.length, 0);
   });
 }

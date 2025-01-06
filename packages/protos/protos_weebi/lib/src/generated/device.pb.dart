@@ -133,7 +133,6 @@ class Device extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearPassword() => clearField(5);
 
-  /// / dateCreation is set by the server
   @$pb.TagNumber(6)
   $18.Timestamp get timestamp => $_getN(5);
   @$pb.TagNumber(6)

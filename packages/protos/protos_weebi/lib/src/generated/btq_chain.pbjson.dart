@@ -20,7 +20,8 @@ const Chain$json = {
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'name', '3': 3, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'boutiques', '3': 4, '4': 3, '5': 11, '6': '.weebi.boutique.Boutique', '10': 'boutiques'},
+    {'1': 'boutiques', '3': 4, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiqueMongo', '10': 'boutiques'},
+    {'1': 'creationDateUTC', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationDateUTC'},
     {'1': 'lastUpdateTimestampUTC', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
     {'1': 'lastUpdatedByuserId', '3': 7, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
   ],
@@ -29,10 +30,12 @@ const Chain$json = {
 /// Descriptor for `Chain`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List chainDescriptor = $convert.base64Decode(
     'CgVDaGFpbhIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEhYKBmZpcm1JZBgCIAEoCVIGZmlybU'
-    'lkEhIKBG5hbWUYAyABKAlSBG5hbWUSNgoJYm91dGlxdWVzGAQgAygLMhgud2VlYmkuYm91dGlx'
-    'dWUuQm91dGlxdWVSCWJvdXRpcXVlcxJSChZsYXN0VXBkYXRlVGltZXN0YW1wVVRDGAYgASgLMh'
-    'ouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIWbGFzdFVwZGF0ZVRpbWVzdGFtcFVUQxIwChNs'
-    'YXN0VXBkYXRlZEJ5dXNlcklkGAcgASgJUhNsYXN0VXBkYXRlZEJ5dXNlcklk');
+    'lkEhIKBG5hbWUYAyABKAlSBG5hbWUSOwoJYm91dGlxdWVzGAQgAygLMh0ud2VlYmkuYm91dGlx'
+    'dWUuQm91dGlxdWVNb25nb1IJYm91dGlxdWVzEkQKD2NyZWF0aW9uRGF0ZVVUQxgFIAEoCzIaLm'
+    'dvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSD2NyZWF0aW9uRGF0ZVVUQxJSChZsYXN0VXBkYXRl'
+    'VGltZXN0YW1wVVRDGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIWbGFzdFVwZG'
+    'F0ZVRpbWVzdGFtcFVUQxIwChNsYXN0VXBkYXRlZEJ5dXNlcklkGAcgASgJUhNsYXN0VXBkYXRl'
+    'ZEJ5dXNlcklk');
 
 @$core.Deprecated('Use chainsDescriptor instead')
 const Chains$json = {

@@ -1,3 +1,44 @@
+## 1.0.7+5 - 2025/01/04
+
+- added : contact.isClient & contact.isSupplier
+
+## 1.0.7+4 - 2025/01/03
+
+- ticket.creationDate added
+
+## 1.0.7+3
+
+- added logo in boutique and in BoutiqueRequest and in BoutiqueResponse
+- breaking change on readBoutique
+
+## 1.0.7+2
+
+- removed authenticateWithDevice
+- removed readUserPermissionsByToken
+
+## 1.0.7+1
+
+- addMany for article, contact, ticket
+- handle photo for articles
+- lastTouchTimestampUTC for lighter sync
+- breaking change on articleService ArticleRequest->CalibreRequest for more coherence
+
+## 1.0.6+3
+
+- boutique also needs to be decomposed in BoutiquePb and BoutiqueMongo 
+
+## 1.0.6+2
+
+- keep categories within articleservice
+
+## 1.0.6+1
+
+- new offline permission: canUpdateContactBalanceOffline
+- new object for article : categories
+
+breaking change : 
+- canSpendOutOfCatalog & canSelldOutOfCatalog
+
 ## 1.0.5
 
 - createDevice

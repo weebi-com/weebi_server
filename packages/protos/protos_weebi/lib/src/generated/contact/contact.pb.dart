@@ -14,25 +14,27 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../common/address.pb.dart' as $20;
+import '../common/g_timestamp.pb.dart' as $18;
 import '../common/phone.pb.dart' as $19;
 
-/// / contactNonUniqueId is to be combined with userId
-/// / local ids can lead to duplicates as each sellers from its own device can create contact
+/// / contactId is unique
 class ContactMongo extends $pb.GeneratedMessage {
   factory ContactMongo({
     ContactPb? contact,
-    $core.int? contactNonUniqueId,
+    $core.int? contactId,
     $core.String? userId,
     $core.String? firmId,
     $core.String? chainId,
     $core.String? creationDate,
+    $18.Timestamp? lastTouchTimestampUTC,
+    $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
     if (contact != null) {
       $result.contact = contact;
     }
-    if (contactNonUniqueId != null) {
-      $result.contactNonUniqueId = contactNonUniqueId;
+    if (contactId != null) {
+      $result.contactId = contactId;
     }
     if (userId != null) {
       $result.userId = userId;
@@ -46,6 +48,12 @@ class ContactMongo extends $pb.GeneratedMessage {
     if (creationDate != null) {
       $result.creationDate = creationDate;
     }
+    if (lastTouchTimestampUTC != null) {
+      $result.lastTouchTimestampUTC = lastTouchTimestampUTC;
+    }
+    if (additionalAttributes != null) {
+      $result.additionalAttributes.addAll(additionalAttributes);
+    }
     return $result;
   }
   ContactMongo._() : super();
@@ -54,11 +62,13 @@ class ContactMongo extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact'), createEmptyInstance: create)
     ..aOM<ContactPb>(1, _omitFieldNames ? '' : 'contact', subBuilder: ContactPb.create)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'contactNonUniqueId', $pb.PbFieldType.O3, protoName: 'contactNonUniqueId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'contactId', $pb.PbFieldType.O3, protoName: 'contactId')
     ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(4, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(5, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(6, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOM<$18.Timestamp>(7, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'ContactMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.contact'))
     ..hasRequiredFields = false
   ;
 
@@ -95,13 +105,13 @@ class ContactMongo extends $pb.GeneratedMessage {
   ContactPb ensureContact() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.int get contactNonUniqueId => $_getIZ(1);
+  $core.int get contactId => $_getIZ(1);
   @$pb.TagNumber(2)
-  set contactNonUniqueId($core.int v) { $_setSignedInt32(1, v); }
+  set contactId($core.int v) { $_setSignedInt32(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasContactNonUniqueId() => $_has(1);
+  $core.bool hasContactId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearContactNonUniqueId() => clearField(2);
+  void clearContactId() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get userId => $_getSZ(2);
@@ -138,11 +148,25 @@ class ContactMongo extends $pb.GeneratedMessage {
   $core.bool hasCreationDate() => $_has(5);
   @$pb.TagNumber(6)
   void clearCreationDate() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $18.Timestamp get lastTouchTimestampUTC => $_getN(6);
+  @$pb.TagNumber(7)
+  set lastTouchTimestampUTC($18.Timestamp v) { setField(7, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasLastTouchTimestampUTC() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearLastTouchTimestampUTC() => clearField(7);
+  @$pb.TagNumber(7)
+  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(6);
+
+  @$pb.TagNumber(99)
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(7);
 }
 
 class ContactPb extends $pb.GeneratedMessage {
   factory ContactPb({
-    $core.int? contactNonUniqueId,
+    $core.int? id,
     $core.String? creationDate,
     $core.String? updateDate,
     $core.String? statusUpdateDate,
@@ -154,11 +178,13 @@ class ContactPb extends $pb.GeneratedMessage {
     $20.Address? addressFull,
     $core.int? overdraft,
     $core.Iterable<$core.String>? tags,
+    $core.bool? isClient,
+    $core.bool? isSupplier,
     $core.Map<$core.String, $core.String>? othersAttributes,
   }) {
     final $result = create();
-    if (contactNonUniqueId != null) {
-      $result.contactNonUniqueId = contactNonUniqueId;
+    if (id != null) {
+      $result.id = id;
     }
     if (creationDate != null) {
       $result.creationDate = creationDate;
@@ -193,6 +219,12 @@ class ContactPb extends $pb.GeneratedMessage {
     if (tags != null) {
       $result.tags.addAll(tags);
     }
+    if (isClient != null) {
+      $result.isClient = isClient;
+    }
+    if (isSupplier != null) {
+      $result.isSupplier = isSupplier;
+    }
     if (othersAttributes != null) {
       $result.othersAttributes.addAll(othersAttributes);
     }
@@ -203,7 +235,7 @@ class ContactPb extends $pb.GeneratedMessage {
   factory ContactPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'contactNonUniqueId')
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..aOS(2, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..aOS(3, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
     ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
@@ -215,6 +247,8 @@ class ContactPb extends $pb.GeneratedMessage {
     ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $20.Address.create)
     ..a<$core.int>(11, _omitFieldNames ? '' : 'overdraft', $pb.PbFieldType.O3)
     ..pPS(12, _omitFieldNames ? '' : 'categories', protoName: 'tags')
+    ..aOB(13, _omitFieldNames ? '' : 'isClient', protoName: 'isClient')
+    ..aOB(14, _omitFieldNames ? '' : 'isSupplier', protoName: 'isSupplier')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'ContactPb.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.contact'))
     ..hasRequiredFields = false
   ;
@@ -241,13 +275,13 @@ class ContactPb extends $pb.GeneratedMessage {
   static ContactPb? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.int get contactNonUniqueId => $_getIZ(0);
+  $core.int get id => $_getIZ(0);
   @$pb.TagNumber(1)
-  set contactNonUniqueId($core.int v) { $_setSignedInt32(0, v); }
+  set id($core.int v) { $_setSignedInt32(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasContactNonUniqueId() => $_has(0);
+  $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearContactNonUniqueId() => clearField(1);
+  void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get creationDate => $_getSZ(1);
@@ -346,8 +380,26 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   $core.List<$core.String> get tags => $_getList(11);
 
+  @$pb.TagNumber(13)
+  $core.bool get isClient => $_getBF(12);
+  @$pb.TagNumber(13)
+  set isClient($core.bool v) { $_setBool(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasIsClient() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearIsClient() => clearField(13);
+
+  @$pb.TagNumber(14)
+  $core.bool get isSupplier => $_getBF(13);
+  @$pb.TagNumber(14)
+  set isSupplier($core.bool v) { $_setBool(13, v); }
+  @$pb.TagNumber(14)
+  $core.bool hasIsSupplier() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearIsSupplier() => clearField(14);
+
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(12);
+  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(14);
 }
 
 

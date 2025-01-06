@@ -15,116 +15,118 @@ import 'dart:core' as $core;
 import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'boutique.pb.dart' as $11;
-import 'btq_chain.pb.dart' as $10;
+import 'btq_chain.pb.dart' as $11;
 import 'common/chained_ids.pb.dart' as $13;
 import 'common/empty.pb.dart' as $0;
 import 'common/g_common.pb.dart' as $1;
 import 'device.pb.dart' as $12;
-import 'fence_service.pb.dart' as $7;
-import 'firm.pb.dart' as $9;
-import 'user.pb.dart' as $6;
-import 'user_permissions.pb.dart' as $8;
+import 'fence_service.pb.dart' as $9;
+import 'firm.pb.dart' as $10;
+import 'user.pb.dart' as $8;
 
 export 'fence_service.pb.dart';
 
 @$pb.GrpcServiceName('weebi.fence.service.FenceService')
 class FenceServiceClient extends $grpc.Client {
-  static final _$signUp = $grpc.ClientMethod<$6.SignUpRequest, $6.SignUpResponse>(
+  static final _$signUp = $grpc.ClientMethod<$8.SignUpRequest, $8.SignUpResponse>(
       '/weebi.fence.service.FenceService/signUp',
-      ($6.SignUpRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $6.SignUpResponse.fromBuffer(value));
-  static final _$authenticateWithCredentials = $grpc.ClientMethod<$7.Credentials, $7.Tokens>(
+      ($8.SignUpRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $8.SignUpResponse.fromBuffer(value));
+  static final _$authenticateWithCredentials = $grpc.ClientMethod<$9.Credentials, $9.Tokens>(
       '/weebi.fence.service.FenceService/authenticateWithCredentials',
-      ($7.Credentials value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.Tokens.fromBuffer(value));
-  static final _$authenticateWithRefreshToken = $grpc.ClientMethod<$7.RefreshToken, $7.Tokens>(
+      ($9.Credentials value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $9.Tokens.fromBuffer(value));
+  static final _$authenticateWithRefreshToken = $grpc.ClientMethod<$9.RefreshToken, $9.Tokens>(
       '/weebi.fence.service.FenceService/authenticateWithRefreshToken',
-      ($7.RefreshToken value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.Tokens.fromBuffer(value));
-  static final _$readUserPermissionsByToken = $grpc.ClientMethod<$0.Empty, $8.UserPermissions>(
-      '/weebi.fence.service.FenceService/readUserPermissionsByToken',
-      ($0.Empty value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $8.UserPermissions.fromBuffer(value));
-  static final _$createFirm = $grpc.ClientMethod<$9.CreateFirmRequest, $9.CreateFirmResponse>(
+      ($9.RefreshToken value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $9.Tokens.fromBuffer(value));
+  static final _$createFirm = $grpc.ClientMethod<$10.CreateFirmRequest, $10.CreateFirmResponse>(
       '/weebi.fence.service.FenceService/createFirm',
-      ($9.CreateFirmRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $9.CreateFirmResponse.fromBuffer(value));
-  static final _$readOneFirm = $grpc.ClientMethod<$0.Empty, $9.Firm>(
+      ($10.CreateFirmRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $10.CreateFirmResponse.fromBuffer(value));
+  static final _$readOneFirm = $grpc.ClientMethod<$0.Empty, $10.Firm>(
       '/weebi.fence.service.FenceService/readOneFirm',
       ($0.Empty value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $9.Firm.fromBuffer(value));
-  static final _$createPendingUser = $grpc.ClientMethod<$6.PendingUserRequest, $6.PendingUserResponse>(
+      ($core.List<$core.int> value) => $10.Firm.fromBuffer(value));
+  static final _$createPendingUser = $grpc.ClientMethod<$8.PendingUserRequest, $8.PendingUserResponse>(
       '/weebi.fence.service.FenceService/createPendingUser',
-      ($6.PendingUserRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $6.PendingUserResponse.fromBuffer(value));
-  static final _$readOneUser = $grpc.ClientMethod<$7.UserId, $7.ReadOneUserResponse>(
+      ($8.PendingUserRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $8.PendingUserResponse.fromBuffer(value));
+  static final _$readOneUser = $grpc.ClientMethod<$9.UserId, $9.ReadOneUserResponse>(
       '/weebi.fence.service.FenceService/readOneUser',
-      ($7.UserId value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.ReadOneUserResponse.fromBuffer(value));
-  static final _$readAllUsers = $grpc.ClientMethod<$0.Empty, $7.UsersPublic>(
+      ($9.UserId value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $9.ReadOneUserResponse.fromBuffer(value));
+  static final _$readAllUsers = $grpc.ClientMethod<$0.Empty, $9.UsersPublic>(
       '/weebi.fence.service.FenceService/readAllUsers',
       ($0.Empty value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.UsersPublic.fromBuffer(value));
-  static final _$updateOneUser = $grpc.ClientMethod<$6.UserPublic, $1.StatusResponse>(
+      ($core.List<$core.int> value) => $9.UsersPublic.fromBuffer(value));
+  static final _$updateOneUser = $grpc.ClientMethod<$8.UserPublic, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/updateOneUser',
-      ($6.UserPublic value) => value.writeToBuffer(),
+      ($8.UserPublic value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$updateUserPassword = $grpc.ClientMethod<$7.PasswordUpdateRequest, $1.StatusResponse>(
+  static final _$updateUserPassword = $grpc.ClientMethod<$9.PasswordUpdateRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/updateUserPassword',
-      ($7.PasswordUpdateRequest value) => value.writeToBuffer(),
+      ($9.PasswordUpdateRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$deleteOneUser = $grpc.ClientMethod<$7.UserId, $1.StatusResponse>(
+  static final _$deleteOneUser = $grpc.ClientMethod<$9.UserId, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/deleteOneUser',
-      ($7.UserId value) => value.writeToBuffer(),
+      ($9.UserId value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$createOneChain = $grpc.ClientMethod<$10.Chain, $1.StatusResponse>(
+  static final _$createOneChain = $grpc.ClientMethod<$11.Chain, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/createOneChain',
-      ($10.Chain value) => value.writeToBuffer(),
+      ($11.Chain value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$readAllChains = $grpc.ClientMethod<$0.Empty, $7.ReadAllChainsResponse>(
+  static final _$readAllChains = $grpc.ClientMethod<$0.Empty, $9.ReadAllChainsResponse>(
       '/weebi.fence.service.FenceService/readAllChains',
       ($0.Empty value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.ReadAllChainsResponse.fromBuffer(value));
-  static final _$updateOneChain = $grpc.ClientMethod<$10.Chain, $1.StatusResponse>(
+      ($core.List<$core.int> value) => $9.ReadAllChainsResponse.fromBuffer(value));
+  static final _$updateOneChain = $grpc.ClientMethod<$11.Chain, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/updateOneChain',
-      ($10.Chain value) => value.writeToBuffer(),
+      ($11.Chain value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$createOneBoutique = $grpc.ClientMethod<$11.Boutique, $1.StatusResponse>(
+  static final _$deleteOneChain = $grpc.ClientMethod<$11.Chain, $1.StatusResponse>(
+      '/weebi.fence.service.FenceService/deleteOneChain',
+      ($11.Chain value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$createOneBoutique = $grpc.ClientMethod<$9.BoutiqueRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/createOneBoutique',
-      ($11.Boutique value) => value.writeToBuffer(),
+      ($9.BoutiqueRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$updateOneBoutique = $grpc.ClientMethod<$11.Boutique, $1.StatusResponse>(
+  static final _$readOneBoutique = $grpc.ClientMethod<$9.BoutiqueRequest, $9.BoutiqueResponse>(
+      '/weebi.fence.service.FenceService/readOneBoutique',
+      ($9.BoutiqueRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $9.BoutiqueResponse.fromBuffer(value));
+  static final _$updateOneBoutique = $grpc.ClientMethod<$9.BoutiqueRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/updateOneBoutique',
-      ($11.Boutique value) => value.writeToBuffer(),
+      ($9.BoutiqueRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$readDevices = $grpc.ClientMethod<$7.ReadDevicesRequest, $12.Devices>(
+  static final _$deleteOneBoutique = $grpc.ClientMethod<$9.BoutiqueRequest, $1.StatusResponse>(
+      '/weebi.fence.service.FenceService/deleteOneBoutique',
+      ($9.BoutiqueRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$readDevices = $grpc.ClientMethod<$9.ReadDevicesRequest, $12.Devices>(
       '/weebi.fence.service.FenceService/readDevices',
-      ($7.ReadDevicesRequest value) => value.writeToBuffer(),
+      ($9.ReadDevicesRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $12.Devices.fromBuffer(value));
-  static final _$generateCodeForPairingDevice = $grpc.ClientMethod<$13.ChainIdAndboutiqueId, $7.CodeForPairingDevice>(
+  static final _$generateCodeForPairingDevice = $grpc.ClientMethod<$13.ChainIdAndboutiqueId, $9.CodeForPairingDevice>(
       '/weebi.fence.service.FenceService/generateCodeForPairingDevice',
       ($13.ChainIdAndboutiqueId value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.CodeForPairingDevice.fromBuffer(value));
-  static final _$readOnePendingDevice = $grpc.ClientMethod<$7.ReadDeviceBtqRequest, $12.Device>(
+      ($core.List<$core.int> value) => $9.CodeForPairingDevice.fromBuffer(value));
+  static final _$readOnePendingDevice = $grpc.ClientMethod<$9.ReadDeviceBtqRequest, $12.Device>(
       '/weebi.fence.service.FenceService/readOnePendingDevice',
-      ($7.ReadDeviceBtqRequest value) => value.writeToBuffer(),
+      ($9.ReadDeviceBtqRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $12.Device.fromBuffer(value));
-  static final _$createDevice = $grpc.ClientMethod<$7.PendingDeviceRequest, $7.CreatePendingDeviceResponse>(
+  static final _$createDevice = $grpc.ClientMethod<$9.PendingDeviceRequest, $9.CreateDeviceResponse>(
       '/weebi.fence.service.FenceService/createDevice',
-      ($7.PendingDeviceRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.CreatePendingDeviceResponse.fromBuffer(value));
-  static final _$authenticateWithDevice = $grpc.ClientMethod<$7.DeviceCredentials, $7.Tokens>(
-      '/weebi.fence.service.FenceService/authenticateWithDevice',
-      ($7.DeviceCredentials value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.Tokens.fromBuffer(value));
-  static final _$updateDevicePassword = $grpc.ClientMethod<$7.UpdateDevicePasswordRequest, $1.StatusResponse>(
+      ($9.PendingDeviceRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $9.CreateDeviceResponse.fromBuffer(value));
+  static final _$updateDevicePassword = $grpc.ClientMethod<$9.UpdateDevicePasswordRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/updateDevicePassword',
-      ($7.UpdateDevicePasswordRequest value) => value.writeToBuffer(),
+      ($9.UpdateDevicePasswordRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$deleteOneDevice = $grpc.ClientMethod<$7.DeleteDeviceRequest, $1.StatusResponse>(
+  static final _$deleteOneDevice = $grpc.ClientMethod<$9.DeleteDeviceRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/deleteOneDevice',
-      ($7.DeleteDeviceRequest value) => value.writeToBuffer(),
+      ($9.DeleteDeviceRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
 
   FenceServiceClient($grpc.ClientChannel channel,
@@ -133,99 +135,103 @@ class FenceServiceClient extends $grpc.Client {
       : super(channel, options: options,
         interceptors: interceptors);
 
-  $grpc.ResponseFuture<$6.SignUpResponse> signUp($6.SignUpRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$8.SignUpResponse> signUp($8.SignUpRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$signUp, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.Tokens> authenticateWithCredentials($7.Credentials request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$9.Tokens> authenticateWithCredentials($9.Credentials request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$authenticateWithCredentials, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.Tokens> authenticateWithRefreshToken($7.RefreshToken request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$9.Tokens> authenticateWithRefreshToken($9.RefreshToken request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$authenticateWithRefreshToken, request, options: options);
   }
 
-  $grpc.ResponseFuture<$8.UserPermissions> readUserPermissionsByToken($0.Empty request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$readUserPermissionsByToken, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$9.CreateFirmResponse> createFirm($9.CreateFirmRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$10.CreateFirmResponse> createFirm($10.CreateFirmRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createFirm, request, options: options);
   }
 
-  $grpc.ResponseFuture<$9.Firm> readOneFirm($0.Empty request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$10.Firm> readOneFirm($0.Empty request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readOneFirm, request, options: options);
   }
 
-  $grpc.ResponseFuture<$6.PendingUserResponse> createPendingUser($6.PendingUserRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$8.PendingUserResponse> createPendingUser($8.PendingUserRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createPendingUser, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.ReadOneUserResponse> readOneUser($7.UserId request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$9.ReadOneUserResponse> readOneUser($9.UserId request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readOneUser, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.UsersPublic> readAllUsers($0.Empty request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$9.UsersPublic> readAllUsers($0.Empty request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readAllUsers, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> updateOneUser($6.UserPublic request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> updateOneUser($8.UserPublic request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateOneUser, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> updateUserPassword($7.PasswordUpdateRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> updateUserPassword($9.PasswordUpdateRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateUserPassword, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> deleteOneUser($7.UserId request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> deleteOneUser($9.UserId request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOneUser, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> createOneChain($10.Chain request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> createOneChain($11.Chain request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createOneChain, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.ReadAllChainsResponse> readAllChains($0.Empty request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$9.ReadAllChainsResponse> readAllChains($0.Empty request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readAllChains, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> updateOneChain($10.Chain request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> updateOneChain($11.Chain request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateOneChain, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> createOneBoutique($11.Boutique request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> deleteOneChain($11.Chain request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteOneChain, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.StatusResponse> createOneBoutique($9.BoutiqueRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createOneBoutique, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> updateOneBoutique($11.Boutique request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$9.BoutiqueResponse> readOneBoutique($9.BoutiqueRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$readOneBoutique, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.StatusResponse> updateOneBoutique($9.BoutiqueRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateOneBoutique, request, options: options);
   }
 
-  $grpc.ResponseFuture<$12.Devices> readDevices($7.ReadDevicesRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> deleteOneBoutique($9.BoutiqueRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$deleteOneBoutique, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$12.Devices> readDevices($9.ReadDevicesRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readDevices, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.CodeForPairingDevice> generateCodeForPairingDevice($13.ChainIdAndboutiqueId request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$9.CodeForPairingDevice> generateCodeForPairingDevice($13.ChainIdAndboutiqueId request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$generateCodeForPairingDevice, request, options: options);
   }
 
-  $grpc.ResponseFuture<$12.Device> readOnePendingDevice($7.ReadDeviceBtqRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$12.Device> readOnePendingDevice($9.ReadDeviceBtqRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readOnePendingDevice, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.CreatePendingDeviceResponse> createDevice($7.PendingDeviceRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$9.CreateDeviceResponse> createDevice($9.PendingDeviceRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createDevice, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.Tokens> authenticateWithDevice($7.DeviceCredentials request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$authenticateWithDevice, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$1.StatusResponse> updateDevicePassword($7.UpdateDevicePasswordRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> updateDevicePassword($9.UpdateDevicePasswordRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateDevicePassword, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> deleteOneDevice($7.DeleteDeviceRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> deleteOneDevice($9.DeleteDeviceRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOneDevice, request, options: options);
   }
 }
@@ -235,294 +241,306 @@ abstract class FenceServiceBase extends $grpc.Service {
   $core.String get $name => 'weebi.fence.service.FenceService';
 
   FenceServiceBase() {
-    $addMethod($grpc.ServiceMethod<$6.SignUpRequest, $6.SignUpResponse>(
+    $addMethod($grpc.ServiceMethod<$8.SignUpRequest, $8.SignUpResponse>(
         'signUp',
         signUp_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $6.SignUpRequest.fromBuffer(value),
-        ($6.SignUpResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.Credentials, $7.Tokens>(
+        ($core.List<$core.int> value) => $8.SignUpRequest.fromBuffer(value),
+        ($8.SignUpResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.Credentials, $9.Tokens>(
         'authenticateWithCredentials',
         authenticateWithCredentials_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.Credentials.fromBuffer(value),
-        ($7.Tokens value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.RefreshToken, $7.Tokens>(
+        ($core.List<$core.int> value) => $9.Credentials.fromBuffer(value),
+        ($9.Tokens value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.RefreshToken, $9.Tokens>(
         'authenticateWithRefreshToken',
         authenticateWithRefreshToken_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.RefreshToken.fromBuffer(value),
-        ($7.Tokens value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $8.UserPermissions>(
-        'readUserPermissionsByToken',
-        readUserPermissionsByToken_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($8.UserPermissions value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$9.CreateFirmRequest, $9.CreateFirmResponse>(
+        ($core.List<$core.int> value) => $9.RefreshToken.fromBuffer(value),
+        ($9.Tokens value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$10.CreateFirmRequest, $10.CreateFirmResponse>(
         'createFirm',
         createFirm_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $9.CreateFirmRequest.fromBuffer(value),
-        ($9.CreateFirmResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $9.Firm>(
+        ($core.List<$core.int> value) => $10.CreateFirmRequest.fromBuffer(value),
+        ($10.CreateFirmResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $10.Firm>(
         'readOneFirm',
         readOneFirm_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($9.Firm value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$6.PendingUserRequest, $6.PendingUserResponse>(
+        ($10.Firm value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$8.PendingUserRequest, $8.PendingUserResponse>(
         'createPendingUser',
         createPendingUser_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $6.PendingUserRequest.fromBuffer(value),
-        ($6.PendingUserResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.UserId, $7.ReadOneUserResponse>(
+        ($core.List<$core.int> value) => $8.PendingUserRequest.fromBuffer(value),
+        ($8.PendingUserResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.UserId, $9.ReadOneUserResponse>(
         'readOneUser',
         readOneUser_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.UserId.fromBuffer(value),
-        ($7.ReadOneUserResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $7.UsersPublic>(
+        ($core.List<$core.int> value) => $9.UserId.fromBuffer(value),
+        ($9.ReadOneUserResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $9.UsersPublic>(
         'readAllUsers',
         readAllUsers_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($7.UsersPublic value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$6.UserPublic, $1.StatusResponse>(
+        ($9.UsersPublic value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$8.UserPublic, $1.StatusResponse>(
         'updateOneUser',
         updateOneUser_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $6.UserPublic.fromBuffer(value),
+        ($core.List<$core.int> value) => $8.UserPublic.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.PasswordUpdateRequest, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$9.PasswordUpdateRequest, $1.StatusResponse>(
         'updateUserPassword',
         updateUserPassword_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.PasswordUpdateRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.PasswordUpdateRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.UserId, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$9.UserId, $1.StatusResponse>(
         'deleteOneUser',
         deleteOneUser_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.UserId.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.UserId.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$10.Chain, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$11.Chain, $1.StatusResponse>(
         'createOneChain',
         createOneChain_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $10.Chain.fromBuffer(value),
+        ($core.List<$core.int> value) => $11.Chain.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.Empty, $7.ReadAllChainsResponse>(
+    $addMethod($grpc.ServiceMethod<$0.Empty, $9.ReadAllChainsResponse>(
         'readAllChains',
         readAllChains_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
-        ($7.ReadAllChainsResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$10.Chain, $1.StatusResponse>(
+        ($9.ReadAllChainsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$11.Chain, $1.StatusResponse>(
         'updateOneChain',
         updateOneChain_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $10.Chain.fromBuffer(value),
+        ($core.List<$core.int> value) => $11.Chain.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$11.Boutique, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$11.Chain, $1.StatusResponse>(
+        'deleteOneChain',
+        deleteOneChain_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $11.Chain.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.BoutiqueRequest, $1.StatusResponse>(
         'createOneBoutique',
         createOneBoutique_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $11.Boutique.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.BoutiqueRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$11.Boutique, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$9.BoutiqueRequest, $9.BoutiqueResponse>(
+        'readOneBoutique',
+        readOneBoutique_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $9.BoutiqueRequest.fromBuffer(value),
+        ($9.BoutiqueResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.BoutiqueRequest, $1.StatusResponse>(
         'updateOneBoutique',
         updateOneBoutique_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $11.Boutique.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.BoutiqueRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.ReadDevicesRequest, $12.Devices>(
+    $addMethod($grpc.ServiceMethod<$9.BoutiqueRequest, $1.StatusResponse>(
+        'deleteOneBoutique',
+        deleteOneBoutique_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $9.BoutiqueRequest.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.ReadDevicesRequest, $12.Devices>(
         'readDevices',
         readDevices_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.ReadDevicesRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.ReadDevicesRequest.fromBuffer(value),
         ($12.Devices value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$13.ChainIdAndboutiqueId, $7.CodeForPairingDevice>(
+    $addMethod($grpc.ServiceMethod<$13.ChainIdAndboutiqueId, $9.CodeForPairingDevice>(
         'generateCodeForPairingDevice',
         generateCodeForPairingDevice_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $13.ChainIdAndboutiqueId.fromBuffer(value),
-        ($7.CodeForPairingDevice value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.ReadDeviceBtqRequest, $12.Device>(
+        ($9.CodeForPairingDevice value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.ReadDeviceBtqRequest, $12.Device>(
         'readOnePendingDevice',
         readOnePendingDevice_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.ReadDeviceBtqRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.ReadDeviceBtqRequest.fromBuffer(value),
         ($12.Device value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.PendingDeviceRequest, $7.CreatePendingDeviceResponse>(
+    $addMethod($grpc.ServiceMethod<$9.PendingDeviceRequest, $9.CreateDeviceResponse>(
         'createDevice',
         createDevice_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.PendingDeviceRequest.fromBuffer(value),
-        ($7.CreatePendingDeviceResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.DeviceCredentials, $7.Tokens>(
-        'authenticateWithDevice',
-        authenticateWithDevice_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $7.DeviceCredentials.fromBuffer(value),
-        ($7.Tokens value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.UpdateDevicePasswordRequest, $1.StatusResponse>(
+        ($core.List<$core.int> value) => $9.PendingDeviceRequest.fromBuffer(value),
+        ($9.CreateDeviceResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.UpdateDevicePasswordRequest, $1.StatusResponse>(
         'updateDevicePassword',
         updateDevicePassword_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.UpdateDevicePasswordRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.UpdateDevicePasswordRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$7.DeleteDeviceRequest, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$9.DeleteDeviceRequest, $1.StatusResponse>(
         'deleteOneDevice',
         deleteOneDevice_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $7.DeleteDeviceRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.DeleteDeviceRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$6.SignUpResponse> signUp_Pre($grpc.ServiceCall call, $async.Future<$6.SignUpRequest> request) async {
+  $async.Future<$8.SignUpResponse> signUp_Pre($grpc.ServiceCall call, $async.Future<$8.SignUpRequest> request) async {
     return signUp(call, await request);
   }
 
-  $async.Future<$7.Tokens> authenticateWithCredentials_Pre($grpc.ServiceCall call, $async.Future<$7.Credentials> request) async {
+  $async.Future<$9.Tokens> authenticateWithCredentials_Pre($grpc.ServiceCall call, $async.Future<$9.Credentials> request) async {
     return authenticateWithCredentials(call, await request);
   }
 
-  $async.Future<$7.Tokens> authenticateWithRefreshToken_Pre($grpc.ServiceCall call, $async.Future<$7.RefreshToken> request) async {
+  $async.Future<$9.Tokens> authenticateWithRefreshToken_Pre($grpc.ServiceCall call, $async.Future<$9.RefreshToken> request) async {
     return authenticateWithRefreshToken(call, await request);
   }
 
-  $async.Future<$8.UserPermissions> readUserPermissionsByToken_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
-    return readUserPermissionsByToken(call, await request);
-  }
-
-  $async.Future<$9.CreateFirmResponse> createFirm_Pre($grpc.ServiceCall call, $async.Future<$9.CreateFirmRequest> request) async {
+  $async.Future<$10.CreateFirmResponse> createFirm_Pre($grpc.ServiceCall call, $async.Future<$10.CreateFirmRequest> request) async {
     return createFirm(call, await request);
   }
 
-  $async.Future<$9.Firm> readOneFirm_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+  $async.Future<$10.Firm> readOneFirm_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
     return readOneFirm(call, await request);
   }
 
-  $async.Future<$6.PendingUserResponse> createPendingUser_Pre($grpc.ServiceCall call, $async.Future<$6.PendingUserRequest> request) async {
+  $async.Future<$8.PendingUserResponse> createPendingUser_Pre($grpc.ServiceCall call, $async.Future<$8.PendingUserRequest> request) async {
     return createPendingUser(call, await request);
   }
 
-  $async.Future<$7.ReadOneUserResponse> readOneUser_Pre($grpc.ServiceCall call, $async.Future<$7.UserId> request) async {
+  $async.Future<$9.ReadOneUserResponse> readOneUser_Pre($grpc.ServiceCall call, $async.Future<$9.UserId> request) async {
     return readOneUser(call, await request);
   }
 
-  $async.Future<$7.UsersPublic> readAllUsers_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+  $async.Future<$9.UsersPublic> readAllUsers_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
     return readAllUsers(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> updateOneUser_Pre($grpc.ServiceCall call, $async.Future<$6.UserPublic> request) async {
+  $async.Future<$1.StatusResponse> updateOneUser_Pre($grpc.ServiceCall call, $async.Future<$8.UserPublic> request) async {
     return updateOneUser(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> updateUserPassword_Pre($grpc.ServiceCall call, $async.Future<$7.PasswordUpdateRequest> request) async {
+  $async.Future<$1.StatusResponse> updateUserPassword_Pre($grpc.ServiceCall call, $async.Future<$9.PasswordUpdateRequest> request) async {
     return updateUserPassword(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> deleteOneUser_Pre($grpc.ServiceCall call, $async.Future<$7.UserId> request) async {
+  $async.Future<$1.StatusResponse> deleteOneUser_Pre($grpc.ServiceCall call, $async.Future<$9.UserId> request) async {
     return deleteOneUser(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> createOneChain_Pre($grpc.ServiceCall call, $async.Future<$10.Chain> request) async {
+  $async.Future<$1.StatusResponse> createOneChain_Pre($grpc.ServiceCall call, $async.Future<$11.Chain> request) async {
     return createOneChain(call, await request);
   }
 
-  $async.Future<$7.ReadAllChainsResponse> readAllChains_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+  $async.Future<$9.ReadAllChainsResponse> readAllChains_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
     return readAllChains(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> updateOneChain_Pre($grpc.ServiceCall call, $async.Future<$10.Chain> request) async {
+  $async.Future<$1.StatusResponse> updateOneChain_Pre($grpc.ServiceCall call, $async.Future<$11.Chain> request) async {
     return updateOneChain(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> createOneBoutique_Pre($grpc.ServiceCall call, $async.Future<$11.Boutique> request) async {
+  $async.Future<$1.StatusResponse> deleteOneChain_Pre($grpc.ServiceCall call, $async.Future<$11.Chain> request) async {
+    return deleteOneChain(call, await request);
+  }
+
+  $async.Future<$1.StatusResponse> createOneBoutique_Pre($grpc.ServiceCall call, $async.Future<$9.BoutiqueRequest> request) async {
     return createOneBoutique(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> updateOneBoutique_Pre($grpc.ServiceCall call, $async.Future<$11.Boutique> request) async {
+  $async.Future<$9.BoutiqueResponse> readOneBoutique_Pre($grpc.ServiceCall call, $async.Future<$9.BoutiqueRequest> request) async {
+    return readOneBoutique(call, await request);
+  }
+
+  $async.Future<$1.StatusResponse> updateOneBoutique_Pre($grpc.ServiceCall call, $async.Future<$9.BoutiqueRequest> request) async {
     return updateOneBoutique(call, await request);
   }
 
-  $async.Future<$12.Devices> readDevices_Pre($grpc.ServiceCall call, $async.Future<$7.ReadDevicesRequest> request) async {
+  $async.Future<$1.StatusResponse> deleteOneBoutique_Pre($grpc.ServiceCall call, $async.Future<$9.BoutiqueRequest> request) async {
+    return deleteOneBoutique(call, await request);
+  }
+
+  $async.Future<$12.Devices> readDevices_Pre($grpc.ServiceCall call, $async.Future<$9.ReadDevicesRequest> request) async {
     return readDevices(call, await request);
   }
 
-  $async.Future<$7.CodeForPairingDevice> generateCodeForPairingDevice_Pre($grpc.ServiceCall call, $async.Future<$13.ChainIdAndboutiqueId> request) async {
+  $async.Future<$9.CodeForPairingDevice> generateCodeForPairingDevice_Pre($grpc.ServiceCall call, $async.Future<$13.ChainIdAndboutiqueId> request) async {
     return generateCodeForPairingDevice(call, await request);
   }
 
-  $async.Future<$12.Device> readOnePendingDevice_Pre($grpc.ServiceCall call, $async.Future<$7.ReadDeviceBtqRequest> request) async {
+  $async.Future<$12.Device> readOnePendingDevice_Pre($grpc.ServiceCall call, $async.Future<$9.ReadDeviceBtqRequest> request) async {
     return readOnePendingDevice(call, await request);
   }
 
-  $async.Future<$7.CreatePendingDeviceResponse> createDevice_Pre($grpc.ServiceCall call, $async.Future<$7.PendingDeviceRequest> request) async {
+  $async.Future<$9.CreateDeviceResponse> createDevice_Pre($grpc.ServiceCall call, $async.Future<$9.PendingDeviceRequest> request) async {
     return createDevice(call, await request);
   }
 
-  $async.Future<$7.Tokens> authenticateWithDevice_Pre($grpc.ServiceCall call, $async.Future<$7.DeviceCredentials> request) async {
-    return authenticateWithDevice(call, await request);
-  }
-
-  $async.Future<$1.StatusResponse> updateDevicePassword_Pre($grpc.ServiceCall call, $async.Future<$7.UpdateDevicePasswordRequest> request) async {
+  $async.Future<$1.StatusResponse> updateDevicePassword_Pre($grpc.ServiceCall call, $async.Future<$9.UpdateDevicePasswordRequest> request) async {
     return updateDevicePassword(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> deleteOneDevice_Pre($grpc.ServiceCall call, $async.Future<$7.DeleteDeviceRequest> request) async {
+  $async.Future<$1.StatusResponse> deleteOneDevice_Pre($grpc.ServiceCall call, $async.Future<$9.DeleteDeviceRequest> request) async {
     return deleteOneDevice(call, await request);
   }
 
-  $async.Future<$6.SignUpResponse> signUp($grpc.ServiceCall call, $6.SignUpRequest request);
-  $async.Future<$7.Tokens> authenticateWithCredentials($grpc.ServiceCall call, $7.Credentials request);
-  $async.Future<$7.Tokens> authenticateWithRefreshToken($grpc.ServiceCall call, $7.RefreshToken request);
-  $async.Future<$8.UserPermissions> readUserPermissionsByToken($grpc.ServiceCall call, $0.Empty request);
-  $async.Future<$9.CreateFirmResponse> createFirm($grpc.ServiceCall call, $9.CreateFirmRequest request);
-  $async.Future<$9.Firm> readOneFirm($grpc.ServiceCall call, $0.Empty request);
-  $async.Future<$6.PendingUserResponse> createPendingUser($grpc.ServiceCall call, $6.PendingUserRequest request);
-  $async.Future<$7.ReadOneUserResponse> readOneUser($grpc.ServiceCall call, $7.UserId request);
-  $async.Future<$7.UsersPublic> readAllUsers($grpc.ServiceCall call, $0.Empty request);
-  $async.Future<$1.StatusResponse> updateOneUser($grpc.ServiceCall call, $6.UserPublic request);
-  $async.Future<$1.StatusResponse> updateUserPassword($grpc.ServiceCall call, $7.PasswordUpdateRequest request);
-  $async.Future<$1.StatusResponse> deleteOneUser($grpc.ServiceCall call, $7.UserId request);
-  $async.Future<$1.StatusResponse> createOneChain($grpc.ServiceCall call, $10.Chain request);
-  $async.Future<$7.ReadAllChainsResponse> readAllChains($grpc.ServiceCall call, $0.Empty request);
-  $async.Future<$1.StatusResponse> updateOneChain($grpc.ServiceCall call, $10.Chain request);
-  $async.Future<$1.StatusResponse> createOneBoutique($grpc.ServiceCall call, $11.Boutique request);
-  $async.Future<$1.StatusResponse> updateOneBoutique($grpc.ServiceCall call, $11.Boutique request);
-  $async.Future<$12.Devices> readDevices($grpc.ServiceCall call, $7.ReadDevicesRequest request);
-  $async.Future<$7.CodeForPairingDevice> generateCodeForPairingDevice($grpc.ServiceCall call, $13.ChainIdAndboutiqueId request);
-  $async.Future<$12.Device> readOnePendingDevice($grpc.ServiceCall call, $7.ReadDeviceBtqRequest request);
-  $async.Future<$7.CreatePendingDeviceResponse> createDevice($grpc.ServiceCall call, $7.PendingDeviceRequest request);
-  $async.Future<$7.Tokens> authenticateWithDevice($grpc.ServiceCall call, $7.DeviceCredentials request);
-  $async.Future<$1.StatusResponse> updateDevicePassword($grpc.ServiceCall call, $7.UpdateDevicePasswordRequest request);
-  $async.Future<$1.StatusResponse> deleteOneDevice($grpc.ServiceCall call, $7.DeleteDeviceRequest request);
+  $async.Future<$8.SignUpResponse> signUp($grpc.ServiceCall call, $8.SignUpRequest request);
+  $async.Future<$9.Tokens> authenticateWithCredentials($grpc.ServiceCall call, $9.Credentials request);
+  $async.Future<$9.Tokens> authenticateWithRefreshToken($grpc.ServiceCall call, $9.RefreshToken request);
+  $async.Future<$10.CreateFirmResponse> createFirm($grpc.ServiceCall call, $10.CreateFirmRequest request);
+  $async.Future<$10.Firm> readOneFirm($grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$8.PendingUserResponse> createPendingUser($grpc.ServiceCall call, $8.PendingUserRequest request);
+  $async.Future<$9.ReadOneUserResponse> readOneUser($grpc.ServiceCall call, $9.UserId request);
+  $async.Future<$9.UsersPublic> readAllUsers($grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$1.StatusResponse> updateOneUser($grpc.ServiceCall call, $8.UserPublic request);
+  $async.Future<$1.StatusResponse> updateUserPassword($grpc.ServiceCall call, $9.PasswordUpdateRequest request);
+  $async.Future<$1.StatusResponse> deleteOneUser($grpc.ServiceCall call, $9.UserId request);
+  $async.Future<$1.StatusResponse> createOneChain($grpc.ServiceCall call, $11.Chain request);
+  $async.Future<$9.ReadAllChainsResponse> readAllChains($grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$1.StatusResponse> updateOneChain($grpc.ServiceCall call, $11.Chain request);
+  $async.Future<$1.StatusResponse> deleteOneChain($grpc.ServiceCall call, $11.Chain request);
+  $async.Future<$1.StatusResponse> createOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
+  $async.Future<$9.BoutiqueResponse> readOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
+  $async.Future<$1.StatusResponse> updateOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
+  $async.Future<$1.StatusResponse> deleteOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
+  $async.Future<$12.Devices> readDevices($grpc.ServiceCall call, $9.ReadDevicesRequest request);
+  $async.Future<$9.CodeForPairingDevice> generateCodeForPairingDevice($grpc.ServiceCall call, $13.ChainIdAndboutiqueId request);
+  $async.Future<$12.Device> readOnePendingDevice($grpc.ServiceCall call, $9.ReadDeviceBtqRequest request);
+  $async.Future<$9.CreateDeviceResponse> createDevice($grpc.ServiceCall call, $9.PendingDeviceRequest request);
+  $async.Future<$1.StatusResponse> updateDevicePassword($grpc.ServiceCall call, $9.UpdateDevicePasswordRequest request);
+  $async.Future<$1.StatusResponse> deleteOneDevice($grpc.ServiceCall call, $9.DeleteDeviceRequest request);
 }

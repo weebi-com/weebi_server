@@ -18,8 +18,7 @@ const FindContactRequest$json = {
   '1': 'FindContactRequest',
   '2': [
     {'1': 'contactChainId', '3': 1, '4': 1, '5': 9, '10': 'contactChainId'},
-    {'1': 'contactUserId', '3': 2, '4': 1, '5': 9, '10': 'contactUserId'},
-    {'1': 'contactNonUniqueId', '3': 3, '4': 1, '5': 5, '10': 'contactNonUniqueId'},
+    {'1': 'contactId', '3': 3, '4': 1, '5': 5, '10': 'contactId'},
     {'1': 'firstName', '3': 4, '4': 1, '5': 9, '9': 0, '10': 'firstName', '17': true},
     {'1': 'lastName', '3': 5, '4': 1, '5': 9, '9': 1, '10': 'lastName', '17': true},
     {'1': 'mail', '3': 6, '4': 1, '5': 9, '9': 2, '10': 'mail', '17': true},
@@ -38,43 +37,55 @@ const FindContactRequest$json = {
 /// Descriptor for `FindContactRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List findContactRequestDescriptor = $convert.base64Decode(
     'ChJGaW5kQ29udGFjdFJlcXVlc3QSJgoOY29udGFjdENoYWluSWQYASABKAlSDmNvbnRhY3RDaG'
-    'FpbklkEiQKDWNvbnRhY3RVc2VySWQYAiABKAlSDWNvbnRhY3RVc2VySWQSLgoSY29udGFjdE5v'
-    'blVuaXF1ZUlkGAMgASgFUhJjb250YWN0Tm9uVW5pcXVlSWQSIQoJZmlyc3ROYW1lGAQgASgJSA'
-    'BSCWZpcnN0TmFtZYgBARIfCghsYXN0TmFtZRgFIAEoCUgBUghsYXN0TmFtZYgBARIXCgRtYWls'
-    'GAYgASgJSAJSBG1haWyIAQESNAoFcGhvbmUYByABKAsyGS53ZWViaS5jb21tb24ucGhvbmUuUG'
-    'hvbmVIA1IFcGhvbmWIAQESQAoHYWRkcmVzcxgIIAEoCzIdLndlZWJpLmNvbW1vbi5hZGRyZXNz'
-    'LkFkZHJlc3NIBFILYWRkcmVzc0Z1bGyIAQFCDAoKX2ZpcnN0TmFtZUILCglfbGFzdE5hbWVCBw'
-    'oFX21haWxCCAoGX3Bob25lQgoKCF9hZGRyZXNz');
+    'FpbklkEhwKCWNvbnRhY3RJZBgDIAEoBVIJY29udGFjdElkEiEKCWZpcnN0TmFtZRgEIAEoCUgA'
+    'UglmaXJzdE5hbWWIAQESHwoIbGFzdE5hbWUYBSABKAlIAVIIbGFzdE5hbWWIAQESFwoEbWFpbB'
+    'gGIAEoCUgCUgRtYWlsiAEBEjQKBXBob25lGAcgASgLMhkud2VlYmkuY29tbW9uLnBob25lLlBo'
+    'b25lSANSBXBob25liAEBEkAKB2FkZHJlc3MYCCABKAsyHS53ZWViaS5jb21tb24uYWRkcmVzcy'
+    '5BZGRyZXNzSARSC2FkZHJlc3NGdWxsiAEBQgwKCl9maXJzdE5hbWVCCwoJX2xhc3ROYW1lQgcK'
+    'BV9tYWlsQggKBl9waG9uZUIKCghfYWRkcmVzcw==');
 
 @$core.Deprecated('Use readAllContactsRequestDescriptor instead')
 const ReadAllContactsRequest$json = {
   '1': 'ReadAllContactsRequest',
   '2': [
-    {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
-    {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'lastFetchTimestampUTC', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastFetchTimestampUTC'},
   ],
 };
 
 /// Descriptor for `ReadAllContactsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List readAllContactsRequestDescriptor = $convert.base64Decode(
-    'ChZSZWFkQWxsQ29udGFjdHNSZXF1ZXN0EhYKBmZpcm1JZBgBIAEoCVIGZmlybUlkEhgKB2NoYW'
-    'luSWQYAiABKAlSB2NoYWluSWQ=');
+    'ChZSZWFkQWxsQ29udGFjdHNSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQSUAoVbG'
+    'FzdEZldGNoVGltZXN0YW1wVVRDGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIV'
+    'bGFzdEZldGNoVGltZXN0YW1wVVRD');
 
 @$core.Deprecated('Use contactRequestDescriptor instead')
 const ContactRequest$json = {
   '1': 'ContactRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'contactUserId', '3': 2, '4': 1, '5': 9, '10': 'contactUserId'},
-    {'1': 'contact', '3': 3, '4': 1, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contact'},
+    {'1': 'contact', '3': 2, '4': 1, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contact'},
   ],
 };
 
 /// Descriptor for `ContactRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactRequestDescriptor = $convert.base64Decode(
-    'Cg5Db250YWN0UmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEiQKDWNvbnRhY3RVc2'
-    'VySWQYAiABKAlSDWNvbnRhY3RVc2VySWQSMgoHY29udGFjdBgDIAEoCzIYLndlZWJpLmNvbnRh'
-    'Y3QuQ29udGFjdFBiUgdjb250YWN0');
+    'Cg5Db250YWN0UmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEjIKB2NvbnRhY3QYAi'
+    'ABKAsyGC53ZWViaS5jb250YWN0LkNvbnRhY3RQYlIHY29udGFjdA==');
+
+@$core.Deprecated('Use contactsRequestDescriptor instead')
+const ContactsRequest$json = {
+  '1': 'ContactsRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'contacts', '3': 2, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contacts'},
+  ],
+};
+
+/// Descriptor for `ContactsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List contactsRequestDescriptor = $convert.base64Decode(
+    'Cg9Db250YWN0c1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBI0Cghjb250YWN0cx'
+    'gCIAMoCzIYLndlZWJpLmNvbnRhY3QuQ29udGFjdFBiUghjb250YWN0cw==');
 
 @$core.Deprecated('Use contactsResponseDescriptor instead')
 const ContactsResponse$json = {

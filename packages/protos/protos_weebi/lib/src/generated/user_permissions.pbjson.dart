@@ -241,10 +241,11 @@ const BoolRights$json = {
     {'1': 'canSetPromo', '3': 4, '4': 1, '5': 8, '10': 'canSetPromo'},
     {'1': 'canStockMovement', '3': 5, '4': 1, '5': 8, '10': 'canStockMovement'},
     {'1': 'canStockInventory', '3': 6, '4': 1, '5': 8, '10': 'canStockInventory'},
-    {'1': 'canQuickSpend', '3': 7, '4': 1, '5': 8, '10': 'canQuickSpend'},
+    {'1': 'canSpendOutOfCatalog', '3': 7, '4': 1, '5': 8, '10': 'canSpendOutOfCatalog'},
     {'1': 'canPurchase', '3': 8, '4': 1, '5': 8, '10': 'canPurchase'},
     {'1': 'canImportTickets', '3': 9, '4': 1, '5': 8, '10': 'canImportTickets'},
-    {'1': 'canQuickSell', '3': 10, '4': 1, '5': 8, '10': 'canQuickSell'},
+    {'1': 'canSellOutOfCatalog', '3': 10, '4': 1, '5': 8, '10': 'canSellOutOfCatalog'},
+    {'1': 'canUpdateContactBalanceOffline', '3': 11, '4': 1, '5': 8, '10': 'canUpdateContactBalanceOffline'},
   ],
 };
 
@@ -254,8 +255,10 @@ final $typed_data.Uint8List boolRightsDescriptor = $convert.base64Decode(
     'BvcnREYXRhGAIgASgIUg1jYW5FeHBvcnREYXRhEigKD2NhbkdpdmVEaXNjb3VudBgDIAEoCFIP'
     'Y2FuR2l2ZURpc2NvdW50EiAKC2NhblNldFByb21vGAQgASgIUgtjYW5TZXRQcm9tbxIqChBjYW'
     '5TdG9ja01vdmVtZW50GAUgASgIUhBjYW5TdG9ja01vdmVtZW50EiwKEWNhblN0b2NrSW52ZW50'
-    'b3J5GAYgASgIUhFjYW5TdG9ja0ludmVudG9yeRIkCg1jYW5RdWlja1NwZW5kGAcgASgIUg1jYW'
-    '5RdWlja1NwZW5kEiAKC2NhblB1cmNoYXNlGAggASgIUgtjYW5QdXJjaGFzZRIqChBjYW5JbXBv'
-    'cnRUaWNrZXRzGAkgASgIUhBjYW5JbXBvcnRUaWNrZXRzEiIKDGNhblF1aWNrU2VsbBgKIAEoCF'
-    'IMY2FuUXVpY2tTZWxs');
+    'b3J5GAYgASgIUhFjYW5TdG9ja0ludmVudG9yeRIyChRjYW5TcGVuZE91dE9mQ2F0YWxvZxgHIA'
+    'EoCFIUY2FuU3BlbmRPdXRPZkNhdGFsb2cSIAoLY2FuUHVyY2hhc2UYCCABKAhSC2NhblB1cmNo'
+    'YXNlEioKEGNhbkltcG9ydFRpY2tldHMYCSABKAhSEGNhbkltcG9ydFRpY2tldHMSMAoTY2FuU2'
+    'VsbE91dE9mQ2F0YWxvZxgKIAEoCFITY2FuU2VsbE91dE9mQ2F0YWxvZxJGCh5jYW5VcGRhdGVD'
+    'b250YWN0QmFsYW5jZU9mZmxpbmUYCyABKAhSHmNhblVwZGF0ZUNvbnRhY3RCYWxhbmNlT2ZmbG'
+    'luZQ==');
 

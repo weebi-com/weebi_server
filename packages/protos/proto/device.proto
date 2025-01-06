@@ -12,7 +12,6 @@ message Device {
     string boutiqueId = 3 [json_name = 'boutiqueId'];
     bool status = 4 [json_name = 'status'];
     string password = 5 [json_name = 'password'];
-    /// dateCreation is set by the server
     google.protobuf.Timestamp timestamp = 6 [json_name = 'timestamp'];
     HardwareInfo hardwareInfo = 7 [json_name = 'hardwareInfo'];
   }

@@ -34,21 +34,41 @@ const CalibreMongo$json = {
   '1': 'CalibreMongo',
   '2': [
     {'1': 'calibre', '3': 1, '4': 1, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibre'},
-    {'1': 'calibreNonUniqueId', '3': 2, '4': 1, '5': 5, '10': 'calibreNonUniqueId'},
+    {'1': 'calibreId', '3': 2, '4': 1, '5': 5, '10': 'calibreId'},
     {'1': 'firmId', '3': 3, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 4, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'userId', '3': 5, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'creationDate', '3': 6, '4': 1, '5': 9, '10': 'creationDate'},
+    {'1': 'lastTouchTimestampUTC', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
+    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.article.CalibreMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
+  '3': [CalibreMongo_AdditionalAttributesEntry$json],
+  '9': [
+    {'1': 8, '2': 99},
+  ],
+};
+
+@$core.Deprecated('Use calibreMongoDescriptor instead')
+const CalibreMongo_AdditionalAttributesEntry$json = {
+  '1': 'AdditionalAttributesEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': {'7': true},
 };
 
 /// Descriptor for `CalibreMongo`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List calibreMongoDescriptor = $convert.base64Decode(
     'CgxDYWxpYnJlTW9uZ28SMgoHY2FsaWJyZRgBIAEoCzIYLndlZWJpLmFydGljbGUuQ2FsaWJyZV'
-    'BiUgdjYWxpYnJlEi4KEmNhbGlicmVOb25VbmlxdWVJZBgCIAEoBVISY2FsaWJyZU5vblVuaXF1'
-    'ZUlkEhYKBmZpcm1JZBgDIAEoCVIGZmlybUlkEhgKB2NoYWluSWQYBCABKAlSB2NoYWluSWQSFg'
-    'oGdXNlcklkGAUgASgJUgZ1c2VySWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRh'
-    'dGU=');
+    'BiUgdjYWxpYnJlEhwKCWNhbGlicmVJZBgCIAEoBVIJY2FsaWJyZUlkEhYKBmZpcm1JZBgDIAEo'
+    'CVIGZmlybUlkEhgKB2NoYWluSWQYBCABKAlSB2NoYWluSWQSFgoGdXNlcklkGAUgASgJUgZ1c2'
+    'VySWQSIgoMY3JlYXRpb25EYXRlGAYgASgJUgxjcmVhdGlvbkRhdGUSUAoVbGFzdFRvdWNoVGlt'
+    'ZXN0YW1wVVRDGAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIVbGFzdFRvdWNoVG'
+    'ltZXN0YW1wVVRDEmsKFWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI1LndlZWJpLmFydGlj'
+    'bGUuQ2FsaWJyZU1vbmdvLkFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnlSFWFkZGl0aW9uYWxfYX'
+    'R0cmlidXRlcxpHChlBZGRpdGlvbmFsQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5'
+    'EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgIEGM=');
 
 @$core.Deprecated('Use calibrePbDescriptor instead')
 const CalibrePb$json = {
@@ -62,10 +82,9 @@ const CalibrePb$json = {
     {'1': 'title', '3': 6, '4': 1, '5': 9, '10': 'title'},
     {'1': 'stockUnit', '3': 7, '4': 1, '5': 14, '6': '.weebi.article.CalibrePb.StockUnit', '10': 'stockUnit'},
     {'1': 'kind', '3': 8, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
-    {'1': 'categories', '3': 9, '4': 3, '5': 9, '10': 'categories'},
-    {'1': 'articlesRetail', '3': 10, '4': 3, '5': 11, '6': '.weebi.article.ArticleRetailPb', '10': 'articlesRetail'},
-    {'1': 'articlesBasket', '3': 11, '4': 3, '5': 11, '6': '.weebi.article.ArticleBasketPb', '10': 'articlesBasket'},
-    {'1': 'articlesUncountable', '3': 12, '4': 3, '5': 11, '6': '.weebi.article.ArticleUncountablePb', '10': 'articlesUncountable'},
+    {'1': 'articlesRetail', '3': 9, '4': 3, '5': 11, '6': '.weebi.article.ArticleRetailPb', '10': 'articlesRetail'},
+    {'1': 'articlesBasket', '3': 10, '4': 3, '5': 11, '6': '.weebi.article.ArticleBasketPb', '10': 'articlesBasket'},
+    {'1': 'articlesUncountable', '3': 11, '4': 3, '5': 11, '6': '.weebi.article.ArticleUncountablePb', '10': 'articlesUncountable'},
   ],
   '4': [CalibrePb_StockUnit$json],
   '9': [
@@ -95,14 +114,13 @@ final $typed_data.Uint8List calibrePbDescriptor = $convert.base64Decode(
     'RGF0ZRgEIAEoCVIQc3RhdHVzVXBkYXRlRGF0ZRIWCgZzdGF0dXMYBSABKAhSBnN0YXR1cxIUCg'
     'V0aXRsZRgGIAEoCVIFdGl0bGUSQAoJc3RvY2tVbml0GAcgASgOMiIud2VlYmkuYXJ0aWNsZS5D'
     'YWxpYnJlUGIuU3RvY2tVbml0UglzdG9ja1VuaXQSMAoEa2luZBgIIAEoDjIcLndlZWJpLmFydG'
-    'ljbGUuQXJ0aWNsZUtpbmRQYlIEa2luZBIeCgpjYXRlZ29yaWVzGAkgAygJUgpjYXRlZ29yaWVz'
-    'EkYKDmFydGljbGVzUmV0YWlsGAogAygLMh4ud2VlYmkuYXJ0aWNsZS5BcnRpY2xlUmV0YWlsUG'
-    'JSDmFydGljbGVzUmV0YWlsEkYKDmFydGljbGVzQmFza2V0GAsgAygLMh4ud2VlYmkuYXJ0aWNs'
-    'ZS5BcnRpY2xlQmFza2V0UGJSDmFydGljbGVzQmFza2V0ElUKE2FydGljbGVzVW5jb3VudGFibG'
-    'UYDCADKAsyIy53ZWViaS5hcnRpY2xlLkFydGljbGVVbmNvdW50YWJsZVBiUhNhcnRpY2xlc1Vu'
-    'Y291bnRhYmxlInAKCVN0b2NrVW5pdBILCgd1bmtub3duEAASDgoKY2VudGlsaXRlchABEg4KCm'
-    'NlbnRpbWV0ZXIQAhIICgRncmFtEAMSDAoIa2lsb2dyYW0QBBIJCgVsaXRlchAFEgkKBW1ldGVy'
-    'EAYSCAoEdW5pdBAHSgQIDRBj');
+    'ljbGUuQXJ0aWNsZUtpbmRQYlIEa2luZBJGCg5hcnRpY2xlc1JldGFpbBgJIAMoCzIeLndlZWJp'
+    'LmFydGljbGUuQXJ0aWNsZVJldGFpbFBiUg5hcnRpY2xlc1JldGFpbBJGCg5hcnRpY2xlc0Jhc2'
+    'tldBgKIAMoCzIeLndlZWJpLmFydGljbGUuQXJ0aWNsZUJhc2tldFBiUg5hcnRpY2xlc0Jhc2tl'
+    'dBJVChNhcnRpY2xlc1VuY291bnRhYmxlGAsgAygLMiMud2VlYmkuYXJ0aWNsZS5BcnRpY2xlVW'
+    '5jb3VudGFibGVQYlITYXJ0aWNsZXNVbmNvdW50YWJsZSJwCglTdG9ja1VuaXQSCwoHdW5rbm93'
+    'bhAAEg4KCmNlbnRpbGl0ZXIQARIOCgpjZW50aW1ldGVyEAISCAoEZ3JhbRADEgwKCGtpbG9ncm'
+    'FtEAQSCQoFbGl0ZXIQBRIJCgVtZXRlchAGEggKBHVuaXQQB0oECA0QYw==');
 
 @$core.Deprecated('Use articleIdDescriptor instead')
 const ArticleId$json = {

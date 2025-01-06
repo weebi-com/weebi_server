@@ -4,14 +4,13 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
 
 abstract class _Helpers {
-  static SelectorBuilder selectContact(String firmId, String chainId,
-          String contactuserId, int contactNonUniqueId, String dateCreation) =>
+  static SelectorBuilder selectContact(
+          String firmId, String chainId, int contactId, String creationDate) =>
       where
           .eq('firmId', firmId)
           .eq('chainId', chainId)
-          .eq('userId', contactuserId)
-          .eq('dateCreation', dateCreation)
-          .eq('contactNonUniqueId', contactNonUniqueId);
+          .eq('contactId', contactId)
+          .eq('creationDate', creationDate);
 }
 
 class ContactService extends ContactServiceBase {
@@ -34,7 +33,7 @@ class ContactService extends ContactServiceBase {
 
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -45,26 +44,34 @@ class ContactService extends ContactServiceBase {
           'user does not have right to create articles');
     }
     try {
+      final snapshot = await collection.findOne(_Helpers.selectContact(
+          userPermission.firmId,
+          request.chainId,
+          request.contact.id,
+          request.contact.creationDate));
+      if (snapshot != null) {
+        throw GrpcError.alreadyExists();
+      }
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
         ..creationDate = request.contact.creationDate
-        ..contactNonUniqueId = request.contact.contactNonUniqueId
+        ..contactId = request.contact.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
-        ..userId = userPermission.userId;
+        ..userId = userPermission.userId
+        ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
       final result = await collection
           .insertOne(contactMongo.toProto3Json() as Map<String, dynamic>);
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
       }
-      if (result.ok == 1 && result.document != null) {
-        final contactNonUniqueId =
-            result.document!['contactNonUniqueId'] as int;
+      if (result.success && result.document != null) {
+        final contactId = result.document!['contactId'] as int;
 
         return StatusResponse.create()
           ..type = StatusResponse_Type.CREATED
-          ..id = contactNonUniqueId.toString()
+          ..id = contactId.toString()
           ..timestamp = DateTime.now().timestampProto;
       } else {
         return StatusResponse.create()
@@ -83,12 +90,12 @@ class ContactService extends ContactServiceBase {
   }
 
   @override
-  Future<StatusResponse> replaceOne(
+  Future<StatusResponse> updateOne(
       ServiceCall? call, ContactRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -102,17 +109,17 @@ class ContactService extends ContactServiceBase {
       final contactMongo = ContactMongo.create()
         ..contact = request.contact
         ..creationDate = request.contact.creationDate
-        ..contactNonUniqueId = request.contact.contactNonUniqueId
+        ..contactId = request.contact.id
         ..chainId = request.chainId
         ..firmId = userPermission.firmId
-        ..userId = userPermission.userId;
+        ..userId = userPermission.userId
+        ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
       final result = await collection.replaceOne(
           _Helpers.selectContact(
             userPermission.firmId,
             request.chainId,
-            request.contactUserId,
-            request.contact.contactNonUniqueId,
+            request.contact.id,
             request.contact.creationDate,
           ),
           contactMongo.toProto3Json() as Map<String, dynamic>,
@@ -143,7 +150,7 @@ class ContactService extends ContactServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.contactRights.rights.any((e) => e == Right.delete) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -158,8 +165,7 @@ class ContactService extends ContactServiceBase {
         _Helpers.selectContact(
           userPermission.firmId,
           request.chainId,
-          request.contactUserId,
-          request.contact.contactNonUniqueId,
+          request.contact.id,
           request.contact.creationDate,
         ),
       );
@@ -178,7 +184,7 @@ class ContactService extends ContactServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -189,13 +195,24 @@ class ContactService extends ContactServiceBase {
           'user does not have right to read contacts');
     }
     try {
-      final list = await collection.find().toList();
+      var selector = SelectorBuilder();
+      if (request.lastFetchTimestampUTC.hasSeconds()) {
+        selector = where.gte('lastTouchTimestampUTC.seconds',
+            request.lastFetchTimestampUTC.seconds);
+      }
+      final list = await collection.find(selector).toList();
+      if (list.isEmpty) {
+        return ContactsResponse.create();
+      }
+
       final contacts = <ContactPb>[];
       for (final e in list) {
         final contactMongo = ContactMongo.create()
           ..mergeFromProto3Json(e, ignoreUnknownFields: true);
+
         contacts.add(contactMongo.contact);
       }
+
       final contactsBis = ContactsResponse();
       contactsBis.contacts
         ..clear()
@@ -213,7 +230,7 @@ class ContactService extends ContactServiceBase {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermission;
+        : call.bearer.userPermissions;
     if (userPermission.isChainAccessible(request.contactChainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.contactChainId}');
@@ -227,8 +244,7 @@ class ContactService extends ContactServiceBase {
     try {
       final selector = where
           .eq('chainId', request.contactChainId)
-          .eq('userId', request.contactUserId)
-          .eq('contactNonUniqueId', request.contactNonUniqueId);
+          .eq('contactId', request.contactId);
       // TOBE completed with firstname, lastname and all that jazz
       final contact = await collection.findOne(selector);
       if (contact != null) {
@@ -241,6 +257,81 @@ class ContactService extends ContactServiceBase {
     } on GrpcError catch (e) {
       print(e);
       rethrow;
+    }
+  }
+
+  @override
+  Future<StatusResponse> createMany(
+      ServiceCall call, ContactsRequest request) async {
+    _db.isConnected ? null : await _db.open();
+
+    final userPermission = isTest
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
+    if (userPermission.contactRights.rights.any((e) => e == Right.create) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to create articles');
+    }
+    final nowProto = DateTime.now().toUtc().timestampProto;
+    final contactsMap = <Map<String, dynamic>>[];
+    int dups = 0;
+    for (final contactPb in request.contacts) {
+      final snapshot = await collection.findOne(_Helpers.selectContact(
+          userPermission.firmId,
+          request.chainId,
+          contactPb.id,
+          contactPb.creationDate));
+      if (snapshot != null) {
+        dups += 1;
+        continue;
+      }
+      final contactMongo = ContactMongo.create()
+        ..contact = contactPb
+        ..creationDate = contactPb.creationDate
+        ..contactId = contactPb.id
+        ..chainId = request.chainId
+        ..firmId = userPermission.firmId
+        ..userId = userPermission.userId
+        ..lastTouchTimestampUTC = nowProto;
+      contactsMap.add(contactMongo.toProto3Json() as Map<String, dynamic>);
+    }
+    if (request.contacts.length == dups) {
+      throw GrpcError.alreadyExists();
+    }
+    try {
+      final result = await collection.insertMany(contactsMap);
+      if (result.hasWriteErrors) {
+        final writeErrorsMessages = <String>[];
+        for (final error in result.writeErrors) {
+          writeErrorsMessages.add(error.toString());
+        }
+        throw GrpcError.unknown(
+            'hasWriteErrors ${writeErrorsMessages.join("\n")}');
+      }
+      if (result.success) {
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.CREATED
+          ..timestamp = DateTime.now().timestampProto
+          ..message =
+              dups > 0 ? 'dups ignored: $dups/${request.contacts.length}' : '';
+      } else {
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.ERROR
+          ..message = 'result.failure but no writeErrorsMessages'
+          ..timestamp = DateTime.now().timestampProto;
+      }
+    } on GrpcError catch (e) {
+      print(e);
+      rethrow;
+    } catch (e, stacktrace) {
+      // the whole stacktrace is heavy
+      print(stacktrace);
+      throw GrpcError.unknown('$e');
     }
   }
 }

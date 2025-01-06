@@ -17,6 +17,8 @@ message Firm {
     google.protobuf.Timestamp lastUpdateTimestampUTC =  9 [json_name = 'lastUpdateTimestampUTC'];
     string lastUpdatedByuserId =  10 [json_name = 'lastUpdatedByuserId'];
     bool isMailVerified =  11 [json_name = 'isMailVerified'];
+    google.protobuf.Timestamp creationDateUTC = 12 [json_name = 'creationDateUTC'];;
+
   }
 
 message CreateFirmRequest {

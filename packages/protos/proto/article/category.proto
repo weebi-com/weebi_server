@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package weebi.category;
+
+import "common/g_timestamp.proto";
+
+message CategoryMongo {
+  // faster object read
+  string firmId = 1 [json_name = 'firmId'];
+  string chainId = 2 [json_name = 'chainId'];
+  string userId = 3 [json_name = 'userId'];
+  string title = 4 [json_name = 'title'];
+  weebi.category.CategoryPb category = 5 [json_name = 'category'] ;
+  google.protobuf.Timestamp lastTouchTimestampUTC =  6 [json_name = 'lastTouchTimestampUTC']; 
+}
+message CategoryPb {
+  repeated uint32 calibresIds = 1 [json_name = 'calibresIds'];
+  string title = 2 [json_name = 'title'];
+  uint32 color = 3 [json_name = 'color'];
+  string creationDate = 4 [json_name = 'creationDate'];
+  string updateDate = 5 [json_name = 'updateDate'];
+}
+

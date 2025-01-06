@@ -1,1 +1,6 @@
 weebi dart server built using grpc
+
+```shell
+dart pub global activate melos
+melos bootstrap
+```
