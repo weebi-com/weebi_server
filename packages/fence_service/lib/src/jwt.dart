@@ -32,7 +32,7 @@ class JsonWebToken {
 
   String get sub => _payload['sub'];
   String get iat => _payload['iat'];
-  String get exp => _payload['exp'];
+  int? get exp => _payload['exp'] as int?;
 
   Map<String, dynamic> get payload => _payload;
 
