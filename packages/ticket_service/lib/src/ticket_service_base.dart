@@ -238,8 +238,8 @@ class TicketService extends TicketServiceBase {
               'ticket.statusUpdateDate',
               DateTime.now().toIso8601String(),
             )
-            .set(
-                'lastTouchTimestampUTC', DateTime.now().toUtc().timestampProto),
+            .set('lastTouchTimestampUTC',
+                DateTime.now().toUtc().timestampProto.toProto3Json()),
       );
       if (result.hasWriteErrors) {
         throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
