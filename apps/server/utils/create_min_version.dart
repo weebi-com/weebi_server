@@ -1,5 +1,6 @@
 import 'package:fence_service/mongo_dart.dart';
 
+// TODO: pass mongodb+srv:// in the args
 void main(List<String> args) async {
   if (args.isEmpty) {
     throw 'please provide a version number (integer only)';
@@ -11,8 +12,7 @@ void main(List<String> args) async {
   final collectionName = 'weebi_app';
 //  final db = TestHelper.localDb;
 
-  final db = await Db.create(
-      "mongodb+srv://pierre:nehemetaouhy@cluster0.220kimt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+  final db = await Db.create(args.first);
   final connection = Connection(ConnectionManager(db));
   await db.open();
   final isConnected = await connection.connect();
