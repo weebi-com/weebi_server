@@ -860,6 +860,7 @@ class BoolRights extends $pb.GeneratedMessage {
     $core.bool? canImportTickets,
     $core.bool? canSellOutOfCatalog,
     $core.bool? canUpdateContactBalanceOffline,
+    $core.bool? canUpdateTicketContactInfo,
   }) {
     final $result = create();
     if (canSeeStats != null) {
@@ -895,6 +896,9 @@ class BoolRights extends $pb.GeneratedMessage {
     if (canUpdateContactBalanceOffline != null) {
       $result.canUpdateContactBalanceOffline = canUpdateContactBalanceOffline;
     }
+    if (canUpdateTicketContactInfo != null) {
+      $result.canUpdateTicketContactInfo = canUpdateTicketContactInfo;
+    }
     return $result;
   }
   BoolRights._() : super();
@@ -913,6 +917,7 @@ class BoolRights extends $pb.GeneratedMessage {
     ..aOB(9, _omitFieldNames ? '' : 'canImportTickets', protoName: 'canImportTickets')
     ..aOB(10, _omitFieldNames ? '' : 'canSellOutOfCatalog', protoName: 'canSellOutOfCatalog')
     ..aOB(11, _omitFieldNames ? '' : 'canUpdateContactBalanceOffline', protoName: 'canUpdateContactBalanceOffline')
+    ..aOB(12, _omitFieldNames ? '' : 'canUpdateTicketContactInfo', protoName: 'canUpdateTicketContactInfo')
     ..hasRequiredFields = false
   ;
 
@@ -1035,6 +1040,15 @@ class BoolRights extends $pb.GeneratedMessage {
   $core.bool hasCanUpdateContactBalanceOffline() => $_has(10);
   @$pb.TagNumber(11)
   void clearCanUpdateContactBalanceOffline() => clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.bool get canUpdateTicketContactInfo => $_getBF(11);
+  @$pb.TagNumber(12)
+  set canUpdateTicketContactInfo($core.bool v) { $_setBool(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasCanUpdateTicketContactInfo() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearCanUpdateTicketContactInfo() => clearField(12);
 }
 
 

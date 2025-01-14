@@ -246,6 +246,7 @@ const BoolRights$json = {
     {'1': 'canImportTickets', '3': 9, '4': 1, '5': 8, '10': 'canImportTickets'},
     {'1': 'canSellOutOfCatalog', '3': 10, '4': 1, '5': 8, '10': 'canSellOutOfCatalog'},
     {'1': 'canUpdateContactBalanceOffline', '3': 11, '4': 1, '5': 8, '10': 'canUpdateContactBalanceOffline'},
+    {'1': 'canUpdateTicketContactInfo', '3': 12, '4': 1, '5': 8, '10': 'canUpdateTicketContactInfo'},
   ],
 };
 
@@ -260,5 +261,6 @@ final $typed_data.Uint8List boolRightsDescriptor = $convert.base64Decode(
     'YXNlEioKEGNhbkltcG9ydFRpY2tldHMYCSABKAhSEGNhbkltcG9ydFRpY2tldHMSMAoTY2FuU2'
     'VsbE91dE9mQ2F0YWxvZxgKIAEoCFITY2FuU2VsbE91dE9mQ2F0YWxvZxJGCh5jYW5VcGRhdGVD'
     'b250YWN0QmFsYW5jZU9mZmxpbmUYCyABKAhSHmNhblVwZGF0ZUNvbnRhY3RCYWxhbmNlT2ZmbG'
-    'luZQ==');
+    'luZRI+ChpjYW5VcGRhdGVUaWNrZXRDb250YWN0SW5mbxgMIAEoCFIaY2FuVXBkYXRlVGlja2V0'
+    'Q29udGFjdEluZm8=');
 
