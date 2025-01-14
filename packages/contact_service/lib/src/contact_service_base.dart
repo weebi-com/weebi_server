@@ -241,6 +241,7 @@ class ContactService extends ContactServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read contact');
     }
+    // TODO: search by firstName/LastName etc
     try {
       final selector = where
           .eq('chainId', request.contactChainId)

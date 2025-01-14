@@ -14,10 +14,10 @@ void main() async {
   final connection = Connection(ConnectionManager(db));
 
   late ArticleService articleService;
-
+  final cal = CalibreWeebi.dummyRetail.toMapProto();
   final calibreDummy = CalibrePb.create()
     ..mergeFromProto3Json(
-      CalibreWeebi.dummyRetail.toMap(),
+      cal,
       ignoreUnknownFields: true,
     );
 
@@ -41,22 +41,27 @@ void main() async {
     final request =
         CalibreRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
     // ignore: unused_local_variable
+    expect(request.calibre.articlesRetail.length, 1);
     final response = await articleService.createOne(null, request);
+
     expect(response.type, StatusResponse_Type.CREATED);
   });
+
   test('test readAll', () async {
     final response = await articleService.readAll(
         null, ReadAllRequest(chainId: Dummy.chain.chainId));
     expect(response.calibres.length, 1);
+    expect(response.calibres.first.title, 'dummy');
+    expect(response.calibres.first.articlesRetail.length, 1);
+    expect(response.calibres.first.articlesRetail.first.calibreId, 1);
   });
+
   test('test replaceOne ', () async {
     final lili = CalibreWeebi.dummyRetail.copyWith(title: 'Lili biscuit');
-    print('lili.title');
-    print(lili.title);
 
     final calibreLili = CalibrePb.create()
       ..mergeFromProto3Json(
-        lili.toMap(),
+        lili.toMapProto(),
         ignoreUnknownFields: true,
       );
 
@@ -71,6 +76,15 @@ void main() async {
     expect(response2.calibres.first.title, 'Lili biscuit');
   });
 
+  test('readOne', () async {
+    final calibreResponse = await articleService.readOne(
+        null,
+        FindCalibreRequest(
+            chainId: Dummy.chain.chainId, title: 'Lili biscuit'));
+    expect(calibreResponse != CalibrePb.getDefault(), isTrue);
+    expect(calibreResponse.articlesRetail.length, 1);
+    expect(calibreResponse.articlesRetail.first.calibreId, 1);
+  });
   test('test deleteOne ', () async {
     final request =
         CalibreRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);

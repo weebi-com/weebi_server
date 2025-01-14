@@ -42,10 +42,9 @@ void main(List<String> arguments) async {
     );
   });
 
-  // also possible here to read data from file.txt/csv/json to populate data
-
   final db = await Db.create(AppEnvironment.mongoDbUri);
 
+  // also possible here to read data from file.txt/csv/json to populate data
 /*   final connection = Connection(ConnectionManager(db), ServerConfig());
   try {
     await connection.connect();

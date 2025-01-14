@@ -20,19 +20,9 @@ void main(List<String> arguments) async {
     );
   });
 
-  // var port = Platform.environment['PORT'];
   final port = '8080';
-  // ignore: unnecessary_null_comparison
-  if (port == null) {
-    throw Exception('Port variable is not defined');
-  }
-
   final intPort = int.parse(port);
-
-  // also possible here to read data from file.txt/csv/json to populate data
-
-  final db = TestHelper.localDb; // mongodb local connexion
-
+  final db = TestHelper.localDb;
   final interceptors = [
     loggingInterceptor,
     authInterceptor,

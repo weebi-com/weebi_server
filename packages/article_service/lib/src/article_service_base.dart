@@ -2,6 +2,7 @@ import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
+// import 'package:logging/logging.dart';
 
 abstract class _Helpers {
   static SelectorBuilder select(String firmId, CalibreRequest request) => where
@@ -67,6 +68,7 @@ class ArticleService extends ArticleServiceBase {
       if (snapshot != null) {
         throw GrpcError.alreadyExists();
       }
+
       final calibreMongo = CalibreMongo.create()
         ..calibre = request.calibre
         ..creationDate = request.calibre.creationDate
@@ -228,7 +230,7 @@ class ArticleService extends ArticleServiceBase {
 
   @override
   Future<CalibrePb> readOne(
-      ServiceCall call, FindCalibreRequest request) async {
+      ServiceCall? call, FindCalibreRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -243,8 +245,10 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     try {
-      final selector =
-          where.eq('chainId', request.chainId).eq('title', request.title);
+      final selector = where
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId)
+          .eq('calibre.title', request.title);
       final calibre = await collectionArticle.findOne(selector);
       if (calibre != null) {
         final calibreMongo = CalibreMongo.create()
