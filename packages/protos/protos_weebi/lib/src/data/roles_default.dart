@@ -36,7 +36,6 @@ abstract class RightsAdmin {
     canPurchase: true,
     canImportTickets: true,
     canUpdateContactBalanceOffline: true,
-    canUpdateTicketContactInfo: true,
   );
 }
 

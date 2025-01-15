@@ -115,7 +115,6 @@ message BoolRights {
   bool canImportTickets = 9 [json_name = 'canImportTickets'];
   bool canSellOutOfCatalog = 10 [json_name = 'canSellOutOfCatalog'];
   bool canUpdateContactBalanceOffline = 11 [json_name = 'canUpdateContactBalanceOffline'];
-  bool canUpdateTicketContactInfo = 12 [json_name = 'canUpdateTicketContactInfo'];
 }
 
 /// all users need to belong at least to a chain to see articles and contact

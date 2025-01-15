@@ -182,6 +182,7 @@ class UserPrivate extends $pb.GeneratedMessage {
     $18.Timestamp? lastSignIn,
     $core.String? lastUpdatedByuserId,
     $18.Timestamp? lastUpdateTimestampUTC,
+    $18.Timestamp? creationDateUTC,
     $core.Map<$core.String, $core.String>? othersAttributes,
   }) {
     final $result = create();
@@ -218,6 +219,9 @@ class UserPrivate extends $pb.GeneratedMessage {
     if (lastUpdateTimestampUTC != null) {
       $result.lastUpdateTimestampUTC = lastUpdateTimestampUTC;
     }
+    if (creationDateUTC != null) {
+      $result.creationDateUTC = creationDateUTC;
+    }
     if (othersAttributes != null) {
       $result.othersAttributes.addAll(othersAttributes);
     }
@@ -239,6 +243,7 @@ class UserPrivate extends $pb.GeneratedMessage {
     ..aOM<$18.Timestamp>(9, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $18.Timestamp.create)
     ..aOS(10, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
     ..aOM<$18.Timestamp>(11, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$18.Timestamp>(12, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $18.Timestamp.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'UserPrivate.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
@@ -372,8 +377,19 @@ class UserPrivate extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   $18.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(10);
 
+  @$pb.TagNumber(12)
+  $18.Timestamp get creationDateUTC => $_getN(11);
+  @$pb.TagNumber(12)
+  set creationDateUTC($18.Timestamp v) { setField(12, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasCreationDateUTC() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearCreationDateUTC() => clearField(12);
+  @$pb.TagNumber(12)
+  $18.Timestamp ensureCreationDateUTC() => $_ensure(11);
+
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(11);
+  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(12);
 }
 
 class SignUpRequest extends $pb.GeneratedMessage {
