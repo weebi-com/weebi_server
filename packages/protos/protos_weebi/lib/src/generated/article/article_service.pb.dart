@@ -23,6 +23,7 @@ class FindCalibreRequest extends $pb.GeneratedMessage {
   factory FindCalibreRequest({
     $core.String? chainId,
     $core.String? title,
+    $core.int? calibreId,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -30,6 +31,9 @@ class FindCalibreRequest extends $pb.GeneratedMessage {
     }
     if (title != null) {
       $result.title = title;
+    }
+    if (calibreId != null) {
+      $result.calibreId = calibreId;
     }
     return $result;
   }
@@ -40,6 +44,7 @@ class FindCalibreRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FindCalibreRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(2, _omitFieldNames ? '' : 'title')
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
     ..hasRequiredFields = false
   ;
 
@@ -81,6 +86,15 @@ class FindCalibreRequest extends $pb.GeneratedMessage {
   $core.bool hasTitle() => $_has(1);
   @$pb.TagNumber(2)
   void clearTitle() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get calibreId => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set calibreId($core.int v) { $_setSignedInt32(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasCalibreId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearCalibreId() => clearField(3);
 }
 
 class ReadAllRequest extends $pb.GeneratedMessage {

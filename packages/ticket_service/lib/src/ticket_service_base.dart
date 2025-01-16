@@ -174,16 +174,16 @@ class TicketService extends TicketServiceBase {
         .eq('firmId', userPermission.firmId)
         .eq('chainId', request.ticketChainId);
     if (request.ticketBoutiqueId.isNotEmpty) {
-      selector.and(where.eq('boutiqueId', request.ticketBoutiqueId));
+      selector.eq('boutiqueId', request.ticketBoutiqueId);
     }
     if (request.nonUniqueId != 0) {
-      selector.and(where.eq('nonUniqueId', request.nonUniqueId));
+      selector.eq('nonUniqueId', request.nonUniqueId);
     }
     if (request.ticketUserId.isNotEmpty) {
-      selector.and(where.eq('userId', request.ticketUserId));
+      selector.eq('userId', request.ticketUserId);
     }
     if (request.creationDate.isNotEmpty) {
-      selector.and(where.eq('creationDate', request.creationDate));
+      selector.eq('creationDate', request.creationDate);
     }
     try {
       final ticket = await collection.findOne(selector);

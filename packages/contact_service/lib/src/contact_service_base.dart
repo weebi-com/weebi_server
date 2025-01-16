@@ -195,10 +195,12 @@ class ContactService extends ContactServiceBase {
           'user does not have right to read contacts');
     }
     try {
-      var selector = SelectorBuilder();
+      final selector = SelectorBuilder()
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId);
       if (request.lastFetchTimestampUTC.hasSeconds()) {
-        selector = where.gte('lastTouchTimestampUTC.seconds',
-            request.lastFetchTimestampUTC.seconds);
+        selector.and(where.gte('lastTouchTimestampUTC.seconds',
+            request.lastFetchTimestampUTC.seconds));
       }
       final list = await collection.find(selector).toList();
       if (list.isEmpty) {
@@ -241,12 +243,43 @@ class ContactService extends ContactServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read contact');
     }
-    // TODO: search by firstName/LastName etc
     try {
       final selector = where
+          .eq('firmId', userPermission.firmId)
           .eq('chainId', request.contactChainId)
           .eq('contactId', request.contactId);
       // TOBE completed with firstname, lastname and all that jazz
+      if (request.lastName.isNotEmpty) {
+        selector.eq('contact.lastName', request.lastName);
+      }
+      if (request.firstName.isNotEmpty) {
+        selector.eq('contact.firstName', request.firstName);
+      }
+      if (request.mail.isNotEmpty) {
+        selector.eq('contact.mail', request.mail);
+      }
+      if (request.phone.toString().isNotEmpty) {
+        selector.eq('contact.phone.number', request.phone.number);
+        if (request.phone.countryCode != 0) {
+          selector.eq('contact.phone.countryCode', request.phone.countryCode);
+        }
+      }
+      if (request.address.toString().isNotEmpty) {
+        if (request.address.street.isNotEmpty) {
+          selector.eq('request.address.street', request.address.street);
+        }
+        if (request.address.city.isNotEmpty) {
+          selector.eq('request.address.city', request.address.city);
+        }
+        if (request.address.code.isNotEmpty) {
+          selector.eq('request.address.code', request.address.code);
+        }
+        if (request.address.country.code2Letters.isNotEmpty) {
+          selector.eq('request.address.country.code2Letters',
+              request.address.country.code2Letters);
+        }
+      }
+
       final contact = await collection.findOne(selector);
       if (contact != null) {
         final contactMongo = ContactMongo.create()

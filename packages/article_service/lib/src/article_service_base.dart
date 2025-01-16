@@ -202,10 +202,12 @@ class ArticleService extends ArticleServiceBase {
     //
 
     try {
-      var selector = SelectorBuilder();
+      final selector = SelectorBuilder()
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId);
       if (request.lastFetchTimestampUTC.hasSeconds()) {
-        selector = where.gte('lastTouchTimestampUTC.seconds',
-            request.lastFetchTimestampUTC.seconds);
+        selector.and(where.gte('lastTouchTimestampUTC.seconds',
+            request.lastFetchTimestampUTC.seconds));
       }
       final list = await collectionArticle.find(selector).toList();
       if (list.isEmpty) {
@@ -244,11 +246,18 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+
+    // TODO: search by calibreId
     try {
       final selector = where
           .eq('firmId', userPermission.firmId)
-          .eq('chainId', request.chainId)
-          .eq('calibre.title', request.title);
+          .eq('chainId', request.chainId);
+      if (request.calibreId != 0) {
+        selector.eq('calibreId', request.calibreId);
+      }
+      if (request.title.isNotEmpty) {
+        selector.eq('calibre.title', request.title);
+      }
       final calibre = await collectionArticle.findOne(selector);
       if (calibre != null) {
         final calibreMongo = CalibreMongo.create()
@@ -418,7 +427,10 @@ class ArticleService extends ArticleServiceBase {
     }
     //
     try {
-      final list = await collectionCategory.find().toList();
+      final selector = SelectorBuilder()
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId);
+      final list = await collectionCategory.find(selector).toList();
       final categories = <CategoryPb>[];
       for (final e in list) {
         final categoryMongo = CategoryMongo.create()
@@ -454,8 +466,10 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     try {
-      final selector =
-          where.eq('chainId', request.chainId).eq('title', request.title);
+      final selector = SelectorBuilder()
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId)
+          .eq('title', request.title);
       final category = await collectionCategory.findOne(selector);
       if (category != null) {
         final categoryMongo = CategoryMongo.create()
@@ -727,10 +741,12 @@ class ArticleService extends ArticleServiceBase {
     //
 
     try {
-      var selector = SelectorBuilder();
+      final selector = SelectorBuilder()
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId);
       if (request.lastFetchTimestampUTC.hasSeconds()) {
-        selector = where.gte('lastTouchTimestampUTC.seconds',
-            request.lastFetchTimestampUTC.seconds);
+        selector.and(where.gte('lastTouchTimestampUTC.seconds',
+            request.lastFetchTimestampUTC.seconds));
       }
       final list = await collectionPhoto.find(selector).toList();
       if (list.isEmpty) {
@@ -771,6 +787,7 @@ class ArticleService extends ArticleServiceBase {
     }
     try {
       final selector = where
+          .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId)
           .eq('calibreId', request.calibreId);
       final photoMap = await collectionPhoto.findOne(selector);
