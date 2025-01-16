@@ -16,15 +16,16 @@ mongosh
 # running server
 ## macos
 ``` shell
-cd packages/server
+cd apps/server
 export MONGO_DB_URI=mongodb://localhost:27017/local
-dart bin/main.dart
+dart bin/server.dart
 ```
 
 ## windows
 ``` shell
+cd apps/server
 $Env:MONGO_DB_URI="mongodb://localhost:27017/local"
-dart bin/main.dart
+dart bin/server.dart
 ```
 
 The term 'KEY="hello"' is not recognized as the name of a cmdlet,
@@ -37,14 +38,5 @@ Select Start > Settings > Network & internet > Wi-Fi and then select the Wi-Fi n
 Under Properties, look for your IP address listed next to IPv4 address
 ex : 192.168.43.250
 use same port (8080)
-
-
-# dummy data
-// no longer used in unit test since mongodb handles _id
-firmId = 665e12f798357783e8000000
-chainId = 665e12f798357783e8000001
-boutiqueId = 665e12f798357783e8000002
-userId = chainId = 665e12f798357783e8000008
-
 
 https://github.com/fullstorydev/grpcurl

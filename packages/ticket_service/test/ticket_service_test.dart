@@ -16,7 +16,7 @@ void main() async {
   late Counterfoil counterfoilDummy;
   final ticketDummy = TicketPb.create()
     ..mergeFromProto3Json(
-      TicketWeebi.dummySell.toMap(),
+      TicketWeebi.dummySell.toMap(isProto: true),
       ignoreUnknownFields: true,
     );
 
@@ -79,7 +79,7 @@ void main() async {
     );
     final ticketLili = TicketPb.create()
       ..mergeFromProto3Json(
-        lili.toMap(),
+        lili.toMap(isProto: true),
         ignoreUnknownFields: true,
       );
     ticketLili.counterfoil = counterfoilDummy;

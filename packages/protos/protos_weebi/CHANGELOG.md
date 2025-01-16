@@ -1,3 +1,7 @@
+## 1.0.8 - 2025/01/14
+
+- added in permission bool rights - canUpdateTicketContactInfo
+
 ## 1.0.7+5 - 2025/01/04
 
 - added : contact.isClient & contact.isSupplier

@@ -26,31 +26,32 @@ abstract class Dummy {
   );
 
   static final boutique = boutiqueNoId
-    ..boutiqueId = '665e12f798357783e8000002'
+    ..boutiqueId = '123456789'
     ..firmId = firm.firmId
     ..chainId = chain.chainId;
 
+  static final hardwareInfo = HardwareInfo.create()
+    ..name = 'dummy device'
+    ..serialNumber = 'unique';
+
   static final device = Device()
-    ..chainId = '665e12f798357783e8000001'
-    ..boutiqueId = '665e12f798357783e8000002'
-    ..deviceId = '665e12f798357783e8000009'
-    ..hardwareInfo.name = 'dummy device'
-    ..hardwareInfo.serialNumber = 'unique';
+    ..chainId = '123456789'
+    ..boutiqueId = '123456789'
+    ..deviceId = '665e12f798357783e8000009';
 
   static final deviceNoId = Device()
     ..chainId = chain.chainId
     ..boutiqueId = boutique.boutiqueId
-    ..hardwareInfo.name = 'dummy device'
-    ..hardwareInfo.serialNumber = 'unique';
+    ..hardwareInfo = hardwareInfo;
 
   static final chainNoId = Chain(
     boutiques: <BoutiqueMongo>[Dummy.boutiqueNoId],
   );
   static final chain = chainNoId
-    ..chainId = '665e12f798357783e8000001'
+    ..chainId = '123456789'
     ..firmId = '123456789'
-    ..boutiques.first.boutiqueId = '665e12f798357783e8000002'
-    ..boutiques.first.chainId = '665e12f798357783e8000001'
+    ..boutiques.first.boutiqueId = '123456789'
+    ..boutiques.first.chainId = '123456789'
     ..boutiques.first.firmId = '123456789';
 
   static final firmNoId = Firm(

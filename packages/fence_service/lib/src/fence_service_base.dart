@@ -1211,12 +1211,14 @@ class FenceService extends FenceServiceBase {
       final permissions = UserPermissions(
           userId: userId, firmRights: FirmRights(rights: [Right.create]));
       final userPrivate = UserPrivate(
-          userId: userId,
-          permissions: permissions,
-          passwordEncrypted: mailAndEncyptedPassword.passwordEncrypted,
-          mail: request.mail,
-          firstname: request.firstname,
-          lastname: request.lastname);
+        userId: userId,
+        permissions: permissions,
+        passwordEncrypted: mailAndEncyptedPassword.passwordEncrypted,
+        mail: request.mail,
+        firstname: request.firstname,
+        lastname: request.lastname,
+        creationDateUTC: DateTime.now().toUtc().timestampProto,
+      );
 
       final result = await userCollection
           .insertOne(userPrivate.toProto3Json() as Map<String, dynamic>);
