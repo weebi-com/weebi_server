@@ -199,6 +199,10 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.double? discountAmount,
     $core.String? comment,
     $core.String? creationDate,
+    $core.String? contactFirstName,
+    $core.String? contactLastName,
+    $core.String? contactPhone,
+    $core.String? contactMail,
   }) {
     final $result = create();
     if (nonUniqueId != null) {
@@ -246,6 +250,18 @@ class TicketPb extends $pb.GeneratedMessage {
     if (creationDate != null) {
       $result.creationDate = creationDate;
     }
+    if (contactFirstName != null) {
+      $result.contactFirstName = contactFirstName;
+    }
+    if (contactLastName != null) {
+      $result.contactLastName = contactLastName;
+    }
+    if (contactPhone != null) {
+      $result.contactPhone = contactPhone;
+    }
+    if (contactMail != null) {
+      $result.contactMail = contactMail;
+    }
     return $result;
   }
   TicketPb._() : super();
@@ -268,6 +284,10 @@ class TicketPb extends $pb.GeneratedMessage {
     ..a<$core.double>(13, _omitFieldNames ? '' : 'discountAmount', $pb.PbFieldType.OD, protoName: 'discountAmount')
     ..aOS(14, _omitFieldNames ? '' : 'comment')
     ..aOS(15, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
+    ..aOS(16, _omitFieldNames ? '' : 'contactFirstName', protoName: 'contactFirstName')
+    ..aOS(17, _omitFieldNames ? '' : 'contactLastName', protoName: 'contactLastName')
+    ..aOS(18, _omitFieldNames ? '' : 'contactPhone', protoName: 'contactPhone')
+    ..aOS(19, _omitFieldNames ? '' : 'contactMail', protoName: 'contactMail')
     ..hasRequiredFields = false
   ;
 
@@ -429,6 +449,43 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.bool hasCreationDate() => $_has(14);
   @$pb.TagNumber(15)
   void clearCreationDate() => clearField(15);
+
+  /// complementary contact fields that need to be stored on ticket in case contacts change
+  @$pb.TagNumber(16)
+  $core.String get contactFirstName => $_getSZ(15);
+  @$pb.TagNumber(16)
+  set contactFirstName($core.String v) { $_setString(15, v); }
+  @$pb.TagNumber(16)
+  $core.bool hasContactFirstName() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearContactFirstName() => clearField(16);
+
+  @$pb.TagNumber(17)
+  $core.String get contactLastName => $_getSZ(16);
+  @$pb.TagNumber(17)
+  set contactLastName($core.String v) { $_setString(16, v); }
+  @$pb.TagNumber(17)
+  $core.bool hasContactLastName() => $_has(16);
+  @$pb.TagNumber(17)
+  void clearContactLastName() => clearField(17);
+
+  @$pb.TagNumber(18)
+  $core.String get contactPhone => $_getSZ(17);
+  @$pb.TagNumber(18)
+  set contactPhone($core.String v) { $_setString(17, v); }
+  @$pb.TagNumber(18)
+  $core.bool hasContactPhone() => $_has(17);
+  @$pb.TagNumber(18)
+  void clearContactPhone() => clearField(18);
+
+  @$pb.TagNumber(19)
+  $core.String get contactMail => $_getSZ(18);
+  @$pb.TagNumber(19)
+  set contactMail($core.String v) { $_setString(18, v); }
+  @$pb.TagNumber(19)
+  $core.bool hasContactMail() => $_has(18);
+  @$pb.TagNumber(19)
+  void clearContactMail() => clearField(19);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {

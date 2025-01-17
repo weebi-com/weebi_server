@@ -1,3 +1,8 @@
+## 1.0.9 - 2025/01/17
+
+- ticket.proto added contactInfo on ticket 
+- article_service.proto added calibreId in FindCalibreRequest
+
 ## 1.0.8 - 2025/01/14
 
 - added in permission bool rights - canUpdateTicketContactInfo
