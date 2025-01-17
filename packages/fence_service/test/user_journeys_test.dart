@@ -7,6 +7,8 @@ import 'package:test/test.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
+import 'service_call_impl.dart';
+
 void main() async {
   final db = TestHelper.localDb;
   final connection = Connection(ConnectionManager(db));

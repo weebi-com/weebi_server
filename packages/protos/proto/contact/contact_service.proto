@@ -15,6 +15,7 @@ service ContactService {
   rpc createOne (ContactRequest) returns (google.retail.common.StatusResponse);
   rpc createMany (ContactsRequest) returns (google.retail.common.StatusResponse);
   
+  /// upsert
   rpc updateOne (ContactRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOne (ContactRequest) returns (google.retail.common.StatusResponse);
 }

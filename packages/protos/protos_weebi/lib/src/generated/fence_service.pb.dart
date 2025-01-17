@@ -21,6 +21,71 @@ import 'device.pb.dart' as $12;
 import 'user.pb.dart' as $8;
 import 'user_permissions.pb.dart' as $22;
 
+/// /
+class ChainRequest extends $pb.GeneratedMessage {
+  factory ChainRequest({
+    $core.String? chainId,
+    $core.String? name,
+  }) {
+    final $result = create();
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    if (name != null) {
+      $result.name = name;
+    }
+    return $result;
+  }
+  ChainRequest._() : super();
+  factory ChainRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ChainRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChainRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ChainRequest clone() => ChainRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ChainRequest copyWith(void Function(ChainRequest) updates) => super.copyWith((message) => updates(message as ChainRequest)) as ChainRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ChainRequest create() => ChainRequest._();
+  ChainRequest createEmptyInstance() => create();
+  static $pb.PbList<ChainRequest> createRepeated() => $pb.PbList<ChainRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ChainRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ChainRequest>(create);
+  static ChainRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => clearField(2);
+}
+
 /// / one boutique creation the server will assign the boutiqueId
 class BoutiqueRequest extends $pb.GeneratedMessage {
   factory BoutiqueRequest({

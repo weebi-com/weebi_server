@@ -10,10 +10,14 @@ import "common/g_common.proto";
 import "common/g_timestamp.proto";
 
 service ArticleService {
+
+  // calibres contain articles
   rpc createOne (CalibreRequest) returns (google.retail.common.StatusResponse);
   rpc createMany (CalibresRequest) returns (google.retail.common.StatusResponse);
   rpc readOne (FindCalibreRequest) returns (weebi.article.CalibrePb);
   rpc readAll (ReadAllRequest) returns  (CalibresResponse);
+  
+  /// upsert works with replaceOne upsert true
   rpc updateOne (CalibreRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOne (CalibreRequest) returns (google.retail.common.StatusResponse);
   
@@ -21,6 +25,8 @@ service ArticleService {
   rpc createOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
   rpc readOneCategory (FindCategoryRequest) returns (weebi.category.CategoryPb);
   rpc readAllCategories (ReadCategoriesRequest) returns  (CategoriesResponse);
+  
+  /// upsert works with replaceOne upsert true
   rpc updateOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
   
@@ -28,6 +34,8 @@ service ArticleService {
   rpc createManyPhotos (PhotosRequest) returns (google.retail.common.StatusResponse);
   rpc readOnePhoto (FindPhotoRequest) returns (weebi.photo.ArticlePhotoPb);
   rpc readAllPhotos (ReadPhotosRequest) returns  (PhotosResponse);
+  
+  /// upsert
   rpc updateOnePhoto (PhotoRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOnePhoto (PhotoRequest) returns (google.retail.common.StatusResponse);
 

@@ -43,17 +43,22 @@ service FenceService {
   
   /// Presumably, until 2030 firms will have max 9 users, why bother filter ?
   rpc readAllUsers(weebi.common.empty.Empty) returns (UsersPublic);
+  
+  // real update, not an upsert, does nothing if user not found
   rpc updateOneUser(weebi.user.UserPublic) returns (google.retail.common.StatusResponse);
   rpc updateUserPassword(PasswordUpdateRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneUser(UserId) returns (google.retail.common.StatusResponse);
   
   rpc createOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
   rpc readAllChains(weebi.common.empty.Empty) returns (ReadAllChainsResponse);
-  rpc updateOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
-  rpc deleteOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
+  // only update fiels not boutiques, not upsert, do nothing if unfound
+  rpc updateOneChain(ChainRequest) returns (google.retail.common.StatusResponse);
+  rpc deleteOneChain(ChainRequest) returns (google.retail.common.StatusResponse);
   
+
   rpc createOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   rpc readOneBoutique(BoutiqueRequest) returns (BoutiqueResponse);
+  /// real update, not upsert, do nothing if unfound
   rpc updateOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   // readBoutiques is not relevant since they are provided in readAllChains
@@ -76,6 +81,13 @@ service FenceService {
   rpc updateDevicePassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
   /// weak auth hack to ease app access to cashiers with very low rights
+}
+
+
+/// 
+message ChainRequest {
+  string chainId = 1 ;
+  string name = 2;
 }
 
 /// one boutique creation the server will assign the boutiqueId
