@@ -18,6 +18,7 @@ dart pub global activate protoc_plugin
 find a way to learn how to go back to line with linux file format
 
 export PATH="$PATH:$HOME/.pub-cache/bin"
+cd packages/protos
 sh protos_weebi/tool/generate_protos.sh
 
 ***

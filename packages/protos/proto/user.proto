@@ -39,7 +39,8 @@ message UserPrivate {
   google.protobuf.Timestamp lastSignIn = 9 [json_name = 'lastSignIn'];
   string lastUpdatedByuserId = 10 [json_name = 'lastUpdatedByuserId'];
   google.protobuf.Timestamp lastUpdateTimestampUTC = 11 [json_name = 'lastUpdateTimestampUTC'];
-  reserved 12 to 98;
+  google.protobuf.Timestamp creationDateUTC = 12 [json_name = 'creationDateUTC'];
+  reserved 13 to 98;
   map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
 }
 

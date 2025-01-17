@@ -57,9 +57,11 @@ void main() {
     expect(codeResponse.code != 0, isTrue);
     // print('codeResponse.code ${codeResponse.code}');
 
+    final hardwareInfo = HardwareInfo.create()
+      ..name = 'testDevice'
+      ..baseOS = 'testOS';
     final pendingDevice = PendingDeviceRequest(
-        code: codeResponse.code,
-        hardwareInfo: HardwareInfo(name: 'testDevice', baseOS: 'testOS'));
+        code: codeResponse.code, hardwareInfo: hardwareInfo);
     final createPendingDeviceStatusResponse = await fenceService.createDevice(
         ServiceCallTest('', path: 'createDevice'), pendingDevice);
     expect(createPendingDeviceStatusResponse.statusResponse.type,

@@ -37,6 +37,7 @@ service ArticleService {
 message FindCalibreRequest {
   string chainId = 1;
   string title = 2 ;
+  int32 calibreId = 3 ;
 }
 
 message ReadAllRequest {

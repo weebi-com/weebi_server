@@ -17,6 +17,7 @@ import 'package:fence_service/weebi_app_service.dart';
 
 import '../constants/app_environment.dart';
 
+// TODO: in a production environment, it’s generally not recommended to use * due to security concern
 FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
   call.headers!.addAll({
     HttpHeaders.accessControlAllowOriginHeader: '*',
@@ -37,45 +38,37 @@ FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
 void main(List<String> arguments) async {
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((LogRecord rec) {
-    log(
-      '${rec.loggerName}: ${rec.level.name}: ${rec.time}: ${rec.message}',
-    );
+    log('${rec.loggerName}: ${rec.level.name}: ${rec.time}: ${rec.message}');
   });
 
-  // also possible here to read data from file.txt/csv/json to populate data
-
-  final db = await Db.create(AppEnvironment.mongoDbUri);
-
-/*   final connection = Connection(ConnectionManager(db), ServerConfig());
   try {
-    await connection.connect();
+    final db = await Db.create(AppEnvironment.mongoDbUri);
+    await db.open();
+    final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
+
+    final articleService = ArticleService(db);
+    final contactService = ContactService(db);
+    final ticketService = TicketService(db);
+    final fenceService = FenceService(db);
+    final weebiAppService = WeebiAppService(db);
+
+    final server = Server.create(
+      services: [
+        articleService,
+        contactService,
+        ticketService,
+        fenceService,
+        weebiAppService
+      ],
+      interceptors: interceptors,
+    );
+
+    final ip = InternetAddress.anyIPv4;
+
+    await server.serve(port: AppEnvironment.port, address: ip);
+
+    print('Server running on ip $ip port ${server.port}');
   } catch (e) {
-    print(e);
-    rethrow;
-  } */
-
-  final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
-
-  final articleService = ArticleService(db);
-  final contactService = ContactService(db);
-  final ticketService = TicketService(db);
-  final fenceService = FenceService(db);
-  final weebiAppService = WeebiAppService(db);
-
-  final server = Server.create(
-    services: [
-      articleService,
-      contactService,
-      ticketService,
-      fenceService,
-      weebiAppService
-    ],
-    interceptors: interceptors,
-  );
-
-  final ip = InternetAddress.anyIPv4;
-
-  await server.serve(port: AppEnvironment.port, address: ip);
-
-  print('Server running on ip $ip port ${server.port}');
+    log('Failed to connect to MongoDB: $e');
+  }
 }

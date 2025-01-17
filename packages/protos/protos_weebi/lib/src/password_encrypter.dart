@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
-// TODO : make this a bit more robust with some salt or whatever
+// tooLate to make this more robust with some salt, nevermind
 class Encrypter {
   final String password;
   const Encrypter(this.password);
