@@ -1,10 +1,10 @@
-## 1.0.9+3 - 2025/01/17
+## 1.0.9+4 - 2025/01/17
 
 - ticket.proto added contactInfo on ticket 
 - article_service.proto added calibreId in FindCalibreRequest
-- export grpc web
 - clearer chain services using ChainRequest 
 - move ServiceCallTest out of protos to avoid errors on web
+- do not export grpc web
 
 ## 1.0.8 - 2025/01/14
 
