@@ -24,11 +24,16 @@ message FindContactRequest {
   // string firmId = 1 [json_name = 'firmId']; // deduced from bearer token
   string contactChainId = 1 [json_name = 'contactChainId'];
   int32 contactId = 3 [json_name = 'contactId'];
-  optional string firstName =  4 [json_name = 'firstName'];
-  optional string lastName =  5 [json_name = 'lastName'];
-  optional string mail =  6 [json_name = 'mail'];
-  optional weebi.common.phone.Phone phone =  7 [json_name = 'phone'];
-  optional weebi.common.address.Address address = 8 [json_name = 'addressFull'];
+  // optional
+  string firstName =  4 [json_name = 'firstName'];
+  // optional
+  string lastName =  5 [json_name = 'lastName'];
+  // optional
+  string mail =  6 [json_name = 'mail'];
+  // optional
+  weebi.common.phone.Phone phone =  7 [json_name = 'phone'];
+  // optional
+  weebi.common.address.Address address = 8 [json_name = 'addressFull'];
   // will add contact created by userId someday
   // until them below is confusing 
   //  string contactUserId = 2 [json_name = 'contactUserId'];
