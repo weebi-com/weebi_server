@@ -7,6 +7,14 @@ import 'package:protos_weebi/src/password_encrypter.dart';
 /// since the _ids logic is no longer handled by mongodb, some of below could be simplified..
 
 abstract class Dummy {
+  static final articleRetail = ArticleRetailPb.create()
+    ..id = 1
+    ..designation = 'test'
+    ..price = 10.0
+    ..calibreId = 1;
+  static final calibre =
+      CalibrePb(id: 1, title: 'test', articlesRetail: [articleRetail]);
+
   static final password = Encrypter('1234').encrypted;
 
   static final address = Address.create()

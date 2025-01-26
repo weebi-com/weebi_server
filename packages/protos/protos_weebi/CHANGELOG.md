@@ -1,3 +1,7 @@
+## 1.0.9+4 - 2025/01/26
+
+- provide a way to compare a list of pairs of proto objects to help reconciliation in app
+
 ## 1.0.9+3 - 2025/01/17
 
 - ticket.proto added contactInfo on ticket 
