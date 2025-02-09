@@ -1,2 +1,3 @@
 export 'package:grpc/grpc.dart';
-export 'package:grpc/grpc_web.dart';
+// ! do not export grpc_web because incompatible with app
+// export 'package:grpc/grpc_web.dart';
