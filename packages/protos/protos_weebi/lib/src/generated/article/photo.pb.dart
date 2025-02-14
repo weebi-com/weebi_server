@@ -14,6 +14,9 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../common/g_timestamp.pb.dart' as $18;
+import 'photo.pbenum.dart';
+
+export 'photo.pbenum.dart';
 
 class ArticlePhotoMongo extends $pb.GeneratedMessage {
   factory ArticlePhotoMongo({
@@ -144,6 +147,7 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
     $core.int? calibreId,
     $core.int? id,
     $core.List<$core.int>? data,
+    ArticlePhotoPb_ExtensionPb? extension_4,
   }) {
     final $result = create();
     if (calibreId != null) {
@@ -155,6 +159,9 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
     if (data != null) {
       $result.data = data;
     }
+    if (extension_4 != null) {
+      $result.extension_4 = extension_4;
+    }
     return $result;
   }
   ArticlePhotoPb._() : super();
@@ -165,6 +172,7 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
     ..a<$core.int>(1, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
     ..a<$core.int>(2, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'data', $pb.PbFieldType.OY)
+    ..e<ArticlePhotoPb_ExtensionPb>(4, _omitFieldNames ? '' : 'extension', $pb.PbFieldType.OE, defaultOrMaker: ArticlePhotoPb_ExtensionPb.unknown, valueOf: ArticlePhotoPb_ExtensionPb.valueOf, enumValues: ArticlePhotoPb_ExtensionPb.values)
     ..hasRequiredFields = false
   ;
 
@@ -215,6 +223,15 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
   $core.bool hasData() => $_has(2);
   @$pb.TagNumber(3)
   void clearData() => clearField(3);
+
+  @$pb.TagNumber(4)
+  ArticlePhotoPb_ExtensionPb get extension_4 => $_getN(3);
+  @$pb.TagNumber(4)
+  set extension_4(ArticlePhotoPb_ExtensionPb v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasExtension_4() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearExtension_4() => clearField(4);
 }
 
 

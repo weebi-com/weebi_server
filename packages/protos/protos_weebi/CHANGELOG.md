@@ -1,3 +1,7 @@
+## 1.0.9+7 - 2025/02/14
+
+- include enum extension in article photo
+
 ## 1.0.9+6 - 2025/01/26
 
 - provide a way to compare a list of pairs of proto objects to help reconciliation in app
