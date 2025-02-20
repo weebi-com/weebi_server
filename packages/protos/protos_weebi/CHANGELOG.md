@@ -1,3 +1,19 @@
+## 1.0.9+7 - 2025/02/14
+
+- include enum extension in article photo
+
+## 1.0.9+6 - 2025/01/26
+
+- provide a way to compare a list of pairs of proto objects to help reconciliation in app
+
+## 1.0.9+4 - 2025/01/17
+
+- ticket.proto added contactInfo on ticket 
+- article_service.proto added calibreId in FindCalibreRequest
+- export grpc web
+- clearer chain services using ChainRequest 
+- move ServiceCallTest out of protos to avoid errors on web
+
 ## 1.0.8 - 2025/01/14
 
 - added in permission bool rights - canUpdateTicketContactInfo

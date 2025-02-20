@@ -107,6 +107,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearContactId() => clearField(3);
 
+  /// optional
   @$pb.TagNumber(4)
   $core.String get firstName => $_getSZ(2);
   @$pb.TagNumber(4)
@@ -116,6 +117,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearFirstName() => clearField(4);
 
+  /// optional
   @$pb.TagNumber(5)
   $core.String get lastName => $_getSZ(3);
   @$pb.TagNumber(5)
@@ -125,6 +127,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearLastName() => clearField(5);
 
+  /// optional
   @$pb.TagNumber(6)
   $core.String get mail => $_getSZ(4);
   @$pb.TagNumber(6)
@@ -134,6 +137,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   void clearMail() => clearField(6);
 
+  /// optional
   @$pb.TagNumber(7)
   $19.Phone get phone => $_getN(5);
   @$pb.TagNumber(7)
@@ -145,6 +149,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $19.Phone ensurePhone() => $_ensure(5);
 
+  /// optional
   @$pb.TagNumber(8)
   $20.Address get address => $_getN(6);
   @$pb.TagNumber(8)

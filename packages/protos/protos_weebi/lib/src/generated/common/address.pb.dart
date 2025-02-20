@@ -118,6 +118,7 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $17.Country ensureCountry() => $_ensure(3);
 
+  /// optional
   @$pb.TagNumber(5)
   $core.double get latitude => $_getN(4);
   @$pb.TagNumber(5)
@@ -127,6 +128,7 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearLatitude() => clearField(5);
 
+  /// optional
   @$pb.TagNumber(6)
   $core.double get longitude => $_getN(5);
   @$pb.TagNumber(6)

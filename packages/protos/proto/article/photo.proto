@@ -14,7 +14,13 @@ message ArticlePhotoMongo {
 }
 
 message ArticlePhotoPb {
+  enum ExtensionPb {
+    unknown = 0;
+    png = 1 ;
+    jpeg = 2 ;
+    }
   int32 calibreId = 1;
   int32 id = 2;
   bytes data = 3;
+  ExtensionPb extension = 4;
 }

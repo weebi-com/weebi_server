@@ -75,8 +75,15 @@ const TicketPb$json = {
     {'1': 'discountAmount', '3': 13, '4': 1, '5': 1, '10': 'discountAmount'},
     {'1': 'comment', '3': 14, '4': 1, '5': 9, '10': 'comment'},
     {'1': 'creationDate', '3': 15, '4': 1, '5': 9, '10': 'creationDate'},
+    {'1': 'contactFirstName', '3': 16, '4': 1, '5': 9, '10': 'contactFirstName'},
+    {'1': 'contactLastName', '3': 17, '4': 1, '5': 9, '10': 'contactLastName'},
+    {'1': 'contactPhone', '3': 18, '4': 1, '5': 9, '10': 'contactPhone'},
+    {'1': 'contactMail', '3': 19, '4': 1, '5': 9, '10': 'contactMail'},
   ],
   '4': [TicketPb_PaymentTypePb$json],
+  '9': [
+    {'1': 20, '2': 99},
+  ],
 };
 
 @$core.Deprecated('Use ticketPbDescriptor instead')
@@ -105,9 +112,12 @@ final $typed_data.Uint8List ticketPbDescriptor = $convert.base64Decode(
     'IJY29udGFjdElkEicKBHRheGUYCiABKAsyEy53ZWViaS50aWNrZXQuVGF4UGJSBHRheGUSFAoF'
     'cHJvbW8YCyABKAFSBXByb21vEhoKCHJlY2VpdmVkGAwgASgBUghyZWNlaXZlZBImCg5kaXNjb3'
     'VudEFtb3VudBgNIAEoAVIOZGlzY291bnRBbW91bnQSGAoHY29tbWVudBgOIAEoCVIHY29tbWVu'
-    'dBIiCgxjcmVhdGlvbkRhdGUYDyABKAlSDGNyZWF0aW9uRGF0ZSJoCg1QYXltZW50VHlwZVBiEg'
-    'sKB3Vua25vd24QABIICgRjYXNoEAESCAoEbm9wZRACEg8KC21vYmlsZU1vbmV5EAMSCgoGY2hl'
-    'cXVlEAQSDgoKY3JlZGl0Q2FyZBAFEgkKBWdvb2RzEAY=');
+    'dBIiCgxjcmVhdGlvbkRhdGUYDyABKAlSDGNyZWF0aW9uRGF0ZRIqChBjb250YWN0Rmlyc3ROYW'
+    '1lGBAgASgJUhBjb250YWN0Rmlyc3ROYW1lEigKD2NvbnRhY3RMYXN0TmFtZRgRIAEoCVIPY29u'
+    'dGFjdExhc3ROYW1lEiIKDGNvbnRhY3RQaG9uZRgSIAEoCVIMY29udGFjdFBob25lEiAKC2Nvbn'
+    'RhY3RNYWlsGBMgASgJUgtjb250YWN0TWFpbCJoCg1QYXltZW50VHlwZVBiEgsKB3Vua25vd24Q'
+    'ABIICgRjYXNoEAESCAoEbm9wZRACEg8KC21vYmlsZU1vbmV5EAMSCgoGY2hlcXVlEAQSDgoKY3'
+    'JlZGl0Q2FyZBAFEgkKBWdvb2RzEAZKBAgUEGM=');
 
 @$core.Deprecated('Use counterfoilDescriptor instead')
 const Counterfoil$json = {

@@ -56,6 +56,14 @@ message TicketPb {
   string comment = 14 [json_name = 'comment'];
   /// when the ticket was created
   string creationDate = 15 [json_name = 'creationDate'];
+
+  // complementary contact fields that need to be stored on ticket in case contacts change
+  string contactFirstName = 16 [json_name = 'contactFirstName'];
+  string contactLastName = 17 [json_name = 'contactLastName'];
+  string contactPhone = 18 [json_name = 'contactPhone'];
+  string contactMail = 19 [json_name = 'contactMail'];
+  reserved 20 to 98;
+
 }
 
 

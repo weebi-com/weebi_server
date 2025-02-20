@@ -13,6 +13,20 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use chainRequestDescriptor instead')
+const ChainRequest$json = {
+  '1': 'ChainRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+  ],
+};
+
+/// Descriptor for `ChainRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List chainRequestDescriptor = $convert.base64Decode(
+    'CgxDaGFpblJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBISCgRuYW1lGAIgASgJUg'
+    'RuYW1l');
+
 @$core.Deprecated('Use boutiqueRequestDescriptor instead')
 const BoutiqueRequest$json = {
   '1': 'BoutiqueRequest',
