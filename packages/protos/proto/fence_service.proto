@@ -95,11 +95,13 @@ message BoutiqueRequest {
   string chainId = 1 ;
   weebi.boutique.BoutiquePb boutique = 2;
   bytes logo = 3 ;
+  string logoExtension = 4;
 }
 /// one boutique creation the server will assign the boutiqueId
 message BoutiqueResponse {
   weebi.boutique.BoutiquePb boutique = 1;
   bytes logo = 2;
+  string logoExtension = 3;
 }
 
 

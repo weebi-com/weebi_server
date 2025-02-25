@@ -92,6 +92,7 @@ class BoutiqueRequest extends $pb.GeneratedMessage {
     $core.String? chainId,
     $21.BoutiquePb? boutique,
     $core.List<$core.int>? logo,
+    $core.String? logoExtension,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -103,6 +104,9 @@ class BoutiqueRequest extends $pb.GeneratedMessage {
     if (logo != null) {
       $result.logo = logo;
     }
+    if (logoExtension != null) {
+      $result.logoExtension = logoExtension;
+    }
     return $result;
   }
   BoutiqueRequest._() : super();
@@ -113,6 +117,7 @@ class BoutiqueRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOM<$21.BoutiquePb>(2, _omitFieldNames ? '' : 'boutique', subBuilder: $21.BoutiquePb.create)
     ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'logo', $pb.PbFieldType.OY)
+    ..aOS(4, _omitFieldNames ? '' : 'logoExtension', protoName: 'logoExtension')
     ..hasRequiredFields = false
   ;
 
@@ -165,6 +170,15 @@ class BoutiqueRequest extends $pb.GeneratedMessage {
   $core.bool hasLogo() => $_has(2);
   @$pb.TagNumber(3)
   void clearLogo() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get logoExtension => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set logoExtension($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasLogoExtension() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLogoExtension() => clearField(4);
 }
 
 /// / one boutique creation the server will assign the boutiqueId
@@ -172,6 +186,7 @@ class BoutiqueResponse extends $pb.GeneratedMessage {
   factory BoutiqueResponse({
     $21.BoutiquePb? boutique,
     $core.List<$core.int>? logo,
+    $core.String? logoExtension,
   }) {
     final $result = create();
     if (boutique != null) {
@@ -179,6 +194,9 @@ class BoutiqueResponse extends $pb.GeneratedMessage {
     }
     if (logo != null) {
       $result.logo = logo;
+    }
+    if (logoExtension != null) {
+      $result.logoExtension = logoExtension;
     }
     return $result;
   }
@@ -189,6 +207,7 @@ class BoutiqueResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOM<$21.BoutiquePb>(1, _omitFieldNames ? '' : 'boutique', subBuilder: $21.BoutiquePb.create)
     ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'logo', $pb.PbFieldType.OY)
+    ..aOS(3, _omitFieldNames ? '' : 'logoExtension', protoName: 'logoExtension')
     ..hasRequiredFields = false
   ;
 
@@ -232,6 +251,15 @@ class BoutiqueResponse extends $pb.GeneratedMessage {
   $core.bool hasLogo() => $_has(1);
   @$pb.TagNumber(2)
   void clearLogo() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get logoExtension => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set logoExtension($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasLogoExtension() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearLogoExtension() => clearField(3);
 }
 
 /// / deviceId == userId, so front can reuse deviceId to try login in

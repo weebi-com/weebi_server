@@ -8,11 +8,6 @@ import "device.proto";
 import "common/g_timestamp.proto";
 
 message BoutiqueMongo {
-    enum ExtensionPb {
-        unknown = 0;
-        png = 1 ;
-        jpeg = 2 ;
-        }
     BoutiquePb boutique = 1 [json_name = 'boutique']; 
     string boutiqueId = 2 [json_name = 'boutiqueId']; // assigned by the server
     string firmId = 3 [json_name = 'firmId'];
@@ -22,7 +17,8 @@ message BoutiqueMongo {
     repeated weebi.device.Device devices = 7 [json_name = 'devices'];
     google.protobuf.Timestamp lastTouchTimestampUTC =  8 [json_name = 'lastTouchTimestampUTC']; 
     bytes logo = 9 [json_name = 'logo'];
-    ExtensionPb logoExtension = 10;
+    /// extension here is a string, e.g. png or jpeg (!= enum in ArticlePhotoPb)
+    string logoExtension = 10;
     reserved 11 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
 }

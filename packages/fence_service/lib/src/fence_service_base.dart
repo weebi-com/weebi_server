@@ -939,7 +939,8 @@ class FenceService extends FenceServiceBase {
       ..name = request.boutique.name
       ..creationTimestampUTC = nowProtoUTC
       ..boutique = request.boutique
-      ..logo = request.logo;
+      ..logo = request.logo
+      ..logoExtension = request.logoExtension;
 
     chain.boutiques.add(boutiqueMongo);
 
@@ -1054,8 +1055,10 @@ class FenceService extends FenceServiceBase {
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('boutique not found');
     }
+
     chain.boutiques[boutiqueIndex].boutique = request.boutique;
     chain.boutiques[boutiqueIndex].logo = request.logo;
+    chain.boutiques[boutiqueIndex].logoExtension = request.logoExtension;
 
     return await _updateOneChainDBExec(chain);
   }
@@ -1635,7 +1638,9 @@ class FenceService extends FenceServiceBase {
     }
 
     return BoutiqueResponse(
-        boutique: chain.boutiques[boutiqueIndex].boutique,
-        logo: chain.boutiques[boutiqueIndex].logo);
+      boutique: chain.boutiques[boutiqueIndex].boutique,
+      logo: chain.boutiques[boutiqueIndex].logo,
+      logoExtension: chain.boutiques[boutiqueIndex].logoExtension,
+    );
   }
 }

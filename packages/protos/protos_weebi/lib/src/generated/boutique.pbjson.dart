@@ -26,11 +26,12 @@ const BoutiqueMongo$json = {
     {'1': 'devices', '3': 7, '4': 3, '5': 11, '6': '.weebi.device.Device', '10': 'devices'},
     {'1': 'lastTouchTimestampUTC', '3': 8, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
     {'1': 'logo', '3': 9, '4': 1, '5': 12, '10': 'logo'},
+    {'1': 'logoExtension', '3': 10, '4': 1, '5': 9, '10': 'logoExtension'},
     {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiqueMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
   '3': [BoutiqueMongo_AdditionalAttributesEntry$json],
   '9': [
-    {'1': 10, '2': 99},
+    {'1': 11, '2': 99},
   ],
 };
 
@@ -53,10 +54,11 @@ final $typed_data.Uint8List boutiqueMongoDescriptor = $convert.base64Decode(
     'aW1lc3RhbXBVVEMSEgoEbmFtZRgGIAEoCVIEbmFtZRIuCgdkZXZpY2VzGAcgAygLMhQud2VlYm'
     'kuZGV2aWNlLkRldmljZVIHZGV2aWNlcxJQChVsYXN0VG91Y2hUaW1lc3RhbXBVVEMYCCABKAsy'
     'Gi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUhVsYXN0VG91Y2hUaW1lc3RhbXBVVEMSEgoEbG'
-    '9nbxgJIAEoDFIEbG9nbxJtChVhZGRpdGlvbmFsX2F0dHJpYnV0ZXMYYyADKAsyNy53ZWViaS5i'
-    'b3V0aXF1ZS5Cb3V0aXF1ZU1vbmdvLkFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnlSFWFkZGl0aW'
-    '9uYWxfYXR0cmlidXRlcxpHChlBZGRpdGlvbmFsQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEo'
-    'CVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgKEGM=');
+    '9nbxgJIAEoDFIEbG9nbxIkCg1sb2dvRXh0ZW5zaW9uGAogASgJUg1sb2dvRXh0ZW5zaW9uEm0K'
+    'FWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI3LndlZWJpLmJvdXRpcXVlLkJvdXRpcXVlTW'
+    '9uZ28uQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb25hbF9hdHRyaWJ1dGVzGkcK'
+    'GUFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAi'
+    'ABKAlSBXZhbHVlOgI4AUoECAsQYw==');
 
 @$core.Deprecated('Use boutiquePbDescriptor instead')
 const BoutiquePb$json = {

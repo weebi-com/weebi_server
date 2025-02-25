@@ -1,7 +1,7 @@
-## 1.0.9+8 - 2025/02/25
+## 1.0.9+9 - 2025/02/25
 
 - include enum extension in article photo
-- include enum logo extension in boutique 
+- include enum logo extension in boutique and boutiqueResponse
 
 ## 1.0.9+6 - 2025/01/26
 
