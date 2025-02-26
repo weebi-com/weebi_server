@@ -1166,6 +1166,31 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
+  Future<IsOneDeviceInChainResponse> isOneDeviceInChain(
+      ServiceCall? call, ReadDevicesRequest request) async {
+    if (request.chainId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId cannot be empty');
+    }
+    final userPermissions = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    _db.isConnected ? null : await _db.open();
+    final chain =
+        await _checkOneChainAndProtoIt(userPermissions.firmId, request.chainId);
+
+    final devices = <Device>[];
+    for (final boutique in chain.boutiques) {
+      for (final device in boutique.devices) {
+        if (device.status) {
+          devices.add(device);
+        }
+      }
+    }
+    return IsOneDeviceInChainResponse(
+        isOneDevice: devices.isNotEmpty && devices.length > 1);
+  }
+
+  @override
   Future<Devices> readDevices(
       ServiceCall? call, ReadDevicesRequest request) async {
     if (request.chainId.isEmpty) {

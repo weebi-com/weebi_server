@@ -1,7 +1,8 @@
-## 1.0.9+9 - 2025/02/25
+## 1.0.9+10 - 2025/02/26
 
 - include enum extension in article photo
 - include enum logo extension in boutique and boutiqueResponse
+- fence_service_base new method isOneDeviceInChain
 
 ## 1.0.9+6 - 2025/01/26
 

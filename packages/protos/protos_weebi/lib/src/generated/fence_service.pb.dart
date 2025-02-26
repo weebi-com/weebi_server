@@ -579,6 +579,56 @@ class ReadDevicesRequest extends $pb.GeneratedMessage {
   void clearChainId() => clearField(1);
 }
 
+class IsOneDeviceInChainResponse extends $pb.GeneratedMessage {
+  factory IsOneDeviceInChainResponse({
+    $core.bool? isOneDevice,
+  }) {
+    final $result = create();
+    if (isOneDevice != null) {
+      $result.isOneDevice = isOneDevice;
+    }
+    return $result;
+  }
+  IsOneDeviceInChainResponse._() : super();
+  factory IsOneDeviceInChainResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory IsOneDeviceInChainResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'IsOneDeviceInChainResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'isOneDevice', protoName: 'isOneDevice')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  IsOneDeviceInChainResponse clone() => IsOneDeviceInChainResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  IsOneDeviceInChainResponse copyWith(void Function(IsOneDeviceInChainResponse) updates) => super.copyWith((message) => updates(message as IsOneDeviceInChainResponse)) as IsOneDeviceInChainResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static IsOneDeviceInChainResponse create() => IsOneDeviceInChainResponse._();
+  IsOneDeviceInChainResponse createEmptyInstance() => create();
+  static $pb.PbList<IsOneDeviceInChainResponse> createRepeated() => $pb.PbList<IsOneDeviceInChainResponse>();
+  @$core.pragma('dart2js:noInline')
+  static IsOneDeviceInChainResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<IsOneDeviceInChainResponse>(create);
+  static IsOneDeviceInChainResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get isOneDevice => $_getBF(0);
+  @$pb.TagNumber(1)
+  set isOneDevice($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasIsOneDevice() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearIsOneDevice() => clearField(1);
+}
+
 class ReadDeviceBtqRequest extends $pb.GeneratedMessage {
   factory ReadDeviceBtqRequest({
     $core.String? chainId,

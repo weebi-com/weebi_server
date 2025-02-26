@@ -63,7 +63,14 @@ service FenceService {
   rpc deleteOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   // readBoutiques is not relevant since they are provided in readAllChains
    
-  /// devices are sensitive
+  /// scans all firm's devices, disregarding user rights
+  /// used both in : 
+    /// weebi_app signups to REQUIRE that user pushes device data
+    /// weebi_app device linking to PREVENT user from pushing data, pulling only
+  // will be false by default, which is safer since it avoids corrupting data when linking new device that potentially weebi_app with different data
+  rpc isOneDeviceInChain(ReadDevicesRequest) returns (IsOneDeviceInChainResponse);
+  
+  /// return only device visible according to user rights
   rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
   /// device enrolment follows a different process than user enrolment
   /// generateCodeForPairingDevice is called by web app, it includes chainId and boutiqueId
@@ -132,6 +139,10 @@ message ReadAllChainsResponse {
 
 message ReadDevicesRequest {
   string chainId = 1;
+}
+
+message IsOneDeviceInChainResponse {
+  bool isOneDevice = 1;
 }
 
 message ReadDeviceBtqRequest {

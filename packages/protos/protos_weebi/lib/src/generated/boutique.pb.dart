@@ -189,6 +189,7 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   void clearLogo() => clearField(9);
 
+  /// / extension here is a string, e.g. png or jpeg (!= enum in ArticlePhotoPb)
   @$pb.TagNumber(10)
   $core.String get logoExtension => $_getSZ(9);
   @$pb.TagNumber(10)
