@@ -357,10 +357,14 @@ class ContactsRequest extends $pb.GeneratedMessage {
 class ContactsResponse extends $pb.GeneratedMessage {
   factory ContactsResponse({
     $core.Iterable<$7.ContactPb>? contacts,
+    $core.Iterable<$core.int>? ids,
   }) {
     final $result = create();
     if (contacts != null) {
       $result.contacts.addAll(contacts);
+    }
+    if (ids != null) {
+      $result.ids.addAll(ids);
     }
     return $result;
   }
@@ -370,6 +374,7 @@ class ContactsResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactsResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact.service'), createEmptyInstance: create)
     ..pc<$7.ContactPb>(1, _omitFieldNames ? '' : 'contacts', $pb.PbFieldType.PM, subBuilder: $7.ContactPb.create)
+    ..p<$core.int>(2, _omitFieldNames ? '' : 'ids', $pb.PbFieldType.KU3)
     ..hasRequiredFields = false
   ;
 
@@ -396,6 +401,9 @@ class ContactsResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<$7.ContactPb> get contacts => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.List<$core.int> get ids => $_getList(1);
 }
 
 

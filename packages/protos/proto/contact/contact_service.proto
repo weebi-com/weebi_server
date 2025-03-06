@@ -10,13 +10,17 @@ import "common/g_common.proto";
 import "common/g_timestamp.proto";
 
 service ContactService {
-  rpc readAll (ReadAllContactsRequest) returns  (ContactsResponse);
-  rpc readOne (FindContactRequest) returns (weebi.contact.ContactPb);
   rpc createOne (ContactRequest) returns (google.retail.common.StatusResponse);
   rpc createMany (ContactsRequest) returns (google.retail.common.StatusResponse);
-  
-  /// upsert
+ 
+  /// use [lastFetchTimestampUTC] to only read the latest changes since last fetch
+  rpc readAll (ReadAllContactsRequest) returns  (ContactsResponse);
+  rpc readOne (FindContactRequest) returns (weebi.contact.ContactPb);
+
+  /// == upsert
   rpc updateOne (ContactRequest) returns (google.retail.common.StatusResponse);
+  
+  /// hard delete
   rpc deleteOne (ContactRequest) returns (google.retail.common.StatusResponse);
 }
 
@@ -57,4 +61,8 @@ message ContactsRequest {
 
 message ContactsResponse {
   repeated weebi.contact.ContactPb contacts = 1;
+
+  /// only provided if the request contained lastFetchTimestamp, i.e. if device resync
+  /// include all ids so that offline device can delete objects removed by another user/device 
+  repeated uint32 ids = 2;
 }

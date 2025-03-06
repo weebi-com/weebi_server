@@ -84,11 +84,12 @@ const ContactsResponse$json = {
   '1': 'ContactsResponse',
   '2': [
     {'1': 'contacts', '3': 1, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contacts'},
+    {'1': 'ids', '3': 2, '4': 3, '5': 13, '10': 'ids'},
   ],
 };
 
 /// Descriptor for `ContactsResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactsResponseDescriptor = $convert.base64Decode(
     'ChBDb250YWN0c1Jlc3BvbnNlEjQKCGNvbnRhY3RzGAEgAygLMhgud2VlYmkuY29udGFjdC5Db2'
-    '50YWN0UGJSCGNvbnRhY3Rz');
+    '50YWN0UGJSCGNvbnRhY3RzEhAKA2lkcxgCIAMoDVIDaWRz');
 
