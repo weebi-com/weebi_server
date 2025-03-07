@@ -1186,8 +1186,7 @@ class FenceService extends FenceServiceBase {
         }
       }
     }
-    return IsOneDeviceInChainResponse(
-        isOneDevice: devices.isNotEmpty && devices.length > 1);
+    return IsOneDeviceInChainResponse(isOneDevice: devices.isNotEmpty);
   }
 
   @override
