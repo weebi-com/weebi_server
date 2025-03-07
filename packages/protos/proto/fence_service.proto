@@ -53,6 +53,7 @@ service FenceService {
   rpc readAllChains(weebi.common.empty.Empty) returns (ReadAllChainsResponse);
   // only update fiels not boutiques, not upsert, do nothing if unfound
   rpc updateOneChain(ChainRequest) returns (google.retail.common.StatusResponse);
+  /// hard/complete delete
   rpc deleteOneChain(ChainRequest) returns (google.retail.common.StatusResponse);
   
 
@@ -60,6 +61,8 @@ service FenceService {
   rpc readOneBoutique(BoutiqueRequest) returns (BoutiqueResponse);
   /// real update, not upsert, do nothing if unfound
   rpc updateOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
+  
+  /// hard/complete delete
   rpc deleteOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   // readBoutiques is not relevant since they are provided in readAllChains
    
@@ -86,6 +89,7 @@ service FenceService {
   /// removed as it brings a security risk
   /// rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
   rpc updateDevicePassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
+  /// hard/forever delete
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
   /// weak auth hack to ease app access to cashiers with very low rights
 }

@@ -30,6 +30,7 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     $18.Timestamp? lastTouchTimestampUTC,
     $core.List<$core.int>? logo,
     $core.String? logoExtension,
+    $core.String? isDeleted,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
@@ -63,6 +64,9 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     if (logoExtension != null) {
       $result.logoExtension = logoExtension;
     }
+    if (isDeleted != null) {
+      $result.isDeleted = isDeleted;
+    }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addAll(additionalAttributes);
     }
@@ -83,6 +87,7 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     ..aOM<$18.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
     ..a<$core.List<$core.int>>(9, _omitFieldNames ? '' : 'logo', $pb.PbFieldType.OY)
     ..aOS(10, _omitFieldNames ? '' : 'logoExtension', protoName: 'logoExtension')
+    ..aOS(11, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiqueMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -199,8 +204,17 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   void clearLogoExtension() => clearField(10);
 
+  @$pb.TagNumber(11)
+  $core.String get isDeleted => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set isDeleted($core.String v) { $_setString(10, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasIsDeleted() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearIsDeleted() => clearField(11);
+
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(10);
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(11);
 }
 
 class BoutiquePb extends $pb.GeneratedMessage {

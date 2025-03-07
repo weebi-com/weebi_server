@@ -1,3 +1,7 @@
+## 1.0.9+11 - 2025 march 7th
+- delete Tickets - softDelete only 
+- delete Article & Delete Contacts - hard Delete 
+
 ## 1.0.9+10 - 2025/02/26
 
 - include enum extension in article photo

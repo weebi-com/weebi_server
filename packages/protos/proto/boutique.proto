@@ -18,7 +18,7 @@ message BoutiqueMongo {
     google.protobuf.Timestamp lastTouchTimestampUTC =  8 [json_name = 'lastTouchTimestampUTC']; 
     bytes logo = 9 [json_name = 'logo'];
     /// extension here is a string, e.g. png or jpeg (!= enum in ArticlePhotoPb)
-    string logoExtension = 10;
+    string logoExtension = 10 [json_name = 'logoExtension'];
     reserved 11 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
 }

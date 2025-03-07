@@ -402,6 +402,8 @@ class ContactsResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.List<$7.ContactPb> get contacts => $_getList(0);
 
+  /// / only provided if the request contained lastFetchTimestamp, i.e. if device resync
+  /// / include all ids so that offline device can delete objects removed by another user/device
   @$pb.TagNumber(2)
   $core.List<$core.int> get ids => $_getList(1);
 }
