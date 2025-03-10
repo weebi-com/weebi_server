@@ -1166,7 +1166,7 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
-  Future<IsOneDeviceInChainResponse> isOneDeviceInChain(
+  Future<IsADeviceInChainResponse> isADeviceInChain(
       ServiceCall? call, ReadDevicesRequest request) async {
     if (request.chainId.isEmpty) {
       throw GrpcError.invalidArgument('chainId cannot be empty');
@@ -1186,7 +1186,7 @@ class FenceService extends FenceServiceBase {
         }
       }
     }
-    return IsOneDeviceInChainResponse(isOneDevice: devices.isNotEmpty);
+    return IsADeviceInChainResponse(isADevice: devices.isNotEmpty);
   }
 
   @override

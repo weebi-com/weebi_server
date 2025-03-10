@@ -1,6 +1,7 @@
-## 1.0.9+11 - 2025 march 7th
+## 1.0.9+12 - 2025 march 7th
 - delete Tickets - softDelete only 
 - delete Article & Delete Contacts - hard Delete 
+- IsADeviceInChain
 
 ## 1.0.9+10 - 2025/02/26
 

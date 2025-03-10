@@ -19,11 +19,12 @@ service TicketService {
 }
 
 message ReadAllTicketsRequest {
-  string firmId = 1;
   string chainId = 2;
   string boutiqueId = 3;
   // optional used for weebi_app device back online
   google.protobuf.Timestamp lastFetchTimestampUTC =  4 [json_name = 'lastFetchTimestampUTC']; 
+  reserved 1 to 1;
+
 }
 
 message FindTicketRequest {

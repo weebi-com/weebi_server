@@ -103,10 +103,6 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read tickets');
     }
-    if (userPermission.isFirmAccessible(request.firmId) == false) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from firm ${request.firmId}');
-    }
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');

@@ -132,18 +132,18 @@ const ReadDevicesRequest$json = {
 final $typed_data.Uint8List readDevicesRequestDescriptor = $convert.base64Decode(
     'ChJSZWFkRGV2aWNlc1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZA==');
 
-@$core.Deprecated('Use isOneDeviceInChainResponseDescriptor instead')
-const IsOneDeviceInChainResponse$json = {
-  '1': 'IsOneDeviceInChainResponse',
+@$core.Deprecated('Use isADeviceInChainResponseDescriptor instead')
+const IsADeviceInChainResponse$json = {
+  '1': 'IsADeviceInChainResponse',
   '2': [
-    {'1': 'isOneDevice', '3': 1, '4': 1, '5': 8, '10': 'isOneDevice'},
+    {'1': 'isADevice', '3': 1, '4': 1, '5': 8, '10': 'isADevice'},
   ],
 };
 
-/// Descriptor for `IsOneDeviceInChainResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List isOneDeviceInChainResponseDescriptor = $convert.base64Decode(
-    'ChpJc09uZURldmljZUluQ2hhaW5SZXNwb25zZRIgCgtpc09uZURldmljZRgBIAEoCFILaXNPbm'
-    'VEZXZpY2U=');
+/// Descriptor for `IsADeviceInChainResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List isADeviceInChainResponseDescriptor = $convert.base64Decode(
+    'ChhJc0FEZXZpY2VJbkNoYWluUmVzcG9uc2USHAoJaXNBRGV2aWNlGAEgASgIUglpc0FEZXZpY2'
+    'U=');
 
 @$core.Deprecated('Use readDeviceBtqRequestDescriptor instead')
 const ReadDeviceBtqRequest$json = {

@@ -71,7 +71,8 @@ service FenceService {
     /// weebi_app signups to REQUIRE that user pushes device data
     /// weebi_app device linking to PREVENT user from pushing data, pulling only
   // will be false by default, which is safer since it avoids corrupting data when linking new device that potentially weebi_app with different data
-  rpc isOneDeviceInChain(ReadDevicesRequest) returns (IsOneDeviceInChainResponse);
+  // == isOneDevice at least
+  rpc isADeviceInChain(ReadDevicesRequest) returns (IsADeviceInChainResponse);
   
   /// return only device visible according to user rights
   rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
@@ -145,8 +146,8 @@ message ReadDevicesRequest {
   string chainId = 1;
 }
 
-message IsOneDeviceInChainResponse {
-  bool isOneDevice = 1;
+message IsADeviceInChainResponse {
+  bool isADevice = 1;
 }
 
 message ReadDeviceBtqRequest {
