@@ -53,6 +53,7 @@ service FenceService {
   rpc readAllChains(weebi.common.empty.Empty) returns (ReadAllChainsResponse);
   // only update fiels not boutiques, not upsert, do nothing if unfound
   rpc updateOneChain(ChainRequest) returns (google.retail.common.StatusResponse);
+  /// hard/complete delete
   rpc deleteOneChain(ChainRequest) returns (google.retail.common.StatusResponse);
   
 
@@ -60,10 +61,20 @@ service FenceService {
   rpc readOneBoutique(BoutiqueRequest) returns (BoutiqueResponse);
   /// real update, not upsert, do nothing if unfound
   rpc updateOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
+  
+  /// hard/complete delete
   rpc deleteOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   // readBoutiques is not relevant since they are provided in readAllChains
    
-  /// devices are sensitive
+  /// scans all firm's devices, disregarding user rights
+  /// used both in : 
+    /// weebi_app signups to REQUIRE that user pushes device data
+    /// weebi_app device linking to PREVENT user from pushing data, pulling only
+  // will be false by default, which is safer since it avoids corrupting data when linking new device that potentially weebi_app with different data
+  // == isOneDevice at least
+  rpc isADeviceInChain(ReadDevicesRequest) returns (IsADeviceInChainResponse);
+  
+  /// return only device visible according to user rights
   rpc readDevices(ReadDevicesRequest) returns (weebi.device.Devices);
   /// device enrolment follows a different process than user enrolment
   /// generateCodeForPairingDevice is called by web app, it includes chainId and boutiqueId
@@ -79,6 +90,7 @@ service FenceService {
   /// removed as it brings a security risk
   /// rpc authenticateWithDevice (DeviceCredentials) returns (Tokens);
   rpc updateDevicePassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
+  /// hard/forever delete
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
   /// weak auth hack to ease app access to cashiers with very low rights
 }
@@ -95,11 +107,13 @@ message BoutiqueRequest {
   string chainId = 1 ;
   weebi.boutique.BoutiquePb boutique = 2;
   bytes logo = 3 ;
+  string logoExtension = 4;
 }
 /// one boutique creation the server will assign the boutiqueId
 message BoutiqueResponse {
   weebi.boutique.BoutiquePb boutique = 1;
   bytes logo = 2;
+  string logoExtension = 3;
 }
 
 
@@ -130,6 +144,10 @@ message ReadAllChainsResponse {
 
 message ReadDevicesRequest {
   string chainId = 1;
+}
+
+message IsADeviceInChainResponse {
+  bool isADevice = 1;
 }
 
 message ReadDeviceBtqRequest {

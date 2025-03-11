@@ -103,10 +103,6 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read tickets');
     }
-    if (userPermission.isFirmAccessible(request.firmId) == false) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from firm ${request.firmId}');
-    }
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -124,7 +120,8 @@ class TicketService extends TicketServiceBase {
     final selector = where
         .eq('firmId', userPermission.firmId)
         .eq('chainId', request.chainId)
-        .eq('boutiqueId', request.boutiqueId);
+        .eq('boutiqueId', request.boutiqueId)
+        .eq('isDeleted', false);
     if (isOneBoutiqueFilter) {
       selector.and(where.eq('boutiqueId', request.boutiqueId));
     }
@@ -172,7 +169,9 @@ class TicketService extends TicketServiceBase {
 
     final selector = where
         .eq('firmId', userPermission.firmId)
-        .eq('chainId', request.ticketChainId);
+        .eq('chainId', request.ticketChainId)
+        .eq('isDeleted', false);
+    ;
     if (request.ticketBoutiqueId.isNotEmpty) {
       selector.eq('boutiqueId', request.ticketBoutiqueId);
     }
@@ -295,10 +294,25 @@ class TicketService extends TicketServiceBase {
     );
 
     try {
-      await collection.deleteOne(selector);
-      return StatusResponse()
-        ..type = StatusResponse_Type.DELETED
-        ..timestamp = DateTime.now().timestampProto;
+      // * for legal reasons do not delete a ticket, only softDelete it
+      // thus we do not use await collection.deleteOne(selector);
+      final result = await collection.updateOne(
+        selector,
+        modify.set('isDeleted', true).set('lastTouchTimestampUTC',
+            DateTime.now().toUtc().timestampProto.toProto3Json()),
+      );
+      if (result.hasWriteErrors) {
+        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
+      } else if (result.success) {
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.DELETED
+          ..timestamp = DateTime.now().timestampProto;
+      } else {
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.ERROR
+          ..message = 'result.ok != 1 || result.document == null'
+          ..timestamp = DateTime.now().timestampProto;
+      }
     } on GrpcError catch (e) {
       print(e);
       rethrow;

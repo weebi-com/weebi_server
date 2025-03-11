@@ -939,7 +939,8 @@ class FenceService extends FenceServiceBase {
       ..name = request.boutique.name
       ..creationTimestampUTC = nowProtoUTC
       ..boutique = request.boutique
-      ..logo = request.logo;
+      ..logo = request.logo
+      ..logoExtension = request.logoExtension;
 
     chain.boutiques.add(boutiqueMongo);
 
@@ -1054,8 +1055,10 @@ class FenceService extends FenceServiceBase {
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('boutique not found');
     }
+
     chain.boutiques[boutiqueIndex].boutique = request.boutique;
     chain.boutiques[boutiqueIndex].logo = request.logo;
+    chain.boutiques[boutiqueIndex].logoExtension = request.logoExtension;
 
     return await _updateOneChainDBExec(chain);
   }
@@ -1160,6 +1163,30 @@ class FenceService extends FenceServiceBase {
     // update chain in db
 
     return await _updateOneChainDBExec(chain);
+  }
+
+  @override
+  Future<IsADeviceInChainResponse> isADeviceInChain(
+      ServiceCall? call, ReadDevicesRequest request) async {
+    if (request.chainId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId cannot be empty');
+    }
+    final userPermissions = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    _db.isConnected ? null : await _db.open();
+    final chain =
+        await _checkOneChainAndProtoIt(userPermissions.firmId, request.chainId);
+
+    final devices = <Device>[];
+    for (final boutique in chain.boutiques) {
+      for (final device in boutique.devices) {
+        if (device.status) {
+          devices.add(device);
+        }
+      }
+    }
+    return IsADeviceInChainResponse(isADevice: devices.isNotEmpty);
   }
 
   @override
@@ -1635,7 +1662,9 @@ class FenceService extends FenceServiceBase {
     }
 
     return BoutiqueResponse(
-        boutique: chain.boutiques[boutiqueIndex].boutique,
-        logo: chain.boutiques[boutiqueIndex].logo);
+      boutique: chain.boutiques[boutiqueIndex].boutique,
+      logo: chain.boutiques[boutiqueIndex].logo,
+      logoExtension: chain.boutiques[boutiqueIndex].logoExtension,
+    );
   }
 }

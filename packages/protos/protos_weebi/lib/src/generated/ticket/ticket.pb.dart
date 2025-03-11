@@ -32,6 +32,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     $core.String? chainId,
     $core.String? creationDate,
     $18.Timestamp? lastTouchTimestampUTC,
+    $core.bool? isDeleted,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
@@ -59,6 +60,9 @@ class TicketMongo extends $pb.GeneratedMessage {
     if (lastTouchTimestampUTC != null) {
       $result.lastTouchTimestampUTC = lastTouchTimestampUTC;
     }
+    if (isDeleted != null) {
+      $result.isDeleted = isDeleted;
+    }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addAll(additionalAttributes);
     }
@@ -77,6 +81,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..aOM<$18.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOB(9, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'TicketMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.ticket'))
     ..hasRequiredFields = false
   ;
@@ -178,8 +183,17 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
 
+  @$pb.TagNumber(9)
+  $core.bool get isDeleted => $_getBF(8);
+  @$pb.TagNumber(9)
+  set isDeleted($core.bool v) { $_setBool(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasIsDeleted() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearIsDeleted() => clearField(9);
+
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(8);
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(9);
 }
 
 class TicketPb extends $pb.GeneratedMessage {

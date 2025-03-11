@@ -21,6 +21,7 @@ message Firm {
   }
 
 message CreateFirmRequest {
+  /// mandatory
   string name = 1 [json_name = 'name'];
 }
 

@@ -1,6 +1,13 @@
-## 1.0.9+7 - 2025/02/14
+## 1.0.9+12 - 2025 march 7th
+- delete Tickets - softDelete only 
+- delete Article & Delete Contacts - hard Delete 
+- IsADeviceInChain
+
+## 1.0.9+10 - 2025/02/26
 
 - include enum extension in article photo
+- include enum logo extension in boutique and boutiqueResponse
+- fence_service_base new method isOneDeviceInChain
 
 ## 1.0.9+6 - 2025/01/26
 
