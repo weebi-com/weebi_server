@@ -79,6 +79,7 @@ service FenceService {
   /// device enrolment follows a different process than user enrolment
   /// generateCodeForPairingDevice is called by web app, it includes chainId and boutiqueId
   /// A device belongs to a boutique 
+  // TODO rename this create
   rpc generateCodeForPairingDevice(weebi.common.chained_ids.ChainIdAndboutiqueId) returns (CodeForPairingDevice);
   /// webapp listens to deviceStream awaiting PoS app to createDevice by typing the code
   rpc readOnePendingDevice(ReadDeviceBtqRequest) returns (weebi.device.Device);
