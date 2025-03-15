@@ -15,6 +15,8 @@ service TicketService {
   rpc createMany (TicketsRequest) returns (google.retail.common.StatusResponse);
   
   rpc updateStatusOne (TicketRequest) returns (google.retail.common.StatusResponse);
+  
+  /// soft delete
   rpc deleteOne (TicketRequest) returns (google.retail.common.StatusResponse);
 }
 
