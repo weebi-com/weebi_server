@@ -120,7 +120,7 @@ class TicketService extends TicketServiceBase {
     final selector = where
         .eq('firmId', userPermission.firmId)
         .eq('chainId', request.chainId)
-        .eq('isDeleted', false);
+        .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
     if (isOneBoutiqueFilter) {
       selector.and(where.eq('boutiqueId', request.boutiqueId));
     }
@@ -169,8 +169,8 @@ class TicketService extends TicketServiceBase {
     final selector = where
         .eq('firmId', userPermission.firmId)
         .eq('chainId', request.ticketChainId)
-        .eq('isDeleted', false);
-    ;
+        .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
+
     if (request.ticketBoutiqueId.isNotEmpty) {
       selector.eq('boutiqueId', request.ticketBoutiqueId);
     }
