@@ -120,7 +120,6 @@ class TicketService extends TicketServiceBase {
     final selector = where
         .eq('firmId', userPermission.firmId)
         .eq('chainId', request.chainId)
-        .eq('boutiqueId', request.boutiqueId)
         .eq('isDeleted', false);
     if (isOneBoutiqueFilter) {
       selector.and(where.eq('boutiqueId', request.boutiqueId));
