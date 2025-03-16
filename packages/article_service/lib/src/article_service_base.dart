@@ -213,8 +213,8 @@ class ArticleService extends ArticleServiceBase {
           idsSet.add(doc['calibreId']);
         }
 
-        selector.and(where.gte('lastTouchTimestampUTC.seconds',
-            request.lastFetchTimestampUTC.seconds));
+        selector.and(where.gte('lastTouchTimestampUTC',
+            request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
       }
       final list = await collectionArticle.find(selector).toList();
       if (list.isEmpty) {
@@ -752,8 +752,8 @@ class ArticleService extends ArticleServiceBase {
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
       if (request.lastFetchTimestampUTC.hasSeconds()) {
-        selector.and(where.gte('lastTouchTimestampUTC.seconds',
-            request.lastFetchTimestampUTC.seconds));
+        selector.and(where.gte('lastTouchTimestampUTC',
+            request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
       }
       final list = await collectionPhoto.find(selector).toList();
       if (list.isEmpty) {
