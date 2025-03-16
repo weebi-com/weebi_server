@@ -28,3 +28,5 @@ kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-r
 kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-request.json
 kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-request.json
 kreya_api_calling/weebi/fence/service/FenceService/generateCodeForPairingDevice-request.json
+kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-request.json
+kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials.krop
