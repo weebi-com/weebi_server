@@ -9,6 +9,7 @@
       "options": {
         "files": [
           "../packages/protos/proto/fence_service.proto",
+          "../packages/protos/proto/ticket",
           "../packages/protos/proto/weebi_app_service.proto"
         ],
         "importPaths": []

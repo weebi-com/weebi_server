@@ -46,6 +46,15 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
+    if (request.permissions.firmId.isEmpty) {
+      throw GrpcError.invalidArgument(
+          'request.permissions.firmId cannot be empty');
+    }
+    if (request.firstname.isEmpty || request.lastname.isEmpty || request.mail.isEmpty) {
+      throw GrpcError.invalidArgument(
+          'missing either firstname, lastname, mail');
+    }
+
     if (userPermission.firmId != request.permissions.firmId) {
       throw GrpcError.permissionDenied(
           'you do not have access to firm ${request.permissions.firmId}');
@@ -168,7 +177,6 @@ class FenceService extends FenceServiceBase {
     try {
       final lastSignin = DateTime.now().timestampProto;
       final dd = lastSignin.toProto3Json();
-      print('dd $dd');
       await userCollection.update(
         where.eq('userId', userId),
         ModifierBuilder().set('lastSignIn', dd),

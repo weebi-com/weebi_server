@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
@@ -117,17 +119,22 @@ class TicketService extends TicketServiceBase {
       }
       isOneBoutiqueFilter = true;
     }
+
     final selector = where
         .eq('firmId', userPermission.firmId)
         .eq('chainId', request.chainId)
         .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
+
+    print('readTickets : firmId ${userPermission.firmId} chainId ${request.chainId}');
     if (isOneBoutiqueFilter) {
       selector.and(where.eq('boutiqueId', request.boutiqueId));
     }
+
     if (request.lastFetchTimestampUTC.hasSeconds()) {
-      selector.and(where.gte('lastTouchTimestampUTC.seconds',
-          request.lastFetchTimestampUTC.seconds));
+      selector.and(where.gte('lastTouchTimestampUTC',
+          request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
     }
+
     try {
       final list = await collection.find(selector).toList();
       if (list.isEmpty) {
