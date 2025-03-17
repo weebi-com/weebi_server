@@ -171,7 +171,7 @@ class TicketService extends TicketServiceBase {
         .eq('firmId', userPermission.firmId)
         .eq('chainId', request.ticketChainId)
         .eq('isDeleted', false);
-    ;
+
     if (request.ticketBoutiqueId.isNotEmpty) {
       selector.eq('boutiqueId', request.ticketBoutiqueId);
     }

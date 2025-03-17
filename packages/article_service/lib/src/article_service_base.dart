@@ -254,7 +254,6 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    // TODO: search by calibreId
     try {
       final selector = where
           .eq('firmId', userPermission.firmId)
@@ -477,6 +476,17 @@ class ArticleService extends ArticleServiceBase {
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId)
           .eq('title', request.title);
+      final pipeline = AggregationPipelineBuilder().addStage({
+        '\$search': {
+          'wildcard': {'path': 'title', 'query': request.title}
+        }
+      }).addStage({
+        '\$project': {'_id': 0, 'title': 1}
+      });
+
+      var result =
+          await collectionCategory.aggregateToStream(pipeline).toList();
+
       final category = await collectionCategory.findOne(selector);
       if (category != null) {
         final categoryMongo = CategoryMongo.create()
