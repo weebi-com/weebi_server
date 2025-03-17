@@ -66,7 +66,6 @@ void main() async {
     final response = await ticketService.readAll(
       null,
       ReadAllTicketsRequest(
-          firmId: counterfoilDummy.firmId,
           chainId: counterfoilDummy.chainId,
           boutiqueId: counterfoilDummy.boutiqueId),
     );
@@ -93,7 +92,6 @@ void main() async {
     final response2 = await ticketService.readAll(
         null,
         ReadAllTicketsRequest(
-            firmId: counterfoilDummy.firmId,
             chainId: counterfoilDummy.chainId,
             boutiqueId: counterfoilDummy.boutiqueId));
 //    print('response2 ${response2.tickets.length}');
@@ -112,7 +110,6 @@ void main() async {
     final response2 = await ticketService.readAll(
         null,
         ReadAllTicketsRequest(
-            firmId: counterfoilDummy.firmId,
             chainId: counterfoilDummy.chainId,
             boutiqueId: counterfoilDummy.boutiqueId));
     expect(response2.tickets.length, 0);
