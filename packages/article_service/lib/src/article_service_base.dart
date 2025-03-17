@@ -16,7 +16,7 @@ abstract class _Helpers {
       where
           .eq('firmId', firmId)
           .eq('chainId', request.chainId)
-          .eq('creationDate', request.category.creationDate);
+          .eq('category.creationDate', request.category.creationDate);
 
   static SelectorBuilder selectPhoto(String firmId, PhotoRequest request) =>
       where
@@ -363,6 +363,8 @@ class ArticleService extends ArticleServiceBase {
         ..userId = userPermission.userId
         ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
+//      final resultFindOne = await collectionCategory.findOne(_Helpers.selectCategory(userPermission.firmId, request));
+
       final result = await collectionCategory.replaceOne(
           _Helpers.selectCategory(userPermission.firmId, request),
           categoryMongo.toProto3Json() as Map<String, dynamic>,
@@ -436,9 +438,11 @@ class ArticleService extends ArticleServiceBase {
       final selector = SelectorBuilder()
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
+
       final list = await collectionCategory.find(selector).toList();
       final categories = <CategoryPb>[];
       for (final e in list) {
+      
         final categoryMongo = CategoryMongo.create()
           ..mergeFromProto3Json(e, ignoreUnknownFields: true);
         categories.add(categoryMongo.category);
@@ -474,8 +478,11 @@ class ArticleService extends ArticleServiceBase {
     try {
       final selector = SelectorBuilder()
           .eq('firmId', userPermission.firmId)
-          .eq('chainId', request.chainId)
-          .eq('title', request.title);
+          .eq('chainId', request.chainId);
+
+      if (request.title.isNotEmpty) {
+        selector.match('title', '^${RegExp.escape(request.title)}*');
+      }
 
       // pipeline is a work in progress
 

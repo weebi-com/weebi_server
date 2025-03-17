@@ -16,5 +16,6 @@ void main() {
     expect(
         categoryPb.calibresIds.length, CategoryWeebi.dummy.calibresIds.length);
     expect(categoryPb.calibresIds.first, CategoryWeebi.dummy.calibresIds.first);
+    expect(int.tryParse('${categoryPb.color}'), CategoryWeebi.dummy.color);
   });
 }

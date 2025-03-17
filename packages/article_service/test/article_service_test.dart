@@ -35,10 +35,12 @@ void main() async {
     );
     await db.collection(articleService.collectionArticle.collectionName).drop();
     await db.createCollection(articleService.collectionArticle.collectionName);
+    await db.createCollection(articleService.collectionCategory.collectionName);
   });
 
   tearDownAll(() async {
     await db.collection(articleService.collectionArticle.collectionName).drop();
+    await db.collection(articleService.collectionCategory.collectionName).drop();
     await connection.close();
   });
 
@@ -114,7 +116,7 @@ void main() async {
         null, ReadCategoriesRequest(chainId: Dummy.chain.chainId));
     expect(response.categories.length, 1);
     expect(response.categories.first.title, 'test category');
-    expect(response.categories.first.color, 4294198070);
+    expect(response.categories.first.color, categoryDummy.color);
     expect(response.categories.first.calibresIds.first, 1);
     expect(response.categories.first.calibresIds.length, 1);
   });
@@ -138,16 +140,17 @@ void main() async {
     final responseReadAll = await articleService.readAllCategories(
         null, ReadCategoriesRequest(chainId: Dummy.chain.chainId));
     //print('responseReadAll ${responseReadAll.categories.length}');
-    expect(responseReadAll.categories.first.title, 'Lili category');
+    expect(responseReadAll.categories.length, 1);
     expect(responseReadAll.categories.first.calibresIds.length, 2);
+    expect(responseReadAll.categories.first.title, 'Lili category');
 
-    final categoryResponse = await articleService.readOneCategory(
+    final readOneResponse = await articleService.readOneCategory(
         null,
         FindCategoryRequest(
-            chainId: Dummy.chain.chainId, title: 'Lili category'));
-    expect(categoryResponse != CategoryPb.getDefault(), isTrue);
-    expect(categoryResponse.calibresIds.length, 1);
-    expect(categoryResponse.title, 'Lili category');
+            chainId: Dummy.chain.chainId, title: 'Lili')); // testing wilcard
+    expect(readOneResponse != CategoryPb.getDefault(), isTrue);
+    expect(readOneResponse.calibresIds.length, 2);
+    expect(readOneResponse.title, 'Lili category');
   });
   test('test deleteOne category', () async {
     final request =
