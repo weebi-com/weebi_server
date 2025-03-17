@@ -29,6 +29,7 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     $core.Iterable<$12.Device>? devices,
     $18.Timestamp? lastTouchTimestampUTC,
     $core.List<$core.int>? logo,
+    $core.String? logoExtension,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
@@ -59,6 +60,9 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     if (logo != null) {
       $result.logo = logo;
     }
+    if (logoExtension != null) {
+      $result.logoExtension = logoExtension;
+    }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addAll(additionalAttributes);
     }
@@ -78,6 +82,7 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     ..pc<$12.Device>(7, _omitFieldNames ? '' : 'devices', $pb.PbFieldType.PM, subBuilder: $12.Device.create)
     ..aOM<$18.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
     ..a<$core.List<$core.int>>(9, _omitFieldNames ? '' : 'logo', $pb.PbFieldType.OY)
+    ..aOS(10, _omitFieldNames ? '' : 'logoExtension', protoName: 'logoExtension')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiqueMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -184,8 +189,18 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   void clearLogo() => clearField(9);
 
+  /// / extension here is a string, e.g. png or jpeg (!= enum in ArticlePhotoPb)
+  @$pb.TagNumber(10)
+  $core.String get logoExtension => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set logoExtension($core.String v) { $_setString(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasLogoExtension() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearLogoExtension() => clearField(10);
+
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(9);
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(10);
 }
 
 class BoutiquePb extends $pb.GeneratedMessage {

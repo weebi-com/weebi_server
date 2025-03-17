@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
@@ -103,10 +105,6 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read tickets');
     }
-    if (userPermission.isFirmAccessible(request.firmId) == false) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from firm ${request.firmId}');
-    }
     if (userPermission.isChainAccessible(request.chainId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
@@ -121,17 +119,32 @@ class TicketService extends TicketServiceBase {
       }
       isOneBoutiqueFilter = true;
     }
+
+    print(
+        'readTickets : firmId ${userPermission.firmId} chainId ${request.chainId}');
+
     final selector = where
         .eq('firmId', userPermission.firmId)
-        .eq('chainId', request.chainId)
-        .eq('boutiqueId', request.boutiqueId);
+        .eq('chainId', request.chainId);
+
     if (isOneBoutiqueFilter) {
       selector.and(where.eq('boutiqueId', request.boutiqueId));
     }
+
     if (request.lastFetchTimestampUTC.hasSeconds()) {
-      selector.and(where.gte('lastTouchTimestampUTC.seconds',
-          request.lastFetchTimestampUTC.seconds));
+      selector.and(where.gte(
+          'lastTouchTimestampUTC', request.lastFetchTimestampUTC.toDateTime()));
     }
+
+    if (request.isDeleted) {
+      /// will look for deleted tickets
+      selector.and(where.eq('isDeleted', true));
+    } else {
+      /// regular search for tickets
+      selector
+          .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
+    }
+
     try {
       final list = await collection.find(selector).toList();
       if (list.isEmpty) {
@@ -172,7 +185,9 @@ class TicketService extends TicketServiceBase {
 
     final selector = where
         .eq('firmId', userPermission.firmId)
-        .eq('chainId', request.ticketChainId);
+        .eq('chainId', request.ticketChainId)
+        .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
+
     if (request.ticketBoutiqueId.isNotEmpty) {
       selector.eq('boutiqueId', request.ticketBoutiqueId);
     }
@@ -295,10 +310,25 @@ class TicketService extends TicketServiceBase {
     );
 
     try {
-      await collection.deleteOne(selector);
-      return StatusResponse()
-        ..type = StatusResponse_Type.DELETED
-        ..timestamp = DateTime.now().timestampProto;
+      // * for legal reasons do not delete a ticket, only softDelete it
+      // thus we do not use await collection.deleteOne(selector);
+      final result = await collection.updateOne(
+        selector,
+        modify.set('isDeleted', true).set('lastTouchTimestampUTC',
+            DateTime.now().toUtc().timestampProto.toProto3Json()),
+      );
+      if (result.hasWriteErrors) {
+        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
+      } else if (result.success) {
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.DELETED
+          ..timestamp = DateTime.now().timestampProto;
+      } else {
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.ERROR
+          ..message = 'result.ok != 1 || result.document == null'
+          ..timestamp = DateTime.now().timestampProto;
+      }
     } on GrpcError catch (e) {
       print(e);
       rethrow;

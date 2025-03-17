@@ -1,7 +1,0 @@
-{
-  "firmId": "{{ faker.random.uuid }}",
-  "chainId": "{{ faker.random.uuid }}",
-  "boutiqueId": "{{ faker.random.uuid }}",
-  "deviceId": "{{ faker.random.uuid }}",
-  "password": "{{ faker.internet.password }}"
-}

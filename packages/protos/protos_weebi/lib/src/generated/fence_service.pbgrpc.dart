@@ -80,13 +80,13 @@ class FenceServiceClient extends $grpc.Client {
       '/weebi.fence.service.FenceService/readAllChains',
       ($0.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $9.ReadAllChainsResponse.fromBuffer(value));
-  static final _$updateOneChain = $grpc.ClientMethod<$11.Chain, $1.StatusResponse>(
+  static final _$updateOneChain = $grpc.ClientMethod<$9.ChainRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/updateOneChain',
-      ($11.Chain value) => value.writeToBuffer(),
+      ($9.ChainRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$deleteOneChain = $grpc.ClientMethod<$11.Chain, $1.StatusResponse>(
+  static final _$deleteOneChain = $grpc.ClientMethod<$9.ChainRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/deleteOneChain',
-      ($11.Chain value) => value.writeToBuffer(),
+      ($9.ChainRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
   static final _$createOneBoutique = $grpc.ClientMethod<$9.BoutiqueRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/createOneBoutique',
@@ -104,6 +104,10 @@ class FenceServiceClient extends $grpc.Client {
       '/weebi.fence.service.FenceService/deleteOneBoutique',
       ($9.BoutiqueRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$isADeviceInChain = $grpc.ClientMethod<$9.ReadDevicesRequest, $9.IsADeviceInChainResponse>(
+      '/weebi.fence.service.FenceService/isADeviceInChain',
+      ($9.ReadDevicesRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $9.IsADeviceInChainResponse.fromBuffer(value));
   static final _$readDevices = $grpc.ClientMethod<$9.ReadDevicesRequest, $12.Devices>(
       '/weebi.fence.service.FenceService/readDevices',
       ($9.ReadDevicesRequest value) => value.writeToBuffer(),
@@ -187,11 +191,11 @@ class FenceServiceClient extends $grpc.Client {
     return $createUnaryCall(_$readAllChains, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> updateOneChain($11.Chain request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> updateOneChain($9.ChainRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateOneChain, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> deleteOneChain($11.Chain request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> deleteOneChain($9.ChainRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOneChain, request, options: options);
   }
 
@@ -209,6 +213,10 @@ class FenceServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$1.StatusResponse> deleteOneBoutique($9.BoutiqueRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOneBoutique, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$9.IsADeviceInChainResponse> isADeviceInChain($9.ReadDevicesRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$isADeviceInChain, request, options: options);
   }
 
   $grpc.ResponseFuture<$12.Devices> readDevices($9.ReadDevicesRequest request, {$grpc.CallOptions? options}) {
@@ -332,19 +340,19 @@ abstract class FenceServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($9.ReadAllChainsResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$11.Chain, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$9.ChainRequest, $1.StatusResponse>(
         'updateOneChain',
         updateOneChain_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $11.Chain.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.ChainRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$11.Chain, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$9.ChainRequest, $1.StatusResponse>(
         'deleteOneChain',
         deleteOneChain_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $11.Chain.fromBuffer(value),
+        ($core.List<$core.int> value) => $9.ChainRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$9.BoutiqueRequest, $1.StatusResponse>(
         'createOneBoutique',
@@ -374,6 +382,13 @@ abstract class FenceServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $9.BoutiqueRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.ReadDevicesRequest, $9.IsADeviceInChainResponse>(
+        'isADeviceInChain',
+        isADeviceInChain_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $9.ReadDevicesRequest.fromBuffer(value),
+        ($9.IsADeviceInChainResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$9.ReadDevicesRequest, $12.Devices>(
         'readDevices',
         readDevices_Pre,
@@ -470,11 +485,11 @@ abstract class FenceServiceBase extends $grpc.Service {
     return readAllChains(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> updateOneChain_Pre($grpc.ServiceCall call, $async.Future<$11.Chain> request) async {
+  $async.Future<$1.StatusResponse> updateOneChain_Pre($grpc.ServiceCall call, $async.Future<$9.ChainRequest> request) async {
     return updateOneChain(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> deleteOneChain_Pre($grpc.ServiceCall call, $async.Future<$11.Chain> request) async {
+  $async.Future<$1.StatusResponse> deleteOneChain_Pre($grpc.ServiceCall call, $async.Future<$9.ChainRequest> request) async {
     return deleteOneChain(call, await request);
   }
 
@@ -492,6 +507,10 @@ abstract class FenceServiceBase extends $grpc.Service {
 
   $async.Future<$1.StatusResponse> deleteOneBoutique_Pre($grpc.ServiceCall call, $async.Future<$9.BoutiqueRequest> request) async {
     return deleteOneBoutique(call, await request);
+  }
+
+  $async.Future<$9.IsADeviceInChainResponse> isADeviceInChain_Pre($grpc.ServiceCall call, $async.Future<$9.ReadDevicesRequest> request) async {
+    return isADeviceInChain(call, await request);
   }
 
   $async.Future<$12.Devices> readDevices_Pre($grpc.ServiceCall call, $async.Future<$9.ReadDevicesRequest> request) async {
@@ -531,12 +550,13 @@ abstract class FenceServiceBase extends $grpc.Service {
   $async.Future<$1.StatusResponse> deleteOneUser($grpc.ServiceCall call, $9.UserId request);
   $async.Future<$1.StatusResponse> createOneChain($grpc.ServiceCall call, $11.Chain request);
   $async.Future<$9.ReadAllChainsResponse> readAllChains($grpc.ServiceCall call, $0.Empty request);
-  $async.Future<$1.StatusResponse> updateOneChain($grpc.ServiceCall call, $11.Chain request);
-  $async.Future<$1.StatusResponse> deleteOneChain($grpc.ServiceCall call, $11.Chain request);
+  $async.Future<$1.StatusResponse> updateOneChain($grpc.ServiceCall call, $9.ChainRequest request);
+  $async.Future<$1.StatusResponse> deleteOneChain($grpc.ServiceCall call, $9.ChainRequest request);
   $async.Future<$1.StatusResponse> createOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
   $async.Future<$9.BoutiqueResponse> readOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
   $async.Future<$1.StatusResponse> updateOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
   $async.Future<$1.StatusResponse> deleteOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
+  $async.Future<$9.IsADeviceInChainResponse> isADeviceInChain($grpc.ServiceCall call, $9.ReadDevicesRequest request);
   $async.Future<$12.Devices> readDevices($grpc.ServiceCall call, $9.ReadDevicesRequest request);
   $async.Future<$9.CodeForPairingDevice> generateCodeForPairingDevice($grpc.ServiceCall call, $13.ChainIdAndboutiqueId request);
   $async.Future<$12.Device> readOnePendingDevice($grpc.ServiceCall call, $9.ReadDeviceBtqRequest request);

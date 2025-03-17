@@ -41,11 +41,25 @@ const ArticlePhotoPb$json = {
     {'1': 'calibreId', '3': 1, '4': 1, '5': 5, '10': 'calibreId'},
     {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
     {'1': 'data', '3': 3, '4': 1, '5': 12, '10': 'data'},
+    {'1': 'extension', '3': 4, '4': 1, '5': 14, '6': '.weebi.photo.ArticlePhotoPb.ExtensionPb', '10': 'extension'},
+  ],
+  '4': [ArticlePhotoPb_ExtensionPb$json],
+};
+
+@$core.Deprecated('Use articlePhotoPbDescriptor instead')
+const ArticlePhotoPb_ExtensionPb$json = {
+  '1': 'ExtensionPb',
+  '2': [
+    {'1': 'unknown', '2': 0},
+    {'1': 'png', '2': 1},
+    {'1': 'jpeg', '2': 2},
   ],
 };
 
 /// Descriptor for `ArticlePhotoPb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List articlePhotoPbDescriptor = $convert.base64Decode(
     'Cg5BcnRpY2xlUGhvdG9QYhIcCgljYWxpYnJlSWQYASABKAVSCWNhbGlicmVJZBIOCgJpZBgCIA'
-    'EoBVICaWQSEgoEZGF0YRgDIAEoDFIEZGF0YQ==');
+    'EoBVICaWQSEgoEZGF0YRgDIAEoDFIEZGF0YRJFCglleHRlbnNpb24YBCABKA4yJy53ZWViaS5w'
+    'aG90by5BcnRpY2xlUGhvdG9QYi5FeHRlbnNpb25QYlIJZXh0ZW5zaW9uIi0KC0V4dGVuc2lvbl'
+    'BiEgsKB3Vua25vd24QABIHCgNwbmcQARIICgRqcGVnEAI=');
 

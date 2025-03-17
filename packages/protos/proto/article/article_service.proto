@@ -9,25 +9,44 @@ import "article/photo.proto";
 import "common/g_common.proto";
 import "common/g_timestamp.proto";
 
+/// articles are contained in calibres
+/// we keep article as the service name for clarity
+/// but the list of objects are Calibres and we use calibreId
 service ArticleService {
   rpc createOne (CalibreRequest) returns (google.retail.common.StatusResponse);
   rpc createMany (CalibresRequest) returns (google.retail.common.StatusResponse);
   rpc readOne (FindCalibreRequest) returns (weebi.article.CalibrePb);
+  /// use [lastFetchTimestampUTC] to only read the latest changes since last fetch
   rpc readAll (ReadAllRequest) returns  (CalibresResponse);
+ 
+  /// update == upsert (replaceOne upsert)
   rpc updateOne (CalibreRequest) returns (google.retail.common.StatusResponse);
+  /// hard delete
   rpc deleteOne (CalibreRequest) returns (google.retail.common.StatusResponse);
   
-  // category
+
+  ///
+  /// category
+  ///
   rpc createOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
   rpc readOneCategory (FindCategoryRequest) returns (weebi.category.CategoryPb);
   rpc readAllCategories (ReadCategoriesRequest) returns  (CategoriesResponse);
+  
+  /// upsert works with replaceOne upsert true
   rpc updateOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneCategory (CategoryRequest) returns (google.retail.common.StatusResponse);
   
+  ///
+  /// photo
+  ///
   rpc createOnePhoto (PhotoRequest) returns (google.retail.common.StatusResponse);
   rpc createManyPhotos (PhotosRequest) returns (google.retail.common.StatusResponse);
   rpc readOnePhoto (FindPhotoRequest) returns (weebi.photo.ArticlePhotoPb);
+  
+  /// use [lastFetchTimestampUTC] to only read the latest changes since last fetch
   rpc readAllPhotos (ReadPhotosRequest) returns  (PhotosResponse);
+
+  /// upsert
   rpc updateOnePhoto (PhotoRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOnePhoto (PhotoRequest) returns (google.retail.common.StatusResponse);
 
@@ -59,6 +78,10 @@ message CalibresRequest {
 
 message CalibresResponse {
   repeated weebi.article.CalibrePb calibres = 1;
+  
+  /// only provided if the request contained lastFetchTimestamp, i.e. if device resync
+  /// include all ids so that offline device can delete objects removed by another user/device 
+  repeated uint32 ids = 2;
 }
 
 /// categories

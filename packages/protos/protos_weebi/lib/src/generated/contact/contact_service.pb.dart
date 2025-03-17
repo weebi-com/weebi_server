@@ -107,6 +107,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearContactId() => clearField(3);
 
+  /// optional
   @$pb.TagNumber(4)
   $core.String get firstName => $_getSZ(2);
   @$pb.TagNumber(4)
@@ -116,6 +117,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   void clearFirstName() => clearField(4);
 
+  /// optional
   @$pb.TagNumber(5)
   $core.String get lastName => $_getSZ(3);
   @$pb.TagNumber(5)
@@ -125,6 +127,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearLastName() => clearField(5);
 
+  /// optional
   @$pb.TagNumber(6)
   $core.String get mail => $_getSZ(4);
   @$pb.TagNumber(6)
@@ -134,6 +137,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   void clearMail() => clearField(6);
 
+  /// optional
   @$pb.TagNumber(7)
   $19.Phone get phone => $_getN(5);
   @$pb.TagNumber(7)
@@ -145,6 +149,7 @@ class FindContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $19.Phone ensurePhone() => $_ensure(5);
 
+  /// optional
   @$pb.TagNumber(8)
   $20.Address get address => $_getN(6);
   @$pb.TagNumber(8)
@@ -352,10 +357,14 @@ class ContactsRequest extends $pb.GeneratedMessage {
 class ContactsResponse extends $pb.GeneratedMessage {
   factory ContactsResponse({
     $core.Iterable<$7.ContactPb>? contacts,
+    $core.Iterable<$core.int>? ids,
   }) {
     final $result = create();
     if (contacts != null) {
       $result.contacts.addAll(contacts);
+    }
+    if (ids != null) {
+      $result.ids.addAll(ids);
     }
     return $result;
   }
@@ -365,6 +374,7 @@ class ContactsResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactsResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact.service'), createEmptyInstance: create)
     ..pc<$7.ContactPb>(1, _omitFieldNames ? '' : 'contacts', $pb.PbFieldType.PM, subBuilder: $7.ContactPb.create)
+    ..p<$core.int>(2, _omitFieldNames ? '' : 'ids', $pb.PbFieldType.KU3)
     ..hasRequiredFields = false
   ;
 
@@ -391,6 +401,11 @@ class ContactsResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<$7.ContactPb> get contacts => $_getList(0);
+
+  /// / only provided if the request contained lastFetchTimestamp, i.e. if device resync
+  /// / include all ids so that offline device can delete objects removed by another user/device
+  @$pb.TagNumber(2)
+  $core.List<$core.int> get ids => $_getList(1);
 }
 
 

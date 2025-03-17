@@ -17,7 +17,9 @@ message BoutiqueMongo {
     repeated weebi.device.Device devices = 7 [json_name = 'devices'];
     google.protobuf.Timestamp lastTouchTimestampUTC =  8 [json_name = 'lastTouchTimestampUTC']; 
     bytes logo = 9 [json_name = 'logo'];
-    reserved 10 to 98;
+    /// extension here is a string, e.g. png or jpeg (!= enum in ArticlePhotoPb)
+    string logoExtension = 10 [json_name = 'logoExtension'];
+    reserved 11 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
 }
 

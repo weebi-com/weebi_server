@@ -1,3 +1,30 @@
+## 1.0.10 - 2025 march 17th
+
+- ticket.readAll isDeleted param
+
+## 1.0.9+12 - 2025 march 7th
+- delete Tickets - softDelete only 
+- delete Article & Delete Contacts - hard Delete 
+- IsADeviceInChain
+
+## 1.0.9+10 - 2025/02/26
+
+- include enum extension in article photo
+- include enum logo extension in boutique and boutiqueResponse
+- fence_service_base new method isOneDeviceInChain
+
+## 1.0.9+6 - 2025/01/26
+
+- provide a way to compare a list of pairs of proto objects to help reconciliation in app
+
+## 1.0.9+4 - 2025/01/17
+
+- ticket.proto added contactInfo on ticket 
+- article_service.proto added calibreId in FindCalibreRequest
+- export grpc web
+- clearer chain services using ChainRequest 
+- move ServiceCallTest out of protos to avoid errors on web
+
 ## 1.0.8 - 2025/01/14
 
 - added in permission bool rights - canUpdateTicketContactInfo

@@ -9,7 +9,9 @@ message Address {
     string code= 2;
     string city = 3;
     weebi.common.country.Country country = 4;
-    optional double latitude = 5;
-    optional double longitude = 6;
+    // optional
+    double latitude = 5;
+    // optional
+    double longitude = 6;
 }
 

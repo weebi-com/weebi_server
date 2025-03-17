@@ -270,6 +270,7 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
   static CreateFirmRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateFirmRequest>(create);
   static CreateFirmRequest? _defaultInstance;
 
+  /// / mandatory
   @$pb.TagNumber(1)
   $core.String get name => $_getSZ(0);
   @$pb.TagNumber(1)

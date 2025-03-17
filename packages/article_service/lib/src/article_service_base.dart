@@ -199,15 +199,22 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    //
 
     try {
       final selector = SelectorBuilder()
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
-      if (request.lastFetchTimestampUTC.hasSeconds()) {
-        selector.and(where.gte('lastTouchTimestampUTC.seconds',
-            request.lastFetchTimestampUTC.seconds));
+
+      final bool isDeviceResync = request.lastFetchTimestampUTC.hasSeconds();
+      final idsSet = <int>{};
+      if (isDeviceResync) {
+        final documents = await collectionArticle.find(selector).toList();
+        for (final doc in documents) {
+          idsSet.add(doc['calibreId']);
+        }
+
+        selector.and(where.gte('lastTouchTimestampUTC',
+            request.lastFetchTimestampUTC.toDateTime()));
       }
       final list = await collectionArticle.find(selector).toList();
       if (list.isEmpty) {
@@ -219,7 +226,7 @@ class ArticleService extends ArticleServiceBase {
           ..mergeFromProto3Json(e, ignoreUnknownFields: true);
         calibres.add(calibreMongo.calibre);
       }
-      final calibresBis = CalibresResponse();
+      final calibresBis = CalibresResponse(ids: idsSet);
       calibresBis.calibres
         ..clear()
         ..addAll(calibres);
@@ -745,8 +752,8 @@ class ArticleService extends ArticleServiceBase {
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
       if (request.lastFetchTimestampUTC.hasSeconds()) {
-        selector.and(where.gte('lastTouchTimestampUTC.seconds',
-            request.lastFetchTimestampUTC.seconds));
+        selector.and(where.gte('lastTouchTimestampUTC',
+            request.lastFetchTimestampUTC.toDateTime()));
       }
       final list = await collectionPhoto.find(selector).toList();
       if (list.isEmpty) {

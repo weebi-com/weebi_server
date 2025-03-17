@@ -198,9 +198,16 @@ class ContactService extends ContactServiceBase {
       final selector = SelectorBuilder()
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
-      if (request.lastFetchTimestampUTC.hasSeconds()) {
-        selector.and(where.gte('lastTouchTimestampUTC.seconds',
-            request.lastFetchTimestampUTC.seconds));
+
+      final bool isDeviceResync = request.lastFetchTimestampUTC.hasSeconds();
+      final idsSet = <int>{};
+      if (isDeviceResync) {
+        final documents = await collection.find(selector).toList();
+        for (final doc in documents) {
+          idsSet.add(doc['contactId']);
+        }
+        selector.and(where.gte('lastTouchTimestampUTC',
+            request.lastFetchTimestampUTC.toDateTime()));
       }
       final list = await collection.find(selector).toList();
       if (list.isEmpty) {
@@ -211,15 +218,14 @@ class ContactService extends ContactServiceBase {
       for (final e in list) {
         final contactMongo = ContactMongo.create()
           ..mergeFromProto3Json(e, ignoreUnknownFields: true);
-
         contacts.add(contactMongo.contact);
       }
 
-      final contactsBis = ContactsResponse();
-      contactsBis.contacts
+      final contactsResponse = ContactsResponse(ids: idsSet);
+      contactsResponse.contacts
         ..clear()
         ..addAll(contacts);
-      return contactsBis;
+      return contactsResponse;
     } on GrpcError catch (e) {
       print('readAll contacts error $e');
       rethrow;

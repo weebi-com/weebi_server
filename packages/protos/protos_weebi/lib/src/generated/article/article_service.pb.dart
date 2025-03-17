@@ -293,10 +293,14 @@ class CalibresRequest extends $pb.GeneratedMessage {
 class CalibresResponse extends $pb.GeneratedMessage {
   factory CalibresResponse({
     $core.Iterable<$3.CalibrePb>? calibres,
+    $core.Iterable<$core.int>? ids,
   }) {
     final $result = create();
     if (calibres != null) {
       $result.calibres.addAll(calibres);
+    }
+    if (ids != null) {
+      $result.ids.addAll(ids);
     }
     return $result;
   }
@@ -306,6 +310,7 @@ class CalibresResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibresResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..pc<$3.CalibrePb>(1, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $3.CalibrePb.create)
+    ..p<$core.int>(2, _omitFieldNames ? '' : 'ids', $pb.PbFieldType.KU3)
     ..hasRequiredFields = false
   ;
 
@@ -332,6 +337,11 @@ class CalibresResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<$3.CalibrePb> get calibres => $_getList(0);
+
+  /// / only provided if the request contained lastFetchTimestamp, i.e. if device resync
+  /// / include all ids so that offline device can delete objects removed by another user/device
+  @$pb.TagNumber(2)
+  $core.List<$core.int> get ids => $_getList(1);
 }
 
 /// / categories

@@ -46,6 +46,15 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
+    if (request.permissions.firmId.isEmpty) {
+      throw GrpcError.invalidArgument(
+          'request.permissions.firmId cannot be empty');
+    }
+    if (request.firstname.isEmpty || request.lastname.isEmpty || request.mail.isEmpty) {
+      throw GrpcError.invalidArgument(
+          'missing either firstname, lastname, mail');
+    }
+
     if (userPermission.firmId != request.permissions.firmId) {
       throw GrpcError.permissionDenied(
           'you do not have access to firm ${request.permissions.firmId}');
@@ -168,7 +177,6 @@ class FenceService extends FenceServiceBase {
     try {
       final lastSignin = DateTime.now().timestampProto;
       final dd = lastSignin.toProto3Json();
-      print('dd $dd');
       await userCollection.update(
         where.eq('userId', userId),
         ModifierBuilder().set('lastSignIn', dd),
@@ -939,7 +947,8 @@ class FenceService extends FenceServiceBase {
       ..name = request.boutique.name
       ..creationTimestampUTC = nowProtoUTC
       ..boutique = request.boutique
-      ..logo = request.logo;
+      ..logo = request.logo
+      ..logoExtension = request.logoExtension;
 
     chain.boutiques.add(boutiqueMongo);
 
@@ -1054,26 +1063,25 @@ class FenceService extends FenceServiceBase {
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('boutique not found');
     }
+
     chain.boutiques[boutiqueIndex].boutique = request.boutique;
     chain.boutiques[boutiqueIndex].logo = request.logo;
+    chain.boutiques[boutiqueIndex].logoExtension = request.logoExtension;
 
     return await _updateOneChainDBExec(chain);
   }
 
   @override
   Future<StatusResponse> updateOneChain(
-      ServiceCall? call, Chain request) async {
-    if (request.firmId.isEmpty) {
-      throw GrpcError.invalidArgument('request.firmId cannot be empty');
-    }
-    if (request.boutiques.any((b) => b.firmId != request.firmId)) {
+      ServiceCall? call, ChainRequest request) async {
+/*     if (request.boutiques.any((b) => b.firmId != request.firmId)) {
       throw GrpcError.invalidArgument(
           'each boutique.firmId must match the chain.firmId');
     }
     if (request.boutiques.any((b) => b.chainId != request.chainId)) {
       throw GrpcError.invalidArgument(
           'each boutique.chainId must match the chainId');
-    }
+    } */
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -1087,13 +1095,25 @@ class FenceService extends FenceServiceBase {
           'user does not have right to update chain');
     }
     if (userPermission.isFirmAndChainAccessible(
-            request.firmId, request.chainId) ==
+            userPermission.firmId, request.chainId) ==
         false) {
       throw GrpcError.permissionDenied(
-          'user cannot access data from firm ${request.firmId} or chain ${request.chainId}');
+          'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
     _db.isConnected ? null : await _db.open();
-    return await _updateOneChainDBExec(request);
+    await boutiqueCollection.update(
+      where.eq('firmId', userPermission.firmId).eq('chainId', request.chainId),
+      ModifierBuilder()
+          .set('name', request.name)
+          .set('lastUpdatedByuserId', userPermission.userId)
+          .set(
+            'lastUpdateTimestampUTC',
+            DateTime.now().toUtc().timestampProto.toProto3Json(),
+          ),
+    );
+    return StatusResponse()
+      ..type = StatusResponse_Type.UPDATED
+      ..timestamp = DateTime.now().timestampProto;
   }
 
   Future<StatusResponse> _updateOneChainDBExec(Chain chain) async {
@@ -1151,6 +1171,30 @@ class FenceService extends FenceServiceBase {
     // update chain in db
 
     return await _updateOneChainDBExec(chain);
+  }
+
+  @override
+  Future<IsADeviceInChainResponse> isADeviceInChain(
+      ServiceCall? call, ReadDevicesRequest request) async {
+    if (request.chainId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId cannot be empty');
+    }
+    final userPermissions = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    _db.isConnected ? null : await _db.open();
+    final chain =
+        await _checkOneChainAndProtoIt(userPermissions.firmId, request.chainId);
+
+    final devices = <Device>[];
+    for (final boutique in chain.boutiques) {
+      for (final device in boutique.devices) {
+        if (device.status) {
+          devices.add(device);
+        }
+      }
+    }
+    return IsADeviceInChainResponse(isADevice: devices.isNotEmpty);
   }
 
   @override
@@ -1563,7 +1607,8 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
-  Future<StatusResponse> deleteOneChain(ServiceCall call, Chain request) async {
+  Future<StatusResponse> deleteOneChain(
+      ServiceCall call, ChainRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -1625,7 +1670,9 @@ class FenceService extends FenceServiceBase {
     }
 
     return BoutiqueResponse(
-        boutique: chain.boutiques[boutiqueIndex].boutique,
-        logo: chain.boutiques[boutiqueIndex].logo);
+      boutique: chain.boutiques[boutiqueIndex].boutique,
+      logo: chain.boutiques[boutiqueIndex].logo,
+      logoExtension: chain.boutiques[boutiqueIndex].logoExtension,
+    );
   }
 }

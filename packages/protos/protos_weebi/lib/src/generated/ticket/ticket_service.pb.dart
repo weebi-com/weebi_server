@@ -18,15 +18,12 @@ import 'ticket.pb.dart' as $15;
 
 class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   factory ReadAllTicketsRequest({
-    $core.String? firmId,
     $core.String? chainId,
     $core.String? boutiqueId,
     $18.Timestamp? lastFetchTimestampUTC,
+    $core.bool? isDeleted,
   }) {
     final $result = create();
-    if (firmId != null) {
-      $result.firmId = firmId;
-    }
     if (chainId != null) {
       $result.chainId = chainId;
     }
@@ -36,6 +33,9 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
     if (lastFetchTimestampUTC != null) {
       $result.lastFetchTimestampUTC = lastFetchTimestampUTC;
     }
+    if (isDeleted != null) {
+      $result.isDeleted = isDeleted;
+    }
     return $result;
   }
   ReadAllTicketsRequest._() : super();
@@ -43,10 +43,10 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   factory ReadAllTicketsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllTicketsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOM<$18.Timestamp>(4, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOB(5, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..hasRequiredFields = false
   ;
 
@@ -71,44 +71,45 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   static ReadAllTicketsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadAllTicketsRequest>(create);
   static ReadAllTicketsRequest? _defaultInstance;
 
-  @$pb.TagNumber(1)
-  $core.String get firmId => $_getSZ(0);
-  @$pb.TagNumber(1)
-  set firmId($core.String v) { $_setString(0, v); }
-  @$pb.TagNumber(1)
-  $core.bool hasFirmId() => $_has(0);
-  @$pb.TagNumber(1)
-  void clearFirmId() => clearField(1);
-
   @$pb.TagNumber(2)
-  $core.String get chainId => $_getSZ(1);
+  $core.String get chainId => $_getSZ(0);
   @$pb.TagNumber(2)
-  set chainId($core.String v) { $_setString(1, v); }
+  set chainId($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(2)
-  $core.bool hasChainId() => $_has(1);
+  $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(2)
   void clearChainId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get boutiqueId => $_getSZ(2);
+  $core.String get boutiqueId => $_getSZ(1);
   @$pb.TagNumber(3)
-  set boutiqueId($core.String v) { $_setString(2, v); }
+  set boutiqueId($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(3)
-  $core.bool hasBoutiqueId() => $_has(2);
+  $core.bool hasBoutiqueId() => $_has(1);
   @$pb.TagNumber(3)
   void clearBoutiqueId() => clearField(3);
 
   /// optional used for weebi_app device back online
   @$pb.TagNumber(4)
-  $18.Timestamp get lastFetchTimestampUTC => $_getN(3);
+  $18.Timestamp get lastFetchTimestampUTC => $_getN(2);
   @$pb.TagNumber(4)
   set lastFetchTimestampUTC($18.Timestamp v) { setField(4, v); }
   @$pb.TagNumber(4)
-  $core.bool hasLastFetchTimestampUTC() => $_has(3);
+  $core.bool hasLastFetchTimestampUTC() => $_has(2);
   @$pb.TagNumber(4)
   void clearLastFetchTimestampUTC() => clearField(4);
   @$pb.TagNumber(4)
-  $18.Timestamp ensureLastFetchTimestampUTC() => $_ensure(3);
+  $18.Timestamp ensureLastFetchTimestampUTC() => $_ensure(2);
+
+  /// optional used for weebi_app device to remove deleted tickets
+  @$pb.TagNumber(5)
+  $core.bool get isDeleted => $_getBF(3);
+  @$pb.TagNumber(5)
+  set isDeleted($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasIsDeleted() => $_has(3);
+  @$pb.TagNumber(5)
+  void clearIsDeleted() => clearField(5);
 }
 
 class FindTicketRequest extends $pb.GeneratedMessage {

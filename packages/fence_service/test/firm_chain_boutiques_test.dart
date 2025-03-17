@@ -64,8 +64,11 @@ void main() async {
 
   test('test updateOneChain', () async {
     final responseReadChains = await fenceService.readAllChains(null, Empty());
-    final liliChain = responseReadChains.chains.first..name = 'Lili chain';
-    final response = await fenceService.updateOneChain(null, liliChain);
+    final response = await fenceService.updateOneChain(
+        null,
+        ChainRequest(
+            chainId: responseReadChains.chains.first.chainId,
+            name: 'Lili chain'));
     expect(response.type, StatusResponse_Type.UPDATED);
     final response2 = await fenceService.readAllChains(null, Empty());
     expect(response2.chains.first.name, 'Lili chain');

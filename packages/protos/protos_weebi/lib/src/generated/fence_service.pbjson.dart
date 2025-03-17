@@ -13,6 +13,20 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use chainRequestDescriptor instead')
+const ChainRequest$json = {
+  '1': 'ChainRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+  ],
+};
+
+/// Descriptor for `ChainRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List chainRequestDescriptor = $convert.base64Decode(
+    'CgxDaGFpblJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBISCgRuYW1lGAIgASgJUg'
+    'RuYW1l');
+
 @$core.Deprecated('Use boutiqueRequestDescriptor instead')
 const BoutiqueRequest$json = {
   '1': 'BoutiqueRequest',
@@ -20,6 +34,7 @@ const BoutiqueRequest$json = {
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'boutique', '3': 2, '4': 1, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutique'},
     {'1': 'logo', '3': 3, '4': 1, '5': 12, '10': 'logo'},
+    {'1': 'logoExtension', '3': 4, '4': 1, '5': 9, '10': 'logoExtension'},
   ],
 };
 
@@ -27,7 +42,7 @@ const BoutiqueRequest$json = {
 final $typed_data.Uint8List boutiqueRequestDescriptor = $convert.base64Decode(
     'Cg9Cb3V0aXF1ZVJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBI2Cghib3V0aXF1ZR'
     'gCIAEoCzIaLndlZWJpLmJvdXRpcXVlLkJvdXRpcXVlUGJSCGJvdXRpcXVlEhIKBGxvZ28YAyAB'
-    'KAxSBGxvZ28=');
+    'KAxSBGxvZ28SJAoNbG9nb0V4dGVuc2lvbhgEIAEoCVINbG9nb0V4dGVuc2lvbg==');
 
 @$core.Deprecated('Use boutiqueResponseDescriptor instead')
 const BoutiqueResponse$json = {
@@ -35,13 +50,15 @@ const BoutiqueResponse$json = {
   '2': [
     {'1': 'boutique', '3': 1, '4': 1, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutique'},
     {'1': 'logo', '3': 2, '4': 1, '5': 12, '10': 'logo'},
+    {'1': 'logoExtension', '3': 3, '4': 1, '5': 9, '10': 'logoExtension'},
   ],
 };
 
 /// Descriptor for `BoutiqueResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List boutiqueResponseDescriptor = $convert.base64Decode(
     'ChBCb3V0aXF1ZVJlc3BvbnNlEjYKCGJvdXRpcXVlGAEgASgLMhoud2VlYmkuYm91dGlxdWUuQm'
-    '91dGlxdWVQYlIIYm91dGlxdWUSEgoEbG9nbxgCIAEoDFIEbG9nbw==');
+    '91dGlxdWVQYlIIYm91dGlxdWUSEgoEbG9nbxgCIAEoDFIEbG9nbxIkCg1sb2dvRXh0ZW5zaW9u'
+    'GAMgASgJUg1sb2dvRXh0ZW5zaW9u');
 
 @$core.Deprecated('Use createDeviceResponseDescriptor instead')
 const CreateDeviceResponse$json = {
@@ -114,6 +131,19 @@ const ReadDevicesRequest$json = {
 /// Descriptor for `ReadDevicesRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List readDevicesRequestDescriptor = $convert.base64Decode(
     'ChJSZWFkRGV2aWNlc1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZA==');
+
+@$core.Deprecated('Use isADeviceInChainResponseDescriptor instead')
+const IsADeviceInChainResponse$json = {
+  '1': 'IsADeviceInChainResponse',
+  '2': [
+    {'1': 'isADevice', '3': 1, '4': 1, '5': 8, '10': 'isADevice'},
+  ],
+};
+
+/// Descriptor for `IsADeviceInChainResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List isADeviceInChainResponseDescriptor = $convert.base64Decode(
+    'ChhJc0FEZXZpY2VJbkNoYWluUmVzcG9uc2USHAoJaXNBRGV2aWNlGAEgASgIUglpc0FEZXZpY2'
+    'U=');
 
 @$core.Deprecated('Use readDeviceBtqRequestDescriptor instead')
 const ReadDeviceBtqRequest$json = {

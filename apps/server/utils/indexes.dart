@@ -1,7 +1,6 @@
 import 'package:article_service/article_service.dart';
 import 'package:contact_service/contact_service.dart';
 import 'package:fence_service/mongo_dart.dart';
-import 'package:test/expect.dart';
 
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
@@ -132,12 +131,13 @@ main() async {
 
   /// basic
   await db.ensureIndex(TicketService.collectionName,
-      name: 'firmId_chainId_boutiqueId_nonUniqueId_creationDate',
+      name: 'firmId_chainId_boutiqueId_isDeleted_nonUniqueId_creationDate',
       keys: {
         'firmId': 1,
         'chainId': 1,
         'boutiqueId': 1,
         'nonUniqueId': 1,
+        'isDeleted': 1,
         'creationDate': -1
       });
 
