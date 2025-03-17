@@ -254,7 +254,6 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    // TODO: search by calibreId
     try {
       final selector = where
           .eq('firmId', userPermission.firmId)
@@ -458,7 +457,7 @@ class ArticleService extends ArticleServiceBase {
 
   @override
   Future<CategoryPb> readOneCategory(
-      ServiceCall call, FindCategoryRequest request) async {
+      ServiceCall? call, FindCategoryRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -477,6 +476,9 @@ class ArticleService extends ArticleServiceBase {
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId)
           .eq('title', request.title);
+
+      // pipeline is a work in progress
+
       final category = await collectionCategory.findOne(selector);
       if (category != null) {
         final categoryMongo = CategoryMongo.create()
