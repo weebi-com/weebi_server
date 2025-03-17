@@ -17,19 +17,22 @@ import 'dart:typed_data' as $typed_data;
 const ReadAllTicketsRequest$json = {
   '1': 'ReadAllTicketsRequest',
   '2': [
-    {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'boutiqueId', '3': 3, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'lastFetchTimestampUTC', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastFetchTimestampUTC'},
+    {'1': 'isDeleted', '3': 5, '4': 1, '5': 8, '10': 'isDeleted'},
+  ],
+  '9': [
+    {'1': 1, '2': 2},
   ],
 };
 
 /// Descriptor for `ReadAllTicketsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List readAllTicketsRequestDescriptor = $convert.base64Decode(
-    'ChVSZWFkQWxsVGlja2V0c1JlcXVlc3QSFgoGZmlybUlkGAEgASgJUgZmaXJtSWQSGAoHY2hhaW'
-    '5JZBgCIAEoCVIHY2hhaW5JZBIeCgpib3V0aXF1ZUlkGAMgASgJUgpib3V0aXF1ZUlkElAKFWxh'
-    'c3RGZXRjaFRpbWVzdGFtcFVUQxgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFW'
-    'xhc3RGZXRjaFRpbWVzdGFtcFVUQw==');
+    'ChVSZWFkQWxsVGlja2V0c1JlcXVlc3QSGAoHY2hhaW5JZBgCIAEoCVIHY2hhaW5JZBIeCgpib3'
+    'V0aXF1ZUlkGAMgASgJUgpib3V0aXF1ZUlkElAKFWxhc3RGZXRjaFRpbWVzdGFtcFVUQxgEIAEo'
+    'CzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFWxhc3RGZXRjaFRpbWVzdGFtcFVUQxIcCg'
+    'lpc0RlbGV0ZWQYBSABKAhSCWlzRGVsZXRlZEoECAEQAg==');
 
 @$core.Deprecated('Use findTicketRequestDescriptor instead')
 const FindTicketRequest$json = {

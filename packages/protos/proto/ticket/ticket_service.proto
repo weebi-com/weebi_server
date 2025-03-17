@@ -25,6 +25,8 @@ message ReadAllTicketsRequest {
   string boutiqueId = 3;
   // optional used for weebi_app device back online
   google.protobuf.Timestamp lastFetchTimestampUTC =  4 [json_name = 'lastFetchTimestampUTC']; 
+  // optional used for weebi_app device to remove deleted tickets
+  bool isDeleted = 5;
   reserved 1 to 1;
 
 }
