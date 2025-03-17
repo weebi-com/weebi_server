@@ -141,22 +141,22 @@ void main() async {
     expect(responseReadAll.categories.first.title, 'Lili category');
     expect(responseReadAll.categories.first.calibresIds.length, 2);
 
-    final calibreResponse = await articleService.readOneCategory(
+    final categoryResponse = await articleService.readOneCategory(
         null,
         FindCategoryRequest(
             chainId: Dummy.chain.chainId, title: 'Lili category'));
-    expect(calibreResponse != CalibrePb.getDefault(), isTrue);
-    expect(calibreResponse.articlesRetail.length, 1);
-    expect(calibreResponse.articlesRetail.first.calibreId, 1);
+    expect(categoryResponse != CategoryPb.getDefault(), isTrue);
+    expect(categoryResponse.calibresIds.length, 1);
+    expect(categoryResponse.title, 'Lili category');
   });
-  test('test deleteOne article', () async {
+  test('test deleteOne category', () async {
     final request =
-        CalibreRequest(chainId: Dummy.chain.chainId, calibre: calibreDummy);
+        CategoryRequest(chainId: Dummy.chain.chainId, category: categoryDummy);
     // ignore: unused_local_variable
-    final response = await articleService.deleteOne(null, request);
+    final response = await articleService.deleteOneCategory(null, request);
 
-    final response2 = await articleService.readAll(
-        null, ReadAllRequest(chainId: Dummy.chain.chainId));
-    expect(response2.calibres.length, 0);
+    final response2 = await articleService.readAllCategories(
+        null, ReadCategoriesRequest(chainId: Dummy.chain.chainId));
+    expect(response2.categories.length, 0);
   });
 }

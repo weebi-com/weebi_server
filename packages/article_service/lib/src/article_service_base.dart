@@ -457,7 +457,7 @@ class ArticleService extends ArticleServiceBase {
 
   @override
   Future<CategoryPb> readOneCategory(
-      ServiceCall call, FindCategoryRequest request) async {
+      ServiceCall? call, FindCategoryRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -476,16 +476,8 @@ class ArticleService extends ArticleServiceBase {
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId)
           .eq('title', request.title);
-      final pipeline = AggregationPipelineBuilder().addStage({
-        '\$search': {
-          'wildcard': {'path': 'title', 'query': request.title}
-        }
-      }).addStage({
-        '\$project': {'_id': 0, 'title': 1}
-      });
 
-      var result =
-          await collectionCategory.aggregateToStream(pipeline).toList();
+      // pipeline is a work in progress
 
       final category = await collectionCategory.findOne(selector);
       if (category != null) {
