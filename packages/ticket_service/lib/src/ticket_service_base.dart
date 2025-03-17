@@ -120,19 +120,29 @@ class TicketService extends TicketServiceBase {
       isOneBoutiqueFilter = true;
     }
 
+    print(
+        'readTickets : firmId ${userPermission.firmId} chainId ${request.chainId}');
+
     final selector = where
         .eq('firmId', userPermission.firmId)
-        .eq('chainId', request.chainId)
-        .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
+        .eq('chainId', request.chainId);
 
-    print('readTickets : firmId ${userPermission.firmId} chainId ${request.chainId}');
     if (isOneBoutiqueFilter) {
       selector.and(where.eq('boutiqueId', request.boutiqueId));
     }
 
     if (request.lastFetchTimestampUTC.hasSeconds()) {
-      selector.and(where.gte('lastTouchTimestampUTC',
-          request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
+      selector.and(where.gte(
+          'lastTouchTimestampUTC', request.lastFetchTimestampUTC.toDateTime()));
+    }
+
+    if (request.isDeleted) {
+      /// will look for deleted tickets
+      selector.and(where.eq('isDeleted', true));
+    } else {
+      /// regular search for tickets
+      selector
+          .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
     }
 
     try {

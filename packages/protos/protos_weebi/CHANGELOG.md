@@ -1,3 +1,7 @@
+## 1.0.10 - 2025 march 17th
+
+- ticket.readAll isDeleted param
+
 ## 1.0.9+12 - 2025 march 7th
 - delete Tickets - softDelete only 
 - delete Article & Delete Contacts - hard Delete 
