@@ -1,8 +1,17 @@
+# changelog
+
+## 1.0.10+2 - 2025 march 21th
+
+- int64 category.color
+- int64 contact.overdraft
+- contactId in TicketMongo
+
 ## 1.0.10 - 2025 march 17th
 
 - ticket.readAll isDeleted param
 
 ## 1.0.9+12 - 2025 march 7th
+
 - delete Tickets - softDelete only 
 - delete Article & Delete Contacts - hard Delete 
 - IsADeviceInChain
@@ -67,7 +76,8 @@
 - new offline permission: canUpdateContactBalanceOffline
 - new object for article : categories
 
-breaking change : 
+breaking change :
+
 - canSpendOutOfCatalog & canSelldOutOfCatalog
 
 ## 1.0.5

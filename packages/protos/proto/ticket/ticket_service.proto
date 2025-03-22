@@ -31,6 +31,7 @@ message ReadAllTicketsRequest {
 
 }
 
+// consider adding isDeleted param
 message FindTicketRequest {
   // mandatory
   string ticketChainId = 1 [json_name = 'ticketChainId'];

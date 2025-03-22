@@ -199,7 +199,7 @@ class ContactService extends ContactServiceBase {
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
 
-      final bool isDeviceResync = request.lastFetchTimestampUTC.hasSeconds();
+      final bool isDeviceResync = request.lastFetchTimestampUTC.isNotEmpty;
       final idsSet = <int>{};
       if (isDeviceResync) {
         final documents = await collection.find(selector).toList();
@@ -209,9 +209,11 @@ class ContactService extends ContactServiceBase {
         selector.and(where.gte('lastTouchTimestampUTC',
             request.lastFetchTimestampUTC.toDateTime()));
       }
+      //
+
       final list = await collection.find(selector).toList();
       if (list.isEmpty) {
-        return ContactsResponse.create();
+        return ContactsResponse(ids: idsSet);
       }
 
       final contacts = <ContactPb>[];
@@ -221,10 +223,11 @@ class ContactService extends ContactServiceBase {
         contacts.add(contactMongo.contact);
       }
 
-      final contactsResponse = ContactsResponse(ids: idsSet);
+      final contactsResponse = ContactsResponse.create();
       contactsResponse.contacts
         ..clear()
         ..addAll(contacts);
+      contactsResponse.ids.addAll(idsSet);
       return contactsResponse;
     } on GrpcError catch (e) {
       print('readAll contacts error $e');

@@ -5,6 +5,18 @@ dart pub global activate melos
 melos bootstrap
 ```
 
+
+```shell
+flutter build web --dart-define=ENVIRONMENT=development
+flutter build web --dart-define=ENVIRONMENT=production
+```
+
+```shell
+gcloud run deploy SERVICE_NAME \
+  --image IMAGE_URL \
+  --set-env-vars ENVIRONMENT=development
+```
+
 - TODO - declare indexes in migrations
 - TODO - add ticket.isDeleted in index
 

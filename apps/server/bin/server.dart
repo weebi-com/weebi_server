@@ -18,6 +18,7 @@ import 'package:fence_service/weebi_app_service.dart';
 import '../constants/app_environment.dart';
 
 // TODO: in a production environment, it’s generally not recommended to use * due to security concern
+// ? can we add weebi domain cors here ?
 FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
   call.headers!.addAll({
     HttpHeaders.accessControlAllowOriginHeader: '*',

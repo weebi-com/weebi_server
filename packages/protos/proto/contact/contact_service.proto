@@ -64,5 +64,5 @@ message ContactsResponse {
 
   /// only provided if the request contained lastFetchTimestamp, i.e. if device resync
   /// include all ids so that offline device can delete objects removed by another user/device 
-  repeated uint32 ids = 2;
+  repeated int32 ids = 2;
 }

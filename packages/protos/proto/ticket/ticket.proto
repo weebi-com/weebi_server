@@ -18,7 +18,8 @@ message TicketMongo {
     string creationDate = 7 [json_name = 'creationDate'];
     google.protobuf.Timestamp lastTouchTimestampUTC =  8 [json_name = 'lastTouchTimestampUTC']; 
     bool isDeleted = 9 [json_name = 'isDeleted'];
-    reserved 10 to 98;
+    int32 contactId = 10 [json_name = 'contactId'];
+    reserved 11 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
 }
 // string uploadByuserId = 3 [json_name = 'uploadByuserId'];

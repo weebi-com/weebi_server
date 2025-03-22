@@ -47,6 +47,9 @@ void main() async {
     final response = await contactService.readAll(
         null, ReadAllContactsRequest(chainId: chainId));
     expect(response.contacts.length, 1);
+    expect(response.ids.length, 1);
+    expect(response.ids.first, 1);
+
   });
 
   test('test readOne', () async {
@@ -58,6 +61,7 @@ void main() async {
       ),
     );
     expect(response.firstName, 'John');
+    expect(response.overdraft, 0);
   });
 
   test('test upsertOne ', () async {

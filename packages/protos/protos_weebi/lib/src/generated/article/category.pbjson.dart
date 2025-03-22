@@ -40,7 +40,7 @@ const CategoryPb$json = {
   '2': [
     {'1': 'calibresIds', '3': 1, '4': 3, '5': 13, '10': 'calibresIds'},
     {'1': 'title', '3': 2, '4': 1, '5': 9, '10': 'title'},
-    {'1': 'color', '3': 3, '4': 1, '5': 13, '10': 'color'},
+    {'1': 'color', '3': 3, '4': 1, '5': 4, '10': 'color'},
     {'1': 'creationDate', '3': 4, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'updateDate', '3': 5, '4': 1, '5': 9, '10': 'updateDate'},
   ],
@@ -49,6 +49,6 @@ const CategoryPb$json = {
 /// Descriptor for `CategoryPb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List categoryPbDescriptor = $convert.base64Decode(
     'CgpDYXRlZ29yeVBiEiAKC2NhbGlicmVzSWRzGAEgAygNUgtjYWxpYnJlc0lkcxIUCgV0aXRsZR'
-    'gCIAEoCVIFdGl0bGUSFAoFY29sb3IYAyABKA1SBWNvbG9yEiIKDGNyZWF0aW9uRGF0ZRgEIAEo'
+    'gCIAEoCVIFdGl0bGUSFAoFY29sb3IYAyABKARSBWNvbG9yEiIKDGNyZWF0aW9uRGF0ZRgEIAEo'
     'CVIMY3JlYXRpb25EYXRlEh4KCnVwZGF0ZURhdGUYBSABKAlSCnVwZGF0ZURhdGU=');
 

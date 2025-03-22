@@ -1,27 +1,29 @@
 # mongo running tests
+
 ## mongo macos
+
 ``` shell
-$ sudo mongod --dbpath /System/Volumes/Data/data/db
+sudo mongod --dbpath /System/Volumes/Data/data/db
 ```
-then in another terminal to interact with mongodb, 
-``` shell
-mongosh
-```
+
+then in another terminal to interact with mongodb run :`mongosh`
 
 ## mongo windows
-```shell
-mongosh
-```
 
-# running server
-## macos
+`mongosh`
+
+## running server
+
+### macos
+
 ``` shell
 cd apps/server
 export MONGO_DB_URI=mongodb://localhost:27017/local
 dart bin/server.dart
 ```
 
-## windows
+### windows
+
 ``` shell
 cd apps/server
 $Env:MONGO_DB_URI="mongodb://localhost:27017/local"

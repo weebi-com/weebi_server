@@ -1,6 +1,6 @@
 import 'package:fence_service/mongo_dart.dart';
 
-// TODO: pass mongodb+srv:// in the args
+// improve by passing mongodb+srv:// in the args
 void main(List<String> args) async {
   if (args.isEmpty) {
     throw 'please provide a version number (integer only)';

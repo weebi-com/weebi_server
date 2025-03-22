@@ -68,7 +68,7 @@ const ContactPb$json = {
     {'1': 'mail', '3': 8, '4': 1, '5': 9, '10': 'mail'},
     {'1': 'phone', '3': 9, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
     {'1': 'addressFull', '3': 10, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
-    {'1': 'overdraft', '3': 11, '4': 1, '5': 5, '10': 'overdraft'},
+    {'1': 'overdraft', '3': 11, '4': 1, '5': 3, '10': 'overdraft'},
     {'1': 'tags', '3': 12, '4': 3, '5': 9, '10': 'categories'},
     {'1': 'isClient', '3': 13, '4': 1, '5': 8, '10': 'isClient'},
     {'1': 'isSupplier', '3': 14, '4': 1, '5': 8, '10': 'isSupplier'},
@@ -98,7 +98,7 @@ final $typed_data.Uint8List contactPbDescriptor = $convert.base64Decode(
     'lmaXJzdE5hbWUYBiABKAlSCWZpcnN0TmFtZRIaCghsYXN0TmFtZRgHIAEoCVIIbGFzdE5hbWUS'
     'EgoEbWFpbBgIIAEoCVIEbWFpbBIvCgVwaG9uZRgJIAEoCzIZLndlZWJpLmNvbW1vbi5waG9uZS'
     '5QaG9uZVIFcGhvbmUSPwoLYWRkcmVzc0Z1bGwYCiABKAsyHS53ZWViaS5jb21tb24uYWRkcmVz'
-    'cy5BZGRyZXNzUgthZGRyZXNzRnVsbBIcCglvdmVyZHJhZnQYCyABKAVSCW92ZXJkcmFmdBIYCg'
+    'cy5BZGRyZXNzUgthZGRyZXNzRnVsbBIcCglvdmVyZHJhZnQYCyABKANSCW92ZXJkcmFmdBIYCg'
     'R0YWdzGAwgAygJUgpjYXRlZ29yaWVzEhoKCGlzQ2xpZW50GA0gASgIUghpc0NsaWVudBIeCgpp'
     'c1N1cHBsaWVyGA4gASgIUgppc1N1cHBsaWVyEloKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsyLi'
     '53ZWViaS5jb250YWN0LkNvbnRhY3RQYi5PdGhlcnNBdHRyaWJ1dGVzRW50cnlSEG90aGVyc0F0'

@@ -1,15 +1,20 @@
+# protos_weebi
+
 1 install [protobuf](https://grpc.io/docs/protoc-installation/) 
 
-on mac : brew install protobuf
+## on mac
 
-1.  dart pub global activate protoc_plugin
-2.  Update your PATH so that the protoc compiler can find the plugin:
-    1.  $ export PATH="$PATH:$HOME/.pub-cache/bin"
+brew install protobuf
+
+1. dart pub global activate protoc_plugin
+2. Update your PATH so that the protoc compiler can find the plugin:
+    1. $ export PATH="$PATH:$HOME/.pub-cache/bin"
 
 from protos dir
 4.  sh protos_weebi/tool/generate_protos.sh
 
-# on windows 
+## on windows
+
 using WSL
 get WSL
 install dart on linux
