@@ -145,12 +145,13 @@ main() async {
 
   /// basic
   await db.ensureIndex(TicketService.collectionName,
-      name: 'firmId_chainId_boutiqueId_isDeleted_nonUniqueId_creationDate',
+      name: 'firmId_chainId_boutiqueId_isDeleted_nonUniqueId_contactId_isDeleted_creationDate',
       keys: {
         'firmId': 1,
         'chainId': 1,
         'boutiqueId': 1,
         'nonUniqueId': 1,
+        'contactId': 1,
         'isDeleted': 1,
         'creationDate': -1
       });
