@@ -11,6 +11,7 @@
 
 import 'dart:core' as $core;
 
+import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../common/address.pb.dart' as $20;
@@ -176,7 +177,7 @@ class ContactPb extends $pb.GeneratedMessage {
     $core.String? mail,
     $19.Phone? phone,
     $20.Address? addressFull,
-    $core.int? overdraft,
+    $fixnum.Int64? overdraft,
     $core.Iterable<$core.String>? tags,
     $core.bool? isClient,
     $core.bool? isSupplier,
@@ -245,7 +246,7 @@ class ContactPb extends $pb.GeneratedMessage {
     ..aOS(8, _omitFieldNames ? '' : 'mail')
     ..aOM<$19.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
     ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $20.Address.create)
-    ..a<$core.int>(11, _omitFieldNames ? '' : 'overdraft', $pb.PbFieldType.O3)
+    ..aInt64(11, _omitFieldNames ? '' : 'overdraft')
     ..pPS(12, _omitFieldNames ? '' : 'categories', protoName: 'tags')
     ..aOB(13, _omitFieldNames ? '' : 'isClient', protoName: 'isClient')
     ..aOB(14, _omitFieldNames ? '' : 'isSupplier', protoName: 'isSupplier')
@@ -368,10 +369,11 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   $20.Address ensureAddressFull() => $_ensure(9);
 
+  /// legacy intt32 might be an issue
   @$pb.TagNumber(11)
-  $core.int get overdraft => $_getIZ(10);
+  $fixnum.Int64 get overdraft => $_getI64(10);
   @$pb.TagNumber(11)
-  set overdraft($core.int v) { $_setSignedInt32(10, v); }
+  set overdraft($fixnum.Int64 v) { $_setInt64(10, v); }
   @$pb.TagNumber(11)
   $core.bool hasOverdraft() => $_has(10);
   @$pb.TagNumber(11)
