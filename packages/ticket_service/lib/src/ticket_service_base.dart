@@ -61,6 +61,7 @@ class TicketService extends TicketServiceBase {
         ..chainId = request.ticket.counterfoil.chainId
         ..firmId = userPermission.firmId
         ..userId = userPermission.userId
+        ..contactId = request.ticket.contactId
         ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
       final result = await collection
@@ -129,7 +130,7 @@ class TicketService extends TicketServiceBase {
       selector.and(where.eq('boutiqueId', request.boutiqueId));
     }
 
-    if (request.lastFetchTimestampUTC.hasSeconds()) {
+    if (request.lastFetchTimestampUTC.isNotEmpty) {
       selector.and(where.gte(
           'lastTouchTimestampUTC', request.lastFetchTimestampUTC.toDateTime()));
     }
@@ -376,6 +377,7 @@ class TicketService extends TicketServiceBase {
         ..chainId = ticketPb.counterfoil.chainId
         ..firmId = userPermission.firmId
         ..userId = userPermission.userId
+        ..contactId = ticketPb.contactId
         ..lastTouchTimestampUTC = nowTimestampUtc;
       ticketsMap.add(ticketMongo.toProto3Json() as Map<String, dynamic>);
     }

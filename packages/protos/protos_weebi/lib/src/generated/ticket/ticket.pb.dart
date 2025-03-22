@@ -33,6 +33,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     $core.String? creationDate,
     $18.Timestamp? lastTouchTimestampUTC,
     $core.bool? isDeleted,
+    $core.int? contactId,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final $result = create();
@@ -63,6 +64,9 @@ class TicketMongo extends $pb.GeneratedMessage {
     if (isDeleted != null) {
       $result.isDeleted = isDeleted;
     }
+    if (contactId != null) {
+      $result.contactId = contactId;
+    }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addAll(additionalAttributes);
     }
@@ -82,6 +86,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..aOM<$18.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
     ..aOB(9, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
+    ..a<$core.int>(10, _omitFieldNames ? '' : 'contactId', $pb.PbFieldType.O3, protoName: 'contactId')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'TicketMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.ticket'))
     ..hasRequiredFields = false
   ;
@@ -192,8 +197,17 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   void clearIsDeleted() => clearField(9);
 
+  @$pb.TagNumber(10)
+  $core.int get contactId => $_getIZ(9);
+  @$pb.TagNumber(10)
+  set contactId($core.int v) { $_setSignedInt32(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasContactId() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearContactId() => clearField(10);
+
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(9);
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(10);
 }
 
 class TicketPb extends $pb.GeneratedMessage {

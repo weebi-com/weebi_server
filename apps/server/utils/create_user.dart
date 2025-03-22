@@ -12,7 +12,6 @@ void main() async {
   final isConnected = await connection.connect();
   print('isConnected $isConnected');
   fenceService = FenceService(db);
-  //await db.createCollection(fenceService.collection.collectionName);
 
   final dd = await fenceService.userCollection
       .insertOne(Dummy.userPublic.toProto3Json() as Map<String, dynamic>);

@@ -1,9 +1,10 @@
 # changelog
 
-## 1.0.10+1 - 2025 march 21th
+## 1.0.10+2 - 2025 march 21th
 
 - int64 category.color
 - int64 contact.overdraft
+- contactId in TicketMongo
 
 ## 1.0.10 - 2025 march 17th
 
