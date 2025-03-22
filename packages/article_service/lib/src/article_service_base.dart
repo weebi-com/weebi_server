@@ -218,7 +218,7 @@ class ArticleService extends ArticleServiceBase {
       }
       final list = await collectionArticle.find(selector).toList();
       if (list.isEmpty) {
-        return CalibresResponse.create();
+        return CalibresResponse(ids:idsSet);
       }
       final calibres = <CalibrePb>[];
       for (final e in list) {

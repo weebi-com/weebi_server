@@ -76,14 +76,14 @@ const CalibresResponse$json = {
   '1': 'CalibresResponse',
   '2': [
     {'1': 'calibres', '3': 1, '4': 3, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibres'},
-    {'1': 'ids', '3': 2, '4': 3, '5': 13, '10': 'ids'},
+    {'1': 'ids', '3': 2, '4': 3, '5': 5, '10': 'ids'},
   ],
 };
 
 /// Descriptor for `CalibresResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List calibresResponseDescriptor = $convert.base64Decode(
     'ChBDYWxpYnJlc1Jlc3BvbnNlEjQKCGNhbGlicmVzGAEgAygLMhgud2VlYmkuYXJ0aWNsZS5DYW'
-    'xpYnJlUGJSCGNhbGlicmVzEhAKA2lkcxgCIAMoDVIDaWRz');
+    'xpYnJlUGJSCGNhbGlicmVzEhAKA2lkcxgCIAMoBVIDaWRz');
 
 @$core.Deprecated('Use findCategoryRequestDescriptor instead')
 const FindCategoryRequest$json = {

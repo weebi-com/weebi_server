@@ -61,6 +61,8 @@ void main() async {
     expect(response.calibres.first.title, 'dummy');
     expect(response.calibres.first.articlesRetail.length, 1);
     expect(response.calibres.first.articlesRetail.first.calibreId, 1);
+    expect(response.ids.length, 1);
+    expect(response.ids.first, 1);
   });
 
   test('test updateOne article and readOne', () async {

@@ -310,7 +310,7 @@ class CalibresResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibresResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..pc<$3.CalibrePb>(1, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $3.CalibrePb.create)
-    ..p<$core.int>(2, _omitFieldNames ? '' : 'ids', $pb.PbFieldType.KU3)
+    ..p<$core.int>(2, _omitFieldNames ? '' : 'ids', $pb.PbFieldType.K3)
     ..hasRequiredFields = false
   ;
 
