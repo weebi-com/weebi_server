@@ -204,16 +204,16 @@ class ContactService extends ContactServiceBase {
       if (isDeviceResync) {
         final documents = await collection.find(selector).toList();
         for (final doc in documents) {
-          //print(doc);
           idsSet.add(doc['contactId']);
-          //print(idsSet.first);
         }
         selector.and(where.gte('lastTouchTimestampUTC',
             request.lastFetchTimestampUTC.toDateTime()));
       }
+      //
+
       final list = await collection.find(selector).toList();
       if (list.isEmpty) {
-        return ContactsResponse.create();
+        return ContactsResponse(ids: idsSet);
       }
 
       final contacts = <ContactPb>[];
@@ -223,10 +223,11 @@ class ContactService extends ContactServiceBase {
         contacts.add(contactMongo.contact);
       }
 
-      final contactsResponse = ContactsResponse(ids: idsSet);
+      final contactsResponse = ContactsResponse.create();
       contactsResponse.contacts
         ..clear()
         ..addAll(contacts);
+      contactsResponse.ids.addAll(idsSet);
       return contactsResponse;
     } on GrpcError catch (e) {
       print('readAll contacts error $e');
