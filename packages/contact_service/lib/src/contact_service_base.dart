@@ -199,12 +199,14 @@ class ContactService extends ContactServiceBase {
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
 
-      final bool isDeviceResync = request.lastFetchTimestampUTC.hasSeconds();
+      final bool isDeviceResync = request.lastFetchTimestampUTC.isNotEmpty;
       final idsSet = <int>{};
       if (isDeviceResync) {
         final documents = await collection.find(selector).toList();
         for (final doc in documents) {
+          //print(doc);
           idsSet.add(doc['contactId']);
+          //print(idsSet.first);
         }
         selector.and(where.gte('lastTouchTimestampUTC',
             request.lastFetchTimestampUTC.toDateTime()));

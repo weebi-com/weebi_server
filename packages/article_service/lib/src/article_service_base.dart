@@ -205,7 +205,7 @@ class ArticleService extends ArticleServiceBase {
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
 
-      final bool isDeviceResync = request.lastFetchTimestampUTC.hasSeconds();
+      final bool isDeviceResync = request.lastFetchTimestampUTC.isNotEmpty;
       final idsSet = <int>{};
       if (isDeviceResync) {
         final documents = await collectionArticle.find(selector).toList();
@@ -760,7 +760,7 @@ class ArticleService extends ArticleServiceBase {
       final selector = SelectorBuilder()
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
-      if (request.lastFetchTimestampUTC.hasSeconds()) {
+      if (request.lastFetchTimestampUTC.isNotEmpty) {
         selector.and(where.gte('lastTouchTimestampUTC',
             request.lastFetchTimestampUTC.toDateTime()));
       }

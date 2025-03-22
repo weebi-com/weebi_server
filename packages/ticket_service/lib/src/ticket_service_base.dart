@@ -130,7 +130,7 @@ class TicketService extends TicketServiceBase {
       selector.and(where.eq('boutiqueId', request.boutiqueId));
     }
 
-    if (request.lastFetchTimestampUTC.hasSeconds()) {
+    if (request.lastFetchTimestampUTC.isNotEmpty) {
       selector.and(where.gte(
           'lastTouchTimestampUTC', request.lastFetchTimestampUTC.toDateTime()));
     }
