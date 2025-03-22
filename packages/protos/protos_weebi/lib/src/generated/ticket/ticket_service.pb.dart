@@ -112,6 +112,7 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   void clearIsDeleted() => clearField(5);
 }
 
+/// consider adding isDeleted param
 class FindTicketRequest extends $pb.GeneratedMessage {
   factory FindTicketRequest({
     $core.String? ticketChainId,

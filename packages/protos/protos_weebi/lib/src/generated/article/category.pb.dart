@@ -11,6 +11,7 @@
 
 import 'dart:core' as $core;
 
+import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../common/g_timestamp.pb.dart' as $18;
@@ -144,7 +145,7 @@ class CategoryPb extends $pb.GeneratedMessage {
   factory CategoryPb({
     $core.Iterable<$core.int>? calibresIds,
     $core.String? title,
-    $core.int? color,
+    $fixnum.Int64? color,
     $core.String? creationDate,
     $core.String? updateDate,
   }) {
@@ -173,7 +174,7 @@ class CategoryPb extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CategoryPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.category'), createEmptyInstance: create)
     ..p<$core.int>(1, _omitFieldNames ? '' : 'calibresIds', $pb.PbFieldType.KU3, protoName: 'calibresIds')
     ..aOS(2, _omitFieldNames ? '' : 'title')
-    ..a<$core.int>(3, _omitFieldNames ? '' : 'color', $pb.PbFieldType.OU3)
+    ..a<$fixnum.Int64>(3, _omitFieldNames ? '' : 'color', $pb.PbFieldType.OU6, defaultOrMaker: $fixnum.Int64.ZERO)
     ..aOS(4, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
     ..aOS(5, _omitFieldNames ? '' : 'updateDate', protoName: 'updateDate')
     ..hasRequiredFields = false
@@ -213,9 +214,9 @@ class CategoryPb extends $pb.GeneratedMessage {
   void clearTitle() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.int get color => $_getIZ(2);
+  $fixnum.Int64 get color => $_getI64(2);
   @$pb.TagNumber(3)
-  set color($core.int v) { $_setUnsignedInt32(2, v); }
+  set color($fixnum.Int64 v) { $_setInt64(2, v); }
   @$pb.TagNumber(3)
   $core.bool hasColor() => $_has(2);
   @$pb.TagNumber(3)

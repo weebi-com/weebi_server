@@ -58,6 +58,7 @@ void main() async {
       ),
     );
     expect(response.firstName, 'John');
+    expect(response.overdraft, 0);
   });
 
   test('test upsertOne ', () async {

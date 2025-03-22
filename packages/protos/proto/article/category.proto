@@ -16,7 +16,7 @@ message CategoryMongo {
 message CategoryPb {
   repeated uint32 calibresIds = 1 [json_name = 'calibresIds'];
   string title = 2 [json_name = 'title'];
-  uint32 color = 3 [json_name = 'color'];
+  uint64 color = 3 [json_name = 'color'];
   string creationDate = 4 [json_name = 'creationDate'];
   string updateDate = 5 [json_name = 'updateDate'];
 }

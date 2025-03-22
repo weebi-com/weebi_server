@@ -23,6 +23,20 @@ db.restaurants.createIndex(
 1 == ascending
 -1 == descending
 
+
+TODO: also include search index
+[
+  {
+    $search: {
+      index: "title",
+      text: {
+        query: "string",
+        path: "string"
+      }
+    }
+  }
+]
+
  */
 main() async {
   final db = await Db.create(TestHelper.local);

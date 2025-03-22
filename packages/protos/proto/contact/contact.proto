@@ -30,7 +30,8 @@ message ContactPb {
     string mail =  8 [json_name = 'mail'];
     weebi.common.phone.Phone phone =  9 [json_name = 'phone'];
     weebi.common.address.Address addressFull =  10 [json_name = 'addressFull'];
-    int32 overdraft =  11 [json_name = 'overdraft'];
+    // legacy intt32 might be an issue
+    int64 overdraft =  11 [json_name = 'overdraft'];
     repeated string tags =  12 [json_name = 'categories'];
     bool isClient =  13 [json_name = 'isClient'];
     bool isSupplier =  14 [json_name = 'isSupplier'];
