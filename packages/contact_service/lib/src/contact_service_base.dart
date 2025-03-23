@@ -213,7 +213,7 @@ class ContactService extends ContactServiceBase {
 
       final list = await collection.find(selector).toList();
       if (list.isEmpty) {
-        return ContactsResponse(ids: idsSet);
+        return ContactsResponse();
       }
 
       final contacts = <ContactPb>[];
@@ -227,7 +227,6 @@ class ContactService extends ContactServiceBase {
       contactsResponse.contacts
         ..clear()
         ..addAll(contacts);
-      contactsResponse.ids.addAll(idsSet);
       return contactsResponse;
     } on GrpcError catch (e) {
       print('readAll contacts error $e');
@@ -235,9 +234,43 @@ class ContactService extends ContactServiceBase {
     }
   }
 
+   @override
+  Future<ContactsIdsResponse> readAllIds(
+      ServiceCall? call, ReadContactsIdsRequest request) async {
+    _db.isConnected ? null : await _db.open();
+    final userPermission = isTest
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
+    if (userPermission.contactRights.rights.any((e) => e == Right.read) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to read contacts');
+    }
+    try {
+      final selector = SelectorBuilder()
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId);
+
+      final idsSet = <int>{};
+        final documents = await collection.find(selector).toList();
+        for (final doc in documents) {
+          idsSet.add(doc['contactId']);
+        }
+
+      return ContactsIdsResponse.create()..ids.addAll(idsSet);
+    } on GrpcError catch (e) {
+      print('readAllIds contacts error $e');
+      rethrow;
+    }
+  }
+
   @override
   Future<ContactPb> readOne(
-      ServiceCall? call, FindContactRequest request) async {
+      ServiceCall? call, ReadContactRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()

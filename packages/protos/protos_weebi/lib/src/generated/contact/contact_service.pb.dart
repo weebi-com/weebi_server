@@ -18,8 +18,8 @@ import '../common/g_timestamp.pb.dart' as $18;
 import '../common/phone.pb.dart' as $19;
 import 'contact.pb.dart' as $7;
 
-class FindContactRequest extends $pb.GeneratedMessage {
-  factory FindContactRequest({
+class ReadContactRequest extends $pb.GeneratedMessage {
+  factory ReadContactRequest({
     $core.String? contactChainId,
     $core.int? contactId,
     $core.String? firstName,
@@ -52,11 +52,11 @@ class FindContactRequest extends $pb.GeneratedMessage {
     }
     return $result;
   }
-  FindContactRequest._() : super();
-  factory FindContactRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory FindContactRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  ReadContactRequest._() : super();
+  factory ReadContactRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadContactRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FindContactRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact.service'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadContactRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'contactChainId', protoName: 'contactChainId')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'contactId', $pb.PbFieldType.O3, protoName: 'contactId')
     ..aOS(4, _omitFieldNames ? '' : 'firstName', protoName: 'firstName')
@@ -71,22 +71,22 @@ class FindContactRequest extends $pb.GeneratedMessage {
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
   'Will be removed in next major version')
-  FindContactRequest clone() => FindContactRequest()..mergeFromMessage(this);
+  ReadContactRequest clone() => ReadContactRequest()..mergeFromMessage(this);
   @$core.Deprecated(
   'Using this can add significant overhead to your binary. '
   'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
   'Will be removed in next major version')
-  FindContactRequest copyWith(void Function(FindContactRequest) updates) => super.copyWith((message) => updates(message as FindContactRequest)) as FindContactRequest;
+  ReadContactRequest copyWith(void Function(ReadContactRequest) updates) => super.copyWith((message) => updates(message as ReadContactRequest)) as ReadContactRequest;
 
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
-  static FindContactRequest create() => FindContactRequest._();
-  FindContactRequest createEmptyInstance() => create();
-  static $pb.PbList<FindContactRequest> createRepeated() => $pb.PbList<FindContactRequest>();
+  static ReadContactRequest create() => ReadContactRequest._();
+  ReadContactRequest createEmptyInstance() => create();
+  static $pb.PbList<ReadContactRequest> createRepeated() => $pb.PbList<ReadContactRequest>();
   @$core.pragma('dart2js:noInline')
-  static FindContactRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FindContactRequest>(create);
-  static FindContactRequest? _defaultInstance;
+  static ReadContactRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadContactRequest>(create);
+  static ReadContactRequest? _defaultInstance;
 
   /// string firmId = 1 [json_name = 'firmId']; // deduced from bearer token
   @$pb.TagNumber(1)
@@ -357,14 +357,10 @@ class ContactsRequest extends $pb.GeneratedMessage {
 class ContactsResponse extends $pb.GeneratedMessage {
   factory ContactsResponse({
     $core.Iterable<$7.ContactPb>? contacts,
-    $core.Iterable<$core.int>? ids,
   }) {
     final $result = create();
     if (contacts != null) {
       $result.contacts.addAll(contacts);
-    }
-    if (ids != null) {
-      $result.ids.addAll(ids);
     }
     return $result;
   }
@@ -374,7 +370,6 @@ class ContactsResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactsResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact.service'), createEmptyInstance: create)
     ..pc<$7.ContactPb>(1, _omitFieldNames ? '' : 'contacts', $pb.PbFieldType.PM, subBuilder: $7.ContactPb.create)
-    ..p<$core.int>(2, _omitFieldNames ? '' : 'ids', $pb.PbFieldType.K3)
     ..hasRequiredFields = false
   ;
 
@@ -401,11 +396,101 @@ class ContactsResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<$7.ContactPb> get contacts => $_getList(0);
+}
 
-  /// / only provided if the request contained lastFetchTimestamp, i.e. if device resync
-  /// / include all ids so that offline device can delete objects removed by another user/device
-  @$pb.TagNumber(2)
-  $core.List<$core.int> get ids => $_getList(1);
+class ReadContactsIdsRequest extends $pb.GeneratedMessage {
+  factory ReadContactsIdsRequest({
+    $core.String? chainId,
+  }) {
+    final $result = create();
+    if (chainId != null) {
+      $result.chainId = chainId;
+    }
+    return $result;
+  }
+  ReadContactsIdsRequest._() : super();
+  factory ReadContactsIdsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadContactsIdsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadContactsIdsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ReadContactsIdsRequest clone() => ReadContactsIdsRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ReadContactsIdsRequest copyWith(void Function(ReadContactsIdsRequest) updates) => super.copyWith((message) => updates(message as ReadContactsIdsRequest)) as ReadContactsIdsRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReadContactsIdsRequest create() => ReadContactsIdsRequest._();
+  ReadContactsIdsRequest createEmptyInstance() => create();
+  static $pb.PbList<ReadContactsIdsRequest> createRepeated() => $pb.PbList<ReadContactsIdsRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ReadContactsIdsRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadContactsIdsRequest>(create);
+  static ReadContactsIdsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => clearField(1);
+}
+
+/// / include all ids so that offline device can delete objects removed by another user/device
+class ContactsIdsResponse extends $pb.GeneratedMessage {
+  factory ContactsIdsResponse({
+    $core.Iterable<$core.int>? ids,
+  }) {
+    final $result = create();
+    if (ids != null) {
+      $result.ids.addAll(ids);
+    }
+    return $result;
+  }
+  ContactsIdsResponse._() : super();
+  factory ContactsIdsResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ContactsIdsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ContactsIdsResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact.service'), createEmptyInstance: create)
+    ..p<$core.int>(1, _omitFieldNames ? '' : 'ids', $pb.PbFieldType.K3)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ContactsIdsResponse clone() => ContactsIdsResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ContactsIdsResponse copyWith(void Function(ContactsIdsResponse) updates) => super.copyWith((message) => updates(message as ContactsIdsResponse)) as ContactsIdsResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ContactsIdsResponse create() => ContactsIdsResponse._();
+  ContactsIdsResponse createEmptyInstance() => create();
+  static $pb.PbList<ContactsIdsResponse> createRepeated() => $pb.PbList<ContactsIdsResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ContactsIdsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ContactsIdsResponse>(create);
+  static ContactsIdsResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<$core.int> get ids => $_getList(0);
 }
 
 

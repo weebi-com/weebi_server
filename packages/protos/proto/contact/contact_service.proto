@@ -14,8 +14,9 @@ service ContactService {
   rpc createMany (ContactsRequest) returns (google.retail.common.StatusResponse);
  
   /// use [lastFetchTimestampUTC] to only read the latest changes since last fetch
+  rpc readOne (ReadContactRequest) returns (weebi.contact.ContactPb);
   rpc readAll (ReadAllContactsRequest) returns  (ContactsResponse);
-  rpc readOne (FindContactRequest) returns (weebi.contact.ContactPb);
+  rpc readAllIds (ReadContactsIdsRequest) returns  (ContactsIdsResponse);
 
   /// == upsert
   rpc updateOne (ContactRequest) returns (google.retail.common.StatusResponse);
@@ -24,7 +25,7 @@ service ContactService {
   rpc deleteOne (ContactRequest) returns (google.retail.common.StatusResponse);
 }
 
-message FindContactRequest {
+message ReadContactRequest {
   // string firmId = 1 [json_name = 'firmId']; // deduced from bearer token
   string contactChainId = 1 [json_name = 'contactChainId'];
   int32 contactId = 3 [json_name = 'contactId'];
@@ -61,8 +62,14 @@ message ContactsRequest {
 
 message ContactsResponse {
   repeated weebi.contact.ContactPb contacts = 1;
-
-  /// only provided if the request contained lastFetchTimestamp, i.e. if device resync
-  /// include all ids so that offline device can delete objects removed by another user/device 
-  repeated int32 ids = 2;
 }
+
+message ReadContactsIdsRequest {
+  string chainId = 1;
+}
+
+/// include all ids so that offline device can delete objects removed by another user/device 
+message ContactsIdsResponse {
+  repeated int32 ids = 1;
+}
+
