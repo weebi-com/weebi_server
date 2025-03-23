@@ -13,9 +13,9 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use findCalibreRequestDescriptor instead')
-const FindCalibreRequest$json = {
-  '1': 'FindCalibreRequest',
+@$core.Deprecated('Use readCalibreRequestDescriptor instead')
+const ReadCalibreRequest$json = {
+  '1': 'ReadCalibreRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'title', '3': 2, '4': 1, '5': 9, '10': 'title'},
@@ -23,9 +23,9 @@ const FindCalibreRequest$json = {
   ],
 };
 
-/// Descriptor for `FindCalibreRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findCalibreRequestDescriptor = $convert.base64Decode(
-    'ChJGaW5kQ2FsaWJyZVJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBIUCgV0aXRsZR'
+/// Descriptor for `ReadCalibreRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readCalibreRequestDescriptor = $convert.base64Decode(
+    'ChJSZWFkQ2FsaWJyZVJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBIUCgV0aXRsZR'
     'gCIAEoCVIFdGl0bGUSHAoJY2FsaWJyZUlkGAMgASgFUgljYWxpYnJlSWQ=');
 
 @$core.Deprecated('Use readAllRequestDescriptor instead')
@@ -76,14 +76,37 @@ const CalibresResponse$json = {
   '1': 'CalibresResponse',
   '2': [
     {'1': 'calibres', '3': 1, '4': 3, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibres'},
-    {'1': 'ids', '3': 2, '4': 3, '5': 5, '10': 'ids'},
   ],
 };
 
 /// Descriptor for `CalibresResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List calibresResponseDescriptor = $convert.base64Decode(
     'ChBDYWxpYnJlc1Jlc3BvbnNlEjQKCGNhbGlicmVzGAEgAygLMhgud2VlYmkuYXJ0aWNsZS5DYW'
-    'xpYnJlUGJSCGNhbGlicmVzEhAKA2lkcxgCIAMoBVIDaWRz');
+    'xpYnJlUGJSCGNhbGlicmVz');
+
+@$core.Deprecated('Use readIdsRequestDescriptor instead')
+const ReadIdsRequest$json = {
+  '1': 'ReadIdsRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+  ],
+};
+
+/// Descriptor for `ReadIdsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readIdsRequestDescriptor = $convert.base64Decode(
+    'Cg5SZWFkSWRzUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklk');
+
+@$core.Deprecated('Use calibresIdsResponseDescriptor instead')
+const CalibresIdsResponse$json = {
+  '1': 'CalibresIdsResponse',
+  '2': [
+    {'1': 'ids', '3': 1, '4': 3, '5': 5, '10': 'ids'},
+  ],
+};
+
+/// Descriptor for `CalibresIdsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List calibresIdsResponseDescriptor = $convert.base64Decode(
+    'ChNDYWxpYnJlc0lkc1Jlc3BvbnNlEhAKA2lkcxgBIAMoBVIDaWRz');
 
 @$core.Deprecated('Use findCategoryRequestDescriptor instead')
 const FindCategoryRequest$json = {

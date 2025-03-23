@@ -13,9 +13,9 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
-@$core.Deprecated('Use findContactRequestDescriptor instead')
-const FindContactRequest$json = {
-  '1': 'FindContactRequest',
+@$core.Deprecated('Use readContactRequestDescriptor instead')
+const ReadContactRequest$json = {
+  '1': 'ReadContactRequest',
   '2': [
     {'1': 'contactChainId', '3': 1, '4': 1, '5': 9, '10': 'contactChainId'},
     {'1': 'contactId', '3': 3, '4': 1, '5': 5, '10': 'contactId'},
@@ -27,9 +27,9 @@ const FindContactRequest$json = {
   ],
 };
 
-/// Descriptor for `FindContactRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List findContactRequestDescriptor = $convert.base64Decode(
-    'ChJGaW5kQ29udGFjdFJlcXVlc3QSJgoOY29udGFjdENoYWluSWQYASABKAlSDmNvbnRhY3RDaG'
+/// Descriptor for `ReadContactRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readContactRequestDescriptor = $convert.base64Decode(
+    'ChJSZWFkQ29udGFjdFJlcXVlc3QSJgoOY29udGFjdENoYWluSWQYASABKAlSDmNvbnRhY3RDaG'
     'FpbklkEhwKCWNvbnRhY3RJZBgDIAEoBVIJY29udGFjdElkEhwKCWZpcnN0TmFtZRgEIAEoCVIJ'
     'Zmlyc3ROYW1lEhoKCGxhc3ROYW1lGAUgASgJUghsYXN0TmFtZRISCgRtYWlsGAYgASgJUgRtYW'
     'lsEi8KBXBob25lGAcgASgLMhkud2VlYmkuY29tbW9uLnBob25lLlBob25lUgVwaG9uZRI7Cgdh'
@@ -84,12 +84,35 @@ const ContactsResponse$json = {
   '1': 'ContactsResponse',
   '2': [
     {'1': 'contacts', '3': 1, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contacts'},
-    {'1': 'ids', '3': 2, '4': 3, '5': 5, '10': 'ids'},
   ],
 };
 
 /// Descriptor for `ContactsResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactsResponseDescriptor = $convert.base64Decode(
     'ChBDb250YWN0c1Jlc3BvbnNlEjQKCGNvbnRhY3RzGAEgAygLMhgud2VlYmkuY29udGFjdC5Db2'
-    '50YWN0UGJSCGNvbnRhY3RzEhAKA2lkcxgCIAMoBVIDaWRz');
+    '50YWN0UGJSCGNvbnRhY3Rz');
+
+@$core.Deprecated('Use readContactsIdsRequestDescriptor instead')
+const ReadContactsIdsRequest$json = {
+  '1': 'ReadContactsIdsRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+  ],
+};
+
+/// Descriptor for `ReadContactsIdsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readContactsIdsRequestDescriptor = $convert.base64Decode(
+    'ChZSZWFkQ29udGFjdHNJZHNSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQ=');
+
+@$core.Deprecated('Use contactsIdsResponseDescriptor instead')
+const ContactsIdsResponse$json = {
+  '1': 'ContactsIdsResponse',
+  '2': [
+    {'1': 'ids', '3': 1, '4': 3, '5': 5, '10': 'ids'},
+  ],
+};
+
+/// Descriptor for `ContactsIdsResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List contactsIdsResponseDescriptor = $convert.base64Decode(
+    'ChNDb250YWN0c0lkc1Jlc3BvbnNlEhAKA2lkcxgBIAMoBVIDaWRz');
 

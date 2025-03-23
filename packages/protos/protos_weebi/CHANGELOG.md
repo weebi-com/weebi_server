@@ -1,10 +1,12 @@
 # changelog
 
-## 1.0.10+2 - 2025 march 21th
+## 1.0.10+3 - 2025 march 21th
 
 - int64 category.color
 - int64 contact.overdraft
 - contactId in TicketMongo
+- split readAll and readIds to avoid 
+- breaking change : use ReadReaquest instead of Find for coherence
 
 ## 1.0.10 - 2025 march 17th
 
