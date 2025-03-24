@@ -15,9 +15,11 @@ import "common/g_timestamp.proto";
 service ArticleService {
   rpc createOne (CalibreRequest) returns (google.retail.common.StatusResponse);
   rpc createMany (CalibresRequest) returns (google.retail.common.StatusResponse);
-  rpc readOne (FindCalibreRequest) returns (weebi.article.CalibrePb);
+
+  rpc readOne (ReadCalibreRequest) returns (weebi.article.CalibrePb);
   /// use [lastFetchTimestampUTC] to only read the latest changes since last fetch
   rpc readAll (ReadAllRequest) returns  (CalibresResponse);
+  rpc readAllIds (ReadIdsRequest) returns  (CalibresIdsResponse);
  
   /// update == upsert (replaceOne upsert)
   rpc updateOne (CalibreRequest) returns (google.retail.common.StatusResponse);
@@ -53,7 +55,7 @@ service ArticleService {
 }
 
 /// A Calibre includes Articles
-message FindCalibreRequest {
+message ReadCalibreRequest {
   string chainId = 1;
   string title = 2 ;
   int32 calibreId = 3 ;
@@ -78,11 +80,17 @@ message CalibresRequest {
 
 message CalibresResponse {
   repeated weebi.article.CalibrePb calibres = 1;
-  
-  /// only provided if the request contained lastFetchTimestamp, i.e. if device resync
-  /// include all ids so that offline device can delete objects removed by another user/device 
-  repeated int32 ids = 2;
 }
+
+message ReadIdsRequest {
+  string chainId = 1;
+}
+
+/// include all ids so that offline device can delete objects removed by another user/device 
+message CalibresIdsResponse {
+  repeated int32 ids = 1;
+}
+
 
 /// categories
 message FindCategoryRequest {

@@ -31,14 +31,18 @@ class ContactServiceClient extends $grpc.Client {
       '/weebi.contact.service.ContactService/createMany',
       ($6.ContactsRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$readOne = $grpc.ClientMethod<$6.ReadContactRequest, $7.ContactPb>(
+      '/weebi.contact.service.ContactService/readOne',
+      ($6.ReadContactRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $7.ContactPb.fromBuffer(value));
   static final _$readAll = $grpc.ClientMethod<$6.ReadAllContactsRequest, $6.ContactsResponse>(
       '/weebi.contact.service.ContactService/readAll',
       ($6.ReadAllContactsRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $6.ContactsResponse.fromBuffer(value));
-  static final _$readOne = $grpc.ClientMethod<$6.FindContactRequest, $7.ContactPb>(
-      '/weebi.contact.service.ContactService/readOne',
-      ($6.FindContactRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $7.ContactPb.fromBuffer(value));
+  static final _$readAllIds = $grpc.ClientMethod<$6.ReadContactsIdsRequest, $6.ContactsIdsResponse>(
+      '/weebi.contact.service.ContactService/readAllIds',
+      ($6.ReadContactsIdsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $6.ContactsIdsResponse.fromBuffer(value));
   static final _$updateOne = $grpc.ClientMethod<$6.ContactRequest, $1.StatusResponse>(
       '/weebi.contact.service.ContactService/updateOne',
       ($6.ContactRequest value) => value.writeToBuffer(),
@@ -62,12 +66,16 @@ class ContactServiceClient extends $grpc.Client {
     return $createUnaryCall(_$createMany, request, options: options);
   }
 
+  $grpc.ResponseFuture<$7.ContactPb> readOne($6.ReadContactRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$readOne, request, options: options);
+  }
+
   $grpc.ResponseFuture<$6.ContactsResponse> readAll($6.ReadAllContactsRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readAll, request, options: options);
   }
 
-  $grpc.ResponseFuture<$7.ContactPb> readOne($6.FindContactRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$readOne, request, options: options);
+  $grpc.ResponseFuture<$6.ContactsIdsResponse> readAllIds($6.ReadContactsIdsRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$readAllIds, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.StatusResponse> updateOne($6.ContactRequest request, {$grpc.CallOptions? options}) {
@@ -98,6 +106,13 @@ abstract class ContactServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $6.ContactsRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$6.ReadContactRequest, $7.ContactPb>(
+        'readOne',
+        readOne_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $6.ReadContactRequest.fromBuffer(value),
+        ($7.ContactPb value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$6.ReadAllContactsRequest, $6.ContactsResponse>(
         'readAll',
         readAll_Pre,
@@ -105,13 +120,13 @@ abstract class ContactServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $6.ReadAllContactsRequest.fromBuffer(value),
         ($6.ContactsResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$6.FindContactRequest, $7.ContactPb>(
-        'readOne',
-        readOne_Pre,
+    $addMethod($grpc.ServiceMethod<$6.ReadContactsIdsRequest, $6.ContactsIdsResponse>(
+        'readAllIds',
+        readAllIds_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $6.FindContactRequest.fromBuffer(value),
-        ($7.ContactPb value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) => $6.ReadContactsIdsRequest.fromBuffer(value),
+        ($6.ContactsIdsResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$6.ContactRequest, $1.StatusResponse>(
         'updateOne',
         updateOne_Pre,
@@ -136,12 +151,16 @@ abstract class ContactServiceBase extends $grpc.Service {
     return createMany(call, await request);
   }
 
+  $async.Future<$7.ContactPb> readOne_Pre($grpc.ServiceCall call, $async.Future<$6.ReadContactRequest> request) async {
+    return readOne(call, await request);
+  }
+
   $async.Future<$6.ContactsResponse> readAll_Pre($grpc.ServiceCall call, $async.Future<$6.ReadAllContactsRequest> request) async {
     return readAll(call, await request);
   }
 
-  $async.Future<$7.ContactPb> readOne_Pre($grpc.ServiceCall call, $async.Future<$6.FindContactRequest> request) async {
-    return readOne(call, await request);
+  $async.Future<$6.ContactsIdsResponse> readAllIds_Pre($grpc.ServiceCall call, $async.Future<$6.ReadContactsIdsRequest> request) async {
+    return readAllIds(call, await request);
   }
 
   $async.Future<$1.StatusResponse> updateOne_Pre($grpc.ServiceCall call, $async.Future<$6.ContactRequest> request) async {
@@ -154,8 +173,9 @@ abstract class ContactServiceBase extends $grpc.Service {
 
   $async.Future<$1.StatusResponse> createOne($grpc.ServiceCall call, $6.ContactRequest request);
   $async.Future<$1.StatusResponse> createMany($grpc.ServiceCall call, $6.ContactsRequest request);
+  $async.Future<$7.ContactPb> readOne($grpc.ServiceCall call, $6.ReadContactRequest request);
   $async.Future<$6.ContactsResponse> readAll($grpc.ServiceCall call, $6.ReadAllContactsRequest request);
-  $async.Future<$7.ContactPb> readOne($grpc.ServiceCall call, $6.FindContactRequest request);
+  $async.Future<$6.ContactsIdsResponse> readAllIds($grpc.ServiceCall call, $6.ReadContactsIdsRequest request);
   $async.Future<$1.StatusResponse> updateOne($grpc.ServiceCall call, $6.ContactRequest request);
   $async.Future<$1.StatusResponse> deleteOne($grpc.ServiceCall call, $6.ContactRequest request);
 }

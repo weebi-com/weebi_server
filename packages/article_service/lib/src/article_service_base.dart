@@ -218,7 +218,7 @@ class ArticleService extends ArticleServiceBase {
       }
       final list = await collectionArticle.find(selector).toList();
       if (list.isEmpty) {
-        return CalibresResponse(ids:idsSet);
+        return CalibresResponse();
       }
       final calibres = <CalibrePb>[];
       for (final e in list) {
@@ -226,7 +226,7 @@ class ArticleService extends ArticleServiceBase {
           ..mergeFromProto3Json(e, ignoreUnknownFields: true);
         calibres.add(calibreMongo.calibre);
       }
-      final calibresBis = CalibresResponse(ids: idsSet);
+      final calibresBis = CalibresResponse();
       calibresBis.calibres
         ..clear()
         ..addAll(calibres);
@@ -238,8 +238,42 @@ class ArticleService extends ArticleServiceBase {
   }
 
   @override
+  Future<CalibresIdsResponse> readAllIds(
+      ServiceCall? call, ReadIdsRequest request) async {
+    _db.isConnected ? null : await _db.open();
+    final userPermission = isTest
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    if (userPermission.articleRights.rights.any((e) => e == Right.read) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to read articles');
+    }
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
+
+    try {
+      final selector = SelectorBuilder()
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId);
+
+      final idsSet = <int>{};
+        final documents = await collectionArticle.find(selector).toList();
+        for (final doc in documents) {
+          idsSet.add(doc['calibreId']);
+        }
+      return CalibresIdsResponse.create()..ids.addAll(idsSet);
+    } on GrpcError catch (e) {
+      print('readAll articles error $e');
+      rethrow;
+    }
+  }
+
+  @override
   Future<CalibrePb> readOne(
-      ServiceCall? call, FindCalibreRequest request) async {
+      ServiceCall? call, ReadCalibreRequest request) async {
     _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -442,7 +476,6 @@ class ArticleService extends ArticleServiceBase {
       final list = await collectionCategory.find(selector).toList();
       final categories = <CategoryPb>[];
       for (final e in list) {
-      
         final categoryMongo = CategoryMongo.create()
           ..mergeFromProto3Json(e, ignoreUnknownFields: true);
         categories.add(categoryMongo.category);

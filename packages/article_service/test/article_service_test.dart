@@ -61,6 +61,10 @@ void main() async {
     expect(response.calibres.first.title, 'dummy');
     expect(response.calibres.first.articlesRetail.length, 1);
     expect(response.calibres.first.articlesRetail.first.calibreId, 1);
+  });
+  test('test readAllIds', () async {
+    final response = await articleService.readAllIds(
+        null, ReadIdsRequest(chainId: Dummy.chain.chainId));
     expect(response.ids.length, 1);
     expect(response.ids.first, 1);
   });
@@ -85,7 +89,7 @@ void main() async {
 
     final responseReadOne = await articleService.readOne(
         null,
-        FindCalibreRequest(
+        ReadCalibreRequest(
             chainId: Dummy.chain.chainId, title: 'Lili biscuit'));
     expect(responseReadOne != CalibrePb.getDefault(), isTrue);
     expect(responseReadOne.articlesRetail.length, 1);

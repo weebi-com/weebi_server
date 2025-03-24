@@ -33,14 +33,18 @@ class ArticleServiceClient extends $grpc.Client {
       '/weebi.article.service.ArticleService/createMany',
       ($2.CalibresRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$readOne = $grpc.ClientMethod<$2.FindCalibreRequest, $3.CalibrePb>(
+  static final _$readOne = $grpc.ClientMethod<$2.ReadCalibreRequest, $3.CalibrePb>(
       '/weebi.article.service.ArticleService/readOne',
-      ($2.FindCalibreRequest value) => value.writeToBuffer(),
+      ($2.ReadCalibreRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $3.CalibrePb.fromBuffer(value));
   static final _$readAll = $grpc.ClientMethod<$2.ReadAllRequest, $2.CalibresResponse>(
       '/weebi.article.service.ArticleService/readAll',
       ($2.ReadAllRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $2.CalibresResponse.fromBuffer(value));
+  static final _$readAllIds = $grpc.ClientMethod<$2.ReadIdsRequest, $2.CalibresIdsResponse>(
+      '/weebi.article.service.ArticleService/readAllIds',
+      ($2.ReadIdsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $2.CalibresIdsResponse.fromBuffer(value));
   static final _$updateOne = $grpc.ClientMethod<$2.CalibreRequest, $1.StatusResponse>(
       '/weebi.article.service.ArticleService/updateOne',
       ($2.CalibreRequest value) => value.writeToBuffer(),
@@ -108,12 +112,16 @@ class ArticleServiceClient extends $grpc.Client {
     return $createUnaryCall(_$createMany, request, options: options);
   }
 
-  $grpc.ResponseFuture<$3.CalibrePb> readOne($2.FindCalibreRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$3.CalibrePb> readOne($2.ReadCalibreRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readOne, request, options: options);
   }
 
   $grpc.ResponseFuture<$2.CalibresResponse> readAll($2.ReadAllRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readAll, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$2.CalibresIdsResponse> readAllIds($2.ReadIdsRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$readAllIds, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.StatusResponse> updateOne($2.CalibreRequest request, {$grpc.CallOptions? options}) {
@@ -188,12 +196,12 @@ abstract class ArticleServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.CalibresRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.FindCalibreRequest, $3.CalibrePb>(
+    $addMethod($grpc.ServiceMethod<$2.ReadCalibreRequest, $3.CalibrePb>(
         'readOne',
         readOne_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $2.FindCalibreRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $2.ReadCalibreRequest.fromBuffer(value),
         ($3.CalibrePb value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.ReadAllRequest, $2.CalibresResponse>(
         'readAll',
@@ -202,6 +210,13 @@ abstract class ArticleServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.ReadAllRequest.fromBuffer(value),
         ($2.CalibresResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.ReadIdsRequest, $2.CalibresIdsResponse>(
+        'readAllIds',
+        readAllIds_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.ReadIdsRequest.fromBuffer(value),
+        ($2.CalibresIdsResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$2.CalibreRequest, $1.StatusResponse>(
         'updateOne',
         updateOne_Pre,
@@ -303,12 +318,16 @@ abstract class ArticleServiceBase extends $grpc.Service {
     return createMany(call, await request);
   }
 
-  $async.Future<$3.CalibrePb> readOne_Pre($grpc.ServiceCall call, $async.Future<$2.FindCalibreRequest> request) async {
+  $async.Future<$3.CalibrePb> readOne_Pre($grpc.ServiceCall call, $async.Future<$2.ReadCalibreRequest> request) async {
     return readOne(call, await request);
   }
 
   $async.Future<$2.CalibresResponse> readAll_Pre($grpc.ServiceCall call, $async.Future<$2.ReadAllRequest> request) async {
     return readAll(call, await request);
+  }
+
+  $async.Future<$2.CalibresIdsResponse> readAllIds_Pre($grpc.ServiceCall call, $async.Future<$2.ReadIdsRequest> request) async {
+    return readAllIds(call, await request);
   }
 
   $async.Future<$1.StatusResponse> updateOne_Pre($grpc.ServiceCall call, $async.Future<$2.CalibreRequest> request) async {
@@ -365,8 +384,9 @@ abstract class ArticleServiceBase extends $grpc.Service {
 
   $async.Future<$1.StatusResponse> createOne($grpc.ServiceCall call, $2.CalibreRequest request);
   $async.Future<$1.StatusResponse> createMany($grpc.ServiceCall call, $2.CalibresRequest request);
-  $async.Future<$3.CalibrePb> readOne($grpc.ServiceCall call, $2.FindCalibreRequest request);
+  $async.Future<$3.CalibrePb> readOne($grpc.ServiceCall call, $2.ReadCalibreRequest request);
   $async.Future<$2.CalibresResponse> readAll($grpc.ServiceCall call, $2.ReadAllRequest request);
+  $async.Future<$2.CalibresIdsResponse> readAllIds($grpc.ServiceCall call, $2.ReadIdsRequest request);
   $async.Future<$1.StatusResponse> updateOne($grpc.ServiceCall call, $2.CalibreRequest request);
   $async.Future<$1.StatusResponse> deleteOne($grpc.ServiceCall call, $2.CalibreRequest request);
   $async.Future<$1.StatusResponse> createOneCategory($grpc.ServiceCall call, $2.CategoryRequest request);

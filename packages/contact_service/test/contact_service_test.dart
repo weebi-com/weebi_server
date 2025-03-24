@@ -47,15 +47,19 @@ void main() async {
     final response = await contactService.readAll(
         null, ReadAllContactsRequest(chainId: chainId));
     expect(response.contacts.length, 1);
+
+  });
+  test('test readAllIds', () async {
+    final response = await contactService.readAllIds(
+        null, ReadContactsIdsRequest(chainId: chainId));
     expect(response.ids.length, 1);
     expect(response.ids.first, 1);
-
   });
 
   test('test readOne', () async {
     final response = await contactService.readOne(
       null,
-      FindContactRequest(
+      ReadContactRequest(
         contactChainId: chainId,
         contactId: 1,
       ),
