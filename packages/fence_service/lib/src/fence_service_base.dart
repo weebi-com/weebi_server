@@ -50,7 +50,9 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.invalidArgument(
           'request.permissions.firmId cannot be empty');
     }
-    if (request.firstname.isEmpty || request.lastname.isEmpty || request.mail.isEmpty) {
+    if (request.firstname.isEmpty ||
+        request.lastname.isEmpty ||
+        request.mail.isEmpty) {
       throw GrpcError.invalidArgument(
           'missing either firstname, lastname, mail');
     }
@@ -270,17 +272,19 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, MailAndEncyptedPassword request) async {
     try {
       final selector = where
-          .eq('mail', request.mail.trim())
+          .match('mail', r'^' + request.mail.trim() + r'$',
+              caseInsensitive: true)
           .eq('password', request.passwordEncrypted);
+
       final userPrivateMongo = await userCollection.findOne(selector);
       if (userPrivateMongo == null) {
-        final resultMail =
+        /*  final resultMail =
             await userCollection.findOne(where.eq('mail', request.mail));
         if (resultMail == null) {
           throw GrpcError.notFound();
-        } else {
-          throw GrpcError.invalidArgument('incorrect password');
-        }
+        } else */
+        // ! deliberately do not give wrong password info for security reason
+        throw GrpcError.invalidArgument('incorrect login or password');
       }
       final userPrivate = UserPrivate()
         ..mergeFromProto3Json(userPrivateMongo, ignoreUnknownFields: true);
