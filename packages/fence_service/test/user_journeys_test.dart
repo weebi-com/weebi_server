@@ -172,7 +172,7 @@ void main() async {
       await fenceService.authenticateWithCredentials(
           null, Credentials(mail: 'alice@weebi.com', password: 'ILostIt!!'));
     } on GrpcError catch (e) {
-      expect(e.message, 'incorrect password');
+      expect(e.message, 'incorrect login or password');
       expect(e.code, 3);
     }
 
