@@ -278,14 +278,13 @@ class FenceService extends FenceServiceBase {
 
       final userPrivateMongo = await userCollection.findOne(selector);
       if (userPrivateMongo == null) {
-        final resultMail =
+        /*  final resultMail =
             await userCollection.findOne(where.eq('mail', request.mail));
         if (resultMail == null) {
           throw GrpcError.notFound();
-        } else {
-          // ! deliberately do not give wrong password info for security reason
-          throw GrpcError.invalidArgument('incorrect login or password');
-        }
+        } else */
+        // ! deliberately do not give wrong password info for security reason
+        throw GrpcError.invalidArgument('incorrect login or password');
       }
       final userPrivate = UserPrivate()
         ..mergeFromProto3Json(userPrivateMongo, ignoreUnknownFields: true);
