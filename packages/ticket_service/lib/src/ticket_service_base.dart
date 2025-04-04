@@ -131,10 +131,11 @@ class TicketService extends TicketServiceBase {
     }
 
     if (request.lastFetchTimestampUTC.isNotEmpty) {
+      print(request.lastFetchTimestampUTC.toDateTime());
       selector.and(where.gte(
           'lastTouchTimestampUTC', request.lastFetchTimestampUTC.toDateTime()));
     }
-
+    
     if (request.isDeleted) {
       /// will look for deleted tickets
       selector.and(where.eq('isDeleted', true));
