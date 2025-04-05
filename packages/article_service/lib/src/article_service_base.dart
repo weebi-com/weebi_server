@@ -214,7 +214,7 @@ class ArticleService extends ArticleServiceBase {
         }
 
         selector.and(where.gte('lastTouchTimestampUTC',
-            request.lastFetchTimestampUTC.toDateTime()));
+            request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
       }
       final list = await collectionArticle.find(selector).toList();
       if (list.isEmpty) {
@@ -795,7 +795,7 @@ class ArticleService extends ArticleServiceBase {
           .eq('chainId', request.chainId);
       if (request.lastFetchTimestampUTC.isNotEmpty) {
         selector.and(where.gte('lastTouchTimestampUTC',
-            request.lastFetchTimestampUTC.toDateTime()));
+            request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
       }
       final list = await collectionPhoto.find(selector).toList();
       if (list.isEmpty) {
