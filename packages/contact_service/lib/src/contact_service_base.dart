@@ -207,7 +207,7 @@ class ContactService extends ContactServiceBase {
           idsSet.add(doc['contactId']);
         }
         selector.and(where.gte('lastTouchTimestampUTC',
-            request.lastFetchTimestampUTC.toDateTime()));
+            request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
       }
       //
 
