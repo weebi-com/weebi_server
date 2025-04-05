@@ -120,7 +120,7 @@ class TicketService extends TicketServiceBase {
     }
 
     print(
-        'readTickets : firmId ${userPermission.firmId} chainId ${request.chainId}');
+        'readTickets : firmId ${userPermission.firmId} chainId ${request.chainId} isOneBoutiqueFilter $isOneBoutiqueFilter');
 
     final selector = where
         .eq('firmId', userPermission.firmId)
@@ -132,9 +132,9 @@ class TicketService extends TicketServiceBase {
 
     if (request.lastFetchTimestampUTC.isNotEmpty) {
       selector.and(where.gte(
-          'lastTouchTimestampUTC', request.lastFetchTimestampUTC.toDateTime()));
+          'lastTouchTimestampUTC', request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
     }
-
+    
     if (request.isDeleted) {
       /// will look for deleted tickets
       selector.and(where.eq('isDeleted', true));
