@@ -18,7 +18,7 @@ RUN dart pub global activate melos
 RUN melos bootstrap
 
 # create an executable file at directory /bin called server. 
-RUN dart compile exe apps/server/bin/server.dart -o apps/server/bin/server
+RUN dart compile exe apps/server/bin/server_local4.dart -o apps/server/bin/server
 # This will enable us to run the dart program by ./bin/server/
 
 # Build minimal serving image from AOT-compiled `/server` and required system

@@ -1,20 +1,23 @@
 # mongo running tests
 
-## mongo macos
+## windows 
+### windows mongo
+`mongosh`
+### windows server
+
+``` shell
+cd apps/server
+$Env:MONGO_DB_URI="mongodb://localhost:27017/local"
+dart bin/server.dart
+```
+
+## macos
+### macos mongo
 
 ``` shell
 sudo mongod --dbpath /System/Volumes/Data/data/db
 ```
-
-then in another terminal to interact with mongodb run :`mongosh`
-
-## mongo windows
-
-`mongosh`
-
-## running server
-
-### macos
+### macos running server
 
 ``` shell
 cd apps/server
@@ -22,13 +25,7 @@ export MONGO_DB_URI=mongodb://localhost:27017/local
 dart bin/server.dart
 ```
 
-### windows
 
-``` shell
-cd apps/server
-$Env:MONGO_DB_URI="mongodb://localhost:27017/local"
-dart bin/server.dart
-```
 
 The term 'KEY="hello"' is not recognized as the name of a cmdlet,
 
