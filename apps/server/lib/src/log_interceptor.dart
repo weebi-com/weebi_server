@@ -4,9 +4,10 @@ import 'package:logging/logging.dart';
 final logger = Logger('LoggingInterceptor');
 Future<GrpcError?> loggingInterceptor(
   ServiceCall call,
-  ServiceMethod method,
+  ServiceMethod serviceMethod,
 ) async {
   final dateTime = DateTime.now();
+
   final clientMetadata = call.clientMetadata ?? {};
   final authority = clientMetadata[':authority'];
   final methodName = clientMetadata[':path'];
@@ -14,5 +15,6 @@ Future<GrpcError?> loggingInterceptor(
   final userAgent = clientMetadata['user-agent'];
 
   logger.info('$authority - - [$dateTime] $method $methodName $userAgent');
+
   return null;
 }
