@@ -1,3 +1,8 @@
+# BUILDME
+
+if dart upgrade adapt in Dockerfile
+
+
 > default
 melos bootstrap
 melos run analyze

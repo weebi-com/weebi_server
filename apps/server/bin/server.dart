@@ -44,10 +44,12 @@ void main(List<String> arguments) async {
   print('1');
 
   try {
-    final db = await Db.create(AppEnvironment.mongoDbUri);
+    // final db = await Db.create(AppEnvironment.mongoDbUri);
+    final pool = ConnectionPool(5, () => Db.create(AppEnvironment.mongoDbUri));
+
     print('2');
 
-    await db.open();
+    final db  = await pool.connect();
     print('3');
 //    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
   //  final db = await pool.connect();
