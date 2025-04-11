@@ -28,12 +28,12 @@ abstract class Dummy {
     name: 'dummy boutique',
     phone: Phone(countryCode: 33, number: '773116767'),
   );
-  static final boutiqueNoId = BoutiqueMongo(
+  static final boutiqueMongoNoId = BoutiqueMongo(
     boutique: boutiquePb,
     devices: <Device>[Dummy.device],
   );
 
-  static final boutique = boutiqueNoId
+  static final boutiqueMongo = boutiqueMongoNoId
     ..boutiqueId = '123456789'
     ..firmId = firm.firmId
     ..chainId = chain.chainId;
@@ -49,11 +49,11 @@ abstract class Dummy {
 
   static final deviceNoId = Device()
     ..chainId = chain.chainId
-    ..boutiqueId = boutique.boutiqueId
+    ..boutiqueId = boutiqueMongo.boutiqueId
     ..hardwareInfo = hardwareInfo;
 
   static final chainNoId = Chain(
-    boutiques: <BoutiqueMongo>[Dummy.boutiqueNoId],
+    boutiques: <BoutiqueMongo>[Dummy.boutiqueMongoNoId],
   );
   static final chain = chainNoId
     ..chainId = '123456789'
@@ -112,7 +112,7 @@ abstract class Dummy {
     ..ticketRights = RightSalesperson.ticket
     ..boolRights = BoolRights()
     ..limitedAccess = AccessLimited(
-      boutiqueIds: BoutiqueIds(ids: [boutique.boutiqueId]),
+      boutiqueIds: BoutiqueIds(ids: [boutiqueMongo.boutiqueId]),
       chainIds: ChainIds(ids: [chain.chainId]),
     );
 

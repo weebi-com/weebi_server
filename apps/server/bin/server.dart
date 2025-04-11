@@ -44,7 +44,6 @@ void main(List<String> arguments) async {
 
   try {
     final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
-
     final db = await pool.connect();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 

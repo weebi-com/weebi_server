@@ -52,10 +52,10 @@ void main() {
         ServiceCallTest(bearer.accessToken),
         ChainIdAndboutiqueId(
             chainId: Dummy.chain.chainId,
-            boutiqueId: Dummy.boutique.boutiqueId));
+            boutiqueId: Dummy.boutiqueMongo.boutiqueId));
 
     expect(codeResponse.chainId, Dummy.chain.chainId);
-    expect(codeResponse.boutiqueId, Dummy.boutique.boutiqueId);
+    expect(codeResponse.boutiqueId, Dummy.boutiqueMongo.boutiqueId);
     expect(codeResponse.code != 0, isTrue);
     // print('codeResponse.code ${codeResponse.code}');
 

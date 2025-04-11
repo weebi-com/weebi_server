@@ -9,10 +9,8 @@ melos test
 > setting environment ?
 
 docker build -t server --progress=plain .
-
 docker run -e PORT=8080 -t server
 docker run -e PORT=8080 -p 8080:8080 -it server
 
 gcloud run deploy
 europe-west9
-

@@ -11,7 +11,7 @@ class WeebiAppService extends WeebiAppServiceBase {
   @override
   Future<AppMinVersionResponse> readAppMinimumVersion(
       ServiceCall? call, AppMinVersionRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    // _db.isConnected ? null : await _db.open();
     try {
       // one app today, but who knows what tomorrow will bring...
       final doc = await collection.findOne(where.eq('app', 'weebi_app'));
