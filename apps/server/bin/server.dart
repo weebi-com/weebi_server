@@ -41,11 +41,16 @@ void main(List<String> arguments) async {
   Logger.root.onRecord.listen((LogRecord rec) {
     log('${rec.loggerName}: ${rec.level.name}: ${rec.time}: ${rec.message}');
   });
+  print('1');
 
   try {
-    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
+    final db = await Db.create(AppEnvironment.mongoDbUri);
+    print('2');
 
-    final db = await pool.connect();
+    await db.open();
+    print('3');
+//    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
+  //  final db = await pool.connect();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
     final articleService = ArticleService(db);
@@ -66,6 +71,7 @@ void main(List<String> arguments) async {
     );
 
     final ip = InternetAddress.anyIPv4;
+    print('4');
 
     await server.serve(port: AppEnvironment.port, address: ip);
 
