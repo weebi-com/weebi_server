@@ -34,7 +34,7 @@ void main() {
   });
 
   tearDownAll(() async {
-    await db.collection(fenceService.userCollection.collectionName).drop();
+    // await db.collection(fenceService.userCollection.collectionName).drop();
     await db.collection(fenceService.boutiqueCollection.collectionName).drop();
     await db.collection(fenceService.firmCollection.collectionName).drop();
     await db

@@ -43,14 +43,7 @@ void main(List<String> arguments) async {
   });
 
   try {
-    dbFactory() async => Db(AppEnvironment.mongoDbUri);
-    final pool = ConnectionPool(5, dbFactory);
-
-    ProcessSignal.sigint.watch().listen((signal) async {
-      print('Received SIGINT, closing connection pool...');
-      await pool.close();
-      exit(0);
-    });
+    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
 
     final db = await pool.connect();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
@@ -75,6 +68,12 @@ void main(List<String> arguments) async {
     final ip = InternetAddress.anyIPv4;
 
     await server.serve(port: AppEnvironment.port, address: ip);
+
+    ProcessSignal.sigint.watch().listen((signal) async {
+      print('Received SIGINT, closing connection pool...');
+      await pool.close();
+      exit(0);
+    });
 
     print('Server running on ip $ip port ${server.port}');
   } catch (e) {
