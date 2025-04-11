@@ -1,13 +1,5 @@
 # weebi dart grpc server
 
-## test it
-
-install [grpcurl](https://github.com/fullstorydev/grpcurl)
-`grpcurl -proto packages\protos\proto\weebi_app_service.proto dev.weebi.com:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion`
-
-
-grpcurl -proto packages\protos\proto\weebi_app_service.proto 192.0.2.1:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion
-
 ***
 
 ```shell

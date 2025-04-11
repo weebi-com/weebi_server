@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
+import 'dart:io' show HttpHeaders, InternetAddress;
 
 import 'package:logging/logging.dart';
 import 'package:fence_service/mongo_dart.dart';
@@ -68,12 +68,6 @@ void main(List<String> arguments) async {
     final ip = InternetAddress.anyIPv4;
 
     await server.serve(port: AppEnvironment.port, address: ip);
-
-    ProcessSignal.sigint.watch().listen((signal) async {
-      print('Received SIGINT, closing connection pool...');
-      await pool.close();
-      exit(0);
-    });
 
     print('Server running on ip $ip port ${server.port}');
   } catch (e) {
