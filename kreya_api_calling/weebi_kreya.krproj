@@ -12,7 +12,8 @@
           "../packages/protos/proto/ticket",
           "../packages/protos/proto/weebi_app_service.proto"
         ],
-        "importPaths": []
+        "importPaths": [],
+        "excludedFiles": []
       }
     }
   ],

@@ -17,8 +17,8 @@ import 'package:fence_service/weebi_app_service.dart';
 
 import '../constants/app_environment.dart';
 
-// TODO: in a production environment, it’s generally not recommended to use * due to security concern
-// ? can we add weebi domain cors here ?
+// * in a production environment, it’s generally not recommended to use * due to security concern
+// ? consider adding weebi domain cors here ?
 FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
   call.headers!.addAll({
     HttpHeaders.accessControlAllowOriginHeader: '*',
@@ -43,8 +43,16 @@ void main(List<String> arguments) async {
   });
 
   try {
-    final db = await Db.create(AppEnvironment.mongoDbUri);
-    await db.open();
+    dbFactory() async => Db(AppEnvironment.mongoDbUri);
+    final pool = ConnectionPool(5, dbFactory);
+
+    ProcessSignal.sigint.watch().listen((signal) async {
+      print('Received SIGINT, closing connection pool...');
+      await pool.close();
+      exit(0);
+    });
+
+    final db = await pool.connect();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
     final articleService = ArticleService(db);

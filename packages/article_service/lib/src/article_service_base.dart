@@ -260,10 +260,10 @@ class ArticleService extends ArticleServiceBase {
           .eq('chainId', request.chainId);
 
       final idsSet = <int>{};
-        final documents = await collectionArticle.find(selector).toList();
-        for (final doc in documents) {
-          idsSet.add(doc['calibreId']);
-        }
+      final documents = await collectionArticle.find(selector).toList();
+      for (final doc in documents) {
+        idsSet.add(doc['calibreId']);
+      }
       return CalibresIdsResponse.create()..ids.addAll(idsSet);
     } on GrpcError catch (e) {
       print('readAll articles error $e');
