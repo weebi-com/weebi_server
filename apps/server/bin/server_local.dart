@@ -12,6 +12,7 @@ import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/weebi_app_service.dart';
 
+// ! a docker image built using this might have issues connecting to mongodb https://github.com/mongo-dart/mongo_dart/issues/59 
 void main(List<String> arguments) async {
   print('0');
   Logger.root.level = Level.ALL;
