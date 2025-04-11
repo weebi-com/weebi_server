@@ -12,7 +12,7 @@ void main() async {
   final connection = Connection(ConnectionManager(db));
 
   late ArticleService articleService;
-  final cal = CalibreWeebi.dummyRetail.toMapProto();
+  final cal = CalibreWeebi.dummyRetail.toMap(isProto: true);
   final calibreDummy = CalibrePb.create()
     ..mergeFromProto3Json(
       cal,
@@ -73,7 +73,7 @@ void main() async {
     final lili = CalibreWeebi.dummyRetail.copyWith(title: 'Lili biscuit');
     final calibreLili = CalibrePb.create()
       ..mergeFromProto3Json(
-        lili.toMapProto(),
+        lili.toMap(isProto: true),
         ignoreUnknownFields: true,
       );
 

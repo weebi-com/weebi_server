@@ -1,4 +1,11 @@
-weebi dart server built using grpc
+# weebi dart grpc server
+
+## test it
+
+install [grpcurl](https://github.com/fullstorydev/grpcurl)
+`grpcurl -proto packages\protos\proto\weebi_app_service.proto dev.weebi.com:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion`
+
+***
 
 ```shell
 dart pub global activate melos
@@ -30,3 +37,7 @@ gcloud run deploy SERVICE_NAME \
 # protobuf
 - https://github.com/protocolbuffers/protobuf/blob/main/docs/field_presence.md
 - thorny subject Presence disciplines define the semantics for translating between the API representation and the serialized representation.
+
+
+- reflection in dart not yet supported
+https://github.com/grpc/grpc-dart/issues/78
