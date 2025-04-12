@@ -42,12 +42,13 @@ void main(List<String> arguments) async {
     log('${rec.loggerName}: ${rec.level.name}: ${rec.time}: ${rec.message}');
   });
 
+  final dbPool = ConnectionPool(5, () => Db.create(AppEnvironment.mongoDbUri));
   try {
     final db = await Db.create(AppEnvironment.mongoDbUri);
     await db.open();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
-    final articleService = ArticleService(db);
+    final articleService = ArticleService(dbPool);
     final contactService = ContactService(db);
     final ticketService = TicketService(db);
     final fenceService = FenceService(db);

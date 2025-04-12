@@ -26,30 +26,40 @@ abstract class _Helpers {
 }
 
 class ArticleService extends ArticleServiceBase {
-  final Db _db;
+  // final Db _db;
+  final ConnectionPool _dbPool;
   // for unit tests only
   final bool isTest;
   final UserPermissions? userPermissionIfTest;
 
-  final DbCollection collectionArticle;
   static const String collectionArticleName = 'article';
-  final DbCollection collectionPhoto;
   static const String collectionPhotoName = 'article_photo';
-  final DbCollection collectionCategory;
   static const String collectionCategoryName = 'category';
 
   ArticleService(
-    this._db, {
+    this._dbPool, {
     this.isTest = false,
     this.userPermissionIfTest,
-  })  : collectionArticle = _db.collection(collectionArticleName),
-        collectionCategory = _db.collection(collectionCategoryName),
-        collectionPhoto = _db.collection(collectionPhotoName);
+  });
+
+  Future<DbCollection> getArticleCollection() async {
+    final db = await _dbPool.connect();
+    return db.collection(collectionArticleName);
+  }
+
+  Future<DbCollection> getCategoryCollection() async {
+    final db = await _dbPool.connect();
+    return db.collection(collectionCategoryName);
+  }
+
+  Future<DbCollection> getPhotoCollection() async {
+    final db = await _dbPool.connect();
+    return db.collection(collectionPhotoName);
+  }
 
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, CalibreRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -62,6 +72,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to create article');
     }
+    final collectionArticle = await getArticleCollection();
     try {
       final snapshot = await collectionArticle
           .findOne(_Helpers.select(userPermission.firmId, request));
@@ -108,7 +119,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> updateOne(
       ServiceCall? call, CalibreRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -131,6 +141,7 @@ class ArticleService extends ArticleServiceBase {
         ..userId = userPermission.userId
         ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
+      final collectionArticle = await getArticleCollection();
       final result = await collectionArticle.replaceOne(
           _Helpers.select(userPermission.firmId, request),
           calibreMongo.toProto3Json() as Map<String, dynamic>,
@@ -158,7 +169,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, CalibreRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -172,6 +182,8 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     try {
+      final collectionArticle = await getArticleCollection();
+
       await collectionArticle
           .deleteOne(_Helpers.select(userPermission.firmId, request));
       return StatusResponse()
@@ -186,7 +198,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CalibresResponse> readAll(
       ServiceCall? call, ReadAllRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -207,6 +218,8 @@ class ArticleService extends ArticleServiceBase {
 
       final bool isDeviceResync = request.lastFetchTimestampUTC.isNotEmpty;
       final idsSet = <int>{};
+      final collectionArticle = await getArticleCollection();
+
       if (isDeviceResync) {
         final documents = await collectionArticle.find(selector).toList();
         for (final doc in documents) {
@@ -240,7 +253,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CalibresIdsResponse> readAllIds(
       ServiceCall? call, ReadIdsRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -255,15 +267,17 @@ class ArticleService extends ArticleServiceBase {
     }
 
     try {
+      final collectionArticle = await getArticleCollection();
+
       final selector = SelectorBuilder()
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
 
       final idsSet = <int>{};
-        final documents = await collectionArticle.find(selector).toList();
-        for (final doc in documents) {
-          idsSet.add(doc['calibreId']);
-        }
+      final documents = await collectionArticle.find(selector).toList();
+      for (final doc in documents) {
+        idsSet.add(doc['calibreId']);
+      }
       return CalibresIdsResponse.create()..ids.addAll(idsSet);
     } on GrpcError catch (e) {
       print('readAll articles error $e');
@@ -274,7 +288,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CalibrePb> readOne(
       ServiceCall? call, ReadCalibreRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -287,6 +300,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+    final collectionArticle = await getArticleCollection();
 
     try {
       final selector = where
@@ -318,7 +332,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createOneCategory(
       ServiceCall? call, CategoryRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -331,6 +344,8 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to create category');
     }
+    final collectionCategory = await getCategoryCollection();
+
     try {
       final snapshot = await collectionCategory
           .findOne(_Helpers.selectCategory(userPermission.firmId, request));
@@ -375,7 +390,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> updateOneCategory(
       ServiceCall? call, CategoryRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -398,6 +412,7 @@ class ArticleService extends ArticleServiceBase {
         ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
 //      final resultFindOne = await collectionCategory.findOne(_Helpers.selectCategory(userPermission.firmId, request));
+      final collectionCategory = await getCategoryCollection();
 
       final result = await collectionCategory.replaceOne(
           _Helpers.selectCategory(userPermission.firmId, request),
@@ -426,7 +441,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> deleteOneCategory(
       ServiceCall? call, CategoryRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -439,6 +453,8 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+    final collectionCategory = await getCategoryCollection();
+
     try {
       await collectionCategory
           .deleteOne(_Helpers.selectCategory(userPermission.firmId, request));
@@ -454,7 +470,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CategoriesResponse> readAllCategories(
       ServiceCall? call, ReadCategoriesRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -468,6 +483,8 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     //
+    final collectionCategory = await getCategoryCollection();
+
     try {
       final selector = SelectorBuilder()
           .eq('firmId', userPermission.firmId)
@@ -495,7 +512,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CategoryPb> readOneCategory(
       ServiceCall? call, FindCategoryRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -508,6 +524,8 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+    final collectionCategory = await getCategoryCollection();
+
     try {
       final selector = SelectorBuilder()
           .eq('firmId', userPermission.firmId)
@@ -536,7 +554,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall? call, CalibresRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -549,7 +566,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to create articles');
     }
-
+    final collectionArticle = await getArticleCollection();
     final calibresMap = <Map<String, dynamic>>[];
     final now = DateTime.now().toUtc().timestampProto;
     int dups = 0;
@@ -615,7 +632,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createManyPhotos(
       ServiceCall call, PhotosRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -628,7 +644,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to create articles photos');
     }
-
+    final collectionPhoto = await getPhotoCollection();
     final map = <Map<String, dynamic>>[];
     final now = DateTime.now().toUtc().timestampProto;
     int dups = 0;
@@ -689,7 +705,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createOnePhoto(
       ServiceCall call, PhotoRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -702,6 +717,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to create article photo');
     }
+    final collectionPhoto = await getPhotoCollection();
     try {
       final snapshot = await collectionPhoto
           .findOne(_Helpers.selectPhoto(userPermission.firmId, request));
@@ -746,7 +762,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> deleteOnePhoto(
       ServiceCall call, PhotoRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -759,6 +774,8 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+
+    final collectionPhoto = await getPhotoCollection();
     try {
       await collectionPhoto
           .deleteOne(_Helpers.selectPhoto(userPermission.firmId, request));
@@ -774,7 +791,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<PhotosResponse> readAllPhotos(
       ServiceCall call, ReadPhotosRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -788,7 +804,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     //
-
+    final collectionPhoto = await getPhotoCollection();
     try {
       final selector = SelectorBuilder()
           .eq('firmId', userPermission.firmId)
@@ -821,7 +837,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<ArticlePhotoPb> readOnePhoto(
       ServiceCall call, FindPhotoRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -834,6 +849,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+    final collectionPhoto = await getPhotoCollection();
     try {
       final selector = where
           .eq('firmId', userPermission.firmId)
@@ -856,7 +872,6 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> updateOnePhoto(
       ServiceCall call, PhotoRequest request) async {
-    _db.isConnected ? null : await _db.open();
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -869,6 +884,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+    final collectionPhoto = await getPhotoCollection();
     try {
       final photoMongo = ArticlePhotoMongo.create()
         ..photo = request.photo

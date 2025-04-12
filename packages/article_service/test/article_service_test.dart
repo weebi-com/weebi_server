@@ -7,9 +7,10 @@ import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 
 void main() async {
-  final db = TestHelper.localDb;
+  // final db = TestHelper.localDb;
 
-  final connection = Connection(ConnectionManager(db));
+  // final connection = Connection(ConnectionManager(db));
+  final dbPool = ConnectionPool(5, () => TestHelper.localDb);
 
   late ArticleService articleService;
   final cal = CalibreWeebi.dummyRetail.toMapProto();
@@ -27,21 +28,34 @@ void main() async {
     );
 
   setUpAll(() async {
-    await db.open();
+    final db = await dbPool.connect();
     articleService = ArticleService(
-      db,
+      dbPool,
       isTest: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
-    await db.collection(articleService.collectionArticle.collectionName).drop();
-    await db.createCollection(articleService.collectionArticle.collectionName);
-    await db.createCollection(articleService.collectionCategory.collectionName);
+    await db
+        .collection(
+            (await articleService.getArticleCollection()).collectionName)
+        .drop();
+    await db.createCollection(
+        (await articleService.getArticleCollection()).collectionName);
+    await db.createCollection(
+        (await articleService.getCategoryCollection()).collectionName);
   });
 
   tearDownAll(() async {
-    await db.collection(articleService.collectionArticle.collectionName).drop();
-    await db.collection(articleService.collectionCategory.collectionName).drop();
-    await connection.close();
+    final db = await dbPool.connect();
+
+    await db
+        .collection(
+            (await articleService.getArticleCollection()).collectionName)
+        .drop();
+    await db
+        .collection(
+            (await articleService.getCategoryCollection()).collectionName)
+        .drop();
+    await db.close();
   });
 
   ///
