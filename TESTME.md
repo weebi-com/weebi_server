@@ -25,12 +25,6 @@ export MONGO_DB_URI=mongodb://localhost:27017/local
 dart bin/server.dart
 ```
 
-
-
-The term 'KEY="hello"' is not recognized as the name of a cmdlet,
-
-should print : Server running on ip InternetAddress('0.0.0.0', IPv4) port 8080
-
 on the flutter app side, do not set 0.0.0.0 or local host but instead the IP of your machine
 in windows : 
 Select Start > Settings > Network & internet > Wi-Fi and then select the Wi-Fi network you're connected to
