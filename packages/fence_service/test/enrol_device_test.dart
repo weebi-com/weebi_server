@@ -34,7 +34,7 @@ void main() {
   });
 
   tearDownAll(() async {
-    await db.collection(fenceService.userCollection.collectionName).drop();
+    // await db.collection(fenceService.userCollection.collectionName).drop();
     await db.collection(fenceService.boutiqueCollection.collectionName).drop();
     await db.collection(fenceService.firmCollection.collectionName).drop();
     await db
@@ -64,6 +64,7 @@ void main() {
       ..baseOS = 'testOS';
     final pendingDevice = PendingDeviceRequest(
         code: codeResponse.code, hardwareInfo: hardwareInfo);
+
     final createPendingDeviceStatusResponse = await fenceService.createDevice(
         ServiceCallTest(bearer.accessToken, path: 'createDevice'),
         pendingDevice);

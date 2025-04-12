@@ -16,6 +16,7 @@ import 'package:fence_service/fence_service.dart';
 
 class FenceService extends FenceServiceBase {
   final Db _db;
+
   final DbCollection userCollection;
   final DbCollection pairingCodesCollection;
   final DbCollection boutiqueCollection;
@@ -67,6 +68,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'you do not have right to create other users');
     }
+
     final user = await _isMailAlreadyUsed(request.mail);
     if (user.userId.isNotEmpty) {
       if (user.permissions.firmId.isEmpty && user.lastSignIn.seconds == 0) {
