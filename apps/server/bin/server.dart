@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
+import 'dart:io' show HttpHeaders, InternetAddress;
 
 import 'package:logging/logging.dart';
 import 'package:fence_service/mongo_dart.dart';
@@ -17,7 +17,7 @@ import 'package:fence_service/weebi_app_service.dart';
 import '../constants/app_environment.dart';
 
 // * in a production environment, it’s generally not recommended to use * due to security concern
-// ? can we add weebi domain cors here ?
+// ? consider adding weebi domain cors here ?
 FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
   call.headers!.addAll({
     HttpHeaders.accessControlAllowOriginHeader: '*',
@@ -52,6 +52,8 @@ void main(List<String> arguments) async {
     print('2');
 
     print('3');
+//    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
+  //  final db = await pool.connect();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
     final articleService = ArticleService(db);

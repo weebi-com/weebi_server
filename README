@@ -16,8 +16,6 @@ dart pub global activate melos
 melos bootstrap
 ```
 
-
-
 ```shell
 gcloud run deploy SERVICE_NAME \
   --image IMAGE_URL \
