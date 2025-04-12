@@ -29,7 +29,7 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, TicketRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -95,7 +95,7 @@ class TicketService extends TicketServiceBase {
   @override
   Future<TicketsResponse> readAll(
       ServiceCall? call, ReadAllTicketsRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -168,7 +168,7 @@ class TicketService extends TicketServiceBase {
 
   @override
   Future<TicketPb> readOne(ServiceCall? call, FindTicketRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -216,7 +216,7 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> updateStatusOne(
       ServiceCall? call, TicketRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -282,7 +282,7 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, TicketRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -337,7 +337,7 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall call, TicketsRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;

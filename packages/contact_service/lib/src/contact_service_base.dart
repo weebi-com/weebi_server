@@ -29,7 +29,7 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, ContactRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
 
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -92,7 +92,7 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> updateOne(
       ServiceCall? call, ContactRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -147,7 +147,7 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, ContactRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -181,7 +181,7 @@ class ContactService extends ContactServiceBase {
   @override
   Future<ContactsResponse> readAll(
       ServiceCall? call, ReadAllContactsRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -237,7 +237,7 @@ class ContactService extends ContactServiceBase {
    @override
   Future<ContactsIdsResponse> readAllIds(
       ServiceCall? call, ReadContactsIdsRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -271,7 +271,7 @@ class ContactService extends ContactServiceBase {
   @override
   Future<ContactPb> readOne(
       ServiceCall? call, ReadContactRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -339,7 +339,7 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall call, ContactsRequest request) async {
-    _db.isConnected ? null : await _db.open();
+    await isDbOpen(_db);
 
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()

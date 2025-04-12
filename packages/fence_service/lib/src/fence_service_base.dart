@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math' show Random;
 
 import 'package:collection/collection.dart';
+import 'package:fence_service/mongo_dart.dart';
 import 'package:mongo_dart/mongo_dart.dart' hide Timestamp;
 import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/encrypter.dart';
@@ -14,7 +15,6 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:fence_service/fence_service.dart';
 
 class FenceService extends FenceServiceBase {
-  // ignore: unused_field
   final Db _db;
 
   final DbCollection userCollection;
@@ -41,6 +41,7 @@ class FenceService extends FenceServiceBase {
   Future<PendingUserResponse> createPendingUser(
       ServiceCall? call, PendingUserRequest request) async {
     final mailChecked = _checkMail(request.mail);
+    await isDbOpen(_db);
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -82,7 +83,7 @@ class FenceService extends FenceServiceBase {
             statusResponse: status, userPublic: userPublic);
       } else {
         // user signed it at least once
-        throw GrpcError.invalidArgument('mail is alreadyUsed');
+        throw GrpcError.invalidArgument('mail ${request.mail} is alreadyUsed');
       }
     }
 
@@ -139,6 +140,7 @@ class FenceService extends FenceServiceBase {
   @override
   Future<Tokens> authenticateWithCredentials(
       ServiceCall? call, Credentials request) async {
+    await isDbOpen(_db);
     try {
       final mailAndEncyptedPassword = _checkCredentials(request);
 
@@ -171,10 +173,14 @@ class FenceService extends FenceServiceBase {
     } on GrpcError catch (e) {
       log('authenticate error $e');
       rethrow;
+    } on MongoDartError catch (e) {
+      log('authenticate MongoDartError ${request.mail} error $e');
+      rethrow;
     }
   }
 
   Future<void> _updateUserLastSignIn(String userId) async {
+    await isDbOpen(_db);
     try {
       final lastSignin = DateTime.now().timestampProto;
       final dd = lastSignin.toProto3Json();
@@ -220,7 +226,7 @@ class FenceService extends FenceServiceBase {
       if (!jwtRefresh.verify()) {
         throw GrpcError.unauthenticated('invalid jwtRefresh ');
       }
-
+      await isDbOpen(_db);
       final userPrivate = await _readUserByUserId(jwtRefresh.sub);
 
       var jwt = JsonWebToken();
@@ -326,7 +332,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update users');
     }
-
+    await isDbOpen(_db);
     final userPrivate = await _checkUserAndProtoIt(request.permissions.userId);
     if (userPrivate.firmId.isNotEmpty &&
         userPrivate.firmId != userPermission.firmId) {
@@ -351,7 +357,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read other users');
     }
-
+    await isDbOpen(_db);
     try {
       final userMongo =
           await userCollection.findOne(where.eq('userId', request.userId));
@@ -409,6 +415,9 @@ class FenceService extends FenceServiceBase {
     } on GrpcError catch (e) {
       print('readOne error $e');
       rethrow;
+    } on MongoDartError catch (e) {
+      log('readOneUser userId ${request.userId} MongoDartError error $e');
+      rethrow;
     }
   }
 
@@ -437,6 +446,8 @@ class FenceService extends FenceServiceBase {
     }
 
     try {
+      await isDbOpen(_db);
+
       /// make sure we do not use an already existing code
       var code = 0;
       var d = CodeForPairingDevice.create();
@@ -506,6 +517,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.notFound('user ${userPermission.userId} not found');
     }
 
+    await isDbOpen(_db);
     final pairingResp = await _findCode(request.code);
     if (pairingResp.code == 0) {
       return CreateDeviceResponse(
@@ -591,7 +603,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-
+    await isDbOpen(_db);
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -641,6 +653,7 @@ class FenceService extends FenceServiceBase {
           'user does not have right to delete users');
     }
 
+    await isDbOpen(_db);
     final userPrivate = await _checkUserAndProtoIt(request.userId);
     if (userPrivate.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied('user belongs to a different firm');
@@ -692,6 +705,8 @@ class FenceService extends FenceServiceBase {
     }
     // ? should we check that no other firm exist for this accouunt ?
     // set the appropriate ids
+
+    await isDbOpen(_db);
 
     final nowProtoUTC = DateTime.now().toUtc().timestampProto;
 
@@ -832,6 +847,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied('user does not have right to read firm');
     }
     try {
+      await isDbOpen(_db);
       final firmMongo = await firmCollection
           .findOne(where.eq('firmId', userPermission.firmId));
       if (firmMongo == null) {
@@ -930,7 +946,8 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot create data for firm ${userPermission.firmId} or chain ${request.chainId}');
     }
-
+    await isDbOpen(_db);
+    
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -990,7 +1007,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access firm ${request.firmId}');
     }
-
+    await isDbOpen(_db);
     final chainId = DateTime.now().objectIdString;
     request.chainId = chainId;
     request.boutiques.first
@@ -1051,12 +1068,14 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
 
+    await isDbOpen(_db);
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
     final boutiqueIndex = chain.boutiques
         .indexWhere((e) => e.boutiqueId == request.boutique.boutiqueId);
     if (boutiqueIndex == -1) {
-      throw GrpcError.notFound('boutique ${request.boutique.boutiqueId} not found');
+      throw GrpcError.notFound(
+          'boutique ${request.boutique.boutiqueId} not found');
     }
 
     chain.boutiques[boutiqueIndex].boutique = request.boutique;
@@ -1095,7 +1114,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
-
+    await isDbOpen(_db);
     await boutiqueCollection.update(
       where.eq('firmId', userPermission.firmId).eq('chainId', request.chainId),
       ModifierBuilder()
@@ -1154,7 +1173,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-
+    await isDbOpen(_db);
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
     // find the device
@@ -1177,7 +1196,7 @@ class FenceService extends FenceServiceBase {
     final userPermissions = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-
+    await isDbOpen(_db);
     final chain =
         await _checkOneChainAndProtoIt(userPermissions.firmId, request.chainId);
 
@@ -1211,7 +1230,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-
+    await isDbOpen(_db);
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -1233,7 +1252,7 @@ class FenceService extends FenceServiceBase {
   Future<SignUpResponse> signUp(ServiceCall call, SignUpRequest request) async {
     final mailAndEncyptedPassword = _checkCredentials(
         Credentials(mail: request.mail, password: request.password));
-
+    await isDbOpen(_db);
     final user = await _isMailAlreadyUsed(mailAndEncyptedPassword.mail);
     if (user.userId.isNotEmpty) {
       if (_isPendingUser(user)) {
@@ -1241,7 +1260,8 @@ class FenceService extends FenceServiceBase {
             user, mailAndEncyptedPassword.passwordEncrypted);
       } else {
         // user signed it at least once
-        throw GrpcError.invalidArgument('mail is not available');
+        throw GrpcError.invalidArgument(
+            'mail ${request.mail} is not available');
       }
     }
     try {
@@ -1339,7 +1359,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read chain');
     }
-
+    await isDbOpen(_db);
     final chains = await _checkChainsAndProtoThem(userPermission);
     return ReadAllChainsResponse(chains: chains);
   }
@@ -1372,6 +1392,7 @@ class FenceService extends FenceServiceBase {
     final passwordEncrypted = _checkAndEncryptPassword(request.password);
 
     try {
+      await isDbOpen(_db);
       await userCollection.update(
           where.eq('firmId', request.firmId).eq('userId', request.userId),
           ModifierBuilder().set('password', passwordEncrypted));
@@ -1401,6 +1422,7 @@ class FenceService extends FenceServiceBase {
           'user does not have right to read users');
     }
     try {
+      await isDbOpen(_db);
       final usersMongo = await userCollection
           .find(where.eq('firmId', userPermission.firmId))
           .toList();
@@ -1478,6 +1500,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have access to read boutique ${request.boutiqueId}');
     }
+    await isDbOpen(_db);
 
     /// ***Mongodb_dart context***
     /// As the change stream return a "fullDocument" and all
@@ -1582,7 +1605,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-
+    await isDbOpen(_db);
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -1616,6 +1639,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
+    await isDbOpen(_db);
 
 // request.chainId
     try {
@@ -1649,7 +1673,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-
+    await isDbOpen(_db);
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
