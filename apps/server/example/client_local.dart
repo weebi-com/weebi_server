@@ -5,7 +5,7 @@ import 'package:server/client_interceptor_example.dart';
 ///in windows : 
 //Select Start > Settings > Network & internet > Wi-Fi and then select the Wi-Fi network you're connected to
 //Under Properties, look for your IP address listed next to IPv4 address
-//ex : 192.168.43.250
+//ex : 192.168.xx.xxx
 void main(List<String> args) async {
   final channelOptions = ChannelOptions(
     credentials: ChannelCredentials.insecure(), // transmit unencrypted data
