@@ -44,7 +44,8 @@ void main(List<String> arguments) async {
 
   try {
     final db = await Db.create(AppEnvironment.mongoDbUri);
-    // MongoDart error : no master connection 
+    await db.open();
+    // MongoDart error : no master connection
     // final pool = ConnectionPool(5, () => Db.create(AppEnvironment.mongoDbUri));
     //  final db  = await pool.connect();
 

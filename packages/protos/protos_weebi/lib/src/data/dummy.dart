@@ -60,8 +60,11 @@ abstract class Dummy {
     ..chainId = '123456789'
     ..firmId = '123456789'
     ..boutiques.first.boutiqueId = '123456789'
+    ..boutiques.first.boutique.boutiqueId = '123456789'
     ..boutiques.first.chainId = '123456789'
-    ..boutiques.first.firmId = '123456789';
+    ..boutiques.first.firmId = '123456789'
+    
+    ;
 
   static final firmNoId = Firm(
     name: 'firmDummy',

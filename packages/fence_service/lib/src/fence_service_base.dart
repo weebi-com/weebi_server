@@ -1065,7 +1065,7 @@ class FenceService extends FenceServiceBase {
     final boutiqueIndex = chain.boutiques
         .indexWhere((e) => e.boutiqueId == request.boutique.boutiqueId);
     if (boutiqueIndex == -1) {
-      throw GrpcError.notFound('boutique not found');
+      throw GrpcError.notFound('boutique ${request.boutique.boutiqueId} not found');
     }
 
     chain.boutiques[boutiqueIndex].boutique = request.boutique;

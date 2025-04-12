@@ -76,13 +76,17 @@ void main() async {
   });
 
   test('test upsertOneBoutique', () async {
-    final boutiqueLili = chain.boutiques.first..name = 'Lili boutique test';
+    final boutiqueLili = chain.boutiques.first
+      ..boutiqueId = chain.chainId
+      ..boutique.boutiqueId = chain.chainId
+      ..boutique.name = 'Lili boutique test';
     final response = await fenceService.updateOneBoutique(
         null,
         BoutiqueRequest(
             chainId: boutiqueLili.chainId, boutique: boutiqueLili.boutique));
     expect(response.type, StatusResponse_Type.UPDATED);
     final response2 = await fenceService.readAllChains(null, Empty());
-    expect(response2.chains.first.boutiques.first.name, 'Lili boutique test');
+    expect(response2.chains.first.boutiques.first.boutique.name,
+        'Lili boutique test');
   });
 }
