@@ -13,7 +13,6 @@ import 'package:server/server_interceptors.dart';
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/weebi_app_service.dart';
-// import 'package:fence_service/mongo_local_testing.dart';
 
 import '../constants/app_environment.dart';
 
@@ -44,12 +43,13 @@ void main(List<String> arguments) async {
   print('1');
 
   try {
-    // final db = await Db.create(AppEnvironment.mongoDbUri);
-    final pool = ConnectionPool(5, () => Db.create(AppEnvironment.mongoDbUri));
+    final db = await Db.create(AppEnvironment.mongoDbUri);
+    // MongoDart error : no master connection 
+    // final pool = ConnectionPool(5, () => Db.create(AppEnvironment.mongoDbUri));
+    //  final db  = await pool.connect();
 
     print('2');
 
-    final db  = await pool.connect();
     print('3');
 //    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
   //  final db = await pool.connect();
