@@ -2,13 +2,17 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'package:server/client_interceptor_example.dart';
 
+///in windows : 
+//Select Start > Settings > Network & internet > Wi-Fi and then select the Wi-Fi network you're connected to
+//Under Properties, look for your IP address listed next to IPv4 address
+//ex : 192.168.xx.xxx
 void main(List<String> args) async {
   final channelOptions = ChannelOptions(
     credentials: ChannelCredentials.insecure(), // transmit unencrypted data
   );
 
   final channel = ClientChannel(
-    '0.0.0.0', // connect to localhost. Where it's served
+    'local machine IP', // connect to localhost. Where it's served
     port: 8080,
     options: channelOptions, // pass the channelOptions above.
   );
@@ -36,7 +40,7 @@ void main(List<String> args) async {
 
   final tokens = await userStub.authenticateWithCredentials(Credentials(
     mail: 'dev@weebi.com',
-    password: '1234',
+    password: 'weebi.com',
   ));
   final accessToken = tokens.accessToken;
   print('accessToken $accessToken');
