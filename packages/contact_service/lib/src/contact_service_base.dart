@@ -29,11 +29,11 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, ContactRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
 

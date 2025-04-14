@@ -42,9 +42,9 @@ class FenceService extends FenceServiceBase {
     final mailChecked = _checkMail(request.mail);
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
 
@@ -147,9 +147,9 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, Credentials request) async {
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     try {
@@ -193,9 +193,9 @@ class FenceService extends FenceServiceBase {
   Future<void> _updateUserLastSignIn(String userId) async {
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     try {
@@ -244,12 +244,12 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.unauthenticated('invalid jwtRefresh ');
       }
       if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        if (_db.state == State.opening) {
+          _db.state = State.closed;
+          final d = await _db.open();
+          print(d.runtimeType);
+        }
       }
-    }
       final userPrivate = await _readUserByUserId(jwtRefresh.sub);
 
       var jwt = JsonWebToken();
@@ -357,9 +357,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPrivate = await _checkUserAndProtoIt(request.permissions.userId);
@@ -388,9 +388,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     try {
@@ -482,12 +482,12 @@ class FenceService extends FenceServiceBase {
 
     try {
       if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        if (_db.state == State.opening) {
+          _db.state = State.closed;
+          final d = await _db.open();
+          print(d.runtimeType);
+        }
       }
-    }
 
       /// make sure we do not use an already existing code
       var code = 0;
@@ -560,9 +560,9 @@ class FenceService extends FenceServiceBase {
 
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final pairingResp = await _findCode(request.code);
@@ -652,9 +652,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final chain =
@@ -708,9 +708,9 @@ class FenceService extends FenceServiceBase {
 
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPrivate = await _checkUserAndProtoIt(request.userId);
@@ -767,9 +767,9 @@ class FenceService extends FenceServiceBase {
 
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
 
@@ -913,12 +913,12 @@ class FenceService extends FenceServiceBase {
     }
     try {
       if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        if (_db.state == State.opening) {
+          _db.state = State.closed;
+          final d = await _db.open();
+          print(d.runtimeType);
+        }
       }
-    }
       final firmMongo = await firmCollection
           .findOne(where.eq('firmId', userPermission.firmId));
       if (firmMongo == null) {
@@ -1019,9 +1019,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
 
@@ -1086,9 +1086,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final chainId = DateTime.now().objectIdString;
@@ -1153,9 +1153,9 @@ class FenceService extends FenceServiceBase {
 
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final chain =
@@ -1205,9 +1205,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     await boutiqueCollection.update(
@@ -1270,9 +1270,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final chain =
@@ -1299,9 +1299,9 @@ class FenceService extends FenceServiceBase {
         : call.bearer.userPermissions;
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final chain =
@@ -1339,9 +1339,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final chain =
@@ -1367,9 +1367,9 @@ class FenceService extends FenceServiceBase {
         Credentials(mail: request.mail, password: request.password));
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final user = await _isMailAlreadyUsed(mailAndEncyptedPassword.mail);
@@ -1480,9 +1480,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open().then((v) => print(v));
       }
     }
     final chains = await _checkChainsAndProtoThem(userPermission);
@@ -1518,12 +1518,12 @@ class FenceService extends FenceServiceBase {
 
     try {
       if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        if (_db.state == State.opening) {
+          _db.state = State.closed;
+          final d = await _db.open();
+          print(d.runtimeType);
+        }
       }
-    }
       await userCollection.update(
           where.eq('firmId', request.firmId).eq('userId', request.userId),
           ModifierBuilder().set('password', passwordEncrypted));
@@ -1554,12 +1554,12 @@ class FenceService extends FenceServiceBase {
     }
     try {
       if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        if (_db.state == State.opening) {
+          _db.state = State.closed;
+          final d = await _db.open();
+          print(d.runtimeType);
+        }
       }
-    }
       final usersMongo = await userCollection
           .find(where.eq('firmId', userPermission.firmId))
           .toList();
@@ -1639,9 +1639,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
 
@@ -1750,9 +1750,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final chain =
@@ -1790,9 +1790,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
 
@@ -1830,9 +1830,9 @@ class FenceService extends FenceServiceBase {
     }
     if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final chain =
