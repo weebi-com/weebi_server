@@ -1,4 +1,3 @@
-import 'package:fence_service/src/db_closed.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/grpc.dart' show ServiceCall, GrpcError;
 import 'package:protos_weebi/protos_weebi_io.dart';
