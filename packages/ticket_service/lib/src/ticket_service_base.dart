@@ -29,7 +29,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, TicketRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -95,7 +101,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<TicketsResponse> readAll(
       ServiceCall? call, ReadAllTicketsRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -168,7 +180,13 @@ class TicketService extends TicketServiceBase {
 
   @override
   Future<TicketPb> readOne(ServiceCall? call, FindTicketRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -216,7 +234,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> updateStatusOne(
       ServiceCall? call, TicketRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -282,7 +306,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, TicketRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -337,7 +367,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall call, TicketsRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
