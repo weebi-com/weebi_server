@@ -49,11 +49,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, CalibreRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -114,11 +114,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> updateOne(
       ServiceCall? call, CalibreRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -170,11 +170,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, CalibreRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -204,11 +204,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CalibresResponse> readAll(
       ServiceCall? call, ReadAllRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -264,11 +264,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CalibresIdsResponse> readAllIds(
       ServiceCall? call, ReadIdsRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -304,11 +304,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CalibrePb> readOne(
       ServiceCall? call, ReadCalibreRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -354,11 +354,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createOneCategory(
       ServiceCall? call, CategoryRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -417,11 +417,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> updateOneCategory(
       ServiceCall? call, CategoryRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -474,11 +474,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> deleteOneCategory(
       ServiceCall? call, CategoryRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -508,11 +508,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CategoriesResponse> readAllCategories(
       ServiceCall? call, ReadCategoriesRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -555,11 +555,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CategoryPb> readOneCategory(
       ServiceCall? call, FindCategoryRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -602,11 +602,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall? call, CalibresRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -687,11 +687,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createManyPhotos(
       ServiceCall call, PhotosRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -767,11 +767,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createOnePhoto(
       ServiceCall call, PhotoRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -830,11 +830,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> deleteOnePhoto(
       ServiceCall call, PhotoRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -864,11 +864,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<PhotosResponse> readAllPhotos(
       ServiceCall call, ReadPhotosRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -917,11 +917,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<ArticlePhotoPb> readOnePhoto(
       ServiceCall call, FindPhotoRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
@@ -958,11 +958,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> updateOnePhoto(
       ServiceCall call, PhotoRequest request) async {
-    if (_db.isConnected == false) {
+        if (_db.isConnected == false) {
       if (_db.state == State.opening) {
-        _db.state = State.closed;
-        final d = await _db.open();
-        print(d.runtimeType);
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
       }
     }
     final userPermission = isTest
