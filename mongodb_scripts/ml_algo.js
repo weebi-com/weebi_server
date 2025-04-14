@@ -2,7 +2,7 @@
 [
   {
     "$match": {
-      "firmId": "1736689297917",
+      "firmId": "xxxxxxxxxxx",
       "ticket.status": true,
       "ticket.items.articleRetail": { "$ne": {} },
       "$or": [

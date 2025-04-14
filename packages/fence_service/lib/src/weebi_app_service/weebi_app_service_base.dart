@@ -1,4 +1,3 @@
-import 'package:fence_service/src/db_closed.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/grpc.dart' show ServiceCall, GrpcError;
 import 'package:protos_weebi/protos_weebi_io.dart';
@@ -12,7 +11,7 @@ class WeebiAppService extends WeebiAppServiceBase {
   @override
   Future<AppMinVersionResponse> readAppMinimumVersion(
       ServiceCall? call, AppMinVersionRequest request) async {
-    await isDbOpen(_db);
+    _db.isConnected == false ?  await _db.open()  : null;
     try {
       // one app today, but who knows what tomorrow will bring...
       final doc = await collection.findOne(where.eq('app', 'weebi_app'));
