@@ -40,7 +40,13 @@ class FenceService extends FenceServiceBase {
   Future<PendingUserResponse> createPendingUser(
       ServiceCall? call, PendingUserRequest request) async {
     final mailChecked = _checkMail(request.mail);
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -139,7 +145,13 @@ class FenceService extends FenceServiceBase {
   @override
   Future<Tokens> authenticateWithCredentials(
       ServiceCall? call, Credentials request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     try {
       final mailAndEncyptedPassword = _checkCredentials(request);
 
@@ -179,7 +191,13 @@ class FenceService extends FenceServiceBase {
   }
 
   Future<void> _updateUserLastSignIn(String userId) async {
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     try {
       final lastSignin = DateTime.now().timestampProto;
       final dd = lastSignin.toProto3Json();
@@ -225,7 +243,13 @@ class FenceService extends FenceServiceBase {
       if (!jwtRefresh.verify()) {
         throw GrpcError.unauthenticated('invalid jwtRefresh ');
       }
-      _db.isConnected == false ?  await _db.open()  : null;
+      if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
       final userPrivate = await _readUserByUserId(jwtRefresh.sub);
 
       var jwt = JsonWebToken();
@@ -331,7 +355,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update users');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final userPrivate = await _checkUserAndProtoIt(request.permissions.userId);
     if (userPrivate.firmId.isNotEmpty &&
         userPrivate.firmId != userPermission.firmId) {
@@ -356,7 +386,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read other users');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     try {
       final userMongo =
           await userCollection.findOne(where.eq('userId', request.userId));
@@ -445,7 +481,13 @@ class FenceService extends FenceServiceBase {
     }
 
     try {
-      _db.isConnected == false ?  await _db.open()  : null;
+      if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
 
       /// make sure we do not use an already existing code
       var code = 0;
@@ -516,7 +558,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.notFound('user ${userPermission.userId} not found');
     }
 
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final pairingResp = await _findCode(request.code);
     if (pairingResp.code == 0) {
       return CreateDeviceResponse(
@@ -602,7 +650,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -652,7 +706,13 @@ class FenceService extends FenceServiceBase {
           'user does not have right to delete users');
     }
 
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final userPrivate = await _checkUserAndProtoIt(request.userId);
     if (userPrivate.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied('user belongs to a different firm');
@@ -705,7 +765,13 @@ class FenceService extends FenceServiceBase {
     // ? should we check that no other firm exist for this accouunt ?
     // set the appropriate ids
 
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
 
     final nowProtoUTC = DateTime.now().toUtc().timestampProto;
 
@@ -846,7 +912,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied('user does not have right to read firm');
     }
     try {
-      _db.isConnected == false ?  await _db.open()  : null;
+      if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
       final firmMongo = await firmCollection
           .findOne(where.eq('firmId', userPermission.firmId));
       if (firmMongo == null) {
@@ -945,8 +1017,14 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot create data for firm ${userPermission.firmId} or chain ${request.chainId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
-    
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
+
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -1006,7 +1084,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access firm ${request.firmId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final chainId = DateTime.now().objectIdString;
     request.chainId = chainId;
     request.boutiques.first
@@ -1067,7 +1151,13 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
 
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
     final boutiqueIndex = chain.boutiques
@@ -1113,7 +1203,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     await boutiqueCollection.update(
       where.eq('firmId', userPermission.firmId).eq('chainId', request.chainId),
       ModifierBuilder()
@@ -1172,7 +1268,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
     // find the device
@@ -1195,7 +1297,13 @@ class FenceService extends FenceServiceBase {
     final userPermissions = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final chain =
         await _checkOneChainAndProtoIt(userPermissions.firmId, request.chainId);
 
@@ -1229,7 +1337,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -1251,7 +1365,13 @@ class FenceService extends FenceServiceBase {
   Future<SignUpResponse> signUp(ServiceCall call, SignUpRequest request) async {
     final mailAndEncyptedPassword = _checkCredentials(
         Credentials(mail: request.mail, password: request.password));
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final user = await _isMailAlreadyUsed(mailAndEncyptedPassword.mail);
     if (user.userId.isNotEmpty) {
       if (_isPendingUser(user)) {
@@ -1358,7 +1478,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read chain');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final chains = await _checkChainsAndProtoThem(userPermission);
     return ReadAllChainsResponse(chains: chains);
   }
@@ -1391,7 +1517,13 @@ class FenceService extends FenceServiceBase {
     final passwordEncrypted = _checkAndEncryptPassword(request.password);
 
     try {
-      _db.isConnected == false ?  await _db.open()  : null;
+      if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
       await userCollection.update(
           where.eq('firmId', request.firmId).eq('userId', request.userId),
           ModifierBuilder().set('password', passwordEncrypted));
@@ -1421,7 +1553,13 @@ class FenceService extends FenceServiceBase {
           'user does not have right to read users');
     }
     try {
-      _db.isConnected == false ?  await _db.open()  : null;
+      if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
       final usersMongo = await userCollection
           .find(where.eq('firmId', userPermission.firmId))
           .toList();
@@ -1499,7 +1637,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have access to read boutique ${request.boutiqueId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
 
     /// ***Mongodb_dart context***
     /// As the change stream return a "fullDocument" and all
@@ -1604,7 +1748,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -1638,7 +1788,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
 
 // request.chainId
     try {
@@ -1672,7 +1828,13 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 

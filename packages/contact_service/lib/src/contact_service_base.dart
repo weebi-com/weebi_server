@@ -29,7 +29,13 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, ContactRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
+    if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        _db.state = State.closed;
+        final d = await _db.open();
+        print(d.runtimeType);
+      }
+    }
 
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
@@ -92,7 +98,6 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> updateOne(
       ServiceCall? call, ContactRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -147,7 +152,6 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, ContactRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -181,7 +185,6 @@ class ContactService extends ContactServiceBase {
   @override
   Future<ContactsResponse> readAll(
       ServiceCall? call, ReadAllContactsRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -234,10 +237,9 @@ class ContactService extends ContactServiceBase {
     }
   }
 
-   @override
+  @override
   Future<ContactsIdsResponse> readAllIds(
       ServiceCall? call, ReadContactsIdsRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -256,10 +258,10 @@ class ContactService extends ContactServiceBase {
           .eq('chainId', request.chainId);
 
       final idsSet = <int>{};
-        final documents = await collection.find(selector).toList();
-        for (final doc in documents) {
-          idsSet.add(doc['contactId']);
-        }
+      final documents = await collection.find(selector).toList();
+      for (final doc in documents) {
+        idsSet.add(doc['contactId']);
+      }
 
       return ContactsIdsResponse.create()..ids.addAll(idsSet);
     } on GrpcError catch (e) {
@@ -271,7 +273,6 @@ class ContactService extends ContactServiceBase {
   @override
   Future<ContactPb> readOne(
       ServiceCall? call, ReadContactRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -339,8 +340,6 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall call, ContactsRequest request) async {
-    _db.isConnected == false ?  await _db.open()  : null;
-
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
