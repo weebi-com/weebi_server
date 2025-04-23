@@ -1,6 +1,6 @@
 # changelog
 
-## 1.0.11 - 2025 april 23rd
+## 1.0.11+1 - 2025 april 23rd
 
 - export GeneratedMessage and PbList to use protobuf built-in reflection capabilities
 
