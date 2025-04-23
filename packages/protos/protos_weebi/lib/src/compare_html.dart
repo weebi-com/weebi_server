@@ -1,4 +1,4 @@
-import 'package:protobuf/protobuf.dart';
+import 'package:protobuf/protobuf.dart' show GeneratedMessage, PbList;
 
 class Difference {
   final String fieldName;

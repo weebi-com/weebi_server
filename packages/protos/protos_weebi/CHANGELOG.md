@@ -1,5 +1,9 @@
 # changelog
 
+## 1.0.11 - 2025 april 23rd
+
+- export GeneratedMessage and PbList to use protobuf built-in reflection capabilities
+
 ## 1.0.10+3 - 2025 march 21th
 
 - int64 category.color

@@ -1479,11 +1479,10 @@ class FenceService extends FenceServiceBase {
           'user does not have right to read chain');
     }
     if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open().then((v) => print(v));
+      if (_db.state != State.opening) {
+        _db.state = State.closed;
       }
+      await _db.open();
     }
     final chains = await _checkChainsAndProtoThem(userPermission);
     return ReadAllChainsResponse(chains: chains);

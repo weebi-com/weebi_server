@@ -1,0 +1,1 @@
+export 'package:protobuf/protobuf.dart' show GeneratedMessage, PbList;
