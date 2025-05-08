@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:fence_service/grpc.dart';
-import 'package:fence_service/mongo_dart.dart';
 import 'package:fence_service/mongo_pool.dart';
 import 'package:logging/logging.dart';
 

@@ -1,4 +1,3 @@
-import 'package:fence_service/mongo_dart.dart';
 import 'package:fence_service/mongo_pool.dart';
 import 'package:test/test.dart';
 
