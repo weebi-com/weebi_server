@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/mongo_dart.dart';
+import 'package:fence_service/mongo_pool.dart';
 import 'package:logging/logging.dart';
 
 import 'package:article_service/article_service.dart';
@@ -24,14 +25,21 @@ void main(List<String> arguments) async {
   final port = '8080';
   final intPort = int.parse(port);
   final db = TestHelper.localDb;
-  final dbPool = ConnectionPool(5, () => TestHelper.localDb);
+  final MongoDbPoolService poolService = MongoDbPoolService(
+    MongoPoolConfiguration(
+      maxLifetimeMilliseconds: 180000,
+      leakDetectionThreshold: 10000,
+      uriString: TestHelper.local,
+      poolSize: 2,
+    ),
+  );
 
   final interceptors = [
     loggingInterceptor,
     authInterceptor,
   ];
 
-  final articleService = ArticleService(dbPool);
+  final articleService = ArticleService(poolService);
   final contactService = ContactService(db);
   final ticketService = TicketService(db);
   final fenceService = FenceService(db);
