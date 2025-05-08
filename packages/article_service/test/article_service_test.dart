@@ -1,4 +1,5 @@
 import 'package:fence_service/mongo_dart.dart';
+import 'package:fence_service/mongo_pool.dart';
 import 'package:test/test.dart';
 
 import 'package:article_service/article_service.dart';
@@ -9,8 +10,26 @@ import 'package:fence_service/mongo_local_testing.dart';
 void main() async {
   // final db = TestHelper.localDb;
 
-  // final connection = Connection(ConnectionManager(db));
-  final dbPool = ConnectionPool(5, () => TestHelper.localDb);
+  final MongoDbPoolService poolService = MongoDbPoolService(
+    const MongoPoolConfiguration(
+      /// [maxLifetimeMilliseconds] is the maximum lifetime of a connection in the pool.
+      /// Connection pools can dynamically expand when faced with high demand. Unused
+      /// connections within a specified period are automatically removed, and the pool
+      /// size is reduced to the specified minimum when connections (poolSize) are not reused within
+      /// that timeframe.
+      maxLifetimeMilliseconds: 180000,
+
+      /// [leakDetectionThreshold] is the threshold for connection leak detection.
+      /// If the connection is not released within the specified time, it is
+      /// considered as a leak.
+      /// It won't work if no value is set. It is recommended to set a value
+      leakDetectionThreshold: 10000,
+      uriString: TestHelper.local,
+
+      /// [poolSize] is the minimum number of connections in the pool.
+      poolSize: 2,
+    ),
+  );
 
   late ArticleService articleService;
   final cal = CalibreWeebi.dummyRetail.toMapProto();
@@ -28,34 +47,24 @@ void main() async {
     );
 
   setUpAll(() async {
-    final db = await dbPool.connect();
+    final db = await poolService.acquire();
     articleService = ArticleService(
-      dbPool,
+      poolService,
       isTest: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
-    await db
-        .collection(
-            (await articleService.getArticleCollection()).collectionName)
-        .drop();
-    await db.createCollection(
-        (await articleService.getArticleCollection()).collectionName);
-    await db.createCollection(
-        (await articleService.getCategoryCollection()).collectionName);
+    await db.collection(ArticleService.collectionArticleName).drop();
+    await db.createCollection(ArticleService.collectionArticleName);
+    await db.createCollection(ArticleService.collectionCategoryName);
+    poolService.release(db);
   });
 
   tearDownAll(() async {
-    final db = await dbPool.connect();
+    final db = await poolService.acquire();
 
-    await db
-        .collection(
-            (await articleService.getArticleCollection()).collectionName)
-        .drop();
-    await db
-        .collection(
-            (await articleService.getCategoryCollection()).collectionName)
-        .drop();
-    await db.close();
+    await db.collection(ArticleService.collectionArticleName).drop();
+    await db.collection(ArticleService.collectionCategoryName).drop();
+    poolService.release(db);
   });
 
   ///

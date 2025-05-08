@@ -1,7 +1,7 @@
 name: fence_service
 description: fence service for weebi server
 version: 1.0.1
-publish_to: 'none'
+publish_to: "none"
 # repository: https://github.com/my_org/my_repo
 
 environment:
@@ -14,10 +14,10 @@ dependencies:
   http: ^1.2.1
   # below are exported
   mongo_dart: ^0.10.3
+  mongo_pool: ^1.4.3
   protos_weebi: #^1.0.4
     path: ../protos/protos_weebi
   models_weebi: ^1.1.13
-  
 
 dev_dependencies:
   test: ^1.25.8

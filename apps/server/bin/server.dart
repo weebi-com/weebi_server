@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:fence_service/mongo_pool.dart';
 import 'package:logging/logging.dart';
 import 'package:fence_service/mongo_dart.dart';
 
@@ -42,13 +43,21 @@ void main(List<String> arguments) async {
     log('${rec.loggerName}: ${rec.level.name}: ${rec.time}: ${rec.message}');
   });
 
-  final dbPool = ConnectionPool(5, () => Db.create(AppEnvironment.mongoDbUri));
+  final MongoDbPoolService poolService = MongoDbPoolService(
+    MongoPoolConfiguration(
+      maxLifetimeMilliseconds: 180000,
+      leakDetectionThreshold: 10000,
+      uriString: AppEnvironment.mongoDbUri,
+      poolSize: 2,
+    ),
+  );
+
   try {
     final db = await Db.create(AppEnvironment.mongoDbUri);
     await db.open();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
-    final articleService = ArticleService(dbPool);
+    final articleService = ArticleService(poolService);
     final contactService = ContactService(db);
     final ticketService = TicketService(db);
     final fenceService = FenceService(db);
