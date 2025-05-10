@@ -32,6 +32,7 @@ void main(List<String> arguments) async {
       poolSize: 2,
     ),
   );
+  await poolService.initialize();
 
   final interceptors = [
     loggingInterceptor,

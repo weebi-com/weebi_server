@@ -52,6 +52,8 @@ void main(List<String> arguments) async {
     ),
   );
 
+  await poolService.initialize();
+
   try {
     final db = await Db.create(AppEnvironment.mongoDbUri);
     await db.open();
