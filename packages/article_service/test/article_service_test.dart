@@ -30,6 +30,8 @@ void main() async {
     ),
   );
 
+  await poolService.initialize();
+
   late ArticleService articleService;
   final cal = CalibreWeebi.dummyRetail.toMapProto();
   final calibreDummy = CalibrePb.create()
