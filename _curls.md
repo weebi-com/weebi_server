@@ -5,7 +5,9 @@ grpcurl -plaintext -proto packages\protos\proto\weebi_app_service.proto 192.0.2.
 
 grpcurl -plaintext -proto fence_service.proto 192.0.2.1:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion
 
-
+## CHIKO
+https://github.com/felangga/chiko/
+chiko -plaintext -proto fence_service.proto 192.0.2.1:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion
 
 # Using compiled protoset files
 grpcurl -protoset my-protos.bin list
