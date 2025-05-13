@@ -6,7 +6,7 @@ void main() {
   test("CalibreWeebi vs CalibrePb", () {
     final calibreWeebi = CalibreWeebi.dummyRetail;
     final calibrePb = CalibrePb.create()
-      ..mergeFromProto3Json(calibreWeebi.toMap(), ignoreUnknownFields: true);
+      ..mergeFromProto3Json(calibreWeebi.toMap(isProto: true), ignoreUnknownFields: true);
     expect(calibrePb, calibreWeebi);
   });
   test("CalibrePb vs CalibreWeebi", () {
