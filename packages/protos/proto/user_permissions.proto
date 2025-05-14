@@ -30,6 +30,10 @@ package weebi.user.permissions;
   }
 }
  */
+
+  /// TOConsider: think about a deviceRights or at least something about device boolRights
+  /// TOConsider rename chainRights ? 
+
 message ChainIds {
   repeated string ids = 1 [json_name = 'ids'];
 }
@@ -55,8 +59,6 @@ message UserPermissions {
   ContactRights contactRights =  7 [json_name = 'contactRights'];
   ArticleRights articleRights =  8  [json_name = 'articleRights'];
   BoutiqueRights boutiqueRights = 9 [json_name = 'boutiqueRights'];
-  // TODO: think about a deviceRights or at least something about device boolRights
-  // TODO reanme below
   ChainRights chainRights =  10  [json_name = 'chainRights'];
   FirmRights firmRights =  11 [json_name = 'firmRights'];
   UserManagementRights userManagementRights =  12 [json_name = 'userManagementRights'];

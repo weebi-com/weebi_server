@@ -34,7 +34,7 @@ void main() {
   });
 
   tearDownAll(() async {
-    await db.collection(fenceService.userCollection.collectionName).drop();
+    // await db.collection(fenceService.userCollection.collectionName).drop();
     await db.collection(fenceService.boutiqueCollection.collectionName).drop();
     await db.collection(fenceService.firmCollection.collectionName).drop();
     await db
@@ -52,10 +52,10 @@ void main() {
         ServiceCallTest(bearer.accessToken),
         ChainIdAndboutiqueId(
             chainId: Dummy.chain.chainId,
-            boutiqueId: Dummy.boutique.boutiqueId));
+            boutiqueId: Dummy.boutiqueMongo.boutiqueId));
 
     expect(codeResponse.chainId, Dummy.chain.chainId);
-    expect(codeResponse.boutiqueId, Dummy.boutique.boutiqueId);
+    expect(codeResponse.boutiqueId, Dummy.boutiqueMongo.boutiqueId);
     expect(codeResponse.code != 0, isTrue);
     // print('codeResponse.code ${codeResponse.code}');
 
@@ -64,8 +64,10 @@ void main() {
       ..baseOS = 'testOS';
     final pendingDevice = PendingDeviceRequest(
         code: codeResponse.code, hardwareInfo: hardwareInfo);
+
     final createPendingDeviceStatusResponse = await fenceService.createDevice(
-        ServiceCallTest('', path: 'createDevice'), pendingDevice);
+        ServiceCallTest(bearer.accessToken, path: 'createDevice'),
+        pendingDevice);
     expect(createPendingDeviceStatusResponse.statusResponse.type,
         StatusResponse_Type.CREATED);
 

@@ -24,9 +24,9 @@ kreya_api_calling/weebi/fence/service/FenceService/readOneUser-request.json
 kreya_api_calling/weebi/fence/service/FenceService/readOneUser.krop
 kreya_api_calling/weebi/fence/service/FenceService/readUserPermissionsByToken.krop
 kreya_api_calling/weebi/fence/service/FenceService/signUp-request.json
-kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-request.json
-kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-request.json
-kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-request.json
 kreya_api_calling/weebi/fence/service/FenceService/generateCodeForPairingDevice-request.json
 kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-request.json
 kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials.krop
+/kreya_api_calling/weebi/fence/service/FenceService/authenticateWithRefreshToken.krop
+kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-request.json
+kreya_api_calling/weebi/fence/service/FenceService/authenticateWithRefreshToken-request.json

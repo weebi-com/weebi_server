@@ -29,7 +29,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, TicketRequest request) async {
-    _db.isConnected ? null : await _db.open();
+        if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -95,7 +101,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<TicketsResponse> readAll(
       ServiceCall? call, ReadAllTicketsRequest request) async {
-    _db.isConnected ? null : await _db.open();
+        if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -131,10 +143,10 @@ class TicketService extends TicketServiceBase {
     }
 
     if (request.lastFetchTimestampUTC.isNotEmpty) {
-      selector.and(where.gte(
-          'lastTouchTimestampUTC', request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
+      selector.and(where.gte('lastTouchTimestampUTC',
+          request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
     }
-    
+
     if (request.isDeleted) {
       /// will look for deleted tickets
       selector.and(where.eq('isDeleted', true));
@@ -145,12 +157,12 @@ class TicketService extends TicketServiceBase {
     }
 
     try {
-      final list = await collection.find(selector).toList();
-      if (list.isEmpty) {
+      final result = await collection.find(selector).toList();
+      if (result.isEmpty) {
         return TicketsResponse.create();
       }
       final tickets = <TicketPb>[];
-      for (final t in list) {
+      for (final t in result) {
         final ticketMongo = TicketMongo.create()
           ..mergeFromProto3Json(t, ignoreUnknownFields: true);
         tickets.add(ticketMongo.ticket);
@@ -168,7 +180,13 @@ class TicketService extends TicketServiceBase {
 
   @override
   Future<TicketPb> readOne(ServiceCall? call, FindTicketRequest request) async {
-    _db.isConnected ? null : await _db.open();
+        if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -216,7 +234,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> updateStatusOne(
       ServiceCall? call, TicketRequest request) async {
-    _db.isConnected ? null : await _db.open();
+        if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -282,7 +306,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, TicketRequest request) async {
-    _db.isConnected ? null : await _db.open();
+        if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -337,7 +367,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall call, TicketsRequest request) async {
-    _db.isConnected ? null : await _db.open();
+        if (_db.isConnected == false) {
+      if (_db.state == State.opening) {
+        await Future.delayed(Duration(microseconds: 10));
+      } else {
+        await _db.open();
+      }
+    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;

@@ -435,8 +435,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   BoutiqueRights ensureBoutiqueRights() => $_ensure(7);
 
-  /// TODO: think about a deviceRights or at least something about device boolRights
-  /// TODO reanme below
+
   @$pb.TagNumber(10)
   ChainRights get chainRights => $_getN(8);
   @$pb.TagNumber(10)

@@ -1,4 +1,4 @@
-import 'package:mongo_dart/mongo_dart.dart';
+import 'package:fence_service/mongo_dart.dart';
 
 Future<void> up(Db db) async {
   var collection = db.collection('your_collection');

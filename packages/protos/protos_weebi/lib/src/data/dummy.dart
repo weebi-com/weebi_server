@@ -21,7 +21,7 @@ abstract class Dummy {
     ..street = 'str'
     ..city = 'city'
     ..code = 'code'
-    ..country = Country(code2Letters: 'fr');
+    ..country = Country(code2Letters: 'FR');
 
   static final boutiquePb = BoutiquePb(
     addressFull: Dummy.address,
@@ -33,10 +33,11 @@ abstract class Dummy {
     devices: <Device>[Dummy.device],
   );
 
-  static final boutique = boutiqueNoId
+  static final boutiqueMongo = boutiqueNoId
     ..boutiqueId = '123456789'
     ..firmId = firm.firmId
-    ..chainId = chain.chainId;
+    ..chainId = chain.chainId
+    ..boutique.boutiqueId = '123456789';
 
   static final hardwareInfo = HardwareInfo.create()
     ..name = 'dummy device'
@@ -49,7 +50,7 @@ abstract class Dummy {
 
   static final deviceNoId = Device()
     ..chainId = chain.chainId
-    ..boutiqueId = boutique.boutiqueId
+    ..boutiqueId = boutiqueMongo.boutiqueId
     ..hardwareInfo = hardwareInfo;
 
   static final chainNoId = Chain(
@@ -59,8 +60,11 @@ abstract class Dummy {
     ..chainId = '123456789'
     ..firmId = '123456789'
     ..boutiques.first.boutiqueId = '123456789'
+    ..boutiques.first.boutique.boutiqueId = '123456789'
     ..boutiques.first.chainId = '123456789'
-    ..boutiques.first.firmId = '123456789';
+    ..boutiques.first.firmId = '123456789'
+    
+    ;
 
   static final firmNoId = Firm(
     name: 'firmDummy',
@@ -112,7 +116,7 @@ abstract class Dummy {
     ..ticketRights = RightSalesperson.ticket
     ..boolRights = BoolRights()
     ..limitedAccess = AccessLimited(
-      boutiqueIds: BoutiqueIds(ids: [boutique.boutiqueId]),
+      boutiqueIds: BoutiqueIds(ids: [boutiqueMongo.boutiqueId]),
       chainIds: ChainIds(ids: [chain.chainId]),
     );
 
