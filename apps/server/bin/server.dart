@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io' show HttpHeaders, InternetAddress;
 
+import 'package:fence_service/mongo_pool.dart';
 import 'package:logging/logging.dart';
-import 'package:fence_service/mongo_dart.dart';
+// import 'package:fence_service/mongo_dart.dart';
 
 import 'package:fence_service/grpc.dart'
     show GrpcError, Server, ServiceCall, ServiceMethod;
@@ -42,6 +43,17 @@ void main(List<String> arguments) async {
   });
   print('1');
 
+  final MongoDbPoolService poolService = MongoDbPoolService(
+    MongoPoolConfiguration(
+      maxLifetimeMilliseconds: 180000,
+      leakDetectionThreshold: 10000,
+      uriString: AppEnvironment.mongoDbUri,
+      poolSize: 2,
+    ),
+  );
+
+  await poolService.initialize();
+
   try {
     final db = await Db.create(AppEnvironment.mongoDbUri);
     await db.open();
@@ -53,11 +65,11 @@ void main(List<String> arguments) async {
   //  final db = await pool.connect();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
-    final articleService = ArticleService(db);
-    final contactService = ContactService(db);
-    final ticketService = TicketService(db);
-    final fenceService = FenceService(db);
-    final weebiAppService = WeebiAppService(db);
+    final articleService = ArticleService(poolService);
+    final contactService = ContactService(poolService);
+    final ticketService = TicketService(poolService);
+    final fenceService = FenceService(poolService);
+    final weebiAppService = WeebiAppService(poolService);
 
     final server = Server.create(
       services: [

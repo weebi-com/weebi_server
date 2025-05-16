@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:fence_service/grpc.dart';
-import 'package:fence_service/mongo_dart.dart';
+import 'package:fence_service/mongo_pool.dart';
 import 'package:logging/logging.dart';
 
 import 'package:fence_service/src/fence_service_base.dart';
@@ -16,16 +16,14 @@ void main(List<String> args) async {
     );
   });
 
-  final db = TestHelper.localDb;
-  final connection = Connection(ConnectionManager(db));
-
   final interceptors = <Interceptor>[
     loggingInterceptor,
     authInterceptor,
   ];
-  await connection.connect();
+
+  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
   final server = Server.create(
-    services: [FenceService(db)],
+    services: [FenceService(poolService)],
     interceptors: interceptors,
     codecRegistry: CodecRegistry(codecs: const [GzipCodec(), IdentityCodec()]),
   );

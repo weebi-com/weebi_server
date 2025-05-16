@@ -1,4 +1,5 @@
-import 'package:fence_service/mongo_dart.dart' hide Timestamp;
+import 'package:fence_service/mongo_pool.dart' hide Timestamp;
+
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
@@ -14,28 +15,21 @@ abstract class _Helpers {
 }
 
 class TicketService extends TicketServiceBase {
-  final Db _db;
-  final DbCollection collection;
+  final MongoDbPoolService _poolService;
+
   // for unit tests only
   final bool isTest;
   final UserPermissions? userPermissionIfTest;
   static const String collectionName = 'ticket';
+
   TicketService(
-    this._db, {
+    this._poolService, {
     this.isTest = false,
     this.userPermissionIfTest,
-  }) : collection = _db.collection(collectionName);
-
+  });
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, TicketRequest request) async {
-        if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -50,64 +44,62 @@ class TicketService extends TicketServiceBase {
           'user does not have right to create ticket');
     }
 
-    try {
-      final snapshot = await collection.findOne(_Helpers.selectTicket(
-          userPermission.firmId,
-          request.ticket.counterfoil.boutiqueId,
-          request.ticket.nonUniqueId,
-          request.ticket.creationDate));
-      if (snapshot != null) {
-        throw GrpcError.alreadyExists();
-      }
-      final ticketMongo = TicketMongo.create()
-        ..ticket = request.ticket
-        ..creationDate = request.ticket.date
-        ..nonUniqueId = request.ticket.nonUniqueId
-        ..boutiqueId = request.ticket.counterfoil.boutiqueId
-        ..chainId = request.ticket.counterfoil.chainId
-        ..firmId = userPermission.firmId
-        ..userId = userPermission.userId
-        ..contactId = request.ticket.contactId
-        ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final collection = db.collection(collectionName);
 
-      final result = await collection
-          .insertOne(ticketMongo.toProto3Json() as Map<String, dynamic>);
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      if (result.success && result.document != null) {
-        final ticketNonUniqueId = result.document!['nonUniqueId'] as int;
+      try {
+        final snapshot = await collection.findOne(_Helpers.selectTicket(
+            userPermission.firmId,
+            request.ticket.counterfoil.boutiqueId,
+            request.ticket.nonUniqueId,
+            request.ticket.creationDate));
+        if (snapshot != null) {
+          throw GrpcError.alreadyExists();
+        }
+        final ticketMongo = TicketMongo.create()
+          ..ticket = request.ticket
+          ..creationDate = request.ticket.date
+          ..nonUniqueId = request.ticket.nonUniqueId
+          ..boutiqueId = request.ticket.counterfoil.boutiqueId
+          ..chainId = request.ticket.counterfoil.chainId
+          ..firmId = userPermission.firmId
+          ..userId = userPermission.userId
+          ..contactId = request.ticket.contactId
+          ..lastTouchTimestampUTC = DateTime.now().toUtc().timestampProto;
 
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.CREATED
-          ..id = ticketNonUniqueId.toString()
-          ..timestamp = DateTime.now().timestampProto;
-      } else {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.ERROR
-          ..message = 'result.ok != 1 || result.document == null'
-          ..timestamp = DateTime.now().timestampProto;
+        final result = await collection
+            .insertOne(ticketMongo.toProto3Json() as Map<String, dynamic>);
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        }
+        if (result.success && result.document != null) {
+          final ticketNonUniqueId = result.document!['nonUniqueId'] as int;
+
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.CREATED
+            ..id = ticketNonUniqueId.toString()
+            ..timestamp = DateTime.now().timestampProto;
+        } else {
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.ERROR
+            ..message = 'result.ok != 1 || result.document == null'
+            ..timestamp = DateTime.now().timestampProto;
+        }
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      } catch (e, stacktrace) {
+        print(e);
+        print(stacktrace);
+        throw GrpcError.unknown('$e');
       }
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
-      throw GrpcError.unknown('$e');
-    }
+    });
   }
 
   @override
   Future<TicketsResponse> readAll(
       ServiceCall? call, ReadAllTicketsRequest request) async {
-        if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -156,37 +148,34 @@ class TicketService extends TicketServiceBase {
           .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
     }
 
-    try {
-      final result = await collection.find(selector).toList();
-      if (result.isEmpty) {
-        return TicketsResponse.create();
+    return databaseMiddleware<TicketsResponse>(_poolService, (db) async {
+      final collection = db.collection(collectionName);
+
+      try {
+        final result = await collection.find(selector).toList();
+        if (result.isEmpty) {
+          return TicketsResponse.create();
+        }
+        final tickets = <TicketPb>[];
+        for (final t in result) {
+          final ticketMongo = TicketMongo.create()
+            ..mergeFromProto3Json(t, ignoreUnknownFields: true);
+          tickets.add(ticketMongo.ticket);
+        }
+        final ticketsBis = TicketsResponse();
+        ticketsBis.tickets
+          ..clear()
+          ..addAll(tickets);
+        return ticketsBis;
+      } on GrpcError catch (e) {
+        print('readAll tickets error $e');
+        rethrow;
       }
-      final tickets = <TicketPb>[];
-      for (final t in result) {
-        final ticketMongo = TicketMongo.create()
-          ..mergeFromProto3Json(t, ignoreUnknownFields: true);
-        tickets.add(ticketMongo.ticket);
-      }
-      final ticketsBis = TicketsResponse();
-      ticketsBis.tickets
-        ..clear()
-        ..addAll(tickets);
-      return ticketsBis;
-    } on GrpcError catch (e) {
-      print('readAll tickets error $e');
-      rethrow;
-    }
+    });
   }
 
   @override
   Future<TicketPb> readOne(ServiceCall? call, FindTicketRequest request) async {
-        if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -217,30 +206,28 @@ class TicketService extends TicketServiceBase {
     if (request.creationDate.isNotEmpty) {
       selector.eq('creationDate', request.creationDate);
     }
-    try {
-      final ticket = await collection.findOne(selector);
-      if (ticket == null) {
-        return TicketPb.getDefault();
+
+    return databaseMiddleware<TicketPb>(_poolService, (db) async {
+      final collection = db.collection(collectionName);
+
+      try {
+        final ticket = await collection.findOne(selector);
+        if (ticket == null) {
+          return TicketPb.getDefault();
+        }
+        final ticketMongo = TicketMongo.create()
+          ..mergeFromProto3Json(ticket, ignoreUnknownFields: true);
+        return ticketMongo.ticket;
+      } on GrpcError catch (e) {
+        print('readOne ticket error $e');
+        rethrow;
       }
-      final ticketMongo = TicketMongo.create()
-        ..mergeFromProto3Json(ticket, ignoreUnknownFields: true);
-      return ticketMongo.ticket;
-    } on GrpcError catch (e) {
-      print('readOne ticket error $e');
-      rethrow;
-    }
+    });
   }
 
   @override
   Future<StatusResponse> updateStatusOne(
       ServiceCall? call, TicketRequest request) async {
-        if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -267,52 +254,50 @@ class TicketService extends TicketServiceBase {
       request.ticket.date,
     );
 
-    try {
-      final result = await collection.updateOne(
-        selector,
-        modify
-            .set('ticket.status', false)
-            .set(
-              'ticket.statusUpdateDate',
-              DateTime.now().toIso8601String(),
-            )
-            .set('lastTouchTimestampUTC',
-                DateTime.now().toUtc().timestampProto.toProto3Json()),
-      );
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final collection = db.collection(collectionName);
+
+      try {
+        final result = await collection.updateOne(
+          selector,
+          modify
+              .set('ticket.status', false)
+              .set(
+                'ticket.statusUpdateDate',
+                DateTime.now().toIso8601String(),
+              )
+              .set('lastTouchTimestampUTC',
+                  DateTime.now().toUtc().timestampProto.toProto3Json()),
+        );
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        }
+        if (result.success) {
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.UPDATED
+            // ..id= mongoid
+            ..timestamp = DateTime.now().timestampProto;
+        } else {
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.ERROR
+            ..message = 'result.ok != 1 || result.document == null'
+            ..timestamp = DateTime.now().timestampProto;
+        }
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      } catch (e, stacktrace) {
+        print(e);
+        print(stacktrace);
+        throw GrpcError.unknown('$e');
       }
-      if (result.success) {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.UPDATED
-          // ..id= mongoid
-          ..timestamp = DateTime.now().timestampProto;
-      } else {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.ERROR
-          ..message = 'result.ok != 1 || result.document == null'
-          ..timestamp = DateTime.now().timestampProto;
-      }
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
-      throw GrpcError.unknown('$e');
-    }
+    });
   }
 
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, TicketRequest request) async {
-        if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -338,42 +323,40 @@ class TicketService extends TicketServiceBase {
       request.ticket.date,
     );
 
-    try {
-      // * for legal reasons do not delete a ticket, only softDelete it
-      // thus we do not use await collection.deleteOne(selector);
-      final result = await collection.updateOne(
-        selector,
-        modify.set('isDeleted', true).set('lastTouchTimestampUTC',
-            DateTime.now().toUtc().timestampProto.toProto3Json()),
-      );
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
-      } else if (result.success) {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.DELETED
-          ..timestamp = DateTime.now().timestampProto;
-      } else {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.ERROR
-          ..message = 'result.ok != 1 || result.document == null'
-          ..timestamp = DateTime.now().timestampProto;
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final collection = db.collection(collectionName);
+
+      try {
+        // * for legal reasons do not delete a ticket, only softDelete it
+        // thus we do not use await collection.deleteOne(selector);
+        final result = await collection.updateOne(
+          selector,
+          modify.set('isDeleted', true).set('lastTouchTimestampUTC',
+              DateTime.now().toUtc().timestampProto.toProto3Json()),
+        );
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        } else if (result.success) {
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.DELETED
+            ..timestamp = DateTime.now().timestampProto;
+        } else {
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.ERROR
+            ..message = 'result.ok != 1 || result.document == null'
+            ..timestamp = DateTime.now().timestampProto;
+        }
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
       }
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    }
+    });
   }
 
   @override
   Future<StatusResponse> createMany(
       ServiceCall call, TicketsRequest request) async {
-        if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -392,63 +375,67 @@ class TicketService extends TicketServiceBase {
           'user does not have right to create ticket');
     }
 
-    final ticketsMap = <Map<String, dynamic>>[];
-    final nowTimestampUtc = DateTime.now().toUtc().timestampProto;
-    int dups = 0;
-    for (final ticketPb in request.tickets) {
-      final snapshot = await collection.findOne(_Helpers.selectTicket(
-          userPermission.firmId,
-          ticketPb.counterfoil.boutiqueId,
-          ticketPb.nonUniqueId,
-          ticketPb.creationDate));
-      if (snapshot != null) {
-        dups += 1;
-        continue;
-      }
-      final ticketMongo = TicketMongo.create()
-        ..ticket = ticketPb
-        ..creationDate = ticketPb.date
-        ..nonUniqueId = ticketPb.nonUniqueId
-        ..boutiqueId = ticketPb.counterfoil.boutiqueId
-        ..chainId = ticketPb.counterfoil.chainId
-        ..firmId = userPermission.firmId
-        ..userId = userPermission.userId
-        ..contactId = ticketPb.contactId
-        ..lastTouchTimestampUTC = nowTimestampUtc;
-      ticketsMap.add(ticketMongo.toProto3Json() as Map<String, dynamic>);
-    }
-    if (request.tickets.length == dups) {
-      throw GrpcError.alreadyExists();
-    }
-    try {
-      final result = await collection.insertMany(ticketsMap);
-      if (result.hasWriteErrors) {
-        final writeErrorsMessages = <String>[];
-        for (final error in result.writeErrors) {
-          writeErrorsMessages.add(error.toString());
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final collection = db.collection(collectionName);
+
+      final ticketsMap = <Map<String, dynamic>>[];
+      final nowTimestampUtc = DateTime.now().toUtc().timestampProto;
+      int dups = 0;
+      for (final ticketPb in request.tickets) {
+        final snapshot = await collection.findOne(_Helpers.selectTicket(
+            userPermission.firmId,
+            ticketPb.counterfoil.boutiqueId,
+            ticketPb.nonUniqueId,
+            ticketPb.creationDate));
+        if (snapshot != null) {
+          dups += 1;
+          continue;
         }
-        throw GrpcError.unknown(
-            'hasWriteErrors ${writeErrorsMessages.join("\n")}');
+        final ticketMongo = TicketMongo.create()
+          ..ticket = ticketPb
+          ..creationDate = ticketPb.date
+          ..nonUniqueId = ticketPb.nonUniqueId
+          ..boutiqueId = ticketPb.counterfoil.boutiqueId
+          ..chainId = ticketPb.counterfoil.chainId
+          ..firmId = userPermission.firmId
+          ..userId = userPermission.userId
+          ..contactId = ticketPb.contactId
+          ..lastTouchTimestampUTC = nowTimestampUtc;
+        ticketsMap.add(ticketMongo.toProto3Json() as Map<String, dynamic>);
       }
-      if (result.success) {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.CREATED
-          ..timestamp = DateTime.now().timestampProto
-          ..message =
-              dups > 0 ? 'dups ignored: $dups/${request.tickets.length}' : '';
-      } else {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.ERROR
-          ..message = 'result.failure but no writeErrorsMessages'
-          ..timestamp = DateTime.now().timestampProto;
+      if (request.tickets.length == dups) {
+        throw GrpcError.alreadyExists();
       }
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
-      throw GrpcError.unknown('$e');
-    }
+      try {
+        final result = await collection.insertMany(ticketsMap);
+        if (result.hasWriteErrors) {
+          final writeErrorsMessages = <String>[];
+          for (final error in result.writeErrors) {
+            writeErrorsMessages.add(error.toString());
+          }
+          throw GrpcError.unknown(
+              'hasWriteErrors ${writeErrorsMessages.join("\n")}');
+        }
+        if (result.success) {
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.CREATED
+            ..timestamp = DateTime.now().timestampProto
+            ..message =
+                dups > 0 ? 'dups ignored: $dups/${request.tickets.length}' : '';
+        } else {
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.ERROR
+            ..message = 'result.failure but no writeErrorsMessages'
+            ..timestamp = DateTime.now().timestampProto;
+        }
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      } catch (e, stacktrace) {
+        print(e);
+        print(stacktrace);
+        throw GrpcError.unknown('$e');
+      }
+    });
   }
 }

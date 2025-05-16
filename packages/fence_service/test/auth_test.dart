@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
 
-import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:fence_service/fence_service.dart';
@@ -17,16 +16,10 @@ final _channel = ClientChannel(
 );
 
 void main() {
-  final db = TestHelper.localDb;
-
-  final connection = Connection(ConnectionManager(db));
-  late FenceService fenceService;
+  final poolService = TestHelper.defaultPoolService;
   setUpAll(() async {
-    await db.open();
-    final isConnected = await connection.connect();
-    print(isConnected);
-    fenceService = FenceService(db);
 
+    final db = await poolService.acquire();
     final userCollection = db.collection('user');
     await userCollection.insertOne({
       'mail': 'dev@weebi.com',
@@ -35,8 +28,9 @@ void main() {
   });
 
   tearDownAll(() async {
-    await db.collection(fenceService.userCollection.collectionName).drop();
-    await connection.close();
+    final db = await poolService.acquire();
+    await db.collection(FenceService.userCollectionName).drop();
+    poolService.release(db);
   });
 
   test('test client auth', () async {
