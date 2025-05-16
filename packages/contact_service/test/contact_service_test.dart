@@ -1,15 +1,15 @@
-// import 'dart:io';
-import 'package:fence_service/mongo_dart.dart';
+import 'package:fence_service/mongo_pool.dart';
 import 'package:test/test.dart';
 
+import 'package:contact_service/contact_service.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/models_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
-import 'package:contact_service/contact_service.dart';
 
 void main() async {
-  final db = TestHelper.localDb;
-  final connection = Connection(ConnectionManager(db));
+  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  await poolService.initialize();
+
   final chainId = Dummy.chain.chainId;
   late ContactService contactService;
 
@@ -20,19 +20,21 @@ void main() async {
     );
 
   setUpAll(() async {
-    await db.open();
+    final db = await poolService.acquire();
     contactService = ContactService(
-      db,
+      poolService,
       isTest: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
-    await db.collection(contactService.collection.collectionName).drop();
-    await db.createCollection(contactService.collection.collectionName);
+    await db.collection(ContactService.collectionName).drop();
+    await db.createCollection(ContactService.collectionName);
+    poolService.release(db);
   });
 
   tearDownAll(() async {
-    await db.collection(contactService.collection.collectionName).drop();
-    await connection.close();
+    final db = await poolService.acquire();
+    await db.collection(ContactService.collectionName).drop();
+    poolService.release(db);
   });
 
   test('test insertOne', () async {
@@ -47,7 +49,6 @@ void main() async {
     final response = await contactService.readAll(
         null, ReadAllContactsRequest(chainId: chainId));
     expect(response.contacts.length, 1);
-
   });
   test('test readAllIds', () async {
     final response = await contactService.readAllIds(

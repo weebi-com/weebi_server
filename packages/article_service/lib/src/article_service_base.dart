@@ -26,7 +26,6 @@ abstract class _Helpers {
 }
 
 class ArticleService extends ArticleServiceBase {
-  // final Db _db;
   final MongoDbPoolService _poolService;
   // for unit tests only
   final bool isTest;
@@ -112,17 +111,17 @@ class ArticleService extends ArticleServiceBase {
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
     if (userPermission.articleRights.rights.any((e) => e == Right.update) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to update articles');
     }
-    if (userPermission.isChainAccessible(request.chainId) == false) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from chain ${request.chainId}');
-    }
 
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         final collectionArticle = db.collection(collectionArticleName);
@@ -178,7 +177,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         try {
@@ -213,7 +212,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<CalibresResponse>(
       _poolService,
       (db) async {
         try {
@@ -273,7 +272,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<CalibresIdsResponse>(
       _poolService,
       (db) async {
         try {
@@ -313,7 +312,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<CalibrePb>(
       _poolService,
       (db) async {
         final collectionArticle = db.collection(collectionArticleName);
@@ -362,7 +361,7 @@ class ArticleService extends ArticleServiceBase {
           'user does not have right to create category');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         final collectionCategory = db.collection(collectionCategoryName);
@@ -426,7 +425,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         final collectionCategory = db.collection(collectionCategoryName);
@@ -485,7 +484,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         final collectionCategory = db.collection(collectionCategoryName);
@@ -521,7 +520,7 @@ class ArticleService extends ArticleServiceBase {
     }
     //
 
-    return databaseMiddleware(
+    return databaseMiddleware<CategoriesResponse>(
       _poolService,
       (db) async {
         final collectionCategory = db.collection(collectionCategoryName);
@@ -568,7 +567,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<CategoryPb>(
       _poolService,
       (db) async {
         final collectionCategory = db.collection(collectionCategoryName);
@@ -616,7 +615,7 @@ class ArticleService extends ArticleServiceBase {
           'user does not have right to create articles');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         final collectionArticle = db.collection(collectionArticleName);
@@ -702,7 +701,7 @@ class ArticleService extends ArticleServiceBase {
           'user does not have right to create articles photos');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         final collectionPhoto = db.collection(collectionPhotoName);
@@ -781,7 +780,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to create article photo');
     }
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         final collectionPhoto = db.collection(collectionPhotoName);
@@ -845,7 +844,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         final collectionPhoto = db.collection(collectionPhotoName);
@@ -879,7 +878,7 @@ class ArticleService extends ArticleServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     //
-    return databaseMiddleware(
+    return databaseMiddleware<PhotosResponse>(
       _poolService,
       (db) async {
         final collectionPhoto = db.collection(collectionPhotoName);
@@ -929,7 +928,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    return databaseMiddleware(
+    return databaseMiddleware<ArticlePhotoPb>(
       _poolService,
       (db) async {
         final collectionPhoto = db.collection(collectionPhotoName);
@@ -969,7 +968,7 @@ class ArticleService extends ArticleServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    return databaseMiddleware(
+    return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
         final collectionPhoto = db.collection(collectionPhotoName);

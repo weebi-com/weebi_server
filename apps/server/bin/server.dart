@@ -66,10 +66,10 @@ void main(List<String> arguments) async {
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
     final articleService = ArticleService(poolService);
-    final contactService = ContactService(db);
-    final ticketService = TicketService(db);
-    final fenceService = FenceService(db);
-    final weebiAppService = WeebiAppService(db);
+    final contactService = ContactService(poolService);
+    final ticketService = TicketService(poolService);
+    final fenceService = FenceService(poolService);
+    final weebiAppService = WeebiAppService(poolService);
 
     final server = Server.create(
       services: [
