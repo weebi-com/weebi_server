@@ -12,8 +12,6 @@ import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:fence_service/fence_service.dart';
-import 'email/email_service.dart';
-import 'email/password_reset_service.dart';
 
 class FenceService extends FenceServiceBase {
   final Db _db;
@@ -1893,7 +1891,7 @@ class FenceService extends FenceServiceBase {
         // Return success but don't actually send an email
         log('Password reset requested for non-existent email: ${request.mail}');
         return StatusResponse()
-          ..type = StatusResponse_Type.OK
+          ..type = StatusResponse_Type.SUCCESS
           ..timestamp = DateTime.now().timestampProto;
       }
 
@@ -1927,7 +1925,7 @@ class FenceService extends FenceServiceBase {
 
       log('Password reset email sent to: ${request.mail}');
       return StatusResponse()
-        ..type = StatusResponse_Type.OK
+        ..type = StatusResponse_Type.SUCCESS
         ..timestamp = DateTime.now().timestampProto;
 
     } on GrpcError catch (e) {
@@ -1983,7 +1981,7 @@ class FenceService extends FenceServiceBase {
         ModifierBuilder().set('password', passwordEncrypted)
       );
 
-      if (updateResult.modifiedCount == 0) {
+      if (updateResult.nModified == 0) {
         throw GrpcError.internal('Failed to update password');
       }
 

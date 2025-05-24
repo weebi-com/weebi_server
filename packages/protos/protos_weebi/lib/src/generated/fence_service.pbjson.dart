@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: fence_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -347,4 +347,32 @@ const ApproveDeviceRequest$json = {
 final $typed_data.Uint8List approveDeviceRequestDescriptor = $convert.base64Decode(
     'ChRBcHByb3ZlRGV2aWNlUmVxdWVzdBIsCgZkZXZpY2UYASABKAsyFC53ZWViaS5kZXZpY2UuRG'
     'V2aWNlUgZkZXZpY2U=');
+
+@$core.Deprecated('Use passwordResetRequestDescriptor instead')
+const PasswordResetRequest$json = {
+  '1': 'PasswordResetRequest',
+  '2': [
+    {'1': 'mail', '3': 1, '4': 1, '5': 9, '10': 'mail'},
+  ],
+};
+
+/// Descriptor for `PasswordResetRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordResetRequestDescriptor = $convert.base64Decode(
+    'ChRQYXNzd29yZFJlc2V0UmVxdWVzdBISCgRtYWlsGAEgASgJUgRtYWls');
+
+@$core.Deprecated('Use passwordResetConfirmRequestDescriptor instead')
+const PasswordResetConfirmRequest$json = {
+  '1': 'PasswordResetConfirmRequest',
+  '2': [
+    {'1': 'mail', '3': 1, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'resetToken', '3': 2, '4': 1, '5': 9, '10': 'resetToken'},
+    {'1': 'newPassword', '3': 3, '4': 1, '5': 9, '10': 'newPassword'},
+  ],
+};
+
+/// Descriptor for `PasswordResetConfirmRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordResetConfirmRequestDescriptor = $convert.base64Decode(
+    'ChtQYXNzd29yZFJlc2V0Q29uZmlybVJlcXVlc3QSEgoEbWFpbBgBIAEoCVIEbWFpbBIeCgpyZX'
+    'NldFRva2VuGAIgASgJUgpyZXNldFRva2VuEiAKC25ld1Bhc3N3b3JkGAMgASgJUgtuZXdQYXNz'
+    'd29yZA==');
 

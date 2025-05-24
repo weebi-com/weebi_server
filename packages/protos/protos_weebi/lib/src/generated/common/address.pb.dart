@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: common/address.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -13,14 +13,16 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'country.pb.dart' as $17;
+import 'country.pb.dart' as $21;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class Address extends $pb.GeneratedMessage {
   factory Address({
     $core.String? street,
     $core.String? code,
     $core.String? city,
-    $17.Country? country,
+    $21.Country? country,
     $core.double? latitude,
     $core.double? longitude,
   }) {
@@ -53,21 +55,15 @@ class Address extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'street')
     ..aOS(2, _omitFieldNames ? '' : 'code')
     ..aOS(3, _omitFieldNames ? '' : 'city')
-    ..aOM<$17.Country>(4, _omitFieldNames ? '' : 'country', subBuilder: $17.Country.create)
+    ..aOM<$21.Country>(4, _omitFieldNames ? '' : 'country', subBuilder: $21.Country.create)
     ..a<$core.double>(5, _omitFieldNames ? '' : 'latitude', $pb.PbFieldType.OD)
     ..a<$core.double>(6, _omitFieldNames ? '' : 'longitude', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Address clone() => Address()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Address copyWith(void Function(Address) updates) => super.copyWith((message) => updates(message as Address)) as Address;
 
   $pb.BuilderInfo get info_ => _i;
@@ -87,7 +83,7 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasStreet() => $_has(0);
   @$pb.TagNumber(1)
-  void clearStreet() => clearField(1);
+  void clearStreet() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get code => $_getSZ(1);
@@ -96,7 +92,7 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasCode() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCode() => clearField(2);
+  void clearCode() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get city => $_getSZ(2);
@@ -105,18 +101,18 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasCity() => $_has(2);
   @$pb.TagNumber(3)
-  void clearCity() => clearField(3);
+  void clearCity() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $17.Country get country => $_getN(3);
+  $21.Country get country => $_getN(3);
   @$pb.TagNumber(4)
-  set country($17.Country v) { setField(4, v); }
+  set country($21.Country v) { $_setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasCountry() => $_has(3);
   @$pb.TagNumber(4)
-  void clearCountry() => clearField(4);
+  void clearCountry() => $_clearField(4);
   @$pb.TagNumber(4)
-  $17.Country ensureCountry() => $_ensure(3);
+  $21.Country ensureCountry() => $_ensure(3);
 
   /// optional
   @$pb.TagNumber(5)
@@ -126,7 +122,7 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasLatitude() => $_has(4);
   @$pb.TagNumber(5)
-  void clearLatitude() => clearField(5);
+  void clearLatitude() => $_clearField(5);
 
   /// optional
   @$pb.TagNumber(6)
@@ -136,7 +132,7 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasLongitude() => $_has(5);
   @$pb.TagNumber(6)
-  void clearLongitude() => clearField(6);
+  void clearLongitude() => $_clearField(6);
 }
 
 

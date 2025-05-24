@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: article/photo.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -13,8 +13,10 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_timestamp.pb.dart' as $18;
+import '../common/g_timestamp.pb.dart' as $17;
 import 'photo.pbenum.dart';
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 export 'photo.pbenum.dart';
 
@@ -25,7 +27,7 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
     $core.String? userId,
     $core.int? calibreId,
     ArticlePhotoPb? photo,
-    $18.Timestamp? lastTouchTimestampUTC,
+    $17.Timestamp? lastTouchTimestampUTC,
   }) {
     final $result = create();
     if (firmId != null) {
@@ -58,19 +60,13 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
     ..aOM<ArticlePhotoPb>(5, _omitFieldNames ? '' : 'photo', subBuilder: ArticlePhotoPb.create)
-    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ArticlePhotoMongo clone() => ArticlePhotoMongo()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ArticlePhotoMongo copyWith(void Function(ArticlePhotoMongo) updates) => super.copyWith((message) => updates(message as ArticlePhotoMongo)) as ArticlePhotoMongo;
 
   $pb.BuilderInfo get info_ => _i;
@@ -90,7 +86,7 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasFirmId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearFirmId() => clearField(1);
+  void clearFirmId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get chainId => $_getSZ(1);
@@ -99,7 +95,7 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasChainId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearChainId() => clearField(2);
+  void clearChainId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get userId => $_getSZ(2);
@@ -108,7 +104,7 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasUserId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUserId() => clearField(3);
+  void clearUserId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.int get calibreId => $_getIZ(3);
@@ -117,29 +113,29 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasCalibreId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearCalibreId() => clearField(4);
+  void clearCalibreId() => $_clearField(4);
 
   @$pb.TagNumber(5)
   ArticlePhotoPb get photo => $_getN(4);
   @$pb.TagNumber(5)
-  set photo(ArticlePhotoPb v) { setField(5, v); }
+  set photo(ArticlePhotoPb v) { $_setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasPhoto() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPhoto() => clearField(5);
+  void clearPhoto() => $_clearField(5);
   @$pb.TagNumber(5)
   ArticlePhotoPb ensurePhoto() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $18.Timestamp get lastTouchTimestampUTC => $_getN(5);
+  $17.Timestamp get lastTouchTimestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set lastTouchTimestampUTC($18.Timestamp v) { setField(6, v); }
+  set lastTouchTimestampUTC($17.Timestamp v) { $_setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasLastTouchTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
-  void clearLastTouchTimestampUTC() => clearField(6);
+  void clearLastTouchTimestampUTC() => $_clearField(6);
   @$pb.TagNumber(6)
-  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(5);
+  $17.Timestamp ensureLastTouchTimestampUTC() => $_ensure(5);
 }
 
 class ArticlePhotoPb extends $pb.GeneratedMessage {
@@ -176,15 +172,9 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ArticlePhotoPb clone() => ArticlePhotoPb()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ArticlePhotoPb copyWith(void Function(ArticlePhotoPb) updates) => super.copyWith((message) => updates(message as ArticlePhotoPb)) as ArticlePhotoPb;
 
   $pb.BuilderInfo get info_ => _i;
@@ -204,7 +194,7 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasCalibreId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCalibreId() => clearField(1);
+  void clearCalibreId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.int get id => $_getIZ(1);
@@ -213,7 +203,7 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearId() => clearField(2);
+  void clearId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.List<$core.int> get data => $_getN(2);
@@ -222,16 +212,16 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasData() => $_has(2);
   @$pb.TagNumber(3)
-  void clearData() => clearField(3);
+  void clearData() => $_clearField(3);
 
   @$pb.TagNumber(4)
   ArticlePhotoPb_ExtensionPb get extension_4 => $_getN(3);
   @$pb.TagNumber(4)
-  set extension_4(ArticlePhotoPb_ExtensionPb v) { setField(4, v); }
+  set extension_4(ArticlePhotoPb_ExtensionPb v) { $_setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasExtension_4() => $_has(3);
   @$pb.TagNumber(4)
-  void clearExtension_4() => clearField(4);
+  void clearExtension_4() => $_clearField(4);
 }
 
 

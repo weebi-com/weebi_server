@@ -100,6 +100,7 @@ void main() async {
   // fenceService.configureEmailService(emailService);
   
   print('Email service configured for ${isDevelopment ? 'development' : 'production'}');
+  print('Email service type: ${emailService.runtimeType}');
   
   // Example: Test sending a welcome email
   // await emailService.sendWelcomeEmail(

@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: ticket/ticket_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -13,14 +13,16 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_timestamp.pb.dart' as $18;
+import '../common/g_timestamp.pb.dart' as $17;
 import 'ticket.pb.dart' as $15;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   factory ReadAllTicketsRequest({
     $core.String? chainId,
     $core.String? boutiqueId,
-    $18.Timestamp? lastFetchTimestampUTC,
+    $17.Timestamp? lastFetchTimestampUTC,
     $core.bool? isDeleted,
   }) {
     final $result = create();
@@ -45,20 +47,14 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllTicketsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
     ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
-    ..aOM<$18.Timestamp>(4, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(4, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOB(5, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadAllTicketsRequest clone() => ReadAllTicketsRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadAllTicketsRequest copyWith(void Function(ReadAllTicketsRequest) updates) => super.copyWith((message) => updates(message as ReadAllTicketsRequest)) as ReadAllTicketsRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -78,7 +74,7 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(2)
-  void clearChainId() => clearField(2);
+  void clearChainId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get boutiqueId => $_getSZ(1);
@@ -87,19 +83,19 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasBoutiqueId() => $_has(1);
   @$pb.TagNumber(3)
-  void clearBoutiqueId() => clearField(3);
+  void clearBoutiqueId() => $_clearField(3);
 
   /// optional used for weebi_app device back online
   @$pb.TagNumber(4)
-  $18.Timestamp get lastFetchTimestampUTC => $_getN(2);
+  $17.Timestamp get lastFetchTimestampUTC => $_getN(2);
   @$pb.TagNumber(4)
-  set lastFetchTimestampUTC($18.Timestamp v) { setField(4, v); }
+  set lastFetchTimestampUTC($17.Timestamp v) { $_setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasLastFetchTimestampUTC() => $_has(2);
   @$pb.TagNumber(4)
-  void clearLastFetchTimestampUTC() => clearField(4);
+  void clearLastFetchTimestampUTC() => $_clearField(4);
   @$pb.TagNumber(4)
-  $18.Timestamp ensureLastFetchTimestampUTC() => $_ensure(2);
+  $17.Timestamp ensureLastFetchTimestampUTC() => $_ensure(2);
 
   /// optional used for weebi_app device to remove deleted tickets
   @$pb.TagNumber(5)
@@ -109,7 +105,7 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasIsDeleted() => $_has(3);
   @$pb.TagNumber(5)
-  void clearIsDeleted() => clearField(5);
+  void clearIsDeleted() => $_clearField(5);
 }
 
 /// consider adding isDeleted param
@@ -152,15 +148,9 @@ class FindTicketRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FindTicketRequest clone() => FindTicketRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FindTicketRequest copyWith(void Function(FindTicketRequest) updates) => super.copyWith((message) => updates(message as FindTicketRequest)) as FindTicketRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -181,7 +171,7 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasTicketChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTicketChainId() => clearField(1);
+  void clearTicketChainId() => $_clearField(1);
 
   /// mandatory
   @$pb.TagNumber(2)
@@ -191,7 +181,7 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasTicketBoutiqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTicketBoutiqueId() => clearField(2);
+  void clearTicketBoutiqueId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get creationDate => $_getSZ(2);
@@ -200,7 +190,7 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasCreationDate() => $_has(2);
   @$pb.TagNumber(3)
-  void clearCreationDate() => clearField(3);
+  void clearCreationDate() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get ticketUserId => $_getSZ(3);
@@ -209,7 +199,7 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasTicketUserId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearTicketUserId() => clearField(4);
+  void clearTicketUserId() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.int get nonUniqueId => $_getIZ(4);
@@ -218,7 +208,7 @@ class FindTicketRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasNonUniqueId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearNonUniqueId() => clearField(5);
+  void clearNonUniqueId() => $_clearField(5);
 }
 
 class TicketRequest extends $pb.GeneratedMessage {
@@ -240,15 +230,9 @@ class TicketRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketRequest clone() => TicketRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketRequest copyWith(void Function(TicketRequest) updates) => super.copyWith((message) => updates(message as TicketRequest)) as TicketRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -264,11 +248,11 @@ class TicketRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $15.TicketPb get ticket => $_getN(0);
   @$pb.TagNumber(1)
-  set ticket($15.TicketPb v) { setField(1, v); }
+  set ticket($15.TicketPb v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasTicket() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTicket() => clearField(1);
+  void clearTicket() => $_clearField(1);
   @$pb.TagNumber(1)
   $15.TicketPb ensureTicket() => $_ensure(0);
 }
@@ -292,15 +276,9 @@ class TicketsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketsRequest clone() => TicketsRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketsRequest copyWith(void Function(TicketsRequest) updates) => super.copyWith((message) => updates(message as TicketsRequest)) as TicketsRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -314,7 +292,7 @@ class TicketsRequest extends $pb.GeneratedMessage {
   static TicketsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$15.TicketPb> get tickets => $_getList(0);
+  $pb.PbList<$15.TicketPb> get tickets => $_getList(0);
 }
 
 class TicketsResponse extends $pb.GeneratedMessage {
@@ -336,15 +314,9 @@ class TicketsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketsResponse clone() => TicketsResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketsResponse copyWith(void Function(TicketsResponse) updates) => super.copyWith((message) => updates(message as TicketsResponse)) as TicketsResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -358,7 +330,7 @@ class TicketsResponse extends $pb.GeneratedMessage {
   static TicketsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$15.TicketPb> get tickets => $_getList(0);
+  $pb.PbList<$15.TicketPb> get tickets => $_getList(0);
 }
 
 

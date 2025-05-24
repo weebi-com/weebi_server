@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: weebi_app_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -12,6 +12,8 @@
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class AppMinVersionRequest extends $pb.GeneratedMessage {
   factory AppMinVersionRequest() => create();
@@ -23,15 +25,9 @@ class AppMinVersionRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AppMinVersionRequest clone() => AppMinVersionRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AppMinVersionRequest copyWith(void Function(AppMinVersionRequest) updates) => super.copyWith((message) => updates(message as AppMinVersionRequest)) as AppMinVersionRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -69,15 +65,9 @@ class AppMinVersionResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AppMinVersionResponse clone() => AppMinVersionResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AppMinVersionResponse copyWith(void Function(AppMinVersionResponse) updates) => super.copyWith((message) => updates(message as AppMinVersionResponse)) as AppMinVersionResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -97,7 +87,7 @@ class AppMinVersionResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasMinVersion() => $_has(0);
   @$pb.TagNumber(1)
-  void clearMinVersion() => clearField(1);
+  void clearMinVersion() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.bool get isUpgradeImperative => $_getBF(1);
@@ -106,7 +96,7 @@ class AppMinVersionResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasIsUpgradeImperative() => $_has(1);
   @$pb.TagNumber(2)
-  void clearIsUpgradeImperative() => clearField(2);
+  void clearIsUpgradeImperative() => $_clearField(2);
 }
 
 

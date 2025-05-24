@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: article/article.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -26,10 +26,10 @@ class ArticleKindPb extends $pb.ProtobufEnum {
     uncountable,
   ];
 
-  static final $core.Map<$core.int, ArticleKindPb> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static ArticleKindPb? valueOf($core.int value) => _byValue[value];
+  static final $core.List<ArticleKindPb?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 3);
+  static ArticleKindPb? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const ArticleKindPb._($core.int v, $core.String n) : super(v, n);
+  const ArticleKindPb._(super.v, super.n);
 }
 
 class CalibrePb_StockUnit extends $pb.ProtobufEnum {
@@ -53,10 +53,10 @@ class CalibrePb_StockUnit extends $pb.ProtobufEnum {
     unit,
   ];
 
-  static final $core.Map<$core.int, CalibrePb_StockUnit> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static CalibrePb_StockUnit? valueOf($core.int value) => _byValue[value];
+  static final $core.List<CalibrePb_StockUnit?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 7);
+  static CalibrePb_StockUnit? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const CalibrePb_StockUnit._($core.int v, $core.String n) : super(v, n);
+  const CalibrePb_StockUnit._(super.v, super.n);
 }
 
 

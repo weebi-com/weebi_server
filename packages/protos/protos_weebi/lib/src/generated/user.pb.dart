@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: user.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -14,9 +14,11 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'common/g_common.pb.dart' as $1;
-import 'common/g_timestamp.pb.dart' as $18;
-import 'common/phone.pb.dart' as $19;
+import 'common/g_timestamp.pb.dart' as $17;
+import 'common/phone.pb.dart' as $18;
 import 'user_permissions.pb.dart' as $22;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class UserPublic extends $pb.GeneratedMessage {
   factory UserPublic({
@@ -24,10 +26,10 @@ class UserPublic extends $pb.GeneratedMessage {
     $core.String? mail,
     $core.String? firstname,
     $core.String? lastname,
-    $19.Phone? phone,
-    $18.Timestamp? lastSignIn,
+    $18.Phone? phone,
+    $17.Timestamp? lastSignIn,
     $22.UserPermissions? permissions,
-    $core.Map<$core.String, $core.String>? othersAttributes,
+    $core.Iterable<$core.MapEntry<$core.String, $core.String>>? othersAttributes,
   }) {
     final $result = create();
     if (userId != null) {
@@ -52,7 +54,7 @@ class UserPublic extends $pb.GeneratedMessage {
       $result.permissions = permissions;
     }
     if (othersAttributes != null) {
-      $result.othersAttributes.addAll(othersAttributes);
+      $result.othersAttributes.addEntries(othersAttributes);
     }
     return $result;
   }
@@ -65,22 +67,16 @@ class UserPublic extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'mail')
     ..aOS(3, _omitFieldNames ? '' : 'firstname')
     ..aOS(4, _omitFieldNames ? '' : 'lastname')
-    ..aOM<$19.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
-    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $18.Timestamp.create)
+    ..aOM<$18.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $17.Timestamp.create)
     ..aOM<$22.UserPermissions>(7, _omitFieldNames ? '' : 'permissions', subBuilder: $22.UserPermissions.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'UserPublic.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserPublic clone() => UserPublic()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserPublic copyWith(void Function(UserPublic) updates) => super.copyWith((message) => updates(message as UserPublic)) as UserPublic;
 
   $pb.BuilderInfo get info_ => _i;
@@ -100,7 +96,7 @@ class UserPublic extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserId() => clearField(1);
+  void clearUserId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get mail => $_getSZ(1);
@@ -109,7 +105,7 @@ class UserPublic extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasMail() => $_has(1);
   @$pb.TagNumber(2)
-  void clearMail() => clearField(2);
+  void clearMail() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get firstname => $_getSZ(2);
@@ -118,7 +114,7 @@ class UserPublic extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasFirstname() => $_has(2);
   @$pb.TagNumber(3)
-  void clearFirstname() => clearField(3);
+  void clearFirstname() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get lastname => $_getSZ(3);
@@ -127,43 +123,43 @@ class UserPublic extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasLastname() => $_has(3);
   @$pb.TagNumber(4)
-  void clearLastname() => clearField(4);
+  void clearLastname() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $19.Phone get phone => $_getN(4);
+  $18.Phone get phone => $_getN(4);
   @$pb.TagNumber(5)
-  set phone($19.Phone v) { setField(5, v); }
+  set phone($18.Phone v) { $_setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasPhone() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPhone() => clearField(5);
+  void clearPhone() => $_clearField(5);
   @$pb.TagNumber(5)
-  $19.Phone ensurePhone() => $_ensure(4);
+  $18.Phone ensurePhone() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $18.Timestamp get lastSignIn => $_getN(5);
+  $17.Timestamp get lastSignIn => $_getN(5);
   @$pb.TagNumber(6)
-  set lastSignIn($18.Timestamp v) { setField(6, v); }
+  set lastSignIn($17.Timestamp v) { $_setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasLastSignIn() => $_has(5);
   @$pb.TagNumber(6)
-  void clearLastSignIn() => clearField(6);
+  void clearLastSignIn() => $_clearField(6);
   @$pb.TagNumber(6)
-  $18.Timestamp ensureLastSignIn() => $_ensure(5);
+  $17.Timestamp ensureLastSignIn() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $22.UserPermissions get permissions => $_getN(6);
   @$pb.TagNumber(7)
-  set permissions($22.UserPermissions v) { setField(7, v); }
+  set permissions($22.UserPermissions v) { $_setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasPermissions() => $_has(6);
   @$pb.TagNumber(7)
-  void clearPermissions() => clearField(7);
+  void clearPermissions() => $_clearField(7);
   @$pb.TagNumber(7)
   $22.UserPermissions ensurePermissions() => $_ensure(6);
 
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(7);
+  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(7);
 }
 
 /// / this is how users are stored in db
@@ -175,15 +171,15 @@ class UserPrivate extends $pb.GeneratedMessage {
     $core.String? mail,
     $core.String? firstname,
     $core.String? lastname,
-    $19.Phone? phone,
+    $18.Phone? phone,
     $core.String? passwordEncrypted,
     $core.String? firmId,
     $22.UserPermissions? permissions,
-    $18.Timestamp? lastSignIn,
+    $17.Timestamp? lastSignIn,
     $core.String? lastUpdatedByuserId,
-    $18.Timestamp? lastUpdateTimestampUTC,
-    $18.Timestamp? creationDateUTC,
-    $core.Map<$core.String, $core.String>? othersAttributes,
+    $17.Timestamp? lastUpdateTimestampUTC,
+    $17.Timestamp? creationDateUTC,
+    $core.Iterable<$core.MapEntry<$core.String, $core.String>>? othersAttributes,
   }) {
     final $result = create();
     if (userId != null) {
@@ -223,7 +219,7 @@ class UserPrivate extends $pb.GeneratedMessage {
       $result.creationDateUTC = creationDateUTC;
     }
     if (othersAttributes != null) {
-      $result.othersAttributes.addAll(othersAttributes);
+      $result.othersAttributes.addEntries(othersAttributes);
     }
     return $result;
   }
@@ -236,27 +232,21 @@ class UserPrivate extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'mail')
     ..aOS(3, _omitFieldNames ? '' : 'firstname')
     ..aOS(4, _omitFieldNames ? '' : 'lastname')
-    ..aOM<$19.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
+    ..aOM<$18.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
     ..aOS(6, _omitFieldNames ? '' : 'password', protoName: 'passwordEncrypted')
     ..aOS(7, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOM<$22.UserPermissions>(8, _omitFieldNames ? '' : 'permissions', subBuilder: $22.UserPermissions.create)
-    ..aOM<$18.Timestamp>(9, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(9, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $17.Timestamp.create)
     ..aOS(10, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
-    ..aOM<$18.Timestamp>(11, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $18.Timestamp.create)
-    ..aOM<$18.Timestamp>(12, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(11, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
+    ..aOM<$17.Timestamp>(12, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $17.Timestamp.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'UserPrivate.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserPrivate clone() => UserPrivate()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserPrivate copyWith(void Function(UserPrivate) updates) => super.copyWith((message) => updates(message as UserPrivate)) as UserPrivate;
 
   $pb.BuilderInfo get info_ => _i;
@@ -277,7 +267,7 @@ class UserPrivate extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserId() => clearField(1);
+  void clearUserId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get mail => $_getSZ(1);
@@ -286,7 +276,7 @@ class UserPrivate extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasMail() => $_has(1);
   @$pb.TagNumber(2)
-  void clearMail() => clearField(2);
+  void clearMail() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get firstname => $_getSZ(2);
@@ -295,7 +285,7 @@ class UserPrivate extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasFirstname() => $_has(2);
   @$pb.TagNumber(3)
-  void clearFirstname() => clearField(3);
+  void clearFirstname() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get lastname => $_getSZ(3);
@@ -304,18 +294,18 @@ class UserPrivate extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasLastname() => $_has(3);
   @$pb.TagNumber(4)
-  void clearLastname() => clearField(4);
+  void clearLastname() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $19.Phone get phone => $_getN(4);
+  $18.Phone get phone => $_getN(4);
   @$pb.TagNumber(5)
-  set phone($19.Phone v) { setField(5, v); }
+  set phone($18.Phone v) { $_setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasPhone() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPhone() => clearField(5);
+  void clearPhone() => $_clearField(5);
   @$pb.TagNumber(5)
-  $19.Phone ensurePhone() => $_ensure(4);
+  $18.Phone ensurePhone() => $_ensure(4);
 
   @$pb.TagNumber(6)
   $core.String get passwordEncrypted => $_getSZ(5);
@@ -324,7 +314,7 @@ class UserPrivate extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasPasswordEncrypted() => $_has(5);
   @$pb.TagNumber(6)
-  void clearPasswordEncrypted() => clearField(6);
+  void clearPasswordEncrypted() => $_clearField(6);
 
   @$pb.TagNumber(7)
   $core.String get firmId => $_getSZ(6);
@@ -333,29 +323,29 @@ class UserPrivate extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.bool hasFirmId() => $_has(6);
   @$pb.TagNumber(7)
-  void clearFirmId() => clearField(7);
+  void clearFirmId() => $_clearField(7);
 
   @$pb.TagNumber(8)
   $22.UserPermissions get permissions => $_getN(7);
   @$pb.TagNumber(8)
-  set permissions($22.UserPermissions v) { setField(8, v); }
+  set permissions($22.UserPermissions v) { $_setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasPermissions() => $_has(7);
   @$pb.TagNumber(8)
-  void clearPermissions() => clearField(8);
+  void clearPermissions() => $_clearField(8);
   @$pb.TagNumber(8)
   $22.UserPermissions ensurePermissions() => $_ensure(7);
 
   @$pb.TagNumber(9)
-  $18.Timestamp get lastSignIn => $_getN(8);
+  $17.Timestamp get lastSignIn => $_getN(8);
   @$pb.TagNumber(9)
-  set lastSignIn($18.Timestamp v) { setField(9, v); }
+  set lastSignIn($17.Timestamp v) { $_setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasLastSignIn() => $_has(8);
   @$pb.TagNumber(9)
-  void clearLastSignIn() => clearField(9);
+  void clearLastSignIn() => $_clearField(9);
   @$pb.TagNumber(9)
-  $18.Timestamp ensureLastSignIn() => $_ensure(8);
+  $17.Timestamp ensureLastSignIn() => $_ensure(8);
 
   @$pb.TagNumber(10)
   $core.String get lastUpdatedByuserId => $_getSZ(9);
@@ -364,32 +354,32 @@ class UserPrivate extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   $core.bool hasLastUpdatedByuserId() => $_has(9);
   @$pb.TagNumber(10)
-  void clearLastUpdatedByuserId() => clearField(10);
+  void clearLastUpdatedByuserId() => $_clearField(10);
 
   @$pb.TagNumber(11)
-  $18.Timestamp get lastUpdateTimestampUTC => $_getN(10);
+  $17.Timestamp get lastUpdateTimestampUTC => $_getN(10);
   @$pb.TagNumber(11)
-  set lastUpdateTimestampUTC($18.Timestamp v) { setField(11, v); }
+  set lastUpdateTimestampUTC($17.Timestamp v) { $_setField(11, v); }
   @$pb.TagNumber(11)
   $core.bool hasLastUpdateTimestampUTC() => $_has(10);
   @$pb.TagNumber(11)
-  void clearLastUpdateTimestampUTC() => clearField(11);
+  void clearLastUpdateTimestampUTC() => $_clearField(11);
   @$pb.TagNumber(11)
-  $18.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(10);
+  $17.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(10);
 
   @$pb.TagNumber(12)
-  $18.Timestamp get creationDateUTC => $_getN(11);
+  $17.Timestamp get creationDateUTC => $_getN(11);
   @$pb.TagNumber(12)
-  set creationDateUTC($18.Timestamp v) { setField(12, v); }
+  set creationDateUTC($17.Timestamp v) { $_setField(12, v); }
   @$pb.TagNumber(12)
   $core.bool hasCreationDateUTC() => $_has(11);
   @$pb.TagNumber(12)
-  void clearCreationDateUTC() => clearField(12);
+  void clearCreationDateUTC() => $_clearField(12);
   @$pb.TagNumber(12)
-  $18.Timestamp ensureCreationDateUTC() => $_ensure(11);
+  $17.Timestamp ensureCreationDateUTC() => $_ensure(11);
 
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(12);
+  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(12);
 }
 
 class SignUpRequest extends $pb.GeneratedMessage {
@@ -426,15 +416,9 @@ class SignUpRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SignUpRequest clone() => SignUpRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SignUpRequest copyWith(void Function(SignUpRequest) updates) => super.copyWith((message) => updates(message as SignUpRequest)) as SignUpRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -454,7 +438,7 @@ class SignUpRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasMail() => $_has(0);
   @$pb.TagNumber(1)
-  void clearMail() => clearField(1);
+  void clearMail() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get firstname => $_getSZ(1);
@@ -463,7 +447,7 @@ class SignUpRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasFirstname() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirstname() => clearField(2);
+  void clearFirstname() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get lastname => $_getSZ(2);
@@ -472,7 +456,7 @@ class SignUpRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasLastname() => $_has(2);
   @$pb.TagNumber(3)
-  void clearLastname() => clearField(3);
+  void clearLastname() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get password => $_getSZ(3);
@@ -481,7 +465,7 @@ class SignUpRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasPassword() => $_has(3);
   @$pb.TagNumber(4)
-  void clearPassword() => clearField(4);
+  void clearPassword() => $_clearField(4);
 }
 
 class SignUpResponse extends $pb.GeneratedMessage {
@@ -508,15 +492,9 @@ class SignUpResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SignUpResponse clone() => SignUpResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   SignUpResponse copyWith(void Function(SignUpResponse) updates) => super.copyWith((message) => updates(message as SignUpResponse)) as SignUpResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -532,11 +510,11 @@ class SignUpResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $1.StatusResponse get statusResponse => $_getN(0);
   @$pb.TagNumber(1)
-  set statusResponse($1.StatusResponse v) { setField(1, v); }
+  set statusResponse($1.StatusResponse v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasStatusResponse() => $_has(0);
   @$pb.TagNumber(1)
-  void clearStatusResponse() => clearField(1);
+  void clearStatusResponse() => $_clearField(1);
   @$pb.TagNumber(1)
   $1.StatusResponse ensureStatusResponse() => $_ensure(0);
 
@@ -547,7 +525,7 @@ class SignUpResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasUserId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearUserId() => clearField(2);
+  void clearUserId() => $_clearField(2);
 }
 
 /// / used by admins to create users
@@ -557,8 +535,8 @@ class PendingUserRequest extends $pb.GeneratedMessage {
     $core.String? firstname,
     $core.String? lastname,
     $22.UserPermissions? permissions,
-    $19.Phone? phone,
-    $core.Map<$core.String, $core.String>? othersAttributes,
+    $18.Phone? phone,
+    $core.Iterable<$core.MapEntry<$core.String, $core.String>>? othersAttributes,
   }) {
     final $result = create();
     if (mail != null) {
@@ -577,7 +555,7 @@ class PendingUserRequest extends $pb.GeneratedMessage {
       $result.phone = phone;
     }
     if (othersAttributes != null) {
-      $result.othersAttributes.addAll(othersAttributes);
+      $result.othersAttributes.addEntries(othersAttributes);
     }
     return $result;
   }
@@ -590,20 +568,14 @@ class PendingUserRequest extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'firstname')
     ..aOS(3, _omitFieldNames ? '' : 'lastname')
     ..aOM<$22.UserPermissions>(4, _omitFieldNames ? '' : 'permissions', subBuilder: $22.UserPermissions.create)
-    ..aOM<$19.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
+    ..aOM<$18.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'PendingUserRequest.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PendingUserRequest clone() => PendingUserRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PendingUserRequest copyWith(void Function(PendingUserRequest) updates) => super.copyWith((message) => updates(message as PendingUserRequest)) as PendingUserRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -623,7 +595,7 @@ class PendingUserRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasMail() => $_has(0);
   @$pb.TagNumber(1)
-  void clearMail() => clearField(1);
+  void clearMail() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get firstname => $_getSZ(1);
@@ -632,7 +604,7 @@ class PendingUserRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasFirstname() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirstname() => clearField(2);
+  void clearFirstname() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get lastname => $_getSZ(2);
@@ -641,32 +613,32 @@ class PendingUserRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasLastname() => $_has(2);
   @$pb.TagNumber(3)
-  void clearLastname() => clearField(3);
+  void clearLastname() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $22.UserPermissions get permissions => $_getN(3);
   @$pb.TagNumber(4)
-  set permissions($22.UserPermissions v) { setField(4, v); }
+  set permissions($22.UserPermissions v) { $_setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasPermissions() => $_has(3);
   @$pb.TagNumber(4)
-  void clearPermissions() => clearField(4);
+  void clearPermissions() => $_clearField(4);
   @$pb.TagNumber(4)
   $22.UserPermissions ensurePermissions() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $19.Phone get phone => $_getN(4);
+  $18.Phone get phone => $_getN(4);
   @$pb.TagNumber(5)
-  set phone($19.Phone v) { setField(5, v); }
+  set phone($18.Phone v) { $_setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasPhone() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPhone() => clearField(5);
+  void clearPhone() => $_clearField(5);
   @$pb.TagNumber(5)
-  $19.Phone ensurePhone() => $_ensure(4);
+  $18.Phone ensurePhone() => $_ensure(4);
 
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(5);
+  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(5);
 }
 
 class PendingUserResponse extends $pb.GeneratedMessage {
@@ -693,15 +665,9 @@ class PendingUserResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PendingUserResponse clone() => PendingUserResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PendingUserResponse copyWith(void Function(PendingUserResponse) updates) => super.copyWith((message) => updates(message as PendingUserResponse)) as PendingUserResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -717,22 +683,22 @@ class PendingUserResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $1.StatusResponse get statusResponse => $_getN(0);
   @$pb.TagNumber(1)
-  set statusResponse($1.StatusResponse v) { setField(1, v); }
+  set statusResponse($1.StatusResponse v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasStatusResponse() => $_has(0);
   @$pb.TagNumber(1)
-  void clearStatusResponse() => clearField(1);
+  void clearStatusResponse() => $_clearField(1);
   @$pb.TagNumber(1)
   $1.StatusResponse ensureStatusResponse() => $_ensure(0);
 
   @$pb.TagNumber(2)
   UserPublic get userPublic => $_getN(1);
   @$pb.TagNumber(2)
-  set userPublic(UserPublic v) { setField(2, v); }
+  set userPublic(UserPublic v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasUserPublic() => $_has(1);
   @$pb.TagNumber(2)
-  void clearUserPublic() => clearField(2);
+  void clearUserPublic() => $_clearField(2);
   @$pb.TagNumber(2)
   UserPublic ensureUserPublic() => $_ensure(1);
 }

@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: fence_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -13,13 +13,15 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'boutique.pb.dart' as $21;
+import 'boutique.pb.dart' as $20;
 import 'btq_chain.pb.dart' as $11;
 import 'common/g_common.pb.dart' as $1;
-import 'common/g_timestamp.pb.dart' as $18;
+import 'common/g_timestamp.pb.dart' as $17;
 import 'device.pb.dart' as $12;
 import 'user.pb.dart' as $8;
 import 'user_permissions.pb.dart' as $22;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 /// /
 class ChainRequest extends $pb.GeneratedMessage {
@@ -46,15 +48,9 @@ class ChainRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChainRequest clone() => ChainRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChainRequest copyWith(void Function(ChainRequest) updates) => super.copyWith((message) => updates(message as ChainRequest)) as ChainRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -74,7 +70,7 @@ class ChainRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -83,14 +79,14 @@ class ChainRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
-  void clearName() => clearField(2);
+  void clearName() => $_clearField(2);
 }
 
 /// / one boutique creation the server will assign the boutiqueId
 class BoutiqueRequest extends $pb.GeneratedMessage {
   factory BoutiqueRequest({
     $core.String? chainId,
-    $21.BoutiquePb? boutique,
+    $20.BoutiquePb? boutique,
     $core.List<$core.int>? logo,
     $core.String? logoExtension,
   }) {
@@ -115,21 +111,15 @@ class BoutiqueRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$21.BoutiquePb>(2, _omitFieldNames ? '' : 'boutique', subBuilder: $21.BoutiquePb.create)
+    ..aOM<$20.BoutiquePb>(2, _omitFieldNames ? '' : 'boutique', subBuilder: $20.BoutiquePb.create)
     ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'logo', $pb.PbFieldType.OY)
     ..aOS(4, _omitFieldNames ? '' : 'logoExtension', protoName: 'logoExtension')
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueRequest clone() => BoutiqueRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueRequest copyWith(void Function(BoutiqueRequest) updates) => super.copyWith((message) => updates(message as BoutiqueRequest)) as BoutiqueRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -149,18 +139,18 @@ class BoutiqueRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $21.BoutiquePb get boutique => $_getN(1);
+  $20.BoutiquePb get boutique => $_getN(1);
   @$pb.TagNumber(2)
-  set boutique($21.BoutiquePb v) { setField(2, v); }
+  set boutique($20.BoutiquePb v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBoutique() => $_has(1);
   @$pb.TagNumber(2)
-  void clearBoutique() => clearField(2);
+  void clearBoutique() => $_clearField(2);
   @$pb.TagNumber(2)
-  $21.BoutiquePb ensureBoutique() => $_ensure(1);
+  $20.BoutiquePb ensureBoutique() => $_ensure(1);
 
   @$pb.TagNumber(3)
   $core.List<$core.int> get logo => $_getN(2);
@@ -169,7 +159,7 @@ class BoutiqueRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasLogo() => $_has(2);
   @$pb.TagNumber(3)
-  void clearLogo() => clearField(3);
+  void clearLogo() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get logoExtension => $_getSZ(3);
@@ -178,13 +168,13 @@ class BoutiqueRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasLogoExtension() => $_has(3);
   @$pb.TagNumber(4)
-  void clearLogoExtension() => clearField(4);
+  void clearLogoExtension() => $_clearField(4);
 }
 
 /// / one boutique creation the server will assign the boutiqueId
 class BoutiqueResponse extends $pb.GeneratedMessage {
   factory BoutiqueResponse({
-    $21.BoutiquePb? boutique,
+    $20.BoutiquePb? boutique,
     $core.List<$core.int>? logo,
     $core.String? logoExtension,
   }) {
@@ -205,21 +195,15 @@ class BoutiqueResponse extends $pb.GeneratedMessage {
   factory BoutiqueResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BoutiqueResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..aOM<$21.BoutiquePb>(1, _omitFieldNames ? '' : 'boutique', subBuilder: $21.BoutiquePb.create)
+    ..aOM<$20.BoutiquePb>(1, _omitFieldNames ? '' : 'boutique', subBuilder: $20.BoutiquePb.create)
     ..a<$core.List<$core.int>>(2, _omitFieldNames ? '' : 'logo', $pb.PbFieldType.OY)
     ..aOS(3, _omitFieldNames ? '' : 'logoExtension', protoName: 'logoExtension')
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueResponse clone() => BoutiqueResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueResponse copyWith(void Function(BoutiqueResponse) updates) => super.copyWith((message) => updates(message as BoutiqueResponse)) as BoutiqueResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -233,15 +217,15 @@ class BoutiqueResponse extends $pb.GeneratedMessage {
   static BoutiqueResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $21.BoutiquePb get boutique => $_getN(0);
+  $20.BoutiquePb get boutique => $_getN(0);
   @$pb.TagNumber(1)
-  set boutique($21.BoutiquePb v) { setField(1, v); }
+  set boutique($20.BoutiquePb v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasBoutique() => $_has(0);
   @$pb.TagNumber(1)
-  void clearBoutique() => clearField(1);
+  void clearBoutique() => $_clearField(1);
   @$pb.TagNumber(1)
-  $21.BoutiquePb ensureBoutique() => $_ensure(0);
+  $20.BoutiquePb ensureBoutique() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.List<$core.int> get logo => $_getN(1);
@@ -250,7 +234,7 @@ class BoutiqueResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasLogo() => $_has(1);
   @$pb.TagNumber(2)
-  void clearLogo() => clearField(2);
+  void clearLogo() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get logoExtension => $_getSZ(2);
@@ -259,7 +243,7 @@ class BoutiqueResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasLogoExtension() => $_has(2);
   @$pb.TagNumber(3)
-  void clearLogoExtension() => clearField(3);
+  void clearLogoExtension() => $_clearField(3);
 }
 
 /// / deviceId == userId, so front can reuse deviceId to try login in
@@ -303,15 +287,9 @@ class CreateDeviceResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateDeviceResponse clone() => CreateDeviceResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CreateDeviceResponse copyWith(void Function(CreateDeviceResponse) updates) => super.copyWith((message) => updates(message as CreateDeviceResponse)) as CreateDeviceResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -327,11 +305,11 @@ class CreateDeviceResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $1.StatusResponse get statusResponse => $_getN(0);
   @$pb.TagNumber(1)
-  set statusResponse($1.StatusResponse v) { setField(1, v); }
+  set statusResponse($1.StatusResponse v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasStatusResponse() => $_has(0);
   @$pb.TagNumber(1)
-  void clearStatusResponse() => clearField(1);
+  void clearStatusResponse() => $_clearField(1);
   @$pb.TagNumber(1)
   $1.StatusResponse ensureStatusResponse() => $_ensure(0);
 
@@ -342,7 +320,7 @@ class CreateDeviceResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasFirmId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirmId() => clearField(2);
+  void clearFirmId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get chainId => $_getSZ(2);
@@ -351,7 +329,7 @@ class CreateDeviceResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasChainId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearChainId() => clearField(3);
+  void clearChainId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get boutiqueId => $_getSZ(3);
@@ -360,7 +338,7 @@ class CreateDeviceResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasBoutiqueId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearBoutiqueId() => clearField(4);
+  void clearBoutiqueId() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get deviceId => $_getSZ(4);
@@ -369,7 +347,7 @@ class CreateDeviceResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasDeviceId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearDeviceId() => clearField(5);
+  void clearDeviceId() => $_clearField(5);
 }
 
 class ReadOneUserResponse extends $pb.GeneratedMessage {
@@ -396,15 +374,9 @@ class ReadOneUserResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadOneUserResponse clone() => ReadOneUserResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadOneUserResponse copyWith(void Function(ReadOneUserResponse) updates) => super.copyWith((message) => updates(message as ReadOneUserResponse)) as ReadOneUserResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -420,22 +392,22 @@ class ReadOneUserResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $1.StatusResponse get statusResponse => $_getN(0);
   @$pb.TagNumber(1)
-  set statusResponse($1.StatusResponse v) { setField(1, v); }
+  set statusResponse($1.StatusResponse v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasStatusResponse() => $_has(0);
   @$pb.TagNumber(1)
-  void clearStatusResponse() => clearField(1);
+  void clearStatusResponse() => $_clearField(1);
   @$pb.TagNumber(1)
   $1.StatusResponse ensureStatusResponse() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $8.UserPublic get user => $_getN(1);
   @$pb.TagNumber(2)
-  set user($8.UserPublic v) { setField(2, v); }
+  set user($8.UserPublic v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasUser() => $_has(1);
   @$pb.TagNumber(2)
-  void clearUser() => clearField(2);
+  void clearUser() => $_clearField(2);
   @$pb.TagNumber(2)
   $8.UserPublic ensureUser() => $_ensure(1);
 }
@@ -459,15 +431,9 @@ class UsersPublic extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UsersPublic clone() => UsersPublic()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UsersPublic copyWith(void Function(UsersPublic) updates) => super.copyWith((message) => updates(message as UsersPublic)) as UsersPublic;
 
   $pb.BuilderInfo get info_ => _i;
@@ -481,7 +447,7 @@ class UsersPublic extends $pb.GeneratedMessage {
   static UsersPublic? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$8.UserPublic> get users => $_getList(0);
+  $pb.PbList<$8.UserPublic> get users => $_getList(0);
 }
 
 class ReadAllChainsResponse extends $pb.GeneratedMessage {
@@ -503,15 +469,9 @@ class ReadAllChainsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadAllChainsResponse clone() => ReadAllChainsResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadAllChainsResponse copyWith(void Function(ReadAllChainsResponse) updates) => super.copyWith((message) => updates(message as ReadAllChainsResponse)) as ReadAllChainsResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -526,7 +486,7 @@ class ReadAllChainsResponse extends $pb.GeneratedMessage {
 
   /// google.retail.common.StatusResponse ?
   @$pb.TagNumber(1)
-  $core.List<$11.Chain> get chains => $_getList(0);
+  $pb.PbList<$11.Chain> get chains => $_getList(0);
 }
 
 class ReadDevicesRequest extends $pb.GeneratedMessage {
@@ -548,15 +508,9 @@ class ReadDevicesRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadDevicesRequest clone() => ReadDevicesRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadDevicesRequest copyWith(void Function(ReadDevicesRequest) updates) => super.copyWith((message) => updates(message as ReadDevicesRequest)) as ReadDevicesRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -576,7 +530,7 @@ class ReadDevicesRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 }
 
 class IsADeviceInChainResponse extends $pb.GeneratedMessage {
@@ -598,15 +552,9 @@ class IsADeviceInChainResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   IsADeviceInChainResponse clone() => IsADeviceInChainResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   IsADeviceInChainResponse copyWith(void Function(IsADeviceInChainResponse) updates) => super.copyWith((message) => updates(message as IsADeviceInChainResponse)) as IsADeviceInChainResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -626,7 +574,7 @@ class IsADeviceInChainResponse extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasIsADevice() => $_has(0);
   @$pb.TagNumber(1)
-  void clearIsADevice() => clearField(1);
+  void clearIsADevice() => $_clearField(1);
 }
 
 class ReadDeviceBtqRequest extends $pb.GeneratedMessage {
@@ -653,15 +601,9 @@ class ReadDeviceBtqRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadDeviceBtqRequest clone() => ReadDeviceBtqRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadDeviceBtqRequest copyWith(void Function(ReadDeviceBtqRequest) updates) => super.copyWith((message) => updates(message as ReadDeviceBtqRequest)) as ReadDeviceBtqRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -681,7 +623,7 @@ class ReadDeviceBtqRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get boutiqueId => $_getSZ(1);
@@ -690,7 +632,7 @@ class ReadDeviceBtqRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasBoutiqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearBoutiqueId() => clearField(2);
+  void clearBoutiqueId() => $_clearField(2);
 }
 
 class DeleteDeviceRequest extends $pb.GeneratedMessage {
@@ -717,15 +659,9 @@ class DeleteDeviceRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeleteDeviceRequest clone() => DeleteDeviceRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeleteDeviceRequest copyWith(void Function(DeleteDeviceRequest) updates) => super.copyWith((message) => updates(message as DeleteDeviceRequest)) as DeleteDeviceRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -745,16 +681,16 @@ class DeleteDeviceRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $12.Device get device => $_getN(1);
   @$pb.TagNumber(2)
-  set device($12.Device v) { setField(2, v); }
+  set device($12.Device v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDevice() => $_has(1);
   @$pb.TagNumber(2)
-  void clearDevice() => clearField(2);
+  void clearDevice() => $_clearField(2);
   @$pb.TagNumber(2)
   $12.Device ensureDevice() => $_ensure(1);
 }
@@ -783,15 +719,9 @@ class MailAndEncyptedPassword extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MailAndEncyptedPassword clone() => MailAndEncyptedPassword()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   MailAndEncyptedPassword copyWith(void Function(MailAndEncyptedPassword) updates) => super.copyWith((message) => updates(message as MailAndEncyptedPassword)) as MailAndEncyptedPassword;
 
   $pb.BuilderInfo get info_ => _i;
@@ -811,7 +741,7 @@ class MailAndEncyptedPassword extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasMail() => $_has(0);
   @$pb.TagNumber(1)
-  void clearMail() => clearField(1);
+  void clearMail() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get passwordEncrypted => $_getSZ(1);
@@ -820,7 +750,7 @@ class MailAndEncyptedPassword extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasPasswordEncrypted() => $_has(1);
   @$pb.TagNumber(2)
-  void clearPasswordEncrypted() => clearField(2);
+  void clearPasswordEncrypted() => $_clearField(2);
 }
 
 class UserId extends $pb.GeneratedMessage {
@@ -842,15 +772,9 @@ class UserId extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserId clone() => UserId()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserId copyWith(void Function(UserId) updates) => super.copyWith((message) => updates(message as UserId)) as UserId;
 
   $pb.BuilderInfo get info_ => _i;
@@ -870,7 +794,7 @@ class UserId extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserId() => clearField(1);
+  void clearUserId() => $_clearField(1);
 }
 
 class Access extends $pb.GeneratedMessage {
@@ -897,15 +821,9 @@ class Access extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Access clone() => Access()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Access copyWith(void Function(Access) updates) => super.copyWith((message) => updates(message as Access)) as Access;
 
   $pb.BuilderInfo get info_ => _i;
@@ -921,22 +839,22 @@ class Access extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $22.ChainIds get chainIds => $_getN(0);
   @$pb.TagNumber(1)
-  set chainIds($22.ChainIds v) { setField(1, v); }
+  set chainIds($22.ChainIds v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasChainIds() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainIds() => clearField(1);
+  void clearChainIds() => $_clearField(1);
   @$pb.TagNumber(1)
   $22.ChainIds ensureChainIds() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $22.BoutiqueIds get boutiqueIds => $_getN(1);
   @$pb.TagNumber(2)
-  set boutiqueIds($22.BoutiqueIds v) { setField(2, v); }
+  set boutiqueIds($22.BoutiqueIds v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBoutiqueIds() => $_has(1);
   @$pb.TagNumber(2)
-  void clearBoutiqueIds() => clearField(2);
+  void clearBoutiqueIds() => $_clearField(2);
   @$pb.TagNumber(2)
   $22.BoutiqueIds ensureBoutiqueIds() => $_ensure(1);
 }
@@ -965,15 +883,9 @@ class Credentials extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Credentials clone() => Credentials()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Credentials copyWith(void Function(Credentials) updates) => super.copyWith((message) => updates(message as Credentials)) as Credentials;
 
   $pb.BuilderInfo get info_ => _i;
@@ -993,7 +905,7 @@ class Credentials extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasMail() => $_has(0);
   @$pb.TagNumber(1)
-  void clearMail() => clearField(1);
+  void clearMail() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get password => $_getSZ(1);
@@ -1002,7 +914,7 @@ class Credentials extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasPassword() => $_has(1);
   @$pb.TagNumber(2)
-  void clearPassword() => clearField(2);
+  void clearPassword() => $_clearField(2);
 }
 
 class DeviceCredentials extends $pb.GeneratedMessage {
@@ -1044,15 +956,9 @@ class DeviceCredentials extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeviceCredentials clone() => DeviceCredentials()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   DeviceCredentials copyWith(void Function(DeviceCredentials) updates) => super.copyWith((message) => updates(message as DeviceCredentials)) as DeviceCredentials;
 
   $pb.BuilderInfo get info_ => _i;
@@ -1072,7 +978,7 @@ class DeviceCredentials extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasFirmId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearFirmId() => clearField(1);
+  void clearFirmId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get chainId => $_getSZ(1);
@@ -1081,7 +987,7 @@ class DeviceCredentials extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasChainId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearChainId() => clearField(2);
+  void clearChainId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get boutiqueId => $_getSZ(2);
@@ -1090,7 +996,7 @@ class DeviceCredentials extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasBoutiqueId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearBoutiqueId() => clearField(3);
+  void clearBoutiqueId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get deviceId => $_getSZ(3);
@@ -1099,7 +1005,7 @@ class DeviceCredentials extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasDeviceId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearDeviceId() => clearField(4);
+  void clearDeviceId() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get password => $_getSZ(4);
@@ -1108,7 +1014,7 @@ class DeviceCredentials extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasPassword() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPassword() => clearField(5);
+  void clearPassword() => $_clearField(5);
 }
 
 class RefreshToken extends $pb.GeneratedMessage {
@@ -1130,15 +1036,9 @@ class RefreshToken extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RefreshToken clone() => RefreshToken()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   RefreshToken copyWith(void Function(RefreshToken) updates) => super.copyWith((message) => updates(message as RefreshToken)) as RefreshToken;
 
   $pb.BuilderInfo get info_ => _i;
@@ -1158,7 +1058,7 @@ class RefreshToken extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasRefreshToken() => $_has(0);
   @$pb.TagNumber(1)
-  void clearRefreshToken() => clearField(1);
+  void clearRefreshToken() => $_clearField(1);
 }
 
 class Tokens extends $pb.GeneratedMessage {
@@ -1185,15 +1085,9 @@ class Tokens extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Tokens clone() => Tokens()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Tokens copyWith(void Function(Tokens) updates) => super.copyWith((message) => updates(message as Tokens)) as Tokens;
 
   $pb.BuilderInfo get info_ => _i;
@@ -1213,7 +1107,7 @@ class Tokens extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasAccessToken() => $_has(0);
   @$pb.TagNumber(1)
-  void clearAccessToken() => clearField(1);
+  void clearAccessToken() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get refreshToken => $_getSZ(1);
@@ -1222,7 +1116,7 @@ class Tokens extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasRefreshToken() => $_has(1);
   @$pb.TagNumber(2)
-  void clearRefreshToken() => clearField(2);
+  void clearRefreshToken() => $_clearField(2);
 }
 
 class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
@@ -1249,15 +1143,9 @@ class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateDevicePasswordRequest clone() => UpdateDevicePasswordRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UpdateDevicePasswordRequest copyWith(void Function(UpdateDevicePasswordRequest) updates) => super.copyWith((message) => updates(message as UpdateDevicePasswordRequest)) as UpdateDevicePasswordRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -1277,16 +1165,16 @@ class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $12.Device get device => $_getN(1);
   @$pb.TagNumber(2)
-  set device($12.Device v) { setField(2, v); }
+  set device($12.Device v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasDevice() => $_has(1);
   @$pb.TagNumber(2)
-  void clearDevice() => clearField(2);
+  void clearDevice() => $_clearField(2);
   @$pb.TagNumber(2)
   $12.Device ensureDevice() => $_ensure(1);
 }
@@ -1320,15 +1208,9 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PasswordUpdateRequest clone() => PasswordUpdateRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PasswordUpdateRequest copyWith(void Function(PasswordUpdateRequest) updates) => super.copyWith((message) => updates(message as PasswordUpdateRequest)) as PasswordUpdateRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -1348,7 +1230,7 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserId() => clearField(1);
+  void clearUserId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get firmId => $_getSZ(1);
@@ -1357,7 +1239,7 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasFirmId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirmId() => clearField(2);
+  void clearFirmId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get password => $_getSZ(2);
@@ -1366,7 +1248,7 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasPassword() => $_has(2);
   @$pb.TagNumber(3)
-  void clearPassword() => clearField(3);
+  void clearPassword() => $_clearField(3);
 }
 
 class PendingDeviceRequest extends $pb.GeneratedMessage {
@@ -1393,15 +1275,9 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PendingDeviceRequest clone() => PendingDeviceRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PendingDeviceRequest copyWith(void Function(PendingDeviceRequest) updates) => super.copyWith((message) => updates(message as PendingDeviceRequest)) as PendingDeviceRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -1417,11 +1293,11 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $12.HardwareInfo get hardwareInfo => $_getN(0);
   @$pb.TagNumber(1)
-  set hardwareInfo($12.HardwareInfo v) { setField(1, v); }
+  set hardwareInfo($12.HardwareInfo v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasHardwareInfo() => $_has(0);
   @$pb.TagNumber(1)
-  void clearHardwareInfo() => clearField(1);
+  void clearHardwareInfo() => $_clearField(1);
   @$pb.TagNumber(1)
   $12.HardwareInfo ensureHardwareInfo() => $_ensure(0);
 
@@ -1432,7 +1308,7 @@ class PendingDeviceRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasCode() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCode() => clearField(2);
+  void clearCode() => $_clearField(2);
 }
 
 class CodeForPairingDevice extends $pb.GeneratedMessage {
@@ -1442,7 +1318,7 @@ class CodeForPairingDevice extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.String? userId,
     $core.int? code,
-    $18.Timestamp? timestampUTC,
+    $17.Timestamp? timestampUTC,
   }) {
     final $result = create();
     if (firmId != null) {
@@ -1475,19 +1351,13 @@ class CodeForPairingDevice extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOS(4, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..a<$core.int>(5, _omitFieldNames ? '' : 'code', $pb.PbFieldType.O3)
-    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'timestampUTC', protoName: 'timestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'timestampUTC', protoName: 'timestampUTC', subBuilder: $17.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CodeForPairingDevice clone() => CodeForPairingDevice()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CodeForPairingDevice copyWith(void Function(CodeForPairingDevice) updates) => super.copyWith((message) => updates(message as CodeForPairingDevice)) as CodeForPairingDevice;
 
   $pb.BuilderInfo get info_ => _i;
@@ -1507,7 +1377,7 @@ class CodeForPairingDevice extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasFirmId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearFirmId() => clearField(1);
+  void clearFirmId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get chainId => $_getSZ(1);
@@ -1516,7 +1386,7 @@ class CodeForPairingDevice extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasChainId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearChainId() => clearField(2);
+  void clearChainId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get boutiqueId => $_getSZ(2);
@@ -1525,7 +1395,7 @@ class CodeForPairingDevice extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasBoutiqueId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearBoutiqueId() => clearField(3);
+  void clearBoutiqueId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get userId => $_getSZ(3);
@@ -1534,7 +1404,7 @@ class CodeForPairingDevice extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasUserId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearUserId() => clearField(4);
+  void clearUserId() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.int get code => $_getIZ(4);
@@ -1543,18 +1413,18 @@ class CodeForPairingDevice extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasCode() => $_has(4);
   @$pb.TagNumber(5)
-  void clearCode() => clearField(5);
+  void clearCode() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $18.Timestamp get timestampUTC => $_getN(5);
+  $17.Timestamp get timestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set timestampUTC($18.Timestamp v) { setField(6, v); }
+  set timestampUTC($17.Timestamp v) { $_setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
-  void clearTimestampUTC() => clearField(6);
+  void clearTimestampUTC() => $_clearField(6);
   @$pb.TagNumber(6)
-  $18.Timestamp ensureTimestampUTC() => $_ensure(5);
+  $17.Timestamp ensureTimestampUTC() => $_ensure(5);
 }
 
 class ApproveDeviceRequest extends $pb.GeneratedMessage {
@@ -1576,15 +1446,9 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ApproveDeviceRequest clone() => ApproveDeviceRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ApproveDeviceRequest copyWith(void Function(ApproveDeviceRequest) updates) => super.copyWith((message) => updates(message as ApproveDeviceRequest)) as ApproveDeviceRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -1600,13 +1464,129 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $12.Device get device => $_getN(0);
   @$pb.TagNumber(1)
-  set device($12.Device v) { setField(1, v); }
+  set device($12.Device v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasDevice() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDevice() => clearField(1);
+  void clearDevice() => $_clearField(1);
   @$pb.TagNumber(1)
   $12.Device ensureDevice() => $_ensure(0);
+}
+
+class PasswordResetRequest extends $pb.GeneratedMessage {
+  factory PasswordResetRequest({
+    $core.String? mail,
+  }) {
+    final $result = create();
+    if (mail != null) {
+      $result.mail = mail;
+    }
+    return $result;
+  }
+  PasswordResetRequest._() : super();
+  factory PasswordResetRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PasswordResetRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasswordResetRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'mail')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetRequest clone() => PasswordResetRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetRequest copyWith(void Function(PasswordResetRequest) updates) => super.copyWith((message) => updates(message as PasswordResetRequest)) as PasswordResetRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetRequest create() => PasswordResetRequest._();
+  PasswordResetRequest createEmptyInstance() => create();
+  static $pb.PbList<PasswordResetRequest> createRepeated() => $pb.PbList<PasswordResetRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PasswordResetRequest>(create);
+  static PasswordResetRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get mail => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set mail($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMail() => $_clearField(1);
+}
+
+class PasswordResetConfirmRequest extends $pb.GeneratedMessage {
+  factory PasswordResetConfirmRequest({
+    $core.String? mail,
+    $core.String? resetToken,
+    $core.String? newPassword,
+  }) {
+    final $result = create();
+    if (mail != null) {
+      $result.mail = mail;
+    }
+    if (resetToken != null) {
+      $result.resetToken = resetToken;
+    }
+    if (newPassword != null) {
+      $result.newPassword = newPassword;
+    }
+    return $result;
+  }
+  PasswordResetConfirmRequest._() : super();
+  factory PasswordResetConfirmRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PasswordResetConfirmRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasswordResetConfirmRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'mail')
+    ..aOS(2, _omitFieldNames ? '' : 'resetToken', protoName: 'resetToken')
+    ..aOS(3, _omitFieldNames ? '' : 'newPassword', protoName: 'newPassword')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetConfirmRequest clone() => PasswordResetConfirmRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetConfirmRequest copyWith(void Function(PasswordResetConfirmRequest) updates) => super.copyWith((message) => updates(message as PasswordResetConfirmRequest)) as PasswordResetConfirmRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetConfirmRequest create() => PasswordResetConfirmRequest._();
+  PasswordResetConfirmRequest createEmptyInstance() => create();
+  static $pb.PbList<PasswordResetConfirmRequest> createRepeated() => $pb.PbList<PasswordResetConfirmRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetConfirmRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PasswordResetConfirmRequest>(create);
+  static PasswordResetConfirmRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get mail => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set mail($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMail() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get resetToken => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set resetToken($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasResetToken() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearResetToken() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get newPassword => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set newPassword($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasNewPassword() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearNewPassword() => $_clearField(3);
 }
 
 

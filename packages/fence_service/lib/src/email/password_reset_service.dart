@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as dev;
 import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:fence_service/mongo_dart.dart';
@@ -38,7 +38,7 @@ class PasswordResetService {
       'used': false,
     });
     
-    log('Generated reset token for email: $email (expires at: $expiryTime)');
+    dev.log('Generated reset token for email: $email (expires at: $expiryTime)');
     return token;
   }
 
@@ -53,7 +53,7 @@ class PasswordResetService {
     });
     
     if (tokenDoc == null) {
-      log('Invalid or expired reset token');
+      dev.log('Invalid or expired reset token');
       return null;
     }
     
@@ -74,7 +74,7 @@ class PasswordResetService {
       },
     );
     
-    return result.modifiedCount > 0;
+    return result.nModified > 0;
   }
 
   /// Clean up expired tokens (should be called periodically)
@@ -83,8 +83,8 @@ class PasswordResetService {
       'expires_at': {'\$lt': DateTime.now()}
     });
     
-    log('Cleaned up ${result.deletedCount} expired reset tokens');
-    return result.deletedCount ?? 0;
+    dev.log('Cleaned up ${result.nRemoved} expired reset tokens');
+    return result.nRemoved;
   }
 
   /// Check if an email has a recent reset request (to prevent spam)

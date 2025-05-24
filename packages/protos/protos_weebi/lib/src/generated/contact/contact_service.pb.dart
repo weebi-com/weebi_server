@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: contact/contact_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -13,10 +13,12 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/address.pb.dart' as $20;
-import '../common/g_timestamp.pb.dart' as $18;
-import '../common/phone.pb.dart' as $19;
+import '../common/address.pb.dart' as $19;
+import '../common/g_timestamp.pb.dart' as $17;
+import '../common/phone.pb.dart' as $18;
 import 'contact.pb.dart' as $7;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class ReadContactRequest extends $pb.GeneratedMessage {
   factory ReadContactRequest({
@@ -25,8 +27,8 @@ class ReadContactRequest extends $pb.GeneratedMessage {
     $core.String? firstName,
     $core.String? lastName,
     $core.String? mail,
-    $19.Phone? phone,
-    $20.Address? address,
+    $18.Phone? phone,
+    $19.Address? address,
   }) {
     final $result = create();
     if (contactChainId != null) {
@@ -62,20 +64,14 @@ class ReadContactRequest extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'firstName', protoName: 'firstName')
     ..aOS(5, _omitFieldNames ? '' : 'lastName', protoName: 'lastName')
     ..aOS(6, _omitFieldNames ? '' : 'mail')
-    ..aOM<$19.Phone>(7, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
-    ..aOM<$20.Address>(8, _omitFieldNames ? '' : 'addressFull', protoName: 'address', subBuilder: $20.Address.create)
+    ..aOM<$18.Phone>(7, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
+    ..aOM<$19.Address>(8, _omitFieldNames ? '' : 'addressFull', protoName: 'address', subBuilder: $19.Address.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadContactRequest clone() => ReadContactRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadContactRequest copyWith(void Function(ReadContactRequest) updates) => super.copyWith((message) => updates(message as ReadContactRequest)) as ReadContactRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -96,7 +92,7 @@ class ReadContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasContactChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearContactChainId() => clearField(1);
+  void clearContactChainId() => $_clearField(1);
 
   @$pb.TagNumber(3)
   $core.int get contactId => $_getIZ(1);
@@ -105,7 +101,7 @@ class ReadContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasContactId() => $_has(1);
   @$pb.TagNumber(3)
-  void clearContactId() => clearField(3);
+  void clearContactId() => $_clearField(3);
 
   /// optional
   @$pb.TagNumber(4)
@@ -115,7 +111,7 @@ class ReadContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasFirstName() => $_has(2);
   @$pb.TagNumber(4)
-  void clearFirstName() => clearField(4);
+  void clearFirstName() => $_clearField(4);
 
   /// optional
   @$pb.TagNumber(5)
@@ -125,7 +121,7 @@ class ReadContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasLastName() => $_has(3);
   @$pb.TagNumber(5)
-  void clearLastName() => clearField(5);
+  void clearLastName() => $_clearField(5);
 
   /// optional
   @$pb.TagNumber(6)
@@ -135,38 +131,38 @@ class ReadContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasMail() => $_has(4);
   @$pb.TagNumber(6)
-  void clearMail() => clearField(6);
+  void clearMail() => $_clearField(6);
 
   /// optional
   @$pb.TagNumber(7)
-  $19.Phone get phone => $_getN(5);
+  $18.Phone get phone => $_getN(5);
   @$pb.TagNumber(7)
-  set phone($19.Phone v) { setField(7, v); }
+  set phone($18.Phone v) { $_setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasPhone() => $_has(5);
   @$pb.TagNumber(7)
-  void clearPhone() => clearField(7);
+  void clearPhone() => $_clearField(7);
   @$pb.TagNumber(7)
-  $19.Phone ensurePhone() => $_ensure(5);
+  $18.Phone ensurePhone() => $_ensure(5);
 
   /// optional
   @$pb.TagNumber(8)
-  $20.Address get address => $_getN(6);
+  $19.Address get address => $_getN(6);
   @$pb.TagNumber(8)
-  set address($20.Address v) { setField(8, v); }
+  set address($19.Address v) { $_setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasAddress() => $_has(6);
   @$pb.TagNumber(8)
-  void clearAddress() => clearField(8);
+  void clearAddress() => $_clearField(8);
   @$pb.TagNumber(8)
-  $20.Address ensureAddress() => $_ensure(6);
+  $19.Address ensureAddress() => $_ensure(6);
 }
 
 /// optional used for weebi_app device back online
 class ReadAllContactsRequest extends $pb.GeneratedMessage {
   factory ReadAllContactsRequest({
     $core.String? chainId,
-    $18.Timestamp? lastFetchTimestampUTC,
+    $17.Timestamp? lastFetchTimestampUTC,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -183,19 +179,13 @@ class ReadAllContactsRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllContactsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.contact.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$18.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadAllContactsRequest clone() => ReadAllContactsRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadAllContactsRequest copyWith(void Function(ReadAllContactsRequest) updates) => super.copyWith((message) => updates(message as ReadAllContactsRequest)) as ReadAllContactsRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -215,19 +205,19 @@ class ReadAllContactsRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   /// optional used for weebi_app device back online
   @$pb.TagNumber(2)
-  $18.Timestamp get lastFetchTimestampUTC => $_getN(1);
+  $17.Timestamp get lastFetchTimestampUTC => $_getN(1);
   @$pb.TagNumber(2)
-  set lastFetchTimestampUTC($18.Timestamp v) { setField(2, v); }
+  set lastFetchTimestampUTC($17.Timestamp v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLastFetchTimestampUTC() => $_has(1);
   @$pb.TagNumber(2)
-  void clearLastFetchTimestampUTC() => clearField(2);
+  void clearLastFetchTimestampUTC() => $_clearField(2);
   @$pb.TagNumber(2)
-  $18.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
+  $17.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
 }
 
 class ContactRequest extends $pb.GeneratedMessage {
@@ -254,15 +244,9 @@ class ContactRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactRequest clone() => ContactRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactRequest copyWith(void Function(ContactRequest) updates) => super.copyWith((message) => updates(message as ContactRequest)) as ContactRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -282,16 +266,16 @@ class ContactRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $7.ContactPb get contact => $_getN(1);
   @$pb.TagNumber(2)
-  set contact($7.ContactPb v) { setField(2, v); }
+  set contact($7.ContactPb v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasContact() => $_has(1);
   @$pb.TagNumber(2)
-  void clearContact() => clearField(2);
+  void clearContact() => $_clearField(2);
   @$pb.TagNumber(2)
   $7.ContactPb ensureContact() => $_ensure(1);
 }
@@ -320,15 +304,9 @@ class ContactsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactsRequest clone() => ContactsRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactsRequest copyWith(void Function(ContactsRequest) updates) => super.copyWith((message) => updates(message as ContactsRequest)) as ContactsRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -348,10 +326,10 @@ class ContactsRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $core.List<$7.ContactPb> get contacts => $_getList(1);
+  $pb.PbList<$7.ContactPb> get contacts => $_getList(1);
 }
 
 class ContactsResponse extends $pb.GeneratedMessage {
@@ -373,15 +351,9 @@ class ContactsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactsResponse clone() => ContactsResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactsResponse copyWith(void Function(ContactsResponse) updates) => super.copyWith((message) => updates(message as ContactsResponse)) as ContactsResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -395,7 +367,7 @@ class ContactsResponse extends $pb.GeneratedMessage {
   static ContactsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$7.ContactPb> get contacts => $_getList(0);
+  $pb.PbList<$7.ContactPb> get contacts => $_getList(0);
 }
 
 class ReadContactsIdsRequest extends $pb.GeneratedMessage {
@@ -417,15 +389,9 @@ class ReadContactsIdsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadContactsIdsRequest clone() => ReadContactsIdsRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadContactsIdsRequest copyWith(void Function(ReadContactsIdsRequest) updates) => super.copyWith((message) => updates(message as ReadContactsIdsRequest)) as ReadContactsIdsRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -445,7 +411,7 @@ class ReadContactsIdsRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 }
 
 /// / include all ids so that offline device can delete objects removed by another user/device
@@ -468,15 +434,9 @@ class ContactsIdsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactsIdsResponse clone() => ContactsIdsResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactsIdsResponse copyWith(void Function(ContactsIdsResponse) updates) => super.copyWith((message) => updates(message as ContactsIdsResponse)) as ContactsIdsResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -490,7 +450,7 @@ class ContactsIdsResponse extends $pb.GeneratedMessage {
   static ContactsIdsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get ids => $_getList(0);
+  $pb.PbList<$core.int> get ids => $_getList(0);
 }
 
 

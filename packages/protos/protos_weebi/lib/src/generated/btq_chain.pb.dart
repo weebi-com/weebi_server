@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: btq_chain.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -13,17 +13,19 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'boutique.pb.dart' as $21;
-import 'common/g_timestamp.pb.dart' as $18;
+import 'boutique.pb.dart' as $20;
+import 'common/g_timestamp.pb.dart' as $17;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class Chain extends $pb.GeneratedMessage {
   factory Chain({
     $core.String? chainId,
     $core.String? firmId,
     $core.String? name,
-    $core.Iterable<$21.BoutiqueMongo>? boutiques,
-    $18.Timestamp? creationDateUTC,
-    $18.Timestamp? lastUpdateTimestampUTC,
+    $core.Iterable<$20.BoutiqueMongo>? boutiques,
+    $17.Timestamp? creationDateUTC,
+    $17.Timestamp? lastUpdateTimestampUTC,
     $core.String? lastUpdatedByuserId,
   }) {
     final $result = create();
@@ -58,22 +60,16 @@ class Chain extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(3, _omitFieldNames ? '' : 'name')
-    ..pc<$21.BoutiqueMongo>(4, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $21.BoutiqueMongo.create)
-    ..aOM<$18.Timestamp>(5, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $18.Timestamp.create)
-    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..pc<$20.BoutiqueMongo>(4, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $20.BoutiqueMongo.create)
+    ..aOM<$17.Timestamp>(5, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $17.Timestamp.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Chain clone() => Chain()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Chain copyWith(void Function(Chain) updates) => super.copyWith((message) => updates(message as Chain)) as Chain;
 
   $pb.BuilderInfo get info_ => _i;
@@ -93,7 +89,7 @@ class Chain extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get firmId => $_getSZ(1);
@@ -102,7 +98,7 @@ class Chain extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasFirmId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirmId() => clearField(2);
+  void clearFirmId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get name => $_getSZ(2);
@@ -111,32 +107,32 @@ class Chain extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasName() => $_has(2);
   @$pb.TagNumber(3)
-  void clearName() => clearField(3);
+  void clearName() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $core.List<$21.BoutiqueMongo> get boutiques => $_getList(3);
+  $pb.PbList<$20.BoutiqueMongo> get boutiques => $_getList(3);
 
   @$pb.TagNumber(5)
-  $18.Timestamp get creationDateUTC => $_getN(4);
+  $17.Timestamp get creationDateUTC => $_getN(4);
   @$pb.TagNumber(5)
-  set creationDateUTC($18.Timestamp v) { setField(5, v); }
+  set creationDateUTC($17.Timestamp v) { $_setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasCreationDateUTC() => $_has(4);
   @$pb.TagNumber(5)
-  void clearCreationDateUTC() => clearField(5);
+  void clearCreationDateUTC() => $_clearField(5);
   @$pb.TagNumber(5)
-  $18.Timestamp ensureCreationDateUTC() => $_ensure(4);
+  $17.Timestamp ensureCreationDateUTC() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $18.Timestamp get lastUpdateTimestampUTC => $_getN(5);
+  $17.Timestamp get lastUpdateTimestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set lastUpdateTimestampUTC($18.Timestamp v) { setField(6, v); }
+  set lastUpdateTimestampUTC($17.Timestamp v) { $_setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasLastUpdateTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
-  void clearLastUpdateTimestampUTC() => clearField(6);
+  void clearLastUpdateTimestampUTC() => $_clearField(6);
   @$pb.TagNumber(6)
-  $18.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(5);
+  $17.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $core.String get lastUpdatedByuserId => $_getSZ(6);
@@ -145,7 +141,7 @@ class Chain extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.bool hasLastUpdatedByuserId() => $_has(6);
   @$pb.TagNumber(7)
-  void clearLastUpdatedByuserId() => clearField(7);
+  void clearLastUpdatedByuserId() => $_clearField(7);
 }
 
 class Chains extends $pb.GeneratedMessage {
@@ -167,15 +163,9 @@ class Chains extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Chains clone() => Chains()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Chains copyWith(void Function(Chains) updates) => super.copyWith((message) => updates(message as Chains)) as Chains;
 
   $pb.BuilderInfo get info_ => _i;
@@ -189,7 +179,7 @@ class Chains extends $pb.GeneratedMessage {
   static Chains? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Chain> get chains => $_getList(0);
+  $pb.PbList<Chain> get chains => $_getList(0);
 }
 
 
