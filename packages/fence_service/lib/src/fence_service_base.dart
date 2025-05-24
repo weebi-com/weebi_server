@@ -12,6 +12,8 @@ import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:fence_service/fence_service.dart';
+import 'email/email_service.dart';
+import 'email/password_reset_service.dart';
 
 class FenceService extends FenceServiceBase {
   final Db _db;
@@ -28,12 +30,24 @@ class FenceService extends FenceServiceBase {
 
   bool isMock;
   UserPermissions? userPermissionIfTest;
-  FenceService(this._db, {this.isMock = false, this.userPermissionIfTest})
+  
+  // Email and password reset services
+  EmailService? _emailService;
+  late PasswordResetService _passwordResetService;
+  
+  FenceService(this._db, {this.isMock = false, this.userPermissionIfTest, EmailService? emailService})
       : pairingCodesCollection = _db.collection(pairingCodesCollectionName),
         userCollection = _db.collection(userCollectionName),
         boutiqueCollection = _db.collection(boutiqueCollectionName),
-        firmCollection = _db.collection(firmCollectionName) {
+        firmCollection = _db.collection(firmCollectionName),
+        _emailService = emailService {
     _db.isConnected ? null : _db.open();
+    _passwordResetService = PasswordResetService(_db);
+  }
+
+  /// Configure email service for sending transactional emails
+  void configureEmailService(EmailService emailService) {
+    _emailService = emailService;
   }
 
   @override
@@ -1850,5 +1864,144 @@ class FenceService extends FenceServiceBase {
       logo: chain.boutiques[boutiqueIndex].logo,
       logoExtension: chain.boutiques[boutiqueIndex].logoExtension,
     );
+  }
+
+  @override
+  Future<StatusResponse> requestPasswordReset(
+      ServiceCall? call, PasswordResetRequest request) async {
+    if (request.mail.isEmpty) {
+      throw GrpcError.invalidArgument('email cannot be empty');
+    }
+
+    if (_emailService == null) {
+      throw GrpcError.failedPrecondition('email service not configured');
+    }
+
+    try {
+      if (_db.isConnected == false) {
+        if (_db.state == State.opening) {
+          await Future.delayed(Duration(microseconds: 10));
+        } else {
+          await _db.open();
+        }
+      }
+
+      // Check if email exists in our user database
+      final userDoc = await userCollection.findOne({'mail': request.mail});
+      if (userDoc == null) {
+        // For security reasons, don't reveal if email exists or not
+        // Return success but don't actually send an email
+        log('Password reset requested for non-existent email: ${request.mail}');
+        return StatusResponse()
+          ..type = StatusResponse_Type.OK
+          ..timestamp = DateTime.now().timestampProto;
+      }
+
+      // Check if there's a recent reset request to prevent spam
+      final hasRecentRequest = await _passwordResetService.hasRecentResetRequest(request.mail);
+      if (hasRecentRequest) {
+        throw GrpcError.resourceExhausted(
+            'Password reset already requested recently. Please wait before requesting again.');
+      }
+
+      // Generate reset token
+      final resetToken = await _passwordResetService.generateResetToken(request.mail);
+      
+      // Create reset URL (this should be configurable based on your frontend URL)
+      final resetUrl = 'https://your-app-domain.com/reset-password?token=$resetToken&email=${Uri.encodeComponent(request.mail)}';
+      
+      // Get user name for personalized email
+      final userName = userDoc['name'] ?? 'User';
+
+      // Send reset email
+      final emailSent = await _emailService!.sendPasswordResetEmail(
+        toEmail: request.mail,
+        userName: userName,
+        resetToken: resetToken,
+        resetUrl: resetUrl,
+      );
+
+      if (!emailSent) {
+        throw GrpcError.internal('Failed to send password reset email');
+      }
+
+      log('Password reset email sent to: ${request.mail}');
+      return StatusResponse()
+        ..type = StatusResponse_Type.OK
+        ..timestamp = DateTime.now().timestampProto;
+
+    } on GrpcError catch (e) {
+      log('Password reset request error: $e');
+      rethrow;
+    } catch (e, stacktrace) {
+      log('Password reset request error: $e');
+      log('Stacktrace: $stacktrace');
+      throw GrpcError.internal('Internal error processing password reset request');
+    }
+  }
+
+  @override
+  Future<StatusResponse> confirmPasswordReset(
+      ServiceCall? call, PasswordResetConfirmRequest request) async {
+    if (request.mail.isEmpty) {
+      throw GrpcError.invalidArgument('email cannot be empty');
+    }
+    if (request.resetToken.isEmpty) {
+      throw GrpcError.invalidArgument('reset token cannot be empty');
+    }
+    if (request.newPassword.isEmpty) {
+      throw GrpcError.invalidArgument('new password cannot be empty');
+    }
+
+    try {
+      if (_db.isConnected == false) {
+        if (_db.state == State.opening) {
+          await Future.delayed(Duration(microseconds: 10));
+        } else {
+          await _db.open();
+        }
+      }
+
+      // Verify the reset token
+      final tokenEmail = await _passwordResetService.verifyResetToken(request.resetToken);
+      if (tokenEmail == null || tokenEmail != request.mail) {
+        throw GrpcError.invalidArgument('Invalid or expired reset token');
+      }
+
+      // Check if user exists
+      final userDoc = await userCollection.findOne({'mail': request.mail});
+      if (userDoc == null) {
+        throw GrpcError.notFound('User not found');
+      }
+
+      // Encrypt the new password
+      final passwordEncrypted = _checkAndEncryptPassword(request.newPassword);
+
+      // Update user password
+      final updateResult = await userCollection.updateOne(
+        where.eq('mail', request.mail),
+        ModifierBuilder().set('password', passwordEncrypted)
+      );
+
+      if (updateResult.modifiedCount == 0) {
+        throw GrpcError.internal('Failed to update password');
+      }
+
+      // Mark token as used
+      await _passwordResetService.markTokenAsUsed(request.resetToken);
+
+      log('Password successfully reset for user: ${request.mail}');
+      return StatusResponse()
+        ..type = StatusResponse_Type.UPDATED
+        ..timestamp = DateTime.now().timestampProto;
+
+    } on GrpcError catch (e) {
+      log('Password reset confirmation error: $e');
+      rethrow;
+    } catch (e, stacktrace) {
+      log('Password reset confirmation error: $e');
+      log('Stacktrace: $stacktrace');
+      throw GrpcError.internal('Internal error confirming password reset');
+    }
   }
 }

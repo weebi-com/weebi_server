@@ -20,6 +20,10 @@ service FenceService {
   rpc signUp(weebi.user.SignUpRequest) returns (weebi.user.SignUpResponse);
   rpc authenticateWithCredentials (Credentials) returns (Tokens);
   rpc authenticateWithRefreshToken (RefreshToken) returns (Tokens);
+  
+  // Password reset functionality
+  rpc requestPasswordReset(PasswordResetRequest) returns (google.retail.common.StatusResponse);
+  rpc confirmPasswordReset(PasswordResetConfirmRequest) returns (google.retail.common.StatusResponse);
 
   // removed below useless 2024 dec
   // rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.permissions.UserPermissions);
@@ -223,4 +227,14 @@ message CodeForPairingDevice {
 
 message ApproveDeviceRequest { 
   weebi.device.Device device = 1 ;
+}
+
+message PasswordResetRequest {
+  string mail = 1 [json_name = 'mail'];
+}
+
+message PasswordResetConfirmRequest {
+  string mail = 1 [json_name = 'mail'];
+  string resetToken = 2 [json_name = 'resetToken'];
+  string newPassword = 3 [json_name = 'newPassword'];
 }
