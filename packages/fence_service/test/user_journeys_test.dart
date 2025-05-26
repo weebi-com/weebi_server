@@ -1,36 +1,38 @@
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/mongo_local_testing.dart';
+import 'package:fence_service/mongo_pool.dart';
 import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/grpc.dart';
 
 import 'package:test/test.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'service_call_impl.dart';
 
 void main() async {
-  final db = TestHelper.localDb;
-  final connection = Connection(ConnectionManager(db));
+  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  await poolService.initialize();
+
   late FenceService fenceService;
 
   setUpAll(() async {
-    await db.open();
-    final isConnected = await connection.connect();
+    final db = await poolService.acquire();
 
-    expect(isConnected, true);
-    fenceService = FenceService(db, isMock: false); // we do not mock signup
+    fenceService =
+        FenceService(poolService, isMock: false); // we do not mock signup
 
-    await db.createCollection(fenceService.userCollection.collectionName);
-    await db.createCollection(fenceService.boutiqueCollection.collectionName);
-    await db.createCollection(fenceService.firmCollection.collectionName);
+    await db.createCollection(FenceService.userCollectionName);
+    await db.createCollection(FenceService.boutiqueCollectionName);
+    await db.createCollection(FenceService.firmCollectionName);
+    poolService.release(db);
   });
 
   tearDownAll(() async {
-    await db.collection(fenceService.userCollection.collectionName).drop();
-    await db.collection(fenceService.boutiqueCollection.collectionName).drop();
-    await db.collection(fenceService.firmCollection.collectionName).drop();
-    await connection.close();
+    final db = await poolService.acquire();
+    await db.collection(FenceService.userCollectionName).drop();
+    await db.collection(FenceService.boutiqueCollectionName).drop();
+    await db.collection(FenceService.firmCollectionName).drop();
+    poolService.release(db);
   });
 
   test('''signup createFirm 
