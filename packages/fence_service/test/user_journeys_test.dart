@@ -105,8 +105,9 @@ void main() async {
 
     // alice signs up and is linked to boss' firm
     final aliceSignUp = await fenceService.signUp(
-        ServiceCallTest('', path: 'signUp'),
-        SignUpRequest(mail: 'alice@weebi.com', password: '987654321'));
+      ServiceCallTest('', path: 'signUp'),
+      SignUpRequest(mail: 'alice@weebi.com', password: '987654321'),
+    );
 
     expect(aliceSignUp.statusResponse.type, StatusResponse_Type.UPDATED);
     // indeed update since alice was already created by boss
