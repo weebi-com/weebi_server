@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: contact/contact_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -23,6 +23,14 @@ export 'contact_service.pb.dart';
 
 @$pb.GrpcServiceName('weebi.contact.service.ContactService')
 class ContactServiceClient extends $grpc.Client {
+  /// The hostname for this service.
+  static const $core.String defaultHost = '';
+
+  /// OAuth scopes needed for the client.
+  static const $core.List<$core.String> oauthScopes = [
+    '',
+  ];
+
   static final _$createOne = $grpc.ClientMethod<$6.ContactRequest, $1.StatusResponse>(
       '/weebi.contact.service.ContactService/createOne',
       ($6.ContactRequest value) => value.writeToBuffer(),
@@ -52,11 +60,7 @@ class ContactServiceClient extends $grpc.Client {
       ($6.ContactRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
 
-  ContactServiceClient($grpc.ClientChannel channel,
-      {$grpc.CallOptions? options,
-      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
-      : super(channel, options: options,
-        interceptors: interceptors);
+  ContactServiceClient(super.channel, {super.options, super.interceptors});
 
   $grpc.ResponseFuture<$1.StatusResponse> createOne($6.ContactRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createOne, request, options: options);
@@ -66,6 +70,7 @@ class ContactServiceClient extends $grpc.Client {
     return $createUnaryCall(_$createMany, request, options: options);
   }
 
+  /// / use [lastFetchTimestampUTC] to only read the latest changes since last fetch
   $grpc.ResponseFuture<$7.ContactPb> readOne($6.ReadContactRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readOne, request, options: options);
   }
@@ -78,10 +83,12 @@ class ContactServiceClient extends $grpc.Client {
     return $createUnaryCall(_$readAllIds, request, options: options);
   }
 
+  /// / == upsert
   $grpc.ResponseFuture<$1.StatusResponse> updateOne($6.ContactRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateOne, request, options: options);
   }
 
+  /// / hard delete
   $grpc.ResponseFuture<$1.StatusResponse> deleteOne($6.ContactRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOne, request, options: options);
   }
@@ -143,32 +150,32 @@ abstract class ContactServiceBase extends $grpc.Service {
         ($1.StatusResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$1.StatusResponse> createOne_Pre($grpc.ServiceCall call, $async.Future<$6.ContactRequest> request) async {
-    return createOne(call, await request);
+  $async.Future<$1.StatusResponse> createOne_Pre($grpc.ServiceCall $call, $async.Future<$6.ContactRequest> $request) async {
+    return createOne($call, await $request);
   }
 
-  $async.Future<$1.StatusResponse> createMany_Pre($grpc.ServiceCall call, $async.Future<$6.ContactsRequest> request) async {
-    return createMany(call, await request);
+  $async.Future<$1.StatusResponse> createMany_Pre($grpc.ServiceCall $call, $async.Future<$6.ContactsRequest> $request) async {
+    return createMany($call, await $request);
   }
 
-  $async.Future<$7.ContactPb> readOne_Pre($grpc.ServiceCall call, $async.Future<$6.ReadContactRequest> request) async {
-    return readOne(call, await request);
+  $async.Future<$7.ContactPb> readOne_Pre($grpc.ServiceCall $call, $async.Future<$6.ReadContactRequest> $request) async {
+    return readOne($call, await $request);
   }
 
-  $async.Future<$6.ContactsResponse> readAll_Pre($grpc.ServiceCall call, $async.Future<$6.ReadAllContactsRequest> request) async {
-    return readAll(call, await request);
+  $async.Future<$6.ContactsResponse> readAll_Pre($grpc.ServiceCall $call, $async.Future<$6.ReadAllContactsRequest> $request) async {
+    return readAll($call, await $request);
   }
 
-  $async.Future<$6.ContactsIdsResponse> readAllIds_Pre($grpc.ServiceCall call, $async.Future<$6.ReadContactsIdsRequest> request) async {
-    return readAllIds(call, await request);
+  $async.Future<$6.ContactsIdsResponse> readAllIds_Pre($grpc.ServiceCall $call, $async.Future<$6.ReadContactsIdsRequest> $request) async {
+    return readAllIds($call, await $request);
   }
 
-  $async.Future<$1.StatusResponse> updateOne_Pre($grpc.ServiceCall call, $async.Future<$6.ContactRequest> request) async {
-    return updateOne(call, await request);
+  $async.Future<$1.StatusResponse> updateOne_Pre($grpc.ServiceCall $call, $async.Future<$6.ContactRequest> $request) async {
+    return updateOne($call, await $request);
   }
 
-  $async.Future<$1.StatusResponse> deleteOne_Pre($grpc.ServiceCall call, $async.Future<$6.ContactRequest> request) async {
-    return deleteOne(call, await request);
+  $async.Future<$1.StatusResponse> deleteOne_Pre($grpc.ServiceCall $call, $async.Future<$6.ContactRequest> $request) async {
+    return deleteOne($call, await $request);
   }
 
   $async.Future<$1.StatusResponse> createOne($grpc.ServiceCall call, $6.ContactRequest request);

@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: ticket/ticket.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -32,10 +32,10 @@ class TicketPb_PaymentTypePb extends $pb.ProtobufEnum {
     goods,
   ];
 
-  static final $core.Map<$core.int, TicketPb_PaymentTypePb> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static TicketPb_PaymentTypePb? valueOf($core.int value) => _byValue[value];
+  static final $core.List<TicketPb_PaymentTypePb?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 6);
+  static TicketPb_PaymentTypePb? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const TicketPb_PaymentTypePb._($core.int v, $core.String n) : super(v, n);
+  const TicketPb_PaymentTypePb._(super.v, super.n);
 }
 
 

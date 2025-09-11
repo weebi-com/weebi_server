@@ -19,7 +19,8 @@ message UserPublic {
   weebi.common.phone.Phone phone =  5 [json_name = 'phone'];
   google.protobuf.Timestamp lastSignIn = 6 [json_name = 'lastSignIn'];
   weebi.user.permissions.UserPermissions permissions = 7 [json_name = 'permissions'];
-  reserved 8 to 98;
+  bool mustChangePassword = 8 [json_name = 'mustChangePassword']; // Client needs this to enforce password change
+  reserved 9 to 98;
   map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
 }
 
@@ -40,7 +41,9 @@ message UserPrivate {
   string lastUpdatedByuserId = 10 [json_name = 'lastUpdatedByuserId'];
   google.protobuf.Timestamp lastUpdateTimestampUTC = 11 [json_name = 'lastUpdateTimestampUTC'];
   google.protobuf.Timestamp creationDateUTC = 12 [json_name = 'creationDateUTC'];
-  reserved 13 to 98;
+  bool mustChangePassword = 13 [json_name = 'mustChangePassword']; // Forces password change on first login
+  bool emailVerificationSent = 14 [json_name = 'emailVerificationSent']; // Track if setup email was sent
+  reserved 15 to 98;
   map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
 }
 
@@ -69,7 +72,8 @@ message PendingUserRequest {
   string lastname = 3 [json_name = 'lastname'];
   weebi.user.permissions.UserPermissions permissions = 4 [json_name = 'permissions'];
   weebi.common.phone.Phone phone =  5 [json_name = 'phone'];
-  reserved 6 to 98;
+  string password = 6 [json_name = 'password']; // Same as UserPrivate - no confusion!
+  reserved 7 to 98;
   map<string, string> othersAttributes = 99 [json_name = 'othersAttributes'];
 }
 

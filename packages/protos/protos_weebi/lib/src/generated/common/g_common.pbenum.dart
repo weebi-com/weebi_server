@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: common/g_common.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -28,10 +28,10 @@ class StatusResponse_Type extends $pb.ProtobufEnum {
     DELETED,
   ];
 
-  static final $core.Map<$core.int, StatusResponse_Type> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static StatusResponse_Type? valueOf($core.int value) => _byValue[value];
+  static final $core.List<StatusResponse_Type?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 4);
+  static StatusResponse_Type? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const StatusResponse_Type._($core.int v, $core.String n) : super(v, n);
+  const StatusResponse_Type._(super.v, super.n);
 }
 
 class HealthCheckResponse_ServingStatus extends $pb.ProtobufEnum {
@@ -47,10 +47,10 @@ class HealthCheckResponse_ServingStatus extends $pb.ProtobufEnum {
     SERVICE_UNKNOWN,
   ];
 
-  static final $core.Map<$core.int, HealthCheckResponse_ServingStatus> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static HealthCheckResponse_ServingStatus? valueOf($core.int value) => _byValue[value];
+  static final $core.List<HealthCheckResponse_ServingStatus?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 3);
+  static HealthCheckResponse_ServingStatus? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const HealthCheckResponse_ServingStatus._($core.int v, $core.String n) : super(v, n);
+  const HealthCheckResponse_ServingStatus._(super.v, super.n);
 }
 
 

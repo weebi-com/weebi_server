@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: common/g_common.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -15,25 +15,31 @@ import 'dart:core' as $core;
 import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'empty.pb.dart' as $0;
+import 'empty.pb.dart' as $5;
 import 'g_common.pb.dart' as $1;
 
 export 'g_common.pb.dart';
 
 @$pb.GrpcServiceName('google.retail.common.Status')
 class StatusClient extends $grpc.Client {
-  static final _$get = $grpc.ClientMethod<$0.Empty, $1.HealthCheckResponse>(
+  /// The hostname for this service.
+  static const $core.String defaultHost = '';
+
+  /// OAuth scopes needed for the client.
+  static const $core.List<$core.String> oauthScopes = [
+    '',
+  ];
+
+  static final _$get = $grpc.ClientMethod<$5.Empty, $1.HealthCheckResponse>(
       '/google.retail.common.Status/Get',
-      ($0.Empty value) => value.writeToBuffer(),
+      ($5.Empty value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.HealthCheckResponse.fromBuffer(value));
 
-  StatusClient($grpc.ClientChannel channel,
-      {$grpc.CallOptions? options,
-      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
-      : super(channel, options: options,
-        interceptors: interceptors);
+  StatusClient(super.channel, {super.options, super.interceptors});
 
-  $grpc.ResponseFuture<$1.HealthCheckResponse> get($0.Empty request, {$grpc.CallOptions? options}) {
+  ///
+  ///  Gets service status
+  $grpc.ResponseFuture<$1.HealthCheckResponse> get($5.Empty request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$get, request, options: options);
   }
 }
@@ -43,18 +49,18 @@ abstract class StatusServiceBase extends $grpc.Service {
   $core.String get $name => 'google.retail.common.Status';
 
   StatusServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.Empty, $1.HealthCheckResponse>(
+    $addMethod($grpc.ServiceMethod<$5.Empty, $1.HealthCheckResponse>(
         'Get',
         get_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($core.List<$core.int> value) => $5.Empty.fromBuffer(value),
         ($1.HealthCheckResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$1.HealthCheckResponse> get_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
-    return get(call, await request);
+  $async.Future<$1.HealthCheckResponse> get_Pre($grpc.ServiceCall $call, $async.Future<$5.Empty> $request) async {
+    return get($call, await $request);
   }
 
-  $async.Future<$1.HealthCheckResponse> get($grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$1.HealthCheckResponse> get($grpc.ServiceCall call, $5.Empty request);
 }

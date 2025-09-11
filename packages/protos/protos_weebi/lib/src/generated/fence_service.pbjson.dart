@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: fence_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -264,13 +264,15 @@ const Tokens$json = {
   '2': [
     {'1': 'accessToken', '3': 1, '4': 1, '5': 9, '10': 'accessToken'},
     {'1': 'refreshToken', '3': 2, '4': 1, '5': 9, '10': 'refreshToken'},
+    {'1': 'mustChangePassword', '3': 3, '4': 1, '5': 8, '10': 'mustChangePassword'},
   ],
 };
 
 /// Descriptor for `Tokens`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List tokensDescriptor = $convert.base64Decode(
     'CgZUb2tlbnMSIAoLYWNjZXNzVG9rZW4YASABKAlSC2FjY2Vzc1Rva2VuEiIKDHJlZnJlc2hUb2'
-    'tlbhgCIAEoCVIMcmVmcmVzaFRva2Vu');
+    'tlbhgCIAEoCVIMcmVmcmVzaFRva2VuEi4KEm11c3RDaGFuZ2VQYXNzd29yZBgDIAEoCFISbXVz'
+    'dENoYW5nZVBhc3N3b3Jk');
 
 @$core.Deprecated('Use updateDevicePasswordRequestDescriptor instead')
 const UpdateDevicePasswordRequest$json = {
@@ -292,14 +294,16 @@ const PasswordUpdateRequest$json = {
   '2': [
     {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
-    {'1': 'password', '3': 3, '4': 1, '5': 9, '10': 'password'},
+    {'1': 'passwordCurrent', '3': 3, '4': 1, '5': 9, '10': 'passwordCurrent'},
+    {'1': 'passwordNew', '3': 4, '4': 1, '5': 9, '10': 'passwordNew'},
   ],
 };
 
 /// Descriptor for `PasswordUpdateRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List passwordUpdateRequestDescriptor = $convert.base64Decode(
     'ChVQYXNzd29yZFVwZGF0ZVJlcXVlc3QSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQSFgoGZmlybU'
-    'lkGAIgASgJUgZmaXJtSWQSGgoIcGFzc3dvcmQYAyABKAlSCHBhc3N3b3Jk');
+    'lkGAIgASgJUgZmaXJtSWQSKAoPcGFzc3dvcmRDdXJyZW50GAMgASgJUg9wYXNzd29yZEN1cnJl'
+    'bnQSIAoLcGFzc3dvcmROZXcYBCABKAlSC3Bhc3N3b3JkTmV3');
 
 @$core.Deprecated('Use pendingDeviceRequestDescriptor instead')
 const PendingDeviceRequest$json = {

@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: ticket/ticket_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -23,6 +23,14 @@ export 'ticket_service.pb.dart';
 
 @$pb.GrpcServiceName('weebi.ticket.service.TicketService')
 class TicketServiceClient extends $grpc.Client {
+  /// The hostname for this service.
+  static const $core.String defaultHost = '';
+
+  /// OAuth scopes needed for the client.
+  static const $core.List<$core.String> oauthScopes = [
+    '',
+  ];
+
   static final _$readAll = $grpc.ClientMethod<$14.ReadAllTicketsRequest, $14.TicketsResponse>(
       '/weebi.ticket.service.TicketService/readAll',
       ($14.ReadAllTicketsRequest value) => value.writeToBuffer(),
@@ -48,12 +56,10 @@ class TicketServiceClient extends $grpc.Client {
       ($14.TicketRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
 
-  TicketServiceClient($grpc.ClientChannel channel,
-      {$grpc.CallOptions? options,
-      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
-      : super(channel, options: options,
-        interceptors: interceptors);
+  TicketServiceClient(super.channel, {super.options, super.interceptors});
 
+  /// / allows to read tickets from all accessible boutiques
+  /// / no need to paginate yet, will conisder streaming
   $grpc.ResponseFuture<$14.TicketsResponse> readAll($14.ReadAllTicketsRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readAll, request, options: options);
   }
@@ -74,6 +80,7 @@ class TicketServiceClient extends $grpc.Client {
     return $createUnaryCall(_$updateStatusOne, request, options: options);
   }
 
+  /// / soft delete
   $grpc.ResponseFuture<$1.StatusResponse> deleteOne($14.TicketRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOne, request, options: options);
   }
@@ -128,28 +135,28 @@ abstract class TicketServiceBase extends $grpc.Service {
         ($1.StatusResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$14.TicketsResponse> readAll_Pre($grpc.ServiceCall call, $async.Future<$14.ReadAllTicketsRequest> request) async {
-    return readAll(call, await request);
+  $async.Future<$14.TicketsResponse> readAll_Pre($grpc.ServiceCall $call, $async.Future<$14.ReadAllTicketsRequest> $request) async {
+    return readAll($call, await $request);
   }
 
-  $async.Future<$15.TicketPb> readOne_Pre($grpc.ServiceCall call, $async.Future<$14.FindTicketRequest> request) async {
-    return readOne(call, await request);
+  $async.Future<$15.TicketPb> readOne_Pre($grpc.ServiceCall $call, $async.Future<$14.FindTicketRequest> $request) async {
+    return readOne($call, await $request);
   }
 
-  $async.Future<$1.StatusResponse> createOne_Pre($grpc.ServiceCall call, $async.Future<$14.TicketRequest> request) async {
-    return createOne(call, await request);
+  $async.Future<$1.StatusResponse> createOne_Pre($grpc.ServiceCall $call, $async.Future<$14.TicketRequest> $request) async {
+    return createOne($call, await $request);
   }
 
-  $async.Future<$1.StatusResponse> createMany_Pre($grpc.ServiceCall call, $async.Future<$14.TicketsRequest> request) async {
-    return createMany(call, await request);
+  $async.Future<$1.StatusResponse> createMany_Pre($grpc.ServiceCall $call, $async.Future<$14.TicketsRequest> $request) async {
+    return createMany($call, await $request);
   }
 
-  $async.Future<$1.StatusResponse> updateStatusOne_Pre($grpc.ServiceCall call, $async.Future<$14.TicketRequest> request) async {
-    return updateStatusOne(call, await request);
+  $async.Future<$1.StatusResponse> updateStatusOne_Pre($grpc.ServiceCall $call, $async.Future<$14.TicketRequest> $request) async {
+    return updateStatusOne($call, await $request);
   }
 
-  $async.Future<$1.StatusResponse> deleteOne_Pre($grpc.ServiceCall call, $async.Future<$14.TicketRequest> request) async {
-    return deleteOne(call, await request);
+  $async.Future<$1.StatusResponse> deleteOne_Pre($grpc.ServiceCall $call, $async.Future<$14.TicketRequest> $request) async {
+    return deleteOne($call, await $request);
   }
 
   $async.Future<$14.TicketsResponse> readAll($grpc.ServiceCall call, $14.ReadAllTicketsRequest request);

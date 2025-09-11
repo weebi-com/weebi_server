@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: article/article_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -13,10 +13,12 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_timestamp.pb.dart' as $18;
-import 'article.pb.dart' as $3;
-import 'category.pb.dart' as $4;
-import 'photo.pb.dart' as $5;
+import '../common/g_timestamp.pb.dart' as $17;
+import 'article.pb.dart' as $2;
+import 'category.pb.dart' as $3;
+import 'photo.pb.dart' as $4;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 /// / A Calibre includes Articles
 class ReadCalibreRequest extends $pb.GeneratedMessage {
@@ -48,15 +50,9 @@ class ReadCalibreRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadCalibreRequest clone() => ReadCalibreRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadCalibreRequest copyWith(void Function(ReadCalibreRequest) updates) => super.copyWith((message) => updates(message as ReadCalibreRequest)) as ReadCalibreRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -76,7 +72,7 @@ class ReadCalibreRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get title => $_getSZ(1);
@@ -85,7 +81,7 @@ class ReadCalibreRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasTitle() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTitle() => clearField(2);
+  void clearTitle() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.int get calibreId => $_getIZ(2);
@@ -94,13 +90,13 @@ class ReadCalibreRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasCalibreId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearCalibreId() => clearField(3);
+  void clearCalibreId() => $_clearField(3);
 }
 
 class ReadAllRequest extends $pb.GeneratedMessage {
   factory ReadAllRequest({
     $core.String? chainId,
-    $18.Timestamp? lastFetchTimestampUTC,
+    $17.Timestamp? lastFetchTimestampUTC,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -117,19 +113,13 @@ class ReadAllRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$18.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadAllRequest clone() => ReadAllRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadAllRequest copyWith(void Function(ReadAllRequest) updates) => super.copyWith((message) => updates(message as ReadAllRequest)) as ReadAllRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -149,25 +139,25 @@ class ReadAllRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   /// optional used for weebi_app device back online
   @$pb.TagNumber(2)
-  $18.Timestamp get lastFetchTimestampUTC => $_getN(1);
+  $17.Timestamp get lastFetchTimestampUTC => $_getN(1);
   @$pb.TagNumber(2)
-  set lastFetchTimestampUTC($18.Timestamp v) { setField(2, v); }
+  set lastFetchTimestampUTC($17.Timestamp v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLastFetchTimestampUTC() => $_has(1);
   @$pb.TagNumber(2)
-  void clearLastFetchTimestampUTC() => clearField(2);
+  void clearLastFetchTimestampUTC() => $_clearField(2);
   @$pb.TagNumber(2)
-  $18.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
+  $17.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
 }
 
 class CalibreRequest extends $pb.GeneratedMessage {
   factory CalibreRequest({
     $core.String? chainId,
-    $3.CalibrePb? calibre,
+    $2.CalibrePb? calibre,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -184,19 +174,13 @@ class CalibreRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibreRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$3.CalibrePb>(2, _omitFieldNames ? '' : 'calibre', subBuilder: $3.CalibrePb.create)
+    ..aOM<$2.CalibrePb>(2, _omitFieldNames ? '' : 'calibre', subBuilder: $2.CalibrePb.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CalibreRequest clone() => CalibreRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CalibreRequest copyWith(void Function(CalibreRequest) updates) => super.copyWith((message) => updates(message as CalibreRequest)) as CalibreRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -217,24 +201,24 @@ class CalibreRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $3.CalibrePb get calibre => $_getN(1);
+  $2.CalibrePb get calibre => $_getN(1);
   @$pb.TagNumber(2)
-  set calibre($3.CalibrePb v) { setField(2, v); }
+  set calibre($2.CalibrePb v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasCalibre() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCalibre() => clearField(2);
+  void clearCalibre() => $_clearField(2);
   @$pb.TagNumber(2)
-  $3.CalibrePb ensureCalibre() => $_ensure(1);
+  $2.CalibrePb ensureCalibre() => $_ensure(1);
 }
 
 class CalibresRequest extends $pb.GeneratedMessage {
   factory CalibresRequest({
     $core.String? chainId,
-    $core.Iterable<$3.CalibrePb>? calibres,
+    $core.Iterable<$2.CalibrePb>? calibres,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -251,19 +235,13 @@ class CalibresRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibresRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..pc<$3.CalibrePb>(2, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $3.CalibrePb.create)
+    ..pc<$2.CalibrePb>(2, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $2.CalibrePb.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CalibresRequest clone() => CalibresRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CalibresRequest copyWith(void Function(CalibresRequest) updates) => super.copyWith((message) => updates(message as CalibresRequest)) as CalibresRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -284,15 +262,15 @@ class CalibresRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $core.List<$3.CalibrePb> get calibres => $_getList(1);
+  $pb.PbList<$2.CalibrePb> get calibres => $_getList(1);
 }
 
 class CalibresResponse extends $pb.GeneratedMessage {
   factory CalibresResponse({
-    $core.Iterable<$3.CalibrePb>? calibres,
+    $core.Iterable<$2.CalibrePb>? calibres,
   }) {
     final $result = create();
     if (calibres != null) {
@@ -305,19 +283,13 @@ class CalibresResponse extends $pb.GeneratedMessage {
   factory CalibresResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CalibresResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
-    ..pc<$3.CalibrePb>(1, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $3.CalibrePb.create)
+    ..pc<$2.CalibrePb>(1, _omitFieldNames ? '' : 'calibres', $pb.PbFieldType.PM, subBuilder: $2.CalibrePb.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CalibresResponse clone() => CalibresResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CalibresResponse copyWith(void Function(CalibresResponse) updates) => super.copyWith((message) => updates(message as CalibresResponse)) as CalibresResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -331,7 +303,7 @@ class CalibresResponse extends $pb.GeneratedMessage {
   static CalibresResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$3.CalibrePb> get calibres => $_getList(0);
+  $pb.PbList<$2.CalibrePb> get calibres => $_getList(0);
 }
 
 class ReadIdsRequest extends $pb.GeneratedMessage {
@@ -353,15 +325,9 @@ class ReadIdsRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadIdsRequest clone() => ReadIdsRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadIdsRequest copyWith(void Function(ReadIdsRequest) updates) => super.copyWith((message) => updates(message as ReadIdsRequest)) as ReadIdsRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -381,7 +347,7 @@ class ReadIdsRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 }
 
 /// / include all ids so that offline device can delete objects removed by another user/device
@@ -404,15 +370,9 @@ class CalibresIdsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CalibresIdsResponse clone() => CalibresIdsResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CalibresIdsResponse copyWith(void Function(CalibresIdsResponse) updates) => super.copyWith((message) => updates(message as CalibresIdsResponse)) as CalibresIdsResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -426,7 +386,7 @@ class CalibresIdsResponse extends $pb.GeneratedMessage {
   static CalibresIdsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get ids => $_getList(0);
+  $pb.PbList<$core.int> get ids => $_getList(0);
 }
 
 /// / categories
@@ -454,15 +414,9 @@ class FindCategoryRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FindCategoryRequest clone() => FindCategoryRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FindCategoryRequest copyWith(void Function(FindCategoryRequest) updates) => super.copyWith((message) => updates(message as FindCategoryRequest)) as FindCategoryRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -482,7 +436,7 @@ class FindCategoryRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get title => $_getSZ(1);
@@ -491,7 +445,7 @@ class FindCategoryRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasTitle() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTitle() => clearField(2);
+  void clearTitle() => $_clearField(2);
 }
 
 class ReadCategoriesRequest extends $pb.GeneratedMessage {
@@ -513,15 +467,9 @@ class ReadCategoriesRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadCategoriesRequest clone() => ReadCategoriesRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadCategoriesRequest copyWith(void Function(ReadCategoriesRequest) updates) => super.copyWith((message) => updates(message as ReadCategoriesRequest)) as ReadCategoriesRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -541,13 +489,13 @@ class ReadCategoriesRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 }
 
 class CategoryRequest extends $pb.GeneratedMessage {
   factory CategoryRequest({
     $core.String? chainId,
-    $4.CategoryPb? category,
+    $3.CategoryPb? category,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -564,19 +512,13 @@ class CategoryRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CategoryRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$4.CategoryPb>(2, _omitFieldNames ? '' : 'category', subBuilder: $4.CategoryPb.create)
+    ..aOM<$3.CategoryPb>(2, _omitFieldNames ? '' : 'category', subBuilder: $3.CategoryPb.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CategoryRequest clone() => CategoryRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CategoryRequest copyWith(void Function(CategoryRequest) updates) => super.copyWith((message) => updates(message as CategoryRequest)) as CategoryRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -597,23 +539,23 @@ class CategoryRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $4.CategoryPb get category => $_getN(1);
+  $3.CategoryPb get category => $_getN(1);
   @$pb.TagNumber(2)
-  set category($4.CategoryPb v) { setField(2, v); }
+  set category($3.CategoryPb v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasCategory() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCategory() => clearField(2);
+  void clearCategory() => $_clearField(2);
   @$pb.TagNumber(2)
-  $4.CategoryPb ensureCategory() => $_ensure(1);
+  $3.CategoryPb ensureCategory() => $_ensure(1);
 }
 
 class CategoriesResponse extends $pb.GeneratedMessage {
   factory CategoriesResponse({
-    $core.Iterable<$4.CategoryPb>? categories,
+    $core.Iterable<$3.CategoryPb>? categories,
   }) {
     final $result = create();
     if (categories != null) {
@@ -626,19 +568,13 @@ class CategoriesResponse extends $pb.GeneratedMessage {
   factory CategoriesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CategoriesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
-    ..pc<$4.CategoryPb>(1, _omitFieldNames ? '' : 'categories', $pb.PbFieldType.PM, subBuilder: $4.CategoryPb.create)
+    ..pc<$3.CategoryPb>(1, _omitFieldNames ? '' : 'categories', $pb.PbFieldType.PM, subBuilder: $3.CategoryPb.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CategoriesResponse clone() => CategoriesResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CategoriesResponse copyWith(void Function(CategoriesResponse) updates) => super.copyWith((message) => updates(message as CategoriesResponse)) as CategoriesResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -652,7 +588,7 @@ class CategoriesResponse extends $pb.GeneratedMessage {
   static CategoriesResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$4.CategoryPb> get categories => $_getList(0);
+  $pb.PbList<$3.CategoryPb> get categories => $_getList(0);
 }
 
 /// / Photos
@@ -685,15 +621,9 @@ class FindPhotoRequest extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FindPhotoRequest clone() => FindPhotoRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FindPhotoRequest copyWith(void Function(FindPhotoRequest) updates) => super.copyWith((message) => updates(message as FindPhotoRequest)) as FindPhotoRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -713,7 +643,7 @@ class FindPhotoRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get calibreId => $_getSZ(1);
@@ -722,7 +652,7 @@ class FindPhotoRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasCalibreId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCalibreId() => clearField(2);
+  void clearCalibreId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get id => $_getSZ(2);
@@ -731,13 +661,13 @@ class FindPhotoRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearId() => clearField(3);
+  void clearId() => $_clearField(3);
 }
 
 class ReadPhotosRequest extends $pb.GeneratedMessage {
   factory ReadPhotosRequest({
     $core.String? chainId,
-    $18.Timestamp? lastFetchTimestampUTC,
+    $17.Timestamp? lastFetchTimestampUTC,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -754,19 +684,13 @@ class ReadPhotosRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadPhotosRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$18.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadPhotosRequest clone() => ReadPhotosRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ReadPhotosRequest copyWith(void Function(ReadPhotosRequest) updates) => super.copyWith((message) => updates(message as ReadPhotosRequest)) as ReadPhotosRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -786,24 +710,24 @@ class ReadPhotosRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $18.Timestamp get lastFetchTimestampUTC => $_getN(1);
+  $17.Timestamp get lastFetchTimestampUTC => $_getN(1);
   @$pb.TagNumber(2)
-  set lastFetchTimestampUTC($18.Timestamp v) { setField(2, v); }
+  set lastFetchTimestampUTC($17.Timestamp v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLastFetchTimestampUTC() => $_has(1);
   @$pb.TagNumber(2)
-  void clearLastFetchTimestampUTC() => clearField(2);
+  void clearLastFetchTimestampUTC() => $_clearField(2);
   @$pb.TagNumber(2)
-  $18.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
+  $17.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
 }
 
 class PhotoRequest extends $pb.GeneratedMessage {
   factory PhotoRequest({
     $core.String? chainId,
-    $5.ArticlePhotoPb? photo,
+    $4.ArticlePhotoPb? photo,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -820,19 +744,13 @@ class PhotoRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PhotoRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..aOM<$5.ArticlePhotoPb>(2, _omitFieldNames ? '' : 'photo', subBuilder: $5.ArticlePhotoPb.create)
+    ..aOM<$4.ArticlePhotoPb>(2, _omitFieldNames ? '' : 'photo', subBuilder: $4.ArticlePhotoPb.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PhotoRequest clone() => PhotoRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PhotoRequest copyWith(void Function(PhotoRequest) updates) => super.copyWith((message) => updates(message as PhotoRequest)) as PhotoRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -852,24 +770,24 @@ class PhotoRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $5.ArticlePhotoPb get photo => $_getN(1);
+  $4.ArticlePhotoPb get photo => $_getN(1);
   @$pb.TagNumber(2)
-  set photo($5.ArticlePhotoPb v) { setField(2, v); }
+  set photo($4.ArticlePhotoPb v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasPhoto() => $_has(1);
   @$pb.TagNumber(2)
-  void clearPhoto() => clearField(2);
+  void clearPhoto() => $_clearField(2);
   @$pb.TagNumber(2)
-  $5.ArticlePhotoPb ensurePhoto() => $_ensure(1);
+  $4.ArticlePhotoPb ensurePhoto() => $_ensure(1);
 }
 
 class PhotosRequest extends $pb.GeneratedMessage {
   factory PhotosRequest({
     $core.String? chainId,
-    $core.Iterable<$5.ArticlePhotoPb>? photos,
+    $core.Iterable<$4.ArticlePhotoPb>? photos,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -886,19 +804,13 @@ class PhotosRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PhotosRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
-    ..pc<$5.ArticlePhotoPb>(2, _omitFieldNames ? '' : 'photos', $pb.PbFieldType.PM, subBuilder: $5.ArticlePhotoPb.create)
+    ..pc<$4.ArticlePhotoPb>(2, _omitFieldNames ? '' : 'photos', $pb.PbFieldType.PM, subBuilder: $4.ArticlePhotoPb.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PhotosRequest clone() => PhotosRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PhotosRequest copyWith(void Function(PhotosRequest) updates) => super.copyWith((message) => updates(message as PhotosRequest)) as PhotosRequest;
 
   $pb.BuilderInfo get info_ => _i;
@@ -918,15 +830,15 @@ class PhotosRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $core.List<$5.ArticlePhotoPb> get photos => $_getList(1);
+  $pb.PbList<$4.ArticlePhotoPb> get photos => $_getList(1);
 }
 
 class PhotosResponse extends $pb.GeneratedMessage {
   factory PhotosResponse({
-    $core.Iterable<$5.ArticlePhotoPb>? photos,
+    $core.Iterable<$4.ArticlePhotoPb>? photos,
   }) {
     final $result = create();
     if (photos != null) {
@@ -939,19 +851,13 @@ class PhotosResponse extends $pb.GeneratedMessage {
   factory PhotosResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PhotosResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
-    ..pc<$5.ArticlePhotoPb>(1, _omitFieldNames ? '' : 'photos', $pb.PbFieldType.PM, subBuilder: $5.ArticlePhotoPb.create)
+    ..pc<$4.ArticlePhotoPb>(1, _omitFieldNames ? '' : 'photos', $pb.PbFieldType.PM, subBuilder: $4.ArticlePhotoPb.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PhotosResponse clone() => PhotosResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   PhotosResponse copyWith(void Function(PhotosResponse) updates) => super.copyWith((message) => updates(message as PhotosResponse)) as PhotosResponse;
 
   $pb.BuilderInfo get info_ => _i;
@@ -965,7 +871,7 @@ class PhotosResponse extends $pb.GeneratedMessage {
   static PhotosResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$5.ArticlePhotoPb> get photos => $_getList(0);
+  $pb.PbList<$4.ArticlePhotoPb> get photos => $_getList(0);
 }
 
 

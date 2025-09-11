@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: device.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -13,7 +13,9 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'common/g_timestamp.pb.dart' as $18;
+import 'common/g_timestamp.pb.dart' as $17;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 /// / a device == cash register, assigned to a boutique,
 /// / by default once enrolled there is a cashier access that can always log in
@@ -24,7 +26,7 @@ class Device extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.bool? status,
     $core.String? password,
-    $18.Timestamp? timestamp,
+    $17.Timestamp? timestamp,
     HardwareInfo? hardwareInfo,
   }) {
     final $result = create();
@@ -61,20 +63,14 @@ class Device extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
     ..aOB(4, _omitFieldNames ? '' : 'status')
     ..aOS(5, _omitFieldNames ? '' : 'password')
-    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'timestamp', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'timestamp', subBuilder: $17.Timestamp.create)
     ..aOM<HardwareInfo>(7, _omitFieldNames ? '' : 'hardwareInfo', protoName: 'hardwareInfo', subBuilder: HardwareInfo.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Device clone() => Device()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Device copyWith(void Function(Device) updates) => super.copyWith((message) => updates(message as Device)) as Device;
 
   $pb.BuilderInfo get info_ => _i;
@@ -95,7 +91,7 @@ class Device extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasDeviceId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDeviceId() => clearField(1);
+  void clearDeviceId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get chainId => $_getSZ(1);
@@ -104,7 +100,7 @@ class Device extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasChainId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearChainId() => clearField(2);
+  void clearChainId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get boutiqueId => $_getSZ(2);
@@ -113,7 +109,7 @@ class Device extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasBoutiqueId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearBoutiqueId() => clearField(3);
+  void clearBoutiqueId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.bool get status => $_getBF(3);
@@ -122,7 +118,7 @@ class Device extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasStatus() => $_has(3);
   @$pb.TagNumber(4)
-  void clearStatus() => clearField(4);
+  void clearStatus() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get password => $_getSZ(4);
@@ -131,27 +127,27 @@ class Device extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasPassword() => $_has(4);
   @$pb.TagNumber(5)
-  void clearPassword() => clearField(5);
+  void clearPassword() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $18.Timestamp get timestamp => $_getN(5);
+  $17.Timestamp get timestamp => $_getN(5);
   @$pb.TagNumber(6)
-  set timestamp($18.Timestamp v) { setField(6, v); }
+  set timestamp($17.Timestamp v) { $_setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasTimestamp() => $_has(5);
   @$pb.TagNumber(6)
-  void clearTimestamp() => clearField(6);
+  void clearTimestamp() => $_clearField(6);
   @$pb.TagNumber(6)
-  $18.Timestamp ensureTimestamp() => $_ensure(5);
+  $17.Timestamp ensureTimestamp() => $_ensure(5);
 
   @$pb.TagNumber(7)
   HardwareInfo get hardwareInfo => $_getN(6);
   @$pb.TagNumber(7)
-  set hardwareInfo(HardwareInfo v) { setField(7, v); }
+  set hardwareInfo(HardwareInfo v) { $_setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasHardwareInfo() => $_has(6);
   @$pb.TagNumber(7)
-  void clearHardwareInfo() => clearField(7);
+  void clearHardwareInfo() => $_clearField(7);
   @$pb.TagNumber(7)
   HardwareInfo ensureHardwareInfo() => $_ensure(6);
 }
@@ -175,15 +171,9 @@ class Devices extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Devices clone() => Devices()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Devices copyWith(void Function(Devices) updates) => super.copyWith((message) => updates(message as Devices)) as Devices;
 
   $pb.BuilderInfo get info_ => _i;
@@ -197,7 +187,7 @@ class Devices extends $pb.GeneratedMessage {
   static Devices? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Device> get devices => $_getList(0);
+  $pb.PbList<Device> get devices => $_getList(0);
 }
 
 /// / come from weebi_app, not set by web
@@ -235,15 +225,9 @@ class HardwareInfo extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   HardwareInfo clone() => HardwareInfo()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   HardwareInfo copyWith(void Function(HardwareInfo) updates) => super.copyWith((message) => updates(message as HardwareInfo)) as HardwareInfo;
 
   $pb.BuilderInfo get info_ => _i;
@@ -263,7 +247,7 @@ class HardwareInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasName() => $_has(0);
   @$pb.TagNumber(1)
-  void clearName() => clearField(1);
+  void clearName() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get serialNumber => $_getSZ(1);
@@ -272,7 +256,7 @@ class HardwareInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasSerialNumber() => $_has(1);
   @$pb.TagNumber(2)
-  void clearSerialNumber() => clearField(2);
+  void clearSerialNumber() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get baseOS => $_getSZ(2);
@@ -281,7 +265,7 @@ class HardwareInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasBaseOS() => $_has(2);
   @$pb.TagNumber(3)
-  void clearBaseOS() => clearField(3);
+  void clearBaseOS() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get brand => $_getSZ(3);
@@ -290,7 +274,7 @@ class HardwareInfo extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasBrand() => $_has(3);
   @$pb.TagNumber(4)
-  void clearBrand() => clearField(4);
+  void clearBrand() => $_clearField(4);
 }
 
 

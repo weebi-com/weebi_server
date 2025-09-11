@@ -14,6 +14,13 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:fence_service/fence_service.dart';
 
+class PermissionAndSillyBoolean {
+  final UserPermissions userPermissions;
+  final bool mustChangePassword;
+  PermissionAndSillyBoolean(
+      {required this.userPermissions, required this.mustChangePassword});
+}
+
 class FenceService extends FenceServiceBase {
   final MongoDbPoolService _poolService;
 
@@ -36,6 +43,7 @@ class FenceService extends FenceServiceBase {
   Future<PendingUserResponse> createPendingUser(
       ServiceCall? call, PendingUserRequest request) async {
     final mailChecked = _checkMail(request.mail);
+    final passwordEncrypted = _checkAndEncryptPassword(request.password);
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -65,20 +73,8 @@ class FenceService extends FenceServiceBase {
 
     final user = await _isMailAlreadyUsed(request.mail);
     if (user.userId.isNotEmpty) {
-      if (user.permissions.firmId.isEmpty && user.lastSignIn.seconds == 0) {
-        // rare use case when user has signed up before the boss created his/her account
-        // also the user carefully did not create a firm and patiently stayed in the waiting room
-        final userPublic = UserPublic.create()
-          ..mergeFromProto3Json(user.toProto3Json() as Map<String, dynamic>,
-              ignoreUnknownFields: true)
-          ..permissions = request.permissions;
-        final status = await _updateUserDBExec(userPublic);
-        return PendingUserResponse(
-            statusResponse: status, userPublic: userPublic);
-      } else {
-        // user signed it at least once
-        throw GrpcError.invalidArgument('mail ${request.mail} is alreadyUsed');
-      }
+      // Always reject if email exists - force admin to use different email or contact user
+      throw GrpcError.invalidArgument('mail ${request.mail} is alreadyUsed');
     }
 
     return databaseMiddleware<PendingUserResponse>(_poolService, (db) async {
@@ -93,13 +89,20 @@ class FenceService extends FenceServiceBase {
           ..userId = userId;
 
         final userPrivate = UserPrivate(
-            permissions: request.permissions,
-            userId: userId,
-            mail: mailChecked,
-            phone: request.phone,
-            firstname: request.firstname,
-            lastname: request.lastname,
-            firmId: firmId);
+          permissions: request.permissions,
+          userId: userId,
+          mail: mailChecked,
+          phone: request.phone,
+          firstname: request.firstname,
+          lastname: request.lastname,
+          firmId: firmId,
+          passwordEncrypted: passwordEncrypted,
+          mustChangePassword:
+              true, // by default passwords here are auto-generated and must be changed on first login
+          emailVerificationSent: false, // not handled yet (end of 2025)
+          lastUpdatedByuserId: userPermission.userId,
+          creationDateUTC: DateTime.now().toUtc().timestampProto,
+        );
 
         final result = await userCollection
             .insertOne(userPrivate.toProto3Json() as Map<String, dynamic>);
@@ -147,9 +150,10 @@ class FenceService extends FenceServiceBase {
       final userPermission = await _readUserPermissionsByMailAndPassword(
           call, mailAndEncyptedPassword);
       var jwt = JsonWebToken();
-      final payload = userPermission.toProto3Json() as Map<String, dynamic>?;
+      final payload = userPermission.userPermissions.toProto3Json()
+          as Map<String, dynamic>?;
       jwt.createPayload(
-        userPermission.userId,
+        userPermission.userPermissions.userId,
         expireIn: const Duration(days: 1),
         payload: payload,
       );
@@ -157,17 +161,20 @@ class FenceService extends FenceServiceBase {
       final accessToken = jwt.sign();
       jwt = JsonWebToken();
       jwt.createPayload(
-        userPermission.userId,
+        userPermission.userPermissions.userId,
         expireIn: Duration(days: 30),
         payload: {
-          'userId': userPermission.userId,
-          'firmId': userPermission.firmId
+          'userId': userPermission.userPermissions.userId,
+          'firmId': userPermission.userPermissions.firmId
         },
       );
       // refresh token only contains userId & firmId
       final resfreshToken = jwt.sign();
       _updateUserLastSignIn;
-      return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
+      return Tokens(
+          accessToken: accessToken,
+          refreshToken: resfreshToken,
+          mustChangePassword: userPermission.mustChangePassword);
     } on GrpcError catch (e) {
       log('authenticate error $e');
       rethrow;
@@ -273,9 +280,10 @@ class FenceService extends FenceServiceBase {
     });
   }
 
-  Future<UserPermissions> _readUserPermissionsByMailAndPassword(
+  Future<PermissionAndSillyBoolean> _readUserPermissionsByMailAndPassword(
       ServiceCall? call, MailAndEncyptedPassword request) async {
-    return databaseMiddleware<UserPermissions>(_poolService, (db) async {
+    return databaseMiddleware<PermissionAndSillyBoolean>(_poolService,
+        (db) async {
       final selector = where
           .match('mail', r'^' + request.mail.trim() + r'$',
               caseInsensitive: true)
@@ -297,7 +305,9 @@ class FenceService extends FenceServiceBase {
         final userPermission = UserPermissions.create()
           ..mergeFromProto3Json(
               userPrivate.permissions.toProto3Json() as Map<String, dynamic>);
-        return userPermission;
+        return PermissionAndSillyBoolean(
+            userPermissions: userPermission,
+            mustChangePassword: userPrivate.mustChangePassword);
       } on GrpcError catch (e) {
         log('$e');
         rethrow;
@@ -894,7 +904,8 @@ class FenceService extends FenceServiceBase {
         final firmMongo = await firmCollection
             .findOne(where.eq('firmId', userPermission.firmId));
         if (firmMongo == null) {
-          throw GrpcError.notFound('Did not find firmId ${userPermission.firmId}');
+          throw GrpcError.notFound(
+              'Did not find firmId ${userPermission.firmId}');
         }
         final firm = Firm()
           ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
@@ -1352,6 +1363,7 @@ class FenceService extends FenceServiceBase {
           mail: request.mail,
           firstname: request.firstname,
           lastname: request.lastname,
+          mustChangePassword: false,
           creationDateUTC: DateTime.now().toUtc().timestampProto,
         );
 
@@ -1454,35 +1466,69 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, PasswordUpdateRequest request) async {
     if (request.firmId.isEmpty ||
         request.userId.isEmpty ||
-        request.password.isEmpty) {
+        request.passwordCurrent.isEmpty ||
+        request.passwordNew.isEmpty) {
       throw GrpcError.invalidArgument(
-          'firmId / userId / password cannot be empty');
+          'firmId / userId / passwordCurrent / passwordNew cannot be empty');
+    }
+    if (request.passwordCurrent != request.passwordNew) {
+      throw GrpcError.invalidArgument(
+          'passwordCurrent and passwordNew must be different');
     }
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
-    if (userPermission.userManagementRights.rights
-            .any((e) => e == Right.update) ==
-        false) {
+    if (request.userId != userPermission.userId &&
+        userPermission.userManagementRights.rights
+                .any((e) => e == Right.update) ==
+            false) {
       throw GrpcError.permissionDenied(
-          'user does not have right to update user');
+          'you do not have the right to update other users passwords');
     }
     if (userPermission.isFirmAccessible(request.firmId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.firmId}');
     }
 
-    final passwordEncrypted = _checkAndEncryptPassword(request.password);
+    final passwordNewEncrypted = _checkAndEncryptPassword(request.passwordNew);
+    // we do not use _checkAndEncryptPassword below because it could lead to techical bug (catch 22)
+    // in case password making rules change in the future
+    final passwordCurrentEncrypted =
+        Encrypter(request.passwordCurrent).encrypted;
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
 
       try {
+        /// ****************
+        // * double security in case user bearer token is compromised
+        /// ****************
+        final user = await userCollection.findOne(
+            where.eq('firmId', request.firmId).eq('userId', request.userId));
+        if (user == null) {
+          throw GrpcError.notFound('user not found');
+        }
+        final userMongo = UserPrivate.create()
+          ..mergeFromProto3Json(user, ignoreUnknownFields: true);
+        if (userMongo.passwordEncrypted != passwordCurrentEncrypted) {
+          throw GrpcError.invalidArgument('passwordCurrent is incorrect');
+        }
+
+        /// ****************
+        // * update password
+        /// ****************
         await userCollection.update(
             where.eq('firmId', request.firmId).eq('userId', request.userId),
-            ModifierBuilder().set('password', passwordEncrypted));
+            ModifierBuilder()
+                .set('password', passwordNewEncrypted)
+                .set('mustChangePassword', false));
+
+        ///TODO: invalidate all existing tokens for this user
+        // await _invalidateAllUserTokens(request.userId);
+        ///... generate new token
+        // final newToken = await _generateNewToken(request.userId);
         return StatusResponse()
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;

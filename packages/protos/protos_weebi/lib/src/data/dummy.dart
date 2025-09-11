@@ -33,7 +33,7 @@ abstract class Dummy {
     devices: <Device>[Dummy.device],
   );
 
-  static final boutiqueMongo = boutiqueNoId
+  static final boutiqueMongo = boutiqueMongoNoId
     ..boutiqueId = '123456789'
     ..firmId = firm.firmId
     ..chainId = chain.chainId

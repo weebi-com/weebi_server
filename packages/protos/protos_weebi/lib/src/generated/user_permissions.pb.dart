@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: user_permissions.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -15,21 +15,10 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'user_permissions.pbenum.dart';
 
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
+
 export 'user_permissions.pbenum.dart';
 
-///   message AccessChainsAndBoutiques {
-/// message AccessLimited {
-/// ChainIds chainIds = 1 [json_name = 'boutiqueIds'];
-/// BoutiqueIds boutiqueIds = 2 [json_name = 'boutiqueIds'];
-/// }
-/// message AccessFull {
-/// bool hasFullAccess = 1 [json_name = 'hasFullAccess'];
-/// }
-/// oneof access {
-/// AccessLimited limitedAccess = 1 [json_name = 'limitedAccess'];
-/// AccessFull fullAccess = 2 [json_name = 'fullAccess'];
-/// }
-/// }
 class ChainIds extends $pb.GeneratedMessage {
   factory ChainIds({
     $core.Iterable<$core.String>? ids,
@@ -49,15 +38,9 @@ class ChainIds extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChainIds clone() => ChainIds()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChainIds copyWith(void Function(ChainIds) updates) => super.copyWith((message) => updates(message as ChainIds)) as ChainIds;
 
   $pb.BuilderInfo get info_ => _i;
@@ -71,7 +54,7 @@ class ChainIds extends $pb.GeneratedMessage {
   static ChainIds? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.String> get ids => $_getList(0);
+  $pb.PbList<$core.String> get ids => $_getList(0);
 }
 
 class BoutiqueIds extends $pb.GeneratedMessage {
@@ -93,15 +76,9 @@ class BoutiqueIds extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueIds clone() => BoutiqueIds()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueIds copyWith(void Function(BoutiqueIds) updates) => super.copyWith((message) => updates(message as BoutiqueIds)) as BoutiqueIds;
 
   $pb.BuilderInfo get info_ => _i;
@@ -115,7 +92,7 @@ class BoutiqueIds extends $pb.GeneratedMessage {
   static BoutiqueIds? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.String> get ids => $_getList(0);
+  $pb.PbList<$core.String> get ids => $_getList(0);
 }
 
 class AccessLimited extends $pb.GeneratedMessage {
@@ -142,15 +119,9 @@ class AccessLimited extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AccessLimited clone() => AccessLimited()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AccessLimited copyWith(void Function(AccessLimited) updates) => super.copyWith((message) => updates(message as AccessLimited)) as AccessLimited;
 
   $pb.BuilderInfo get info_ => _i;
@@ -166,22 +137,22 @@ class AccessLimited extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   ChainIds get chainIds => $_getN(0);
   @$pb.TagNumber(1)
-  set chainIds(ChainIds v) { setField(1, v); }
+  set chainIds(ChainIds v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasChainIds() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainIds() => clearField(1);
+  void clearChainIds() => $_clearField(1);
   @$pb.TagNumber(1)
   ChainIds ensureChainIds() => $_ensure(0);
 
   @$pb.TagNumber(2)
   BoutiqueIds get boutiqueIds => $_getN(1);
   @$pb.TagNumber(2)
-  set boutiqueIds(BoutiqueIds v) { setField(2, v); }
+  set boutiqueIds(BoutiqueIds v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasBoutiqueIds() => $_has(1);
   @$pb.TagNumber(2)
-  void clearBoutiqueIds() => clearField(2);
+  void clearBoutiqueIds() => $_clearField(2);
   @$pb.TagNumber(2)
   BoutiqueIds ensureBoutiqueIds() => $_ensure(1);
 }
@@ -205,15 +176,9 @@ class AccessFull extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AccessFull clone() => AccessFull()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   AccessFull copyWith(void Function(AccessFull) updates) => super.copyWith((message) => updates(message as AccessFull)) as AccessFull;
 
   $pb.BuilderInfo get info_ => _i;
@@ -233,7 +198,7 @@ class AccessFull extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasHasFullAccess() => $_has(0);
   @$pb.TagNumber(1)
-  void clearHasFullAccess() => clearField(1);
+  void clearHasFullAccess() => $_clearField(1);
 }
 
 enum UserPermissions_Access {
@@ -327,15 +292,9 @@ class UserPermissions extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserPermissions clone() => UserPermissions()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserPermissions copyWith(void Function(UserPermissions) updates) => super.copyWith((message) => updates(message as UserPermissions)) as UserPermissions;
 
   $pb.BuilderInfo get info_ => _i;
@@ -349,7 +308,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   static UserPermissions? _defaultInstance;
 
   UserPermissions_Access whichAccess() => _UserPermissions_AccessByTag[$_whichOneof(0)]!;
-  void clearAccess() => clearField($_whichOneof(0));
+  void clearAccess() => $_clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
   $core.String get userId => $_getSZ(0);
@@ -358,7 +317,7 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasUserId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserId() => clearField(1);
+  void clearUserId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get firmId => $_getSZ(1);
@@ -367,127 +326,126 @@ class UserPermissions extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasFirmId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirmId() => clearField(2);
+  void clearFirmId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   AccessLimited get limitedAccess => $_getN(2);
   @$pb.TagNumber(3)
-  set limitedAccess(AccessLimited v) { setField(3, v); }
+  set limitedAccess(AccessLimited v) { $_setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasLimitedAccess() => $_has(2);
   @$pb.TagNumber(3)
-  void clearLimitedAccess() => clearField(3);
+  void clearLimitedAccess() => $_clearField(3);
   @$pb.TagNumber(3)
   AccessLimited ensureLimitedAccess() => $_ensure(2);
 
   @$pb.TagNumber(4)
   AccessFull get fullAccess => $_getN(3);
   @$pb.TagNumber(4)
-  set fullAccess(AccessFull v) { setField(4, v); }
+  set fullAccess(AccessFull v) { $_setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasFullAccess() => $_has(3);
   @$pb.TagNumber(4)
-  void clearFullAccess() => clearField(4);
+  void clearFullAccess() => $_clearField(4);
   @$pb.TagNumber(4)
   AccessFull ensureFullAccess() => $_ensure(3);
 
   @$pb.TagNumber(6)
   TicketRights get ticketRights => $_getN(4);
   @$pb.TagNumber(6)
-  set ticketRights(TicketRights v) { setField(6, v); }
+  set ticketRights(TicketRights v) { $_setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasTicketRights() => $_has(4);
   @$pb.TagNumber(6)
-  void clearTicketRights() => clearField(6);
+  void clearTicketRights() => $_clearField(6);
   @$pb.TagNumber(6)
   TicketRights ensureTicketRights() => $_ensure(4);
 
   @$pb.TagNumber(7)
   ContactRights get contactRights => $_getN(5);
   @$pb.TagNumber(7)
-  set contactRights(ContactRights v) { setField(7, v); }
+  set contactRights(ContactRights v) { $_setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasContactRights() => $_has(5);
   @$pb.TagNumber(7)
-  void clearContactRights() => clearField(7);
+  void clearContactRights() => $_clearField(7);
   @$pb.TagNumber(7)
   ContactRights ensureContactRights() => $_ensure(5);
 
   @$pb.TagNumber(8)
   ArticleRights get articleRights => $_getN(6);
   @$pb.TagNumber(8)
-  set articleRights(ArticleRights v) { setField(8, v); }
+  set articleRights(ArticleRights v) { $_setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasArticleRights() => $_has(6);
   @$pb.TagNumber(8)
-  void clearArticleRights() => clearField(8);
+  void clearArticleRights() => $_clearField(8);
   @$pb.TagNumber(8)
   ArticleRights ensureArticleRights() => $_ensure(6);
 
   @$pb.TagNumber(9)
   BoutiqueRights get boutiqueRights => $_getN(7);
   @$pb.TagNumber(9)
-  set boutiqueRights(BoutiqueRights v) { setField(9, v); }
+  set boutiqueRights(BoutiqueRights v) { $_setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasBoutiqueRights() => $_has(7);
   @$pb.TagNumber(9)
-  void clearBoutiqueRights() => clearField(9);
+  void clearBoutiqueRights() => $_clearField(9);
   @$pb.TagNumber(9)
   BoutiqueRights ensureBoutiqueRights() => $_ensure(7);
-
 
   @$pb.TagNumber(10)
   ChainRights get chainRights => $_getN(8);
   @$pb.TagNumber(10)
-  set chainRights(ChainRights v) { setField(10, v); }
+  set chainRights(ChainRights v) { $_setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasChainRights() => $_has(8);
   @$pb.TagNumber(10)
-  void clearChainRights() => clearField(10);
+  void clearChainRights() => $_clearField(10);
   @$pb.TagNumber(10)
   ChainRights ensureChainRights() => $_ensure(8);
 
   @$pb.TagNumber(11)
   FirmRights get firmRights => $_getN(9);
   @$pb.TagNumber(11)
-  set firmRights(FirmRights v) { setField(11, v); }
+  set firmRights(FirmRights v) { $_setField(11, v); }
   @$pb.TagNumber(11)
   $core.bool hasFirmRights() => $_has(9);
   @$pb.TagNumber(11)
-  void clearFirmRights() => clearField(11);
+  void clearFirmRights() => $_clearField(11);
   @$pb.TagNumber(11)
   FirmRights ensureFirmRights() => $_ensure(9);
 
   @$pb.TagNumber(12)
   UserManagementRights get userManagementRights => $_getN(10);
   @$pb.TagNumber(12)
-  set userManagementRights(UserManagementRights v) { setField(12, v); }
+  set userManagementRights(UserManagementRights v) { $_setField(12, v); }
   @$pb.TagNumber(12)
   $core.bool hasUserManagementRights() => $_has(10);
   @$pb.TagNumber(12)
-  void clearUserManagementRights() => clearField(12);
+  void clearUserManagementRights() => $_clearField(12);
   @$pb.TagNumber(12)
   UserManagementRights ensureUserManagementRights() => $_ensure(10);
 
   @$pb.TagNumber(13)
   BillingRights get billingRights => $_getN(11);
   @$pb.TagNumber(13)
-  set billingRights(BillingRights v) { setField(13, v); }
+  set billingRights(BillingRights v) { $_setField(13, v); }
   @$pb.TagNumber(13)
   $core.bool hasBillingRights() => $_has(11);
   @$pb.TagNumber(13)
-  void clearBillingRights() => clearField(13);
+  void clearBillingRights() => $_clearField(13);
   @$pb.TagNumber(13)
   BillingRights ensureBillingRights() => $_ensure(11);
 
   @$pb.TagNumber(14)
   BoolRights get boolRights => $_getN(12);
   @$pb.TagNumber(14)
-  set boolRights(BoolRights v) { setField(14, v); }
+  set boolRights(BoolRights v) { $_setField(14, v); }
   @$pb.TagNumber(14)
   $core.bool hasBoolRights() => $_has(12);
   @$pb.TagNumber(14)
-  void clearBoolRights() => clearField(14);
+  void clearBoolRights() => $_clearField(14);
   @$pb.TagNumber(14)
   BoolRights ensureBoolRights() => $_ensure(12);
 }
@@ -511,15 +469,9 @@ class ArticleRights extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ArticleRights clone() => ArticleRights()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ArticleRights copyWith(void Function(ArticleRights) updates) => super.copyWith((message) => updates(message as ArticleRights)) as ArticleRights;
 
   $pb.BuilderInfo get info_ => _i;
@@ -533,7 +485,7 @@ class ArticleRights extends $pb.GeneratedMessage {
   static ArticleRights? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Right> get rights => $_getList(0);
+  $pb.PbList<Right> get rights => $_getList(0);
 }
 
 class BoutiqueRights extends $pb.GeneratedMessage {
@@ -555,15 +507,9 @@ class BoutiqueRights extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueRights clone() => BoutiqueRights()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueRights copyWith(void Function(BoutiqueRights) updates) => super.copyWith((message) => updates(message as BoutiqueRights)) as BoutiqueRights;
 
   $pb.BuilderInfo get info_ => _i;
@@ -577,7 +523,7 @@ class BoutiqueRights extends $pb.GeneratedMessage {
   static BoutiqueRights? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Right> get rights => $_getList(0);
+  $pb.PbList<Right> get rights => $_getList(0);
 }
 
 class ChainRights extends $pb.GeneratedMessage {
@@ -599,15 +545,9 @@ class ChainRights extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChainRights clone() => ChainRights()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChainRights copyWith(void Function(ChainRights) updates) => super.copyWith((message) => updates(message as ChainRights)) as ChainRights;
 
   $pb.BuilderInfo get info_ => _i;
@@ -621,7 +561,7 @@ class ChainRights extends $pb.GeneratedMessage {
   static ChainRights? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Right> get rights => $_getList(0);
+  $pb.PbList<Right> get rights => $_getList(0);
 }
 
 class FirmRights extends $pb.GeneratedMessage {
@@ -643,15 +583,9 @@ class FirmRights extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FirmRights clone() => FirmRights()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   FirmRights copyWith(void Function(FirmRights) updates) => super.copyWith((message) => updates(message as FirmRights)) as FirmRights;
 
   $pb.BuilderInfo get info_ => _i;
@@ -665,7 +599,7 @@ class FirmRights extends $pb.GeneratedMessage {
   static FirmRights? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Right> get rights => $_getList(0);
+  $pb.PbList<Right> get rights => $_getList(0);
 }
 
 class ContactRights extends $pb.GeneratedMessage {
@@ -687,15 +621,9 @@ class ContactRights extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactRights clone() => ContactRights()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactRights copyWith(void Function(ContactRights) updates) => super.copyWith((message) => updates(message as ContactRights)) as ContactRights;
 
   $pb.BuilderInfo get info_ => _i;
@@ -709,7 +637,7 @@ class ContactRights extends $pb.GeneratedMessage {
   static ContactRights? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Right> get rights => $_getList(0);
+  $pb.PbList<Right> get rights => $_getList(0);
 }
 
 /// / there is no such a thing as updating a ticket, one can simply disable or restore it
@@ -733,15 +661,9 @@ class TicketRights extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketRights clone() => TicketRights()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketRights copyWith(void Function(TicketRights) updates) => super.copyWith((message) => updates(message as TicketRights)) as TicketRights;
 
   $pb.BuilderInfo get info_ => _i;
@@ -755,7 +677,7 @@ class TicketRights extends $pb.GeneratedMessage {
   static TicketRights? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Right> get rights => $_getList(0);
+  $pb.PbList<Right> get rights => $_getList(0);
 }
 
 class UserManagementRights extends $pb.GeneratedMessage {
@@ -777,15 +699,9 @@ class UserManagementRights extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserManagementRights clone() => UserManagementRights()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   UserManagementRights copyWith(void Function(UserManagementRights) updates) => super.copyWith((message) => updates(message as UserManagementRights)) as UserManagementRights;
 
   $pb.BuilderInfo get info_ => _i;
@@ -799,7 +715,7 @@ class UserManagementRights extends $pb.GeneratedMessage {
   static UserManagementRights? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Right> get rights => $_getList(0);
+  $pb.PbList<Right> get rights => $_getList(0);
 }
 
 class BillingRights extends $pb.GeneratedMessage {
@@ -821,15 +737,9 @@ class BillingRights extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BillingRights clone() => BillingRights()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BillingRights copyWith(void Function(BillingRights) updates) => super.copyWith((message) => updates(message as BillingRights)) as BillingRights;
 
   $pb.BuilderInfo get info_ => _i;
@@ -843,7 +753,7 @@ class BillingRights extends $pb.GeneratedMessage {
   static BillingRights? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Right> get rights => $_getList(0);
+  $pb.PbList<Right> get rights => $_getList(0);
 }
 
 class BoolRights extends $pb.GeneratedMessage {
@@ -915,15 +825,9 @@ class BoolRights extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoolRights clone() => BoolRights()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoolRights copyWith(void Function(BoolRights) updates) => super.copyWith((message) => updates(message as BoolRights)) as BoolRights;
 
   $pb.BuilderInfo get info_ => _i;
@@ -943,7 +847,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasCanSeeStats() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCanSeeStats() => clearField(1);
+  void clearCanSeeStats() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.bool get canExportData => $_getBF(1);
@@ -952,7 +856,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasCanExportData() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCanExportData() => clearField(2);
+  void clearCanExportData() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.bool get canGiveDiscount => $_getBF(2);
@@ -961,7 +865,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasCanGiveDiscount() => $_has(2);
   @$pb.TagNumber(3)
-  void clearCanGiveDiscount() => clearField(3);
+  void clearCanGiveDiscount() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.bool get canSetPromo => $_getBF(3);
@@ -970,7 +874,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasCanSetPromo() => $_has(3);
   @$pb.TagNumber(4)
-  void clearCanSetPromo() => clearField(4);
+  void clearCanSetPromo() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.bool get canStockMovement => $_getBF(4);
@@ -979,7 +883,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasCanStockMovement() => $_has(4);
   @$pb.TagNumber(5)
-  void clearCanStockMovement() => clearField(5);
+  void clearCanStockMovement() => $_clearField(5);
 
   @$pb.TagNumber(6)
   $core.bool get canStockInventory => $_getBF(5);
@@ -988,7 +892,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasCanStockInventory() => $_has(5);
   @$pb.TagNumber(6)
-  void clearCanStockInventory() => clearField(6);
+  void clearCanStockInventory() => $_clearField(6);
 
   @$pb.TagNumber(7)
   $core.bool get canSpendOutOfCatalog => $_getBF(6);
@@ -997,7 +901,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.bool hasCanSpendOutOfCatalog() => $_has(6);
   @$pb.TagNumber(7)
-  void clearCanSpendOutOfCatalog() => clearField(7);
+  void clearCanSpendOutOfCatalog() => $_clearField(7);
 
   @$pb.TagNumber(8)
   $core.bool get canPurchase => $_getBF(7);
@@ -1006,7 +910,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $core.bool hasCanPurchase() => $_has(7);
   @$pb.TagNumber(8)
-  void clearCanPurchase() => clearField(8);
+  void clearCanPurchase() => $_clearField(8);
 
   @$pb.TagNumber(9)
   $core.bool get canImportTickets => $_getBF(8);
@@ -1015,7 +919,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   $core.bool hasCanImportTickets() => $_has(8);
   @$pb.TagNumber(9)
-  void clearCanImportTickets() => clearField(9);
+  void clearCanImportTickets() => $_clearField(9);
 
   @$pb.TagNumber(10)
   $core.bool get canSellOutOfCatalog => $_getBF(9);
@@ -1024,7 +928,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   $core.bool hasCanSellOutOfCatalog() => $_has(9);
   @$pb.TagNumber(10)
-  void clearCanSellOutOfCatalog() => clearField(10);
+  void clearCanSellOutOfCatalog() => $_clearField(10);
 
   @$pb.TagNumber(11)
   $core.bool get canUpdateContactBalanceOffline => $_getBF(10);
@@ -1033,7 +937,7 @@ class BoolRights extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   $core.bool hasCanUpdateContactBalanceOffline() => $_has(10);
   @$pb.TagNumber(11)
-  void clearCanUpdateContactBalanceOffline() => clearField(11);
+  void clearCanUpdateContactBalanceOffline() => $_clearField(11);
 }
 
 
