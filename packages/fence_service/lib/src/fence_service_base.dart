@@ -441,6 +441,8 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  ///  chain rights encompass device pairing, not boutique update rights
+  ///  right.create is the right to generate a code for pairing device
   @override
   Future<CodeForPairingDevice> generateCodeForPairingDevice(
       ServiceCall? call, ChainIdAndboutiqueId request) async {
@@ -448,7 +450,7 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
     // chain rights encompass device pairing
-    if (userPermission.chainRights.rights.any((e) => e == Right.update) ==
+    if (userPermission.chainRights.rights.any((e) => e == Right.create) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to pair device (missing chainRights)');
@@ -527,7 +529,9 @@ class FenceService extends FenceServiceBase {
     });
   }
 
-  /// needs a code from generateCodeForPairingDevice, that should be called by admin on web back office
+  /// no specific kind of permission for creating the device as code is required in the payload
+  /// this code comes from .generateCodeForPairingDevice()
+  /// which requires ChainRights.rights.contains(Right.create)
   /// mitigating the risk of a device added without admin consent
   /// The device is created in the boutique's chain with a true status
   /// so admin will not need to re-approve device
@@ -538,8 +542,6 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-
-// ? No permission checking ??
 
     return databaseMiddleware<CreateDeviceResponse>(_poolService, (db) async {
       final pairingCodesCollection = db.collection(pairingCodesCollectionName);
@@ -577,6 +579,78 @@ class FenceService extends FenceServiceBase {
               'no boutique found with this info chainId ${pairingResp.chainId} btqId ${pairingResp.boutiqueId}');
         }
 
+        // Check for duplicate devices based on hardware info
+        final boutique = chain.boutiques[boutiqueIndex];
+
+        // Check 1: Serial number duplicates (most reliable)
+        final existingDeviceBySerial =
+            boutique.devices.firstWhereOrNull((device) {
+          final hwInfo = device.hardwareInfo;
+          final requestHwInfo = request.hardwareInfo;
+
+          return hwInfo.serialNumber.isNotEmpty &&
+              requestHwInfo.serialNumber.isNotEmpty &&
+              hwInfo.serialNumber == requestHwInfo.serialNumber;
+        });
+
+        // Handle existing device by serial number (most reliable match)
+        if (existingDeviceBySerial != null) {
+          // Device re-enrollment case - return existing device info to allow mobile app to proceed
+          print(
+              'Device re-enrollment detected: serial ${request.hardwareInfo.serialNumber} already exists, returning existing device info');
+
+          return CreateDeviceResponse(
+              statusResponse: StatusResponse(
+                  type: StatusResponse_Type.CREATED,
+                  timestamp: DateTime.now().timestampProto,
+                  message:
+                      'Device re-enrolled - found existing device with same serial number (${request.hardwareInfo.serialNumber})'),
+              firmId: chain.firmId,
+              chainId: chain.chainId,
+              boutiqueId: existingDeviceBySerial.boutiqueId,
+              deviceId: existingDeviceBySerial.deviceId);
+        }
+
+        // Check 2: Name + Brand + OS combination duplicates (fallback for devices without serial)
+        final existingDeviceBySpecs =
+            boutique.devices.firstWhereOrNull((device) {
+          final hwInfo = device.hardwareInfo;
+          final requestHwInfo = request.hardwareInfo;
+
+          // Only check this if at least one device doesn't have a serial number
+          final currentHasNoSerial = hwInfo.serialNumber.isEmpty;
+          final requestHasNoSerial = requestHwInfo.serialNumber.isEmpty;
+
+          if (!currentHasNoSerial && !requestHasNoSerial) {
+            return false; // Both have serials, already checked above
+          }
+
+          return hwInfo.name.isNotEmpty &&
+              requestHwInfo.name.isNotEmpty &&
+              hwInfo.name == requestHwInfo.name &&
+              hwInfo.brand == requestHwInfo.brand &&
+              hwInfo.baseOS == requestHwInfo.baseOS;
+        });
+
+        // Handle existing device by specs (less reliable match)
+        if (existingDeviceBySpecs != null) {
+          // Device re-enrollment case - return existing device info to allow mobile app to proceed
+          print(
+              'Device re-enrollment detected: specs ${request.hardwareInfo.name}-${request.hardwareInfo.brand} already exist, returning existing device info');
+
+          return CreateDeviceResponse(
+              statusResponse: StatusResponse(
+                  type: StatusResponse_Type.CREATED,
+                  timestamp: DateTime.now().timestampProto,
+                  message:
+                      'Device re-enrolled - found existing device with same specifications (${request.hardwareInfo.name} - ${request.hardwareInfo.brand})'),
+              firmId: chain.firmId,
+              chainId: chain.chainId,
+              boutiqueId: existingDeviceBySpecs.boutiqueId,
+              deviceId: existingDeviceBySpecs.deviceId);
+        }
+
+        // No existing device found - create new one
         final device = Device.create()
           ..status = true
           ..password = ''
@@ -1241,13 +1315,14 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// chain rights encompass device pairing
+  /// right.delete is the right to delete a device
   @override
   Future<StatusResponse> deleteOneDevice(
       ServiceCall? call, DeleteDeviceRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-    // chain rights encompass device pairing
     if (userPermission.chainRights.rights.any((e) => e == Right.delete) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -1268,7 +1343,14 @@ class FenceService extends FenceServiceBase {
         .removeAt(btqIndexDeviceIndex.deviceIndex);
     // update chain in db
 
-    return await _updateOneChainDBExec(chain);
+    try {
+      await _updateOneChainDBExec(chain);
+      return StatusResponse()
+        ..type = StatusResponse_Type.DELETED
+        ..timestamp = DateTime.now().timestampProto;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -1480,9 +1562,10 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
+    ///  firm rights encompass user management
+    /// userManagementRights.rights is not enough here
     if (request.userId != userPermission.userId &&
-        userPermission.userManagementRights.rights
-                .any((e) => e == Right.update) ==
+        userPermission.firmRights.rights.any((e) => e == Right.update) ==
             false) {
       throw GrpcError.permissionDenied(
           'you do not have the right to update other users passwords');
@@ -1761,7 +1844,14 @@ class FenceService extends FenceServiceBase {
     // remove device
     chain.boutiques.removeAt(boutiqueIndex);
     // update chain in db
-    return await _updateOneChainDBExec(chain);
+    try {
+      await _updateOneChainDBExec(chain);
+      return StatusResponse()
+        ..type = StatusResponse_Type.DELETED
+        ..timestamp = DateTime.now().timestampProto;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

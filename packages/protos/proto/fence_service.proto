@@ -93,7 +93,6 @@ service FenceService {
   rpc updateDevicePassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
   /// hard/forever delete
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
-  /// weak auth hack to ease app access to cashiers with very low rights
 }
 
 
