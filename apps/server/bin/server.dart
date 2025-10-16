@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io' show HttpHeaders, InternetAddress;
+import 'dart:io' show HttpHeaders, InternetAddress, Platform;
 
 import 'package:fence_service/mongo_pool.dart';
 import 'package:logging/logging.dart';
@@ -56,20 +56,24 @@ void main(List<String> arguments) async {
 
   try {
     final db = await Db.create(AppEnvironment.mongoDbUri);
-    await db.open();
-
     print('2');
-
+    await db.open();
     print('3');
 //    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
-  //  final db = await pool.connect();
+    //  final db = await pool.connect();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
     final articleService = ArticleService(poolService);
     final contactService = ContactService(poolService);
     final ticketService = TicketService(poolService);
-    final fenceService = FenceService(poolService);
     final weebiAppService = WeebiAppService(poolService);
+    final fenceService = FenceService(poolService);
+    
+    /// reminder
+    /// MAILTRAP_DEV_USERNAME  MAILTRAP_DEV_PASSWORD
+    /// prd 'MAILTRAP_API_TOKEN'] optionnal FROM_EMAIL FROM_NAME 
+
+    fenceService.configureMailService(EmailConfig.create());
 
     final server = Server.create(
       services: [
@@ -87,7 +91,19 @@ void main(List<String> arguments) async {
 
     await server.serve(port: AppEnvironment.port, address: ip);
 
-    print('Server running on ip $ip port ${server.port}');
+    print('gRPC Server running on ip $ip port ${server.port}');
+    
+    // Start HTTP server for REST endpoints
+    final httpBaseUrl = Platform.environment['HTTP_BASE_URL'] ?? 
+        (Platform.environment['ENVIRONMENT'] == 'production' 
+            ? 'https://api.weebi.com' 
+            : 'http://localhost:${AppEnvironment.httpPort}');
+    
+    await fenceService.startHttpServer(
+      port: AppEnvironment.httpPort,
+      baseUrl: httpBaseUrl,
+    );
+    print('HTTP Server running on port ${AppEnvironment.httpPort} with base URL: $httpBaseUrl');
   } catch (e) {
     log('Failed to connect to MongoDB: $e');
   }

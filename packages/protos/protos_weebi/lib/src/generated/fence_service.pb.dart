@@ -485,8 +485,47 @@ class ReadAllChainsResponse extends $pb.GeneratedMessage {
   static ReadAllChainsResponse? _defaultInstance;
 
   /// google.retail.common.StatusResponse ?
+  /// Note: chains contain only active boutiques (deleted ones are filtered out)
   @$pb.TagNumber(1)
   $pb.PbList<$11.Chain> get chains => $_getList(0);
+}
+
+class ReadAllBoutiquesResponse extends $pb.GeneratedMessage {
+  factory ReadAllBoutiquesResponse({
+    $core.Iterable<$20.BoutiquePb>? boutiques,
+  }) {
+    final $result = create();
+    if (boutiques != null) {
+      $result.boutiques.addAll(boutiques);
+    }
+    return $result;
+  }
+  ReadAllBoutiquesResponse._() : super();
+  factory ReadAllBoutiquesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadAllBoutiquesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllBoutiquesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..pc<$20.BoutiquePb>(1, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $20.BoutiquePb.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReadAllBoutiquesResponse clone() => ReadAllBoutiquesResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReadAllBoutiquesResponse copyWith(void Function(ReadAllBoutiquesResponse) updates) => super.copyWith((message) => updates(message as ReadAllBoutiquesResponse)) as ReadAllBoutiquesResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReadAllBoutiquesResponse create() => ReadAllBoutiquesResponse._();
+  ReadAllBoutiquesResponse createEmptyInstance() => create();
+  static $pb.PbList<ReadAllBoutiquesResponse> createRepeated() => $pb.PbList<ReadAllBoutiquesResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ReadAllBoutiquesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadAllBoutiquesResponse>(create);
+  static ReadAllBoutiquesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$20.BoutiquePb> get boutiques => $_getList(0);
 }
 
 class ReadDevicesRequest extends $pb.GeneratedMessage {
@@ -1499,6 +1538,122 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
   void clearDevice() => $_clearField(1);
   @$pb.TagNumber(1)
   $12.Device ensureDevice() => $_ensure(0);
+}
+
+class PasswordResetRequest extends $pb.GeneratedMessage {
+  factory PasswordResetRequest({
+    $core.String? mail,
+  }) {
+    final $result = create();
+    if (mail != null) {
+      $result.mail = mail;
+    }
+    return $result;
+  }
+  PasswordResetRequest._() : super();
+  factory PasswordResetRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PasswordResetRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasswordResetRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'mail')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetRequest clone() => PasswordResetRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetRequest copyWith(void Function(PasswordResetRequest) updates) => super.copyWith((message) => updates(message as PasswordResetRequest)) as PasswordResetRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetRequest create() => PasswordResetRequest._();
+  PasswordResetRequest createEmptyInstance() => create();
+  static $pb.PbList<PasswordResetRequest> createRepeated() => $pb.PbList<PasswordResetRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PasswordResetRequest>(create);
+  static PasswordResetRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get mail => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set mail($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMail() => $_clearField(1);
+}
+
+class PasswordResetConfirmRequest extends $pb.GeneratedMessage {
+  factory PasswordResetConfirmRequest({
+    $core.String? mail,
+    $core.String? resetToken,
+    $core.String? newPassword,
+  }) {
+    final $result = create();
+    if (mail != null) {
+      $result.mail = mail;
+    }
+    if (resetToken != null) {
+      $result.resetToken = resetToken;
+    }
+    if (newPassword != null) {
+      $result.newPassword = newPassword;
+    }
+    return $result;
+  }
+  PasswordResetConfirmRequest._() : super();
+  factory PasswordResetConfirmRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PasswordResetConfirmRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasswordResetConfirmRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'mail')
+    ..aOS(2, _omitFieldNames ? '' : 'resetToken', protoName: 'resetToken')
+    ..aOS(3, _omitFieldNames ? '' : 'newPassword', protoName: 'newPassword')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetConfirmRequest clone() => PasswordResetConfirmRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetConfirmRequest copyWith(void Function(PasswordResetConfirmRequest) updates) => super.copyWith((message) => updates(message as PasswordResetConfirmRequest)) as PasswordResetConfirmRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetConfirmRequest create() => PasswordResetConfirmRequest._();
+  PasswordResetConfirmRequest createEmptyInstance() => create();
+  static $pb.PbList<PasswordResetConfirmRequest> createRepeated() => $pb.PbList<PasswordResetConfirmRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetConfirmRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PasswordResetConfirmRequest>(create);
+  static PasswordResetConfirmRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get mail => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set mail($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMail() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get resetToken => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set resetToken($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasResetToken() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearResetToken() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get newPassword => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set newPassword($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasNewPassword() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearNewPassword() => $_clearField(3);
 }
 
 

@@ -32,6 +32,9 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     $17.Timestamp? lastTouchTimestampUTC,
     $core.List<$core.int>? logo,
     $core.String? logoExtension,
+    $core.bool? isDeleted,
+    $core.String? deletedBy,
+    $core.String? restoredBy,
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? additionalAttributes,
   }) {
     final $result = create();
@@ -65,6 +68,15 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     if (logoExtension != null) {
       $result.logoExtension = logoExtension;
     }
+    if (isDeleted != null) {
+      $result.isDeleted = isDeleted;
+    }
+    if (deletedBy != null) {
+      $result.deletedBy = deletedBy;
+    }
+    if (restoredBy != null) {
+      $result.restoredBy = restoredBy;
+    }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addEntries(additionalAttributes);
     }
@@ -85,6 +97,9 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     ..aOM<$17.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..a<$core.List<$core.int>>(9, _omitFieldNames ? '' : 'logo', $pb.PbFieldType.OY)
     ..aOS(10, _omitFieldNames ? '' : 'logoExtension', protoName: 'logoExtension')
+    ..aOB(11, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
+    ..aOS(12, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
+    ..aOS(13, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiqueMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -195,8 +210,35 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   void clearLogoExtension() => $_clearField(10);
 
+  @$pb.TagNumber(11)
+  $core.bool get isDeleted => $_getBF(10);
+  @$pb.TagNumber(11)
+  set isDeleted($core.bool v) { $_setBool(10, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasIsDeleted() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearIsDeleted() => $_clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.String get deletedBy => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set deletedBy($core.String v) { $_setString(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasDeletedBy() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearDeletedBy() => $_clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.String get restoredBy => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set restoredBy($core.String v) { $_setString(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasRestoredBy() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearRestoredBy() => $_clearField(13);
+
   @$pb.TagNumber(99)
-  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(10);
+  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(13);
 }
 
 class BoutiquePb extends $pb.GeneratedMessage {
