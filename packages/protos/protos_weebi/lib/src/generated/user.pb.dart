@@ -29,6 +29,7 @@ class UserPublic extends $pb.GeneratedMessage {
     $18.Phone? phone,
     $17.Timestamp? lastSignIn,
     $22.UserPermissions? permissions,
+    $core.bool? mustChangePassword,
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? othersAttributes,
   }) {
     final $result = create();
@@ -53,6 +54,9 @@ class UserPublic extends $pb.GeneratedMessage {
     if (permissions != null) {
       $result.permissions = permissions;
     }
+    if (mustChangePassword != null) {
+      $result.mustChangePassword = mustChangePassword;
+    }
     if (othersAttributes != null) {
       $result.othersAttributes.addEntries(othersAttributes);
     }
@@ -70,6 +74,7 @@ class UserPublic extends $pb.GeneratedMessage {
     ..aOM<$18.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
     ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'lastSignIn', protoName: 'lastSignIn', subBuilder: $17.Timestamp.create)
     ..aOM<$22.UserPermissions>(7, _omitFieldNames ? '' : 'permissions', subBuilder: $22.UserPermissions.create)
+    ..aOB(8, _omitFieldNames ? '' : 'mustChangePassword', protoName: 'mustChangePassword')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'UserPublic.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
@@ -158,8 +163,17 @@ class UserPublic extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $22.UserPermissions ensurePermissions() => $_ensure(6);
 
+  @$pb.TagNumber(8)
+  $core.bool get mustChangePassword => $_getBF(7);
+  @$pb.TagNumber(8)
+  set mustChangePassword($core.bool v) { $_setBool(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasMustChangePassword() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearMustChangePassword() => $_clearField(8);
+
   @$pb.TagNumber(99)
-  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(7);
+  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(8);
 }
 
 /// / this is how users are stored in db
@@ -179,6 +193,8 @@ class UserPrivate extends $pb.GeneratedMessage {
     $core.String? lastUpdatedByuserId,
     $17.Timestamp? lastUpdateTimestampUTC,
     $17.Timestamp? creationDateUTC,
+    $core.bool? mustChangePassword,
+    $core.bool? emailVerificationSent,
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? othersAttributes,
   }) {
     final $result = create();
@@ -218,6 +234,12 @@ class UserPrivate extends $pb.GeneratedMessage {
     if (creationDateUTC != null) {
       $result.creationDateUTC = creationDateUTC;
     }
+    if (mustChangePassword != null) {
+      $result.mustChangePassword = mustChangePassword;
+    }
+    if (emailVerificationSent != null) {
+      $result.emailVerificationSent = emailVerificationSent;
+    }
     if (othersAttributes != null) {
       $result.othersAttributes.addEntries(othersAttributes);
     }
@@ -240,6 +262,8 @@ class UserPrivate extends $pb.GeneratedMessage {
     ..aOS(10, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
     ..aOM<$17.Timestamp>(11, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOM<$17.Timestamp>(12, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $17.Timestamp.create)
+    ..aOB(13, _omitFieldNames ? '' : 'mustChangePassword', protoName: 'mustChangePassword')
+    ..aOB(14, _omitFieldNames ? '' : 'emailVerificationSent', protoName: 'emailVerificationSent')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'UserPrivate.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
@@ -378,8 +402,26 @@ class UserPrivate extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   $17.Timestamp ensureCreationDateUTC() => $_ensure(11);
 
+  @$pb.TagNumber(13)
+  $core.bool get mustChangePassword => $_getBF(12);
+  @$pb.TagNumber(13)
+  set mustChangePassword($core.bool v) { $_setBool(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasMustChangePassword() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearMustChangePassword() => $_clearField(13);
+
+  @$pb.TagNumber(14)
+  $core.bool get emailVerificationSent => $_getBF(13);
+  @$pb.TagNumber(14)
+  set emailVerificationSent($core.bool v) { $_setBool(13, v); }
+  @$pb.TagNumber(14)
+  $core.bool hasEmailVerificationSent() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearEmailVerificationSent() => $_clearField(14);
+
   @$pb.TagNumber(99)
-  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(12);
+  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(14);
 }
 
 class SignUpRequest extends $pb.GeneratedMessage {
@@ -536,6 +578,7 @@ class PendingUserRequest extends $pb.GeneratedMessage {
     $core.String? lastname,
     $22.UserPermissions? permissions,
     $18.Phone? phone,
+    $core.String? password,
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? othersAttributes,
   }) {
     final $result = create();
@@ -554,6 +597,9 @@ class PendingUserRequest extends $pb.GeneratedMessage {
     if (phone != null) {
       $result.phone = phone;
     }
+    if (password != null) {
+      $result.password = password;
+    }
     if (othersAttributes != null) {
       $result.othersAttributes.addEntries(othersAttributes);
     }
@@ -569,6 +615,7 @@ class PendingUserRequest extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'lastname')
     ..aOM<$22.UserPermissions>(4, _omitFieldNames ? '' : 'permissions', subBuilder: $22.UserPermissions.create)
     ..aOM<$18.Phone>(5, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
+    ..aOS(6, _omitFieldNames ? '' : 'password')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'othersAttributes', protoName: 'othersAttributes', entryClassName: 'PendingUserRequest.OthersAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.user'))
     ..hasRequiredFields = false
   ;
@@ -637,8 +684,17 @@ class PendingUserRequest extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $18.Phone ensurePhone() => $_ensure(4);
 
+  @$pb.TagNumber(6)
+  $core.String get password => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set password($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasPassword() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearPassword() => $_clearField(6);
+
   @$pb.TagNumber(99)
-  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(5);
+  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(6);
 }
 
 class PendingUserResponse extends $pb.GeneratedMessage {

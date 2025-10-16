@@ -1,28 +1,28 @@
+import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/src/weebi_app_service/weebi_app_service_base.dart';
 
 import 'package:test/test.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 
 void main() async {
-  final db = TestHelper.localDb;
+  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  await poolService.initialize();
 
-  final connection = Connection(ConnectionManager(db));
   late WeebiAppService weebiAppService;
   setUpAll(() async {
-    await db.open();
-    final isConnected = await connection.connect();
-    print(isConnected);
-    weebiAppService = WeebiAppService(db);
-    await db.createCollection(weebiAppService.collection.collectionName);
-    await db.collection(weebiAppService.collection.collectionName).insertOne(
+    final db = await poolService.acquire();
+    weebiAppService = WeebiAppService(poolService);
+    await db.createCollection(WeebiAppService.collectionName);
+    await db.collection(WeebiAppService.collectionName).insertOne(
         {'app': 'weebi_app', 'minVersion': 279, 'isUpgradeImperative': false});
+    poolService.release(db);
   });
 
   tearDownAll(() async {
-    await db.collection(weebiAppService.collection.collectionName).drop();
-    await connection.close();
+    final db = await poolService.acquire();
+    await db.collection(WeebiAppService.collectionName).drop();
+    poolService.release(db);
   });
 
   test('test readAppMinimumVersion', () async {

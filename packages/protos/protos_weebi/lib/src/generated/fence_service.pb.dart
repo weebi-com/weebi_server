@@ -1065,6 +1065,7 @@ class Tokens extends $pb.GeneratedMessage {
   factory Tokens({
     $core.String? accessToken,
     $core.String? refreshToken,
+    $core.bool? mustChangePassword,
   }) {
     final $result = create();
     if (accessToken != null) {
@@ -1072,6 +1073,9 @@ class Tokens extends $pb.GeneratedMessage {
     }
     if (refreshToken != null) {
       $result.refreshToken = refreshToken;
+    }
+    if (mustChangePassword != null) {
+      $result.mustChangePassword = mustChangePassword;
     }
     return $result;
   }
@@ -1082,6 +1086,7 @@ class Tokens extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Tokens', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'accessToken', protoName: 'accessToken')
     ..aOS(2, _omitFieldNames ? '' : 'refreshToken', protoName: 'refreshToken')
+    ..aOB(3, _omitFieldNames ? '' : 'mustChangePassword', protoName: 'mustChangePassword')
     ..hasRequiredFields = false
   ;
 
@@ -1117,6 +1122,15 @@ class Tokens extends $pb.GeneratedMessage {
   $core.bool hasRefreshToken() => $_has(1);
   @$pb.TagNumber(2)
   void clearRefreshToken() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get mustChangePassword => $_getBF(2);
+  @$pb.TagNumber(3)
+  set mustChangePassword($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasMustChangePassword() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMustChangePassword() => $_clearField(3);
 }
 
 class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {
@@ -1183,7 +1197,8 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   factory PasswordUpdateRequest({
     $core.String? userId,
     $core.String? firmId,
-    $core.String? password,
+    $core.String? passwordCurrent,
+    $core.String? passwordNew,
   }) {
     final $result = create();
     if (userId != null) {
@@ -1192,8 +1207,11 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
     if (firmId != null) {
       $result.firmId = firmId;
     }
-    if (password != null) {
-      $result.password = password;
+    if (passwordCurrent != null) {
+      $result.passwordCurrent = passwordCurrent;
+    }
+    if (passwordNew != null) {
+      $result.passwordNew = passwordNew;
     }
     return $result;
   }
@@ -1204,7 +1222,8 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasswordUpdateRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(2, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
-    ..aOS(3, _omitFieldNames ? '' : 'password')
+    ..aOS(3, _omitFieldNames ? '' : 'passwordCurrent', protoName: 'passwordCurrent')
+    ..aOS(4, _omitFieldNames ? '' : 'passwordNew', protoName: 'passwordNew')
     ..hasRequiredFields = false
   ;
 
@@ -1242,13 +1261,22 @@ class PasswordUpdateRequest extends $pb.GeneratedMessage {
   void clearFirmId() => $_clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get password => $_getSZ(2);
+  $core.String get passwordCurrent => $_getSZ(2);
   @$pb.TagNumber(3)
-  set password($core.String v) { $_setString(2, v); }
+  set passwordCurrent($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasPassword() => $_has(2);
+  $core.bool hasPasswordCurrent() => $_has(2);
   @$pb.TagNumber(3)
-  void clearPassword() => $_clearField(3);
+  void clearPasswordCurrent() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get passwordNew => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set passwordNew($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPasswordNew() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPasswordNew() => $_clearField(4);
 }
 
 class PendingDeviceRequest extends $pb.GeneratedMessage {

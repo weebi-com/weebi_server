@@ -164,15 +164,6 @@ class FenceServiceClient extends $grpc.Client {
     return $createUnaryCall(_$authenticateWithRefreshToken, request, options: options);
   }
 
-  /// Password reset functionality
-  $grpc.ResponseFuture<$1.StatusResponse> requestPasswordReset($9.PasswordResetRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$requestPasswordReset, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$1.StatusResponse> confirmPasswordReset($9.PasswordResetConfirmRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$confirmPasswordReset, request, options: options);
-  }
-
   /// / only one firm per 'company'
   /// / 1. user signup and get a userId & create firm permission
   /// / 2. A. user create a firm
@@ -509,14 +500,6 @@ abstract class FenceServiceBase extends $grpc.Service {
 
   $async.Future<$9.Tokens> authenticateWithRefreshToken_Pre($grpc.ServiceCall $call, $async.Future<$9.RefreshToken> $request) async {
     return authenticateWithRefreshToken($call, await $request);
-  }
-
-  $async.Future<$1.StatusResponse> requestPasswordReset_Pre($grpc.ServiceCall $call, $async.Future<$9.PasswordResetRequest> $request) async {
-    return requestPasswordReset($call, await $request);
-  }
-
-  $async.Future<$1.StatusResponse> confirmPasswordReset_Pre($grpc.ServiceCall $call, $async.Future<$9.PasswordResetConfirmRequest> $request) async {
-    return confirmPasswordReset($call, await $request);
   }
 
   $async.Future<$10.CreateFirmResponse> createFirm_Pre($grpc.ServiceCall $call, $async.Future<$10.CreateFirmRequest> $request) async {

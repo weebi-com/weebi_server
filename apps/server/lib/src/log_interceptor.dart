@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 final logger = Logger('LoggingInterceptor');
 Future<GrpcError?> loggingInterceptor(
   ServiceCall call,
-  ServiceMethod serviceMethod,
+  ServiceMethod method,
 ) async {
   final dateTime = DateTime.now();
 

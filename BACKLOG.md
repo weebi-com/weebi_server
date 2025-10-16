@@ -1,7 +1,8 @@
 # Backlog
 
-- TODO - test github CI to run autom 
+- TODO - use github CI to run autom - > https://shorebird.dev/blog/introducing-shorebird-ci/
 - TODO - declare indexes in migrations
+
 
 - provide batch insert methods for article (calibre), contact and ticket
 
@@ -10,20 +11,21 @@ Set up Mailtrap account**:
    - Sign up at [mailtrap.io](https://mailtrap.io)
    - Get your sandbox credentials for testing
 
-3. **Configure environment variables**:
+1. **Configure environment variables**:
    ```bash
    export MAILTRAP_USERNAME="your_username"
    export MAILTRAP_PASSWORD="your_password"
    export ENVIRONMENT="development"
    ```
 
-4. **Update dependencies**:
+2. **Update dependencies**:
    ```bash
    cd packages/fence_service
    dart pub get
    ```
 
-5. **Test the implementation**:
+3. **Test the implementation**:
    ```bash
    dart test test/email_test.dart
    dart run example/email_config_example.dart
+

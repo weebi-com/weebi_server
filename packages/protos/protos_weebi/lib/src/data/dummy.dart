@@ -28,12 +28,12 @@ abstract class Dummy {
     name: 'dummy boutique',
     phone: Phone(countryCode: 33, number: '773116767'),
   );
-  static final boutiqueNoId = BoutiqueMongo(
+  static final boutiqueMongoNoId = BoutiqueMongo(
     boutique: boutiquePb,
     devices: <Device>[Dummy.device],
   );
 
-  static final boutiqueMongo = boutiqueNoId
+  static final boutiqueMongo = boutiqueMongoNoId
     ..boutiqueId = '123456789'
     ..firmId = firm.firmId
     ..chainId = chain.chainId
@@ -54,7 +54,7 @@ abstract class Dummy {
     ..hardwareInfo = hardwareInfo;
 
   static final chainNoId = Chain(
-    boutiques: <BoutiqueMongo>[Dummy.boutiqueNoId],
+    boutiques: <BoutiqueMongo>[Dummy.boutiqueMongoNoId],
   );
   static final chain = chainNoId
     ..chainId = '123456789'

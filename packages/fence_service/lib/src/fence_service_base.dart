@@ -4,6 +4,7 @@ import 'dart:math' show Random;
 
 import 'package:collection/collection.dart';
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
+import 'package:fence_service/mongo_pool.dart';
 import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/encrypter.dart';
 import 'package:protos_weebi/extensions.dart';
@@ -13,13 +14,20 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:fence_service/fence_service.dart';
 
-class FenceService extends FenceServiceBase {
-  final Db _db;
+class PermissionAndSillyBoolean {
+  final UserPermissions userPermissions;
+  final bool mustChangePassword;
+  PermissionAndSillyBoolean(
+      {required this.userPermissions, required this.mustChangePassword});
+}
 
-  final DbCollection userCollection;
-  final DbCollection pairingCodesCollection;
-  final DbCollection boutiqueCollection;
-  final DbCollection firmCollection;
+class FenceService extends FenceServiceBase {
+  final MongoDbPoolService _poolService;
+
+  //final DbCollection userCollection;
+  //final DbCollection pairingCodesCollection;
+  //final DbCollection boutiqueCollection;
+  //final DbCollection firmCollection;
 
   static const String pairingCodesCollectionName = 'pairing_codes';
   static const String boutiqueCollectionName = 'boutique';
@@ -28,23 +36,17 @@ class FenceService extends FenceServiceBase {
 
   bool isMock;
   UserPermissions? userPermissionIfTest;
-  
-  // Email and password reset services
-  EmailService? _emailService;
+
+// Email and password reset services
+  MailService? _emailService;
   late PasswordResetService _passwordResetService;
-  
-  FenceService(this._db, {this.isMock = false, this.userPermissionIfTest, EmailService? emailService})
-      : pairingCodesCollection = _db.collection(pairingCodesCollectionName),
-        userCollection = _db.collection(userCollectionName),
-        boutiqueCollection = _db.collection(boutiqueCollectionName),
-        firmCollection = _db.collection(firmCollectionName),
-        _emailService = emailService {
-    _db.isConnected ? null : _db.open();
-    _passwordResetService = PasswordResetService(_db);
-  }
+
+  FenceService(this._poolService,
+      {this.isMock = false, this.userPermissionIfTest});
 
   /// Configure email service for sending transactional emails
-  void configureEmailService(EmailService emailService) {
+
+  void configureEmailService(MailService emailService) {
     _emailService = emailService;
   }
 
@@ -52,13 +54,7 @@ class FenceService extends FenceServiceBase {
   Future<PendingUserResponse> createPendingUser(
       ServiceCall? call, PendingUserRequest request) async {
     final mailChecked = _checkMail(request.mail);
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+    final passwordEncrypted = _checkAndEncryptPassword(request.password);
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -88,82 +84,75 @@ class FenceService extends FenceServiceBase {
 
     final user = await _isMailAlreadyUsed(request.mail);
     if (user.userId.isNotEmpty) {
-      if (user.permissions.firmId.isEmpty && user.lastSignIn.seconds == 0) {
-        // rare use case when user has signed up before the boss created his/her account
-        // also the user carefully did not create a firm and patiently stayed in the waiting room
-        final userPublic = UserPublic.create()
-          ..mergeFromProto3Json(user.toProto3Json() as Map<String, dynamic>,
-              ignoreUnknownFields: true)
-          ..permissions = request.permissions;
-        final status = await _updateUserDBExec(userPublic);
-        return PendingUserResponse(
-            statusResponse: status, userPublic: userPublic);
-      } else {
-        // user signed it at least once
-        throw GrpcError.invalidArgument('mail ${request.mail} is alreadyUsed');
-      }
+      // Always reject if email exists - force admin to use different email or contact user
+      throw GrpcError.invalidArgument('mail ${request.mail} is alreadyUsed');
     }
 
-    try {
-      final userId = DateTime.now().objectIdString;
-      String firmId =
-          userPermission.firmId.isEmpty ? userId : userPermission.firmId;
-      request.permissions
-        ..firmId = firmId
-        ..userId = userId;
+    return databaseMiddleware<PendingUserResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
 
-      final userPrivate = UserPrivate(
+      try {
+        final userId = DateTime.now().objectIdString;
+        String firmId =
+            userPermission.firmId.isEmpty ? userId : userPermission.firmId;
+        request.permissions
+          ..firmId = firmId
+          ..userId = userId;
+
+        final userPrivate = UserPrivate(
           permissions: request.permissions,
           userId: userId,
           mail: mailChecked,
           phone: request.phone,
           firstname: request.firstname,
           lastname: request.lastname,
-          firmId: firmId);
+          firmId: firmId,
+          passwordEncrypted: passwordEncrypted,
+          mustChangePassword:
+              true, // by default passwords here are auto-generated and must be changed on first login
+          emailVerificationSent: false, // not handled yet (end of 2025)
+          lastUpdatedByuserId: userPermission.userId,
+          creationDateUTC: DateTime.now().toUtc().timestampProto,
+        );
 
-      final result = await userCollection
-          .insertOne(userPrivate.toProto3Json() as Map<String, dynamic>);
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
+        final result = await userCollection
+            .insertOne(userPrivate.toProto3Json() as Map<String, dynamic>);
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        }
+        final timestamp = DateTime.now().timestampProto;
+        if (result.success && result.document != null) {
+          final userId = result.document!['userId'];
+          //print('userId.runtimeType ${userId.runtimeType}');
+
+          final userPublic = UserPublic.create()
+            ..mergeFromProto3Json(
+                (userPrivate.toProto3Json() as Map<String, dynamic>),
+                ignoreUnknownFields: true);
+
+          return PendingUserResponse(
+              statusResponse: StatusResponse()
+                ..id = userId
+                ..type = StatusResponse_Type.CREATED
+                ..timestamp = timestamp,
+              userPublic: userPublic);
+        } else {
+          return PendingUserResponse(
+              statusResponse: StatusResponse()
+                ..type = StatusResponse_Type.ERROR
+                ..timestamp = timestamp);
+        }
+      } on GrpcError catch (e) {
+        log('user mail ${request.mail} createPendingUser error: $e');
+        rethrow;
       }
-      final timestamp = DateTime.now().timestampProto;
-      if (result.success && result.document != null) {
-        final userId = result.document!['userId'];
-        //print('userId.runtimeType ${userId.runtimeType}');
-
-        final userPublic = UserPublic.create()
-          ..mergeFromProto3Json(
-              (userPrivate.toProto3Json() as Map<String, dynamic>),
-              ignoreUnknownFields: true);
-
-        return PendingUserResponse(
-            statusResponse: StatusResponse()
-              ..id = userId
-              ..type = StatusResponse_Type.CREATED
-              ..timestamp = timestamp,
-            userPublic: userPublic);
-      } else {
-        return PendingUserResponse(
-            statusResponse: StatusResponse()
-              ..type = StatusResponse_Type.ERROR
-              ..timestamp = timestamp);
-      }
-    } on GrpcError catch (e) {
-      log('user mail ${request.mail} createPendingUser error: $e');
-      rethrow;
-    }
+    });
   }
 
   @override
   Future<Tokens> authenticateWithCredentials(
       ServiceCall? call, Credentials request) async {
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
     try {
       final mailAndEncyptedPassword = _checkCredentials(request);
 
@@ -172,9 +161,10 @@ class FenceService extends FenceServiceBase {
       final userPermission = await _readUserPermissionsByMailAndPassword(
           call, mailAndEncyptedPassword);
       var jwt = JsonWebToken();
-      final payload = userPermission.toProto3Json() as Map<String, dynamic>?;
+      final payload = userPermission.userPermissions.toProto3Json()
+          as Map<String, dynamic>?;
       jwt.createPayload(
-        userPermission.userId,
+        userPermission.userPermissions.userId,
         expireIn: const Duration(days: 1),
         payload: payload,
       );
@@ -182,17 +172,20 @@ class FenceService extends FenceServiceBase {
       final accessToken = jwt.sign();
       jwt = JsonWebToken();
       jwt.createPayload(
-        userPermission.userId,
+        userPermission.userPermissions.userId,
         expireIn: Duration(days: 30),
         payload: {
-          'userId': userPermission.userId,
-          'firmId': userPermission.firmId
+          'userId': userPermission.userPermissions.userId,
+          'firmId': userPermission.userPermissions.firmId
         },
       );
       // refresh token only contains userId & firmId
       final resfreshToken = jwt.sign();
       _updateUserLastSignIn;
-      return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
+      return Tokens(
+          accessToken: accessToken,
+          refreshToken: resfreshToken,
+          mustChangePassword: userPermission.mustChangePassword);
     } on GrpcError catch (e) {
       log('authenticate error $e');
       rethrow;
@@ -203,24 +196,19 @@ class FenceService extends FenceServiceBase {
   }
 
   Future<void> _updateUserLastSignIn(String userId) async {
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
+    return databaseMiddleware(_poolService, (db) async {
+      try {
+        final lastSignin = DateTime.now().timestampProto;
+        final dd = lastSignin.toProto3Json();
+        await db.collection(userCollectionName).update(
+              where.eq('userId', userId),
+              ModifierBuilder().set('lastSignIn', dd),
+            );
+      } catch (e) {
+        log('eroor $e');
+        rethrow;
       }
-    }
-    try {
-      final lastSignin = DateTime.now().timestampProto;
-      final dd = lastSignin.toProto3Json();
-      await userCollection.update(
-        where.eq('userId', userId),
-        ModifierBuilder().set('lastSignIn', dd),
-      );
-    } catch (e) {
-      log('eroor $e');
-      rethrow;
-    }
+    });
   }
 
   MailAndEncyptedPassword _checkCredentials(Credentials request) =>
@@ -255,13 +243,6 @@ class FenceService extends FenceServiceBase {
       if (!jwtRefresh.verify()) {
         throw GrpcError.unauthenticated('invalid jwtRefresh ');
       }
-      if (_db.isConnected == false) {
-        if (_db.state == State.opening) {
-          _db.state = State.closed;
-          final d = await _db.open();
-          print(d.runtimeType);
-        }
-      }
       final userPrivate = await _readUserByUserId(jwtRefresh.sub);
 
       var jwt = JsonWebToken();
@@ -293,58 +274,69 @@ class FenceService extends FenceServiceBase {
   }
 
   Future<UserPrivate> _readUserByUserId(String userId) async {
-    try {
-      final userPrivate = await userCollection.findOne(
-        where.eq('userId', userId),
-      );
-      if (userPrivate == null) {
-        throw GrpcError.notFound('userId $userId');
+    return databaseMiddleware<UserPrivate>(_poolService, (db) async {
+      try {
+        final userPrivate = await db.collection(userCollectionName).findOne(
+              where.eq('userId', userId),
+            );
+        if (userPrivate == null) {
+          throw GrpcError.notFound('userId $userId');
+        }
+        return UserPrivate()
+          ..mergeFromProto3Json(userPrivate, ignoreUnknownFields: true);
+      } on GrpcError catch (e) {
+        log('$e');
+        rethrow;
       }
-      return UserPrivate()
-        ..mergeFromProto3Json(userPrivate, ignoreUnknownFields: true);
-    } on GrpcError catch (e) {
-      log('$e');
-      rethrow;
-    }
+    });
   }
 
-  Future<UserPermissions> _readUserPermissionsByMailAndPassword(
+  Future<PermissionAndSillyBoolean> _readUserPermissionsByMailAndPassword(
       ServiceCall? call, MailAndEncyptedPassword request) async {
-    try {
+    return databaseMiddleware<PermissionAndSillyBoolean>(_poolService,
+        (db) async {
       final selector = where
           .match('mail', r'^' + request.mail.trim() + r'$',
               caseInsensitive: true)
           .eq('password', request.passwordEncrypted);
-
-      final userPrivateMongo = await userCollection.findOne(selector);
-      if (userPrivateMongo == null) {
-        /*  final resultMail =
+      try {
+        final userPrivateMongo =
+            await db.collection(userCollectionName).findOne(selector);
+        if (userPrivateMongo == null) {
+          /*  final resultMail =
             await userCollection.findOne(where.eq('mail', request.mail));
         if (resultMail == null) {
           throw GrpcError.notFound();
         } else */
-        // ! deliberately do not give wrong password info for security reason
-        throw GrpcError.invalidArgument('incorrect login or password');
+          // ! deliberately do not give wrong password info for security reason
+          throw GrpcError.invalidArgument('incorrect login or password');
+        }
+        final userPrivate = UserPrivate()
+          ..mergeFromProto3Json(userPrivateMongo, ignoreUnknownFields: true);
+        final userPermission = UserPermissions.create()
+          ..mergeFromProto3Json(
+              userPrivate.permissions.toProto3Json() as Map<String, dynamic>);
+        return PermissionAndSillyBoolean(
+            userPermissions: userPermission,
+            mustChangePassword: userPrivate.mustChangePassword);
+      } on GrpcError catch (e) {
+        log('$e');
+        rethrow;
       }
-      final userPrivate = UserPrivate()
-        ..mergeFromProto3Json(userPrivateMongo, ignoreUnknownFields: true);
-      final userPermission = UserPermissions.create()
-        ..mergeFromProto3Json(
-            userPrivate.permissions.toProto3Json() as Map<String, dynamic>);
-      return userPermission;
-    } on GrpcError catch (e) {
-      log('$e');
-      rethrow;
-    }
+    });
   }
 
   Future<UserPrivate> _checkUserAndProtoIt(String userId) async {
-    final userMongo = await userCollection.findOne(where.eq('userId', userId));
-    if (userMongo == null) {
-      throw GrpcError.notFound('user not found');
-    }
-    return UserPrivate.create()
-      ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
+    return databaseMiddleware<UserPrivate>(_poolService, (db) async {
+      final userMongo = await db
+          .collection(userCollectionName)
+          .findOne(where.eq('userId', userId));
+      if (userMongo == null) {
+        throw GrpcError.notFound('user not found');
+      }
+      return UserPrivate.create()
+        ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
+    });
   }
 
   @override
@@ -367,13 +359,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to update users');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+
     final userPrivate = await _checkUserAndProtoIt(request.permissions.userId);
     if (userPrivate.firmId.isNotEmpty &&
         userPrivate.firmId != userPermission.firmId) {
@@ -398,76 +384,76 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read other users');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
-    try {
-      final userMongo =
-          await userCollection.findOne(where.eq('userId', request.userId));
-      if (userMongo == null) {
-        throw GrpcError.notFound('user not found');
-      }
+    return databaseMiddleware<ReadOneUserResponse>(_poolService, (db) async {
+      try {
+        final userMongo = await db
+            .collection(userCollectionName)
+            .findOne(where.eq('userId', request.userId));
+        if (userMongo == null) {
+          throw GrpcError.notFound('user not found');
+        }
 
-      final userFound = UserPublic.create()
-        ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
+        final userFound = UserPublic.create()
+          ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
 
-      if (isReadingOwnUser) {
-        return ReadOneUserResponse(
-            user: userFound,
-            statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
-      }
+        if (isReadingOwnUser) {
+          return ReadOneUserResponse(
+              user: userFound,
+              statusResponse:
+                  StatusResponse(type: StatusResponse_Type.SUCCESS));
+        }
 
-      // if requestor has limited access we check that the userFound belongs to his/her fence
-      if (userPermission.fullAccess.hasFullAccess == false) {
-        // if userFound has no access then it is visible and will be returned
-        // allowing managers to easily redefine their accesses
-        if (userFound.permissions.limitedAccess.chainIds.ids.isNotEmpty ||
-            userFound.permissions.limitedAccess.boutiqueIds.ids.isNotEmpty) {
-          // need to filter to display only users that are within requestor's "fence"
-          // iterator over requestor's chains
-          for (final visibleChain
-              in userPermission.limitedAccess.chainIds.ids) {
-            if (userFound.permissions.limitedAccess.chainIds.ids
-                .none((chainId) => chainId == visibleChain)) {
-              return ReadOneUserResponse.create()
-                ..statusResponse = StatusResponse(
-                    type: StatusResponse_Type.ERROR,
-                    message: 'one user found but belong to a different chain');
-            } else {
-              // userFound && request share at least one chain
-              // we iterate over the requestor available boutiques
-              for (final visibleBoutiques
-                  in userPermission.limitedAccess.boutiqueIds.ids) {
-                if (userFound.permissions.limitedAccess.boutiqueIds.ids
-                    .none((id) => id == visibleBoutiques)) {
-                  return ReadOneUserResponse.create()
-                    ..statusResponse = StatusResponse(
-                        type: StatusResponse_Type.ERROR,
-                        message:
-                            'one user found in the same chain but in a boutique beyond your access');
+        // if requestor has limited access we check that the userFound belongs to his/her fence
+        if (userPermission.fullAccess.hasFullAccess == false) {
+          // if userFound has no access then it is visible and will be returned
+          // allowing managers to easily redefine their accesses
+          if (userFound.permissions.limitedAccess.chainIds.ids.isNotEmpty ||
+              userFound.permissions.limitedAccess.boutiqueIds.ids.isNotEmpty) {
+            // need to filter to display only users that are within requestor's "fence"
+            // iterator over requestor's chains
+            for (final visibleChain
+                in userPermission.limitedAccess.chainIds.ids) {
+              if (userFound.permissions.limitedAccess.chainIds.ids
+                  .none((chainId) => chainId == visibleChain)) {
+                return ReadOneUserResponse.create()
+                  ..statusResponse = StatusResponse(
+                      type: StatusResponse_Type.ERROR,
+                      message:
+                          'one user found but belong to a different chain');
+              } else {
+                // userFound && request share at least one chain
+                // we iterate over the requestor available boutiques
+                for (final visibleBoutiques
+                    in userPermission.limitedAccess.boutiqueIds.ids) {
+                  if (userFound.permissions.limitedAccess.boutiqueIds.ids
+                      .none((id) => id == visibleBoutiques)) {
+                    return ReadOneUserResponse.create()
+                      ..statusResponse = StatusResponse(
+                          type: StatusResponse_Type.ERROR,
+                          message:
+                              'one user found in the same chain but in a boutique beyond your access');
+                  }
                 }
               }
             }
           }
         }
+        // password will not be passed because does not exist in Userpublic
+        return ReadOneUserResponse(
+            user: userFound,
+            statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
+      } on GrpcError catch (e) {
+        print('readOne error $e');
+        rethrow;
+      } on MongoDartError catch (e) {
+        log('readOneUser userId ${request.userId} MongoDartError error $e');
+        rethrow;
       }
-      // password will not be passed because does not exist in Userpublic
-      return ReadOneUserResponse(
-          user: userFound,
-          statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
-    } on GrpcError catch (e) {
-      print('readOne error $e');
-      rethrow;
-    } on MongoDartError catch (e) {
-      log('readOneUser userId ${request.userId} MongoDartError error $e');
-      rethrow;
-    }
+    });
   }
 
+  ///  chain rights encompass device pairing, not boutique update rights
+  ///  right.create is the right to generate a code for pairing device
   @override
   Future<CodeForPairingDevice> generateCodeForPairingDevice(
       ServiceCall? call, ChainIdAndboutiqueId request) async {
@@ -475,7 +461,7 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
     // chain rights encompass device pairing
-    if (userPermission.chainRights.rights.any((e) => e == Right.update) ==
+    if (userPermission.chainRights.rights.any((e) => e == Right.create) ==
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to pair device (missing chainRights)');
@@ -492,48 +478,46 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.notFound('unknown boutiqueId ${request.boutiqueId}');
     }
 
-    try {
-      if (_db.isConnected == false) {
-        if (_db.state == State.opening) {
-          _db.state = State.closed;
-          final d = await _db.open();
-          print(d.runtimeType);
+    var code = 0;
+    var d = CodeForPairingDevice.create();
+    do {
+      code = _createCode();
+      d = await _findCode(code);
+    } while (code == d.code);
+
+    return databaseMiddleware<CodeForPairingDevice>(_poolService, (db) async {
+      try {
+        /// make sure we do not use an already existing code
+
+        final temp = CodeForPairingDevice.create()
+          ..userId = userPermission.userId
+          ..firmId = userPermission.firmId
+          ..chainId = request.chainId
+          ..boutiqueId = request.boutiqueId
+          ..code = code
+          ..timestampUTC = DateTime.now().timestampProto;
+
+        final result = await db
+            .collection(pairingCodesCollectionName)
+            .insertOne(temp.toProto3Json() as Map<String, dynamic>);
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
         }
+        if (result.success && result.document != null) {
+          return temp;
+        } else {
+          throw GrpcError.unknown('mongo error generateCodeForPairingDevice');
+        }
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      } catch (e, stacktrace) {
+        print(e);
+        print(stacktrace);
+        throw GrpcError.unknown('$e');
       }
-
-      /// make sure we do not use an already existing code
-      var code = 0;
-      var d = CodeForPairingDevice.create();
-      do {
-        code = _createCode();
-        d = await _findCode(code);
-      } while (code == d.code);
-
-      final temp = CodeForPairingDevice.create()
-        ..userId = userPermission.userId
-        ..firmId = userPermission.firmId
-        ..chainId = request.chainId
-        ..boutiqueId = request.boutiqueId
-        ..code = code
-        ..timestampUTC = DateTime.now().timestampProto;
-      final result = await pairingCodesCollection
-          .insertOne(temp.toProto3Json() as Map<String, dynamic>);
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      if (result.success && result.document != null) {
-        return temp;
-      } else {
-        throw GrpcError.unknown('mongo error generateCodeForPairingDevice');
-      }
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
-      throw GrpcError.unknown('$e');
-    }
+    });
   }
 
   int _createCode() {
@@ -542,17 +526,23 @@ class FenceService extends FenceServiceBase {
   }
 
   Future<CodeForPairingDevice> _findCode(int code) async {
-    try {
-      final d = await pairingCodesCollection.findOne(where.eq('code', code));
-      return CodeForPairingDevice.create()
-        ..mergeFromProto3Json(d, ignoreUnknownFields: true);
-    } on MongoDartError catch (e) {
-      print('_isCodeInDb error $e');
-      rethrow;
-    }
+    return databaseMiddleware<CodeForPairingDevice>(_poolService, (db) async {
+      try {
+        final d = await db
+            .collection(pairingCodesCollectionName)
+            .findOne(where.eq('code', code));
+        return CodeForPairingDevice.create()
+          ..mergeFromProto3Json(d, ignoreUnknownFields: true);
+      } on MongoDartError catch (e) {
+        print('_isCodeInDb error $e');
+        rethrow;
+      }
+    });
   }
 
-  /// needs a code from generateCodeForPairingDevice, that should be called by admin on web back office
+  /// no specific kind of permission for creating the device as code is required in the payload
+  /// this code comes from .generateCodeForPairingDevice()
+  /// which requires ChainRights.rights.contains(Right.create)
   /// mitigating the risk of a device added without admin consent
   /// The device is created in the boutique's chain with a true status
   /// so admin will not need to re-approve device
@@ -564,88 +554,156 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
-    final userMongo =
-        await userCollection.findOne(where.eq('userId', userPermission.userId));
-    if (userMongo == null) {
-      throw GrpcError.notFound('user ${userPermission.userId} not found');
-    }
-
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
-    final pairingResp = await _findCode(request.code);
-    if (pairingResp.code == 0) {
-      return CreateDeviceResponse(
-          statusResponse: StatusResponse(
-              type: StatusResponse_Type.ERROR,
-              message: 'no match',
-              timestamp: DateTime.now().timestampProto));
-    }
-    if (pairingResp.firmId != userPermission.firmId) {
-      throw GrpcError.permissionDenied(
-          'user cannot access data from firmId ${pairingResp.firmId}');
-    }
-
-    try {
-      // get chain info
-      final chain = await _checkOneChainAndProtoIt(
-          pairingResp.firmId, pairingResp.chainId);
-
-      final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
-          btq.chainId == pairingResp.chainId &&
-          btq.boutiqueId == pairingResp.boutiqueId);
-
-      if (boutiqueIndex == -1) {
-        throw GrpcError.notFound(
-            'no boutique found with this info chainId ${pairingResp.chainId} btqId ${pairingResp.boutiqueId}');
+    return databaseMiddleware<CreateDeviceResponse>(_poolService, (db) async {
+      final pairingCodesCollection = db.collection(pairingCodesCollectionName);
+      final userMongo = await db
+          .collection(userCollectionName)
+          .findOne(where.eq('userId', userPermission.userId));
+      if (userMongo == null) {
+        throw GrpcError.notFound('user ${userPermission.userId} not found');
       }
 
-      final device = Device.create()
-        ..status = true
-        ..password = ''
-        ..timestamp = DateTime.now().timestampProto
-        ..boutiqueId = pairingResp.boutiqueId
-        ..chainId = pairingResp.chainId
-        ..deviceId = DateTime.now().objectIdString
-        ..hardwareInfo = request.hardwareInfo;
-
-      chain.boutiques[boutiqueIndex].devices.add(device);
-
-      final result = await _updateOneChainDBExec(chain);
-
-      // _cleanPairingCodes
-      // delete the already used code
-      await pairingCodesCollection.deleteOne(where.eq('code', request.code));
-      // if 10% of the numbers are attributed
-      // clean codes older than 10 days
-      final countCodes = await pairingCodesCollection.count();
-      if (countCodes > 10000) {
-        final selector = where.lt(
-            'timestampUTC',
-            DateTime.now()
-                .subtract(const Duration(days: 10))
-                .toIso8601String());
-        await pairingCodesCollection.deleteMany(selector);
+      final pairingResp = await _findCode(request.code);
+      if (pairingResp.code == 0) {
+        return CreateDeviceResponse(
+            statusResponse: StatusResponse(
+                type: StatusResponse_Type.ERROR,
+                message: 'no match',
+                timestamp: DateTime.now().timestampProto));
+      }
+      if (pairingResp.firmId != userPermission.firmId) {
+        throw GrpcError.permissionDenied(
+            'user cannot access data from firmId ${pairingResp.firmId}');
       }
 
-      return CreateDeviceResponse(
-          statusResponse: StatusResponse(
-              type: StatusResponse_Type.CREATED, timestamp: result.timestamp),
-          firmId: chain.firmId,
-          chainId: chain.chainId,
-          boutiqueId: device.boutiqueId,
-          deviceId: device.deviceId);
-    } on GrpcError catch (e) {
-      print('createDevice error $e');
-      rethrow;
-    }
+      try {
+        // get chain info
+        final chain = await _checkOneChainAndProtoIt(
+            pairingResp.firmId, pairingResp.chainId);
+
+        final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
+            btq.chainId == pairingResp.chainId &&
+            btq.boutiqueId == pairingResp.boutiqueId);
+
+        if (boutiqueIndex == -1) {
+          throw GrpcError.notFound(
+              'no boutique found with this info chainId ${pairingResp.chainId} btqId ${pairingResp.boutiqueId}');
+        }
+
+        // Check for duplicate devices based on hardware info
+        final boutique = chain.boutiques[boutiqueIndex];
+
+        // Check 1: Serial number duplicates (most reliable)
+        final existingDeviceBySerial =
+            boutique.devices.firstWhereOrNull((device) {
+          final hwInfo = device.hardwareInfo;
+          final requestHwInfo = request.hardwareInfo;
+
+          return hwInfo.serialNumber.isNotEmpty &&
+              requestHwInfo.serialNumber.isNotEmpty &&
+              hwInfo.serialNumber == requestHwInfo.serialNumber;
+        });
+
+        // Handle existing device by serial number (most reliable match)
+        if (existingDeviceBySerial != null) {
+          // Device re-enrollment case - return existing device info to allow mobile app to proceed
+          print(
+              'Device re-enrollment detected: serial ${request.hardwareInfo.serialNumber} already exists, returning existing device info');
+
+          return CreateDeviceResponse(
+              statusResponse: StatusResponse(
+                  type: StatusResponse_Type.CREATED,
+                  timestamp: DateTime.now().timestampProto,
+                  message:
+                      'Device re-enrolled - found existing device with same serial number (${request.hardwareInfo.serialNumber})'),
+              firmId: chain.firmId,
+              chainId: chain.chainId,
+              boutiqueId: existingDeviceBySerial.boutiqueId,
+              deviceId: existingDeviceBySerial.deviceId);
+        }
+
+        // Check 2: Name + Brand + OS combination duplicates (fallback for devices without serial)
+        final existingDeviceBySpecs =
+            boutique.devices.firstWhereOrNull((device) {
+          final hwInfo = device.hardwareInfo;
+          final requestHwInfo = request.hardwareInfo;
+
+          // Only check this if at least one device doesn't have a serial number
+          final currentHasNoSerial = hwInfo.serialNumber.isEmpty;
+          final requestHasNoSerial = requestHwInfo.serialNumber.isEmpty;
+
+          if (!currentHasNoSerial && !requestHasNoSerial) {
+            return false; // Both have serials, already checked above
+          }
+
+          return hwInfo.name.isNotEmpty &&
+              requestHwInfo.name.isNotEmpty &&
+              hwInfo.name == requestHwInfo.name &&
+              hwInfo.brand == requestHwInfo.brand &&
+              hwInfo.baseOS == requestHwInfo.baseOS;
+        });
+
+        // Handle existing device by specs (less reliable match)
+        if (existingDeviceBySpecs != null) {
+          // Device re-enrollment case - return existing device info to allow mobile app to proceed
+          print(
+              'Device re-enrollment detected: specs ${request.hardwareInfo.name}-${request.hardwareInfo.brand} already exist, returning existing device info');
+
+          return CreateDeviceResponse(
+              statusResponse: StatusResponse(
+                  type: StatusResponse_Type.CREATED,
+                  timestamp: DateTime.now().timestampProto,
+                  message:
+                      'Device re-enrolled - found existing device with same specifications (${request.hardwareInfo.name} - ${request.hardwareInfo.brand})'),
+              firmId: chain.firmId,
+              chainId: chain.chainId,
+              boutiqueId: existingDeviceBySpecs.boutiqueId,
+              deviceId: existingDeviceBySpecs.deviceId);
+        }
+
+        // No existing device found - create new one
+        final device = Device.create()
+          ..status = true
+          ..password = ''
+          ..timestamp = DateTime.now().timestampProto
+          ..boutiqueId = pairingResp.boutiqueId
+          ..chainId = pairingResp.chainId
+          ..deviceId = DateTime.now().objectIdString
+          ..hardwareInfo = request.hardwareInfo;
+
+        chain.boutiques[boutiqueIndex].devices.add(device);
+
+        final result = await _updateOneChainDBExec(chain);
+
+        // _cleanPairingCodes
+        // delete the already used code
+        await pairingCodesCollection.deleteOne(where.eq('code', request.code));
+        // if 10% of the numbers are attributed
+        // clean codes older than 10 days
+        final countCodes = await pairingCodesCollection.count();
+        if (countCodes > 10000) {
+          final selector = where.lt(
+              'timestampUTC',
+              DateTime.now()
+                  .subtract(const Duration(days: 10))
+                  .toIso8601String());
+          await pairingCodesCollection.deleteMany(selector);
+        }
+
+        return CreateDeviceResponse(
+            statusResponse: StatusResponse(
+                type: StatusResponse_Type.CREATED, timestamp: result.timestamp),
+            firmId: chain.firmId,
+            chainId: chain.chainId,
+            boutiqueId: device.boutiqueId,
+            deviceId: device.deviceId);
+      } on GrpcError catch (e) {
+        print('createDevice error $e');
+        rethrow;
+      }
+    });
   }
 
-  //
   @override
   Future<StatusResponse> updateDevicePassword(
       ServiceCall? call, UpdateDevicePasswordRequest request) async {
@@ -662,13 +720,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -680,26 +732,31 @@ class FenceService extends FenceServiceBase {
         .devices[boutiqueIndexAndDeviceIndex.deviceIndex]
         .password = request.device.password;
 
-    try {
-      final result = await userCollection.replaceOne(
-        where.eq('firmId', chain.firmId).eq('chainid', chain.chainId),
-        chain.toProto3Json() as Map<String, dynamic>,
-        upsert: true,
-      );
-      if (result.hasWriteErrors) {
-        throw GrpcError.internal('hasWriteErrors ${result.writeError!.errmsg}');
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        final result = await userCollection.replaceOne(
+          where.eq('firmId', chain.firmId).eq('chainid', chain.chainId),
+          chain.toProto3Json() as Map<String, dynamic>,
+          upsert: true,
+        );
+        if (result.hasWriteErrors) {
+          throw GrpcError.internal(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        }
+        if (result.ok != 1) {
+          throw GrpcError.unknown(
+              'update != 1 ${result.document} ${result.serverResponses}');
+        }
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        print('pairOneDevice error $e');
+        rethrow;
       }
-      if (result.ok != 1) {
-        throw GrpcError.unknown(
-            'update != 1 ${result.document} ${result.serverResponses}');
-      }
-      return StatusResponse()
-        ..type = StatusResponse_Type.UPDATED
-        ..timestamp = DateTime.now().timestampProto;
-    } on GrpcError catch (e) {
-      print('pairOneDevice error $e');
-      rethrow;
-    }
+    });
   }
 
   @override
@@ -718,29 +775,26 @@ class FenceService extends FenceServiceBase {
           'user does not have right to delete users');
     }
 
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
     final userPrivate = await _checkUserAndProtoIt(request.userId);
     if (userPrivate.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied('user belongs to a different firm');
     }
 
-    try {
-      // ignore: unused_local_variable
-      final result =
-          await userCollection.deleteOne(where.eq('userId', request.userId));
-      return StatusResponse()
-        ..type = StatusResponse_Type.DELETED
-        ..timestamp = DateTime.now().timestampProto;
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    }
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        // ignore: unused_local_variable
+        final result =
+            await userCollection.deleteOne(where.eq('userId', request.userId));
+        return StatusResponse()
+          ..type = StatusResponse_Type.DELETED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      }
+    });
   }
 
   ///
@@ -777,14 +831,6 @@ class FenceService extends FenceServiceBase {
     // ? should we check that no other firm exist for this accouunt ?
     // set the appropriate ids
 
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
-
     final nowProtoUTC = DateTime.now().toUtc().timestampProto;
 
     final firmId = DateTime.now().objectIdString;
@@ -794,125 +840,138 @@ class FenceService extends FenceServiceBase {
         status: true,
         creationDateUTC: nowProtoUTC);
 
-    try {
-      final result = await firmCollection
-          .insertOne(firm.toProto3Json() as Map<String, dynamic>);
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
-      }
-      if (result.success && result.document != null) {
-        final permissions = UserPermissions.create()
-          ..articleRights = RightsAdmin.article
-          ..boutiqueRights = RightsAdmin.boutique
-          ..contactRights = RightsAdmin.contact
-          ..chainRights = RightsAdmin.chain
-          ..firmRights = RightsAdmin.firm
-          ..ticketRights = RightsAdmin.ticket
-          ..boolRights = RightsAdmin.boolRights
-          ..userManagementRights = RightsAdmin.userManagement
-          ..billingRights = RightsAdmin.billing
-          ..firmId = firmId
-          ..userId = userPermission.userId
-          ..fullAccess = AccessFull(hasFullAccess: true);
+    return databaseMiddleware<CreateFirmResponse>(_poolService, (db) async {
+      final firmCollection = db.collection(firmCollectionName);
 
-        try {
-          await _updateUserFirmIdAndPermissionsDBExec(
-              userPermission.userId, firmId, permissions);
-        } on GrpcError catch (e) {
-          print('createFirm _updateUserFirmIdAndPermissionsDBExec error $e');
-          rethrow;
+      try {
+        final result = await firmCollection
+            .insertOne(firm.toProto3Json() as Map<String, dynamic>);
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
         }
+        if (result.success && result.document != null) {
+          final permissions = UserPermissions.create()
+            ..articleRights = RightsAdmin.article
+            ..boutiqueRights = RightsAdmin.boutique
+            ..contactRights = RightsAdmin.contact
+            ..chainRights = RightsAdmin.chain
+            ..firmRights = RightsAdmin.firm
+            ..ticketRights = RightsAdmin.ticket
+            ..boolRights = RightsAdmin.boolRights
+            ..userManagementRights = RightsAdmin.userManagement
+            ..billingRights = RightsAdmin.billing
+            ..firmId = firmId
+            ..userId = userPermission.userId
+            ..fullAccess = AccessFull(hasFullAccess: true);
 
-        final chain = Chain(
-            firmId: firmId,
-            chainId: firmId,
-            name: request.name,
-            creationDateUTC: nowProtoUTC,
-            boutiques: [
-              BoutiqueMongo.create()
-                ..firmId = firmId
-                ..chainId = firmId
-                ..boutiqueId = firmId
-                ..name = request.name
-                ..creationTimestampUTC = nowProtoUTC
-            ]);
+          try {
+            await _updateUserFirmIdAndPermissionsDBExec(
+                userPermission.userId, firmId, permissions);
+          } on GrpcError catch (e) {
+            print('createFirm _updateUserFirmIdAndPermissionsDBExec error $e');
+            rethrow;
+          }
 
-        try {
-          await _createOneChainDBExec(chain);
-        } on GrpcError catch (e) {
-          print('createFirm _createOneChainDBExec error $e');
-          rethrow;
-        }
-        return CreateFirmResponse(
-          statusResponse: StatusResponse.create()
-            ..type = StatusResponse_Type.CREATED
-            ..id = firmId
-            ..timestamp = DateTime.now().timestampProto,
-          firm: firm,
-        );
-      } else {
-        return CreateFirmResponse(
+          final chain = Chain(
+              firmId: firmId,
+              chainId: firmId,
+              name: request.name,
+              creationDateUTC: nowProtoUTC,
+              boutiques: [
+                BoutiqueMongo.create()
+                  ..firmId = firmId
+                  ..chainId = firmId
+                  ..boutiqueId = firmId
+                  ..name = request.name
+                  ..creationTimestampUTC = nowProtoUTC
+              ]);
+
+          try {
+            await _createOneChainDBExec(chain);
+          } on GrpcError catch (e) {
+            print('createFirm _createOneChainDBExec error $e');
+            rethrow;
+          }
+          return CreateFirmResponse(
             statusResponse: StatusResponse.create()
-              ..type = StatusResponse_Type.ERROR
-              ..message = 'result.ok != 1 || result.document == null'
-              ..timestamp = DateTime.now().timestampProto);
+              ..type = StatusResponse_Type.CREATED
+              ..id = firmId
+              ..timestamp = DateTime.now().timestampProto,
+            firm: firm,
+          );
+        } else {
+          return CreateFirmResponse(
+              statusResponse: StatusResponse.create()
+                ..type = StatusResponse_Type.ERROR
+                ..message = 'result.ok != 1 || result.document == null'
+                ..timestamp = DateTime.now().timestampProto);
+        }
+      } on GrpcError catch (e) {
+        print('createFirm $e');
+        rethrow;
+      } catch (e, stacktrace) {
+        print('createFirm $e');
+        print(stacktrace);
+        rethrow;
       }
-    } on GrpcError catch (e) {
-      print('createFirm $e');
-      rethrow;
-    } catch (e, stacktrace) {
-      print('createFirm $e');
-      print(stacktrace);
-      rethrow;
-    }
+    });
   }
 
   Future<StatusResponse> _updateUserFirmIdAndPermissionsDBExec(
       String userId, String firmId, UserPermissions permissions) async {
-    try {
-      await userCollection.update(
-        where.eq('userId', userId),
-        ModifierBuilder().set('firmId', firmId).set(
-            'permissions', permissions.toProto3Json() as Map<String, dynamic>),
-      );
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
 
-      return StatusResponse()
-        ..type = StatusResponse_Type.UPDATED
-        ..timestamp = DateTime.now().timestampProto;
-    } on GrpcError catch (e) {
-      print('_updateUserFirmIdAndPermissionsDBExec $e');
-      rethrow;
-    } catch (e, stacktrace) {
-      print('_updateUserFirmIdAndPermissionsDBExec $e');
-      // the whole stacktrace is heavy
-      print(stacktrace);
-      rethrow;
-    }
+      try {
+        await userCollection.update(
+          where.eq('userId', userId),
+          ModifierBuilder().set('firmId', firmId).set('permissions',
+              permissions.toProto3Json() as Map<String, dynamic>),
+        );
+
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        print('_updateUserFirmIdAndPermissionsDBExec $e');
+        rethrow;
+      } catch (e, stacktrace) {
+        print('_updateUserFirmIdAndPermissionsDBExec $e');
+        // the whole stacktrace is heavy
+        print(stacktrace);
+        rethrow;
+      }
+    });
   }
 
   Future<StatusResponse> _updateUserDBExec(UserPublic user) async {
-    try {
-      await userCollection.update(
-        where.eq('userId', user.userId),
-        ModifierBuilder()
-            .set('firstname', user.firstname)
-            .set('lastname', user.lastname)
-            .set('mail', user.mail)
-            .set('phone', user.phone.toProto3Json() as Map<String, dynamic>)
-            .set('permissions',
-                user.permissions.toProto3Json() as Map<String, dynamic>),
-      );
-      return StatusResponse()
-        ..type = StatusResponse_Type.UPDATED
-        ..timestamp = DateTime.now().timestampProto;
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      // the whole stacktrace is heavy
-      print(stacktrace);
-      rethrow;
-    }
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        await userCollection.update(
+          where.eq('userId', user.userId),
+          ModifierBuilder()
+              .set('firstname', user.firstname)
+              .set('lastname', user.lastname)
+              .set('mail', user.mail)
+              .set('phone', user.phone.toProto3Json() as Map<String, dynamic>)
+              .set('permissions',
+                  user.permissions.toProto3Json() as Map<String, dynamic>),
+        );
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      } catch (e, stacktrace) {
+        // the whole stacktrace is heavy
+        print(stacktrace);
+        rethrow;
+      }
+    });
   }
 
   @override
@@ -923,26 +982,24 @@ class FenceService extends FenceServiceBase {
     if (userPermission.firmRights.rights.any((e) => e == Right.read) == false) {
       throw GrpcError.permissionDenied('user does not have right to read firm');
     }
-    try {
-      if (_db.isConnected == false) {
-        if (_db.state == State.opening) {
-          _db.state = State.closed;
-          final d = await _db.open();
-          print(d.runtimeType);
+    return databaseMiddleware<Firm>(_poolService, (db) async {
+      final firmCollection = db.collection(firmCollectionName);
+
+      try {
+        final firmMongo = await firmCollection
+            .findOne(where.eq('firmId', userPermission.firmId));
+        if (firmMongo == null) {
+          throw GrpcError.notFound(
+              'Did not find firmId ${userPermission.firmId}');
         }
+        final firm = Firm()
+          ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
+        return firm;
+      } on GrpcError catch (e) {
+        print('readFirm error $e');
+        rethrow;
       }
-      final firmMongo = await firmCollection
-          .findOne(where.eq('firmId', userPermission.firmId));
-      if (firmMongo == null) {
-        throw GrpcError.notFound('firm not found');
-      }
-      final firm = Firm()
-        ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
-      return firm;
-    } on GrpcError catch (e) {
-      print('readFirm error $e');
-      rethrow;
-    }
+    });
   }
 
   // Future<Firm> _checkFirmAndProtoIt(UserPermissions userPermissions) async {
@@ -957,40 +1014,48 @@ class FenceService extends FenceServiceBase {
 
   Future<List<Chain>> _checkChainsAndProtoThem(
       UserPermissions userPermissions) async {
-    try {
-      final chainsMongo = await boutiqueCollection
-          .find(where.eq('firmId', userPermissions.firmId))
-          .toList();
-      if (chainsMongo.isEmpty) {
-        return [];
+    return databaseMiddleware<List<Chain>>(_poolService, (db) async {
+      final boutiqueCollection = db.collection(boutiqueCollectionName);
+
+      try {
+        final chainsMongo = await boutiqueCollection
+            .find(where.eq('firmId', userPermissions.firmId))
+            .toList();
+        if (chainsMongo.isEmpty) {
+          return [];
+        }
+        final chains = <Chain>[];
+        for (final chainMongo in chainsMongo) {
+          chains.add(Chain.create()
+            ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true));
+        }
+        return chains;
+      } on GrpcError catch (e) {
+        print('_findChainsAndProtoThem $e');
+        rethrow;
       }
-      final chains = <Chain>[];
-      for (final chainMongo in chainsMongo) {
-        chains.add(Chain.create()
-          ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true));
-      }
-      return chains;
-    } on GrpcError catch (e) {
-      print('_findChainsAndProtoThem $e');
-      rethrow;
-    }
+    });
   }
 
   /// if no match whith firmId and chainId throws GrpcError.notFound
   Future<Chain> _checkOneChainAndProtoIt(String firmId, String chainId) async {
-    try {
-      final chainMongo = await boutiqueCollection
-          .findOne(where.eq('firmId', firmId).eq('chainId', chainId));
-      if (chainMongo == null) {
-        throw GrpcError.notFound(
-            'firm/chain not found firmId: $firmId chainId:$chainId');
+    return databaseMiddleware<Chain>(_poolService, (db) async {
+      final boutiqueCollection = db.collection(boutiqueCollectionName);
+
+      try {
+        final chainMongo = await boutiqueCollection
+            .findOne(where.eq('firmId', firmId).eq('chainId', chainId));
+        if (chainMongo == null) {
+          throw GrpcError.notFound(
+              'firm/chain not found firmId: $firmId chainId:$chainId');
+        }
+        return Chain.create()
+          ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
+      } on GrpcError catch (e) {
+        print('_checkOneChainAndProtoIt $e');
+        rethrow;
       }
-      return Chain.create()
-        ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
-    } on GrpcError catch (e) {
-      print('_checkOneChainAndProtoIt $e');
-      rethrow;
-    }
+    });
   }
 
   // Future<List<String>> _readAllBoutiquesInChain(UserPrivate user) async {
@@ -1028,13 +1093,6 @@ class FenceService extends FenceServiceBase {
         false) {
       throw GrpcError.permissionDenied(
           'user cannot create data for firm ${userPermission.firmId} or chain ${request.chainId}');
-    }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
     }
 
     final chain =
@@ -1096,13 +1154,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access firm ${request.firmId}');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+
     final chainId = DateTime.now().objectIdString;
     request.chainId = chainId;
     request.boutiques.first
@@ -1113,32 +1165,37 @@ class FenceService extends FenceServiceBase {
   }
 
   Future<StatusResponse> _createOneChainDBExec(Chain chain) async {
-    try {
-      final result = await boutiqueCollection
-          .insertOne(chain.toProto3Json() as Map<String, dynamic>);
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final boutiqueCollection = db.collection(boutiqueCollectionName);
+
+      try {
+        final result = await boutiqueCollection
+            .insertOne(chain.toProto3Json() as Map<String, dynamic>);
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        }
+        if (result.success && result.document != null) {
+          final chainId = result.document!['chainId'];
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.CREATED
+            ..id = chainId
+            ..timestamp = DateTime.now().timestampProto;
+        } else {
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.ERROR
+            ..message = 'result.ok != 1 || result.document == null'
+            ..timestamp = DateTime.now().timestampProto;
+        }
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      } catch (e, stacktrace) {
+        print(e);
+        print(stacktrace);
+        rethrow;
       }
-      if (result.success && result.document != null) {
-        final chainId = result.document!['chainId'];
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.CREATED
-          ..id = chainId
-          ..timestamp = DateTime.now().timestampProto;
-      } else {
-        return StatusResponse.create()
-          ..type = StatusResponse_Type.ERROR
-          ..message = 'result.ok != 1 || result.document == null'
-          ..timestamp = DateTime.now().timestampProto;
-      }
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      print(e);
-      print(stacktrace);
-      rethrow;
-    }
+    });
   }
 
   @override
@@ -1163,13 +1220,6 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
 
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
     final boutiqueIndex = chain.boutiques
@@ -1215,62 +1265,75 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final boutiqueCollection = db.collection(boutiqueCollectionName);
+      try {
+        await boutiqueCollection.update(
+          where
+              .eq('firmId', userPermission.firmId)
+              .eq('chainId', request.chainId),
+          ModifierBuilder()
+              .set('name', request.name)
+              .set('lastUpdatedByuserId', userPermission.userId)
+              .set(
+                'lastUpdateTimestampUTC',
+                DateTime.now().toUtc().timestampProto.toProto3Json(),
+              ),
+        );
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      } catch (e, stacktrace) {
+        print(e);
+        print(stacktrace);
+        rethrow;
       }
-    }
-    await boutiqueCollection.update(
-      where.eq('firmId', userPermission.firmId).eq('chainId', request.chainId),
-      ModifierBuilder()
-          .set('name', request.name)
-          .set('lastUpdatedByuserId', userPermission.userId)
-          .set(
-            'lastUpdateTimestampUTC',
-            DateTime.now().toUtc().timestampProto.toProto3Json(),
-          ),
-    );
-    return StatusResponse()
-      ..type = StatusResponse_Type.UPDATED
-      ..timestamp = DateTime.now().timestampProto;
+    });
   }
 
   Future<StatusResponse> _updateOneChainDBExec(Chain chain) async {
-    try {
-      final result = await boutiqueCollection.replaceOne(
-        where.eq('firmId', chain.firmId).eq('chainId', chain.chainId),
-        chain.toProto3Json() as Map<String, dynamic>,
-        upsert: true,
-      );
-      if (result.hasWriteErrors) {
-        throw GrpcError.internal('hasWriteErrors ${result.writeError!.errmsg}');
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final boutiqueCollection = db.collection(boutiqueCollectionName);
+
+      try {
+        final result = await boutiqueCollection.replaceOne(
+          where.eq('firmId', chain.firmId).eq('chainId', chain.chainId),
+          chain.toProto3Json() as Map<String, dynamic>,
+          upsert: true,
+        );
+        if (result.hasWriteErrors) {
+          throw GrpcError.internal(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        }
+        if (result.ok != 1) {
+          throw GrpcError.unknown(
+              'update != 1 ${result.document} ${result.serverResponses}');
+        }
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      } catch (e, stacktrace) {
+        // the whole stacktrace is heavy
+        print(stacktrace);
+        rethrow;
       }
-      if (result.ok != 1) {
-        throw GrpcError.unknown(
-            'update != 1 ${result.document} ${result.serverResponses}');
-      }
-      return StatusResponse()
-        ..type = StatusResponse_Type.UPDATED
-        ..timestamp = DateTime.now().timestampProto;
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      // the whole stacktrace is heavy
-      print(stacktrace);
-      rethrow;
-    }
+    });
   }
 
+  /// chain rights encompass device pairing
+  /// right.delete is the right to delete a device
   @override
   Future<StatusResponse> deleteOneDevice(
       ServiceCall? call, DeleteDeviceRequest request) async {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-    // chain rights encompass device pairing
     if (userPermission.chainRights.rights.any((e) => e == Right.delete) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -1280,13 +1343,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
     // find the device
@@ -1297,7 +1354,14 @@ class FenceService extends FenceServiceBase {
         .removeAt(btqIndexDeviceIndex.deviceIndex);
     // update chain in db
 
-    return await _updateOneChainDBExec(chain);
+    try {
+      await _updateOneChainDBExec(chain);
+      return StatusResponse()
+        ..type = StatusResponse_Type.DELETED
+        ..timestamp = DateTime.now().timestampProto;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -1309,13 +1373,7 @@ class FenceService extends FenceServiceBase {
     final userPermissions = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+
     final chain =
         await _checkOneChainAndProtoIt(userPermissions.firmId, request.chainId);
 
@@ -1349,13 +1407,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -1377,13 +1429,7 @@ class FenceService extends FenceServiceBase {
   Future<SignUpResponse> signUp(ServiceCall call, SignUpRequest request) async {
     final mailAndEncyptedPassword = _checkCredentials(
         Credentials(mail: request.mail, password: request.password));
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+
     final user = await _isMailAlreadyUsed(mailAndEncyptedPassword.mail);
     if (user.userId.isNotEmpty) {
       if (_isPendingUser(user)) {
@@ -1395,61 +1441,70 @@ class FenceService extends FenceServiceBase {
             'mail ${request.mail} is not available');
       }
     }
-    try {
-      // mail/user does not exist AND is not a pending user
-      final userId = DateTime.now().objectIdString;
-      final permissions = UserPermissions(
-          userId: userId, firmRights: FirmRights(rights: [Right.create]));
-      final userPrivate = UserPrivate(
-        userId: userId,
-        permissions: permissions,
-        passwordEncrypted: mailAndEncyptedPassword.passwordEncrypted,
-        mail: request.mail,
-        firstname: request.firstname,
-        lastname: request.lastname,
-        creationDateUTC: DateTime.now().toUtc().timestampProto,
-      );
+    return databaseMiddleware<SignUpResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
 
-      final result = await userCollection
-          .insertOne(userPrivate.toProto3Json() as Map<String, dynamic>);
-      if (result.hasWriteErrors) {
-        throw GrpcError.unknown('hasWriteErrors ${result.writeError!.errmsg}');
+      try {
+        // mail/user does not exist AND is not a pending user
+        final userId = DateTime.now().objectIdString;
+        final permissions = UserPermissions(
+            userId: userId, firmRights: FirmRights(rights: [Right.create]));
+        final userPrivate = UserPrivate(
+          userId: userId,
+          permissions: permissions,
+          passwordEncrypted: mailAndEncyptedPassword.passwordEncrypted,
+          mail: request.mail,
+          firstname: request.firstname,
+          lastname: request.lastname,
+          mustChangePassword: false,
+          creationDateUTC: DateTime.now().toUtc().timestampProto,
+        );
+
+        final result = await userCollection
+            .insertOne(userPrivate.toProto3Json() as Map<String, dynamic>);
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        }
+        final timestamp = DateTime.now().timestampProto;
+        if (result.success && result.document != null) {
+          final userId = result.document!['userId'];
+          return SignUpResponse(
+              statusResponse: StatusResponse()
+                ..id = userId
+                ..type = StatusResponse_Type.CREATED
+                ..timestamp = timestamp,
+              userId: userId);
+        } else {
+          return SignUpResponse(
+              statusResponse: StatusResponse()
+                ..type = StatusResponse_Type.ERROR
+                ..timestamp = timestamp);
+        }
+      } on GrpcError catch (e) {
+        log('user mail ${request.mail} signup error: $e');
+        rethrow;
       }
-      final timestamp = DateTime.now().timestampProto;
-      if (result.success && result.document != null) {
-        final userId = result.document!['userId'];
-        return SignUpResponse(
-            statusResponse: StatusResponse()
-              ..id = userId
-              ..type = StatusResponse_Type.CREATED
-              ..timestamp = timestamp,
-            userId: userId);
-      } else {
-        return SignUpResponse(
-            statusResponse: StatusResponse()
-              ..type = StatusResponse_Type.ERROR
-              ..timestamp = timestamp);
-      }
-    } on GrpcError catch (e) {
-      log('user mail ${request.mail} signup error: $e');
-      rethrow;
-    }
+    });
   }
 
   /// returns empty user if not found
   Future<UserPublic> _isMailAlreadyUsed(String mail) async {
-    try {
-      final userMap = await userCollection.findOne(where.eq('mail', mail));
-      if (userMap != null) {
-        return UserPublic.create()
-          ..mergeFromProto3Json(userMap, ignoreUnknownFields: true);
-      } else {
-        return UserPublic.create();
+    return databaseMiddleware<UserPublic>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+      try {
+        final userMap = await userCollection.findOne(where.eq('mail', mail));
+        if (userMap != null) {
+          return UserPublic.create()
+            ..mergeFromProto3Json(userMap, ignoreUnknownFields: true);
+        } else {
+          return UserPublic.create();
+        }
+      } catch (e) {
+        log('isMailAlreadyUsed $e');
+        rethrow;
       }
-    } catch (e) {
-      log('isMailAlreadyUsed $e');
-      rethrow;
-    }
+    });
   }
 
   /// User created by a firm manager are pending until they sign in
@@ -1462,21 +1517,25 @@ class FenceService extends FenceServiceBase {
   // if user was created by mistake, he/she can quit/delete profile to start fresh signup
   Future<SignUpResponse> _updatePendingUser(
       UserPublic user, String passwordEncrypted) async {
-    try {
-      await userCollection.update(where.eq('userId', user.userId),
-          ModifierBuilder().set('password', passwordEncrypted),
-          upsert: true);
-      return SignUpResponse(
-          statusResponse: StatusResponse()
-            ..message =
-                'pendingUser from firm ${user.permissions.firmId}, just log in to access it'
-            ..type = StatusResponse_Type.UPDATED
-            ..timestamp = DateTime.now().timestampProto,
-          userId: user.userId);
-    } catch (e) {
-      log('error $e');
-      rethrow;
-    }
+    return databaseMiddleware<SignUpResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        await userCollection.update(where.eq('userId', user.userId),
+            ModifierBuilder().set('password', passwordEncrypted),
+            upsert: true);
+        return SignUpResponse(
+            statusResponse: StatusResponse()
+              ..message =
+                  'pendingUser from firm ${user.permissions.firmId}, just log in to access it'
+              ..type = StatusResponse_Type.UPDATED
+              ..timestamp = DateTime.now().timestampProto,
+            userId: user.userId);
+      } catch (e) {
+        log('error $e');
+        rethrow;
+      }
+    });
   }
 
   @override
@@ -1490,13 +1549,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read chain');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open().then((v) => print(v));
-      }
-    }
+
     final chains = await _checkChainsAndProtoThem(userPermission);
     return ReadAllChainsResponse(chains: chains);
   }
@@ -1506,50 +1559,82 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, PasswordUpdateRequest request) async {
     if (request.firmId.isEmpty ||
         request.userId.isEmpty ||
-        request.password.isEmpty) {
+        request.passwordCurrent.isEmpty ||
+        request.passwordNew.isEmpty) {
       throw GrpcError.invalidArgument(
-          'firmId / userId / password cannot be empty');
+          'firmId / userId / passwordCurrent / passwordNew cannot be empty');
+    }
+    if (request.passwordCurrent != request.passwordNew) {
+      throw GrpcError.invalidArgument(
+          'passwordCurrent and passwordNew must be different');
     }
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
-    if (userPermission.userManagementRights.rights
-            .any((e) => e == Right.update) ==
-        false) {
+    ///  firm rights encompass user management
+    /// userManagementRights.rights is not enough here
+    if (request.userId != userPermission.userId &&
+        userPermission.firmRights.rights.any((e) => e == Right.update) ==
+            false) {
       throw GrpcError.permissionDenied(
-          'user does not have right to update user');
+          'you do not have the right to update other users passwords');
     }
     if (userPermission.isFirmAccessible(request.firmId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.firmId}');
     }
 
-    final passwordEncrypted = _checkAndEncryptPassword(request.password);
+    final passwordNewEncrypted = _checkAndEncryptPassword(request.passwordNew);
+    // we do not use _checkAndEncryptPassword below because it could lead to techical bug (catch 22)
+    // in case password making rules change in the future
+    final passwordCurrentEncrypted =
+        Encrypter(request.passwordCurrent).encrypted;
 
-    try {
-      if (_db.isConnected == false) {
-        if (_db.state == State.opening) {
-          _db.state = State.closed;
-          final d = await _db.open();
-          print(d.runtimeType);
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        /// ****************
+        // * double security in case user bearer token is compromised
+        /// ****************
+        final user = await userCollection.findOne(
+            where.eq('firmId', request.firmId).eq('userId', request.userId));
+        if (user == null) {
+          throw GrpcError.notFound('user not found');
         }
+        final userMongo = UserPrivate.create()
+          ..mergeFromProto3Json(user, ignoreUnknownFields: true);
+        if (userMongo.passwordEncrypted != passwordCurrentEncrypted) {
+          throw GrpcError.invalidArgument('passwordCurrent is incorrect');
+        }
+
+        /// ****************
+        // * update password
+        /// ****************
+        await userCollection.update(
+            where.eq('firmId', request.firmId).eq('userId', request.userId),
+            ModifierBuilder()
+                .set('password', passwordNewEncrypted)
+                .set('mustChangePassword', false));
+
+        ///TODO: invalidate all existing tokens for this user
+        // await _invalidateAllUserTokens(request.userId);
+        ///... generate new token
+        // final newToken = await _generateNewToken(request.userId);
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      } catch (e, stacktrace) {
+        // the whole stacktrace is heavy
+        print(stacktrace);
+        rethrow;
       }
-      await userCollection.update(
-          where.eq('firmId', request.firmId).eq('userId', request.userId),
-          ModifierBuilder().set('password', passwordEncrypted));
-      return StatusResponse()
-        ..type = StatusResponse_Type.UPDATED
-        ..timestamp = DateTime.now().timestampProto;
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    } catch (e, stacktrace) {
-      // the whole stacktrace is heavy
-      print(stacktrace);
-      rethrow;
-    }
+    });
   }
 
   @override
@@ -1564,61 +1649,59 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to read users');
     }
-    try {
-      if (_db.isConnected == false) {
-        if (_db.state == State.opening) {
-          _db.state = State.closed;
-          final d = await _db.open();
-          print(d.runtimeType);
-        }
-      }
-      final usersMongo = await userCollection
-          .find(where.eq('firmId', userPermission.firmId))
-          .toList();
-      if (usersMongo.isEmpty) {
-        return UsersPublic(users: []);
-      }
-      final users = <UserPublic>[];
-      for (final userMongo in usersMongo) {
-        users.add(UserPublic.create()
-          ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true));
-      }
+    return databaseMiddleware<UsersPublic>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
 
-      if (userPermission.fullAccess.hasFullAccess) {
-        return UsersPublic(users: users);
-      }
-      // if requestor has limitedAccess we retain only users that belong to his/her "fence"
-      final usersFiltered = users
-        ..retainWhere((userFound) {
-          // userFound without any access are included
-          // allowing managers to easily redefine their accesses
-          if (userFound.permissions.limitedAccess.chainIds.ids.isNotEmpty ||
-              userFound.permissions.limitedAccess.boutiqueIds.ids.isNotEmpty) {
-            return true;
-          }
-          // iterate over requestor's chains
-          for (final visibleChain
-              in userPermission.limitedAccess.chainIds.ids) {
-            if (userFound.permissions.limitedAccess.chainIds.ids
-                .any((chainId) => chainId == visibleChain)) {
-              // userFound && requestor share at least one chain
-              // we iterate over the requestor's boutiques
-              for (final visibleBoutiques
-                  in userPermission.limitedAccess.boutiqueIds.ids) {
-                if (userFound.permissions.limitedAccess.boutiqueIds.ids
-                    .any((id) => id == visibleBoutiques)) {
-                  return true;
+      try {
+        final usersMongo = await userCollection
+            .find(where.eq('firmId', userPermission.firmId))
+            .toList();
+        if (usersMongo.isEmpty) {
+          return UsersPublic(users: []);
+        }
+        final users = <UserPublic>[];
+        for (final userMongo in usersMongo) {
+          users.add(UserPublic.create()
+            ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true));
+        }
+
+        if (userPermission.fullAccess.hasFullAccess) {
+          return UsersPublic(users: users);
+        }
+        // if requestor has limitedAccess we retain only users that belong to his/her "fence"
+        final usersFiltered = users
+          ..retainWhere((userFound) {
+            // userFound without any access are included
+            // allowing managers to easily redefine their accesses
+            if (userFound.permissions.limitedAccess.chainIds.ids.isNotEmpty ||
+                userFound
+                    .permissions.limitedAccess.boutiqueIds.ids.isNotEmpty) {
+              return true;
+            }
+            // iterate over requestor's chains
+            for (final visibleChain
+                in userPermission.limitedAccess.chainIds.ids) {
+              if (userFound.permissions.limitedAccess.chainIds.ids
+                  .any((chainId) => chainId == visibleChain)) {
+                // userFound && requestor share at least one chain
+                // we iterate over the requestor's boutiques
+                for (final visibleBoutiques
+                    in userPermission.limitedAccess.boutiqueIds.ids) {
+                  if (userFound.permissions.limitedAccess.boutiqueIds.ids
+                      .any((id) => id == visibleBoutiques)) {
+                    return true;
+                  }
                 }
               }
             }
-          }
-          return false;
-        });
-      return UsersPublic(users: usersFiltered);
-    } on GrpcError catch (e) {
-      print('readOne error $e');
-      rethrow;
-    }
+            return false;
+          });
+        return UsersPublic(users: usersFiltered);
+      } on GrpcError catch (e) {
+        print('readOne error $e');
+        rethrow;
+      }
+    });
   }
 
   /// webApp admin listens to this stream awaiting pendingDevice to be created
@@ -1649,97 +1732,96 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have access to read boutique ${request.boutiqueId}');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
 
-    /// ***Mongodb_dart context***
-    /// As the change stream return a "fullDocument" and all
-    /// checks are made on this document, all field names must be prefixed
-    /// with "fullDocument" (see below: 'fullDocument.custId')
-    ///
-    /// Inside the Match stage there is the query operator "oneFrom" that corresponds to "$in"
-    ///
-    /// *** Note***
-    /// If you use a SelectorBuilder the Match stage requires a Map,
-    /// so you have to extract the map with ".map['\$query']"
-    final pipeline = AggregationPipelineBuilder().addStage(Match(
-        where.eq('fullDocument.chainId', request.chainId).map['\$query']));
+    return databaseMiddleware<Device>(_poolService, (db) async {
+      final boutiqueCollection = db.collection(boutiqueCollectionName);
 
-    /// If you look for updates is better to set "fullDocument" to "updateLookup"
-    /// otherwise the returned document will contain only the changed fields
-    /// also, since the pipeline control is made on the document processed,
-    /// If the document does not contains the field to be verified the event vill not be fired.
-    /// In our case, if we do not specify 'updateLookup' the returned document
-    /// will not contain the 'chainId' field and the match will not be performed (no event returned)
-    final stream = boutiqueCollection.watch(pipeline,
-        changeStreamOptions: ChangeStreamOptions(fullDocument: 'updateLookup'));
+      /// ***Mongodb_dart context***
+      /// As the change stream return a "fullDocument" and all
+      /// checks are made on this document, all field names must be prefixed
+      /// with "fullDocument" (see below: 'fullDocument.custId')
+      ///
+      /// Inside the Match stage there is the query operator "oneFrom" that corresponds to "$in"
+      ///
+      /// *** Note***
+      /// If you use a SelectorBuilder the Match stage requires a Map,
+      /// so you have to extract the map with ".map['\$query']"
+      final pipeline = AggregationPipelineBuilder().addStage(Match(
+          where.eq('fullDocument.chainId', request.chainId).map['\$query']));
 
-    bool pleaseClose = false;
+      /// If you look for updates is better to set "fullDocument" to "updateLookup"
+      /// otherwise the returned document will contain only the changed fields
+      /// also, since the pipeline control is made on the document processed,
+      /// If the document does not contains the field to be verified the event vill not be fired.
+      /// In our case, if we do not specify 'updateLookup' the returned document
+      /// will not contain the 'chainId' field and the match will not be performed (no event returned)
+      final stream = boutiqueCollection.watch(pipeline,
+          changeStreamOptions:
+              ChangeStreamOptions(fullDocument: 'updateLookup'));
 
-    /// As the stream does not end until it is closed, do not use .toList()
-    /// or you will wait indefinitely
-    Device device = Device.create();
-    Chain chainUpdated = Chain.create();
-    final controller = stream.listen((changeEvent) {
-      final fullDocument = changeEvent.fullDocument ?? <String, dynamic>{};
+      bool pleaseClose = false;
 
-      print('Detected change for "chainId" '
-          '${fullDocument['chainId']}: "${fullDocument['name']}"');
-      chainUpdated.mergeFromProto3Json(fullDocument, ignoreUnknownFields: true);
+      /// As the stream does not end until it is closed, do not use .toList()
+      /// or you will wait indefinitely
+      Device device = Device.create();
+      Chain chainUpdated = Chain.create();
+      final controller = stream.listen((changeEvent) {
+        final fullDocument = changeEvent.fullDocument ?? <String, dynamic>{};
 
-      if (chainUpdated.boutiques.isNotEmpty) {
-        final boutique = chainUpdated.boutiques
-            .firstWhereOrNull((b) => b.boutiqueId == request.boutiqueId);
-        if (boutique != null) {
-          final devices = boutique.devices.where((d) =>
-              d.chainId == request.chainId &&
-              d.boutiqueId == request.boutiqueId &&
-              d.status == false);
-          if (devices.isEmpty) {
-            // another event first occured on chain, too bad really
-            // since adding recursity here would be far-fetched
-            // we will simply redirect webapp to devices page
-          } else if (devices.length == 1) {
-            device = devices.first;
-          } else {
-            /// latest device prevails, high chance the other ones are not pending but disabled
-            devices.toList().sort(
-                (a, b) => a.timestamp.seconds.compareTo(b.timestamp.seconds));
-            device = devices.first;
+        print('Detected change for "chainId" '
+            '${fullDocument['chainId']}: "${fullDocument['name']}"');
+        chainUpdated.mergeFromProto3Json(fullDocument,
+            ignoreUnknownFields: true);
+
+        if (chainUpdated.boutiques.isNotEmpty) {
+          final boutique = chainUpdated.boutiques
+              .firstWhereOrNull((b) => b.boutiqueId == request.boutiqueId);
+          if (boutique != null) {
+            final devices = boutique.devices.where((d) =>
+                d.chainId == request.chainId &&
+                d.boutiqueId == request.boutiqueId &&
+                d.status == false);
+            if (devices.isEmpty) {
+              // another event first occured on chain, too bad really
+              // since adding recursity here would be far-fetched
+              // we will simply redirect webapp to devices page
+            } else if (devices.length == 1) {
+              device = devices.first;
+            } else {
+              /// latest device prevails, high chance the other ones are not pending but disabled
+              devices.toList().sort(
+                  (a, b) => a.timestamp.seconds.compareTo(b.timestamp.seconds));
+              device = devices.first;
+            }
           }
         }
-      }
-      pleaseClose = true;
-    });
+        pleaseClose = true;
+      });
 
-    var waitingCount = 0;
-    await Future.doWhile(() async {
-      if (pleaseClose) {
-        print('Change detected, closing stream and db.');
+      var waitingCount = 0;
+      await Future.doWhile(() async {
+        if (pleaseClose) {
+          print('Change detected, closing stream and db.');
 
-        /// This is the correct way to cancel the watch subscription
-        await controller.cancel();
-        return false;
+          /// This is the correct way to cancel the watch subscription
+          await controller.cancel();
+          return false;
+        }
+        print('Waiting for change to be detected...');
+        await Future.delayed(Duration(seconds: 2));
+        waitingCount++;
+        if (waitingCount > 60) {
+          throw GrpcError.deadlineExceeded(
+              'no change on chainId ${request.chainId} for the past 2 minutes, retry');
+        }
+        return true;
+      });
+      if (device.boutiqueId.isNotEmpty) {
+        return device;
+      } else {
+        throw GrpcError.notFound('no pendingDevice found');
       }
-      print('Waiting for change to be detected...');
-      await Future.delayed(Duration(seconds: 2));
-      waitingCount++;
-      if (waitingCount > 60) {
-        throw GrpcError.deadlineExceeded(
-            'no change on chainId ${request.chainId} for the past 2 minutes, retry');
-      }
-      return true;
     });
-    if (device.boutiqueId.isNotEmpty) {
-      return device;
-    } else {
-      throw GrpcError.notFound('no pendingDevice found');
-    }
   }
 
   @override
@@ -1760,13 +1842,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -1779,7 +1855,14 @@ class FenceService extends FenceServiceBase {
     // remove device
     chain.boutiques.removeAt(boutiqueIndex);
     // update chain in db
-    return await _updateOneChainDBExec(chain);
+    try {
+      await _updateOneChainDBExec(chain);
+      return StatusResponse()
+        ..type = StatusResponse_Type.DELETED
+        ..timestamp = DateTime.now().timestampProto;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
@@ -1800,26 +1883,22 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
 
-// request.chainId
-    try {
-      await boutiqueCollection.deleteOne(where
-          .eq('firmId', userPermission.firmId)
-          .eq('chainId', request.chainId));
-      return StatusResponse()
-        ..type = StatusResponse_Type.DELETED
-        ..timestamp = DateTime.now().timestampProto;
-    } on GrpcError catch (e) {
-      print(e);
-      rethrow;
-    }
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final boutiqueCollection = db.collection(boutiqueCollectionName);
+
+      try {
+        await boutiqueCollection.deleteOne(where
+            .eq('firmId', userPermission.firmId)
+            .eq('chainId', request.chainId));
+        return StatusResponse()
+          ..type = StatusResponse_Type.DELETED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        print(e);
+        rethrow;
+      }
+    });
   }
 
   @override
@@ -1840,13 +1919,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from chain ${request.chainId}');
     }
-    if (_db.isConnected == false) {
-      if (_db.state == State.opening) {
-        await Future.delayed(Duration(microseconds: 10));
-      } else {
-        await _db.open();
-      }
-    }
+
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
@@ -1875,67 +1948,68 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.failedPrecondition('email service not configured');
     }
 
-    try {
-      if (_db.isConnected == false) {
-        if (_db.state == State.opening) {
-          await Future.delayed(Duration(microseconds: 10));
-        } else {
-          await _db.open();
-        }
-      }
+    databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
 
-      // Check if email exists in our user database
-      final userDoc = await userCollection.findOne({'mail': request.mail});
-      if (userDoc == null) {
-        // For security reasons, don't reveal if email exists or not
-        // Return success but don't actually send an email
-        log('Password reset requested for non-existent email: ${request.mail}');
+      try {
+        final userDoc = await userCollection.findOne({'mail': request.mail});
+        // Check if email exists in our user database
+        if (userDoc == null) {
+          // For security reasons, don't reveal if email exists or not
+          // Return success but don't actually send an email
+          log('Password reset requested for non-existent email: ${request.mail}');
+          return StatusResponse()
+            ..type = StatusResponse_Type.ERROR
+            ..message = 'Email not found'
+            ..timestamp = DateTime.now().timestampProto;
+        }
+
+        // Check if there's a recent reset request to prevent spam
+        final hasRecentRequest =
+            await _passwordResetService.hasRecentResetRequest(request.mail);
+        if (hasRecentRequest) {
+          throw GrpcError.resourceExhausted(
+              'Password reset already requested recently. Please wait before requesting again.');
+        }
+
+        // Generate reset token
+        final resetToken =
+            await _passwordResetService.generateResetToken(request.mail);
+
+        // TODO clarify this reset URL
+        // Create reset URL (this should be configurable based on your frontend URL)
+        final resetUrl =
+            'https://weebi.com/reset-password?token=$resetToken&email=${Uri.encodeComponent(request.mail)}';
+
+        // Get user name for personalized email
+        final userName = userDoc['name'] ?? 'User';
+
+        // Send reset email
+        final emailSent = await _emailService!.sendPasswordResetEmail(
+          toEmail: request.mail,
+          userName: userName,
+          resetToken: resetToken,
+          resetUrl: resetUrl,
+        );
+
+        if (!emailSent) {
+          throw GrpcError.internal('Failed to send password reset email');
+        }
+
+        log('Password reset email sent to: ${request.mail}');
         return StatusResponse()
           ..type = StatusResponse_Type.SUCCESS
           ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        log('Password reset request error: $e');
+        rethrow;
+      } catch (e, stacktrace) {
+        log('Password reset request error: $e');
+        log('Stacktrace: $stacktrace');
+        throw GrpcError.internal(
+            'Internal error processing password reset request');
       }
-
-      // Check if there's a recent reset request to prevent spam
-      final hasRecentRequest = await _passwordResetService.hasRecentResetRequest(request.mail);
-      if (hasRecentRequest) {
-        throw GrpcError.resourceExhausted(
-            'Password reset already requested recently. Please wait before requesting again.');
-      }
-
-      // Generate reset token
-      final resetToken = await _passwordResetService.generateResetToken(request.mail);
-      
-      // Create reset URL (this should be configurable based on your frontend URL)
-      final resetUrl = 'https://your-app-domain.com/reset-password?token=$resetToken&email=${Uri.encodeComponent(request.mail)}';
-      
-      // Get user name for personalized email
-      final userName = userDoc['name'] ?? 'User';
-
-      // Send reset email
-      final emailSent = await _emailService!.sendPasswordResetEmail(
-        toEmail: request.mail,
-        userName: userName,
-        resetToken: resetToken,
-        resetUrl: resetUrl,
-      );
-
-      if (!emailSent) {
-        throw GrpcError.internal('Failed to send password reset email');
-      }
-
-      log('Password reset email sent to: ${request.mail}');
-      return StatusResponse()
-        ..type = StatusResponse_Type.SUCCESS
-        ..timestamp = DateTime.now().timestampProto;
-
-    } on GrpcError catch (e) {
-      log('Password reset request error: $e');
-      rethrow;
-    } catch (e, stacktrace) {
-      log('Password reset request error: $e');
-      log('Stacktrace: $stacktrace');
-      throw GrpcError.internal('Internal error processing password reset request');
-    }
+    });
   }
 
   @override
@@ -1951,55 +2025,50 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.invalidArgument('new password cannot be empty');
     }
 
-    try {
-      if (_db.isConnected == false) {
-        if (_db.state == State.opening) {
-          await Future.delayed(Duration(microseconds: 10));
-        } else {
-          await _db.open();
+    databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        // Verify the reset token
+        final tokenEmail =
+            await _passwordResetService.verifyResetToken(request.resetToken);
+        if (tokenEmail == null || tokenEmail != request.mail) {
+          throw GrpcError.invalidArgument('Invalid or expired reset token');
         }
+
+        // Check if user exists
+        final userDoc = await userCollection.findOne({'mail': request.mail});
+        if (userDoc == null) {
+          throw GrpcError.notFound('User not found');
+        }
+
+        // Encrypt the new password
+        final passwordEncrypted = _checkAndEncryptPassword(request.newPassword);
+
+        // Update user password
+        final updateResult = await userCollection.updateOne(
+            where.eq('mail', request.mail),
+            ModifierBuilder().set('password', passwordEncrypted));
+
+        if (updateResult.nModified == 0) {
+          throw GrpcError.internal('Failed to update password');
+        }
+
+        // Mark token as used
+        await _passwordResetService.markTokenAsUsed(request.resetToken);
+
+        log('Password successfully reset for user: ${request.mail}');
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        log('Password reset confirmation error: $e');
+        rethrow;
+      } catch (e, stacktrace) {
+        log('Password reset confirmation error: $e');
+        log('Stacktrace: $stacktrace');
+        throw GrpcError.internal('Internal error confirming password reset');
       }
-
-      // Verify the reset token
-      final tokenEmail = await _passwordResetService.verifyResetToken(request.resetToken);
-      if (tokenEmail == null || tokenEmail != request.mail) {
-        throw GrpcError.invalidArgument('Invalid or expired reset token');
-      }
-
-      // Check if user exists
-      final userDoc = await userCollection.findOne({'mail': request.mail});
-      if (userDoc == null) {
-        throw GrpcError.notFound('User not found');
-      }
-
-      // Encrypt the new password
-      final passwordEncrypted = _checkAndEncryptPassword(request.newPassword);
-
-      // Update user password
-      final updateResult = await userCollection.updateOne(
-        where.eq('mail', request.mail),
-        ModifierBuilder().set('password', passwordEncrypted)
-      );
-
-      if (updateResult.nModified == 0) {
-        throw GrpcError.internal('Failed to update password');
-      }
-
-      // Mark token as used
-      await _passwordResetService.markTokenAsUsed(request.resetToken);
-
-      log('Password successfully reset for user: ${request.mail}');
-      return StatusResponse()
-        ..type = StatusResponse_Type.UPDATED
-        ..timestamp = DateTime.now().timestampProto;
-
-    } on GrpcError catch (e) {
-      log('Password reset confirmation error: $e');
-      rethrow;
-    } catch (e, stacktrace) {
-      log('Password reset confirmation error: $e');
-      log('Stacktrace: $stacktrace');
-      throw GrpcError.internal('Internal error confirming password reset');
-    }
+    });
   }
 }

@@ -1,6 +1,6 @@
 name: protos_weebi
 description: protos for weebi
-version: 1.0.10+3
+version: 1.0.12+4
 repository: https://github.com/weebi-com/weebi_server/
 homepage: https://www.weebi.com
 
@@ -8,7 +8,7 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  protobuf: ^4.1.0
+  protobuf:  ^4.0.0
   # below are exported 
   grpc: ^4.0.1
   fixnum: ^1.1.1

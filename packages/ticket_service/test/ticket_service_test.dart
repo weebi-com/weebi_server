@@ -1,7 +1,6 @@
-// import 'dart:io';
-import 'package:fence_service/mongo_dart.dart';
 import 'package:test/test.dart';
 
+import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/models_weebi.dart' show TicketWeebi;
@@ -9,9 +8,10 @@ import 'package:fence_service/mongo_local_testing.dart';
 import 'package:ticket_service/ticket_service.dart';
 
 void main() async {
-  final db = TestHelper.localDb;
+  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
 
-  final connection = Connection(ConnectionManager(db));
+  await poolService.initialize();
+
   late TicketService ticketService;
   late Counterfoil counterfoilDummy;
   final ticketDummy = TicketPb.create()
@@ -21,15 +21,14 @@ void main() async {
     );
 
   setUpAll(() async {
-    await db.open();
-    await connection.connect();
     var fenceService = FenceService(
-      db,
+      poolService,
       isMock: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
-    await db.createCollection(fenceService.userCollection.collectionName);
-    await db.createCollection(fenceService.boutiqueCollection.collectionName);
+    final db = await poolService.acquire();
+    await db.createCollection(FenceService.userCollectionName);
+    await db.createCollection(FenceService.boutiqueCollectionName);
 
     fenceService.userPermissionIfTest = Dummy.adminPermission;
     final counterfoil = Counterfoil.create()
@@ -38,22 +37,23 @@ void main() async {
       ..boutiqueId = Dummy.chain.boutiques.first.boutiqueId
       ..userId = Dummy.userPublic.userId;
 
-    await db.open();
     ticketService = TicketService(
-      db,
+      poolService,
       isTest: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
-    await db.collection(ticketService.collection.collectionName).drop();
-    await db.createCollection(ticketService.collection.collectionName);
+    await db.collection(TicketService.collectionName).drop();
+    await db.createCollection(TicketService.collectionName);
 
     counterfoilDummy = counterfoil;
     ticketDummy.counterfoil = counterfoil;
+    poolService.release(db);
   });
 
   tearDownAll(() async {
-    await db.collection(ticketService.collection.collectionName).drop();
-    await connection.close();
+    final db = await poolService.acquire();
+    await db.collection(TicketService.collectionName).drop();
+    poolService.release(db);
   });
 
   test('test insertOne ', () async {

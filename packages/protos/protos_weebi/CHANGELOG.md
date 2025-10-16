@@ -1,5 +1,13 @@
 # changelog
 
+## 1.0.12+4 - 2025 september 11
+
+- add fields to PendingUserRequest, UserPrivate, UserPublic, to handle first login and password change
+- add currentPassword in passwordUpdate for stronger security
+- add mustChangePassword in authent response
+- protobuf:  ^4.0.0
+- export GeneratedMessage and PbList
+
 ## 1.0.10+3 - 2025 march 21th
 
 - int64 category.color

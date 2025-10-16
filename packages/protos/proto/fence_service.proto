@@ -97,7 +97,6 @@ service FenceService {
   rpc updateDevicePassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
   /// hard/forever delete
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
-  /// weak auth hack to ease app access to cashiers with very low rights
 }
 
 
@@ -199,6 +198,7 @@ message RefreshToken {
 message Tokens {
   string accessToken = 1;
   string refreshToken = 2;
+  bool mustChangePassword = 3;
 }
 
 message UpdateDevicePasswordRequest {
@@ -209,8 +209,10 @@ message UpdateDevicePasswordRequest {
 message PasswordUpdateRequest {
   string userId = 1 [json_name = 'userId'];
   string firmId = 2 [json_name = 'firmId'];
-  string password = 3 [json_name = 'password'];
+  string passwordCurrent = 3 [json_name = 'passwordCurrent'];
+  string passwordNew = 4 [json_name = 'passwordNew'];
 }
+
 message PendingDeviceRequest {
   weebi.device.HardwareInfo hardwareInfo = 1 ;
   int32 code = 2;
