@@ -60,8 +60,8 @@
 3. **Test Email Functionality**
    ```bash
    # Set environment variables
-   export MAILTRAP_USERNAME="your_username"
-   export MAILTRAP_PASSWORD="your_password"
+   export MAILTRAP_DEV_USERNAME="your_username"
+   export MAILTRAP_DEV_PASSWORD="your_password"
    export ENVIRONMENT="development"
    
    # Test implementation
@@ -117,8 +117,8 @@
 ### Required Environment Variables:
 ```bash
 # Development (Mailtrap Sandbox)
-MAILTRAP_USERNAME=your_username
-MAILTRAP_PASSWORD=your_password
+MAILTRAP_DEV_USERNAME=your_username
+MAILTRAP_DEV_PASSWORD=your_password
 ENVIRONMENT=development
 
 # Production (Mailtrap Send API)

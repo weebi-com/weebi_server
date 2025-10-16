@@ -485,8 +485,47 @@ class ReadAllChainsResponse extends $pb.GeneratedMessage {
   static ReadAllChainsResponse? _defaultInstance;
 
   /// google.retail.common.StatusResponse ?
+  /// Note: chains contain only active boutiques (deleted ones are filtered out)
   @$pb.TagNumber(1)
   $pb.PbList<$11.Chain> get chains => $_getList(0);
+}
+
+class ReadAllBoutiquesResponse extends $pb.GeneratedMessage {
+  factory ReadAllBoutiquesResponse({
+    $core.Iterable<$20.BoutiquePb>? boutiques,
+  }) {
+    final $result = create();
+    if (boutiques != null) {
+      $result.boutiques.addAll(boutiques);
+    }
+    return $result;
+  }
+  ReadAllBoutiquesResponse._() : super();
+  factory ReadAllBoutiquesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadAllBoutiquesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllBoutiquesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..pc<$20.BoutiquePb>(1, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $20.BoutiquePb.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReadAllBoutiquesResponse clone() => ReadAllBoutiquesResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReadAllBoutiquesResponse copyWith(void Function(ReadAllBoutiquesResponse) updates) => super.copyWith((message) => updates(message as ReadAllBoutiquesResponse)) as ReadAllBoutiquesResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReadAllBoutiquesResponse create() => ReadAllBoutiquesResponse._();
+  ReadAllBoutiquesResponse createEmptyInstance() => create();
+  static $pb.PbList<ReadAllBoutiquesResponse> createRepeated() => $pb.PbList<ReadAllBoutiquesResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ReadAllBoutiquesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadAllBoutiquesResponse>(create);
+  static ReadAllBoutiquesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$20.BoutiquePb> get boutiques => $_getList(0);
 }
 
 class ReadDevicesRequest extends $pb.GeneratedMessage {

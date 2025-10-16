@@ -23,8 +23,8 @@ Set up the following environment variables based on your setup:
 
 #### For Development (Mailtrap Sandbox)
 ```bash
-MAILTRAP_USERNAME=your_mailtrap_username
-MAILTRAP_PASSWORD=your_mailtrap_password
+MAILTRAP_DEV_USERNAME=your_mailtrap_username
+MAILTRAP_DEV_PASSWORD=your_mailtrap_password
 ENVIRONMENT=development
 ```
 

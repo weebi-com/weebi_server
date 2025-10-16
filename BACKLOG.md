@@ -13,8 +13,8 @@ Set up Mailtrap account**:
 
 1. **Configure environment variables**:
    ```bash
-   export MAILTRAP_USERNAME="your_username"
-   export MAILTRAP_PASSWORD="your_password"
+   export MAILTRAP_DEV_USERNAME="your_username"
+   export MAILTRAP_DEV_PASSWORD="your_password"
    export ENVIRONMENT="development"
    ```
 

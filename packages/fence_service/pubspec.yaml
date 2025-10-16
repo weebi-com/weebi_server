@@ -15,7 +15,6 @@ dependencies:
   # below are exported
   mongo_pool: ^1.4.3
   mongo_dart: ^0.10.4
-  mysql1: ^0.20.0
   logging: ^1.3.0
   protos_weebi: #^1.0.4
     path: ../protos/protos_weebi

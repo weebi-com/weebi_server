@@ -4,7 +4,7 @@ import 'package:fence_service/fence_service.dart';
 void main() {
   group('EmailService Tests', () {
     test('should create EmailService with custom SMTP settings', () {
-      final emailService = EmailService(
+      final emailService = MailService(
         smtpHost: 'smtp.example.com',
         smtpPort: 587,
         username: 'test@example.com',
@@ -17,7 +17,7 @@ void main() {
     });
 
     test('should create EmailService for Mailtrap sandbox', () {
-      final emailService = EmailService.mailtrap(
+      final emailService = MailService.mailtrap(
         username: 'test_username',
         password: 'test_password',
         fromEmail: 'noreply@test.com',
@@ -28,7 +28,7 @@ void main() {
     });
 
     test('should create EmailService for Mailtrap Send API', () {
-      final emailService = EmailService.mailtrapSend(
+      final emailService = MailService.mailtrapSend(
         apiToken: 'test_token',
         fromEmail: 'noreply@test.com',
         fromName: 'Test App',
@@ -56,10 +56,10 @@ void main() {
   });
 
   group('Email Templates Tests', () {
-    late EmailService emailService;
+    late MailService emailService;
 
     setUp(() {
-      emailService = EmailService.mailtrap(
+      emailService = MailService.mailtrap(
         username: 'test',
         password: 'test',
         fromEmail: 'test@example.com',
@@ -84,7 +84,7 @@ void main() {
     test('should handle email service configuration errors gracefully', () {
       // EmailService doesn't validate empty strings, so this test just verifies
       // that it can be created without throwing errors
-      final emailService = EmailService(
+      final emailService = MailService(
         smtpHost: 'smtp.example.com',
         smtpPort: 587,
         username: 'test',

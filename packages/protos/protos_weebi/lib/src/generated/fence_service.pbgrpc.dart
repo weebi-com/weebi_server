@@ -121,6 +121,14 @@ class FenceServiceClient extends $grpc.Client {
       '/weebi.fence.service.FenceService/deleteOneBoutique',
       ($9.BoutiqueRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$restoreOneBoutique = $grpc.ClientMethod<$9.BoutiqueRequest, $1.StatusResponse>(
+      '/weebi.fence.service.FenceService/restoreOneBoutique',
+      ($9.BoutiqueRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$readAllBoutiques = $grpc.ClientMethod<$5.Empty, $9.ReadAllBoutiquesResponse>(
+      '/weebi.fence.service.FenceService/readAllBoutiques',
+      ($5.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $9.ReadAllBoutiquesResponse.fromBuffer(value));
   static final _$isADeviceInChain = $grpc.ClientMethod<$9.ReadDevicesRequest, $9.IsADeviceInChainResponse>(
       '/weebi.fence.service.FenceService/isADeviceInChain',
       ($9.ReadDevicesRequest value) => value.writeToBuffer(),
@@ -162,6 +170,15 @@ class FenceServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$9.Tokens> authenticateWithRefreshToken($9.RefreshToken request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$authenticateWithRefreshToken, request, options: options);
+  }
+
+  /// Password reset functionality
+  $grpc.ResponseFuture<$1.StatusResponse> requestPasswordReset($9.PasswordResetRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$requestPasswordReset, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.StatusResponse> confirmPasswordReset($9.PasswordResetConfirmRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$confirmPasswordReset, request, options: options);
   }
 
   /// / only one firm per 'company'
@@ -235,9 +252,19 @@ class FenceServiceClient extends $grpc.Client {
     return $createUnaryCall(_$updateOneBoutique, request, options: options);
   }
 
-  /// / hard/complete delete
+  /// / soft delete - marks boutique as deleted
   $grpc.ResponseFuture<$1.StatusResponse> deleteOneBoutique($9.BoutiqueRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOneBoutique, request, options: options);
+  }
+
+  /// / restore a soft-deleted boutique
+  $grpc.ResponseFuture<$1.StatusResponse> restoreOneBoutique($9.BoutiqueRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$restoreOneBoutique, request, options: options);
+  }
+
+  /// / returns all active boutiques across all chains (filters out deleted ones)
+  $grpc.ResponseFuture<$9.ReadAllBoutiquesResponse> readAllBoutiques($5.Empty request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$readAllBoutiques, request, options: options);
   }
 
   /// / scans all firm's devices, disregarding user rights
@@ -439,6 +466,20 @@ abstract class FenceServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $9.BoutiqueRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$9.BoutiqueRequest, $1.StatusResponse>(
+        'restoreOneBoutique',
+        restoreOneBoutique_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $9.BoutiqueRequest.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$5.Empty, $9.ReadAllBoutiquesResponse>(
+        'readAllBoutiques',
+        readAllBoutiques_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $5.Empty.fromBuffer(value),
+        ($9.ReadAllBoutiquesResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$9.ReadDevicesRequest, $9.IsADeviceInChainResponse>(
         'isADeviceInChain',
         isADeviceInChain_Pre,
@@ -500,6 +541,14 @@ abstract class FenceServiceBase extends $grpc.Service {
 
   $async.Future<$9.Tokens> authenticateWithRefreshToken_Pre($grpc.ServiceCall $call, $async.Future<$9.RefreshToken> $request) async {
     return authenticateWithRefreshToken($call, await $request);
+  }
+
+  $async.Future<$1.StatusResponse> requestPasswordReset_Pre($grpc.ServiceCall $call, $async.Future<$9.PasswordResetRequest> $request) async {
+    return requestPasswordReset($call, await $request);
+  }
+
+  $async.Future<$1.StatusResponse> confirmPasswordReset_Pre($grpc.ServiceCall $call, $async.Future<$9.PasswordResetConfirmRequest> $request) async {
+    return confirmPasswordReset($call, await $request);
   }
 
   $async.Future<$10.CreateFirmResponse> createFirm_Pre($grpc.ServiceCall $call, $async.Future<$10.CreateFirmRequest> $request) async {
@@ -566,6 +615,14 @@ abstract class FenceServiceBase extends $grpc.Service {
     return deleteOneBoutique($call, await $request);
   }
 
+  $async.Future<$1.StatusResponse> restoreOneBoutique_Pre($grpc.ServiceCall $call, $async.Future<$9.BoutiqueRequest> $request) async {
+    return restoreOneBoutique($call, await $request);
+  }
+
+  $async.Future<$9.ReadAllBoutiquesResponse> readAllBoutiques_Pre($grpc.ServiceCall $call, $async.Future<$5.Empty> $request) async {
+    return readAllBoutiques($call, await $request);
+  }
+
   $async.Future<$9.IsADeviceInChainResponse> isADeviceInChain_Pre($grpc.ServiceCall $call, $async.Future<$9.ReadDevicesRequest> $request) async {
     return isADeviceInChain($call, await $request);
   }
@@ -615,6 +672,8 @@ abstract class FenceServiceBase extends $grpc.Service {
   $async.Future<$9.BoutiqueResponse> readOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
   $async.Future<$1.StatusResponse> updateOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
   $async.Future<$1.StatusResponse> deleteOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
+  $async.Future<$1.StatusResponse> restoreOneBoutique($grpc.ServiceCall call, $9.BoutiqueRequest request);
+  $async.Future<$9.ReadAllBoutiquesResponse> readAllBoutiques($grpc.ServiceCall call, $5.Empty request);
   $async.Future<$9.IsADeviceInChainResponse> isADeviceInChain($grpc.ServiceCall call, $9.ReadDevicesRequest request);
   $async.Future<$12.Devices> readDevices($grpc.ServiceCall call, $9.ReadDevicesRequest request);
   $async.Future<$9.CodeForPairingDevice> generateCodeForPairingDevice($grpc.ServiceCall call, $13.ChainIdAndboutiqueId request);

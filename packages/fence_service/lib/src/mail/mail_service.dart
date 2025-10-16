@@ -2,12 +2,12 @@ import 'dart:developer';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
-class EmailService {
+class MailService {
   late SmtpServer _smtpServer;
   final String _fromEmail;
   final String _fromName;
 
-  EmailService({
+  MailService( {
     required String smtpHost,
     required int smtpPort,
     required String username,
@@ -28,13 +28,13 @@ class EmailService {
   }
 
   /// Factory constructor for Mailtrap configuration
-  factory EmailService.mailtrap({
+  factory MailService.mailtrap({
     required String username,
     required String password,
     required String fromEmail,
     required String fromName,
   }) {
-    return EmailService(
+    return MailService(
       smtpHost: 'sandbox.smtp.mailtrap.io',
       smtpPort: 2525,
       username: username,
@@ -46,12 +46,12 @@ class EmailService {
   }
 
   /// Factory constructor for production Mailtrap Send configuration
-  factory EmailService.mailtrapSend({
+  factory MailService.mailtrapSend({
     required String apiToken,
     required String fromEmail,
     required String fromName,
   }) {
-    return EmailService(
+    return MailService(
       smtpHost: 'send.api.mailtrap.io',
       smtpPort: 587,
       username: 'api',
@@ -102,6 +102,28 @@ class EmailService {
       return true;
     } catch (e) {
       log('Failed to send welcome email to $toEmail: $e');
+      return false;
+    }
+  }
+
+  Future<bool> sendMailConfirmationEmail({
+    required String toEmail,
+    required String userName,
+    required String confirmationUrl,
+  }) async {
+    try {
+      final message = Message()
+        ..from = Address(_fromEmail, _fromName)
+        ..recipients.add(toEmail)
+        ..subject = 'Confirm Your Mail Address - Weebi'
+        ..html = _buildMailConfirmationHtml(userName, confirmationUrl)
+        ..text = _buildMailConfirmationText(userName, confirmationUrl);
+
+      final sendReport = await send(message, _smtpServer);
+      log('Mail confirmation email sent to $toEmail: ${sendReport.toString()}');
+      return true;
+    } catch (e) {
+      log('Failed to send mail confirmation email to $toEmail: $e');
       return false;
     }
   }
@@ -220,7 +242,7 @@ Welcome to Weebi!
 
 Hello $userName,
 
-Thank you for joining Weebi. We're excited to have you as part of our community.
+Thank you for joining Weebi.
 
 Your account has been successfully created and you can now start using all of Weebi's features.
 
@@ -231,6 +253,72 @@ The Weebi Team
 
 ---
 Welcome to Weebi - Your business management solution
+    ''';
+  }
+
+  String _buildMailConfirmationHtml(String userName, String confirmationUrl) {
+    return '''
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Mail Address - Weebi</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #2c3e50; color: white; padding: 20px; text-align: center; }
+        .content { padding: 30px; background-color: #f9f9f9; }
+        .button { display: inline-block; padding: 12px 24px; background-color: #27ae60; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .footer { padding: 20px; text-align: center; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Weebi</h1>
+        </div>
+        <div class="content">
+            <h2>Confirm Your Mail Address</h2>
+            <p>Hello $userName,</p>
+            <p>Thank you for signing up with Weebi! To complete your account setup, please confirm your mail address by clicking the button below:</p>
+            <a href="$confirmationUrl" class="button">Confirm Mail Address</a>
+            <p>Or copy and paste this link into your browser:</p>
+            <p style="background-color: #ecf0f1; padding: 10px; border-radius: 3px; font-family: monospace; word-break: break-all;">$confirmationUrl</p>
+            <p><strong>This link will expire in 24 hours for security reasons.</strong></p>
+            <p>If you didn't create an account with Weebi, you can safely ignore this email.</p>
+            <p>Best regards,<br>The Weebi Team</p>
+        </div>
+        <div class="footer">
+            <p>This email was sent to confirm your mail address for your Weebi account.</p>
+            <p>If you didn't request this, please contact our support team.</p>
+        </div>
+    </div>
+</body>
+</html>
+    ''';
+  }
+
+  String _buildMailConfirmationText(String userName, String confirmationUrl) {
+    return '''
+Confirm Your Mail Address - Weebi
+
+Hello $userName,
+
+Thank you for signing up with Weebi! To complete your account setup, please confirm your mail address by visiting the following link:
+
+$confirmationUrl
+
+This link will expire in 24 hours for security reasons.
+
+If you didn't create an account with Weebi, you can safely ignore this email.
+
+Best regards,
+The Weebi Team
+
+---
+This email was sent to confirm your mail address for your Weebi account.
+If you didn't request this, please contact our support team.
     ''';
   }
 }

@@ -19,7 +19,10 @@ message BoutiqueMongo {
     bytes logo = 9 [json_name = 'logo'];
     /// extension here is a string, e.g. png or jpeg (!= enum in ArticlePhotoPb)
     string logoExtension = 10 [json_name = 'logoExtension'];
-    reserved 11 to 98;
+    bool isDeleted = 11 [json_name = 'isDeleted'];
+    string deletedBy = 12 [json_name = 'deletedBy']; // userId who deleted it
+        string restoredBy = 13 [json_name = 'restoredBy']; // userId who restored it (empty if never restored)
+    reserved 14 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
 }
 

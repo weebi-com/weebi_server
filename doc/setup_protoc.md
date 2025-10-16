@@ -120,17 +120,6 @@ protoc --dart_out=grpc:protos_weebi/lib/src/generated \
   weebi_app_service.proto
 ```
 
-## Verify Generated Files
-
-After running the generation, verify that the new password reset methods are included:
-
-```bash
-# Check if the new RPC methods exist in the generated gRPC file
-grep -n "requestPasswordReset\|confirmPasswordReset" protos_weebi/lib/src/generated/fence_service.pbgrpc.dart
-
-# Check if the new message types exist
-grep -n "PasswordResetRequest\|PasswordResetConfirmRequest" protos_weebi/lib/src/generated/fence_service.pb.dart
-```
 
 ## Troubleshooting
 
@@ -180,35 +169,4 @@ dart pub get
 
 # Try to compile (this will show any syntax errors)
 dart analyze
-```
-
-## Next Steps
-
-1. Once proto files are generated, update your dependencies:
-   ```bash
-   dart pub get
-   ```
-
-2. Test the email functionality by running the example:
-   ```bash
-   dart run example/email_config_example.dart
-   ```
-
-3. Set up your environment variables for email testing as described in EMAIL_SETUP.md
-
-## Environment Variables for Email Testing
-
-Create a `.env` file or set these environment variables:
-
-```bash
-# For development (Mailtrap sandbox)
-export MAILTRAP_USERNAME="your_username_here"
-export MAILTRAP_PASSWORD="your_password_here"
-export ENVIRONMENT="development"
-
-# For production (Mailtrap Send API)
-# export MAILTRAP_API_TOKEN="your_api_token_here"
-# export FROM_EMAIL="noreply@yourdomain.com"
-# export FROM_NAME="Your App Name"
-# export ENVIRONMENT="production"
 ```

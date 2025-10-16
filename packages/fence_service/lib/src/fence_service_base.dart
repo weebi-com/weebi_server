@@ -1,8 +1,11 @@
 import 'dart:developer';
 import 'dart:async';
 import 'dart:math' show Random;
+import 'dart:io';
+import 'dart:convert';
 
 import 'package:collection/collection.dart';
+// ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:protos_weebi/data_dummy.dart';
@@ -37,17 +40,303 @@ class FenceService extends FenceServiceBase {
   bool isMock;
   UserPermissions? userPermissionIfTest;
 
-// Email and password reset services
-  MailService? _emailService;
+// Mail and password reset services
+  MailService? _mailService;
   late PasswordResetService _passwordResetService;
+  
+  // HTTP server for REST endpoints
+  HttpServer? _httpServer;
+  String _baseUrl = 'http://localhost:8081';
 
-  FenceService(this._poolService,
-      {this.isMock = false, this.userPermissionIfTest});
+  FenceService(
+    this._poolService, {
+    this.isMock = false,
+    this.userPermissionIfTest,
+  });
 
   /// Configure email service for sending transactional emails
 
-  void configureEmailService(MailService emailService) {
-    _emailService = emailService;
+  void configureMailService(MailService emailService) {
+    _mailService = emailService;
+  }
+
+  /// Start HTTP server for REST endpoints (password reset, mail confirmation)
+  Future<void> startHttpServer({
+    int port = 8081,
+    String? baseUrl,
+  }) async {
+    _httpServer = await HttpServer.bind('0.0.0.0', port);
+    _baseUrl = baseUrl ?? _getBaseUrl();
+    log('HTTP server started on port $port with base URL: $_baseUrl');
+    
+    await for (HttpRequest request in _httpServer!) {
+      _handleHttpRequest(request);
+    }
+  }
+
+  /// Stop HTTP server
+  Future<void> stopHttpServer() async {
+    await _httpServer?.close();
+    _httpServer = null;
+    log('HTTP server stopped');
+  }
+
+  void _handleHttpRequest(HttpRequest request) async {
+    final response = request.response;
+    
+    try {
+      final path = request.uri.path;
+      final method = request.method;
+      
+      if (method == 'GET' && path == '/reset-password') {
+        await _handleGetResetPassword(request, response);
+      } else if (method == 'POST' && path == '/reset-password') {
+        await _handlePostResetPassword(request, response);
+      } else if (method == 'GET' && path == '/confirm-mail') {
+        await _handleGetConfirmMail(request, response);
+      } else if (method == 'POST' && path == '/confirm-mail') {
+        await _handlePostConfirmMail(request, response);
+      } else {
+        response.statusCode = 404;
+        response.headers.contentType = ContentType.text;
+        response.write('Not Found');
+      }
+    } catch (e) {
+      response.statusCode = 500;
+      response.headers.contentType = ContentType.text;
+      response.write('Internal Server Error: $e');
+      log('HTTP request error: $e');
+    } finally {
+      await response.close();
+    }
+  }
+
+  /// Handle GET /reset-password - Show password reset form
+  Future<void> _handleGetResetPassword(HttpRequest request, HttpResponse response) async {
+    final token = request.uri.queryParameters['token'];
+    final mail = request.uri.queryParameters['mail'];
+    
+    if (token == null || mail == null) {
+      response.statusCode = 400;
+      response.headers.contentType = ContentType.text;
+      response.write('Missing token or mail');
+      return;
+    }
+    
+    // Validate token
+    final verifiedMail = await _passwordResetService.verifyResetToken(token);
+    if (verifiedMail == null || verifiedMail != mail) {
+      response.statusCode = 403;
+      response.headers.contentType = ContentType.text;
+      response.write('Invalid or expired token');
+      return;
+    }
+    
+    // Return HTML form
+    response.headers.contentType = ContentType.html;
+    response.write('''
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Reset Password - Weebi</title>
+        <style>
+          body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; }
+          .form-group { margin-bottom: 15px; }
+          label { display: block; margin-bottom: 5px; font-weight: bold; }
+          input[type="password"] { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+          button { background-color: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+          button:hover { background-color: #2980b9; }
+          .error { color: red; margin-top: 10px; }
+          .success { color: green; margin-top: 10px; }
+        </style>
+      </head>
+      <body>
+        <h1>Reset Password</h1>
+        <p>Enter your new password for <strong>$mail</strong></p>
+        <form method="POST">
+          <input type="hidden" name="token" value="$token">
+          <input type="hidden" name="mail" value="$mail">
+          <div class="form-group">
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required minlength="8">
+          </div>
+          <button type="submit">Reset Password</button>
+        </form>
+      </body>
+      </html>
+    ''');
+  }
+
+  /// Handle POST /reset-password - Process password reset
+  Future<void> _handlePostResetPassword(HttpRequest request, HttpResponse response) async {
+    final body = await utf8.decodeStream(request);
+    final params = Uri.splitQueryString(body);
+    
+    final token = params['token'];
+    final mail = params['mail'];
+    final newPassword = params['newPassword'];
+    
+    if (token == null || mail == null || newPassword == null) {
+      response.statusCode = 400;
+      response.headers.contentType = ContentType.text;
+      response.write('Missing required fields');
+      return;
+    }
+    
+    if (newPassword.length < 8) {
+      response.statusCode = 400;
+      response.headers.contentType = ContentType.text;
+      response.write('Password must be at least 8 characters long');
+      return;
+    }
+    
+    // Validate token
+    final verifiedMail = await _passwordResetService.verifyResetToken(token);
+    if (verifiedMail == null || verifiedMail != mail) {
+      response.statusCode = 403;
+      response.headers.contentType = ContentType.text;
+      response.write('Invalid or expired token');
+      return;
+    }
+    
+    try {
+      // Update password (implement this method)
+      await _updateUserPasswordByMail(mail, newPassword);
+      
+      // Mark token as used
+      await _passwordResetService.markTokenAsUsed(token);
+      
+      response.headers.contentType = ContentType.html;
+      response.write('''
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Password Reset Success - Weebi</title>
+          <style>
+            body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; text-align: center; }
+            .success { color: green; font-size: 18px; margin: 20px 0; }
+            .button { background-color: #27ae60; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; }
+          </style>
+        </head>
+        <body>
+          <h1>Password Reset Successful</h1>
+          <p class="success">Your password has been successfully reset.</p>
+          <p>You can now log in with your new password.</p>
+          <a href="https://weebi.com/login" class="button">Go to Login</a>
+        </body>
+        </html>
+      ''');
+    } catch (e) {
+      response.statusCode = 500;
+      response.headers.contentType = ContentType.text;
+      response.write('Failed to reset password: $e');
+      log('Password reset error: $e');
+    }
+  }
+
+  /// Handle GET /confirm-mail - Show mail confirmation form
+  Future<void> _handleGetConfirmMail(HttpRequest request, HttpResponse response) async {
+    final token = request.uri.queryParameters['token'];
+    final mail = request.uri.queryParameters['mail'];
+    
+    if (token == null || mail == null) {
+      response.statusCode = 400;
+      response.headers.contentType = ContentType.text;
+      response.write('Missing token or mail');
+      return;
+    }
+    
+    // Validate token (you'll need to implement mail confirmation token verification)
+    final verifiedMail = await _verifyMailConfirmationToken(token);
+    if (verifiedMail == null || verifiedMail != mail) {
+      response.statusCode = 403;
+      response.headers.contentType = ContentType.text;
+      response.write('Invalid or expired token');
+      return;
+    }
+    
+    // Return HTML confirmation page
+    response.headers.contentType = ContentType.html;
+    response.write('''
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Confirm Mail - Weebi</title>
+        <style>
+          body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; text-align: center; }
+          .button { background-color: #3498db; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; }
+        </style>
+      </head>
+      <body>
+        <h1>Confirm Your Mail Address</h1>
+        <p>Click the button below to confirm your mail address: <strong>$mail</strong></p>
+        <form method="POST">
+          <input type="hidden" name="token" value="$token">
+          <input type="hidden" name="mail" value="$mail">
+          <button type="submit" class="button">Confirm Mail Address</button>
+        </form>
+      </body>
+      </html>
+    ''');
+  }
+
+  /// Handle POST /confirm-mail - Process mail confirmation
+  Future<void> _handlePostConfirmMail(HttpRequest request, HttpResponse response) async {
+    final body = await utf8.decodeStream(request);
+    final params = Uri.splitQueryString(body);
+    
+    final token = params['token'];
+    final mail = params['mail'];
+    
+    if (token == null || mail == null) {
+      response.statusCode = 400;
+      response.headers.contentType = ContentType.text;
+      response.write('Missing required fields');
+      return;
+    }
+    
+    // Validate token
+    final verifiedMail = await _verifyMailConfirmationToken(token);
+    if (verifiedMail == null || verifiedMail != mail) {
+      response.statusCode = 403;
+      response.headers.contentType = ContentType.text;
+      response.write('Invalid or expired token');
+      return;
+    }
+    
+    try {
+      // Confirm mail address (implement this method)
+      await _confirmUserMail(mail);
+      
+      // Mark token as used
+      await _markMailConfirmationTokenAsUsed(token);
+      
+      response.headers.contentType = ContentType.html;
+      response.write('''
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Mail Confirmed - Weebi</title>
+          <style>
+            body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; text-align: center; }
+            .success { color: green; font-size: 18px; margin: 20px 0; }
+            .button { background-color: #27ae60; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; }
+          </style>
+        </head>
+        <body>
+          <h1>Mail Address Confirmed</h1>
+          <p class="success">Your mail address has been successfully confirmed!</p>
+          <p>You can now use all features of your Weebi account.</p>
+          <a href="https://weebi.com/dashboard" class="button">Go to Dashboard</a>
+        </body>
+        </html>
+      ''');
+    } catch (e) {
+      response.statusCode = 500;
+      response.headers.contentType = ContentType.text;
+      response.write('Failed to confirm mail: $e');
+      log('Mail confirmation error: $e');
+    }
   }
 
   @override
@@ -775,6 +1064,10 @@ class FenceService extends FenceServiceBase {
           'user does not have right to delete users');
     }
 
+    if(userPermission.userId == request.userId) {
+      throw GrpcError.permissionDenied('user cannot delete themselves');
+    }
+
     final userPrivate = await _checkUserAndProtoIt(request.userId);
     if (userPrivate.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied('user belongs to a different firm');
@@ -893,6 +1186,15 @@ class FenceService extends FenceServiceBase {
             print('createFirm _createOneChainDBExec error $e');
             rethrow;
           }
+
+          // Send welcome email and mail confirmation
+          try {
+            await _sendWelcomeAndConfirmationMail(userPermission.userId, firmId);
+          } catch (e) {
+            // Log error but don't fail the firm creation
+            log('Failed to send welcome/confirmation mail: $e');
+          }
+
           return CreateFirmResponse(
             statusResponse: StatusResponse.create()
               ..type = StatusResponse_Type.CREATED
@@ -1026,8 +1328,22 @@ class FenceService extends FenceServiceBase {
         }
         final chains = <Chain>[];
         for (final chainMongo in chainsMongo) {
-          chains.add(Chain.create()
-            ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true));
+          final chainTemp = Chain.create()
+            ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
+          
+          // Filter out soft-deleted boutiques and create new chain
+          final activeBoutiques = chainTemp.boutiques.where((b) => !b.isDeleted).toList();
+          
+          final chain = Chain.create()
+            ..chainId = chainTemp.chainId
+            ..firmId = chainTemp.firmId
+            ..name = chainTemp.name
+            ..lastUpdateTimestampUTC = chainTemp.lastUpdateTimestampUTC
+            ..lastUpdatedByuserId = chainTemp.lastUpdatedByuserId
+            ..creationDateUTC = chainTemp.creationDateUTC
+            ..boutiques.addAll(activeBoutiques);
+          
+          chains.add(chain);
         }
         return chains;
       } on GrpcError catch (e) {
@@ -1229,9 +1545,18 @@ class FenceService extends FenceServiceBase {
           'boutique ${request.boutique.boutiqueId} not found');
     }
 
-    chain.boutiques[boutiqueIndex].boutique = request.boutique;
-    chain.boutiques[boutiqueIndex].logo = request.logo;
-    chain.boutiques[boutiqueIndex].logoExtension = request.logoExtension;
+    final boutique = chain.boutiques[boutiqueIndex];
+    
+    // Prevent updating deleted boutiques
+    if (boutique.isDeleted) {
+      throw GrpcError.failedPrecondition(
+          'cannot update deleted boutique ${request.boutique.boutiqueId}');
+    }
+
+    boutique.boutique = request.boutique;
+    boutique.logo = request.logo;
+    boutique.logoExtension = request.logoExtension;
+    boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
 
     return await _updateOneChainDBExec(chain);
   }
@@ -1555,6 +1880,33 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
+  Future<ReadAllBoutiquesResponse> readAllBoutiques(
+      ServiceCall? call, Empty request) async {
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    
+    if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to read boutiques');
+    }
+
+    // Get all chains (this already filters out deleted boutiques)
+    final chains = await _checkChainsAndProtoThem(userPermission);
+    
+    // Extract BoutiquePb from each boutique (following readOneBoutique pattern)
+    final allBoutiques = <BoutiquePb>[];
+    for (final chain in chains) {
+      for (final boutique in chain.boutiques) {
+        allBoutiques.add(boutique.boutique);
+      }
+    }
+
+    return ReadAllBoutiquesResponse(boutiques: allBoutiques);
+  }
+
+  @override
   Future<StatusResponse> updateUserPassword(
       ServiceCall? call, PasswordUpdateRequest request) async {
     if (request.firmId.isEmpty ||
@@ -1704,6 +2056,7 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// for web app
   /// webApp admin listens to this stream awaiting pendingDevice to be created
   /// during 2 minutes, duration arbitrarily chosen
   @override
@@ -1852,13 +2205,86 @@ class FenceService extends FenceServiceBase {
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('no boutique match found');
     }
-    // remove device
-    chain.boutiques.removeAt(boutiqueIndex);
+
+    // Soft delete: mark as deleted instead of removing
+    final boutique = chain.boutiques[boutiqueIndex];
+    if (boutique.isDeleted) {
+      throw GrpcError.failedPrecondition(
+          'boutique ${request.boutique.boutiqueId} is already deleted');
+    }
+
+    boutique.isDeleted = true;
+    boutique.deletedBy = userPermission.userId;
+    boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
+
     // update chain in db
     try {
       await _updateOneChainDBExec(chain);
       return StatusResponse()
-        ..type = StatusResponse_Type.DELETED
+        ..type = StatusResponse_Type.DELETED // soft delete in fact
+        ..timestamp = DateTime.now().timestampProto;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<StatusResponse> restoreOneBoutique(
+      ServiceCall call, BoutiqueRequest request) async {
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    
+    if (request.boutique.boutiqueId.isEmpty) {
+      throw GrpcError.invalidArgument('boutiqueId cannot be empty');
+    }
+
+    // Permission check: user needs delete permission to restore
+    // This makes sense: if you can delete, you can undo the deletion
+    // Alternatively, could check for firm-level rights for stricter control
+    if (userPermission.boutiqueRights.rights.any((e) => e == Right.delete) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to restore boutique');
+    }
+
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
+
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+
+    final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
+        btq.chainId == request.chainId &&
+        btq.boutiqueId == request.boutique.boutiqueId);
+    
+    if (boutiqueIndex == -1) {
+      throw GrpcError.notFound('no boutique match found');
+    }
+
+    final boutique = chain.boutiques[boutiqueIndex];
+
+    // Can only restore a deleted boutique
+    if (!boutique.isDeleted) {
+      throw GrpcError.failedPrecondition(
+          'boutique ${request.boutique.boutiqueId} is not deleted - nothing to restore');
+    }
+
+    // Restore: unmark as deleted
+    boutique.isDeleted = false;
+    boutique.restoredBy = userPermission.userId;
+    boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
+    
+    // Note: deletedBy is intentionally kept for audit trail
+    // Shows who deleted it originally and who restored it
+
+    // update chain in db
+    try {
+      await _updateOneChainDBExec(chain);
+      return StatusResponse()
+        ..type = StatusResponse_Type.UPDATED
         ..timestamp = DateTime.now().timestampProto;
     } catch (e) {
       rethrow;
@@ -1930,10 +2356,18 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.notFound('no boutique match found');
     }
 
+    final boutique = chain.boutiques[boutiqueIndex];
+    
+    // Check if boutique is soft-deleted
+    if (boutique.isDeleted) {
+      throw GrpcError.notFound(
+          'boutique ${request.boutique.boutiqueId} has been deleted');
+    }
+
     return BoutiqueResponse(
-      boutique: chain.boutiques[boutiqueIndex].boutique,
-      logo: chain.boutiques[boutiqueIndex].logo,
-      logoExtension: chain.boutiques[boutiqueIndex].logoExtension,
+      boutique: boutique.boutique,
+      logo: boutique.logo,
+      logoExtension: boutique.logoExtension,
     );
   }
 
@@ -1941,14 +2375,14 @@ class FenceService extends FenceServiceBase {
   Future<StatusResponse> requestPasswordReset(
       ServiceCall? call, PasswordResetRequest request) async {
     if (request.mail.isEmpty) {
-      throw GrpcError.invalidArgument('email cannot be empty');
+      throw GrpcError.invalidArgument('mail cannot be empty');
     }
 
-    if (_emailService == null) {
-      throw GrpcError.failedPrecondition('email service not configured');
+    if (_mailService == null) {
+      throw GrpcError.failedPrecondition('mail service not configured');
     }
 
-    databaseMiddleware<StatusResponse>(_poolService, (db) async {
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
 
       try {
@@ -1960,7 +2394,7 @@ class FenceService extends FenceServiceBase {
           log('Password reset requested for non-existent email: ${request.mail}');
           return StatusResponse()
             ..type = StatusResponse_Type.ERROR
-            ..message = 'Email not found'
+            ..message = 'Mail not found'
             ..timestamp = DateTime.now().timestampProto;
         }
 
@@ -1976,16 +2410,16 @@ class FenceService extends FenceServiceBase {
         final resetToken =
             await _passwordResetService.generateResetToken(request.mail);
 
-        // TODO clarify this reset URL
-        // Create reset URL (this should be configurable based on your frontend URL)
+        // Create reset URL pointing to our HTTP server
+        final baseUrl = _getBaseUrl();
         final resetUrl =
-            'https://weebi.com/reset-password?token=$resetToken&email=${Uri.encodeComponent(request.mail)}';
+            '$baseUrl/reset-password?token=$resetToken&mail=${Uri.encodeComponent(request.mail)}';
 
         // Get user name for personalized email
         final userName = userDoc['name'] ?? 'User';
 
         // Send reset email
-        final emailSent = await _emailService!.sendPasswordResetEmail(
+        final emailSent = await _mailService!.sendPasswordResetEmail(
           toEmail: request.mail,
           userName: userName,
           resetToken: resetToken,
@@ -2025,7 +2459,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.invalidArgument('new password cannot be empty');
     }
 
-    databaseMiddleware<StatusResponse>(_poolService, (db) async {
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
 
       try {
@@ -2070,5 +2504,114 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.internal('Internal error confirming password reset');
       }
     });
+  }
+
+  /// Update user password by mail address
+  Future<void> _updateUserPasswordByMail(String mail, String newPassword) async {
+    return databaseMiddleware(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+      final passwordEncrypted = _checkAndEncryptPassword(newPassword);
+      
+      await userCollection.update(
+        where.eq('mail', mail),
+        ModifierBuilder().set('password', passwordEncrypted),
+      );
+    });
+  }
+
+  /// Verify mail confirmation token (placeholder - implement based on your needs)
+  Future<String?> _verifyMailConfirmationToken(String token) async {
+    // TODO: Implement mail confirmation token verification
+    // This should work similar to password reset tokens but for mail confirmation
+    // For now, return null to indicate invalid token
+    return null;
+  }
+
+  /// Confirm user mail address
+  Future<void> _confirmUserMail(String mail) async {
+    return databaseMiddleware(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+      
+      await userCollection.update(
+        where.eq('mail', mail),
+        ModifierBuilder().set('mailConfirmed', true),
+      );
+    });
+  }
+
+  /// Mark mail confirmation token as used
+  Future<void> _markMailConfirmationTokenAsUsed(String token) async {
+    // TODO: Implement marking mail confirmation token as used
+    // This should work similar to password reset tokens
+  }
+
+  /// Get base URL for HTTP endpoints based on environment
+  String _getBaseUrl() {
+    final environment = Platform.environment['ENVIRONMENT'] ?? 'development';
+    final httpPort = Platform.environment['HTTP_PORT'] ?? '8081';
+    
+    if (environment == 'production') {
+      // Production domain
+      final domain = Platform.environment['HTTP_DOMAIN'] ?? 'https://api.weebi.com';
+      return domain;
+    } else {
+      // Development - use localhost with port
+      return 'http://localhost:$httpPort';
+    }
+  }
+
+  /// Send welcome email and mail confirmation after firm creation
+  Future<void> _sendWelcomeAndConfirmationMail(String userId, String firmId) async {
+    if (_mailService == null) {
+      log('Mail service not configured, skipping welcome/confirmation mail');
+      return;
+    }
+
+    return databaseMiddleware(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+      
+      // Get user details
+      final userDoc = await userCollection.findOne(where.eq('userId', userId));
+      if (userDoc == null) {
+        log('User not found for welcome mail: $userId');
+        return;
+      }
+
+      final mail = userDoc['mail'] as String?;
+      final firstName = userDoc['firstname'] as String? ?? 'User';
+      final lastName = userDoc['lastname'] as String? ?? '';
+      final userName = '$firstName $lastName'.trim();
+
+      if (mail == null) {
+        log('User mail not found for welcome mail: $userId');
+        return;
+      }
+
+      // Send welcome email
+      await _mailService!.sendWelcomeEmail(
+        toEmail: mail,
+        userName: userName,
+      );
+
+      // Generate mail confirmation token and send confirmation email
+      final confirmationToken = await _generateMailConfirmationToken(mail);
+      final confirmationUrl = '$_baseUrl/confirm-mail?token=$confirmationToken&mail=${Uri.encodeComponent(mail)}';
+      
+      await _mailService!.sendMailConfirmationEmail(
+        toEmail: mail,
+        userName: userName,
+        confirmationUrl: confirmationUrl,
+      );
+
+      log('Welcome and confirmation mails sent to $mail');
+    });
+  }
+
+  /// Generate mail confirmation token (placeholder - implement similar to password reset)
+  Future<String> _generateMailConfirmationToken(String mail) async {
+    // TODO: Implement mail confirmation token generation
+    // This should work similar to password reset tokens but for mail confirmation
+    // For now, return a placeholder token
+    return 'confirmation_token_${DateTime.now().millisecondsSinceEpoch}';
   }
 }

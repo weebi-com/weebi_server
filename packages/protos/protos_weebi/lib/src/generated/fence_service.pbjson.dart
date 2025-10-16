@@ -120,6 +120,19 @@ final $typed_data.Uint8List readAllChainsResponseDescriptor = $convert.base64Dec
     'ChVSZWFkQWxsQ2hhaW5zUmVzcG9uc2USKgoGY2hhaW5zGAEgAygLMhIud2VlYmkuY2hhaW4uQ2'
     'hhaW5SBmNoYWlucw==');
 
+@$core.Deprecated('Use readAllBoutiquesResponseDescriptor instead')
+const ReadAllBoutiquesResponse$json = {
+  '1': 'ReadAllBoutiquesResponse',
+  '2': [
+    {'1': 'boutiques', '3': 1, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutiques'},
+  ],
+};
+
+/// Descriptor for `ReadAllBoutiquesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readAllBoutiquesResponseDescriptor = $convert.base64Decode(
+    'ChhSZWFkQWxsQm91dGlxdWVzUmVzcG9uc2USOAoJYm91dGlxdWVzGAEgAygLMhoud2VlYmkuYm'
+    '91dGlxdWUuQm91dGlxdWVQYlIJYm91dGlxdWVz');
+
 @$core.Deprecated('Use readDevicesRequestDescriptor instead')
 const ReadDevicesRequest$json = {
   '1': 'ReadDevicesRequest',
