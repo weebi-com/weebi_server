@@ -45,4 +45,4 @@ jobs:
       - name: Run tests
         run: melos run test
         env:
-          MONGO_DB_URI: mongodb://localhost:27017/test 
+          MONGO_DB_URI: mongodb://localhost:27017/local 
