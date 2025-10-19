@@ -668,6 +668,8 @@ class ReadPhotosRequest extends $pb.GeneratedMessage {
   factory ReadPhotosRequest({
     $core.String? chainId,
     $17.Timestamp? lastFetchTimestampUTC,
+    $core.int? offset,
+    $core.int? limit,
   }) {
     final $result = create();
     if (chainId != null) {
@@ -675,6 +677,12 @@ class ReadPhotosRequest extends $pb.GeneratedMessage {
     }
     if (lastFetchTimestampUTC != null) {
       $result.lastFetchTimestampUTC = lastFetchTimestampUTC;
+    }
+    if (offset != null) {
+      $result.offset = offset;
+    }
+    if (limit != null) {
+      $result.limit = limit;
     }
     return $result;
   }
@@ -685,6 +693,8 @@ class ReadPhotosRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadPhotosRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOM<$17.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $17.Timestamp.create)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'offset', $pb.PbFieldType.O3)
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'limit', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -722,6 +732,24 @@ class ReadPhotosRequest extends $pb.GeneratedMessage {
   void clearLastFetchTimestampUTC() => $_clearField(2);
   @$pb.TagNumber(2)
   $17.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $core.int get offset => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set offset($core.int v) { $_setSignedInt32(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasOffset() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOffset() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get limit => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set limit($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasLimit() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLimit() => $_clearField(4);
 }
 
 class PhotoRequest extends $pb.GeneratedMessage {
@@ -839,10 +867,26 @@ class PhotosRequest extends $pb.GeneratedMessage {
 class PhotosResponse extends $pb.GeneratedMessage {
   factory PhotosResponse({
     $core.Iterable<$4.ArticlePhotoPb>? photos,
+    $core.int? total,
+    $core.int? offset,
+    $core.bool? hasMore,
+    $core.int? batchSize,
   }) {
     final $result = create();
     if (photos != null) {
       $result.photos.addAll(photos);
+    }
+    if (total != null) {
+      $result.total = total;
+    }
+    if (offset != null) {
+      $result.offset = offset;
+    }
+    if (hasMore != null) {
+      $result.hasMore = hasMore;
+    }
+    if (batchSize != null) {
+      $result.batchSize = batchSize;
     }
     return $result;
   }
@@ -852,6 +896,10 @@ class PhotosResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PhotosResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.article.service'), createEmptyInstance: create)
     ..pc<$4.ArticlePhotoPb>(1, _omitFieldNames ? '' : 'photos', $pb.PbFieldType.PM, subBuilder: $4.ArticlePhotoPb.create)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'total', $pb.PbFieldType.O3)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'offset', $pb.PbFieldType.O3)
+    ..aOB(4, _omitFieldNames ? '' : 'hasMore', protoName: 'hasMore')
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'batchSize', $pb.PbFieldType.O3, protoName: 'batchSize')
     ..hasRequiredFields = false
   ;
 
@@ -872,6 +920,42 @@ class PhotosResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $pb.PbList<$4.ArticlePhotoPb> get photos => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.int get total => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set total($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasTotal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTotal() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get offset => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set offset($core.int v) { $_setSignedInt32(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasOffset() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOffset() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get hasMore => $_getBF(3);
+  @$pb.TagNumber(4)
+  set hasMore($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasHasMore() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearHasMore() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get batchSize => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set batchSize($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasBatchSize() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearBatchSize() => $_clearField(5);
 }
 
 

@@ -890,21 +890,46 @@ class ArticleService extends ArticleServiceBase {
             selector.and(where.gte('lastTouchTimestampUTC',
                 request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
           }
-          final list = await collectionPhoto.find(selector).toList();
+
+          // 1. GET TOTAL COUNT FIRST (fast operation)
+          final totalCount = await collectionPhoto.count(selector);
+
+          // 2. DETERMINE OFFSET AND LIMIT
+          final maxAllowedLimit = 100;
+          final limit = request.limit > maxAllowedLimit ? maxAllowedLimit : request.limit;
+
+          // 3. FETCH BATCH WITH LIMIT
+          final list = await collectionPhoto
+              .find(selector)
+              .skip(request.offset)
+              .take(limit)
+              .toList();
+
           if (list.isEmpty) {
-            return PhotosResponse.create();
+            return PhotosResponse.create()
+              ..total = totalCount
+              ..offset = request.offset
+              ..hasMore = false;
           }
+
           final photos = <ArticlePhotoPb>[];
           for (final e in list) {
             final articlePhotoMongo = ArticlePhotoMongo.create()
               ..mergeFromProto3Json(e, ignoreUnknownFields: true);
             photos.add(articlePhotoMongo.photo);
           }
-          final bis = PhotosResponse();
-          bis.photos
+          final response = PhotosResponse();
+          response.photos
             ..clear()
             ..addAll(photos);
-          return bis;
+
+          // 4. ADD PAGINATION METADATA
+          response.total = totalCount;
+          response.offset = request.offset;
+          response.hasMore = (request.offset + photos.length) < totalCount;
+          response.batchSize = photos.length;
+
+          return response;
         } on GrpcError catch (e) {
           print('readAll articles error $e');
           rethrow;

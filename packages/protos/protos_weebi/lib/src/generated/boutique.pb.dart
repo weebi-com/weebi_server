@@ -254,6 +254,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.double? promo,
     $core.String? promoStart,
     $core.String? promoEnd,
+    $core.bool? isDeleted,
+    $core.String? deletedBy,
+    $core.String? restoredBy,
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? additionalAttributes,
   }) {
     final $result = create();
@@ -290,6 +293,15 @@ class BoutiquePb extends $pb.GeneratedMessage {
     if (promoEnd != null) {
       $result.promoEnd = promoEnd;
     }
+    if (isDeleted != null) {
+      $result.isDeleted = isDeleted;
+    }
+    if (deletedBy != null) {
+      $result.deletedBy = deletedBy;
+    }
+    if (restoredBy != null) {
+      $result.restoredBy = restoredBy;
+    }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addEntries(additionalAttributes);
     }
@@ -311,6 +323,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     ..a<$core.double>(9, _omitFieldNames ? '' : 'promo', $pb.PbFieldType.OD)
     ..aOS(10, _omitFieldNames ? '' : 'promoStart', protoName: 'promoStart')
     ..aOS(11, _omitFieldNames ? '' : 'promoEnd', protoName: 'promoEnd')
+    ..aOB(12, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
+    ..aOS(13, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
+    ..aOS(14, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiquePb.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -433,8 +448,35 @@ class BoutiquePb extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   void clearPromoEnd() => $_clearField(11);
 
+  @$pb.TagNumber(12)
+  $core.bool get isDeleted => $_getBF(11);
+  @$pb.TagNumber(12)
+  set isDeleted($core.bool v) { $_setBool(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasIsDeleted() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearIsDeleted() => $_clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.String get deletedBy => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set deletedBy($core.String v) { $_setString(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasDeletedBy() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearDeletedBy() => $_clearField(13);
+
+  @$pb.TagNumber(14)
+  $core.String get restoredBy => $_getSZ(13);
+  @$pb.TagNumber(14)
+  set restoredBy($core.String v) { $_setString(13, v); }
+  @$pb.TagNumber(14)
+  $core.bool hasRestoredBy() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearRestoredBy() => $_clearField(14);
+
   @$pb.TagNumber(99)
-  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(11);
+  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(14);
 }
 
 
