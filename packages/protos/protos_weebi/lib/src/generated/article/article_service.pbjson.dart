@@ -182,6 +182,8 @@ const ReadPhotosRequest$json = {
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'lastFetchTimestampUTC', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastFetchTimestampUTC'},
+    {'1': 'offset', '3': 3, '4': 1, '5': 5, '10': 'offset'},
+    {'1': 'limit', '3': 4, '4': 1, '5': 5, '10': 'limit'},
   ],
 };
 
@@ -189,7 +191,8 @@ const ReadPhotosRequest$json = {
 final $typed_data.Uint8List readPhotosRequestDescriptor = $convert.base64Decode(
     'ChFSZWFkUGhvdG9zUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkElAKFWxhc3RGZX'
     'RjaFRpbWVzdGFtcFVUQxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFWxhc3RG'
-    'ZXRjaFRpbWVzdGFtcFVUQw==');
+    'ZXRjaFRpbWVzdGFtcFVUQxIWCgZvZmZzZXQYAyABKAVSBm9mZnNldBIUCgVsaW1pdBgEIAEoBV'
+    'IFbGltaXQ=');
 
 @$core.Deprecated('Use photoRequestDescriptor instead')
 const PhotoRequest$json = {
@@ -224,11 +227,17 @@ const PhotosResponse$json = {
   '1': 'PhotosResponse',
   '2': [
     {'1': 'photos', '3': 1, '4': 3, '5': 11, '6': '.weebi.photo.ArticlePhotoPb', '10': 'photos'},
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {'1': 'offset', '3': 3, '4': 1, '5': 5, '10': 'offset'},
+    {'1': 'hasMore', '3': 4, '4': 1, '5': 8, '10': 'hasMore'},
+    {'1': 'batchSize', '3': 5, '4': 1, '5': 5, '10': 'batchSize'},
   ],
 };
 
 /// Descriptor for `PhotosResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List photosResponseDescriptor = $convert.base64Decode(
     'Cg5QaG90b3NSZXNwb25zZRIzCgZwaG90b3MYASADKAsyGy53ZWViaS5waG90by5BcnRpY2xlUG'
-    'hvdG9QYlIGcGhvdG9z');
+    'hvdG9QYlIGcGhvdG9zEhQKBXRvdGFsGAIgASgFUgV0b3RhbBIWCgZvZmZzZXQYAyABKAVSBm9m'
+    'ZnNldBIYCgdoYXNNb3JlGAQgASgIUgdoYXNNb3JlEhwKCWJhdGNoU2l6ZRgFIAEoBVIJYmF0Y2'
+    'hTaXpl');
 

@@ -123,6 +123,8 @@ message FindPhotoRequest {
 message ReadPhotosRequest {
   string chainId = 1;
   google.protobuf.Timestamp lastFetchTimestampUTC =  2 ; 
+  int32 offset = 3;        //  Starting position (default 0)
+  int32 limit = 4;         //  Batch size (default 100)
 }
 
 message PhotoRequest {
@@ -136,4 +138,8 @@ message PhotosRequest {
 
 message PhotosResponse {
   repeated weebi.photo.ArticlePhotoPb photos = 1;
+  int32 total = 2;    
+  int32 offset = 3;   
+  bool hasMore = 4;        // More photos available?
+  int32 batchSize = 5;
 }
