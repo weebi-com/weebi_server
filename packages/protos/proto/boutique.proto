@@ -19,7 +19,10 @@ message BoutiqueMongo {
     bytes logo = 9 [json_name = 'logo'];
     /// extension here is a string, e.g. png or jpeg (!= enum in ArticlePhotoPb)
     string logoExtension = 10 [json_name = 'logoExtension'];
-    reserved 11 to 98;
+    bool isDeleted = 11 [json_name = 'isDeleted'];
+    string deletedBy = 12 [json_name = 'deletedBy']; // userId who deleted it
+    string restoredBy = 13 [json_name = 'restoredBy']; // userId who restored it (empty if never restored)
+    reserved 14 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
 }
 
@@ -28,15 +31,18 @@ message BoutiquePb {
     string boutiqueId = 1 [json_name = 'boutiqueId'];
     string creationDate = 2 [json_name = 'creationDate'];
     string updateDate = 3 [json_name = 'updateDate'];
-    string statusUpdateDate = 4 [json_name = 'statusUpdateDate'];
-    bool status = 5 [json_name = 'status'];
+    string statusUpdateDate = 4 [json_name = 'statusUpdateDate', deprecated = true]; // dont use this field, use lastTouchTimestampUTC instead
+    bool status = 5 [json_name = 'status', deprecated = true]; // dont use this field, use isDeleted instead
     string name = 6 [json_name = 'name'];
     weebi.common.phone.Phone phone = 7 [json_name = 'phone'];
     weebi.common.address.Address addressFull = 8 [json_name = 'addressFull'];
     double promo = 9 [json_name = 'promo'];
     string promoStart = 10 [json_name = 'promoStart'];
     string promoEnd = 11 [json_name = 'promoEnd'];
-    reserved 12 to 98;
+    bool isDeleted = 12 [json_name = 'isDeleted'];
+    string deletedBy = 13 [json_name = 'deletedBy']; // userId who deleted it
+    string restoredBy = 14 [json_name = 'restoredBy']; // userId who restored it (empty if never restored)
+    reserved 15 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
    }
    

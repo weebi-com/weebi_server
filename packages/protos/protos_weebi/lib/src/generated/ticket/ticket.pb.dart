@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: ticket/ticket.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -13,10 +13,12 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../article/article.pb.dart' as $3;
-import '../common/g_timestamp.pb.dart' as $18;
+import '../article/article.pb.dart' as $2;
+import '../common/g_timestamp.pb.dart' as $17;
 import 'ticket.pbenum.dart';
 import 'ticket_type.pbenum.dart' as $23;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 export 'ticket.pbenum.dart';
 
@@ -31,10 +33,10 @@ class TicketMongo extends $pb.GeneratedMessage {
     $core.String? firmId,
     $core.String? chainId,
     $core.String? creationDate,
-    $18.Timestamp? lastTouchTimestampUTC,
+    $17.Timestamp? lastTouchTimestampUTC,
     $core.bool? isDeleted,
     $core.int? contactId,
-    $core.Map<$core.String, $core.String>? additionalAttributes,
+    $core.Iterable<$core.MapEntry<$core.String, $core.String>>? additionalAttributes,
   }) {
     final $result = create();
     if (ticket != null) {
@@ -68,7 +70,7 @@ class TicketMongo extends $pb.GeneratedMessage {
       $result.contactId = contactId;
     }
     if (additionalAttributes != null) {
-      $result.additionalAttributes.addAll(additionalAttributes);
+      $result.additionalAttributes.addEntries(additionalAttributes);
     }
     return $result;
   }
@@ -84,22 +86,16 @@ class TicketMongo extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(6, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
-    ..aOM<$18.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..aOB(9, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..a<$core.int>(10, _omitFieldNames ? '' : 'contactId', $pb.PbFieldType.O3, protoName: 'contactId')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'TicketMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.ticket'))
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketMongo clone() => TicketMongo()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketMongo copyWith(void Function(TicketMongo) updates) => super.copyWith((message) => updates(message as TicketMongo)) as TicketMongo;
 
   $pb.BuilderInfo get info_ => _i;
@@ -115,11 +111,11 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   TicketPb get ticket => $_getN(0);
   @$pb.TagNumber(1)
-  set ticket(TicketPb v) { setField(1, v); }
+  set ticket(TicketPb v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasTicket() => $_has(0);
   @$pb.TagNumber(1)
-  void clearTicket() => clearField(1);
+  void clearTicket() => $_clearField(1);
   @$pb.TagNumber(1)
   TicketPb ensureTicket() => $_ensure(0);
 
@@ -130,7 +126,7 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasNonUniqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearNonUniqueId() => clearField(2);
+  void clearNonUniqueId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get userId => $_getSZ(2);
@@ -139,7 +135,7 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasUserId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUserId() => clearField(3);
+  void clearUserId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get boutiqueId => $_getSZ(3);
@@ -148,7 +144,7 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasBoutiqueId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearBoutiqueId() => clearField(4);
+  void clearBoutiqueId() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get firmId => $_getSZ(4);
@@ -157,7 +153,7 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasFirmId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearFirmId() => clearField(5);
+  void clearFirmId() => $_clearField(5);
 
   @$pb.TagNumber(6)
   $core.String get chainId => $_getSZ(5);
@@ -166,7 +162,7 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasChainId() => $_has(5);
   @$pb.TagNumber(6)
-  void clearChainId() => clearField(6);
+  void clearChainId() => $_clearField(6);
 
   @$pb.TagNumber(7)
   $core.String get creationDate => $_getSZ(6);
@@ -175,18 +171,18 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.bool hasCreationDate() => $_has(6);
   @$pb.TagNumber(7)
-  void clearCreationDate() => clearField(7);
+  void clearCreationDate() => $_clearField(7);
 
   @$pb.TagNumber(8)
-  $18.Timestamp get lastTouchTimestampUTC => $_getN(7);
+  $17.Timestamp get lastTouchTimestampUTC => $_getN(7);
   @$pb.TagNumber(8)
-  set lastTouchTimestampUTC($18.Timestamp v) { setField(8, v); }
+  set lastTouchTimestampUTC($17.Timestamp v) { $_setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasLastTouchTimestampUTC() => $_has(7);
   @$pb.TagNumber(8)
-  void clearLastTouchTimestampUTC() => clearField(8);
+  void clearLastTouchTimestampUTC() => $_clearField(8);
   @$pb.TagNumber(8)
-  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
+  $17.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
 
   @$pb.TagNumber(9)
   $core.bool get isDeleted => $_getBF(8);
@@ -195,7 +191,7 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   $core.bool hasIsDeleted() => $_has(8);
   @$pb.TagNumber(9)
-  void clearIsDeleted() => clearField(9);
+  void clearIsDeleted() => $_clearField(9);
 
   @$pb.TagNumber(10)
   $core.int get contactId => $_getIZ(9);
@@ -204,10 +200,10 @@ class TicketMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   $core.bool hasContactId() => $_has(9);
   @$pb.TagNumber(10)
-  void clearContactId() => clearField(10);
+  void clearContactId() => $_clearField(10);
 
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(10);
+  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(10);
 }
 
 class TicketPb extends $pb.GeneratedMessage {
@@ -319,15 +315,9 @@ class TicketPb extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketPb clone() => TicketPb()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TicketPb copyWith(void Function(TicketPb) updates) => super.copyWith((message) => updates(message as TicketPb)) as TicketPb;
 
   $pb.BuilderInfo get info_ => _i;
@@ -347,7 +337,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasNonUniqueId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearNonUniqueId() => clearField(1);
+  void clearNonUniqueId() => $_clearField(1);
 
   /// different from article and contact
   /// a ticket must include a firm/chain/boutique/user
@@ -355,11 +345,11 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   Counterfoil get counterfoil => $_getN(1);
   @$pb.TagNumber(2)
-  set counterfoil(Counterfoil v) { setField(2, v); }
+  set counterfoil(Counterfoil v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasCounterfoil() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCounterfoil() => clearField(2);
+  void clearCounterfoil() => $_clearField(2);
   @$pb.TagNumber(2)
   Counterfoil ensureCounterfoil() => $_ensure(1);
 
@@ -371,7 +361,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasDate() => $_has(2);
   @$pb.TagNumber(3)
-  void clearDate() => clearField(3);
+  void clearDate() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get statusUpdateDate => $_getSZ(3);
@@ -380,7 +370,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasStatusUpdateDate() => $_has(3);
   @$pb.TagNumber(4)
-  void clearStatusUpdateDate() => clearField(4);
+  void clearStatusUpdateDate() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.bool get status => $_getBF(4);
@@ -389,28 +379,28 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasStatus() => $_has(4);
   @$pb.TagNumber(5)
-  void clearStatus() => clearField(5);
+  void clearStatus() => $_clearField(5);
 
   @$pb.TagNumber(6)
-  $core.List<ItemCartPb> get items => $_getList(5);
+  $pb.PbList<ItemCartPb> get items => $_getList(5);
 
   @$pb.TagNumber(7)
   $23.TicketTypePb get ticketType => $_getN(6);
   @$pb.TagNumber(7)
-  set ticketType($23.TicketTypePb v) { setField(7, v); }
+  set ticketType($23.TicketTypePb v) { $_setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasTicketType() => $_has(6);
   @$pb.TagNumber(7)
-  void clearTicketType() => clearField(7);
+  void clearTicketType() => $_clearField(7);
 
   @$pb.TagNumber(8)
   TicketPb_PaymentTypePb get paymentType => $_getN(7);
   @$pb.TagNumber(8)
-  set paymentType(TicketPb_PaymentTypePb v) { setField(8, v); }
+  set paymentType(TicketPb_PaymentTypePb v) { $_setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasPaymentType() => $_has(7);
   @$pb.TagNumber(8)
-  void clearPaymentType() => clearField(8);
+  void clearPaymentType() => $_clearField(8);
 
   @$pb.TagNumber(9)
   $core.int get contactId => $_getIZ(8);
@@ -419,16 +409,16 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   $core.bool hasContactId() => $_has(8);
   @$pb.TagNumber(9)
-  void clearContactId() => clearField(9);
+  void clearContactId() => $_clearField(9);
 
   @$pb.TagNumber(10)
   TaxPb get taxe => $_getN(9);
   @$pb.TagNumber(10)
-  set taxe(TaxPb v) { setField(10, v); }
+  set taxe(TaxPb v) { $_setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasTaxe() => $_has(9);
   @$pb.TagNumber(10)
-  void clearTaxe() => clearField(10);
+  void clearTaxe() => $_clearField(10);
   @$pb.TagNumber(10)
   TaxPb ensureTaxe() => $_ensure(9);
 
@@ -439,7 +429,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   $core.bool hasPromo() => $_has(10);
   @$pb.TagNumber(11)
-  void clearPromo() => clearField(11);
+  void clearPromo() => $_clearField(11);
 
   @$pb.TagNumber(12)
   $core.double get received => $_getN(11);
@@ -448,7 +438,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(12)
   $core.bool hasReceived() => $_has(11);
   @$pb.TagNumber(12)
-  void clearReceived() => clearField(12);
+  void clearReceived() => $_clearField(12);
 
   @$pb.TagNumber(13)
   $core.double get discountAmount => $_getN(12);
@@ -457,7 +447,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   $core.bool hasDiscountAmount() => $_has(12);
   @$pb.TagNumber(13)
-  void clearDiscountAmount() => clearField(13);
+  void clearDiscountAmount() => $_clearField(13);
 
   @$pb.TagNumber(14)
   $core.String get comment => $_getSZ(13);
@@ -466,7 +456,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   $core.bool hasComment() => $_has(13);
   @$pb.TagNumber(14)
-  void clearComment() => clearField(14);
+  void clearComment() => $_clearField(14);
 
   /// / when the ticket was created
   @$pb.TagNumber(15)
@@ -476,7 +466,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(15)
   $core.bool hasCreationDate() => $_has(14);
   @$pb.TagNumber(15)
-  void clearCreationDate() => clearField(15);
+  void clearCreationDate() => $_clearField(15);
 
   /// complementary contact fields that need to be stored on ticket in case contacts change
   @$pb.TagNumber(16)
@@ -486,7 +476,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(16)
   $core.bool hasContactFirstName() => $_has(15);
   @$pb.TagNumber(16)
-  void clearContactFirstName() => clearField(16);
+  void clearContactFirstName() => $_clearField(16);
 
   @$pb.TagNumber(17)
   $core.String get contactLastName => $_getSZ(16);
@@ -495,7 +485,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(17)
   $core.bool hasContactLastName() => $_has(16);
   @$pb.TagNumber(17)
-  void clearContactLastName() => clearField(17);
+  void clearContactLastName() => $_clearField(17);
 
   @$pb.TagNumber(18)
   $core.String get contactPhone => $_getSZ(17);
@@ -504,7 +494,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(18)
   $core.bool hasContactPhone() => $_has(17);
   @$pb.TagNumber(18)
-  void clearContactPhone() => clearField(18);
+  void clearContactPhone() => $_clearField(18);
 
   @$pb.TagNumber(19)
   $core.String get contactMail => $_getSZ(18);
@@ -513,7 +503,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(19)
   $core.bool hasContactMail() => $_has(18);
   @$pb.TagNumber(19)
-  void clearContactMail() => clearField(19);
+  void clearContactMail() => $_clearField(19);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {
@@ -580,15 +570,9 @@ class Counterfoil extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Counterfoil clone() => Counterfoil()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Counterfoil copyWith(void Function(Counterfoil) updates) => super.copyWith((message) => updates(message as Counterfoil)) as Counterfoil;
 
   $pb.BuilderInfo get info_ => _i;
@@ -608,7 +592,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasFirmId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearFirmId() => clearField(1);
+  void clearFirmId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get firmName => $_getSZ(1);
@@ -617,7 +601,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasFirmName() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFirmName() => clearField(2);
+  void clearFirmName() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get chainId => $_getSZ(2);
@@ -626,7 +610,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasChainId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearChainId() => clearField(3);
+  void clearChainId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get chainName => $_getSZ(3);
@@ -635,7 +619,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasChainName() => $_has(3);
   @$pb.TagNumber(4)
-  void clearChainName() => clearField(4);
+  void clearChainName() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get deviceId => $_getSZ(4);
@@ -644,7 +628,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasDeviceId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearDeviceId() => clearField(5);
+  void clearDeviceId() => $_clearField(5);
 
   @$pb.TagNumber(6)
   $core.String get deviceName => $_getSZ(5);
@@ -653,7 +637,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasDeviceName() => $_has(5);
   @$pb.TagNumber(6)
-  void clearDeviceName() => clearField(6);
+  void clearDeviceName() => $_clearField(6);
 
   @$pb.TagNumber(7)
   $core.String get boutiqueId => $_getSZ(6);
@@ -662,7 +646,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.bool hasBoutiqueId() => $_has(6);
   @$pb.TagNumber(7)
-  void clearBoutiqueId() => clearField(7);
+  void clearBoutiqueId() => $_clearField(7);
 
   @$pb.TagNumber(8)
   $core.String get boutiqueName => $_getSZ(7);
@@ -671,7 +655,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $core.bool hasBoutiqueName() => $_has(7);
   @$pb.TagNumber(8)
-  void clearBoutiqueName() => clearField(8);
+  void clearBoutiqueName() => $_clearField(8);
 
   /// / userId is the user who synced the ticket, not necessarily the one who created it
   @$pb.TagNumber(9)
@@ -681,7 +665,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   $core.bool hasUserId() => $_has(8);
   @$pb.TagNumber(9)
-  void clearUserId() => clearField(9);
+  void clearUserId() => $_clearField(9);
 
   @$pb.TagNumber(10)
   $core.String get userName => $_getSZ(9);
@@ -690,7 +674,7 @@ class Counterfoil extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   $core.bool hasUserName() => $_has(9);
   @$pb.TagNumber(10)
-  void clearUserName() => clearField(10);
+  void clearUserName() => $_clearField(10);
 }
 
 class TaxPb extends $pb.GeneratedMessage {
@@ -722,15 +706,9 @@ class TaxPb extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TaxPb clone() => TaxPb()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   TaxPb copyWith(void Function(TaxPb) updates) => super.copyWith((message) => updates(message as TaxPb)) as TaxPb;
 
   $pb.BuilderInfo get info_ => _i;
@@ -750,7 +728,7 @@ class TaxPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
+  void clearId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get name => $_getSZ(1);
@@ -759,7 +737,7 @@ class TaxPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
-  void clearName() => clearField(2);
+  void clearName() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.double get percentage => $_getN(2);
@@ -768,7 +746,7 @@ class TaxPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasPercentage() => $_has(2);
   @$pb.TagNumber(3)
-  void clearPercentage() => clearField(3);
+  void clearPercentage() => $_clearField(3);
 }
 
 class ProxyArticleWorthPb extends $pb.GeneratedMessage {
@@ -835,15 +813,9 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ProxyArticleWorthPb clone() => ProxyArticleWorthPb()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ProxyArticleWorthPb copyWith(void Function(ProxyArticleWorthPb) updates) => super.copyWith((message) => updates(message as ProxyArticleWorthPb)) as ProxyArticleWorthPb;
 
   $pb.BuilderInfo get info_ => _i;
@@ -863,7 +835,7 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasCalibreId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCalibreId() => clearField(1);
+  void clearCalibreId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.int get articleId => $_getIZ(1);
@@ -872,7 +844,7 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasArticleId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearArticleId() => clearField(2);
+  void clearArticleId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.int get id => $_getIZ(2);
@@ -881,7 +853,7 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearId() => clearField(3);
+  void clearId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.bool get status => $_getBF(3);
@@ -890,7 +862,7 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasStatus() => $_has(3);
   @$pb.TagNumber(4)
-  void clearStatus() => clearField(4);
+  void clearStatus() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.int get proxyCalibreId => $_getIZ(4);
@@ -899,7 +871,7 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasProxyCalibreId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearProxyCalibreId() => clearField(5);
+  void clearProxyCalibreId() => $_clearField(5);
 
   @$pb.TagNumber(6)
   $core.int get proxyArticleId => $_getIZ(5);
@@ -908,7 +880,7 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasProxyArticleId() => $_has(5);
   @$pb.TagNumber(6)
-  void clearProxyArticleId() => clearField(6);
+  void clearProxyArticleId() => $_clearField(6);
 
   @$pb.TagNumber(7)
   $core.double get minimumUnitPerBasket => $_getN(6);
@@ -917,7 +889,7 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.bool hasMinimumUnitPerBasket() => $_has(6);
   @$pb.TagNumber(7)
-  void clearMinimumUnitPerBasket() => clearField(7);
+  void clearMinimumUnitPerBasket() => $_clearField(7);
 
   @$pb.TagNumber(8)
   $core.double get articleWeight => $_getN(7);
@@ -926,7 +898,7 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $core.bool hasArticleWeight() => $_has(7);
   @$pb.TagNumber(8)
-  void clearArticleWeight() => clearField(8);
+  void clearArticleWeight() => $_clearField(8);
 
   @$pb.TagNumber(9)
   $core.double get price => $_getN(8);
@@ -935,7 +907,7 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(9)
   $core.bool hasPrice() => $_has(8);
   @$pb.TagNumber(9)
-  void clearPrice() => clearField(9);
+  void clearPrice() => $_clearField(9);
 
   @$pb.TagNumber(10)
   $core.double get cost => $_getN(9);
@@ -944,14 +916,14 @@ class ProxyArticleWorthPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   $core.bool hasCost() => $_has(9);
   @$pb.TagNumber(10)
-  void clearCost() => clearField(10);
+  void clearCost() => $_clearField(10);
 }
 
 class ItemCartPb extends $pb.GeneratedMessage {
   factory ItemCartPb({
-    $3.ArticleRetailOnTicketPb? articleRetail,
-    $3.ArticleBasketOnTicketPb? articleBasket,
-    $3.ArticleUncountableOnTicketPb? articleUncountable,
+    $2.ArticleRetailOnTicketPb? articleRetail,
+    $2.ArticleBasketOnTicketPb? articleBasket,
+    $2.ArticleUncountableOnTicketPb? articleUncountable,
     $core.double? quantity,
     $core.Iterable<ProxyArticleWorthPb>? proxiesWorth,
     $core.double? inventoryAbsoluteQt,
@@ -982,24 +954,18 @@ class ItemCartPb extends $pb.GeneratedMessage {
   factory ItemCartPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ItemCartPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
-    ..aOM<$3.ArticleRetailOnTicketPb>(1, _omitFieldNames ? '' : 'articleRetail', protoName: 'articleRetail', subBuilder: $3.ArticleRetailOnTicketPb.create)
-    ..aOM<$3.ArticleBasketOnTicketPb>(2, _omitFieldNames ? '' : 'articleBasket', protoName: 'articleBasket', subBuilder: $3.ArticleBasketOnTicketPb.create)
-    ..aOM<$3.ArticleUncountableOnTicketPb>(3, _omitFieldNames ? '' : 'articleUncountable', protoName: 'articleUncountable', subBuilder: $3.ArticleUncountableOnTicketPb.create)
+    ..aOM<$2.ArticleRetailOnTicketPb>(1, _omitFieldNames ? '' : 'articleRetail', protoName: 'articleRetail', subBuilder: $2.ArticleRetailOnTicketPb.create)
+    ..aOM<$2.ArticleBasketOnTicketPb>(2, _omitFieldNames ? '' : 'articleBasket', protoName: 'articleBasket', subBuilder: $2.ArticleBasketOnTicketPb.create)
+    ..aOM<$2.ArticleUncountableOnTicketPb>(3, _omitFieldNames ? '' : 'articleUncountable', protoName: 'articleUncountable', subBuilder: $2.ArticleUncountableOnTicketPb.create)
     ..a<$core.double>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..pc<ProxyArticleWorthPb>(5, _omitFieldNames ? '' : 'proxiesWorth', $pb.PbFieldType.PM, subBuilder: ProxyArticleWorthPb.create)
     ..a<$core.double>(6, _omitFieldNames ? '' : 'inventoryAbsoluteQt', $pb.PbFieldType.OD, protoName: 'inventoryAbsoluteQt')
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ItemCartPb clone() => ItemCartPb()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ItemCartPb copyWith(void Function(ItemCartPb) updates) => super.copyWith((message) => updates(message as ItemCartPb)) as ItemCartPb;
 
   $pb.BuilderInfo get info_ => _i;
@@ -1013,37 +979,37 @@ class ItemCartPb extends $pb.GeneratedMessage {
   static ItemCartPb? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $3.ArticleRetailOnTicketPb get articleRetail => $_getN(0);
+  $2.ArticleRetailOnTicketPb get articleRetail => $_getN(0);
   @$pb.TagNumber(1)
-  set articleRetail($3.ArticleRetailOnTicketPb v) { setField(1, v); }
+  set articleRetail($2.ArticleRetailOnTicketPb v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasArticleRetail() => $_has(0);
   @$pb.TagNumber(1)
-  void clearArticleRetail() => clearField(1);
+  void clearArticleRetail() => $_clearField(1);
   @$pb.TagNumber(1)
-  $3.ArticleRetailOnTicketPb ensureArticleRetail() => $_ensure(0);
+  $2.ArticleRetailOnTicketPb ensureArticleRetail() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $3.ArticleBasketOnTicketPb get articleBasket => $_getN(1);
+  $2.ArticleBasketOnTicketPb get articleBasket => $_getN(1);
   @$pb.TagNumber(2)
-  set articleBasket($3.ArticleBasketOnTicketPb v) { setField(2, v); }
+  set articleBasket($2.ArticleBasketOnTicketPb v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasArticleBasket() => $_has(1);
   @$pb.TagNumber(2)
-  void clearArticleBasket() => clearField(2);
+  void clearArticleBasket() => $_clearField(2);
   @$pb.TagNumber(2)
-  $3.ArticleBasketOnTicketPb ensureArticleBasket() => $_ensure(1);
+  $2.ArticleBasketOnTicketPb ensureArticleBasket() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $3.ArticleUncountableOnTicketPb get articleUncountable => $_getN(2);
+  $2.ArticleUncountableOnTicketPb get articleUncountable => $_getN(2);
   @$pb.TagNumber(3)
-  set articleUncountable($3.ArticleUncountableOnTicketPb v) { setField(3, v); }
+  set articleUncountable($2.ArticleUncountableOnTicketPb v) { $_setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasArticleUncountable() => $_has(2);
   @$pb.TagNumber(3)
-  void clearArticleUncountable() => clearField(3);
+  void clearArticleUncountable() => $_clearField(3);
   @$pb.TagNumber(3)
-  $3.ArticleUncountableOnTicketPb ensureArticleUncountable() => $_ensure(2);
+  $2.ArticleUncountableOnTicketPb ensureArticleUncountable() => $_ensure(2);
 
   @$pb.TagNumber(4)
   $core.double get quantity => $_getN(3);
@@ -1052,10 +1018,10 @@ class ItemCartPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasQuantity() => $_has(3);
   @$pb.TagNumber(4)
-  void clearQuantity() => clearField(4);
+  void clearQuantity() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $core.List<ProxyArticleWorthPb> get proxiesWorth => $_getList(4);
+  $pb.PbList<ProxyArticleWorthPb> get proxiesWorth => $_getList(4);
 
   @$pb.TagNumber(6)
   $core.double get inventoryAbsoluteQt => $_getN(5);
@@ -1064,7 +1030,7 @@ class ItemCartPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasInventoryAbsoluteQt() => $_has(5);
   @$pb.TagNumber(6)
-  void clearInventoryAbsoluteQt() => clearField(6);
+  void clearInventoryAbsoluteQt() => $_clearField(6);
 }
 
 

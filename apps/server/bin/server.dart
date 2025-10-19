@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
+import 'dart:io' show HttpHeaders, InternetAddress, Platform;
 
+import 'package:fence_service/mongo_pool.dart';
 import 'package:logging/logging.dart';
-import 'package:fence_service/mongo_dart.dart';
+// import 'package:fence_service/mongo_dart.dart';
 
 import 'package:fence_service/grpc.dart'
     show GrpcError, Server, ServiceCall, ServiceMethod;
@@ -13,12 +14,11 @@ import 'package:server/server_interceptors.dart';
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/weebi_app_service.dart';
-// import 'package:fence_service/mongo_local_testing.dart';
 
 import '../constants/app_environment.dart';
 
-// TODO: in a production environment, it’s generally not recommended to use * due to security concern
-// ? can we add weebi domain cors here ?
+// * in a production environment, it’s generally not recommended to use * due to security concern
+// ? consider adding weebi domain cors here ?
 FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
   call.headers!.addAll({
     HttpHeaders.accessControlAllowOriginHeader: '*',
@@ -41,17 +41,39 @@ void main(List<String> arguments) async {
   Logger.root.onRecord.listen((LogRecord rec) {
     log('${rec.loggerName}: ${rec.level.name}: ${rec.time}: ${rec.message}');
   });
+  print('1');
+
+  final MongoDbPoolService poolService = MongoDbPoolService(
+    MongoPoolConfiguration(
+      maxLifetimeMilliseconds: 180000,
+      leakDetectionThreshold: 10000,
+      uriString: AppEnvironment.mongoDbUri,
+      poolSize: 2,
+    ),
+  );
+
+  await poolService.initialize();
 
   try {
     final db = await Db.create(AppEnvironment.mongoDbUri);
+    print('2');
     await db.open();
+    print('3');
+//    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
+    //  final db = await pool.connect();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
-    final articleService = ArticleService(db);
-    final contactService = ContactService(db);
-    final ticketService = TicketService(db);
-    final fenceService = FenceService(db);
-    final weebiAppService = WeebiAppService(db);
+    final articleService = ArticleService(poolService);
+    final contactService = ContactService(poolService);
+    final ticketService = TicketService(poolService);
+    final weebiAppService = WeebiAppService(poolService);
+    final fenceService = FenceService(poolService);
+    
+    /// reminder
+    /// MAILTRAP_DEV_USERNAME  MAILTRAP_DEV_PASSWORD
+    /// prd 'MAILTRAP_API_TOKEN'] optionnal FROM_EMAIL FROM_NAME 
+
+    fenceService.configureMailService(EmailConfig.create());
 
     final server = Server.create(
       services: [
@@ -65,10 +87,23 @@ void main(List<String> arguments) async {
     );
 
     final ip = InternetAddress.anyIPv4;
+    print('4');
 
     await server.serve(port: AppEnvironment.port, address: ip);
 
-    print('Server running on ip $ip port ${server.port}');
+    print('gRPC Server running on ip $ip port ${server.port}');
+    
+    // Start HTTP server for REST endpoints
+    final httpBaseUrl = Platform.environment['HTTP_BASE_URL'] ?? 
+        (Platform.environment['ENVIRONMENT'] == 'production' 
+            ? 'https://api.weebi.com' 
+            : 'http://localhost:${AppEnvironment.httpPort}');
+    
+    await fenceService.startHttpServer(
+      port: AppEnvironment.httpPort,
+      baseUrl: httpBaseUrl,
+    );
+    print('HTTP Server running on port ${AppEnvironment.httpPort} with base URL: $httpBaseUrl');
   } catch (e) {
     log('Failed to connect to MongoDB: $e');
   }

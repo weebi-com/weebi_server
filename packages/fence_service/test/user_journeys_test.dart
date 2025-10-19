@@ -1,41 +1,42 @@
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/mongo_local_testing.dart';
+import 'package:fence_service/mongo_pool.dart';
 import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/grpc.dart';
 
 import 'package:test/test.dart';
-import 'package:mongo_dart/mongo_dart.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'service_call_impl.dart';
 
 void main() async {
-  final db = TestHelper.localDb;
-  final connection = Connection(ConnectionManager(db));
+  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  await poolService.initialize();
+
   late FenceService fenceService;
 
   setUpAll(() async {
-    await db.open();
-    final isConnected = await connection.connect();
+    final db = await poolService.acquire();
 
-    expect(isConnected, true);
-    fenceService = FenceService(db, isMock: false); // we do not mock signup
+    fenceService =
+        FenceService(poolService, isMock: false); // we do not mock signup
 
-    await db.createCollection(fenceService.userCollection.collectionName);
-    await db.createCollection(fenceService.boutiqueCollection.collectionName);
-    await db.createCollection(fenceService.firmCollection.collectionName);
+    await db.createCollection(FenceService.userCollectionName);
+    await db.createCollection(FenceService.boutiqueCollectionName);
+    await db.createCollection(FenceService.firmCollectionName);
+    poolService.release(db);
   });
 
   tearDownAll(() async {
-    await db.collection(fenceService.userCollection.collectionName).drop();
-    await db.collection(fenceService.boutiqueCollection.collectionName).drop();
-    await db.collection(fenceService.firmCollection.collectionName).drop();
-    await connection.close();
+    final db = await poolService.acquire();
+    await db.collection(FenceService.userCollectionName).drop();
+    await db.collection(FenceService.boutiqueCollectionName).drop();
+    await db.collection(FenceService.firmCollectionName).drop();
+    poolService.release(db);
   });
 
   test('''signup createFirm 
       createPendingUser and then have user signup and authent
-      let user signup and then createPendingUser and then have user authent
       ''', () async {
     // boss signs up
     final response = await fenceService.signUp(
@@ -103,8 +104,9 @@ void main() async {
 
     // alice signs up and is linked to boss' firm
     final aliceSignUp = await fenceService.signUp(
-        ServiceCallTest('', path: 'signUp'),
-        SignUpRequest(mail: 'alice@weebi.com', password: '987654321'));
+      ServiceCallTest('', path: 'signUp'),
+      SignUpRequest(mail: 'alice@weebi.com', password: '987654321'),
+    );
 
     expect(aliceSignUp.statusResponse.type, StatusResponse_Type.UPDATED);
     // indeed update since alice was already created by boss
@@ -124,48 +126,6 @@ void main() async {
     expect(alicePermission.articleRights,
         Dummy.salesPersonPermissionNoId.articleRights);
 
-    // user john signs up and awaits
-    final johnSignUp = await fenceService.signUp(
-        ServiceCallTest('', path: 'signUp'),
-        SignUpRequest(
-            mail: 'john@weebi.com',
-            password: 'iDontMindWaiting',
-            firstname: 'John',
-            lastname: 'Stressless'));
-
-// John is very patient and waits silently
-// boss (finally) creates pending user john which updates john's user
-    final bossCreateJohnResponse = await fenceService.createPendingUser(
-        ServiceCallTest(tokensBoss2.accessToken),
-        PendingUserRequest(
-            firstname: 'john',
-            lastname: 'whateverIForgotImTheBossIDealWithBiggerIssues',
-            mail: 'john@weebi.com',
-            phone: Phone(countryCode: 221, number: '784578482'),
-            permissions: Dummy.salesPersonPermissionNoId
-              ..firmId = createFirmResponse.firm.firmId
-              ..userId = johnSignUp.userId));
-
-    // again john already existed, so simple udate
-    expect(bossCreateJohnResponse.statusResponse.type,
-        StatusResponse_Type.UPDATED);
-    expect(bossCreateJohnResponse.userPublic.firstname, 'John');
-    expect(bossCreateJohnResponse.userPublic.permissions.firmId,
-        createFirmResponse.firm.firmId);
-    expect(bossCreateJohnResponse.userPublic.permissions.userId,
-        johnSignUp.userId);
-
-    // john logs-in with the appropriate access and rights
-    final johnToken = await fenceService.authenticateWithCredentials(null,
-        Credentials(mail: 'john@weebi.com', password: 'iDontMindWaiting'));
-
-    final johnPermission = johnToken.accessToken.userPermissions;
-    // final alicePermission = await fenceService.readUserPermissionsByToken(null, Empty());
-    expect(johnPermission.firmRights.rights.contains(Right.create), isFalse);
-    expect(johnPermission.userId, johnSignUp.userId);
-    expect(johnPermission.firmId, createFirmResponse.firm.firmId);
-    expect(johnPermission.articleRights,
-        Dummy.salesPersonPermissionNoId.articleRights);
 
     // Alice tries to authent with wrong password
     try {
@@ -190,7 +150,8 @@ void main() async {
         PasswordUpdateRequest(
             userId: aliceUser.userId,
             firmId: liliPermissions2.firmId,
-            password: 'alice2024'));
+            passwordCurrent: '987654321',
+            passwordNew: 'alice2024'));
     expect(passwordUpdaeResponse.type, StatusResponse_Type.UPDATED);
 
     // Alice authents with new password

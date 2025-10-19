@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   test('calibre pb', () {
-    final calibreWeebi = CalibreWeebi.dummyRetail.toMapProto();
+    final calibreWeebi = CalibreWeebi.dummyRetail.toMap(isProto: true);
     print(calibreWeebi);
 
     final calibrePb = CalibrePb.create()

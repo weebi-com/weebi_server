@@ -20,13 +20,11 @@ service FenceService {
   rpc signUp(weebi.user.SignUpRequest) returns (weebi.user.SignUpResponse);
   rpc authenticateWithCredentials (Credentials) returns (Tokens);
   rpc authenticateWithRefreshToken (RefreshToken) returns (Tokens);
-
-  // removed below useless 2024 dec
-  // rpc readUserPermissionsByToken(weebi.common.empty.Empty) returns (weebi.user.permissions.UserPermissions);
-  // TODO: add quit / droit à l'oubli like
-  // allowing user added in an existing firm by mistake to signup again and start his/her own firm
-
   
+  // Password reset functionality
+  rpc requestPasswordReset(PasswordResetRequest) returns (google.retail.common.StatusResponse);
+  rpc confirmPasswordReset(PasswordResetConfirmRequest) returns (google.retail.common.StatusResponse);
+
   /// only one firm per 'company'
   /// 1. user signup and get a userId & create firm permission
   /// 2. A. user create a firm
@@ -35,8 +33,11 @@ service FenceService {
   /// 2. B. user joins a firm is a different use case detailed in createPendingUser rpc
   rpc createFirm(weebi.firm.CreateFirmRequest) returns (weebi.firm.CreateFirmResponse);
   rpc readOneFirm(weebi.common.empty.Empty) returns (weebi.firm.Firm);
-  // TODO add updateFirm
-  // TODO add deleteFirm
+  // TODO add updateFirm but with specific update fields, not the whole firm
+
+  // nice to have add deleteFirm
+  // nice to have add GDPR / droit à l'oubli like until them manually is ok
+  // allowing user added in an existing firm by mistake to signup again and start his/her own firm
 
   rpc createPendingUser(weebi.user.PendingUserRequest) returns (weebi.user.PendingUserResponse);
   rpc readOneUser(UserId) returns (ReadOneUserResponse);
@@ -62,9 +63,13 @@ service FenceService {
   /// real update, not upsert, do nothing if unfound
   rpc updateOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
   
-  /// hard/complete delete
+  /// soft delete - marks boutique as deleted
   rpc deleteOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
-  // readBoutiques is not relevant since they are provided in readAllChains
+  /// restore a soft-deleted boutique
+  rpc restoreOneBoutique(BoutiqueRequest) returns (google.retail.common.StatusResponse);
+  
+  /// returns all active boutiques across all chains (filters out deleted ones)
+  rpc readAllBoutiques(weebi.common.empty.Empty) returns (ReadAllBoutiquesResponse);
    
   /// scans all firm's devices, disregarding user rights
   /// used both in : 
@@ -93,7 +98,6 @@ service FenceService {
   rpc updateDevicePassword(UpdateDevicePasswordRequest) returns (google.retail.common.StatusResponse);
   /// hard/forever delete
   rpc deleteOneDevice(DeleteDeviceRequest) returns (google.retail.common.StatusResponse);
-  /// weak auth hack to ease app access to cashiers with very low rights
 }
 
 
@@ -140,7 +144,12 @@ message UsersPublic {
 
 message ReadAllChainsResponse {
   // google.retail.common.StatusResponse ? 
+  // Note: chains contain only active boutiques (deleted ones are filtered out)
   repeated weebi.chain.Chain chains = 1;
+}
+
+message ReadAllBoutiquesResponse {
+  repeated weebi.boutique.BoutiquePb boutiques = 1 [json_name = 'boutiques'];
 }
 
 message ReadDevicesRequest {
@@ -195,6 +204,7 @@ message RefreshToken {
 message Tokens {
   string accessToken = 1;
   string refreshToken = 2;
+  bool mustChangePassword = 3;
 }
 
 message UpdateDevicePasswordRequest {
@@ -205,8 +215,10 @@ message UpdateDevicePasswordRequest {
 message PasswordUpdateRequest {
   string userId = 1 [json_name = 'userId'];
   string firmId = 2 [json_name = 'firmId'];
-  string password = 3 [json_name = 'password'];
+  string passwordCurrent = 3 [json_name = 'passwordCurrent'];
+  string passwordNew = 4 [json_name = 'passwordNew'];
 }
+
 message PendingDeviceRequest {
   weebi.device.HardwareInfo hardwareInfo = 1 ;
   int32 code = 2;
@@ -223,4 +235,14 @@ message CodeForPairingDevice {
 
 message ApproveDeviceRequest { 
   weebi.device.Device device = 1 ;
+}
+
+message PasswordResetRequest {
+  string mail = 1 [json_name = 'mail'];
+}
+
+message PasswordResetConfirmRequest {
+  string mail = 1 [json_name = 'mail'];
+  string resetToken = 2 [json_name = 'resetToken'];
+  string newPassword = 3 [json_name = 'newPassword'];
 }

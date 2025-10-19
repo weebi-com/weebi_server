@@ -5,6 +5,10 @@ class AppEnvironment {
     return int.parse(Platform.environment['PORT'] ?? '8080');
   }
 
+  static int get httpPort {
+    return int.parse(Platform.environment['HTTP_PORT'] ?? '8081');
+  }
+
   static String get mongoDbUri {
     String? mongoDbUri = Platform.environment['MONGO_DB_URI'];
     if (mongoDbUri == null) {

@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: user_permissions.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -29,10 +29,10 @@ class Right extends $pb.ProtobufEnum {
     delete,
   ];
 
-  static final $core.Map<$core.int, Right> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static Right? valueOf($core.int value) => _byValue[value];
+  static final $core.List<Right?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 4);
+  static Right? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const Right._($core.int v, $core.String n) : super(v, n);
+  const Right._(super.v, super.n);
 }
 
 

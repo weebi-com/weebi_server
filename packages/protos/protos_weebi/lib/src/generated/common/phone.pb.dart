@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: common/phone.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -12,6 +12,8 @@
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class Phone extends $pb.GeneratedMessage {
   factory Phone({
@@ -37,15 +39,9 @@ class Phone extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Phone clone() => Phone()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Phone copyWith(void Function(Phone) updates) => super.copyWith((message) => updates(message as Phone)) as Phone;
 
   $pb.BuilderInfo get info_ => _i;
@@ -65,7 +61,7 @@ class Phone extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasCountryCode() => $_has(0);
   @$pb.TagNumber(1)
-  void clearCountryCode() => clearField(1);
+  void clearCountryCode() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get number => $_getSZ(1);
@@ -74,7 +70,7 @@ class Phone extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasNumber() => $_has(1);
   @$pb.TagNumber(2)
-  void clearNumber() => clearField(2);
+  void clearNumber() => $_clearField(2);
 }
 
 

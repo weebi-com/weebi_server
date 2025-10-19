@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: article/category.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -14,7 +14,9 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_timestamp.pb.dart' as $18;
+import '../common/g_timestamp.pb.dart' as $17;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class CategoryMongo extends $pb.GeneratedMessage {
   factory CategoryMongo({
@@ -23,7 +25,7 @@ class CategoryMongo extends $pb.GeneratedMessage {
     $core.String? userId,
     $core.String? title,
     CategoryPb? category,
-    $18.Timestamp? lastTouchTimestampUTC,
+    $17.Timestamp? lastTouchTimestampUTC,
   }) {
     final $result = create();
     if (firmId != null) {
@@ -56,19 +58,13 @@ class CategoryMongo extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..aOS(4, _omitFieldNames ? '' : 'title')
     ..aOM<CategoryPb>(5, _omitFieldNames ? '' : 'category', subBuilder: CategoryPb.create)
-    ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CategoryMongo clone() => CategoryMongo()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CategoryMongo copyWith(void Function(CategoryMongo) updates) => super.copyWith((message) => updates(message as CategoryMongo)) as CategoryMongo;
 
   $pb.BuilderInfo get info_ => _i;
@@ -89,7 +85,7 @@ class CategoryMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasFirmId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearFirmId() => clearField(1);
+  void clearFirmId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get chainId => $_getSZ(1);
@@ -98,7 +94,7 @@ class CategoryMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasChainId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearChainId() => clearField(2);
+  void clearChainId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get userId => $_getSZ(2);
@@ -107,7 +103,7 @@ class CategoryMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasUserId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUserId() => clearField(3);
+  void clearUserId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get title => $_getSZ(3);
@@ -116,29 +112,29 @@ class CategoryMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasTitle() => $_has(3);
   @$pb.TagNumber(4)
-  void clearTitle() => clearField(4);
+  void clearTitle() => $_clearField(4);
 
   @$pb.TagNumber(5)
   CategoryPb get category => $_getN(4);
   @$pb.TagNumber(5)
-  set category(CategoryPb v) { setField(5, v); }
+  set category(CategoryPb v) { $_setField(5, v); }
   @$pb.TagNumber(5)
   $core.bool hasCategory() => $_has(4);
   @$pb.TagNumber(5)
-  void clearCategory() => clearField(5);
+  void clearCategory() => $_clearField(5);
   @$pb.TagNumber(5)
   CategoryPb ensureCategory() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $18.Timestamp get lastTouchTimestampUTC => $_getN(5);
+  $17.Timestamp get lastTouchTimestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set lastTouchTimestampUTC($18.Timestamp v) { setField(6, v); }
+  set lastTouchTimestampUTC($17.Timestamp v) { $_setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasLastTouchTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
-  void clearLastTouchTimestampUTC() => clearField(6);
+  void clearLastTouchTimestampUTC() => $_clearField(6);
   @$pb.TagNumber(6)
-  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(5);
+  $17.Timestamp ensureLastTouchTimestampUTC() => $_ensure(5);
 }
 
 class CategoryPb extends $pb.GeneratedMessage {
@@ -180,15 +176,9 @@ class CategoryPb extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CategoryPb clone() => CategoryPb()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   CategoryPb copyWith(void Function(CategoryPb) updates) => super.copyWith((message) => updates(message as CategoryPb)) as CategoryPb;
 
   $pb.BuilderInfo get info_ => _i;
@@ -202,7 +192,7 @@ class CategoryPb extends $pb.GeneratedMessage {
   static CategoryPb? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$core.int> get calibresIds => $_getList(0);
+  $pb.PbList<$core.int> get calibresIds => $_getList(0);
 
   @$pb.TagNumber(2)
   $core.String get title => $_getSZ(1);
@@ -211,7 +201,7 @@ class CategoryPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasTitle() => $_has(1);
   @$pb.TagNumber(2)
-  void clearTitle() => clearField(2);
+  void clearTitle() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $fixnum.Int64 get color => $_getI64(2);
@@ -220,7 +210,7 @@ class CategoryPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasColor() => $_has(2);
   @$pb.TagNumber(3)
-  void clearColor() => clearField(3);
+  void clearColor() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get creationDate => $_getSZ(3);
@@ -229,7 +219,7 @@ class CategoryPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasCreationDate() => $_has(3);
   @$pb.TagNumber(4)
-  void clearCreationDate() => clearField(4);
+  void clearCreationDate() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get updateDate => $_getSZ(4);
@@ -238,7 +228,7 @@ class CategoryPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasUpdateDate() => $_has(4);
   @$pb.TagNumber(5)
-  void clearUpdateDate() => clearField(5);
+  void clearUpdateDate() => $_clearField(5);
 }
 
 

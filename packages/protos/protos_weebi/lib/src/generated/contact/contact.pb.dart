@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: contact/contact.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -14,9 +14,11 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/address.pb.dart' as $20;
-import '../common/g_timestamp.pb.dart' as $18;
-import '../common/phone.pb.dart' as $19;
+import '../common/address.pb.dart' as $19;
+import '../common/g_timestamp.pb.dart' as $17;
+import '../common/phone.pb.dart' as $18;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 /// / contactId is unique
 class ContactMongo extends $pb.GeneratedMessage {
@@ -27,8 +29,8 @@ class ContactMongo extends $pb.GeneratedMessage {
     $core.String? firmId,
     $core.String? chainId,
     $core.String? creationDate,
-    $18.Timestamp? lastTouchTimestampUTC,
-    $core.Map<$core.String, $core.String>? additionalAttributes,
+    $17.Timestamp? lastTouchTimestampUTC,
+    $core.Iterable<$core.MapEntry<$core.String, $core.String>>? additionalAttributes,
   }) {
     final $result = create();
     if (contact != null) {
@@ -53,7 +55,7 @@ class ContactMongo extends $pb.GeneratedMessage {
       $result.lastTouchTimestampUTC = lastTouchTimestampUTC;
     }
     if (additionalAttributes != null) {
-      $result.additionalAttributes.addAll(additionalAttributes);
+      $result.additionalAttributes.addEntries(additionalAttributes);
     }
     return $result;
   }
@@ -68,20 +70,14 @@ class ContactMongo extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(5, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(6, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
-    ..aOM<$18.Timestamp>(7, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$17.Timestamp>(7, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'ContactMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.contact'))
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactMongo clone() => ContactMongo()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactMongo copyWith(void Function(ContactMongo) updates) => super.copyWith((message) => updates(message as ContactMongo)) as ContactMongo;
 
   $pb.BuilderInfo get info_ => _i;
@@ -97,11 +93,11 @@ class ContactMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   ContactPb get contact => $_getN(0);
   @$pb.TagNumber(1)
-  set contact(ContactPb v) { setField(1, v); }
+  set contact(ContactPb v) { $_setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasContact() => $_has(0);
   @$pb.TagNumber(1)
-  void clearContact() => clearField(1);
+  void clearContact() => $_clearField(1);
   @$pb.TagNumber(1)
   ContactPb ensureContact() => $_ensure(0);
 
@@ -112,7 +108,7 @@ class ContactMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasContactId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearContactId() => clearField(2);
+  void clearContactId() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get userId => $_getSZ(2);
@@ -121,7 +117,7 @@ class ContactMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasUserId() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUserId() => clearField(3);
+  void clearUserId() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get firmId => $_getSZ(3);
@@ -130,7 +126,7 @@ class ContactMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasFirmId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearFirmId() => clearField(4);
+  void clearFirmId() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get chainId => $_getSZ(4);
@@ -139,7 +135,7 @@ class ContactMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasChainId() => $_has(4);
   @$pb.TagNumber(5)
-  void clearChainId() => clearField(5);
+  void clearChainId() => $_clearField(5);
 
   @$pb.TagNumber(6)
   $core.String get creationDate => $_getSZ(5);
@@ -148,21 +144,21 @@ class ContactMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasCreationDate() => $_has(5);
   @$pb.TagNumber(6)
-  void clearCreationDate() => clearField(6);
+  void clearCreationDate() => $_clearField(6);
 
   @$pb.TagNumber(7)
-  $18.Timestamp get lastTouchTimestampUTC => $_getN(6);
+  $17.Timestamp get lastTouchTimestampUTC => $_getN(6);
   @$pb.TagNumber(7)
-  set lastTouchTimestampUTC($18.Timestamp v) { setField(7, v); }
+  set lastTouchTimestampUTC($17.Timestamp v) { $_setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasLastTouchTimestampUTC() => $_has(6);
   @$pb.TagNumber(7)
-  void clearLastTouchTimestampUTC() => clearField(7);
+  void clearLastTouchTimestampUTC() => $_clearField(7);
   @$pb.TagNumber(7)
-  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(6);
+  $17.Timestamp ensureLastTouchTimestampUTC() => $_ensure(6);
 
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(7);
+  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(7);
 }
 
 class ContactPb extends $pb.GeneratedMessage {
@@ -175,13 +171,13 @@ class ContactPb extends $pb.GeneratedMessage {
     $core.String? firstName,
     $core.String? lastName,
     $core.String? mail,
-    $19.Phone? phone,
-    $20.Address? addressFull,
+    $18.Phone? phone,
+    $19.Address? addressFull,
     $fixnum.Int64? overdraft,
     $core.Iterable<$core.String>? tags,
     $core.bool? isClient,
     $core.bool? isSupplier,
-    $core.Map<$core.String, $core.String>? othersAttributes,
+    $core.Iterable<$core.MapEntry<$core.String, $core.String>>? othersAttributes,
   }) {
     final $result = create();
     if (id != null) {
@@ -227,7 +223,7 @@ class ContactPb extends $pb.GeneratedMessage {
       $result.isSupplier = isSupplier;
     }
     if (othersAttributes != null) {
-      $result.othersAttributes.addAll(othersAttributes);
+      $result.othersAttributes.addEntries(othersAttributes);
     }
     return $result;
   }
@@ -244,8 +240,8 @@ class ContactPb extends $pb.GeneratedMessage {
     ..aOS(6, _omitFieldNames ? '' : 'firstName', protoName: 'firstName')
     ..aOS(7, _omitFieldNames ? '' : 'lastName', protoName: 'lastName')
     ..aOS(8, _omitFieldNames ? '' : 'mail')
-    ..aOM<$19.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $19.Phone.create)
-    ..aOM<$20.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $20.Address.create)
+    ..aOM<$18.Phone>(9, _omitFieldNames ? '' : 'phone', subBuilder: $18.Phone.create)
+    ..aOM<$19.Address>(10, _omitFieldNames ? '' : 'addressFull', protoName: 'addressFull', subBuilder: $19.Address.create)
     ..aInt64(11, _omitFieldNames ? '' : 'overdraft')
     ..pPS(12, _omitFieldNames ? '' : 'categories', protoName: 'tags')
     ..aOB(13, _omitFieldNames ? '' : 'isClient', protoName: 'isClient')
@@ -254,15 +250,9 @@ class ContactPb extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactPb clone() => ContactPb()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ContactPb copyWith(void Function(ContactPb) updates) => super.copyWith((message) => updates(message as ContactPb)) as ContactPb;
 
   $pb.BuilderInfo get info_ => _i;
@@ -282,7 +272,7 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearId() => clearField(1);
+  void clearId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get creationDate => $_getSZ(1);
@@ -291,7 +281,7 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasCreationDate() => $_has(1);
   @$pb.TagNumber(2)
-  void clearCreationDate() => clearField(2);
+  void clearCreationDate() => $_clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get updateDate => $_getSZ(2);
@@ -300,7 +290,7 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.bool hasUpdateDate() => $_has(2);
   @$pb.TagNumber(3)
-  void clearUpdateDate() => clearField(3);
+  void clearUpdateDate() => $_clearField(3);
 
   @$pb.TagNumber(4)
   $core.String get statusUpdateDate => $_getSZ(3);
@@ -309,7 +299,7 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.bool hasStatusUpdateDate() => $_has(3);
   @$pb.TagNumber(4)
-  void clearStatusUpdateDate() => clearField(4);
+  void clearStatusUpdateDate() => $_clearField(4);
 
   @$pb.TagNumber(5)
   $core.bool get status => $_getBF(4);
@@ -318,7 +308,7 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   $core.bool hasStatus() => $_has(4);
   @$pb.TagNumber(5)
-  void clearStatus() => clearField(5);
+  void clearStatus() => $_clearField(5);
 
   @$pb.TagNumber(6)
   $core.String get firstName => $_getSZ(5);
@@ -327,7 +317,7 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.bool hasFirstName() => $_has(5);
   @$pb.TagNumber(6)
-  void clearFirstName() => clearField(6);
+  void clearFirstName() => $_clearField(6);
 
   @$pb.TagNumber(7)
   $core.String get lastName => $_getSZ(6);
@@ -336,7 +326,7 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   $core.bool hasLastName() => $_has(6);
   @$pb.TagNumber(7)
-  void clearLastName() => clearField(7);
+  void clearLastName() => $_clearField(7);
 
   @$pb.TagNumber(8)
   $core.String get mail => $_getSZ(7);
@@ -345,29 +335,29 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $core.bool hasMail() => $_has(7);
   @$pb.TagNumber(8)
-  void clearMail() => clearField(8);
+  void clearMail() => $_clearField(8);
 
   @$pb.TagNumber(9)
-  $19.Phone get phone => $_getN(8);
+  $18.Phone get phone => $_getN(8);
   @$pb.TagNumber(9)
-  set phone($19.Phone v) { setField(9, v); }
+  set phone($18.Phone v) { $_setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasPhone() => $_has(8);
   @$pb.TagNumber(9)
-  void clearPhone() => clearField(9);
+  void clearPhone() => $_clearField(9);
   @$pb.TagNumber(9)
-  $19.Phone ensurePhone() => $_ensure(8);
+  $18.Phone ensurePhone() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $20.Address get addressFull => $_getN(9);
+  $19.Address get addressFull => $_getN(9);
   @$pb.TagNumber(10)
-  set addressFull($20.Address v) { setField(10, v); }
+  set addressFull($19.Address v) { $_setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasAddressFull() => $_has(9);
   @$pb.TagNumber(10)
-  void clearAddressFull() => clearField(10);
+  void clearAddressFull() => $_clearField(10);
   @$pb.TagNumber(10)
-  $20.Address ensureAddressFull() => $_ensure(9);
+  $19.Address ensureAddressFull() => $_ensure(9);
 
   /// legacy intt32 might be an issue
   @$pb.TagNumber(11)
@@ -377,10 +367,10 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   $core.bool hasOverdraft() => $_has(10);
   @$pb.TagNumber(11)
-  void clearOverdraft() => clearField(11);
+  void clearOverdraft() => $_clearField(11);
 
   @$pb.TagNumber(12)
-  $core.List<$core.String> get tags => $_getList(11);
+  $pb.PbList<$core.String> get tags => $_getList(11);
 
   @$pb.TagNumber(13)
   $core.bool get isClient => $_getBF(12);
@@ -389,7 +379,7 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   $core.bool hasIsClient() => $_has(12);
   @$pb.TagNumber(13)
-  void clearIsClient() => clearField(13);
+  void clearIsClient() => $_clearField(13);
 
   @$pb.TagNumber(14)
   $core.bool get isSupplier => $_getBF(13);
@@ -398,10 +388,10 @@ class ContactPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   $core.bool hasIsSupplier() => $_has(13);
   @$pb.TagNumber(14)
-  void clearIsSupplier() => clearField(14);
+  void clearIsSupplier() => $_clearField(14);
 
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get othersAttributes => $_getMap(14);
+  $pb.PbMap<$core.String, $core.String> get othersAttributes => $_getMap(14);
 }
 
 

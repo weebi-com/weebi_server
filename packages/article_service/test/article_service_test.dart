@@ -1,18 +1,17 @@
-import 'package:fence_service/mongo_dart.dart';
 import 'package:test/test.dart';
 
 import 'package:article_service/article_service.dart';
+import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/models_weebi.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 
 void main() async {
-  final db = TestHelper.localDb;
-
-  final connection = Connection(ConnectionManager(db));
+  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  await poolService.initialize();
 
   late ArticleService articleService;
-  final cal = CalibreWeebi.dummyRetail.toMapProto();
+  final cal = CalibreWeebi.dummyRetail.toMap(isProto: true);
   final calibreDummy = CalibrePb.create()
     ..mergeFromProto3Json(
       cal,
@@ -27,21 +26,24 @@ void main() async {
     );
 
   setUpAll(() async {
-    await db.open();
+    final db = await poolService.acquire();
     articleService = ArticleService(
-      db,
+      poolService,
       isTest: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
-    await db.collection(articleService.collectionArticle.collectionName).drop();
-    await db.createCollection(articleService.collectionArticle.collectionName);
-    await db.createCollection(articleService.collectionCategory.collectionName);
+    await db.collection(ArticleService.collectionArticleName).drop();
+    await db.createCollection(ArticleService.collectionArticleName);
+    await db.createCollection(ArticleService.collectionCategoryName);
+    poolService.release(db);
   });
 
   tearDownAll(() async {
-    await db.collection(articleService.collectionArticle.collectionName).drop();
-    await db.collection(articleService.collectionCategory.collectionName).drop();
-    await connection.close();
+    final db = await poolService.acquire();
+
+    await db.collection(ArticleService.collectionArticleName).drop();
+    await db.collection(ArticleService.collectionCategoryName).drop();
+    poolService.release(db);
   });
 
   ///
@@ -73,7 +75,7 @@ void main() async {
     final lili = CalibreWeebi.dummyRetail.copyWith(title: 'Lili biscuit');
     final calibreLili = CalibrePb.create()
       ..mergeFromProto3Json(
-        lili.toMapProto(),
+        lili.toMap(isProto: true),
         ignoreUnknownFields: true,
       );
 

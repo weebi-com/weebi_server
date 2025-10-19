@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: user.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -24,11 +24,12 @@ const UserPublic$json = {
     {'1': 'phone', '3': 5, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
     {'1': 'lastSignIn', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastSignIn'},
     {'1': 'permissions', '3': 7, '4': 1, '5': 11, '6': '.weebi.user.permissions.UserPermissions', '10': 'permissions'},
+    {'1': 'mustChangePassword', '3': 8, '4': 1, '5': 8, '10': 'mustChangePassword'},
     {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.user.UserPublic.OthersAttributesEntry', '10': 'othersAttributes'},
   ],
   '3': [UserPublic_OthersAttributesEntry$json],
   '9': [
-    {'1': 8, '2': 99},
+    {'1': 9, '2': 99},
   ],
 };
 
@@ -49,10 +50,11 @@ final $typed_data.Uint8List userPublicDescriptor = $convert.base64Decode(
     'YW1lEi8KBXBob25lGAUgASgLMhkud2VlYmkuY29tbW9uLnBob25lLlBob25lUgVwaG9uZRI6Cg'
     'psYXN0U2lnbkluGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIKbGFzdFNpZ25J'
     'bhJJCgtwZXJtaXNzaW9ucxgHIAEoCzInLndlZWJpLnVzZXIucGVybWlzc2lvbnMuVXNlclBlcm'
-    '1pc3Npb25zUgtwZXJtaXNzaW9ucxJYChBvdGhlcnNBdHRyaWJ1dGVzGGMgAygLMiwud2VlYmku'
-    'dXNlci5Vc2VyUHVibGljLk90aGVyc0F0dHJpYnV0ZXNFbnRyeVIQb3RoZXJzQXR0cmlidXRlcx'
-    'pDChVPdGhlcnNBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiAB'
-    'KAlSBXZhbHVlOgI4AUoECAgQYw==');
+    '1pc3Npb25zUgtwZXJtaXNzaW9ucxIuChJtdXN0Q2hhbmdlUGFzc3dvcmQYCCABKAhSEm11c3RD'
+    'aGFuZ2VQYXNzd29yZBJYChBvdGhlcnNBdHRyaWJ1dGVzGGMgAygLMiwud2VlYmkudXNlci5Vc2'
+    'VyUHVibGljLk90aGVyc0F0dHJpYnV0ZXNFbnRyeVIQb3RoZXJzQXR0cmlidXRlcxpDChVPdGhl'
+    'cnNBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbH'
+    'VlOgI4AUoECAkQYw==');
 
 @$core.Deprecated('Use userPrivateDescriptor instead')
 const UserPrivate$json = {
@@ -70,11 +72,13 @@ const UserPrivate$json = {
     {'1': 'lastUpdatedByuserId', '3': 10, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
     {'1': 'lastUpdateTimestampUTC', '3': 11, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
     {'1': 'creationDateUTC', '3': 12, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationDateUTC'},
+    {'1': 'mustChangePassword', '3': 13, '4': 1, '5': 8, '10': 'mustChangePassword'},
+    {'1': 'emailVerificationSent', '3': 14, '4': 1, '5': 8, '10': 'emailVerificationSent'},
     {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.user.UserPrivate.OthersAttributesEntry', '10': 'othersAttributes'},
   ],
   '3': [UserPrivate_OthersAttributesEntry$json],
   '9': [
-    {'1': 13, '2': 99},
+    {'1': 15, '2': 99},
   ],
 };
 
@@ -100,10 +104,12 @@ final $typed_data.Uint8List userPrivateDescriptor = $convert.base64Decode(
     'lSE2xhc3RVcGRhdGVkQnl1c2VySWQSUgoWbGFzdFVwZGF0ZVRpbWVzdGFtcFVUQxgLIAEoCzIa'
     'Lmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFmxhc3RVcGRhdGVUaW1lc3RhbXBVVEMSRAoPY3'
     'JlYXRpb25EYXRlVVRDGAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIPY3JlYXRp'
-    'b25EYXRlVVRDElkKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsyLS53ZWViaS51c2VyLlVzZXJQcm'
-    'l2YXRlLk90aGVyc0F0dHJpYnV0ZXNFbnRyeVIQb3RoZXJzQXR0cmlidXRlcxpDChVPdGhlcnNB'
-    'dHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOg'
-    'I4AUoECA0QYw==');
+    'b25EYXRlVVRDEi4KEm11c3RDaGFuZ2VQYXNzd29yZBgNIAEoCFISbXVzdENoYW5nZVBhc3N3b3'
+    'JkEjQKFWVtYWlsVmVyaWZpY2F0aW9uU2VudBgOIAEoCFIVZW1haWxWZXJpZmljYXRpb25TZW50'
+    'ElkKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsyLS53ZWViaS51c2VyLlVzZXJQcml2YXRlLk90aG'
+    'Vyc0F0dHJpYnV0ZXNFbnRyeVIQb3RoZXJzQXR0cmlidXRlcxpDChVPdGhlcnNBdHRyaWJ1dGVz'
+    'RW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AUoECA8QYw'
+    '==');
 
 @$core.Deprecated('Use signUpRequestDescriptor instead')
 const SignUpRequest$json = {
@@ -146,11 +152,12 @@ const PendingUserRequest$json = {
     {'1': 'lastname', '3': 3, '4': 1, '5': 9, '10': 'lastname'},
     {'1': 'permissions', '3': 4, '4': 1, '5': 11, '6': '.weebi.user.permissions.UserPermissions', '10': 'permissions'},
     {'1': 'phone', '3': 5, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
+    {'1': 'password', '3': 6, '4': 1, '5': 9, '10': 'password'},
     {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.user.PendingUserRequest.OthersAttributesEntry', '10': 'othersAttributes'},
   ],
   '3': [PendingUserRequest_OthersAttributesEntry$json],
   '9': [
-    {'1': 6, '2': 99},
+    {'1': 7, '2': 99},
   ],
 };
 
@@ -170,10 +177,10 @@ final $typed_data.Uint8List pendingUserRequestDescriptor = $convert.base64Decode
     'ABKAlSCWZpcnN0bmFtZRIaCghsYXN0bmFtZRgDIAEoCVIIbGFzdG5hbWUSSQoLcGVybWlzc2lv'
     'bnMYBCABKAsyJy53ZWViaS51c2VyLnBlcm1pc3Npb25zLlVzZXJQZXJtaXNzaW9uc1ILcGVybW'
     'lzc2lvbnMSLwoFcGhvbmUYBSABKAsyGS53ZWViaS5jb21tb24ucGhvbmUuUGhvbmVSBXBob25l'
-    'EmAKEG90aGVyc0F0dHJpYnV0ZXMYYyADKAsyNC53ZWViaS51c2VyLlBlbmRpbmdVc2VyUmVxdW'
-    'VzdC5PdGhlcnNBdHRyaWJ1dGVzRW50cnlSEG90aGVyc0F0dHJpYnV0ZXMaQwoVT3RoZXJzQXR0'
-    'cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJUgV2YWx1ZToCOA'
-    'FKBAgGEGM=');
+    'EhoKCHBhc3N3b3JkGAYgASgJUghwYXNzd29yZBJgChBvdGhlcnNBdHRyaWJ1dGVzGGMgAygLMj'
+    'Qud2VlYmkudXNlci5QZW5kaW5nVXNlclJlcXVlc3QuT3RoZXJzQXR0cmlidXRlc0VudHJ5UhBv'
+    'dGhlcnNBdHRyaWJ1dGVzGkMKFU90aGVyc0F0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASABKAlSA2'
+    'tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBSgQIBxBj');
 
 @$core.Deprecated('Use pendingUserResponseDescriptor instead')
 const PendingUserResponse$json = {

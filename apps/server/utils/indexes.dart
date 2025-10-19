@@ -137,7 +137,7 @@ main() async {
         'contact.mail': 1,
       });
 
-  // TODO : index contact.address when relevant
+  // TOConsider : index contact.address when relevant/needed
 
   ///
   /// TICKET INDEXES

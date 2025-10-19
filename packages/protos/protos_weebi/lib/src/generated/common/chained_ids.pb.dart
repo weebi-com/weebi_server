@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: common/chained_ids.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -12,6 +12,8 @@
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
+
+export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 class ChainIdAndboutiqueId extends $pb.GeneratedMessage {
   factory ChainIdAndboutiqueId({
@@ -37,15 +39,9 @@ class ChainIdAndboutiqueId extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChainIdAndboutiqueId clone() => ChainIdAndboutiqueId()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ChainIdAndboutiqueId copyWith(void Function(ChainIdAndboutiqueId) updates) => super.copyWith((message) => updates(message as ChainIdAndboutiqueId)) as ChainIdAndboutiqueId;
 
   $pb.BuilderInfo get info_ => _i;
@@ -65,7 +61,7 @@ class ChainIdAndboutiqueId extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasChainId() => $_has(0);
   @$pb.TagNumber(1)
-  void clearChainId() => clearField(1);
+  void clearChainId() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.String get boutiqueId => $_getSZ(1);
@@ -74,7 +70,7 @@ class ChainIdAndboutiqueId extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasBoutiqueId() => $_has(1);
   @$pb.TagNumber(2)
-  void clearBoutiqueId() => clearField(2);
+  void clearBoutiqueId() => $_clearField(2);
 }
 
 class BoutiqueIndexAndDeviceIndex extends $pb.GeneratedMessage {
@@ -101,15 +97,9 @@ class BoutiqueIndexAndDeviceIndex extends $pb.GeneratedMessage {
     ..hasRequiredFields = false
   ;
 
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueIndexAndDeviceIndex clone() => BoutiqueIndexAndDeviceIndex()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   BoutiqueIndexAndDeviceIndex copyWith(void Function(BoutiqueIndexAndDeviceIndex) updates) => super.copyWith((message) => updates(message as BoutiqueIndexAndDeviceIndex)) as BoutiqueIndexAndDeviceIndex;
 
   $pb.BuilderInfo get info_ => _i;
@@ -129,7 +119,7 @@ class BoutiqueIndexAndDeviceIndex extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   $core.bool hasBoutiqueIndex() => $_has(0);
   @$pb.TagNumber(1)
-  void clearBoutiqueIndex() => clearField(1);
+  void clearBoutiqueIndex() => $_clearField(1);
 
   @$pb.TagNumber(2)
   $core.int get deviceIndex => $_getIZ(1);
@@ -138,7 +128,7 @@ class BoutiqueIndexAndDeviceIndex extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.bool hasDeviceIndex() => $_has(1);
   @$pb.TagNumber(2)
-  void clearDeviceIndex() => clearField(2);
+  void clearDeviceIndex() => $_clearField(2);
 }
 
 

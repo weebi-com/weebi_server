@@ -1,22 +1,15 @@
 import 'package:fence_service/fence_service.dart';
-import 'package:fence_service/mongo_dart.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/protos_weebi.dart' show Credentials, Dummy;
 
 void main(List<String> args) async {
   final user = Dummy.userPublic;
-  final db = TestHelper.localDb;
-  final connection = Connection(ConnectionManager(db));
-  late FenceService fenceService;
-  await db.open();
-  final isConnected = await connection.connect();
-  print('isConnected $isConnected');
-  fenceService = FenceService(db);
 
+  final poolService = TestHelper.defaultPoolService;
+  final fenceService = FenceService(poolService);
   final dd = await fenceService.authenticateWithCredentials(
       null, Credentials(mail: user.mail, password: '1234'));
   print(dd);
-  await connection.close();
   return;
 }
 

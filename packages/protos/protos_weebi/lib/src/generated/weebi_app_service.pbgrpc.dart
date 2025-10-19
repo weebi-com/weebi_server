@@ -2,7 +2,7 @@
 //  Generated code. Do not modify.
 //  source: weebi_app_service.proto
 //
-// @dart = 2.12
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
 // ignore_for_file: constant_identifier_names, library_prefixes
@@ -21,16 +21,20 @@ export 'weebi_app_service.pb.dart';
 
 @$pb.GrpcServiceName('weebi.weebi_app.service.WeebiAppService')
 class WeebiAppServiceClient extends $grpc.Client {
+  /// The hostname for this service.
+  static const $core.String defaultHost = '';
+
+  /// OAuth scopes needed for the client.
+  static const $core.List<$core.String> oauthScopes = [
+    '',
+  ];
+
   static final _$readAppMinimumVersion = $grpc.ClientMethod<$16.AppMinVersionRequest, $16.AppMinVersionResponse>(
       '/weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion',
       ($16.AppMinVersionRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $16.AppMinVersionResponse.fromBuffer(value));
 
-  WeebiAppServiceClient($grpc.ClientChannel channel,
-      {$grpc.CallOptions? options,
-      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
-      : super(channel, options: options,
-        interceptors: interceptors);
+  WeebiAppServiceClient(super.channel, {super.options, super.interceptors});
 
   $grpc.ResponseFuture<$16.AppMinVersionResponse> readAppMinimumVersion($16.AppMinVersionRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readAppMinimumVersion, request, options: options);
@@ -51,8 +55,8 @@ abstract class WeebiAppServiceBase extends $grpc.Service {
         ($16.AppMinVersionResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$16.AppMinVersionResponse> readAppMinimumVersion_Pre($grpc.ServiceCall call, $async.Future<$16.AppMinVersionRequest> request) async {
-    return readAppMinimumVersion(call, await request);
+  $async.Future<$16.AppMinVersionResponse> readAppMinimumVersion_Pre($grpc.ServiceCall $call, $async.Future<$16.AppMinVersionRequest> $request) async {
+    return readAppMinimumVersion($call, await $request);
   }
 
   $async.Future<$16.AppMinVersionResponse> readAppMinimumVersion($grpc.ServiceCall call, $16.AppMinVersionRequest request);

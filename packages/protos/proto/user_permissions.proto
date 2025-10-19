@@ -30,6 +30,8 @@ package weebi.user.permissions;
   }
 }
  */
+
+
 message ChainIds {
   repeated string ids = 1 [json_name = 'ids'];
 }
@@ -55,8 +57,6 @@ message UserPermissions {
   ContactRights contactRights =  7 [json_name = 'contactRights'];
   ArticleRights articleRights =  8  [json_name = 'articleRights'];
   BoutiqueRights boutiqueRights = 9 [json_name = 'boutiqueRights'];
-  // TODO: think about a deviceRights or at least something about device boolRights
-  // TODO reanme below
   ChainRights chainRights =  10  [json_name = 'chainRights'];
   FirmRights firmRights =  11 [json_name = 'firmRights'];
   UserManagementRights userManagementRights =  12 [json_name = 'userManagementRights'];
@@ -80,6 +80,13 @@ message ArticleRights {
 message BoutiqueRights {
   repeated Right rights = 1 [json_name = 'boutiqueRights'];
 }
+
+/// chain rights encompass device pairing, not boutique update rights
+///think about it as rights related to chaining/linking devices to boutiques, 
+// bool canLinkDevices => userPermissions.ChainRights.rights.contains(Right.create);
+// bool canMoveDevices => userPermissions.ChainRights.rights.contains(Right.update);
+// bool canRemoveDevices => userPermissions.ChainRights.rights.contains(Right.delete);
+
 message ChainRights {
   repeated Right rights = 1 [json_name = 'chainRights'];
 }

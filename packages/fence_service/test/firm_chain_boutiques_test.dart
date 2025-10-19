@@ -1,6 +1,7 @@
+import 'package:fence_service/mongo_pool.dart';
 import 'package:protos_weebi/data_dummy.dart';
 import 'package:test/test.dart';
-import 'package:mongo_dart/mongo_dart.dart';
+// import 'package:mongo_dart/mongo_dart.dart';
 
 import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:fence_service/fence_service.dart';
@@ -9,36 +10,48 @@ import 'package:fence_service/mongo_local_testing.dart';
 // ? consider doing more stupid mongo cruds
 
 void main() async {
-  final db = TestHelper.localDb;
-
-  final connection = Connection(ConnectionManager(db));
+  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  await poolService.initialize();
 
   String firmId = '';
   late Chain chain;
   late FenceService fenceService;
 
   setUpAll(() async {
-    await db.open();
     fenceService = FenceService(
-      db,
+      poolService,
       isMock: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
-    await db.collection(fenceService.boutiqueCollection.collectionName).drop();
-    await db.collection(fenceService.userCollection.collectionName).drop();
-    await db.createCollection(fenceService.boutiqueCollection.collectionName);
-    await db.createCollection(fenceService.firmCollection.collectionName);
+
+    final db = await poolService.acquire();
+
+    await db.collection(FenceService.boutiqueCollectionName).drop();
+    await db.collection(FenceService.userCollectionName).drop();
+    await db.collection(FenceService.firmCollectionName).drop();
+    
+    await db.createCollection(FenceService.boutiqueCollectionName);
+    await db.createCollection(FenceService.firmCollectionName);
+    await db.createCollection(FenceService.userCollectionName);
     // firm cannot be created with admin permission so i do it manually below
-    await db
-        .collection(fenceService.firmCollection.collectionName)
+    final dd = await db
+        .collection(FenceService.firmCollectionName)
         .insertOne(Dummy.firm.toProto3Json() as Map<String, dynamic>);
+    print(dd.id);
+    print(dd.document);
+    final read = await db
+        .collection(FenceService.firmCollectionName)
+        .findOne(where.eq('firmId', Dummy.firm.firmId));
+    print(read?.entries.first);
+    poolService.release(db);
   });
 
   tearDownAll(() async {
-    await db.collection(fenceService.boutiqueCollection.collectionName).drop();
-    await db.collection(fenceService.userCollection.collectionName).drop();
-    await db.collection(fenceService.firmCollection.collectionName).drop();
-    await connection.close();
+    final db = await poolService.acquire();
+    await db.collection(FenceService.boutiqueCollectionName).drop();
+    await db.collection(FenceService.userCollectionName).drop();
+    await db.collection(FenceService.firmCollectionName).drop();
+    poolService.release(db);
   });
 
   test('test readOneFirm', () async {
@@ -76,13 +89,17 @@ void main() async {
   });
 
   test('test upsertOneBoutique', () async {
-    final boutiqueLili = chain.boutiques.first..name = 'Lili boutique test';
+    final boutiqueLili = chain.boutiques.first
+      ..boutiqueId = chain.chainId
+      ..boutique.boutiqueId = chain.chainId
+      ..boutique.name = 'Lili boutique test';
     final response = await fenceService.updateOneBoutique(
         null,
         BoutiqueRequest(
             chainId: boutiqueLili.chainId, boutique: boutiqueLili.boutique));
     expect(response.type, StatusResponse_Type.UPDATED);
     final response2 = await fenceService.readAllChains(null, Empty());
-    expect(response2.chains.first.boutiques.first.name, 'Lili boutique test');
+    expect(response2.chains.first.boutiques.first.boutique.name,
+        'Lili boutique test');
   });
 }
