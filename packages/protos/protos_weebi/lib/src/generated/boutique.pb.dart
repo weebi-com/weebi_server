@@ -246,7 +246,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.String? creationDate,
     $core.String? updateDate,
+  @$core.Deprecated('This field is deprecated.')
     $core.String? statusUpdateDate,
+  @$core.Deprecated('This field is deprecated.')
     $core.bool? status,
     $core.String? name,
     $18.Phone? phone,
@@ -270,9 +272,11 @@ class BoutiquePb extends $pb.GeneratedMessage {
       $result.updateDate = updateDate;
     }
     if (statusUpdateDate != null) {
+      // ignore: deprecated_member_use_from_same_package
       $result.statusUpdateDate = statusUpdateDate;
     }
     if (status != null) {
+      // ignore: deprecated_member_use_from_same_package
       $result.status = status;
     }
     if (name != null) {
@@ -372,21 +376,29 @@ class BoutiquePb extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearUpdateDate() => $_clearField(3);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(4)
   $core.String get statusUpdateDate => $_getSZ(3);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(4)
   set statusUpdateDate($core.String v) { $_setString(3, v); }
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(4)
   $core.bool hasStatusUpdateDate() => $_has(3);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(4)
   void clearStatusUpdateDate() => $_clearField(4);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   $core.bool get status => $_getBF(4);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   set status($core.bool v) { $_setBool(4, v); }
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   $core.bool hasStatus() => $_has(4);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   void clearStatus() => $_clearField(5);
 
