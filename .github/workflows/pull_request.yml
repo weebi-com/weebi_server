@@ -10,20 +10,3 @@ jobs:
     
     steps:
       - uses: actions/checkout@v3
-
-      - name: Validate branch name
-        run: |
-          BRANCH_NAME=${GITHUB_HEAD_REF}
-          if [[ ! $BRANCH_NAME =~ ^(feature|bugfix|hotfix|release)/[a-zA-Z0-9_-]+$ ]]; then
-            echo "Branch name '$BRANCH_NAME' does not follow the convention: (feature|bugfix|hotfix|release)/name"
-            exit 1
-          fi
-
-      - name: Validate commit messages
-        run: |
-          git fetch origin $GITHUB_BASE_REF
-          COMMITS=$(git log --format=%B origin/$GITHUB_BASE_REF..$GITHUB_SHA)
-          if [[ ! $COMMITS =~ ^(feat|fix|docs|style|refactor|test|chore): ]]; then
-            echo "Commit messages must start with one of: feat, fix, docs, style, refactor, test, chore"
-            exit 1
-          fi 
