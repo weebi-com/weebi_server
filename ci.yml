@@ -16,7 +16,7 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd mongosh
+          --health-cmd "nc -z localhost 27017"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -45,4 +45,4 @@ jobs:
       - name: Run tests
         run: melos run test
         env:
-          MONGO_DB_URI: mongodb://localhost:27017/test 
+          MONGO_DB_URI: mongodb://localhost:27017/local 

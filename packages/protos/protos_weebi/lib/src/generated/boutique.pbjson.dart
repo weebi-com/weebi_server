@@ -72,8 +72,22 @@ const BoutiquePb$json = {
     {'1': 'boutiqueId', '3': 1, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'creationDate', '3': 2, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'updateDate', '3': 3, '4': 1, '5': 9, '10': 'updateDate'},
-    {'1': 'statusUpdateDate', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
-    {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
+    {
+      '1': 'statusUpdateDate',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '8': {'3': true},
+      '10': 'statusUpdateDate',
+    },
+    {
+      '1': 'status',
+      '3': 5,
+      '4': 1,
+      '5': 8,
+      '8': {'3': true},
+      '10': 'status',
+    },
     {'1': 'name', '3': 6, '4': 1, '5': 9, '10': 'name'},
     {'1': 'phone', '3': 7, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
     {'1': 'addressFull', '3': 8, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
@@ -105,15 +119,15 @@ const BoutiquePb_AdditionalAttributesEntry$json = {
 final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'CgpCb3V0aXF1ZVBiEh4KCmJvdXRpcXVlSWQYASABKAlSCmJvdXRpcXVlSWQSIgoMY3JlYXRpb2'
     '5EYXRlGAIgASgJUgxjcmVhdGlvbkRhdGUSHgoKdXBkYXRlRGF0ZRgDIAEoCVIKdXBkYXRlRGF0'
-    'ZRIqChBzdGF0dXNVcGRhdGVEYXRlGAQgASgJUhBzdGF0dXNVcGRhdGVEYXRlEhYKBnN0YXR1cx'
-    'gFIAEoCFIGc3RhdHVzEhIKBG5hbWUYBiABKAlSBG5hbWUSLwoFcGhvbmUYByABKAsyGS53ZWVi'
-    'aS5jb21tb24ucGhvbmUuUGhvbmVSBXBob25lEj8KC2FkZHJlc3NGdWxsGAggASgLMh0ud2VlYm'
-    'kuY29tbW9uLmFkZHJlc3MuQWRkcmVzc1ILYWRkcmVzc0Z1bGwSFAoFcHJvbW8YCSABKAFSBXBy'
-    'b21vEh4KCnByb21vU3RhcnQYCiABKAlSCnByb21vU3RhcnQSGgoIcHJvbW9FbmQYCyABKAlSCH'
-    'Byb21vRW5kEhwKCWlzRGVsZXRlZBgMIAEoCFIJaXNEZWxldGVkEhwKCWRlbGV0ZWRCeRgNIAEo'
-    'CVIJZGVsZXRlZEJ5Eh4KCnJlc3RvcmVkQnkYDiABKAlSCnJlc3RvcmVkQnkSagoVYWRkaXRpb2'
-    '5hbF9hdHRyaWJ1dGVzGGMgAygLMjQud2VlYmkuYm91dGlxdWUuQm91dGlxdWVQYi5BZGRpdGlv'
-    'bmFsQXR0cmlidXRlc0VudHJ5UhVhZGRpdGlvbmFsX2F0dHJpYnV0ZXMaRwoZQWRkaXRpb25hbE'
-    'F0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6'
-    'AjgBSgQIDxBj');
+    'ZRIuChBzdGF0dXNVcGRhdGVEYXRlGAQgASgJQgIYAVIQc3RhdHVzVXBkYXRlRGF0ZRIaCgZzdG'
+    'F0dXMYBSABKAhCAhgBUgZzdGF0dXMSEgoEbmFtZRgGIAEoCVIEbmFtZRIvCgVwaG9uZRgHIAEo'
+    'CzIZLndlZWJpLmNvbW1vbi5waG9uZS5QaG9uZVIFcGhvbmUSPwoLYWRkcmVzc0Z1bGwYCCABKA'
+    'syHS53ZWViaS5jb21tb24uYWRkcmVzcy5BZGRyZXNzUgthZGRyZXNzRnVsbBIUCgVwcm9tbxgJ'
+    'IAEoAVIFcHJvbW8SHgoKcHJvbW9TdGFydBgKIAEoCVIKcHJvbW9TdGFydBIaCghwcm9tb0VuZB'
+    'gLIAEoCVIIcHJvbW9FbmQSHAoJaXNEZWxldGVkGAwgASgIUglpc0RlbGV0ZWQSHAoJZGVsZXRl'
+    'ZEJ5GA0gASgJUglkZWxldGVkQnkSHgoKcmVzdG9yZWRCeRgOIAEoCVIKcmVzdG9yZWRCeRJqCh'
+    'VhZGRpdGlvbmFsX2F0dHJpYnV0ZXMYYyADKAsyNC53ZWViaS5ib3V0aXF1ZS5Cb3V0aXF1ZVBi'
+    'LkFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnlSFWFkZGl0aW9uYWxfYXR0cmlidXRlcxpHChlBZG'
+    'RpdGlvbmFsQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJ'
+    'UgV2YWx1ZToCOAFKBAgPEGM=');
 

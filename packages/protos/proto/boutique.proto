@@ -31,8 +31,8 @@ message BoutiquePb {
     string boutiqueId = 1 [json_name = 'boutiqueId'];
     string creationDate = 2 [json_name = 'creationDate'];
     string updateDate = 3 [json_name = 'updateDate'];
-    string statusUpdateDate = 4 [json_name = 'statusUpdateDate'];
-    bool status = 5 [json_name = 'status'];
+    string statusUpdateDate = 4 [json_name = 'statusUpdateDate', deprecated = true]; // dont use this field, use lastTouchTimestampUTC instead
+    bool status = 5 [json_name = 'status', deprecated = true]; // dont use this field, use isDeleted instead
     string name = 6 [json_name = 'name'];
     weebi.common.phone.Phone phone = 7 [json_name = 'phone'];
     weebi.common.address.Address addressFull = 8 [json_name = 'addressFull'];
