@@ -17,8 +17,11 @@ import "device.proto";
 
 /// boutiques & users 
 service FenceService {
-  /// Health check with version information
-  rpc healthCheck(weebi.common.empty.Empty) returns (HealthCheckWeebiResponse);
+  /// Get service version information
+  rpc getVersion(weebi.common.empty.Empty) returns (VersionResponse);
+  
+  /// Health check using standard google.retail.common.HealthCheckResponse
+  rpc healthCheck(weebi.common.empty.Empty) returns (google.retail.common.HealthCheckResponse);
   
   rpc signUp(weebi.user.SignUpRequest) returns (weebi.user.SignUpResponse);
   rpc authenticateWithCredentials (Credentials) returns (Tokens);
@@ -250,17 +253,11 @@ message PasswordResetConfirmRequest {
   string newPassword = 3 [json_name = 'newPassword'];
 }
 
-/// Health check response with service versions
-message HealthCheckWeebiResponse {
-  string status = 1 [json_name = 'status'];
-  string timestamp = 2 [json_name = 'timestamp'];
-  ServiceVersions versions = 3 [json_name = 'versions'];
-  bool databaseHealthy = 4 [json_name = 'databaseHealthy'];
-}
-
-message ServiceVersions {
+/// Version information response
+message VersionResponse {
   string server = 1 [json_name = 'server'];
   string protos_weebi = 2 [json_name = 'protos_weebi'];
   string fence_service = 3 [json_name = 'fence_service'];
   string models_weebi = 4 [json_name = 'models_weebi'];
+  string timestamp = 5 [json_name = 'timestamp'];
 }

@@ -37,10 +37,14 @@ class FenceServiceClient extends $grpc.Client {
     '',
   ];
 
-  static final _$healthCheck = $grpc.ClientMethod<$5.Empty, $8.HealthCheckWeebiResponse>(
+  static final _$getVersion = $grpc.ClientMethod<$5.Empty, $8.VersionResponse>(
+      '/weebi.fence.service.FenceService/getVersion',
+      ($5.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $8.VersionResponse.fromBuffer(value));
+  static final _$healthCheck = $grpc.ClientMethod<$5.Empty, $1.HealthCheckResponse>(
       '/weebi.fence.service.FenceService/healthCheck',
       ($5.Empty value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $8.HealthCheckWeebiResponse.fromBuffer(value));
+      ($core.List<$core.int> value) => $1.HealthCheckResponse.fromBuffer(value));
   static final _$signUp = $grpc.ClientMethod<$9.SignUpRequest, $9.SignUpResponse>(
       '/weebi.fence.service.FenceService/signUp',
       ($9.SignUpRequest value) => value.writeToBuffer(),
@@ -164,8 +168,13 @@ class FenceServiceClient extends $grpc.Client {
 
   FenceServiceClient(super.channel, {super.options, super.interceptors});
 
-  /// / Health check with version information
-  $grpc.ResponseFuture<$8.HealthCheckWeebiResponse> healthCheck($5.Empty request, {$grpc.CallOptions? options}) {
+  /// / Get service version information
+  $grpc.ResponseFuture<$8.VersionResponse> getVersion($5.Empty request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getVersion, request, options: options);
+  }
+
+  /// / Health check using standard google.retail.common.HealthCheckResponse
+  $grpc.ResponseFuture<$1.HealthCheckResponse> healthCheck($5.Empty request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$healthCheck, request, options: options);
   }
 
@@ -328,13 +337,20 @@ abstract class FenceServiceBase extends $grpc.Service {
   $core.String get $name => 'weebi.fence.service.FenceService';
 
   FenceServiceBase() {
-    $addMethod($grpc.ServiceMethod<$5.Empty, $8.HealthCheckWeebiResponse>(
+    $addMethod($grpc.ServiceMethod<$5.Empty, $8.VersionResponse>(
+        'getVersion',
+        getVersion_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $5.Empty.fromBuffer(value),
+        ($8.VersionResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$5.Empty, $1.HealthCheckResponse>(
         'healthCheck',
         healthCheck_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $5.Empty.fromBuffer(value),
-        ($8.HealthCheckWeebiResponse value) => value.writeToBuffer()));
+        ($1.HealthCheckResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$9.SignUpRequest, $9.SignUpResponse>(
         'signUp',
         signUp_Pre,
@@ -547,7 +563,11 @@ abstract class FenceServiceBase extends $grpc.Service {
         ($1.StatusResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$8.HealthCheckWeebiResponse> healthCheck_Pre($grpc.ServiceCall $call, $async.Future<$5.Empty> $request) async {
+  $async.Future<$8.VersionResponse> getVersion_Pre($grpc.ServiceCall $call, $async.Future<$5.Empty> $request) async {
+    return getVersion($call, await $request);
+  }
+
+  $async.Future<$1.HealthCheckResponse> healthCheck_Pre($grpc.ServiceCall $call, $async.Future<$5.Empty> $request) async {
     return healthCheck($call, await $request);
   }
 
@@ -671,7 +691,8 @@ abstract class FenceServiceBase extends $grpc.Service {
     return deleteOneDevice($call, await $request);
   }
 
-  $async.Future<$8.HealthCheckWeebiResponse> healthCheck($grpc.ServiceCall call, $5.Empty request);
+  $async.Future<$8.VersionResponse> getVersion($grpc.ServiceCall call, $5.Empty request);
+  $async.Future<$1.HealthCheckResponse> healthCheck($grpc.ServiceCall call, $5.Empty request);
   $async.Future<$9.SignUpResponse> signUp($grpc.ServiceCall call, $9.SignUpRequest request);
   $async.Future<$8.Tokens> authenticateWithCredentials($grpc.ServiceCall call, $8.Credentials request);
   $async.Future<$8.Tokens> authenticateWithRefreshToken($grpc.ServiceCall call, $8.RefreshToken request);

@@ -120,21 +120,7 @@ class FenceService extends FenceServiceBase {
   }
 
 
-  /// Check database health
-  Future<bool> _checkDatabaseHealth() async {
-    try {
-      return await databaseMiddleware<bool>(_poolService, (db) async {
-        // Simple ping to check database connectivity
-        await db.runCommand({'ping': 1});
-        return true;
-      });
-    } catch (e) {
-      log('Database health check failed: $e');
-      return false;
-    }
-  }
 
-  // Will use _getVersionInfo() and _checkDatabaseHealth()
 
   // NOTE: HTTP handlers and email service methods have been removed
   // Email service functionality is preserved in lib/src/mail/ folder:
@@ -1793,10 +1779,6 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
-    // DEBUG: Log user permissions and firmId
-    print('DEBUG readAllUsers: userPermission.firmId = ${userPermission.firmId}');
-    print('DEBUG readAllUsers: userPermission.userManagementRights.rights = ${userPermission.userManagementRights.rights}');
-    print('DEBUG readAllUsers: userPermission.fullAccess.hasFullAccess = ${userPermission.fullAccess.hasFullAccess}');
 
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.read) ==
@@ -1812,15 +1794,7 @@ class FenceService extends FenceServiceBase {
             .find(where.eq('firmId', userPermission.firmId))
             .toList();
         
-        // DEBUG: Log database query results
-        print('DEBUG readAllUsers: Found ${usersMongo.length} users in database');
-        print('DEBUG readAllUsers: Query firmId = ${userPermission.firmId}');
-        for (int i = 0; i < usersMongo.length; i++) {
-          print('DEBUG readAllUsers: User $i: ${usersMongo[i]['firstname']} ${usersMongo[i]['lastname']} (firmId: ${usersMongo[i]['firmId']})');
-        }
-        
         if (usersMongo.isEmpty) {
-          print('DEBUG readAllUsers: No users found, returning empty list');
           return UsersPublic(users: []);
         }
         final users = <UserPublic>[];
@@ -1830,7 +1804,6 @@ class FenceService extends FenceServiceBase {
         }
 
         if (userPermission.fullAccess.hasFullAccess) {
-          print('DEBUG readAllUsers: User has full access, returning ${users.length} users');
           return UsersPublic(users: users);
         }
         // if requestor has limitedAccess we retain only users that belong to his/her "fence"
@@ -2200,40 +2173,61 @@ class FenceService extends FenceServiceBase {
         'Password reset functionality temporarily unavailable');
   }
   
+
   @override
-  Future<HealthCheckWeebiResponse> healthCheck(ServiceCall? call, Empty request) async {
+  Future<VersionResponse> getVersion(ServiceCall? call, Empty request) async {
     try {
-      // Check database connectivity
-      final isDbHealthy = await _checkDatabaseHealth();
-      
       // Get version information
       final versionInfo = _getVersionInfo();
       
       // Create version response
-      final versions = ServiceVersions()
+      return VersionResponse()
         ..server = versionInfo['server'] ?? 'unknown'
         ..protosWeebi = versionInfo['protos_weebi'] ?? 'unknown'
         ..fenceService = versionInfo['fence_service'] ?? 'unknown'
-        ..modelsWeebi = versionInfo['models_weebi'] ?? 'unknown';
+        ..modelsWeebi = versionInfo['models_weebi'] ?? 'unknown'
+        ..timestamp = DateTime.now().toIso8601String();
+    } catch (e) {
+      log('Version check error: $e');
+      // Return unknown versions on error
+      return VersionResponse()
+        ..server = 'unknown'
+        ..protosWeebi = 'unknown'
+        ..fenceService = 'unknown'
+        ..modelsWeebi = 'unknown'
+        ..timestamp = DateTime.now().toIso8601String();
+    }
+  }
+
+  @override
+  Future<HealthCheckResponse> healthCheck(ServiceCall? call, Empty request) async {
+    try {
+      // Check database connectivity
+      final isDbHealthy = await _checkDatabaseHealth();
       
-      // Return health check response
-      return HealthCheckWeebiResponse()
-        ..status = isDbHealthy ? 'healthy' : 'unhealthy'
-        ..timestamp = DateTime.now().toIso8601String()
-        ..databaseHealthy = isDbHealthy
-        ..versions = versions;
+      // Determine serving status
+      final status = isDbHealthy 
+          ? HealthCheckResponse_ServingStatus.SERVING 
+          : HealthCheckResponse_ServingStatus.NOT_SERVING;
+
+      return HealthCheckResponse()..status = status;
     } catch (e) {
       log('Health check error: $e');
-      // Return unhealthy status with unknown versions
-      return HealthCheckWeebiResponse()
-        ..status = 'unhealthy'
-        ..timestamp = DateTime.now().toIso8601String()
-        ..databaseHealthy = false
-        ..versions = (ServiceVersions()
-          ..server = 'unknown'
-          ..protosWeebi = 'unknown'
-          ..fenceService = 'unknown'
-          ..modelsWeebi = 'unknown');
+      return HealthCheckResponse()..status = HealthCheckResponse_ServingStatus.NOT_SERVING;
+    }
+  }
+
+  /// Check database connectivity
+  Future<bool> _checkDatabaseHealth() async {
+    try {
+      final db = await _poolService.acquire();
+      // Simple ping to check database connectivity
+      await db.runCommand({'ping': 1});
+      _poolService.release(db);
+      return true;
+    } catch (e) {
+      print('Database health check failed: $e');
+      return false;
     }
   }
 

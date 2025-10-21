@@ -393,38 +393,22 @@ final $typed_data.Uint8List passwordResetConfirmRequestDescriptor = $convert.bas
     'NldFRva2VuGAIgASgJUgpyZXNldFRva2VuEiAKC25ld1Bhc3N3b3JkGAMgASgJUgtuZXdQYXNz'
     'd29yZA==');
 
-@$core.Deprecated('Use healthCheckWeebiResponseDescriptor instead')
-const HealthCheckWeebiResponse$json = {
-  '1': 'HealthCheckWeebiResponse',
-  '2': [
-    {'1': 'status', '3': 1, '4': 1, '5': 9, '10': 'status'},
-    {'1': 'timestamp', '3': 2, '4': 1, '5': 9, '10': 'timestamp'},
-    {'1': 'versions', '3': 3, '4': 1, '5': 11, '6': '.weebi.fence.service.ServiceVersions', '10': 'versions'},
-    {'1': 'databaseHealthy', '3': 4, '4': 1, '5': 8, '10': 'databaseHealthy'},
-  ],
-};
-
-/// Descriptor for `HealthCheckWeebiResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List healthCheckWeebiResponseDescriptor = $convert.base64Decode(
-    'ChhIZWFsdGhDaGVja1dlZWJpUmVzcG9uc2USFgoGc3RhdHVzGAEgASgJUgZzdGF0dXMSHAoJdG'
-    'ltZXN0YW1wGAIgASgJUgl0aW1lc3RhbXASQAoIdmVyc2lvbnMYAyABKAsyJC53ZWViaS5mZW5j'
-    'ZS5zZXJ2aWNlLlNlcnZpY2VWZXJzaW9uc1IIdmVyc2lvbnMSKAoPZGF0YWJhc2VIZWFsdGh5GA'
-    'QgASgIUg9kYXRhYmFzZUhlYWx0aHk=');
-
-@$core.Deprecated('Use serviceVersionsDescriptor instead')
-const ServiceVersions$json = {
-  '1': 'ServiceVersions',
+@$core.Deprecated('Use versionResponseDescriptor instead')
+const VersionResponse$json = {
+  '1': 'VersionResponse',
   '2': [
     {'1': 'server', '3': 1, '4': 1, '5': 9, '10': 'server'},
     {'1': 'protos_weebi', '3': 2, '4': 1, '5': 9, '10': 'protos_weebi'},
     {'1': 'fence_service', '3': 3, '4': 1, '5': 9, '10': 'fence_service'},
     {'1': 'models_weebi', '3': 4, '4': 1, '5': 9, '10': 'models_weebi'},
+    {'1': 'timestamp', '3': 5, '4': 1, '5': 9, '10': 'timestamp'},
   ],
 };
 
-/// Descriptor for `ServiceVersions`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List serviceVersionsDescriptor = $convert.base64Decode(
-    'Cg9TZXJ2aWNlVmVyc2lvbnMSFgoGc2VydmVyGAEgASgJUgZzZXJ2ZXISIgoMcHJvdG9zX3dlZW'
+/// Descriptor for `VersionResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List versionResponseDescriptor = $convert.base64Decode(
+    'Cg9WZXJzaW9uUmVzcG9uc2USFgoGc2VydmVyGAEgASgJUgZzZXJ2ZXISIgoMcHJvdG9zX3dlZW'
     'JpGAIgASgJUgxwcm90b3Nfd2VlYmkSJAoNZmVuY2Vfc2VydmljZRgDIAEoCVINZmVuY2Vfc2Vy'
-    'dmljZRIiCgxtb2RlbHNfd2VlYmkYBCABKAlSDG1vZGVsc193ZWViaQ==');
+    'dmljZRIiCgxtb2RlbHNfd2VlYmkYBCABKAlSDG1vZGVsc193ZWViaRIcCgl0aW1lc3RhbXAYBS'
+    'ABKAlSCXRpbWVzdGFtcA==');
 

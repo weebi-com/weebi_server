@@ -82,14 +82,13 @@ void main(List<String> arguments) async {
     final ticketService = TicketService(poolService);
     final weebiAppService = WeebiAppService(poolService);
     final fenceService = FenceService(poolService);
-
     final server = Server.create(
       services: [
         articleService,
         contactService,
         ticketService,
         fenceService,
-        weebiAppService
+        weebiAppService,
       ],
       interceptors: interceptors,
     );
@@ -100,7 +99,8 @@ void main(List<String> arguments) async {
     await server.serve(port: AppEnvironment.port, address: ip);
 
     print('gRPC Server running on ip $ip port ${server.port}');
-    print('Use healthCheck RPC for service health and version information');
+    print('Use weebi.fence.service.FenceService/getVersion for version information');
+    print('Use weebi.fence.service.FenceService/healthCheck for health checking');
   } catch (e) {
     log('Failed to create gRPC server: $e');
   }
