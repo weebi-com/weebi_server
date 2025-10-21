@@ -18,16 +18,10 @@ gcloud run deploy weebi-grpc \
   --set-env-vars JWT_SECRET_KEY=your_secret
 ```
 
-Map domain: `prd.weebi.com` → `weebi-grpc` (for production)
-Map domain: `dev.weebi.com` → `weebi-grpc-dev` (for development)
-
 **Required Environment Variables:**
 - `PORT` - gRPC server port (default: 8080)
 - `MONGO_DB_URI` - MongoDB connection string
 - `JWT_SECRET_KEY` - Secret for JWT tokens
-
-**Optional:**
-- `ENVIRONMENT` - 'production' or 'development'
 
 **Health Check:**
 Use the `healthCheck` gRPC method for service health and version information.

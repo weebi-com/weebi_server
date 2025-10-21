@@ -41,8 +41,5 @@ Platform.environment :
 ['MONGO_DB_URI']
 ['JWT_SECRET_KEY']
 
-optional : 
-['ENVIRONMENT'] -- 'production' or 'development'
-
 Note: HTTP REST server and email functionality has been removed.
 Use healthCheck gRPC method for service health and version information.
