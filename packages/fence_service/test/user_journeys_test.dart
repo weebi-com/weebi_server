@@ -84,18 +84,27 @@ void main() async {
     expect(liliPermissions2.firmId, createFirmResponse.firm.firmId);
 
     // boss creates alice
+    print('DEBUG TEST: About to create pending user Alice');
+    print('DEBUG TEST: Boss firmId: ${createFirmResponse.firm.firmId}');
+    print('DEBUG TEST: Boss userId: ${response.userId}');
+    
     final alice = await fenceService.createPendingUser(
       ServiceCallTest(tokensBoss2.accessToken),
-      PendingUserRequest(
+      PendingUserRequest(password: '987654321',
           mail: 'alice@weebi.com',
           firstname: 'Alice',
-          lastname: 'nonyabusiness',
-          phone: Phone(countryCode: 1, number: '123456789'),
-          permissions: Dummy.salesPersonPermissionNoId
-            ..firmId = createFirmResponse.firm.firmId
-            ..userId = response.userId),
+        lastname: 'nonyabusiness',
+        phone: Phone(countryCode: 1, number: '123456789'),
+        permissions: Dummy.salesPersonPermissionNoId
+          ..firmId = createFirmResponse.firm.firmId
+          ..userId = response.userId,
+      ),
     );
 
+    print('DEBUG TEST: Alice pending user creation result: ${alice.statusResponse.type}');
+    print('DEBUG TEST: Alice pending user firstname: ${alice.userPublic.firstname}');
+    print('DEBUG TEST: Alice pending user mail: ${alice.userPublic.mail}');
+    
     expect(alice.statusResponse.type, StatusResponse_Type.CREATED);
     expect(alice.userPublic.firstname, 'Alice');
     expect(alice.userPublic.mail, 'alice@weebi.com');
@@ -103,11 +112,15 @@ void main() async {
     expect(alice.userPublic.phone.number, '123456789');
 
     // alice signs up and is linked to boss' firm
+    print('DEBUG TEST: About to sign up Alice');
     final aliceSignUp = await fenceService.signUp(
       ServiceCallTest('', path: 'signUp'),
       SignUpRequest(mail: 'alice@weebi.com', password: '987654321'),
     );
 
+    print('DEBUG TEST: Alice signup result: ${aliceSignUp.statusResponse.type}');
+    print('DEBUG TEST: Alice userId: ${aliceSignUp.userId}');
+    
     expect(aliceSignUp.statusResponse.type, StatusResponse_Type.UPDATED);
     // indeed update since alice was already created by boss
     expect(aliceSignUp.userId.isNotEmpty, isTrue);
@@ -138,8 +151,20 @@ void main() async {
 
     //  Alice lost her password and asks Lili the boss to reset it
     // Lili first readAllUsers
+    
+    // DEBUG: Log the authentication token before calling readAllUsers
+    print('DEBUG TEST: About to call readAllUsers with token: ${tokensBoss2.accessToken}');
+    print('DEBUG TEST: Token userPermissions: ${tokensBoss2.accessToken.userPermissions}');
+    print('DEBUG TEST: Token firmId: ${tokensBoss2.accessToken.userPermissions.firmId}');
+    
     final allUsers = await fenceService.readAllUsers(
         ServiceCallTest(tokensBoss2.accessToken), Empty());
+
+    // DEBUG: Log the result
+    print('DEBUG TEST: readAllUsers returned ${allUsers.users.length} users');
+    for (int i = 0; i < allUsers.users.length; i++) {
+      print('DEBUG TEST: User $i: ${allUsers.users[i].firstname} ${allUsers.users[i].lastname}');
+    }
 
     // Lili does not need to look very far!
     expect(allUsers.users.length, 2);

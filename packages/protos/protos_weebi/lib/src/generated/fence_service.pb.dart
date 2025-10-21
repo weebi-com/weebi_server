@@ -18,7 +18,7 @@ import 'btq_chain.pb.dart' as $11;
 import 'common/g_common.pb.dart' as $1;
 import 'common/g_timestamp.pb.dart' as $17;
 import 'device.pb.dart' as $12;
-import 'user.pb.dart' as $8;
+import 'user.pb.dart' as $9;
 import 'user_permissions.pb.dart' as $22;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -353,7 +353,7 @@ class CreateDeviceResponse extends $pb.GeneratedMessage {
 class ReadOneUserResponse extends $pb.GeneratedMessage {
   factory ReadOneUserResponse({
     $1.StatusResponse? statusResponse,
-    $8.UserPublic? user,
+    $9.UserPublic? user,
   }) {
     final $result = create();
     if (statusResponse != null) {
@@ -370,7 +370,7 @@ class ReadOneUserResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadOneUserResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOM<$1.StatusResponse>(1, _omitFieldNames ? '' : 'statusResponse', protoName: 'statusResponse', subBuilder: $1.StatusResponse.create)
-    ..aOM<$8.UserPublic>(2, _omitFieldNames ? '' : 'user', subBuilder: $8.UserPublic.create)
+    ..aOM<$9.UserPublic>(2, _omitFieldNames ? '' : 'user', subBuilder: $9.UserPublic.create)
     ..hasRequiredFields = false
   ;
 
@@ -401,20 +401,20 @@ class ReadOneUserResponse extends $pb.GeneratedMessage {
   $1.StatusResponse ensureStatusResponse() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $8.UserPublic get user => $_getN(1);
+  $9.UserPublic get user => $_getN(1);
   @$pb.TagNumber(2)
-  set user($8.UserPublic v) { $_setField(2, v); }
+  set user($9.UserPublic v) { $_setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasUser() => $_has(1);
   @$pb.TagNumber(2)
   void clearUser() => $_clearField(2);
   @$pb.TagNumber(2)
-  $8.UserPublic ensureUser() => $_ensure(1);
+  $9.UserPublic ensureUser() => $_ensure(1);
 }
 
 class UsersPublic extends $pb.GeneratedMessage {
   factory UsersPublic({
-    $core.Iterable<$8.UserPublic>? users,
+    $core.Iterable<$9.UserPublic>? users,
   }) {
     final $result = create();
     if (users != null) {
@@ -427,7 +427,7 @@ class UsersPublic extends $pb.GeneratedMessage {
   factory UsersPublic.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UsersPublic', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
-    ..pc<$8.UserPublic>(1, _omitFieldNames ? '' : 'users', $pb.PbFieldType.PM, subBuilder: $8.UserPublic.create)
+    ..pc<$9.UserPublic>(1, _omitFieldNames ? '' : 'users', $pb.PbFieldType.PM, subBuilder: $9.UserPublic.create)
     ..hasRequiredFields = false
   ;
 
@@ -447,7 +447,7 @@ class UsersPublic extends $pb.GeneratedMessage {
   static UsersPublic? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $pb.PbList<$8.UserPublic> get users => $_getList(0);
+  $pb.PbList<$9.UserPublic> get users => $_getList(0);
 }
 
 class ReadAllChainsResponse extends $pb.GeneratedMessage {
@@ -485,8 +485,47 @@ class ReadAllChainsResponse extends $pb.GeneratedMessage {
   static ReadAllChainsResponse? _defaultInstance;
 
   /// google.retail.common.StatusResponse ?
+  /// Note: chains contain only active boutiques (deleted ones are filtered out)
   @$pb.TagNumber(1)
   $pb.PbList<$11.Chain> get chains => $_getList(0);
+}
+
+class ReadAllBoutiquesResponse extends $pb.GeneratedMessage {
+  factory ReadAllBoutiquesResponse({
+    $core.Iterable<$20.BoutiquePb>? boutiques,
+  }) {
+    final $result = create();
+    if (boutiques != null) {
+      $result.boutiques.addAll(boutiques);
+    }
+    return $result;
+  }
+  ReadAllBoutiquesResponse._() : super();
+  factory ReadAllBoutiquesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadAllBoutiquesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllBoutiquesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..pc<$20.BoutiquePb>(1, _omitFieldNames ? '' : 'boutiques', $pb.PbFieldType.PM, subBuilder: $20.BoutiquePb.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReadAllBoutiquesResponse clone() => ReadAllBoutiquesResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ReadAllBoutiquesResponse copyWith(void Function(ReadAllBoutiquesResponse) updates) => super.copyWith((message) => updates(message as ReadAllBoutiquesResponse)) as ReadAllBoutiquesResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReadAllBoutiquesResponse create() => ReadAllBoutiquesResponse._();
+  ReadAllBoutiquesResponse createEmptyInstance() => create();
+  static $pb.PbList<ReadAllBoutiquesResponse> createRepeated() => $pb.PbList<ReadAllBoutiquesResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ReadAllBoutiquesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadAllBoutiquesResponse>(create);
+  static ReadAllBoutiquesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<$20.BoutiquePb> get boutiques => $_getList(0);
 }
 
 class ReadDevicesRequest extends $pb.GeneratedMessage {
@@ -1499,6 +1538,297 @@ class ApproveDeviceRequest extends $pb.GeneratedMessage {
   void clearDevice() => $_clearField(1);
   @$pb.TagNumber(1)
   $12.Device ensureDevice() => $_ensure(0);
+}
+
+class PasswordResetRequest extends $pb.GeneratedMessage {
+  factory PasswordResetRequest({
+    $core.String? mail,
+  }) {
+    final $result = create();
+    if (mail != null) {
+      $result.mail = mail;
+    }
+    return $result;
+  }
+  PasswordResetRequest._() : super();
+  factory PasswordResetRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PasswordResetRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasswordResetRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'mail')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetRequest clone() => PasswordResetRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetRequest copyWith(void Function(PasswordResetRequest) updates) => super.copyWith((message) => updates(message as PasswordResetRequest)) as PasswordResetRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetRequest create() => PasswordResetRequest._();
+  PasswordResetRequest createEmptyInstance() => create();
+  static $pb.PbList<PasswordResetRequest> createRepeated() => $pb.PbList<PasswordResetRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PasswordResetRequest>(create);
+  static PasswordResetRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get mail => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set mail($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMail() => $_clearField(1);
+}
+
+class PasswordResetConfirmRequest extends $pb.GeneratedMessage {
+  factory PasswordResetConfirmRequest({
+    $core.String? mail,
+    $core.String? resetToken,
+    $core.String? newPassword,
+  }) {
+    final $result = create();
+    if (mail != null) {
+      $result.mail = mail;
+    }
+    if (resetToken != null) {
+      $result.resetToken = resetToken;
+    }
+    if (newPassword != null) {
+      $result.newPassword = newPassword;
+    }
+    return $result;
+  }
+  PasswordResetConfirmRequest._() : super();
+  factory PasswordResetConfirmRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PasswordResetConfirmRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PasswordResetConfirmRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'mail')
+    ..aOS(2, _omitFieldNames ? '' : 'resetToken', protoName: 'resetToken')
+    ..aOS(3, _omitFieldNames ? '' : 'newPassword', protoName: 'newPassword')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetConfirmRequest clone() => PasswordResetConfirmRequest()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  PasswordResetConfirmRequest copyWith(void Function(PasswordResetConfirmRequest) updates) => super.copyWith((message) => updates(message as PasswordResetConfirmRequest)) as PasswordResetConfirmRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetConfirmRequest create() => PasswordResetConfirmRequest._();
+  PasswordResetConfirmRequest createEmptyInstance() => create();
+  static $pb.PbList<PasswordResetConfirmRequest> createRepeated() => $pb.PbList<PasswordResetConfirmRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PasswordResetConfirmRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PasswordResetConfirmRequest>(create);
+  static PasswordResetConfirmRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get mail => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set mail($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasMail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMail() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get resetToken => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set resetToken($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasResetToken() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearResetToken() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get newPassword => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set newPassword($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasNewPassword() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearNewPassword() => $_clearField(3);
+}
+
+/// / Health check response with service versions
+class HealthCheckWeebiResponse extends $pb.GeneratedMessage {
+  factory HealthCheckWeebiResponse({
+    $core.String? status,
+    $core.String? timestamp,
+    ServiceVersions? versions,
+    $core.bool? databaseHealthy,
+  }) {
+    final $result = create();
+    if (status != null) {
+      $result.status = status;
+    }
+    if (timestamp != null) {
+      $result.timestamp = timestamp;
+    }
+    if (versions != null) {
+      $result.versions = versions;
+    }
+    if (databaseHealthy != null) {
+      $result.databaseHealthy = databaseHealthy;
+    }
+    return $result;
+  }
+  HealthCheckWeebiResponse._() : super();
+  factory HealthCheckWeebiResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory HealthCheckWeebiResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'HealthCheckWeebiResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'status')
+    ..aOS(2, _omitFieldNames ? '' : 'timestamp')
+    ..aOM<ServiceVersions>(3, _omitFieldNames ? '' : 'versions', subBuilder: ServiceVersions.create)
+    ..aOB(4, _omitFieldNames ? '' : 'databaseHealthy', protoName: 'databaseHealthy')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  HealthCheckWeebiResponse clone() => HealthCheckWeebiResponse()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  HealthCheckWeebiResponse copyWith(void Function(HealthCheckWeebiResponse) updates) => super.copyWith((message) => updates(message as HealthCheckWeebiResponse)) as HealthCheckWeebiResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static HealthCheckWeebiResponse create() => HealthCheckWeebiResponse._();
+  HealthCheckWeebiResponse createEmptyInstance() => create();
+  static $pb.PbList<HealthCheckWeebiResponse> createRepeated() => $pb.PbList<HealthCheckWeebiResponse>();
+  @$core.pragma('dart2js:noInline')
+  static HealthCheckWeebiResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<HealthCheckWeebiResponse>(create);
+  static HealthCheckWeebiResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get status => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set status($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasStatus() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearStatus() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get timestamp => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set timestamp($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasTimestamp() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTimestamp() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  ServiceVersions get versions => $_getN(2);
+  @$pb.TagNumber(3)
+  set versions(ServiceVersions v) { $_setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasVersions() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearVersions() => $_clearField(3);
+  @$pb.TagNumber(3)
+  ServiceVersions ensureVersions() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $core.bool get databaseHealthy => $_getBF(3);
+  @$pb.TagNumber(4)
+  set databaseHealthy($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasDatabaseHealthy() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearDatabaseHealthy() => $_clearField(4);
+}
+
+class ServiceVersions extends $pb.GeneratedMessage {
+  factory ServiceVersions({
+    $core.String? server,
+    $core.String? protosWeebi,
+    $core.String? fenceService,
+    $core.String? modelsWeebi,
+  }) {
+    final $result = create();
+    if (server != null) {
+      $result.server = server;
+    }
+    if (protosWeebi != null) {
+      $result.protosWeebi = protosWeebi;
+    }
+    if (fenceService != null) {
+      $result.fenceService = fenceService;
+    }
+    if (modelsWeebi != null) {
+      $result.modelsWeebi = modelsWeebi;
+    }
+    return $result;
+  }
+  ServiceVersions._() : super();
+  factory ServiceVersions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ServiceVersions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ServiceVersions', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'server')
+    ..aOS(2, _omitFieldNames ? '' : 'protos_weebi')
+    ..aOS(3, _omitFieldNames ? '' : 'fence_service')
+    ..aOS(4, _omitFieldNames ? '' : 'models_weebi')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ServiceVersions clone() => ServiceVersions()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ServiceVersions copyWith(void Function(ServiceVersions) updates) => super.copyWith((message) => updates(message as ServiceVersions)) as ServiceVersions;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ServiceVersions create() => ServiceVersions._();
+  ServiceVersions createEmptyInstance() => create();
+  static $pb.PbList<ServiceVersions> createRepeated() => $pb.PbList<ServiceVersions>();
+  @$core.pragma('dart2js:noInline')
+  static ServiceVersions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ServiceVersions>(create);
+  static ServiceVersions? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get server => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set server($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasServer() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearServer() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get protosWeebi => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set protosWeebi($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasProtosWeebi() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearProtosWeebi() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get fenceService => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set fenceService($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasFenceService() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearFenceService() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get modelsWeebi => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set modelsWeebi($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasModelsWeebi() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearModelsWeebi() => $_clearField(4);
 }
 
 

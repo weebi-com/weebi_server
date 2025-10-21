@@ -1,11 +1,12 @@
+import 'dart:io';
 import 'package:fence_service/mongo_pool.dart';
 
 class TestHelper {
-  static const String local = "mongodb://localhost:27017/local";
-  static final localDb = Db(local);
+  static String get local => Platform.environment['MONGO_DB_URI'] ?? "mongodb://localhost:27017/local";
+  static Db get localDb => Db(local);
 
-    static final MongoDbPoolService defaultPoolService = MongoDbPoolService(
-    const MongoPoolConfiguration(
+    static MongoDbPoolService get defaultPoolService => MongoDbPoolService(
+    MongoPoolConfiguration(
       /// [maxLifetimeMilliseconds] is the maximum lifetime of a connection in the pool.
       /// Connection pools can dynamically expand when faced with high demand. Unused
       /// connections within a specified period are automatically removed, and the pool

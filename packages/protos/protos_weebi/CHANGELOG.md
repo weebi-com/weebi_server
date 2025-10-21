@@ -1,5 +1,17 @@
 # changelog
 
+## 1.0.13.1 - 2025 octobre 19
+
+- added deleted filed in BoutiquePb
+- added pagination in articleService.readAllPhotos
+
+## 1.0.13 - 2025 octobre 19
+
+- rework deleteOneBoutique for soft-deletion only
+- add restoreOneBoutique rpc
+- add readAllBoutiques rpc (response does not include deletedboutiques)
+- readOneBoutique, updateOneBoutique error if boutique is soft-deleted
+
 ## 1.0.12+4 - 2025 september 11
 
 - add fields to PendingUserRequest, UserPrivate, UserPublic, to handle first login and password change

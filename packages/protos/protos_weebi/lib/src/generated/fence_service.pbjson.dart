@@ -120,6 +120,19 @@ final $typed_data.Uint8List readAllChainsResponseDescriptor = $convert.base64Dec
     'ChVSZWFkQWxsQ2hhaW5zUmVzcG9uc2USKgoGY2hhaW5zGAEgAygLMhIud2VlYmkuY2hhaW4uQ2'
     'hhaW5SBmNoYWlucw==');
 
+@$core.Deprecated('Use readAllBoutiquesResponseDescriptor instead')
+const ReadAllBoutiquesResponse$json = {
+  '1': 'ReadAllBoutiquesResponse',
+  '2': [
+    {'1': 'boutiques', '3': 1, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutiques'},
+  ],
+};
+
+/// Descriptor for `ReadAllBoutiquesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readAllBoutiquesResponseDescriptor = $convert.base64Decode(
+    'ChhSZWFkQWxsQm91dGlxdWVzUmVzcG9uc2USOAoJYm91dGlxdWVzGAEgAygLMhoud2VlYmkuYm'
+    '91dGlxdWUuQm91dGlxdWVQYlIJYm91dGlxdWVz');
+
 @$core.Deprecated('Use readDevicesRequestDescriptor instead')
 const ReadDevicesRequest$json = {
   '1': 'ReadDevicesRequest',
@@ -351,4 +364,67 @@ const ApproveDeviceRequest$json = {
 final $typed_data.Uint8List approveDeviceRequestDescriptor = $convert.base64Decode(
     'ChRBcHByb3ZlRGV2aWNlUmVxdWVzdBIsCgZkZXZpY2UYASABKAsyFC53ZWViaS5kZXZpY2UuRG'
     'V2aWNlUgZkZXZpY2U=');
+
+@$core.Deprecated('Use passwordResetRequestDescriptor instead')
+const PasswordResetRequest$json = {
+  '1': 'PasswordResetRequest',
+  '2': [
+    {'1': 'mail', '3': 1, '4': 1, '5': 9, '10': 'mail'},
+  ],
+};
+
+/// Descriptor for `PasswordResetRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordResetRequestDescriptor = $convert.base64Decode(
+    'ChRQYXNzd29yZFJlc2V0UmVxdWVzdBISCgRtYWlsGAEgASgJUgRtYWls');
+
+@$core.Deprecated('Use passwordResetConfirmRequestDescriptor instead')
+const PasswordResetConfirmRequest$json = {
+  '1': 'PasswordResetConfirmRequest',
+  '2': [
+    {'1': 'mail', '3': 1, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'resetToken', '3': 2, '4': 1, '5': 9, '10': 'resetToken'},
+    {'1': 'newPassword', '3': 3, '4': 1, '5': 9, '10': 'newPassword'},
+  ],
+};
+
+/// Descriptor for `PasswordResetConfirmRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List passwordResetConfirmRequestDescriptor = $convert.base64Decode(
+    'ChtQYXNzd29yZFJlc2V0Q29uZmlybVJlcXVlc3QSEgoEbWFpbBgBIAEoCVIEbWFpbBIeCgpyZX'
+    'NldFRva2VuGAIgASgJUgpyZXNldFRva2VuEiAKC25ld1Bhc3N3b3JkGAMgASgJUgtuZXdQYXNz'
+    'd29yZA==');
+
+@$core.Deprecated('Use healthCheckWeebiResponseDescriptor instead')
+const HealthCheckWeebiResponse$json = {
+  '1': 'HealthCheckWeebiResponse',
+  '2': [
+    {'1': 'status', '3': 1, '4': 1, '5': 9, '10': 'status'},
+    {'1': 'timestamp', '3': 2, '4': 1, '5': 9, '10': 'timestamp'},
+    {'1': 'versions', '3': 3, '4': 1, '5': 11, '6': '.weebi.fence.service.ServiceVersions', '10': 'versions'},
+    {'1': 'databaseHealthy', '3': 4, '4': 1, '5': 8, '10': 'databaseHealthy'},
+  ],
+};
+
+/// Descriptor for `HealthCheckWeebiResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List healthCheckWeebiResponseDescriptor = $convert.base64Decode(
+    'ChhIZWFsdGhDaGVja1dlZWJpUmVzcG9uc2USFgoGc3RhdHVzGAEgASgJUgZzdGF0dXMSHAoJdG'
+    'ltZXN0YW1wGAIgASgJUgl0aW1lc3RhbXASQAoIdmVyc2lvbnMYAyABKAsyJC53ZWViaS5mZW5j'
+    'ZS5zZXJ2aWNlLlNlcnZpY2VWZXJzaW9uc1IIdmVyc2lvbnMSKAoPZGF0YWJhc2VIZWFsdGh5GA'
+    'QgASgIUg9kYXRhYmFzZUhlYWx0aHk=');
+
+@$core.Deprecated('Use serviceVersionsDescriptor instead')
+const ServiceVersions$json = {
+  '1': 'ServiceVersions',
+  '2': [
+    {'1': 'server', '3': 1, '4': 1, '5': 9, '10': 'server'},
+    {'1': 'protos_weebi', '3': 2, '4': 1, '5': 9, '10': 'protos_weebi'},
+    {'1': 'fence_service', '3': 3, '4': 1, '5': 9, '10': 'fence_service'},
+    {'1': 'models_weebi', '3': 4, '4': 1, '5': 9, '10': 'models_weebi'},
+  ],
+};
+
+/// Descriptor for `ServiceVersions`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List serviceVersionsDescriptor = $convert.base64Decode(
+    'Cg9TZXJ2aWNlVmVyc2lvbnMSFgoGc2VydmVyGAEgASgJUgZzZXJ2ZXISIgoMcHJvdG9zX3dlZW'
+    'JpGAIgASgJUgxwcm90b3Nfd2VlYmkSJAoNZmVuY2Vfc2VydmljZRgDIAEoCVINZmVuY2Vfc2Vy'
+    'dmljZRIiCgxtb2RlbHNfd2VlYmkYBCABKAlSDG1vZGVsc193ZWViaQ==');
 

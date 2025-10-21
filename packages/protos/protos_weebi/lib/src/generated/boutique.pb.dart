@@ -32,6 +32,9 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     $17.Timestamp? lastTouchTimestampUTC,
     $core.List<$core.int>? logo,
     $core.String? logoExtension,
+    $core.bool? isDeleted,
+    $core.String? deletedBy,
+    $core.String? restoredBy,
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? additionalAttributes,
   }) {
     final $result = create();
@@ -65,6 +68,15 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     if (logoExtension != null) {
       $result.logoExtension = logoExtension;
     }
+    if (isDeleted != null) {
+      $result.isDeleted = isDeleted;
+    }
+    if (deletedBy != null) {
+      $result.deletedBy = deletedBy;
+    }
+    if (restoredBy != null) {
+      $result.restoredBy = restoredBy;
+    }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addEntries(additionalAttributes);
     }
@@ -85,6 +97,9 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
     ..aOM<$17.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $17.Timestamp.create)
     ..a<$core.List<$core.int>>(9, _omitFieldNames ? '' : 'logo', $pb.PbFieldType.OY)
     ..aOS(10, _omitFieldNames ? '' : 'logoExtension', protoName: 'logoExtension')
+    ..aOB(11, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
+    ..aOS(12, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
+    ..aOS(13, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiqueMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -195,8 +210,35 @@ class BoutiqueMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(10)
   void clearLogoExtension() => $_clearField(10);
 
+  @$pb.TagNumber(11)
+  $core.bool get isDeleted => $_getBF(10);
+  @$pb.TagNumber(11)
+  set isDeleted($core.bool v) { $_setBool(10, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasIsDeleted() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearIsDeleted() => $_clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.String get deletedBy => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set deletedBy($core.String v) { $_setString(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasDeletedBy() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearDeletedBy() => $_clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.String get restoredBy => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set restoredBy($core.String v) { $_setString(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasRestoredBy() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearRestoredBy() => $_clearField(13);
+
   @$pb.TagNumber(99)
-  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(10);
+  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(13);
 }
 
 class BoutiquePb extends $pb.GeneratedMessage {
@@ -204,7 +246,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $core.String? creationDate,
     $core.String? updateDate,
+  @$core.Deprecated('This field is deprecated.')
     $core.String? statusUpdateDate,
+  @$core.Deprecated('This field is deprecated.')
     $core.bool? status,
     $core.String? name,
     $18.Phone? phone,
@@ -212,6 +256,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.double? promo,
     $core.String? promoStart,
     $core.String? promoEnd,
+    $core.bool? isDeleted,
+    $core.String? deletedBy,
+    $core.String? restoredBy,
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? additionalAttributes,
   }) {
     final $result = create();
@@ -225,9 +272,11 @@ class BoutiquePb extends $pb.GeneratedMessage {
       $result.updateDate = updateDate;
     }
     if (statusUpdateDate != null) {
+      // ignore: deprecated_member_use_from_same_package
       $result.statusUpdateDate = statusUpdateDate;
     }
     if (status != null) {
+      // ignore: deprecated_member_use_from_same_package
       $result.status = status;
     }
     if (name != null) {
@@ -247,6 +296,15 @@ class BoutiquePb extends $pb.GeneratedMessage {
     }
     if (promoEnd != null) {
       $result.promoEnd = promoEnd;
+    }
+    if (isDeleted != null) {
+      $result.isDeleted = isDeleted;
+    }
+    if (deletedBy != null) {
+      $result.deletedBy = deletedBy;
+    }
+    if (restoredBy != null) {
+      $result.restoredBy = restoredBy;
     }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addEntries(additionalAttributes);
@@ -269,6 +327,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     ..a<$core.double>(9, _omitFieldNames ? '' : 'promo', $pb.PbFieldType.OD)
     ..aOS(10, _omitFieldNames ? '' : 'promoStart', protoName: 'promoStart')
     ..aOS(11, _omitFieldNames ? '' : 'promoEnd', protoName: 'promoEnd')
+    ..aOB(12, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
+    ..aOS(13, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
+    ..aOS(14, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiquePb.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -315,21 +376,29 @@ class BoutiquePb extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearUpdateDate() => $_clearField(3);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(4)
   $core.String get statusUpdateDate => $_getSZ(3);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(4)
   set statusUpdateDate($core.String v) { $_setString(3, v); }
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(4)
   $core.bool hasStatusUpdateDate() => $_has(3);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(4)
   void clearStatusUpdateDate() => $_clearField(4);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   $core.bool get status => $_getBF(4);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   set status($core.bool v) { $_setBool(4, v); }
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   $core.bool hasStatus() => $_has(4);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   void clearStatus() => $_clearField(5);
 
@@ -391,8 +460,35 @@ class BoutiquePb extends $pb.GeneratedMessage {
   @$pb.TagNumber(11)
   void clearPromoEnd() => $_clearField(11);
 
+  @$pb.TagNumber(12)
+  $core.bool get isDeleted => $_getBF(11);
+  @$pb.TagNumber(12)
+  set isDeleted($core.bool v) { $_setBool(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasIsDeleted() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearIsDeleted() => $_clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.String get deletedBy => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set deletedBy($core.String v) { $_setString(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasDeletedBy() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearDeletedBy() => $_clearField(13);
+
+  @$pb.TagNumber(14)
+  $core.String get restoredBy => $_getSZ(13);
+  @$pb.TagNumber(14)
+  set restoredBy($core.String v) { $_setString(13, v); }
+  @$pb.TagNumber(14)
+  $core.bool hasRestoredBy() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearRestoredBy() => $_clearField(14);
+
   @$pb.TagNumber(99)
-  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(11);
+  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(14);
 }
 
 

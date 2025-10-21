@@ -19,6 +19,11 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
       .contains('readappminimumversion')) {
     return null; // allow all read app min version RPC calls
   }
+  if (call.clientMetadata![':path']!
+      .toLowerCase()
+      .contains('healthcheck')) {
+    return null; // allow all read app min version RPC calls
+  }
   // below stupid idea -> security risk
   //if (call.clientMetadata![':path']!.toLowerCase().contains('createdevice')) {
   //  return null; // allow all createPendingDevice RPC calls

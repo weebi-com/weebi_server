@@ -1,8 +1,11 @@
 import 'dart:developer';
 import 'dart:async';
 import 'dart:math' show Random;
+import 'dart:io';
+import 'package:pubspec_parse/pubspec_parse.dart';
 
 import 'package:collection/collection.dart';
+// ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:protos_weebi/data_dummy.dart';
@@ -36,8 +39,109 @@ class FenceService extends FenceServiceBase {
 
   bool isMock;
   UserPermissions? userPermissionIfTest;
-  FenceService(this._poolService,
-      {this.isMock = false, this.userPermissionIfTest});
+
+  FenceService(
+    this._poolService, {
+    this.isMock = false,
+    this.userPermissionIfTest,
+  });
+
+  /// Get version information for health check using pubspec_parse
+  Map<String, String> _getVersionInfo() {
+    try {
+      // Get the root directory of the project
+      // When running from weebi_server, find pubspec files relative to current directory
+      final currentDir = Directory.current.path;
+      
+      return {
+        'server': Platform.environment['SERVER_VERSION'] ?? 
+            _getVersionFromPubspec('$currentDir/apps/server/pubspec.yaml'),
+        'protos_weebi': Platform.environment['PROTOS_VERSION'] ?? 
+            _getVersionFromPubspec('$currentDir/packages/protos/protos_weebi/pubspec.yaml'),
+        'fence_service': Platform.environment['FENCE_SERVICE_VERSION'] ?? 
+            _getVersionFromPubspec('$currentDir/packages/fence_service/pubspec.yaml'),
+        // models_weebi is a pub dependency - read from pubspec.lock
+        'models_weebi': Platform.environment['MODELS_VERSION'] ?? 
+            _getVersionFromPubspecLock('$currentDir/packages/fence_service/pubspec.lock', 'models_weebi'),
+      };
+    } catch (e) {
+      log('Error getting version info: $e');
+      return {
+        'server': 'unknown',
+        'protos_weebi': 'unknown',
+        'fence_service': 'unknown',
+        'models_weebi': 'unknown',
+      };
+    }
+  }
+
+  /// Read version from pubspec.yaml using pubspec_parse
+  String _getVersionFromPubspec(String absolutePath) {
+    try {
+      final pubspecFile = File(absolutePath);
+      if (!pubspecFile.existsSync()) {
+        log('Pubspec file not found: $absolutePath');
+        return 'unknown';
+      }
+      
+      final pubspecContent = pubspecFile.readAsStringSync();
+      final pubspec = Pubspec.parse(pubspecContent);
+      
+      return pubspec.version?.toString() ?? 'unknown';
+    } catch (e) {
+      log('Error reading version from $absolutePath: $e');
+      return 'unknown';
+    }
+  }
+
+  /// Read version from pubspec.lock for a dependency
+  String _getVersionFromPubspecLock(String lockFilePath, String packageName) {
+    try {
+      final lockFile = File(lockFilePath);
+      if (!lockFile.existsSync()) {
+        log('Pubspec.lock file not found: $lockFilePath');
+        return 'unknown';
+      }
+      
+      final content = lockFile.readAsStringSync();
+      // Simple regex to find the package and its version
+      final pattern = RegExp('$packageName:.*?version: "([^"]+)"', dotAll: true);
+      final match = pattern.firstMatch(content);
+      
+      if (match != null && match.groupCount >= 1) {
+        return match.group(1) ?? 'unknown';
+      }
+      
+      return 'unknown';
+    } catch (e) {
+      log('Error reading version from $lockFilePath for $packageName: $e');
+      return 'unknown';
+    }
+  }
+
+
+  /// Check database health
+  Future<bool> _checkDatabaseHealth() async {
+    try {
+      return await databaseMiddleware<bool>(_poolService, (db) async {
+        // Simple ping to check database connectivity
+        await db.runCommand({'ping': 1});
+        return true;
+      });
+    } catch (e) {
+      log('Database health check failed: $e');
+      return false;
+    }
+  }
+
+  // Will use _getVersionInfo() and _checkDatabaseHealth()
+
+  // NOTE: HTTP handlers and email service methods have been removed
+  // Email service functionality is preserved in lib/src/mail/ folder:
+  // - mail_service.dart: Email sending logic
+  // - password_reset_service.dart: Token management
+  // - email_config.dart: Configuration
+  // These can be used later for a dedicated email/auth service
 
   @override
   Future<PendingUserResponse> createPendingUser(
@@ -764,6 +868,10 @@ class FenceService extends FenceServiceBase {
           'user does not have right to delete users');
     }
 
+    if(userPermission.userId == request.userId) {
+      throw GrpcError.permissionDenied('user cannot delete themselves');
+    }
+
     final userPrivate = await _checkUserAndProtoIt(request.userId);
     if (userPrivate.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied('user belongs to a different firm');
@@ -882,6 +990,9 @@ class FenceService extends FenceServiceBase {
             print('createFirm _createOneChainDBExec error $e');
             rethrow;
           }
+
+          // Email/welcome mail functionality removed - will be handled by dedicated service
+
           return CreateFirmResponse(
             statusResponse: StatusResponse.create()
               ..type = StatusResponse_Type.CREATED
@@ -1015,8 +1126,22 @@ class FenceService extends FenceServiceBase {
         }
         final chains = <Chain>[];
         for (final chainMongo in chainsMongo) {
-          chains.add(Chain.create()
-            ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true));
+          final chainTemp = Chain.create()
+            ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
+          
+          // Filter out soft-deleted boutiques and create new chain
+          final activeBoutiques = chainTemp.boutiques.where((b) => !b.isDeleted).toList();
+          
+          final chain = Chain.create()
+            ..chainId = chainTemp.chainId
+            ..firmId = chainTemp.firmId
+            ..name = chainTemp.name
+            ..lastUpdateTimestampUTC = chainTemp.lastUpdateTimestampUTC
+            ..lastUpdatedByuserId = chainTemp.lastUpdatedByuserId
+            ..creationDateUTC = chainTemp.creationDateUTC
+            ..boutiques.addAll(activeBoutiques);
+          
+          chains.add(chain);
         }
         return chains;
       } on GrpcError catch (e) {
@@ -1218,9 +1343,18 @@ class FenceService extends FenceServiceBase {
           'boutique ${request.boutique.boutiqueId} not found');
     }
 
-    chain.boutiques[boutiqueIndex].boutique = request.boutique;
-    chain.boutiques[boutiqueIndex].logo = request.logo;
-    chain.boutiques[boutiqueIndex].logoExtension = request.logoExtension;
+    final boutique = chain.boutiques[boutiqueIndex];
+    
+    // Prevent updating deleted boutiques
+    if (boutique.isDeleted) {
+      throw GrpcError.failedPrecondition(
+          'cannot update deleted boutique ${request.boutique.boutiqueId}');
+    }
+
+    boutique.boutique = request.boutique;
+    boutique.logo = request.logo;
+    boutique.logoExtension = request.logoExtension;
+    boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
 
     return await _updateOneChainDBExec(chain);
   }
@@ -1544,6 +1678,33 @@ class FenceService extends FenceServiceBase {
   }
 
   @override
+  Future<ReadAllBoutiquesResponse> readAllBoutiques(
+      ServiceCall? call, Empty request) async {
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    
+    if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to read boutiques');
+    }
+
+    // Get all chains (this already filters out deleted boutiques)
+    final chains = await _checkChainsAndProtoThem(userPermission);
+    
+    // Extract BoutiquePb from each boutique (following readOneBoutique pattern)
+    final allBoutiques = <BoutiquePb>[];
+    for (final chain in chains) {
+      for (final boutique in chain.boutiques) {
+        allBoutiques.add(boutique.boutique);
+      }
+    }
+
+    return ReadAllBoutiquesResponse(boutiques: allBoutiques);
+  }
+
+  @override
   Future<StatusResponse> updateUserPassword(
       ServiceCall? call, PasswordUpdateRequest request) async {
     if (request.firmId.isEmpty ||
@@ -1553,7 +1714,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.invalidArgument(
           'firmId / userId / passwordCurrent / passwordNew cannot be empty');
     }
-    if (request.passwordCurrent != request.passwordNew) {
+    if (request.passwordCurrent == request.passwordNew) {
       throw GrpcError.invalidArgument(
           'passwordCurrent and passwordNew must be different');
     }
@@ -1632,6 +1793,11 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
+    // DEBUG: Log user permissions and firmId
+    print('DEBUG readAllUsers: userPermission.firmId = ${userPermission.firmId}');
+    print('DEBUG readAllUsers: userPermission.userManagementRights.rights = ${userPermission.userManagementRights.rights}');
+    print('DEBUG readAllUsers: userPermission.fullAccess.hasFullAccess = ${userPermission.fullAccess.hasFullAccess}');
+
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.read) ==
         false) {
@@ -1645,7 +1811,16 @@ class FenceService extends FenceServiceBase {
         final usersMongo = await userCollection
             .find(where.eq('firmId', userPermission.firmId))
             .toList();
+        
+        // DEBUG: Log database query results
+        print('DEBUG readAllUsers: Found ${usersMongo.length} users in database');
+        print('DEBUG readAllUsers: Query firmId = ${userPermission.firmId}');
+        for (int i = 0; i < usersMongo.length; i++) {
+          print('DEBUG readAllUsers: User $i: ${usersMongo[i]['firstname']} ${usersMongo[i]['lastname']} (firmId: ${usersMongo[i]['firmId']})');
+        }
+        
         if (usersMongo.isEmpty) {
+          print('DEBUG readAllUsers: No users found, returning empty list');
           return UsersPublic(users: []);
         }
         final users = <UserPublic>[];
@@ -1655,6 +1830,7 @@ class FenceService extends FenceServiceBase {
         }
 
         if (userPermission.fullAccess.hasFullAccess) {
+          print('DEBUG readAllUsers: User has full access, returning ${users.length} users');
           return UsersPublic(users: users);
         }
         // if requestor has limitedAccess we retain only users that belong to his/her "fence"
@@ -1693,6 +1869,7 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// for web app
   /// webApp admin listens to this stream awaiting pendingDevice to be created
   /// during 2 minutes, duration arbitrarily chosen
   @override
@@ -1841,13 +2018,86 @@ class FenceService extends FenceServiceBase {
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('no boutique match found');
     }
-    // remove device
-    chain.boutiques.removeAt(boutiqueIndex);
+
+    // Soft delete: mark as deleted instead of removing
+    final boutique = chain.boutiques[boutiqueIndex];
+    if (boutique.isDeleted) {
+      throw GrpcError.failedPrecondition(
+          'boutique ${request.boutique.boutiqueId} is already deleted');
+    }
+
+    boutique.isDeleted = true;
+    boutique.deletedBy = userPermission.userId;
+    boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
+
     // update chain in db
     try {
       await _updateOneChainDBExec(chain);
       return StatusResponse()
-        ..type = StatusResponse_Type.DELETED
+        ..type = StatusResponse_Type.DELETED // soft delete in fact
+        ..timestamp = DateTime.now().timestampProto;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<StatusResponse> restoreOneBoutique(
+      ServiceCall call, BoutiqueRequest request) async {
+    final userPermission = isMock
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    
+    if (request.boutique.boutiqueId.isEmpty) {
+      throw GrpcError.invalidArgument('boutiqueId cannot be empty');
+    }
+
+    // Permission check: user needs delete permission to restore
+    // This makes sense: if you can delete, you can undo the deletion
+    // Alternatively, could check for firm-level rights for stricter control
+    if (userPermission.boutiqueRights.rights.any((e) => e == Right.delete) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to restore boutique');
+    }
+
+    if (userPermission.isChainAccessible(request.chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain ${request.chainId}');
+    }
+
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+
+    final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
+        btq.chainId == request.chainId &&
+        btq.boutiqueId == request.boutique.boutiqueId);
+    
+    if (boutiqueIndex == -1) {
+      throw GrpcError.notFound('no boutique match found');
+    }
+
+    final boutique = chain.boutiques[boutiqueIndex];
+
+    // Can only restore a deleted boutique
+    if (!boutique.isDeleted) {
+      throw GrpcError.failedPrecondition(
+          'boutique ${request.boutique.boutiqueId} is not deleted - nothing to restore');
+    }
+
+    // Restore: unmark as deleted
+    boutique.isDeleted = false;
+    boutique.restoredBy = userPermission.userId;
+    boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
+    
+    // Note: deletedBy is intentionally kept for audit trail
+    // Shows who deleted it originally and who restored it
+
+    // update chain in db
+    try {
+      await _updateOneChainDBExec(chain);
+      return StatusResponse()
+        ..type = StatusResponse_Type.UPDATED
         ..timestamp = DateTime.now().timestampProto;
     } catch (e) {
       rethrow;
@@ -1919,10 +2169,73 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.notFound('no boutique match found');
     }
 
+    final boutique = chain.boutiques[boutiqueIndex];
+    
+    // Check if boutique is soft-deleted
+    if (boutique.isDeleted) {
+      throw GrpcError.notFound(
+          'boutique ${request.boutique.boutiqueId} has been deleted');
+    }
+
     return BoutiqueResponse(
-      boutique: chain.boutiques[boutiqueIndex].boutique,
-      logo: chain.boutiques[boutiqueIndex].logo,
-      logoExtension: chain.boutiques[boutiqueIndex].logoExtension,
+      boutique: boutique.boutique,
+      logo: boutique.logo,
+      logoExtension: boutique.logoExtension,
     );
   }
+
+  @override
+  Future<StatusResponse> requestPasswordReset(
+      ServiceCall? call, PasswordResetRequest request) async {
+    // Password reset functionality removed - will be handled by dedicated email service
+    throw GrpcError.unimplemented(
+        'Password reset functionality temporarily unavailable');
+  }
+
+  @override
+  Future<StatusResponse> confirmPasswordReset(
+      ServiceCall? call, PasswordResetConfirmRequest request) async {
+    // Password reset functionality removed - will be handled by dedicated email service
+    throw GrpcError.unimplemented(
+        'Password reset functionality temporarily unavailable');
+  }
+  
+  @override
+  Future<HealthCheckWeebiResponse> healthCheck(ServiceCall? call, Empty request) async {
+    try {
+      // Check database connectivity
+      final isDbHealthy = await _checkDatabaseHealth();
+      
+      // Get version information
+      final versionInfo = _getVersionInfo();
+      
+      // Create version response
+      final versions = ServiceVersions()
+        ..server = versionInfo['server'] ?? 'unknown'
+        ..protosWeebi = versionInfo['protos_weebi'] ?? 'unknown'
+        ..fenceService = versionInfo['fence_service'] ?? 'unknown'
+        ..modelsWeebi = versionInfo['models_weebi'] ?? 'unknown';
+      
+      // Return health check response
+      return HealthCheckWeebiResponse()
+        ..status = isDbHealthy ? 'healthy' : 'unhealthy'
+        ..timestamp = DateTime.now().toIso8601String()
+        ..databaseHealthy = isDbHealthy
+        ..versions = versions;
+    } catch (e) {
+      log('Health check error: $e');
+      // Return unhealthy status with unknown versions
+      return HealthCheckWeebiResponse()
+        ..status = 'unhealthy'
+        ..timestamp = DateTime.now().toIso8601String()
+        ..databaseHealthy = false
+        ..versions = (ServiceVersions()
+          ..server = 'unknown'
+          ..protosWeebi = 'unknown'
+          ..fenceService = 'unknown'
+          ..modelsWeebi = 'unknown');
+    }
+  }
+
+  // Email-related methods removed - preserved in lib/src/mail/ folder for future use
 }

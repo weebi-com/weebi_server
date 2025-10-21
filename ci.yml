@@ -1,0 +1,49 @@
+name: Dart CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:6
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "nc -z localhost 27017"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+        
+      - name: Install Melos
+        run: dart pub global activate melos
+        
+      - name: Get dependencies
+        run: dart pub get
+        
+      - name: Bootstrap workspace
+        run: melos bootstrap
+        
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+        
+      - name: Analyze project source
+        run: dart analyze
+        
+      - name: Run tests
+        run: melos run test
+        env:
+          MONGO_DB_URI: mongodb://localhost:27017/local
+          JWT_SECRET_KEY: test-secret-key-for-ci

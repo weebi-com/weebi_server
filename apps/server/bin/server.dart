@@ -15,8 +15,6 @@ import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/weebi_app_service.dart';
 
-import '../constants/app_environment.dart';
-
 // * in a production environment, it’s generally not recommended to use * due to security concern
 // ? consider adding weebi domain cors here ?
 FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
@@ -41,7 +39,7 @@ void main(List<String> arguments) async {
   Logger.root.onRecord.listen((LogRecord rec) {
     log('${rec.loggerName}: ${rec.level.name}: ${rec.time}: ${rec.message}');
   });
-  print('1');
+  print('1 - Starting server');
 
   final MongoDbPoolService poolService = MongoDbPoolService(
     MongoPoolConfiguration(
@@ -52,24 +50,38 @@ void main(List<String> arguments) async {
     ),
   );
 
-  await poolService.initialize();
-
+  try {
+    await poolService.initialize();
+    print('1 - Pool service initialized successfully');
+  } catch (e) {
+    print('ERROR: Failed to initialize pool service: $e');
+    rethrow;
+  }
+  
   try {
     final db = await Db.create(AppEnvironment.mongoDbUri);
+    print('2 - MongoDB connection created');
+    final startTime = DateTime.now();
     await db.open();
+    final endTime = DateTime.now();
+    print(
+        '3 - MongoDB connection opened successfully in ${endTime.difference(startTime).inSeconds} seconds');
+  } catch (e) {
+    print('ERROR: Failed to create or open MongoDB connection: $e'); // Log the full error
+    rethrow;
+  }
 
-    print('2');
 
-    print('3');
+  try {
 //    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
-  //  final db = await pool.connect();
+    //  final db = await pool.connect();
     final interceptors = [loggingInterceptor, authInterceptor, corsInterceptor];
 
     final articleService = ArticleService(poolService);
     final contactService = ContactService(poolService);
     final ticketService = TicketService(poolService);
-    final fenceService = FenceService(poolService);
     final weebiAppService = WeebiAppService(poolService);
+    final fenceService = FenceService(poolService);
 
     final server = Server.create(
       services: [
@@ -83,12 +95,13 @@ void main(List<String> arguments) async {
     );
 
     final ip = InternetAddress.anyIPv4;
-    print('4');
+    print('4 - gRPC server created about to serve');
 
     await server.serve(port: AppEnvironment.port, address: ip);
 
-    print('Server running on ip $ip port ${server.port}');
+    print('gRPC Server running on ip $ip port ${server.port}');
+    print('Use healthCheck RPC for service health and version information');
   } catch (e) {
-    log('Failed to connect to MongoDB: $e');
+    log('Failed to create gRPC server: $e');
   }
 }

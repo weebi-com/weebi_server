@@ -5,3 +5,4 @@ export 'src/jwt.dart';
 export 'src/bearer_ext.dart';
 export 'src/user_perm_ext.dart';
 export 'src/extension.dart';
+export 'src/constants/app_environment.dart';

@@ -6,11 +6,40 @@ grpcurl -proto packages\protos\proto\weebi_app_service.proto dev.weebicom:443 we
 
 > for kreya (postman like) see folder `kreya_api_calling`
 
-## set-up
+## run locally
+
+install mongosh
+
 ```shell
 dart pub global activate melos
 melos bootstrap
 cd app/server
-dart bin/server.dart
+dart bin/server_local.dart
 ```
 
+## run in dev/prod
+```shell
+$env:MONGO_DB_URI="your_mongodb_connection_string_here"
+$env:PORT="8080"
+$env:HTTP_PORT="8081"
+dart run apps/server/bin/server.dart
+```
+
+## troubleshoot
+if mongodb MongoServerSelectionError: connect ETIMEDOUT 
+
+In Windows Defender Firewall
+Go to Outbound Rules → New Rule.
+Select Port, click Next.
+Choose TCP, specify 27017, click Next.
+Select Allow the connection, click Next.
+Apply to all profiles (Domain, Private, Public), click Next.
+Name it something like MongoDB Outbound, click Finish.
+
+Platform.environment : 
+['PORT'] -- gRPC server port (default: 8080)
+['MONGO_DB_URI']
+['JWT_SECRET_KEY']
+
+Note: HTTP REST server and email functionality has been removed.
+Use healthCheck gRPC method for service health and version information.
