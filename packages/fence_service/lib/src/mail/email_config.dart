@@ -90,12 +90,11 @@ class EmailConfig {
   /// If no credentials are found, it will create a no-op service instead of throwing an exception.
   static MailService create() {
     // Try production first
-    if (Platform.environment['MAILTRAP_API_TOKEN'] != null &&
-        Platform.environment['MAILTRAP_DEV_USERNAME'] == null) {
+    if (Platform.environment['MAILTRAP_API_TOKEN'] != null) {
       return createForProduction();
     }
 
-    // Fall back to development
+    // Fallback to development
     if (Platform.environment['MAILTRAP_DEV_USERNAME'] != null) {
       return createForDevelopment();
     }
