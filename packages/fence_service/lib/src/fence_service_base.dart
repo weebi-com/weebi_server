@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:io';
 import 'dart:convert';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:collection/collection.dart';
 // ignore: unnecessary_import
@@ -88,7 +89,9 @@ class FenceService extends FenceServiceBase {
       final path = request.uri.path;
       final method = request.method;
       
-      if (method == 'GET' && path == '/reset-password') {
+      if (method == 'GET' && path == '/health') {
+        await _handleHealthCheck(request, response);
+      } else if (method == 'GET' && path == '/reset-password') {
         await _handleGetResetPassword(request, response);
       } else if (method == 'POST' && path == '/reset-password') {
         await _handlePostResetPassword(request, response);
@@ -108,6 +111,100 @@ class FenceService extends FenceServiceBase {
       log('HTTP request error: $e');
     } finally {
       await response.close();
+    }
+  }
+
+  /// Handle GET /health - Health check endpoint
+  Future<void> _handleHealthCheck(HttpRequest request, HttpResponse response) async {
+    try {
+      // Check database connectivity
+      final isDbHealthy = await _checkDatabaseHealth();
+      
+      // Get version information using package_info_plus
+      final versionInfo = await _getVersionInfo();
+      
+      if (isDbHealthy) {
+        response.statusCode = 200;
+        response.headers.contentType = ContentType.json;
+        response.write('''
+{
+  "status": "healthy",
+  "timestamp": "${DateTime.now().toIso8601String()}",
+  "versions": {
+    "server": "${versionInfo['server']}",
+    "protos_weebi": "${versionInfo['protos_weebi']}",
+    "fence_service": "${versionInfo['fence_service']}",
+    "models_weebi": "${versionInfo['models_weebi']}"
+  }
+}''');
+      } else {
+        response.statusCode = 503;
+        response.headers.contentType = ContentType.json;
+        response.write('''
+{
+  "status": "unhealthy",
+  "timestamp": "${DateTime.now().toIso8601String()}",
+  "versions": {
+    "server": "${versionInfo['server']}",
+    "protos_weebi": "${versionInfo['protos_weebi']}",
+    "fence_service": "${versionInfo['fence_service']}",
+    "models_weebi": "${versionInfo['models_weebi']}"
+  }
+}''');
+      }
+    } catch (e) {
+      response.statusCode = 503;
+      response.headers.contentType = ContentType.json;
+      response.write('''
+{
+  "status": "unhealthy",
+  "error": "$e",
+  "timestamp": "${DateTime.now().toIso8601String()}",
+  "versions": {
+    "server": "unknown",
+    "protos_weebi": "unknown",
+    "fence_service": "unknown",
+    "models_weebi": "unknown"
+  }
+}''');
+      log('Health check error: $e');
+    }
+  }
+
+  /// Get version information for health check using package_info_plus
+  Future<Map<String, String>> _getVersionInfo() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      
+      return {
+        'server': packageInfo.version,
+        'protos_weebi': Platform.environment['PROTOS_VERSION'] ?? 'unknown',
+        'fence_service': Platform.environment['FENCE_SERVICE_VERSION'] ?? 'unknown',
+        'models_weebi': Platform.environment['MODELS_VERSION'] ?? 'unknown+1',
+      };
+    } catch (e) {
+      log('Error getting version info: $e');
+      return {
+        'server': 'unknown',
+        'protos_weebi': 'unknown',
+        'fence_service': 'unknown',
+        'models_weebi': 'unknown',
+      };
+    }
+  }
+
+
+  /// Check database health
+  Future<bool> _checkDatabaseHealth() async {
+    try {
+      return await databaseMiddleware<bool>(_poolService, (db) async {
+        // Simple ping to check database connectivity
+        await db.runCommand({'ping': 1});
+        return true;
+      });
+    } catch (e) {
+      log('Database health check failed: $e');
+      return false;
     }
   }
 
