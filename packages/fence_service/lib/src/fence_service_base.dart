@@ -1714,7 +1714,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.invalidArgument(
           'firmId / userId / passwordCurrent / passwordNew cannot be empty');
     }
-    if (request.passwordCurrent != request.passwordNew) {
+    if (request.passwordCurrent == request.passwordNew) {
       throw GrpcError.invalidArgument(
           'passwordCurrent and passwordNew must be different');
     }

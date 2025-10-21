@@ -86,14 +86,15 @@ void main() async {
     // boss creates alice
     final alice = await fenceService.createPendingUser(
       ServiceCallTest(tokensBoss2.accessToken),
-      PendingUserRequest(
+      PendingUserRequest(password: '987654321',
           mail: 'alice@weebi.com',
           firstname: 'Alice',
-          lastname: 'nonyabusiness',
-          phone: Phone(countryCode: 1, number: '123456789'),
-          permissions: Dummy.salesPersonPermissionNoId
-            ..firmId = createFirmResponse.firm.firmId
-            ..userId = response.userId),
+        lastname: 'nonyabusiness',
+        phone: Phone(countryCode: 1, number: '123456789'),
+        permissions: Dummy.salesPersonPermissionNoId
+          ..firmId = createFirmResponse.firm.firmId
+          ..userId = response.userId,
+      ),
     );
 
     expect(alice.statusResponse.type, StatusResponse_Type.CREATED);
