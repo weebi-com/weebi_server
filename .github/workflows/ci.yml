@@ -16,10 +16,10 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd mongosh
+          --health-cmd "mongosh --eval 'db.runCommand({ping: 1})'"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
     
     steps:
       - uses: actions/checkout@v3
@@ -39,6 +39,18 @@ jobs:
       - name: Analyze project source
         run: dart analyze
         
+      - name: Wait for MongoDB
+        run: |
+          echo "Waiting for MongoDB to be ready..."
+          for i in {1..30}; do
+            if mongosh --eval "db.runCommand({ping: 1})" > /dev/null 2>&1; then
+              echo "MongoDB is ready!"
+              break
+            fi
+            echo "Waiting for MongoDB... attempt $i/30"
+            sleep 2
+          done
+          
       - name: Run tests
         run: melos run test
         env:

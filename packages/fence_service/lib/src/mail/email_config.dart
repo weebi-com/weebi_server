@@ -18,7 +18,7 @@ class EmailConfig {
     final username = Platform.environment['MAILTRAP_DEV_USERNAME'];
     final password = Platform.environment['MAILTRAP_DEV_PASSWORD'];
 
-    if (username == null || password == null) {
+    if (username == null || password == null || username.isEmpty || password.isEmpty) {
       throw Exception(
           'MAILTRAP_DEV_USERNAME and MAILTRAP_DEV_PASSWORD environment variables must be set.\n'
           'Get these from your Mailtrap inbox SMTP settings.');
@@ -43,7 +43,7 @@ class EmailConfig {
     final fromEmail = Platform.environment['FROM_EMAIL'] ?? 'hello@weebi.com';
     final fromName = Platform.environment['FROM_NAME'] ?? 'Weebi';
 
-    if (apiToken == null) {
+    if (apiToken == null || apiToken.isEmpty) {
       throw Exception('MAILTRAP_API_TOKEN environment variable must be set.\n'
           'Get this from your Mailtrap Email API settings.');
     }
@@ -90,12 +90,11 @@ class EmailConfig {
   /// If no credentials are found, it will create a no-op service instead of throwing an exception.
   static MailService create() {
     // Try production first
-    if (Platform.environment['MAILTRAP_API_TOKEN'] != null &&
-        Platform.environment['MAILTRAP_DEV_USERNAME'] == null) {
+    if (Platform.environment['MAILTRAP_API_TOKEN'] != null) {
       return createForProduction();
     }
 
-    // Fall back to development
+    // Fallback to development
     if (Platform.environment['MAILTRAP_DEV_USERNAME'] != null) {
       return createForDevelopment();
     }
