@@ -28,5 +28,7 @@ COPY --from=build /runtime/ /
 COPY --from=build app/apps/server/bin/server app/apps/server/bin/
 
 # Start server.
+# Expose both gRPC (8080) and HTTP REST (8081) ports
 EXPOSE 8080
+EXPOSE 8081
 CMD ["/app/apps/server/bin/server"]

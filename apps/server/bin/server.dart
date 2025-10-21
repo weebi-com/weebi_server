@@ -52,7 +52,8 @@ void main(List<String> arguments) async {
     ),
   );
 
-  try {await poolService.initialize();
+  try {
+    await poolService.initialize();
     final db = await Db.create(AppEnvironment.mongoDbUri);
     print('2');
     await db.open();
@@ -66,10 +67,10 @@ void main(List<String> arguments) async {
     final ticketService = TicketService(poolService);
     final weebiAppService = WeebiAppService(poolService);
     final fenceService = FenceService(poolService);
-    
+
     /// reminder
     /// MAILTRAP_DEV_USERNAME  MAILTRAP_DEV_PASSWORD
-    /// prd 'MAILTRAP_API_TOKEN'] optionnal FROM_EMAIL FROM_NAME 
+    /// prd 'MAILTRAP_API_TOKEN'] optionnal FROM_EMAIL FROM_NAME
 
     fenceService.configureMailService(EmailConfig.create());
 
@@ -90,18 +91,28 @@ void main(List<String> arguments) async {
     await server.serve(port: AppEnvironment.port, address: ip);
 
     print('gRPC Server running on ip $ip port ${server.port}');
-    
-    // Start HTTP server for REST endpoints
-    final httpBaseUrl = Platform.environment['HTTP_BASE_URL'] ?? 
-        (Platform.environment['ENVIRONMENT'] == 'production' 
-            ? 'https://api.weebi.com' 
-            : 'http://localhost:${AppEnvironment.httpPort}');
-    
+
+    String httpBaseUrl = '';
+    if (Platform.environment['ENVIRONMENT'] == null) {
+      print(
+          'Platform.environment null REST server on localhost:${AppEnvironment.httpPort}');
+      httpBaseUrl = 'http://localhost:${AppEnvironment.httpPort}';
+    } else {
+      // Start HTTP server for REST endpoints
+      print('HTTP_BASE_URL: ${Platform.environment['HTTP_BASE_URL']}');
+      print('REST server on ${Platform.environment['ENVIRONMENT']} ');
+      httpBaseUrl = Platform.environment['HTTP_BASE_URL'] ??
+          (Platform.environment['ENVIRONMENT'] == 'production'
+              ? 'https://prd.weebi.com'
+              : 'https://dev.weebi.com');
+    }
+
     await fenceService.startHttpServer(
       port: AppEnvironment.httpPort,
       baseUrl: httpBaseUrl,
     );
-    print('HTTP Server running on port ${AppEnvironment.httpPort} with base URL: $httpBaseUrl');
+    print(
+        'HTTP Server running on port ${AppEnvironment.httpPort} with base URL: $httpBaseUrl');
   } catch (e) {
     log('Failed to connect to MongoDB: $e');
   }

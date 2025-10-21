@@ -10,7 +10,6 @@ environment:
 dependencies:
   #mongo_dart: ^0.10.3 comes from fence_service
   logging: ^1.3.0
-  package_info_plus: ^8.0.0
   # weebi's
   article_service:
     path: ../../packages/article_service

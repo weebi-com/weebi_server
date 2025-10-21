@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:io';
 import 'dart:convert';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:pubspec_parse/pubspec_parse.dart';
 
 import 'package:collection/collection.dart';
 // ignore: unnecessary_import
@@ -64,15 +64,16 @@ class FenceService extends FenceServiceBase {
   /// Start HTTP server for REST endpoints (password reset, mail confirmation)
   Future<void> startHttpServer({
     int port = 8081,
-    String? baseUrl,
+    required String baseUrl,
   }) async {
     _httpServer = await HttpServer.bind('0.0.0.0', port);
-    _baseUrl = baseUrl ?? _getBaseUrl();
+    _baseUrl = baseUrl;
     log('HTTP server started on port $port with base URL: $_baseUrl');
     
-    await for (HttpRequest request in _httpServer!) {
+    // Listen for requests without blocking
+    _httpServer!.listen((HttpRequest request) {
       _handleHttpRequest(request);
-    }
+    });
   }
 
   /// Stop HTTP server
@@ -120,8 +121,8 @@ class FenceService extends FenceServiceBase {
       // Check database connectivity
       final isDbHealthy = await _checkDatabaseHealth();
       
-      // Get version information using package_info_plus
-      final versionInfo = await _getVersionInfo();
+      // Get version information using environment variables
+      final versionInfo = _getVersionInfo();
       
       if (isDbHealthy) {
         response.statusCode = 200;
@@ -171,16 +172,23 @@ class FenceService extends FenceServiceBase {
     }
   }
 
-  /// Get version information for health check using package_info_plus
-  Future<Map<String, String>> _getVersionInfo() async {
+  /// Get version information for health check using pubspec_parse
+  Map<String, String> _getVersionInfo() {
     try {
-      final packageInfo = await PackageInfo.fromPlatform();
+      // Get the root directory of the project
+      // When running from weebi_server, find pubspec files relative to current directory
+      final currentDir = Directory.current.path;
       
       return {
-        'server': packageInfo.version,
-        'protos_weebi': Platform.environment['PROTOS_VERSION'] ?? 'unknown',
-        'fence_service': Platform.environment['FENCE_SERVICE_VERSION'] ?? 'unknown',
-        'models_weebi': Platform.environment['MODELS_VERSION'] ?? 'unknown+1',
+        'server': Platform.environment['SERVER_VERSION'] ?? 
+            _getVersionFromPubspec('$currentDir/apps/server/pubspec.yaml'),
+        'protos_weebi': Platform.environment['PROTOS_VERSION'] ?? 
+            _getVersionFromPubspec('$currentDir/packages/protos/protos_weebi/pubspec.yaml'),
+        'fence_service': Platform.environment['FENCE_SERVICE_VERSION'] ?? 
+            _getVersionFromPubspec('$currentDir/packages/fence_service/pubspec.yaml'),
+        // models_weebi is a pub dependency - read from pubspec.lock
+        'models_weebi': Platform.environment['MODELS_VERSION'] ?? 
+            _getVersionFromPubspecLock('$currentDir/packages/fence_service/pubspec.lock', 'models_weebi'),
       };
     } catch (e) {
       log('Error getting version info: $e');
@@ -190,6 +198,50 @@ class FenceService extends FenceServiceBase {
         'fence_service': 'unknown',
         'models_weebi': 'unknown',
       };
+    }
+  }
+
+  /// Read version from pubspec.yaml using pubspec_parse
+  String _getVersionFromPubspec(String absolutePath) {
+    try {
+      final pubspecFile = File(absolutePath);
+      if (!pubspecFile.existsSync()) {
+        log('Pubspec file not found: $absolutePath');
+        return 'unknown';
+      }
+      
+      final pubspecContent = pubspecFile.readAsStringSync();
+      final pubspec = Pubspec.parse(pubspecContent);
+      
+      return pubspec.version?.toString() ?? 'unknown';
+    } catch (e) {
+      log('Error reading version from $absolutePath: $e');
+      return 'unknown';
+    }
+  }
+
+  /// Read version from pubspec.lock for a dependency
+  String _getVersionFromPubspecLock(String lockFilePath, String packageName) {
+    try {
+      final lockFile = File(lockFilePath);
+      if (!lockFile.existsSync()) {
+        log('Pubspec.lock file not found: $lockFilePath');
+        return 'unknown';
+      }
+      
+      final content = lockFile.readAsStringSync();
+      // Simple regex to find the package and its version
+      final pattern = RegExp('$packageName:.*?version: "([^"]+)"', dotAll: true);
+      final match = pattern.firstMatch(content);
+      
+      if (match != null && match.groupCount >= 1) {
+        return match.group(1) ?? 'unknown';
+      }
+      
+      return 'unknown';
+    } catch (e) {
+      log('Error reading version from $lockFilePath for $packageName: $e');
+      return 'unknown';
     }
   }
 
@@ -2508,7 +2560,7 @@ class FenceService extends FenceServiceBase {
             await _passwordResetService.generateResetToken(request.mail);
 
         // Create reset URL pointing to our HTTP server
-        final baseUrl = _getBaseUrl();
+        final baseUrl = _baseUrl;
         final resetUrl =
             '$baseUrl/reset-password?token=$resetToken&mail=${Uri.encodeComponent(request.mail)}';
 
@@ -2642,20 +2694,7 @@ class FenceService extends FenceServiceBase {
     // This should work similar to password reset tokens
   }
 
-  /// Get base URL for HTTP endpoints based on environment
-  String _getBaseUrl() {
-    final environment = Platform.environment['ENVIRONMENT'] ?? 'development';
-    final httpPort = Platform.environment['HTTP_PORT'] ?? '8081';
-    
-    if (environment == 'production') {
-      // Production domain
-      final domain = Platform.environment['HTTP_DOMAIN'] ?? 'https://api.weebi.com';
-      return domain;
-    } else {
-      // Development - use localhost with port
-      return 'http://localhost:$httpPort';
-    }
-  }
+
 
   /// Send welcome email and mail confirmation after firm creation
   Future<void> _sendWelcomeAndConfirmationMail(String userId, String firmId) async {
