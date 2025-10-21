@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io' show HttpHeaders, InternetAddress, Platform;
+import 'dart:io' show HttpHeaders, InternetAddress;
 
 import 'package:fence_service/mongo_pool.dart';
 import 'package:logging/logging.dart';
@@ -68,12 +68,6 @@ void main(List<String> arguments) async {
     final weebiAppService = WeebiAppService(poolService);
     final fenceService = FenceService(poolService);
 
-    /// reminder
-    /// MAILTRAP_DEV_USERNAME  MAILTRAP_DEV_PASSWORD
-    /// prd 'MAILTRAP_API_TOKEN'] optionnal FROM_EMAIL FROM_NAME
-
-    fenceService.configureMailService(EmailConfig.create());
-
     final server = Server.create(
       services: [
         articleService,
@@ -91,28 +85,7 @@ void main(List<String> arguments) async {
     await server.serve(port: AppEnvironment.port, address: ip);
 
     print('gRPC Server running on ip $ip port ${server.port}');
-
-    String httpBaseUrl = '';
-    if (Platform.environment['ENVIRONMENT'] == null) {
-      print(
-          'Platform.environment null REST server on localhost:${AppEnvironment.httpPort}');
-      httpBaseUrl = 'http://localhost:${AppEnvironment.httpPort}';
-    } else {
-      // Start HTTP server for REST endpoints
-      print('HTTP_BASE_URL: ${Platform.environment['HTTP_BASE_URL']}');
-      print('REST server on ${Platform.environment['ENVIRONMENT']} ');
-      httpBaseUrl = Platform.environment['HTTP_BASE_URL'] ??
-          (Platform.environment['ENVIRONMENT'] == 'production'
-              ? 'https://prd.weebi.com'
-              : 'https://dev.weebi.com');
-    }
-
-    await fenceService.startHttpServer(
-      port: AppEnvironment.httpPort,
-      baseUrl: httpBaseUrl,
-    );
-    print(
-        'HTTP Server running on port ${AppEnvironment.httpPort} with base URL: $httpBaseUrl');
+    print('Use healthCheck RPC for service health and version information');
   } catch (e) {
     log('Failed to connect to MongoDB: $e');
   }

@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:io';
-import 'dart:convert';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
 import 'package:collection/collection.dart';
@@ -41,136 +40,11 @@ class FenceService extends FenceServiceBase {
   bool isMock;
   UserPermissions? userPermissionIfTest;
 
-// Mail and password reset services
-  MailService? _mailService;
-  late PasswordResetService _passwordResetService;
-  
-  // HTTP server for REST endpoints
-  HttpServer? _httpServer;
-  String _baseUrl = 'http://localhost:8081';
-
   FenceService(
     this._poolService, {
     this.isMock = false,
     this.userPermissionIfTest,
   });
-
-  /// Configure email service for sending transactional emails
-
-  void configureMailService(MailService emailService) {
-    _mailService = emailService;
-  }
-
-  /// Start HTTP server for REST endpoints (password reset, mail confirmation)
-  Future<void> startHttpServer({
-    int port = 8081,
-    required String baseUrl,
-  }) async {
-    _httpServer = await HttpServer.bind('0.0.0.0', port);
-    _baseUrl = baseUrl;
-    log('HTTP server started on port $port with base URL: $_baseUrl');
-    
-    // Listen for requests without blocking
-    _httpServer!.listen((HttpRequest request) {
-      _handleHttpRequest(request);
-    });
-  }
-
-  /// Stop HTTP server
-  Future<void> stopHttpServer() async {
-    await _httpServer?.close();
-    _httpServer = null;
-    log('HTTP server stopped');
-  }
-
-  void _handleHttpRequest(HttpRequest request) async {
-    final response = request.response;
-    
-    try {
-      final path = request.uri.path;
-      final method = request.method;
-      
-      if (method == 'GET' && path == '/health') {
-        await _handleHealthCheck(request, response);
-      } else if (method == 'GET' && path == '/reset-password') {
-        await _handleGetResetPassword(request, response);
-      } else if (method == 'POST' && path == '/reset-password') {
-        await _handlePostResetPassword(request, response);
-      } else if (method == 'GET' && path == '/confirm-mail') {
-        await _handleGetConfirmMail(request, response);
-      } else if (method == 'POST' && path == '/confirm-mail') {
-        await _handlePostConfirmMail(request, response);
-      } else {
-        response.statusCode = 404;
-        response.headers.contentType = ContentType.text;
-        response.write('Not Found');
-      }
-    } catch (e) {
-      response.statusCode = 500;
-      response.headers.contentType = ContentType.text;
-      response.write('Internal Server Error: $e');
-      log('HTTP request error: $e');
-    } finally {
-      await response.close();
-    }
-  }
-
-  /// Handle GET /health - Health check endpoint
-  Future<void> _handleHealthCheck(HttpRequest request, HttpResponse response) async {
-    try {
-      // Check database connectivity
-      final isDbHealthy = await _checkDatabaseHealth();
-      
-      // Get version information using environment variables
-      final versionInfo = _getVersionInfo();
-      
-      if (isDbHealthy) {
-        response.statusCode = 200;
-        response.headers.contentType = ContentType.json;
-        response.write('''
-{
-  "status": "healthy",
-  "timestamp": "${DateTime.now().toIso8601String()}",
-  "versions": {
-    "server": "${versionInfo['server']}",
-    "protos_weebi": "${versionInfo['protos_weebi']}",
-    "fence_service": "${versionInfo['fence_service']}",
-    "models_weebi": "${versionInfo['models_weebi']}"
-  }
-}''');
-      } else {
-        response.statusCode = 503;
-        response.headers.contentType = ContentType.json;
-        response.write('''
-{
-  "status": "unhealthy",
-  "timestamp": "${DateTime.now().toIso8601String()}",
-  "versions": {
-    "server": "${versionInfo['server']}",
-    "protos_weebi": "${versionInfo['protos_weebi']}",
-    "fence_service": "${versionInfo['fence_service']}",
-    "models_weebi": "${versionInfo['models_weebi']}"
-  }
-}''');
-      }
-    } catch (e) {
-      response.statusCode = 503;
-      response.headers.contentType = ContentType.json;
-      response.write('''
-{
-  "status": "unhealthy",
-  "error": "$e",
-  "timestamp": "${DateTime.now().toIso8601String()}",
-  "versions": {
-    "server": "unknown",
-    "protos_weebi": "unknown",
-    "fence_service": "unknown",
-    "models_weebi": "unknown"
-  }
-}''');
-      log('Health check error: $e');
-    }
-  }
 
   /// Get version information for health check using pubspec_parse
   Map<String, String> _getVersionInfo() {
@@ -260,233 +134,14 @@ class FenceService extends FenceServiceBase {
     }
   }
 
-  /// Handle GET /reset-password - Show password reset form
-  Future<void> _handleGetResetPassword(HttpRequest request, HttpResponse response) async {
-    final token = request.uri.queryParameters['token'];
-    final mail = request.uri.queryParameters['mail'];
-    
-    if (token == null || mail == null) {
-      response.statusCode = 400;
-      response.headers.contentType = ContentType.text;
-      response.write('Missing token or mail');
-      return;
-    }
-    
-    // Validate token
-    final verifiedMail = await _passwordResetService.verifyResetToken(token);
-    if (verifiedMail == null || verifiedMail != mail) {
-      response.statusCode = 403;
-      response.headers.contentType = ContentType.text;
-      response.write('Invalid or expired token');
-      return;
-    }
-    
-    // Return HTML form
-    response.headers.contentType = ContentType.html;
-    response.write('''
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Reset Password - Weebi</title>
-        <style>
-          body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; }
-          .form-group { margin-bottom: 15px; }
-          label { display: block; margin-bottom: 5px; font-weight: bold; }
-          input[type="password"] { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-          button { background-color: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
-          button:hover { background-color: #2980b9; }
-          .error { color: red; margin-top: 10px; }
-          .success { color: green; margin-top: 10px; }
-        </style>
-      </head>
-      <body>
-        <h1>Reset Password</h1>
-        <p>Enter your new password for <strong>$mail</strong></p>
-        <form method="POST">
-          <input type="hidden" name="token" value="$token">
-          <input type="hidden" name="mail" value="$mail">
-          <div class="form-group">
-            <label for="newPassword">New Password:</label>
-            <input type="password" id="newPassword" name="newPassword" required minlength="8">
-          </div>
-          <button type="submit">Reset Password</button>
-        </form>
-      </body>
-      </html>
-    ''');
-  }
+  // Will use _getVersionInfo() and _checkDatabaseHealth()
 
-  /// Handle POST /reset-password - Process password reset
-  Future<void> _handlePostResetPassword(HttpRequest request, HttpResponse response) async {
-    final body = await utf8.decodeStream(request);
-    final params = Uri.splitQueryString(body);
-    
-    final token = params['token'];
-    final mail = params['mail'];
-    final newPassword = params['newPassword'];
-    
-    if (token == null || mail == null || newPassword == null) {
-      response.statusCode = 400;
-      response.headers.contentType = ContentType.text;
-      response.write('Missing required fields');
-      return;
-    }
-    
-    if (newPassword.length < 8) {
-      response.statusCode = 400;
-      response.headers.contentType = ContentType.text;
-      response.write('Password must be at least 8 characters long');
-      return;
-    }
-    
-    // Validate token
-    final verifiedMail = await _passwordResetService.verifyResetToken(token);
-    if (verifiedMail == null || verifiedMail != mail) {
-      response.statusCode = 403;
-      response.headers.contentType = ContentType.text;
-      response.write('Invalid or expired token');
-      return;
-    }
-    
-    try {
-      // Update password (implement this method)
-      await _updateUserPasswordByMail(mail, newPassword);
-      
-      // Mark token as used
-      await _passwordResetService.markTokenAsUsed(token);
-      
-      response.headers.contentType = ContentType.html;
-      response.write('''
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Password Reset Success - Weebi</title>
-          <style>
-            body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; text-align: center; }
-            .success { color: green; font-size: 18px; margin: 20px 0; }
-            .button { background-color: #27ae60; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; }
-          </style>
-        </head>
-        <body>
-          <h1>Password Reset Successful</h1>
-          <p class="success">Your password has been successfully reset.</p>
-          <p>You can now log in with your new password.</p>
-          <a href="https://weebi.com/login" class="button">Go to Login</a>
-        </body>
-        </html>
-      ''');
-    } catch (e) {
-      response.statusCode = 500;
-      response.headers.contentType = ContentType.text;
-      response.write('Failed to reset password: $e');
-      log('Password reset error: $e');
-    }
-  }
-
-  /// Handle GET /confirm-mail - Show mail confirmation form
-  Future<void> _handleGetConfirmMail(HttpRequest request, HttpResponse response) async {
-    final token = request.uri.queryParameters['token'];
-    final mail = request.uri.queryParameters['mail'];
-    
-    if (token == null || mail == null) {
-      response.statusCode = 400;
-      response.headers.contentType = ContentType.text;
-      response.write('Missing token or mail');
-      return;
-    }
-    
-    // Validate token (you'll need to implement mail confirmation token verification)
-    final verifiedMail = await _verifyMailConfirmationToken(token);
-    if (verifiedMail == null || verifiedMail != mail) {
-      response.statusCode = 403;
-      response.headers.contentType = ContentType.text;
-      response.write('Invalid or expired token');
-      return;
-    }
-    
-    // Return HTML confirmation page
-    response.headers.contentType = ContentType.html;
-    response.write('''
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Confirm Mail - Weebi</title>
-        <style>
-          body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; text-align: center; }
-          .button { background-color: #3498db; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; }
-        </style>
-      </head>
-      <body>
-        <h1>Confirm Your Mail Address</h1>
-        <p>Click the button below to confirm your mail address: <strong>$mail</strong></p>
-        <form method="POST">
-          <input type="hidden" name="token" value="$token">
-          <input type="hidden" name="mail" value="$mail">
-          <button type="submit" class="button">Confirm Mail Address</button>
-        </form>
-      </body>
-      </html>
-    ''');
-  }
-
-  /// Handle POST /confirm-mail - Process mail confirmation
-  Future<void> _handlePostConfirmMail(HttpRequest request, HttpResponse response) async {
-    final body = await utf8.decodeStream(request);
-    final params = Uri.splitQueryString(body);
-    
-    final token = params['token'];
-    final mail = params['mail'];
-    
-    if (token == null || mail == null) {
-      response.statusCode = 400;
-      response.headers.contentType = ContentType.text;
-      response.write('Missing required fields');
-      return;
-    }
-    
-    // Validate token
-    final verifiedMail = await _verifyMailConfirmationToken(token);
-    if (verifiedMail == null || verifiedMail != mail) {
-      response.statusCode = 403;
-      response.headers.contentType = ContentType.text;
-      response.write('Invalid or expired token');
-      return;
-    }
-    
-    try {
-      // Confirm mail address (implement this method)
-      await _confirmUserMail(mail);
-      
-      // Mark token as used
-      await _markMailConfirmationTokenAsUsed(token);
-      
-      response.headers.contentType = ContentType.html;
-      response.write('''
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Mail Confirmed - Weebi</title>
-          <style>
-            body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; text-align: center; }
-            .success { color: green; font-size: 18px; margin: 20px 0; }
-            .button { background-color: #27ae60; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; display: inline-block; }
-          </style>
-        </head>
-        <body>
-          <h1>Mail Address Confirmed</h1>
-          <p class="success">Your mail address has been successfully confirmed!</p>
-          <p>You can now use all features of your Weebi account.</p>
-          <a href="https://weebi.com/dashboard" class="button">Go to Dashboard</a>
-        </body>
-        </html>
-      ''');
-    } catch (e) {
-      response.statusCode = 500;
-      response.headers.contentType = ContentType.text;
-      response.write('Failed to confirm mail: $e');
-      log('Mail confirmation error: $e');
-    }
-  }
+  // NOTE: HTTP handlers and email service methods have been removed
+  // Email service functionality is preserved in lib/src/mail/ folder:
+  // - mail_service.dart: Email sending logic
+  // - password_reset_service.dart: Token management
+  // - email_config.dart: Configuration
+  // These can be used later for a dedicated email/auth service
 
   @override
   Future<PendingUserResponse> createPendingUser(
@@ -1336,13 +991,7 @@ class FenceService extends FenceServiceBase {
             rethrow;
           }
 
-          // Send welcome email and mail confirmation
-          try {
-            await _sendWelcomeAndConfirmationMail(userPermission.userId, firmId);
-          } catch (e) {
-            // Log error but don't fail the firm creation
-            log('Failed to send welcome/confirmation mail: $e');
-          }
+          // Email/welcome mail functionality removed - will be handled by dedicated service
 
           return CreateFirmResponse(
             statusResponse: StatusResponse.create()
@@ -2523,231 +2172,55 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> requestPasswordReset(
       ServiceCall? call, PasswordResetRequest request) async {
-    if (request.mail.isEmpty) {
-      throw GrpcError.invalidArgument('mail cannot be empty');
-    }
-
-    if (_mailService == null) {
-      throw GrpcError.failedPrecondition('mail service not configured');
-    }
-
-    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
-      final userCollection = db.collection(userCollectionName);
-
-      try {
-        final userDoc = await userCollection.findOne({'mail': request.mail});
-        // Check if email exists in our user database
-        if (userDoc == null) {
-          // For security reasons, don't reveal if email exists or not
-          // Return success but don't actually send an email
-          log('Password reset requested for non-existent email: ${request.mail}');
-          return StatusResponse()
-            ..type = StatusResponse_Type.ERROR
-            ..message = 'Mail not found'
-            ..timestamp = DateTime.now().timestampProto;
-        }
-
-        // Check if there's a recent reset request to prevent spam
-        final hasRecentRequest =
-            await _passwordResetService.hasRecentResetRequest(request.mail);
-        if (hasRecentRequest) {
-          throw GrpcError.resourceExhausted(
-              'Password reset already requested recently. Please wait before requesting again.');
-        }
-
-        // Generate reset token
-        final resetToken =
-            await _passwordResetService.generateResetToken(request.mail);
-
-        // Create reset URL pointing to our HTTP server
-        final baseUrl = _baseUrl;
-        final resetUrl =
-            '$baseUrl/reset-password?token=$resetToken&mail=${Uri.encodeComponent(request.mail)}';
-
-        // Get user name for personalized email
-        final userName = userDoc['name'] ?? 'User';
-
-        // Send reset email
-        final emailSent = await _mailService!.sendPasswordResetEmail(
-          toEmail: request.mail,
-          userName: userName,
-          resetToken: resetToken,
-          resetUrl: resetUrl,
-        );
-
-        if (!emailSent) {
-          throw GrpcError.internal('Failed to send password reset email');
-        }
-
-        log('Password reset email sent to: ${request.mail}');
-        return StatusResponse()
-          ..type = StatusResponse_Type.SUCCESS
-          ..timestamp = DateTime.now().timestampProto;
-      } on GrpcError catch (e) {
-        log('Password reset request error: $e');
-        rethrow;
-      } catch (e, stacktrace) {
-        log('Password reset request error: $e');
-        log('Stacktrace: $stacktrace');
-        throw GrpcError.internal(
-            'Internal error processing password reset request');
-      }
-    });
+    // Password reset functionality removed - will be handled by dedicated email service
+    throw GrpcError.unimplemented(
+        'Password reset functionality temporarily unavailable');
   }
 
   @override
   Future<StatusResponse> confirmPasswordReset(
       ServiceCall? call, PasswordResetConfirmRequest request) async {
-    if (request.mail.isEmpty) {
-      throw GrpcError.invalidArgument('email cannot be empty');
-    }
-    if (request.resetToken.isEmpty) {
-      throw GrpcError.invalidArgument('reset token cannot be empty');
-    }
-    if (request.newPassword.isEmpty) {
-      throw GrpcError.invalidArgument('new password cannot be empty');
-    }
-
-    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
-      final userCollection = db.collection(userCollectionName);
-
-      try {
-        // Verify the reset token
-        final tokenEmail =
-            await _passwordResetService.verifyResetToken(request.resetToken);
-        if (tokenEmail == null || tokenEmail != request.mail) {
-          throw GrpcError.invalidArgument('Invalid or expired reset token');
-        }
-
-        // Check if user exists
-        final userDoc = await userCollection.findOne({'mail': request.mail});
-        if (userDoc == null) {
-          throw GrpcError.notFound('User not found');
-        }
-
-        // Encrypt the new password
-        final passwordEncrypted = _checkAndEncryptPassword(request.newPassword);
-
-        // Update user password
-        final updateResult = await userCollection.updateOne(
-            where.eq('mail', request.mail),
-            ModifierBuilder().set('password', passwordEncrypted));
-
-        if (updateResult.nModified == 0) {
-          throw GrpcError.internal('Failed to update password');
-        }
-
-        // Mark token as used
-        await _passwordResetService.markTokenAsUsed(request.resetToken);
-
-        log('Password successfully reset for user: ${request.mail}');
-        return StatusResponse()
-          ..type = StatusResponse_Type.UPDATED
-          ..timestamp = DateTime.now().timestampProto;
-      } on GrpcError catch (e) {
-        log('Password reset confirmation error: $e');
-        rethrow;
-      } catch (e, stacktrace) {
-        log('Password reset confirmation error: $e');
-        log('Stacktrace: $stacktrace');
-        throw GrpcError.internal('Internal error confirming password reset');
-      }
-    });
+    // Password reset functionality removed - will be handled by dedicated email service
+    throw GrpcError.unimplemented(
+        'Password reset functionality temporarily unavailable');
   }
-
-  /// Update user password by mail address
-  Future<void> _updateUserPasswordByMail(String mail, String newPassword) async {
-    return databaseMiddleware(_poolService, (db) async {
-      final userCollection = db.collection(userCollectionName);
-      final passwordEncrypted = _checkAndEncryptPassword(newPassword);
+  
+  @override
+  Future<HealthCheckWeebiResponse> healthCheck(ServiceCall? call, Empty request) async {
+    try {
+      // Check database connectivity
+      final isDbHealthy = await _checkDatabaseHealth();
       
-      await userCollection.update(
-        where.eq('mail', mail),
-        ModifierBuilder().set('password', passwordEncrypted),
-      );
-    });
-  }
-
-  /// Verify mail confirmation token (placeholder - implement based on your needs)
-  Future<String?> _verifyMailConfirmationToken(String token) async {
-    // TODO: Implement mail confirmation token verification
-    // This should work similar to password reset tokens but for mail confirmation
-    // For now, return null to indicate invalid token
-    return null;
-  }
-
-  /// Confirm user mail address
-  Future<void> _confirmUserMail(String mail) async {
-    return databaseMiddleware(_poolService, (db) async {
-      final userCollection = db.collection(userCollectionName);
+      // Get version information
+      final versionInfo = _getVersionInfo();
       
-      await userCollection.update(
-        where.eq('mail', mail),
-        ModifierBuilder().set('mailConfirmed', true),
-      );
-    });
-  }
-
-  /// Mark mail confirmation token as used
-  Future<void> _markMailConfirmationTokenAsUsed(String token) async {
-    // TODO: Implement marking mail confirmation token as used
-    // This should work similar to password reset tokens
-  }
-
-
-
-  /// Send welcome email and mail confirmation after firm creation
-  Future<void> _sendWelcomeAndConfirmationMail(String userId, String firmId) async {
-    if (_mailService == null) {
-      log('Mail service not configured, skipping welcome/confirmation mail');
-      return;
+      // Create version response
+      final versions = ServiceVersions()
+        ..server = versionInfo['server'] ?? 'unknown'
+        ..protosWeebi = versionInfo['protos_weebi'] ?? 'unknown'
+        ..fenceService = versionInfo['fence_service'] ?? 'unknown'
+        ..modelsWeebi = versionInfo['models_weebi'] ?? 'unknown';
+      
+      // Return health check response
+      return HealthCheckWeebiResponse()
+        ..status = isDbHealthy ? 'healthy' : 'unhealthy'
+        ..timestamp = DateTime.now().toIso8601String()
+        ..databaseHealthy = isDbHealthy
+        ..versions = versions;
+    } catch (e) {
+      log('Health check error: $e');
+      // Return unhealthy status with unknown versions
+      return HealthCheckWeebiResponse()
+        ..status = 'unhealthy'
+        ..timestamp = DateTime.now().toIso8601String()
+        ..databaseHealthy = false
+        ..versions = (ServiceVersions()
+          ..server = 'unknown'
+          ..protosWeebi = 'unknown'
+          ..fenceService = 'unknown'
+          ..modelsWeebi = 'unknown');
     }
-
-    return databaseMiddleware(_poolService, (db) async {
-      final userCollection = db.collection(userCollectionName);
-      
-      // Get user details
-      final userDoc = await userCollection.findOne(where.eq('userId', userId));
-      if (userDoc == null) {
-        log('User not found for welcome mail: $userId');
-        return;
-      }
-
-      final mail = userDoc['mail'] as String?;
-      final firstName = userDoc['firstname'] as String? ?? 'User';
-      final lastName = userDoc['lastname'] as String? ?? '';
-      final userName = '$firstName $lastName'.trim();
-
-      if (mail == null) {
-        log('User mail not found for welcome mail: $userId');
-        return;
-      }
-
-      // Send welcome email
-      await _mailService!.sendWelcomeEmail(
-        toEmail: mail,
-        userName: userName,
-      );
-
-      // Generate mail confirmation token and send confirmation email
-      final confirmationToken = await _generateMailConfirmationToken(mail);
-      final confirmationUrl = '$_baseUrl/confirm-mail?token=$confirmationToken&mail=${Uri.encodeComponent(mail)}';
-      
-      await _mailService!.sendMailConfirmationEmail(
-        toEmail: mail,
-        userName: userName,
-        confirmationUrl: confirmationUrl,
-      );
-
-      log('Welcome and confirmation mails sent to $mail');
-    });
   }
 
-  /// Generate mail confirmation token (placeholder - implement similar to password reset)
-  Future<String> _generateMailConfirmationToken(String mail) async {
-    // TODO: Implement mail confirmation token generation
-    // This should work similar to password reset tokens but for mail confirmation
-    // For now, return a placeholder token
-    return 'confirmation_token_${DateTime.now().millisecondsSinceEpoch}';
-  }
+  // Email-related methods removed - preserved in lib/src/mail/ folder for future use
 }

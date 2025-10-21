@@ -41,6 +41,8 @@ workflows:
 
       - name: Run Tests
         script: |
+          export MONGO_DB_URI=mongodb://localhost:27017/local
+          export JWT_SECRET_KEY=test-secret-key-for-ci
           melos run test
           
           # Upload results of failed golden tests if test command failed.
