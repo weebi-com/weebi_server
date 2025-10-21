@@ -52,9 +52,7 @@ void main(List<String> arguments) async {
     ),
   );
 
-  await poolService.initialize();
-
-  try {
+  try {await poolService.initialize();
     final db = await Db.create(AppEnvironment.mongoDbUri);
     print('2');
     await db.open();

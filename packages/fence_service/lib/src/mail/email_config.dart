@@ -76,10 +76,18 @@ class EmailConfig {
     );
   }
 
+  /// Create a no-op mail service that logs but doesn't send emails
+  ///
+  /// This is useful for development or when mail credentials are not available.
+  static MailService createNoOp() {
+    return MailService.noOp();
+  }
+
   /// Create mail service with auto-detection based on available credentials
   ///
   /// This method will try to create a production service first,
   /// then fall back to development if production credentials are not available.
+  /// If no credentials are found, it will create a no-op service instead of throwing an exception.
   static MailService create() {
     // Try production first
     if (Platform.environment['MAILTRAP_API_TOKEN'] != null &&
@@ -91,9 +99,12 @@ class EmailConfig {
     if (Platform.environment['MAILTRAP_DEV_USERNAME'] != null) {
       return createForDevelopment();
     }
-
-    throw Exception('No mail credentials found. Please set either:\n'
-        '- MAILTRAP_API_TOKEN (for production)\n'
-        '- MAILTRAP_DEV_USERNAME and MAILTRAP_DEV_PASSWORD (for development)');
+    
+    // No credentials found - use no-op service
+    print('Warning: No mail credentials found. Using no-op mail service (emails will be logged but not sent).');
+    print('To enable email sending, set either:');
+    print('- MAILTRAP_API_TOKEN (for production)');
+    print('- MAILTRAP_DEV_USERNAME and MAILTRAP_DEV_PASSWORD (for development)');
+    return createNoOp();
   }
 }
