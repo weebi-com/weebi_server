@@ -1793,6 +1793,11 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
+    // DEBUG: Log user permissions and firmId
+    print('DEBUG readAllUsers: userPermission.firmId = ${userPermission.firmId}');
+    print('DEBUG readAllUsers: userPermission.userManagementRights.rights = ${userPermission.userManagementRights.rights}');
+    print('DEBUG readAllUsers: userPermission.fullAccess.hasFullAccess = ${userPermission.fullAccess.hasFullAccess}');
+
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.read) ==
         false) {
@@ -1806,7 +1811,16 @@ class FenceService extends FenceServiceBase {
         final usersMongo = await userCollection
             .find(where.eq('firmId', userPermission.firmId))
             .toList();
+        
+        // DEBUG: Log database query results
+        print('DEBUG readAllUsers: Found ${usersMongo.length} users in database');
+        print('DEBUG readAllUsers: Query firmId = ${userPermission.firmId}');
+        for (int i = 0; i < usersMongo.length; i++) {
+          print('DEBUG readAllUsers: User $i: ${usersMongo[i]['firstname']} ${usersMongo[i]['lastname']} (firmId: ${usersMongo[i]['firmId']})');
+        }
+        
         if (usersMongo.isEmpty) {
+          print('DEBUG readAllUsers: No users found, returning empty list');
           return UsersPublic(users: []);
         }
         final users = <UserPublic>[];
@@ -1816,6 +1830,7 @@ class FenceService extends FenceServiceBase {
         }
 
         if (userPermission.fullAccess.hasFullAccess) {
+          print('DEBUG readAllUsers: User has full access, returning ${users.length} users');
           return UsersPublic(users: users);
         }
         // if requestor has limitedAccess we retain only users that belong to his/her "fence"
