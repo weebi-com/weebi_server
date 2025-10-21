@@ -37,16 +37,12 @@ Apply to all profiles (Domain, Private, Public), click Next.
 Name it something like MongoDB Outbound, click Finish.
 
 Platform.environment : 
-['ENVIRONMENT'] -- 'production' or 'development'
 ['PORT'] -- gRPC server port (default: 8080)
-['HTTP_PORT'] -- HTTP REST server port for email callbacks (default: 8081)
-['HTTP_BASE_URL'] -- Base URL for email links (e.g. https://prd.weebi.com)
 ['MONGO_DB_URI']
 ['JWT_SECRET_KEY']
 
 optional : 
-['FROM_EMAIL'] ?? 'hello@weebi.com';
-['FROM_NAME'] ?? 'Weebi';
+['ENVIRONMENT'] -- 'production' or 'development'
 
-['MAILTRAP_DEV_USERNAME'];
-['MAILTRAP_DEV_PASSWORD'];
+Note: HTTP REST server and email functionality has been removed.
+Use healthCheck gRPC method for service health and version information.

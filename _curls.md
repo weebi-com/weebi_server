@@ -3,6 +3,8 @@
 
 grpcurl -proto packages\protos\proto\weebi_app_service.proto 192.0.2.1:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion
 
+grpcurl -proto packages\protos\proto\fence_service.proto 192.0.2.1:443 weebi.fence.service.FenceService/healthCheck
+
 grpcurl -plaintext -proto fence_service.proto -d '{\"mail\": \"mylogin\", \"password\": \"mypassword\"}' localhost:8080 weebi.fence.service.FenceService/authenticateWithCredentials
 
 

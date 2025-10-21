@@ -25,4 +25,7 @@ jobs:
         run: dart analyze
 
       - name: Run tests
-        run: melos run test:dart 
+        run: melos run test:dart
+        env:
+          MONGO_DB_URI: mongodb://localhost:27017/local
+          JWT_SECRET_KEY: test-secret-key-for-ci 
