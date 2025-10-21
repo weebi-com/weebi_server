@@ -3,9 +3,10 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
 class MailService {
-  late SmtpServer _smtpServer;
+  late SmtpServer? _smtpServer;
   final String _fromEmail;
   final String _fromName;
+  final bool _isNoOp;
 
   MailService( {
     required String smtpHost,
@@ -16,7 +17,8 @@ class MailService {
     required String fromName,
     bool enableSsl = true,
   }) : _fromEmail = fromEmail,
-       _fromName = fromName {
+       _fromName = fromName,
+       _isNoOp = false {
     _smtpServer = SmtpServer(
       smtpHost,
       port: smtpPort,
@@ -25,6 +27,14 @@ class MailService {
       ssl: enableSsl,
       allowInsecure: false,
     );
+  }
+
+  /// Private constructor for no-op mail service
+  MailService._noOp() 
+      : _fromEmail = 'noreply@weebi.dev',
+        _fromName = 'Weebi (No-Op)',
+        _isNoOp = true {
+    _smtpServer = null;
   }
 
   /// Factory constructor for Mailtrap configuration
@@ -62,12 +72,27 @@ class MailService {
     );
   }
 
+  /// Factory constructor for no-op mail service
+  /// 
+  /// This service logs email attempts but doesn't actually send them.
+  /// Useful for development or when mail credentials are not available.
+  factory MailService.noOp() {
+    return MailService._noOp();
+  }
+
   Future<bool> sendPasswordResetEmail({
     required String toEmail,
     required String userName,
     required String resetToken,
     required String resetUrl,
   }) async {
+    if (_isNoOp) {
+      log('NO-OP: Would send password reset email to $toEmail for user $userName');
+      log('NO-OP: Reset token: $resetToken');
+      log('NO-OP: Reset URL: $resetUrl');
+      return true;
+    }
+
     try {
       final message = Message()
         ..from = Address(_fromEmail, _fromName)
@@ -76,7 +101,7 @@ class MailService {
         ..html = _buildPasswordResetHtml(userName, resetToken, resetUrl)
         ..text = _buildPasswordResetText(userName, resetToken, resetUrl);
 
-      final sendReport = await send(message, _smtpServer);
+      final sendReport = await send(message, _smtpServer!);
       log('Password reset email sent to $toEmail: ${sendReport.toString()}');
       return true;
     } catch (e) {
@@ -89,6 +114,11 @@ class MailService {
     required String toEmail,
     required String userName,
   }) async {
+    if (_isNoOp) {
+      log('NO-OP: Would send welcome email to $toEmail for user $userName');
+      return true;
+    }
+
     try {
       final message = Message()
         ..from = Address(_fromEmail, _fromName)
@@ -97,7 +127,7 @@ class MailService {
         ..html = _buildWelcomeHtml(userName)
         ..text = _buildWelcomeText(userName);
 
-      final sendReport = await send(message, _smtpServer);
+      final sendReport = await send(message, _smtpServer!);
       log('Welcome email sent to $toEmail: ${sendReport.toString()}');
       return true;
     } catch (e) {
@@ -111,6 +141,12 @@ class MailService {
     required String userName,
     required String confirmationUrl,
   }) async {
+    if (_isNoOp) {
+      log('NO-OP: Would send mail confirmation email to $toEmail for user $userName');
+      log('NO-OP: Confirmation URL: $confirmationUrl');
+      return true;
+    }
+
     try {
       final message = Message()
         ..from = Address(_fromEmail, _fromName)
@@ -119,7 +155,7 @@ class MailService {
         ..html = _buildMailConfirmationHtml(userName, confirmationUrl)
         ..text = _buildMailConfirmationText(userName, confirmationUrl);
 
-      final sendReport = await send(message, _smtpServer);
+      final sendReport = await send(message, _smtpServer!);
       log('Mail confirmation email sent to $toEmail: ${sendReport.toString()}');
       return true;
     } catch (e) {
