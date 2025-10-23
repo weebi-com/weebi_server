@@ -97,11 +97,12 @@ const BoutiquePb$json = {
     {'1': 'isDeleted', '3': 12, '4': 1, '5': 8, '10': 'isDeleted'},
     {'1': 'deletedBy', '3': 13, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 14, '4': 1, '5': 9, '10': 'restoredBy'},
+    {'1': 'mail', '3': 15, '4': 1, '5': 9, '10': 'mail'},
     {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiquePb.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
   '3': [BoutiquePb_AdditionalAttributesEntry$json],
   '9': [
-    {'1': 15, '2': 99},
+    {'1': 16, '2': 99},
   ],
 };
 
@@ -125,9 +126,9 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'syHS53ZWViaS5jb21tb24uYWRkcmVzcy5BZGRyZXNzUgthZGRyZXNzRnVsbBIUCgVwcm9tbxgJ'
     'IAEoAVIFcHJvbW8SHgoKcHJvbW9TdGFydBgKIAEoCVIKcHJvbW9TdGFydBIaCghwcm9tb0VuZB'
     'gLIAEoCVIIcHJvbW9FbmQSHAoJaXNEZWxldGVkGAwgASgIUglpc0RlbGV0ZWQSHAoJZGVsZXRl'
-    'ZEJ5GA0gASgJUglkZWxldGVkQnkSHgoKcmVzdG9yZWRCeRgOIAEoCVIKcmVzdG9yZWRCeRJqCh'
-    'VhZGRpdGlvbmFsX2F0dHJpYnV0ZXMYYyADKAsyNC53ZWViaS5ib3V0aXF1ZS5Cb3V0aXF1ZVBi'
-    'LkFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnlSFWFkZGl0aW9uYWxfYXR0cmlidXRlcxpHChlBZG'
-    'RpdGlvbmFsQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgJ'
-    'UgV2YWx1ZToCOAFKBAgPEGM=');
+    'ZEJ5GA0gASgJUglkZWxldGVkQnkSHgoKcmVzdG9yZWRCeRgOIAEoCVIKcmVzdG9yZWRCeRISCg'
+    'RtYWlsGA8gASgJUgRtYWlsEmoKFWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI0LndlZWJp'
+    'LmJvdXRpcXVlLkJvdXRpcXVlUGIuQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb2'
+    '5hbF9hdHRyaWJ1dGVzGkcKGUFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJ'
+    'UgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AUoECBAQYw==');
 
