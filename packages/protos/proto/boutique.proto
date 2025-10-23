@@ -42,7 +42,8 @@ message BoutiquePb {
     bool isDeleted = 12 [json_name = 'isDeleted'];
     string deletedBy = 13 [json_name = 'deletedBy']; // userId who deleted it
     string restoredBy = 14 [json_name = 'restoredBy']; // userId who restored it (empty if never restored)
-    reserved 15 to 98;
+    string mail = 15 [json_name = 'mail'];
+    reserved 16 to 98;
     map<string, string> additional_attributes = 99  [json_name = 'additional_attributes'];
    }
    
