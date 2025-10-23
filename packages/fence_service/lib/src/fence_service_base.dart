@@ -1352,6 +1352,10 @@ class FenceService extends FenceServiceBase {
     }
 
     boutique.boutique = request.boutique;
+    boutique.name = request.boutique.name; // Sync the outer name field with the nested boutique name
+    boutique.isDeleted = request.boutique.isDeleted; // Sync the outer isDeleted field with the nested boutique isDeleted
+    boutique.deletedBy = request.boutique.deletedBy; // Sync the deletedBy field
+    boutique.restoredBy = request.boutique.restoredBy; // Sync the restoredBy field
     boutique.logo = request.logo;
     boutique.logoExtension = request.logoExtension;
     boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
@@ -2027,7 +2031,9 @@ class FenceService extends FenceServiceBase {
     }
 
     boutique.isDeleted = true;
+    boutique.boutique.isDeleted = true; // Sync the nested boutique isDeleted field
     boutique.deletedBy = userPermission.userId;
+    boutique.boutique.deletedBy = userPermission.userId; // Sync the nested deletedBy field
     boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
 
     // update chain in db
@@ -2087,7 +2093,9 @@ class FenceService extends FenceServiceBase {
 
     // Restore: unmark as deleted
     boutique.isDeleted = false;
+    boutique.boutique.isDeleted = false; // Sync the nested boutique isDeleted field
     boutique.restoredBy = userPermission.userId;
+    boutique.boutique.restoredBy = userPermission.userId; // Sync the nested restoredBy field
     boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
     
     // Note: deletedBy is intentionally kept for audit trail

@@ -1,11 +1,15 @@
 # changelog
 
-## 1.0.13.1 - 2025 octobre 19
+## 1.0.14 - 2025 oct 25
+
+- change license to MIT, shorter
+
+## 1.0.13.1 - 2025 oct 19
 
 - added deleted filed in BoutiquePb
 - added pagination in articleService.readAllPhotos
 
-## 1.0.13 - 2025 octobre 19
+## 1.0.13 - 2025 oct 19
 
 - rework deleteOneBoutique for soft-deletion only
 - add restoreOneBoutique rpc
