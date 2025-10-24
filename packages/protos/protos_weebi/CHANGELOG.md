@@ -1,6 +1,10 @@
 # changelog
 
-## 1.0.14 - 2025 oct 25
+## 1.0.15 - 2025 oct 23
+
+- add boutique.mail for email
+
+## 1.0.14 - 2025 oct 22
 
 - change license to MIT, shorter
 
