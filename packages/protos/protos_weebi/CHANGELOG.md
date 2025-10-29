@@ -1,5 +1,9 @@
 # changelog
 
+## 1.0.16 - 2025 oct 29
+
+- add canUpdateUserPassword in UserManagementRights
+
 ## 1.0.15 - 2025 oct 23
 
 - add boutique.mail for email
