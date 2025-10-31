@@ -165,7 +165,14 @@ const ArticleRetailPb$json = {
     {'1': 'designation', '3': 3, '4': 1, '5': 9, '10': 'designation'},
     {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
-    {'1': 'codeShortcut', '3': 6, '4': 1, '5': 5, '10': 'articleCode'},
+    {
+      '1': 'codeShortcut',
+      '3': 6,
+      '4': 1,
+      '5': 5,
+      '8': {'3': true},
+      '10': 'articleCode',
+    },
     {'1': 'creationDate', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'updateDate', '3': 8, '4': 1, '5': 9, '10': 'updateDate'},
     {'1': 'statusUpdateDate', '3': 9, '4': 1, '5': 9, '10': 'statusUpdateDate'},
@@ -181,11 +188,11 @@ final $typed_data.Uint8List articleRetailPbDescriptor = $convert.base64Decode(
     'Cg9BcnRpY2xlUmV0YWlsUGISHAoJY2FsaWJyZUlkGAEgASgFUgljYWxpYnJlSWQSDgoCaWQYAi'
     'ABKAVSAmlkEiAKC2Rlc2lnbmF0aW9uGAMgASgJUgtkZXNpZ25hdGlvbhIwCgRraW5kGAQgASgO'
     'Mhwud2VlYmkuYXJ0aWNsZS5BcnRpY2xlS2luZFBiUgRraW5kEhYKBnN0YXR1cxgFIAEoCFIGc3'
-    'RhdHVzEiEKDGNvZGVTaG9ydGN1dBgGIAEoBVILYXJ0aWNsZUNvZGUSIgoMY3JlYXRpb25EYXRl'
-    'GAcgASgJUgxjcmVhdGlvbkRhdGUSHgoKdXBkYXRlRGF0ZRgIIAEoCVIKdXBkYXRlRGF0ZRIqCh'
-    'BzdGF0dXNVcGRhdGVEYXRlGAkgASgJUhBzdGF0dXNVcGRhdGVEYXRlEhQKBXByaWNlGAogASgB'
-    'UgVwcmljZRISCgRjb3N0GAsgASgBUgRjb3N0EigKD3VuaXRzSW5PbmVQaWVjZRgMIAEoAVIPdW'
-    '5pdHNJbk9uZVBpZWNlEh4KCmJhcmNvZGVFQU4YDSABKAlSCmJhcmNvZGVFQU4=');
+    'RhdHVzEiUKDGNvZGVTaG9ydGN1dBgGIAEoBUICGAFSC2FydGljbGVDb2RlEiIKDGNyZWF0aW9u'
+    'RGF0ZRgHIAEoCVIMY3JlYXRpb25EYXRlEh4KCnVwZGF0ZURhdGUYCCABKAlSCnVwZGF0ZURhdG'
+    'USKgoQc3RhdHVzVXBkYXRlRGF0ZRgJIAEoCVIQc3RhdHVzVXBkYXRlRGF0ZRIUCgVwcmljZRgK'
+    'IAEoAVIFcHJpY2USEgoEY29zdBgLIAEoAVIEY29zdBIoCg91bml0c0luT25lUGllY2UYDCABKA'
+    'FSD3VuaXRzSW5PbmVQaWVjZRIeCgpiYXJjb2RlRUFOGA0gASgJUgpiYXJjb2RlRUFO');
 
 @$core.Deprecated('Use articleBasketPbDescriptor instead')
 const ArticleBasketPb$json = {
@@ -196,7 +203,14 @@ const ArticleBasketPb$json = {
     {'1': 'designation', '3': 3, '4': 1, '5': 9, '10': 'designation'},
     {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
-    {'1': 'codeShortcut', '3': 6, '4': 1, '5': 5, '10': 'articleCode'},
+    {
+      '1': 'codeShortcut',
+      '3': 6,
+      '4': 1,
+      '5': 5,
+      '8': {'3': true},
+      '10': 'articleCode',
+    },
     {'1': 'creationDate', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'updateDate', '3': 8, '4': 1, '5': 9, '10': 'updateDate'},
     {'1': 'statusUpdateDate', '3': 9, '4': 1, '5': 9, '10': 'statusUpdateDate'},
@@ -211,12 +225,12 @@ final $typed_data.Uint8List articleBasketPbDescriptor = $convert.base64Decode(
     'Cg9BcnRpY2xlQmFza2V0UGISHAoJY2FsaWJyZUlkGAEgASgFUgljYWxpYnJlSWQSDgoCaWQYAi'
     'ABKAVSAmlkEiAKC2Rlc2lnbmF0aW9uGAMgASgJUgtkZXNpZ25hdGlvbhIwCgRraW5kGAQgASgO'
     'Mhwud2VlYmkuYXJ0aWNsZS5BcnRpY2xlS2luZFBiUgRraW5kEhYKBnN0YXR1cxgFIAEoCFIGc3'
-    'RhdHVzEiEKDGNvZGVTaG9ydGN1dBgGIAEoBVILYXJ0aWNsZUNvZGUSIgoMY3JlYXRpb25EYXRl'
-    'GAcgASgJUgxjcmVhdGlvbkRhdGUSHgoKdXBkYXRlRGF0ZRgIIAEoCVIKdXBkYXRlRGF0ZRIqCh'
-    'BzdGF0dXNVcGRhdGVEYXRlGAkgASgJUhBzdGF0dXNVcGRhdGVEYXRlEjcKB3Byb3hpZXMYCiAD'
-    'KAsyHS53ZWViaS5hcnRpY2xlLlByb3h5QXJ0aWNsZVBiUgdwcm94aWVzEi8KDmRpc2NvdW50QW'
-    '1vdW50GAsgASgBUhdkaXNjb3VudEFtb3VudFNhbGVzT25seRIrCgxtYXJrdXBBbW91bnQYDCAB'
-    'KAFSFW1hcmt1cEFtb3VudFNhbGVzT25seQ==');
+    'RhdHVzEiUKDGNvZGVTaG9ydGN1dBgGIAEoBUICGAFSC2FydGljbGVDb2RlEiIKDGNyZWF0aW9u'
+    'RGF0ZRgHIAEoCVIMY3JlYXRpb25EYXRlEh4KCnVwZGF0ZURhdGUYCCABKAlSCnVwZGF0ZURhdG'
+    'USKgoQc3RhdHVzVXBkYXRlRGF0ZRgJIAEoCVIQc3RhdHVzVXBkYXRlRGF0ZRI3Cgdwcm94aWVz'
+    'GAogAygLMh0ud2VlYmkuYXJ0aWNsZS5Qcm94eUFydGljbGVQYlIHcHJveGllcxIvCg5kaXNjb3'
+    'VudEFtb3VudBgLIAEoAVIXZGlzY291bnRBbW91bnRTYWxlc09ubHkSKwoMbWFya3VwQW1vdW50'
+    'GAwgASgBUhVtYXJrdXBBbW91bnRTYWxlc09ubHk=');
 
 @$core.Deprecated('Use articleBasketOnTicketPbDescriptor instead')
 const ArticleBasketOnTicketPb$json = {
@@ -290,7 +304,14 @@ const ArticleUncountablePb$json = {
     {'1': 'designation', '3': 3, '4': 1, '5': 9, '10': 'designation'},
     {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
-    {'1': 'codeShortcut', '3': 6, '4': 1, '5': 5, '10': 'articleCode'},
+    {
+      '1': 'codeShortcut',
+      '3': 6,
+      '4': 1,
+      '5': 5,
+      '8': {'3': true},
+      '10': 'articleCode',
+    },
     {'1': 'creationDate', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'updateDate', '3': 8, '4': 1, '5': 9, '10': 'updateDate'},
     {'1': 'statusUpdateDate', '3': 9, '4': 1, '5': 9, '10': 'statusUpdateDate'},
@@ -306,9 +327,9 @@ final $typed_data.Uint8List articleUncountablePbDescriptor = $convert.base64Deco
     'ChRBcnRpY2xlVW5jb3VudGFibGVQYhIcCgljYWxpYnJlSWQYASABKAVSCWNhbGlicmVJZBIOCg'
     'JpZBgCIAEoBVICaWQSIAoLZGVzaWduYXRpb24YAyABKAlSC2Rlc2lnbmF0aW9uEjAKBGtpbmQY'
     'BCABKA4yHC53ZWViaS5hcnRpY2xlLkFydGljbGVLaW5kUGJSBGtpbmQSFgoGc3RhdHVzGAUgAS'
-    'gIUgZzdGF0dXMSIQoMY29kZVNob3J0Y3V0GAYgASgFUgthcnRpY2xlQ29kZRIiCgxjcmVhdGlv'
-    'bkRhdGUYByABKAlSDGNyZWF0aW9uRGF0ZRIeCgp1cGRhdGVEYXRlGAggASgJUgp1cGRhdGVEYX'
-    'RlEioKEHN0YXR1c1VwZGF0ZURhdGUYCSABKAlSEHN0YXR1c1VwZGF0ZURhdGUSFAoFcHJpY2UY'
-    'CiABKAFSBXByaWNlEhIKBGNvc3QYCyABKAFSBGNvc3QSKAoPdW5pdHNJbk9uZVBpZWNlGAwgAS'
-    'gBUg91bml0c0luT25lUGllY2USHgoKYmFyY29kZUVBThgNIAEoCVIKYmFyY29kZUVBTg==');
+    'gIUgZzdGF0dXMSJQoMY29kZVNob3J0Y3V0GAYgASgFQgIYAVILYXJ0aWNsZUNvZGUSIgoMY3Jl'
+    'YXRpb25EYXRlGAcgASgJUgxjcmVhdGlvbkRhdGUSHgoKdXBkYXRlRGF0ZRgIIAEoCVIKdXBkYX'
+    'RlRGF0ZRIqChBzdGF0dXNVcGRhdGVEYXRlGAkgASgJUhBzdGF0dXNVcGRhdGVEYXRlEhQKBXBy'
+    'aWNlGAogASgBUgVwcmljZRISCgRjb3N0GAsgASgBUgRjb3N0EigKD3VuaXRzSW5PbmVQaWVjZR'
+    'gMIAEoAVIPdW5pdHNJbk9uZVBpZWNlEh4KCmJhcmNvZGVFQU4YDSABKAlSCmJhcmNvZGVFQU4=');
 

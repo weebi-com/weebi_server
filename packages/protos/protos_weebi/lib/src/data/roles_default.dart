@@ -6,6 +6,7 @@ abstract class RightsAdmin {
   );
   static final userManagement = UserManagementRights(
     rights: const [Right.create, Right.read, Right.update, Right.delete],
+    canUpdateUserPassword: true,
   );
   static final article = ArticleRights(
     rights: const [Right.create, Right.read, Right.update, Right.delete],

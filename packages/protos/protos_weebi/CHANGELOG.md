@@ -1,11 +1,27 @@
 # changelog
 
-## 1.0.13.1 - 2025 octobre 19
+## 1.0.17
+
+- export crypto
+
+## 1.0.16 - 2025 oct 29
+
+- add canUpdateUserPassword in UserManagementRights
+
+## 1.0.15 - 2025 oct 23
+
+- add boutique.mail for email
+
+## 1.0.14 - 2025 oct 22
+
+- change license to MIT, shorter
+
+## 1.0.13.1 - 2025 oct 19
 
 - added deleted filed in BoutiquePb
 - added pagination in articleService.readAllPhotos
 
-## 1.0.13 - 2025 octobre 19
+## 1.0.13 - 2025 oct 19
 
 - rework deleteOneBoutique for soft-deletion only
 - add restoreOneBoutique rpc

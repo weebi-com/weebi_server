@@ -75,7 +75,7 @@ message ArticleRetailPb {
   string designation = 3 [json_name = 'designation'];
   ArticleKindPb kind = 4 [json_name = 'kind'];
   bool status = 5 [json_name = 'status'];
-  int32 codeShortcut = 6 [json_name = 'articleCode'];
+  int32 codeShortcut = 6 [json_name = 'articleCode', deprecated = true];
   string creationDate = 7 [json_name = 'creationDate'];
   string updateDate = 8 [json_name = 'updateDate'];
   string statusUpdateDate = 9 [json_name = 'statusUpdateDate'];
@@ -92,7 +92,7 @@ message ArticleBasketPb {
   string designation = 3 [json_name = 'designation'];
   ArticleKindPb kind = 4 [json_name = 'kind'];
   bool status = 5 [json_name = 'status'];
-  int32 codeShortcut = 6 [json_name = 'articleCode'];
+  int32 codeShortcut = 6 [json_name = 'articleCode', deprecated = true];
   string creationDate = 7 [json_name = 'creationDate'];
   string updateDate = 8 [json_name = 'updateDate'];
   string statusUpdateDate = 9 [json_name = 'statusUpdateDate'];
@@ -141,7 +141,7 @@ message ArticleUncountablePb {
   string designation = 3 [json_name = 'designation'];
   ArticleKindPb kind = 4 [json_name = 'kind'];
   bool status = 5 [json_name = 'status'];
-  int32 codeShortcut = 6 [json_name = 'articleCode'];
+  int32 codeShortcut = 6 [json_name = 'articleCode', deprecated = true];
   string creationDate = 7 [json_name = 'creationDate'];
   string updateDate = 8 [json_name = 'updateDate'];
   string statusUpdateDate = 9 [json_name = 'statusUpdateDate'];

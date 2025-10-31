@@ -104,6 +104,7 @@ message TicketRights {
 }
 message UserManagementRights {
   repeated Right rights = 1 [json_name = 'userManagementRights'];
+  bool canUpdateUserPassword = 2 [json_name = 'canUpdateUserPassword']; 
 }
 
 message BillingRights {

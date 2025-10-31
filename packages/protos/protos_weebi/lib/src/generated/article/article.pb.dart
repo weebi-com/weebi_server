@@ -509,6 +509,7 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
     $core.String? designation,
     ArticleKindPb? kind,
     $core.bool? status,
+  @$core.Deprecated('This field is deprecated.')
     $core.int? codeShortcut,
     $core.String? creationDate,
     $core.String? updateDate,
@@ -535,6 +536,7 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
       $result.status = status;
     }
     if (codeShortcut != null) {
+      // ignore: deprecated_member_use_from_same_package
       $result.codeShortcut = codeShortcut;
     }
     if (creationDate != null) {
@@ -641,12 +643,16 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearStatus() => $_clearField(5);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.int get codeShortcut => $_getIZ(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   set codeShortcut($core.int v) { $_setSignedInt32(5, v); }
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.bool hasCodeShortcut() => $_has(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   void clearCodeShortcut() => $_clearField(6);
 
@@ -722,6 +728,7 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
     $core.String? designation,
     ArticleKindPb? kind,
     $core.bool? status,
+  @$core.Deprecated('This field is deprecated.')
     $core.int? codeShortcut,
     $core.String? creationDate,
     $core.String? updateDate,
@@ -747,6 +754,7 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
       $result.status = status;
     }
     if (codeShortcut != null) {
+      // ignore: deprecated_member_use_from_same_package
       $result.codeShortcut = codeShortcut;
     }
     if (creationDate != null) {
@@ -849,12 +857,16 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearStatus() => $_clearField(5);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.int get codeShortcut => $_getIZ(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   set codeShortcut($core.int v) { $_setSignedInt32(5, v); }
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.bool hasCodeShortcut() => $_has(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   void clearCodeShortcut() => $_clearField(6);
 
@@ -1267,6 +1279,7 @@ class ArticleUncountablePb extends $pb.GeneratedMessage {
     $core.String? designation,
     ArticleKindPb? kind,
     $core.bool? status,
+  @$core.Deprecated('This field is deprecated.')
     $core.int? codeShortcut,
     $core.String? creationDate,
     $core.String? updateDate,
@@ -1293,6 +1306,7 @@ class ArticleUncountablePb extends $pb.GeneratedMessage {
       $result.status = status;
     }
     if (codeShortcut != null) {
+      // ignore: deprecated_member_use_from_same_package
       $result.codeShortcut = codeShortcut;
     }
     if (creationDate != null) {
@@ -1399,12 +1413,16 @@ class ArticleUncountablePb extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   void clearStatus() => $_clearField(5);
 
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.int get codeShortcut => $_getIZ(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   set codeShortcut($core.int v) { $_setSignedInt32(5, v); }
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.bool hasCodeShortcut() => $_has(5);
+  @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   void clearCodeShortcut() => $_clearField(6);
 

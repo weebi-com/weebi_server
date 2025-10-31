@@ -683,10 +683,14 @@ class TicketRights extends $pb.GeneratedMessage {
 class UserManagementRights extends $pb.GeneratedMessage {
   factory UserManagementRights({
     $core.Iterable<Right>? rights,
+    $core.bool? canUpdateUserPassword,
   }) {
     final $result = create();
     if (rights != null) {
       $result.rights.addAll(rights);
+    }
+    if (canUpdateUserPassword != null) {
+      $result.canUpdateUserPassword = canUpdateUserPassword;
     }
     return $result;
   }
@@ -696,6 +700,7 @@ class UserManagementRights extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UserManagementRights', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.user.permissions'), createEmptyInstance: create)
     ..pc<Right>(1, _omitFieldNames ? '' : 'userManagementRights', $pb.PbFieldType.KE, protoName: 'rights', valueOf: Right.valueOf, enumValues: Right.values, defaultEnumValue: Right.unknown)
+    ..aOB(2, _omitFieldNames ? '' : 'canUpdateUserPassword', protoName: 'canUpdateUserPassword')
     ..hasRequiredFields = false
   ;
 
@@ -716,6 +721,15 @@ class UserManagementRights extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $pb.PbList<Right> get rights => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.bool get canUpdateUserPassword => $_getBF(1);
+  @$pb.TagNumber(2)
+  set canUpdateUserPassword($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCanUpdateUserPassword() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCanUpdateUserPassword() => $_clearField(2);
 }
 
 class BillingRights extends $pb.GeneratedMessage {
