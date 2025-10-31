@@ -1763,7 +1763,7 @@ class FenceService extends FenceServiceBase {
         final user = await userCollection.findOne(
             where.eq('firmId', request.firmId).eq('userId', request.userId));
         if (user == null) {
-          throw GrpcError.notFound('user not found');
+          throw GrpcError.notFound('userId ${request.userId} not found in firmId ${request.firmId}');
         }
         final userMongo = UserPrivate.create()
           ..mergeFromProto3Json(user, ignoreUnknownFields: true);

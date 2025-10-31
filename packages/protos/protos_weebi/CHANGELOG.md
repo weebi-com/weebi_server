@@ -1,5 +1,9 @@
 # changelog
 
+## 1.0.17
+
+- export crypto
+
 ## 1.0.16 - 2025 oct 29
 
 - add canUpdateUserPassword in UserManagementRights
