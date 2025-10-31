@@ -10,7 +10,7 @@ environment:
 dependencies:
   #mongo_dart comes from fence_service
 
-  logging: ^1.3.0
+  logging: ^1.3.0 ##TODO: remove and read from fence_service 
   fence_service:
     path: ../fence_service
 
