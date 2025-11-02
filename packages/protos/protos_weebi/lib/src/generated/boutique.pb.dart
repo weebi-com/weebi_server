@@ -259,6 +259,7 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.bool? isDeleted,
     $core.String? deletedBy,
     $core.String? restoredBy,
+    $core.String? mail,
     $core.Iterable<$core.MapEntry<$core.String, $core.String>>? additionalAttributes,
   }) {
     final $result = create();
@@ -306,6 +307,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     if (restoredBy != null) {
       $result.restoredBy = restoredBy;
     }
+    if (mail != null) {
+      $result.mail = mail;
+    }
     if (additionalAttributes != null) {
       $result.additionalAttributes.addEntries(additionalAttributes);
     }
@@ -330,6 +334,7 @@ class BoutiquePb extends $pb.GeneratedMessage {
     ..aOB(12, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..aOS(13, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
     ..aOS(14, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
+    ..aOS(15, _omitFieldNames ? '' : 'mail')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiquePb.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -487,8 +492,17 @@ class BoutiquePb extends $pb.GeneratedMessage {
   @$pb.TagNumber(14)
   void clearRestoredBy() => $_clearField(14);
 
+  @$pb.TagNumber(15)
+  $core.String get mail => $_getSZ(14);
+  @$pb.TagNumber(15)
+  set mail($core.String v) { $_setString(14, v); }
+  @$pb.TagNumber(15)
+  $core.bool hasMail() => $_has(14);
+  @$pb.TagNumber(15)
+  void clearMail() => $_clearField(15);
+
   @$pb.TagNumber(99)
-  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(14);
+  $pb.PbMap<$core.String, $core.String> get additionalAttributes => $_getMap(15);
 }
 
 

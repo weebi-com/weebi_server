@@ -210,13 +210,15 @@ const UserManagementRights$json = {
   '1': 'UserManagementRights',
   '2': [
     {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.permissions.Right', '10': 'userManagementRights'},
+    {'1': 'canUpdateUserPassword', '3': 2, '4': 1, '5': 8, '10': 'canUpdateUserPassword'},
   ],
 };
 
 /// Descriptor for `UserManagementRights`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List userManagementRightsDescriptor = $convert.base64Decode(
     'ChRVc2VyTWFuYWdlbWVudFJpZ2h0cxJDCgZyaWdodHMYASADKA4yHS53ZWViaS51c2VyLnBlcm'
-    '1pc3Npb25zLlJpZ2h0UhR1c2VyTWFuYWdlbWVudFJpZ2h0cw==');
+    '1pc3Npb25zLlJpZ2h0UhR1c2VyTWFuYWdlbWVudFJpZ2h0cxI0ChVjYW5VcGRhdGVVc2VyUGFz'
+    'c3dvcmQYAiABKAhSFWNhblVwZGF0ZVVzZXJQYXNzd29yZA==');
 
 @$core.Deprecated('Use billingRightsDescriptor instead')
 const BillingRights$json = {

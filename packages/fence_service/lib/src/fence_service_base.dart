@@ -52,17 +52,21 @@ class FenceService extends FenceServiceBase {
       // Get the root directory of the project
       // When running from weebi_server, find pubspec files relative to current directory
       final currentDir = Directory.current.path;
-      
+
       return {
-        'server': Platform.environment['SERVER_VERSION'] ?? 
+        'server': Platform.environment['SERVER_VERSION'] ??
             _getVersionFromPubspec('$currentDir/apps/server/pubspec.yaml'),
-        'protos_weebi': Platform.environment['PROTOS_VERSION'] ?? 
-            _getVersionFromPubspec('$currentDir/packages/protos/protos_weebi/pubspec.yaml'),
-        'fence_service': Platform.environment['FENCE_SERVICE_VERSION'] ?? 
-            _getVersionFromPubspec('$currentDir/packages/fence_service/pubspec.yaml'),
+        'protos_weebi': Platform.environment['PROTOS_VERSION'] ??
+            _getVersionFromPubspec(
+                '$currentDir/packages/protos/protos_weebi/pubspec.yaml'),
+        'fence_service': Platform.environment['FENCE_SERVICE_VERSION'] ??
+            _getVersionFromPubspec(
+                '$currentDir/packages/fence_service/pubspec.yaml'),
         // models_weebi is a pub dependency - read from pubspec.lock
-        'models_weebi': Platform.environment['MODELS_VERSION'] ?? 
-            _getVersionFromPubspecLock('$currentDir/packages/fence_service/pubspec.lock', 'models_weebi'),
+        'models_weebi': Platform.environment['MODELS_VERSION'] ??
+            _getVersionFromPubspecLock(
+                '$currentDir/packages/fence_service/pubspec.lock',
+                'models_weebi'),
       };
     } catch (e) {
       log('Error getting version info: $e');
@@ -83,10 +87,10 @@ class FenceService extends FenceServiceBase {
         log('Pubspec file not found: $absolutePath');
         return 'unknown';
       }
-      
+
       final pubspecContent = pubspecFile.readAsStringSync();
       final pubspec = Pubspec.parse(pubspecContent);
-      
+
       return pubspec.version?.toString() ?? 'unknown';
     } catch (e) {
       log('Error reading version from $absolutePath: $e');
@@ -102,23 +106,23 @@ class FenceService extends FenceServiceBase {
         log('Pubspec.lock file not found: $lockFilePath');
         return 'unknown';
       }
-      
+
       final content = lockFile.readAsStringSync();
       // Simple regex to find the package and its version
-      final pattern = RegExp('$packageName:.*?version: "([^"]+)"', dotAll: true);
+      final pattern =
+          RegExp('$packageName:.*?version: "([^"]+)"', dotAll: true);
       final match = pattern.firstMatch(content);
-      
+
       if (match != null && match.groupCount >= 1) {
         return match.group(1) ?? 'unknown';
       }
-      
+
       return 'unknown';
     } catch (e) {
       log('Error reading version from $lockFilePath for $packageName: $e');
       return 'unknown';
     }
   }
-
 
   /// Check database health
   Future<bool> _checkDatabaseHealth() async {
@@ -868,7 +872,7 @@ class FenceService extends FenceServiceBase {
           'user does not have right to delete users');
     }
 
-    if(userPermission.userId == request.userId) {
+    if (userPermission.userId == request.userId) {
       throw GrpcError.permissionDenied('user cannot delete themselves');
     }
 
@@ -1128,10 +1132,11 @@ class FenceService extends FenceServiceBase {
         for (final chainMongo in chainsMongo) {
           final chainTemp = Chain.create()
             ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
-          
+
           // Filter out soft-deleted boutiques and create new chain
-          final activeBoutiques = chainTemp.boutiques.where((b) => !b.isDeleted).toList();
-          
+          final activeBoutiques =
+              chainTemp.boutiques.where((b) => !b.isDeleted).toList();
+
           final chain = Chain.create()
             ..chainId = chainTemp.chainId
             ..firmId = chainTemp.firmId
@@ -1140,7 +1145,7 @@ class FenceService extends FenceServiceBase {
             ..lastUpdatedByuserId = chainTemp.lastUpdatedByuserId
             ..creationDateUTC = chainTemp.creationDateUTC
             ..boutiques.addAll(activeBoutiques);
-          
+
           chains.add(chain);
         }
         return chains;
@@ -1344,7 +1349,7 @@ class FenceService extends FenceServiceBase {
     }
 
     final boutique = chain.boutiques[boutiqueIndex];
-    
+
     // Prevent updating deleted boutiques
     if (boutique.isDeleted) {
       throw GrpcError.failedPrecondition(
@@ -1352,6 +1357,13 @@ class FenceService extends FenceServiceBase {
     }
 
     boutique.boutique = request.boutique;
+    boutique.name = request.boutique
+        .name; // Sync the outer name field with the nested boutique name
+    boutique.isDeleted = request.boutique
+        .isDeleted; // Sync the outer isDeleted field with the nested boutique isDeleted
+    boutique.deletedBy = request.boutique.deletedBy; // Sync the deletedBy field
+    boutique.restoredBy =
+        request.boutique.restoredBy; // Sync the restoredBy field
     boutique.logo = request.logo;
     boutique.logoExtension = request.logoExtension;
     boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
@@ -1683,7 +1695,7 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-    
+
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
         false) {
       throw GrpcError.permissionDenied(
@@ -1692,7 +1704,7 @@ class FenceService extends FenceServiceBase {
 
     // Get all chains (this already filters out deleted boutiques)
     final chains = await _checkChainsAndProtoThem(userPermission);
-    
+
     // Extract BoutiquePb from each boutique (following readOneBoutique pattern)
     final allBoutiques = <BoutiquePb>[];
     for (final chain in chains) {
@@ -1723,17 +1735,16 @@ class FenceService extends FenceServiceBase {
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
-    ///  firm rights encompass user management
-    /// userManagementRights.rights is not enough here
-    if (request.userId != userPermission.userId &&
-        userPermission.firmRights.rights.any((e) => e == Right.update) ==
-            false) {
-      throw GrpcError.permissionDenied(
-          'you do not have the right to update other users passwords');
-    }
     if (userPermission.isFirmAccessible(request.firmId) == false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.firmId}');
+    }
+    /// userManagementRights.rights is not enough here
+    /// use canUpdateUserPassword
+    if (request.userId != userPermission.userId &&
+        userPermission.userManagementRights.canUpdateUserPassword == false) {
+      throw GrpcError.permissionDenied(
+          "you do not have the right to update other users' passwords");
     }
 
     final passwordNewEncrypted = _checkAndEncryptPassword(request.passwordNew);
@@ -1752,7 +1763,7 @@ class FenceService extends FenceServiceBase {
         final user = await userCollection.findOne(
             where.eq('firmId', request.firmId).eq('userId', request.userId));
         if (user == null) {
-          throw GrpcError.notFound('user not found');
+          throw GrpcError.notFound('userId ${request.userId} not found in firmId ${request.firmId}');
         }
         final userMongo = UserPrivate.create()
           ..mergeFromProto3Json(user, ignoreUnknownFields: true);
@@ -1794,9 +1805,12 @@ class FenceService extends FenceServiceBase {
         : call.bearer.userPermissions;
 
     // DEBUG: Log user permissions and firmId
-    print('DEBUG readAllUsers: userPermission.firmId = ${userPermission.firmId}');
-    print('DEBUG readAllUsers: userPermission.userManagementRights.rights = ${userPermission.userManagementRights.rights}');
-    print('DEBUG readAllUsers: userPermission.fullAccess.hasFullAccess = ${userPermission.fullAccess.hasFullAccess}');
+    print(
+        'DEBUG readAllUsers: userPermission.firmId = ${userPermission.firmId}');
+    print(
+        'DEBUG readAllUsers: userPermission.userManagementRights.rights = ${userPermission.userManagementRights.rights}');
+    print(
+        'DEBUG readAllUsers: userPermission.fullAccess.hasFullAccess = ${userPermission.fullAccess.hasFullAccess}');
 
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.read) ==
@@ -1811,14 +1825,16 @@ class FenceService extends FenceServiceBase {
         final usersMongo = await userCollection
             .find(where.eq('firmId', userPermission.firmId))
             .toList();
-        
+
         // DEBUG: Log database query results
-        print('DEBUG readAllUsers: Found ${usersMongo.length} users in database');
+        print(
+            'DEBUG readAllUsers: Found ${usersMongo.length} users in database');
         print('DEBUG readAllUsers: Query firmId = ${userPermission.firmId}');
         for (int i = 0; i < usersMongo.length; i++) {
-          print('DEBUG readAllUsers: User $i: ${usersMongo[i]['firstname']} ${usersMongo[i]['lastname']} (firmId: ${usersMongo[i]['firmId']})');
+          print(
+              'DEBUG readAllUsers: User $i: ${usersMongo[i]['firstname']} ${usersMongo[i]['lastname']} (firmId: ${usersMongo[i]['firmId']})');
         }
-        
+
         if (usersMongo.isEmpty) {
           print('DEBUG readAllUsers: No users found, returning empty list');
           return UsersPublic(users: []);
@@ -1830,7 +1846,8 @@ class FenceService extends FenceServiceBase {
         }
 
         if (userPermission.fullAccess.hasFullAccess) {
-          print('DEBUG readAllUsers: User has full access, returning ${users.length} users');
+          print(
+              'DEBUG readAllUsers: User has full access, returning ${users.length} users');
           return UsersPublic(users: users);
         }
         // if requestor has limitedAccess we retain only users that belong to his/her "fence"
@@ -2027,7 +2044,11 @@ class FenceService extends FenceServiceBase {
     }
 
     boutique.isDeleted = true;
+    boutique.boutique.isDeleted =
+        true; // Sync the nested boutique isDeleted field
     boutique.deletedBy = userPermission.userId;
+    boutique.boutique.deletedBy =
+        userPermission.userId; // Sync the nested deletedBy field
     boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
 
     // update chain in db
@@ -2047,7 +2068,7 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-    
+
     if (request.boutique.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }
@@ -2072,7 +2093,7 @@ class FenceService extends FenceServiceBase {
     final boutiqueIndex = chain.boutiques.indexWhere((btq) =>
         btq.chainId == request.chainId &&
         btq.boutiqueId == request.boutique.boutiqueId);
-    
+
     if (boutiqueIndex == -1) {
       throw GrpcError.notFound('no boutique match found');
     }
@@ -2087,9 +2108,13 @@ class FenceService extends FenceServiceBase {
 
     // Restore: unmark as deleted
     boutique.isDeleted = false;
+    boutique.boutique.isDeleted =
+        false; // Sync the nested boutique isDeleted field
     boutique.restoredBy = userPermission.userId;
+    boutique.boutique.restoredBy =
+        userPermission.userId; // Sync the nested restoredBy field
     boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
-    
+
     // Note: deletedBy is intentionally kept for audit trail
     // Shows who deleted it originally and who restored it
 
@@ -2170,7 +2195,7 @@ class FenceService extends FenceServiceBase {
     }
 
     final boutique = chain.boutiques[boutiqueIndex];
-    
+
     // Check if boutique is soft-deleted
     if (boutique.isDeleted) {
       throw GrpcError.notFound(
@@ -2199,23 +2224,24 @@ class FenceService extends FenceServiceBase {
     throw GrpcError.unimplemented(
         'Password reset functionality temporarily unavailable');
   }
-  
+
   @override
-  Future<HealthCheckWeebiResponse> healthCheck(ServiceCall? call, Empty request) async {
+  Future<HealthCheckWeebiResponse> healthCheck(
+      ServiceCall? call, Empty request) async {
     try {
       // Check database connectivity
       final isDbHealthy = await _checkDatabaseHealth();
-      
+
       // Get version information
       final versionInfo = _getVersionInfo();
-      
+
       // Create version response
       final versions = ServiceVersions()
         ..server = versionInfo['server'] ?? 'unknown'
         ..protosWeebi = versionInfo['protos_weebi'] ?? 'unknown'
         ..fenceService = versionInfo['fence_service'] ?? 'unknown'
         ..modelsWeebi = versionInfo['models_weebi'] ?? 'unknown';
-      
+
       // Return health check response
       return HealthCheckWeebiResponse()
         ..status = isDbHealthy ? 'healthy' : 'unhealthy'

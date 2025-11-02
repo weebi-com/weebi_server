@@ -1,7 +1,7 @@
 # CURLS
 > install [grpcurl](https://github.com/fullstorydev/grpcurl)
 
-## local ??
+## localhost - plaintext
 
 _run the server_ : `dart apps/server/bin/server_local.dart`
 
@@ -24,18 +24,12 @@ grpcurl -plaintext -import-path packages/protos/proto -proto packages/protos/pro
 }
 ```
 
+
 grpcurl -plaintext -proto fence_service.proto -d '{\"mail\": \"mylogin\", \"password\": \"mypassword\"}' localhost:8080 weebi.fence.service.FenceService/authenticateWithCredentials
 
-## dev
-grpcurl -proto packages\protos\proto\fence_service.proto dev.weebi.com:443 weebi.fence.service.FenceService/healthCheck
 
-grpcurl -proto packages\protos\proto\weebi_app_service.proto dev.weebi.com:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion
-
+## dev - TLS /S SSL 
+grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto dev.weebi.com:443 weebi.fence.service.FenceService/healthCheck
 
 
-
-## Using compiled protoset files
-grpcurl -protoset my-protos.bin list
-
-## Using proto sources
-grpcurl -import-path ../protos -proto my-stuff.proto list
+rpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto dev.weebi.com:443 describe weebi.fence.service.FenceService
