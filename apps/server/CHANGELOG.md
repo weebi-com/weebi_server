@@ -1,3 +1,8 @@
+## 1.0.5 - nov 2025
+
+- fix boutique create
+- fix packages info
+
 ## 1.0.3 
 
 - protos_weebi 1.0.16
