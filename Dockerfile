@@ -26,6 +26,12 @@ RUN dart compile exe apps/server/bin/server.dart -o apps/server/bin/server
 FROM scratch
 COPY --from=build /runtime/ /
 COPY --from=build app/apps/server/bin/server app/apps/server/bin/
+# Copy pubspec.yaml files needed for version information in health checks
+# Files are copied to root level since working directory is typically / with FROM scratch
+COPY --from=build app/apps/server/pubspec.yaml apps/server/
+COPY --from=build app/packages/protos/protos_weebi/pubspec.yaml packages/protos/protos_weebi/
+COPY --from=build app/packages/fence_service/pubspec.yaml packages/fence_service/
+COPY --from=build app/packages/fence_service/pubspec.lock packages/fence_service/
 
 # Start server.
 # Expose gRPC port
