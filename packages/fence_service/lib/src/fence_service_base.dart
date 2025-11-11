@@ -53,20 +53,39 @@ class FenceService extends FenceServiceBase {
       // When running from weebi_server, find pubspec files relative to current directory
       final currentDir = Directory.current.path;
 
+      // Try multiple possible paths to handle different deployment scenarios
+      final possiblePaths = [
+        '$currentDir/apps/server/pubspec.yaml',
+        '/apps/server/pubspec.yaml',
+        '/app/apps/server/pubspec.yaml',
+      ];
+      final protosPaths = [
+        '$currentDir/packages/protos/protos_weebi/pubspec.yaml',
+        '/packages/protos/protos_weebi/pubspec.yaml',
+        '/app/packages/protos/protos_weebi/pubspec.yaml',
+      ];
+      final fenceServicePaths = [
+        '$currentDir/packages/fence_service/pubspec.yaml',
+        '/packages/fence_service/pubspec.yaml',
+        '/app/packages/fence_service/pubspec.yaml',
+      ];
+      final fenceServiceLockPaths = [
+        '$currentDir/packages/fence_service/pubspec.lock',
+        '/packages/fence_service/pubspec.lock',
+        '/app/packages/fence_service/pubspec.lock',
+      ];
+
       return {
         'server': Platform.environment['SERVER_VERSION'] ??
-            _getVersionFromPubspec('$currentDir/apps/server/pubspec.yaml'),
+            _getVersionFromPubspecMultiplePaths(possiblePaths),
         'protos_weebi': Platform.environment['PROTOS_VERSION'] ??
-            _getVersionFromPubspec(
-                '$currentDir/packages/protos/protos_weebi/pubspec.yaml'),
+            _getVersionFromPubspecMultiplePaths(protosPaths),
         'fence_service': Platform.environment['FENCE_SERVICE_VERSION'] ??
-            _getVersionFromPubspec(
-                '$currentDir/packages/fence_service/pubspec.yaml'),
+            _getVersionFromPubspecMultiplePaths(fenceServicePaths),
         // models_weebi is a pub dependency - read from pubspec.lock
         'models_weebi': Platform.environment['MODELS_VERSION'] ??
-            _getVersionFromPubspecLock(
-                '$currentDir/packages/fence_service/pubspec.lock',
-                'models_weebi'),
+            _getVersionFromPubspecLockMultiplePaths(
+                fenceServiceLockPaths, 'models_weebi'),
       };
     } catch (e) {
       log('Error getting version info: $e');
@@ -77,6 +96,29 @@ class FenceService extends FenceServiceBase {
         'models_weebi': 'unknown',
       };
     }
+  }
+
+  /// Try multiple paths to find pubspec.yaml
+  String _getVersionFromPubspecMultiplePaths(List<String> paths) {
+    for (final path in paths) {
+      final version = _getVersionFromPubspec(path);
+      if (version != 'unknown') {
+        return version;
+      }
+    }
+    return 'unknown';
+  }
+
+  /// Try multiple paths to find pubspec.lock
+  String _getVersionFromPubspecLockMultiplePaths(
+      List<String> paths, String packageName) {
+    for (final path in paths) {
+      final version = _getVersionFromPubspecLock(path, packageName);
+      if (version != 'unknown') {
+        return version;
+      }
+    }
+    return 'unknown';
   }
 
   /// Read version from pubspec.yaml using pubspec_parse
@@ -1219,13 +1261,15 @@ class FenceService extends FenceServiceBase {
 
     final nowProtoUTC = DateTime.now().toUtc().timestampProto;
     final boutiqueId = DateTime.now().objectIdString;
+    final boutiqueRequest = request.boutique..boutiqueId = boutiqueId;
+
     final boutiqueMongo = BoutiqueMongo.create()
       ..firmId = userPermission.firmId
       ..chainId = request.chainId
       ..boutiqueId = boutiqueId
       ..name = request.boutique.name
       ..creationTimestampUTC = nowProtoUTC
-      ..boutique = request.boutique
+      ..boutique = boutiqueRequest
       ..logo = request.logo
       ..logoExtension = request.logoExtension;
 
@@ -1337,6 +1381,10 @@ class FenceService extends FenceServiceBase {
         false) {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
+    }
+
+    if(request.boutique.boutiqueId.isEmpty) {
+      throw GrpcError.invalidArgument('boutique.boutiqueId cannot be empty');
     }
 
     final chain =
@@ -1739,6 +1787,7 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${request.firmId}');
     }
+
     /// userManagementRights.rights is not enough here
     /// use canUpdateUserPassword
     if (request.userId != userPermission.userId &&
@@ -1763,7 +1812,8 @@ class FenceService extends FenceServiceBase {
         final user = await userCollection.findOne(
             where.eq('firmId', request.firmId).eq('userId', request.userId));
         if (user == null) {
-          throw GrpcError.notFound('userId ${request.userId} not found in firmId ${request.firmId}');
+          throw GrpcError.notFound(
+              'userId ${request.userId} not found in firmId ${request.firmId}');
         }
         final userMongo = UserPrivate.create()
           ..mergeFromProto3Json(user, ignoreUnknownFields: true);
@@ -2200,6 +2250,11 @@ class FenceService extends FenceServiceBase {
     if (boutique.isDeleted) {
       throw GrpcError.notFound(
           'boutique ${request.boutique.boutiqueId} has been deleted');
+    }
+
+    // If the boutiqueId is not properly set initially, set it from the parent
+    if (boutique.boutique.boutiqueId.isEmpty) {
+      boutique.boutique.boutiqueId = boutique.boutiqueId;
     }
 
     return BoutiqueResponse(
