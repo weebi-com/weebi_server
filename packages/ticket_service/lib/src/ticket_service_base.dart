@@ -3,6 +3,7 @@ import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
+import 'package:fence_service/logging.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectTicket(String firmId, String boutiqueId,
@@ -16,6 +17,7 @@ abstract class _Helpers {
 
 class TicketService extends TicketServiceBase {
   final MongoDbPoolService _poolService;
+  final WeebiLogger _logger = WeebiLogger.forService('ticket_service');
 
   // for unit tests only
   final bool isTest;
@@ -30,6 +32,11 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, TicketRequest request) async {
+    _logger.logRpcEntry('createOne', call, requestData: {
+      'chainId': request.ticket.counterfoil.chainId,
+      'boutiqueId': request.ticket.counterfoil.boutiqueId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -87,11 +94,10 @@ class TicketService extends TicketServiceBase {
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        print(e);
+        _logger.logRpcError('updateOne', call, e);
         rethrow;
       } catch (e, stacktrace) {
-        print(e);
-        print(stacktrace);
+        _logger.logRpcError('updateOne', call, e, stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
     });
@@ -100,6 +106,11 @@ class TicketService extends TicketServiceBase {
   @override
   Future<TicketsResponse> readAll(
       ServiceCall? call, ReadAllTicketsRequest request) async {
+    _logger.logRpcEntry('readAll', call, requestData: {
+      'chainId': request.chainId,
+      'boutiqueId': request.boutiqueId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -123,8 +134,11 @@ class TicketService extends TicketServiceBase {
       isOneBoutiqueFilter = true;
     }
 
-    print(
-        'readTickets : firmId ${userPermission.firmId} chainId ${request.chainId} isOneBoutiqueFilter $isOneBoutiqueFilter');
+    _logger.debug('readTickets', call: call, extra: {
+      'firmId': userPermission.firmId,
+      'chainId': request.chainId,
+      'isOneBoutiqueFilter': isOneBoutiqueFilter,
+    });
 
     final selector = where
         .eq('firmId', userPermission.firmId)
@@ -167,15 +181,20 @@ class TicketService extends TicketServiceBase {
           ..clear()
           ..addAll(tickets);
         return ticketsBis;
-      } on GrpcError catch (e) {
-        print('readAll tickets error $e');
-        rethrow;
-      }
+        } on GrpcError catch (e) {
+          _logger.logRpcError('readAll', call, e);
+          rethrow;
+        }
     });
   }
 
   @override
   Future<TicketPb> readOne(ServiceCall? call, FindTicketRequest request) async {
+    _logger.logRpcEntry('readOne', call, requestData: {
+      'ticketChainId': request.ticketChainId,
+      'ticketBoutiqueId': request.ticketBoutiqueId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -218,10 +237,10 @@ class TicketService extends TicketServiceBase {
         final ticketMongo = TicketMongo.create()
           ..mergeFromProto3Json(ticket, ignoreUnknownFields: true);
         return ticketMongo.ticket;
-      } on GrpcError catch (e) {
-        print('readOne ticket error $e');
-        rethrow;
-      }
+        } on GrpcError catch (e) {
+          _logger.logRpcError('readOne', call, e);
+          rethrow;
+        }
     });
   }
 
@@ -285,11 +304,10 @@ class TicketService extends TicketServiceBase {
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        print(e);
+        _logger.logRpcError('updateOne', call, e);
         rethrow;
       } catch (e, stacktrace) {
-        print(e);
-        print(stacktrace);
+        _logger.logRpcError('updateOne', call, e, stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
     });
@@ -429,11 +447,10 @@ class TicketService extends TicketServiceBase {
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        print(e);
+        _logger.logRpcError('updateOne', call, e);
         rethrow;
       } catch (e, stacktrace) {
-        print(e);
-        print(stacktrace);
+        _logger.logRpcError('updateOne', call, e, stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
     });

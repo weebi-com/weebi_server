@@ -2,7 +2,7 @@ import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/protos_weebi.dart';
-// import 'package:logging/logging.dart';
+import 'package:fence_service/logging.dart';
 
 abstract class _Helpers {
   static SelectorBuilder select(String firmId, CalibreRequest request) => where
@@ -27,6 +27,7 @@ abstract class _Helpers {
 
 class ArticleService extends ArticleServiceBase {
   final MongoDbPoolService _poolService;
+  final WeebiLogger _logger = WeebiLogger.forService('article_service');
   // for unit tests only
   final bool isTest;
   final UserPermissions? userPermissionIfTest;
@@ -44,6 +45,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, CalibreRequest request) async {
+    _logger.logRpcEntry('createOne', call, requestData: {
+      'chainId': request.chainId,
+      'calibreId': request.calibre.id,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -95,11 +101,10 @@ class ArticleService extends ArticleServiceBase {
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        print(e);
+        _logger.logRpcError('createOne', call, e);
         rethrow;
       } catch (e, stacktrace) {
-        print(e);
-        print(stacktrace);
+        _logger.logRpcError('createOne', call, e, stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
     });
@@ -108,6 +113,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> updateOne(
       ServiceCall? call, CalibreRequest request) async {
+    _logger.logRpcEntry('updateOne', call, requestData: {
+      'chainId': request.chainId,
+      'calibreId': request.calibre.id,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -151,11 +161,10 @@ class ArticleService extends ArticleServiceBase {
             ..type = StatusResponse_Type.UPDATED
             ..timestamp = DateTime.now().timestampProto;
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('updateOneCategory', call, e);
           rethrow;
         } catch (e, stacktrace) {
-          // the whole stacktrace is heavy
-          print(stacktrace);
+          _logger.logRpcError('updateOneCategory', call, e, stackTrace: stacktrace);
           throw GrpcError.unknown('$e');
         }
       },
@@ -165,6 +174,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, CalibreRequest request) async {
+    _logger.logRpcEntry('deleteOne', call, requestData: {
+      'chainId': request.chainId,
+      'calibreId': request.calibre.id,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -189,7 +203,7 @@ class ArticleService extends ArticleServiceBase {
             ..type = StatusResponse_Type.DELETED
             ..timestamp = DateTime.now().timestampProto;
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('deleteOne', call, e);
           rethrow;
         }
       },
@@ -199,6 +213,10 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CalibresResponse> readAll(
       ServiceCall? call, ReadAllRequest request) async {
+    _logger.logRpcEntry('readAll', call, requestData: {
+      'chainId': request.chainId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -249,7 +267,7 @@ class ArticleService extends ArticleServiceBase {
             ..addAll(calibres);
           return calibresBis;
         } on GrpcError catch (e) {
-          print('readAll articles error $e');
+          _logger.logRpcError('readAll', call, e);
           rethrow;
         }
       },
@@ -259,6 +277,10 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CalibresIdsResponse> readAllIds(
       ServiceCall? call, ReadIdsRequest request) async {
+    _logger.logRpcEntry('readAllIds', call, requestData: {
+      'chainId': request.chainId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -289,7 +311,7 @@ class ArticleService extends ArticleServiceBase {
           }
           return CalibresIdsResponse.create()..ids.addAll(idsSet);
         } on GrpcError catch (e) {
-          print('readAll articles error $e');
+          _logger.logRpcError('readAll', call, e);
           rethrow;
         }
       },
@@ -299,6 +321,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<CalibrePb> readOne(
       ServiceCall? call, ReadCalibreRequest request) async {
+    _logger.logRpcEntry('readOne', call, requestData: {
+      'chainId': request.chainId,
+      'calibreId': request.calibreId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -335,7 +362,7 @@ class ArticleService extends ArticleServiceBase {
             return CalibrePb.getDefault();
           }
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('readOne', call, e);
           rethrow;
         }
       },
@@ -348,6 +375,10 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createOneCategory(
       ServiceCall? call, CategoryRequest request) async {
+    _logger.logRpcEntry('createOneCategory', call, requestData: {
+      'chainId': request.chainId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -398,11 +429,10 @@ class ArticleService extends ArticleServiceBase {
               ..timestamp = DateTime.now().timestampProto;
           }
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('createOneCategory', call, e);
           rethrow;
         } catch (e, stacktrace) {
-          print(e);
-          print(stacktrace);
+          _logger.logRpcError('createOneCategory', call, e, stackTrace: stacktrace);
           throw GrpcError.unknown('$e');
         }
       },
@@ -412,6 +442,10 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> updateOneCategory(
       ServiceCall? call, CategoryRequest request) async {
+    _logger.logRpcEntry('updateOneCategory', call, requestData: {
+      'chainId': request.chainId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -457,11 +491,10 @@ class ArticleService extends ArticleServiceBase {
             ..type = StatusResponse_Type.UPDATED
             ..timestamp = DateTime.now().timestampProto;
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('updateOneCategory', call, e);
           rethrow;
         } catch (e, stacktrace) {
-          // the whole stacktrace is heavy
-          print(stacktrace);
+          _logger.logRpcError('updateOneCategory', call, e, stackTrace: stacktrace);
           throw GrpcError.unknown('$e');
         }
       },
@@ -496,7 +529,7 @@ class ArticleService extends ArticleServiceBase {
             ..type = StatusResponse_Type.DELETED
             ..timestamp = DateTime.now().timestampProto;
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('deleteOne', call, e);
           rethrow;
         }
       },
@@ -544,7 +577,7 @@ class ArticleService extends ArticleServiceBase {
             ..addAll(categories);
           return categoriesBis;
         } on GrpcError catch (e) {
-          print('readAll article error $e');
+          _logger.logRpcError('readAllCategories', call, e);
           rethrow;
         }
       },
@@ -592,7 +625,7 @@ class ArticleService extends ArticleServiceBase {
             return CategoryPb.getDefault();
           }
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('deleteOne', call, e);
           rethrow;
         }
       },
@@ -602,6 +635,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall? call, CalibresRequest request) async {
+    _logger.logRpcEntry('createMany', call, requestData: {
+      'chainId': request.chainId,
+      'count': request.calibres.length,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -671,11 +709,10 @@ class ArticleService extends ArticleServiceBase {
               ..timestamp = DateTime.now().timestampProto;
           }
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('createOneCategory', call, e);
           rethrow;
         } catch (e, stacktrace) {
-          print(e);
-          print(stacktrace);
+          _logger.logRpcError('createOneCategory', call, e, stackTrace: stacktrace);
           throw GrpcError.unknown('$e');
         }
       },
@@ -688,6 +725,11 @@ class ArticleService extends ArticleServiceBase {
   @override
   Future<StatusResponse> createManyPhotos(
       ServiceCall call, PhotosRequest request) async {
+    _logger.logRpcEntry('createManyPhotos', call, requestData: {
+      'chainId': request.chainId,
+      'count': request.photos.length,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -754,11 +796,10 @@ class ArticleService extends ArticleServiceBase {
               ..timestamp = DateTime.now().timestampProto;
           }
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('createOneCategory', call, e);
           rethrow;
         } catch (e, stacktrace) {
-          print(e);
-          print(stacktrace);
+          _logger.logRpcError('createOneCategory', call, e, stackTrace: stacktrace);
           throw GrpcError.unknown('$e');
         }
       },
@@ -817,11 +858,10 @@ class ArticleService extends ArticleServiceBase {
               ..timestamp = DateTime.now().timestampProto;
           }
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('createOneCategory', call, e);
           rethrow;
         } catch (e, stacktrace) {
-          print(e);
-          print(stacktrace);
+          _logger.logRpcError('createOneCategory', call, e, stackTrace: stacktrace);
           throw GrpcError.unknown('$e');
         }
       },
@@ -855,7 +895,7 @@ class ArticleService extends ArticleServiceBase {
             ..type = StatusResponse_Type.DELETED
             ..timestamp = DateTime.now().timestampProto;
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('deleteOne', call, e);
           rethrow;
         }
       },
@@ -931,7 +971,7 @@ class ArticleService extends ArticleServiceBase {
 
           return response;
         } on GrpcError catch (e) {
-          print('readAll articles error $e');
+          _logger.logRpcError('readAll', call, e);
           rethrow;
         }
       },
@@ -971,7 +1011,7 @@ class ArticleService extends ArticleServiceBase {
             return ArticlePhotoPb.getDefault();
           }
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('deleteOne', call, e);
           rethrow;
         }
       },
@@ -1022,11 +1062,10 @@ class ArticleService extends ArticleServiceBase {
             ..type = StatusResponse_Type.UPDATED
             ..timestamp = DateTime.now().timestampProto;
         } on GrpcError catch (e) {
-          print(e);
+          _logger.logRpcError('updateOneCategory', call, e);
           rethrow;
         } catch (e, stacktrace) {
-          // the whole stacktrace is heavy
-          print(stacktrace);
+          _logger.logRpcError('updateOneCategory', call, e, stackTrace: stacktrace);
           throw GrpcError.unknown('$e');
         }
       },

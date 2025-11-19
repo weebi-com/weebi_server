@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 
 import 'package:fence_service/grpc.dart'
     show GrpcError, Server, ServiceCall, ServiceMethod;
+import 'package:fence_service/logging.dart' show WeebiLogger;
 import 'package:article_service/article_service.dart';
 import 'package:contact_service/contact_service.dart';
 import 'package:server/server_interceptors.dart';
@@ -35,10 +36,9 @@ FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
 }
 
 void main(List<String> arguments) async {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((LogRecord rec) {
-    log('${rec.loggerName}: ${rec.level.name}: ${rec.time}: ${rec.message}');
-  });
+  // Initialize structured JSON logging for Google Cloud Run
+  WeebiLogger.initialize(level: Level.INFO);
+  
   print('1 - Starting server');
 
   final MongoDbPoolService poolService = MongoDbPoolService(
