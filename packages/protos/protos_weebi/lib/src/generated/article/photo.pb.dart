@@ -1,19 +1,20 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: article/photo.proto
-//
+// Generated from article/photo.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names
 
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_timestamp.pb.dart' as $17;
+import '../common/g_timestamp.pb.dart' as $0;
 import 'photo.pbenum.dart';
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
@@ -27,62 +28,68 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
     $core.String? userId,
     $core.int? calibreId,
     ArticlePhotoPb? photo,
-    $17.Timestamp? lastTouchTimestampUTC,
+    $0.Timestamp? lastTouchTimestampUTC,
   }) {
-    final $result = create();
-    if (firmId != null) {
-      $result.firmId = firmId;
-    }
-    if (chainId != null) {
-      $result.chainId = chainId;
-    }
-    if (userId != null) {
-      $result.userId = userId;
-    }
-    if (calibreId != null) {
-      $result.calibreId = calibreId;
-    }
-    if (photo != null) {
-      $result.photo = photo;
-    }
-    if (lastTouchTimestampUTC != null) {
-      $result.lastTouchTimestampUTC = lastTouchTimestampUTC;
-    }
-    return $result;
+    final result = create();
+    if (firmId != null) result.firmId = firmId;
+    if (chainId != null) result.chainId = chainId;
+    if (userId != null) result.userId = userId;
+    if (calibreId != null) result.calibreId = calibreId;
+    if (photo != null) result.photo = photo;
+    if (lastTouchTimestampUTC != null)
+      result.lastTouchTimestampUTC = lastTouchTimestampUTC;
+    return result;
   }
-  ArticlePhotoMongo._() : super();
-  factory ArticlePhotoMongo.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ArticlePhotoMongo.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticlePhotoMongo', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.photo'), createEmptyInstance: create)
+  ArticlePhotoMongo._();
+
+  factory ArticlePhotoMongo.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ArticlePhotoMongo.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ArticlePhotoMongo',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.photo'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
-    ..a<$core.int>(4, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
-    ..aOM<ArticlePhotoPb>(5, _omitFieldNames ? '' : 'photo', subBuilder: ArticlePhotoPb.create)
-    ..aOM<$17.Timestamp>(6, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $17.Timestamp.create)
-    ..hasRequiredFields = false
-  ;
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3,
+        protoName: 'calibreId')
+    ..aOM<ArticlePhotoPb>(5, _omitFieldNames ? '' : 'photo',
+        subBuilder: ArticlePhotoPb.create)
+    ..aOM<$0.Timestamp>(6, _omitFieldNames ? '' : 'lastTouchTimestampUTC',
+        protoName: 'lastTouchTimestampUTC', subBuilder: $0.Timestamp.create)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ArticlePhotoMongo clone() => ArticlePhotoMongo()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ArticlePhotoMongo copyWith(void Function(ArticlePhotoMongo) updates) => super.copyWith((message) => updates(message as ArticlePhotoMongo)) as ArticlePhotoMongo;
+  ArticlePhotoMongo copyWith(void Function(ArticlePhotoMongo) updates) =>
+      super.copyWith((message) => updates(message as ArticlePhotoMongo))
+          as ArticlePhotoMongo;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static ArticlePhotoMongo create() => ArticlePhotoMongo._();
+  @$core.override
   ArticlePhotoMongo createEmptyInstance() => create();
-  static $pb.PbList<ArticlePhotoMongo> createRepeated() => $pb.PbList<ArticlePhotoMongo>();
+  static $pb.PbList<ArticlePhotoMongo> createRepeated() =>
+      $pb.PbList<ArticlePhotoMongo>();
   @$core.pragma('dart2js:noInline')
-  static ArticlePhotoMongo getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ArticlePhotoMongo>(create);
+  static ArticlePhotoMongo getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ArticlePhotoMongo>(create);
   static ArticlePhotoMongo? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get firmId => $_getSZ(0);
   @$pb.TagNumber(1)
-  set firmId($core.String v) { $_setString(0, v); }
+  set firmId($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
   $core.bool hasFirmId() => $_has(0);
   @$pb.TagNumber(1)
@@ -91,7 +98,7 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get chainId => $_getSZ(1);
   @$pb.TagNumber(2)
-  set chainId($core.String v) { $_setString(1, v); }
+  set chainId($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
   $core.bool hasChainId() => $_has(1);
   @$pb.TagNumber(2)
@@ -100,7 +107,7 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.String get userId => $_getSZ(2);
   @$pb.TagNumber(3)
-  set userId($core.String v) { $_setString(2, v); }
+  set userId($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
   $core.bool hasUserId() => $_has(2);
   @$pb.TagNumber(3)
@@ -109,7 +116,7 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   $core.int get calibreId => $_getIZ(3);
   @$pb.TagNumber(4)
-  set calibreId($core.int v) { $_setSignedInt32(3, v); }
+  set calibreId($core.int value) => $_setSignedInt32(3, value);
   @$pb.TagNumber(4)
   $core.bool hasCalibreId() => $_has(3);
   @$pb.TagNumber(4)
@@ -118,7 +125,7 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
   @$pb.TagNumber(5)
   ArticlePhotoPb get photo => $_getN(4);
   @$pb.TagNumber(5)
-  set photo(ArticlePhotoPb v) { $_setField(5, v); }
+  set photo(ArticlePhotoPb value) => $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasPhoto() => $_has(4);
   @$pb.TagNumber(5)
@@ -127,15 +134,15 @@ class ArticlePhotoMongo extends $pb.GeneratedMessage {
   ArticlePhotoPb ensurePhoto() => $_ensure(4);
 
   @$pb.TagNumber(6)
-  $17.Timestamp get lastTouchTimestampUTC => $_getN(5);
+  $0.Timestamp get lastTouchTimestampUTC => $_getN(5);
   @$pb.TagNumber(6)
-  set lastTouchTimestampUTC($17.Timestamp v) { $_setField(6, v); }
+  set lastTouchTimestampUTC($0.Timestamp value) => $_setField(6, value);
   @$pb.TagNumber(6)
   $core.bool hasLastTouchTimestampUTC() => $_has(5);
   @$pb.TagNumber(6)
   void clearLastTouchTimestampUTC() => $_clearField(6);
   @$pb.TagNumber(6)
-  $17.Timestamp ensureLastTouchTimestampUTC() => $_ensure(5);
+  $0.Timestamp ensureLastTouchTimestampUTC() => $_ensure(5);
 }
 
 class ArticlePhotoPb extends $pb.GeneratedMessage {
@@ -145,52 +152,64 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
     $core.List<$core.int>? data,
     ArticlePhotoPb_ExtensionPb? extension_4,
   }) {
-    final $result = create();
-    if (calibreId != null) {
-      $result.calibreId = calibreId;
-    }
-    if (id != null) {
-      $result.id = id;
-    }
-    if (data != null) {
-      $result.data = data;
-    }
-    if (extension_4 != null) {
-      $result.extension_4 = extension_4;
-    }
-    return $result;
+    final result = create();
+    if (calibreId != null) result.calibreId = calibreId;
+    if (id != null) result.id = id;
+    if (data != null) result.data = data;
+    if (extension_4 != null) result.extension_4 = extension_4;
+    return result;
   }
-  ArticlePhotoPb._() : super();
-  factory ArticlePhotoPb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory ArticlePhotoPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ArticlePhotoPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.photo'), createEmptyInstance: create)
-    ..a<$core.int>(1, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3, protoName: 'calibreId')
+  ArticlePhotoPb._();
+
+  factory ArticlePhotoPb.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ArticlePhotoPb.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ArticlePhotoPb',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.photo'),
+      createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'calibreId', $pb.PbFieldType.O3,
+        protoName: 'calibreId')
     ..a<$core.int>(2, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
-    ..a<$core.List<$core.int>>(3, _omitFieldNames ? '' : 'data', $pb.PbFieldType.OY)
-    ..e<ArticlePhotoPb_ExtensionPb>(4, _omitFieldNames ? '' : 'extension', $pb.PbFieldType.OE, defaultOrMaker: ArticlePhotoPb_ExtensionPb.unknown, valueOf: ArticlePhotoPb_ExtensionPb.valueOf, enumValues: ArticlePhotoPb_ExtensionPb.values)
-    ..hasRequiredFields = false
-  ;
+    ..a<$core.List<$core.int>>(
+        3, _omitFieldNames ? '' : 'data', $pb.PbFieldType.OY)
+    ..e<ArticlePhotoPb_ExtensionPb>(
+        4, _omitFieldNames ? '' : 'extension', $pb.PbFieldType.OE,
+        defaultOrMaker: ArticlePhotoPb_ExtensionPb.unknown,
+        valueOf: ArticlePhotoPb_ExtensionPb.valueOf,
+        enumValues: ArticlePhotoPb_ExtensionPb.values)
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   ArticlePhotoPb clone() => ArticlePhotoPb()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  ArticlePhotoPb copyWith(void Function(ArticlePhotoPb) updates) => super.copyWith((message) => updates(message as ArticlePhotoPb)) as ArticlePhotoPb;
+  ArticlePhotoPb copyWith(void Function(ArticlePhotoPb) updates) =>
+      super.copyWith((message) => updates(message as ArticlePhotoPb))
+          as ArticlePhotoPb;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static ArticlePhotoPb create() => ArticlePhotoPb._();
+  @$core.override
   ArticlePhotoPb createEmptyInstance() => create();
-  static $pb.PbList<ArticlePhotoPb> createRepeated() => $pb.PbList<ArticlePhotoPb>();
+  static $pb.PbList<ArticlePhotoPb> createRepeated() =>
+      $pb.PbList<ArticlePhotoPb>();
   @$core.pragma('dart2js:noInline')
-  static ArticlePhotoPb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ArticlePhotoPb>(create);
+  static ArticlePhotoPb getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ArticlePhotoPb>(create);
   static ArticlePhotoPb? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.int get calibreId => $_getIZ(0);
   @$pb.TagNumber(1)
-  set calibreId($core.int v) { $_setSignedInt32(0, v); }
+  set calibreId($core.int value) => $_setSignedInt32(0, value);
   @$pb.TagNumber(1)
   $core.bool hasCalibreId() => $_has(0);
   @$pb.TagNumber(1)
@@ -199,7 +218,7 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.int get id => $_getIZ(1);
   @$pb.TagNumber(2)
-  set id($core.int v) { $_setSignedInt32(1, v); }
+  set id($core.int value) => $_setSignedInt32(1, value);
   @$pb.TagNumber(2)
   $core.bool hasId() => $_has(1);
   @$pb.TagNumber(2)
@@ -208,7 +227,7 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.List<$core.int> get data => $_getN(2);
   @$pb.TagNumber(3)
-  set data($core.List<$core.int> v) { $_setBytes(2, v); }
+  set data($core.List<$core.int> value) => $_setBytes(2, value);
   @$pb.TagNumber(3)
   $core.bool hasData() => $_has(2);
   @$pb.TagNumber(3)
@@ -217,13 +236,14 @@ class ArticlePhotoPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(4)
   ArticlePhotoPb_ExtensionPb get extension_4 => $_getN(3);
   @$pb.TagNumber(4)
-  set extension_4(ArticlePhotoPb_ExtensionPb v) { $_setField(4, v); }
+  set extension_4(ArticlePhotoPb_ExtensionPb value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasExtension_4() => $_has(3);
   @$pb.TagNumber(4)
   void clearExtension_4() => $_clearField(4);
 }
 
-
-const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

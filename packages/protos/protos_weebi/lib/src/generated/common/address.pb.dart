@@ -1,19 +1,20 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: common/address.proto
-//
+// Generated from common/address.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names
 
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'country.pb.dart' as $21;
+import 'country.pb.dart' as $0;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
@@ -22,64 +23,66 @@ class Address extends $pb.GeneratedMessage {
     $core.String? street,
     $core.String? code,
     $core.String? city,
-    $21.Country? country,
+    $0.Country? country,
     $core.double? latitude,
     $core.double? longitude,
   }) {
-    final $result = create();
-    if (street != null) {
-      $result.street = street;
-    }
-    if (code != null) {
-      $result.code = code;
-    }
-    if (city != null) {
-      $result.city = city;
-    }
-    if (country != null) {
-      $result.country = country;
-    }
-    if (latitude != null) {
-      $result.latitude = latitude;
-    }
-    if (longitude != null) {
-      $result.longitude = longitude;
-    }
-    return $result;
+    final result = create();
+    if (street != null) result.street = street;
+    if (code != null) result.code = code;
+    if (city != null) result.city = city;
+    if (country != null) result.country = country;
+    if (latitude != null) result.latitude = latitude;
+    if (longitude != null) result.longitude = longitude;
+    return result;
   }
-  Address._() : super();
-  factory Address.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Address.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Address', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.common.address'), createEmptyInstance: create)
+  Address._();
+
+  factory Address.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory Address.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'Address',
+      package: const $pb.PackageName(
+          _omitMessageNames ? '' : 'weebi.common.address'),
+      createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'street')
     ..aOS(2, _omitFieldNames ? '' : 'code')
     ..aOS(3, _omitFieldNames ? '' : 'city')
-    ..aOM<$21.Country>(4, _omitFieldNames ? '' : 'country', subBuilder: $21.Country.create)
+    ..aOM<$0.Country>(4, _omitFieldNames ? '' : 'country',
+        subBuilder: $0.Country.create)
     ..a<$core.double>(5, _omitFieldNames ? '' : 'latitude', $pb.PbFieldType.OD)
     ..a<$core.double>(6, _omitFieldNames ? '' : 'longitude', $pb.PbFieldType.OD)
-    ..hasRequiredFields = false
-  ;
+    ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   Address clone() => Address()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  Address copyWith(void Function(Address) updates) => super.copyWith((message) => updates(message as Address)) as Address;
+  Address copyWith(void Function(Address) updates) =>
+      super.copyWith((message) => updates(message as Address)) as Address;
 
+  @$core.override
   $pb.BuilderInfo get info_ => _i;
 
   @$core.pragma('dart2js:noInline')
   static Address create() => Address._();
+  @$core.override
   Address createEmptyInstance() => create();
   static $pb.PbList<Address> createRepeated() => $pb.PbList<Address>();
   @$core.pragma('dart2js:noInline')
-  static Address getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Address>(create);
+  static Address getDefault() =>
+      _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Address>(create);
   static Address? _defaultInstance;
 
   @$pb.TagNumber(1)
   $core.String get street => $_getSZ(0);
   @$pb.TagNumber(1)
-  set street($core.String v) { $_setString(0, v); }
+  set street($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
   $core.bool hasStreet() => $_has(0);
   @$pb.TagNumber(1)
@@ -88,7 +91,7 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   $core.String get code => $_getSZ(1);
   @$pb.TagNumber(2)
-  set code($core.String v) { $_setString(1, v); }
+  set code($core.String value) => $_setString(1, value);
   @$pb.TagNumber(2)
   $core.bool hasCode() => $_has(1);
   @$pb.TagNumber(2)
@@ -97,28 +100,28 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   $core.String get city => $_getSZ(2);
   @$pb.TagNumber(3)
-  set city($core.String v) { $_setString(2, v); }
+  set city($core.String value) => $_setString(2, value);
   @$pb.TagNumber(3)
   $core.bool hasCity() => $_has(2);
   @$pb.TagNumber(3)
   void clearCity() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $21.Country get country => $_getN(3);
+  $0.Country get country => $_getN(3);
   @$pb.TagNumber(4)
-  set country($21.Country v) { $_setField(4, v); }
+  set country($0.Country value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasCountry() => $_has(3);
   @$pb.TagNumber(4)
   void clearCountry() => $_clearField(4);
   @$pb.TagNumber(4)
-  $21.Country ensureCountry() => $_ensure(3);
+  $0.Country ensureCountry() => $_ensure(3);
 
   /// optional
   @$pb.TagNumber(5)
   $core.double get latitude => $_getN(4);
   @$pb.TagNumber(5)
-  set latitude($core.double v) { $_setDouble(4, v); }
+  set latitude($core.double value) => $_setDouble(4, value);
   @$pb.TagNumber(5)
   $core.bool hasLatitude() => $_has(4);
   @$pb.TagNumber(5)
@@ -128,13 +131,14 @@ class Address extends $pb.GeneratedMessage {
   @$pb.TagNumber(6)
   $core.double get longitude => $_getN(5);
   @$pb.TagNumber(6)
-  set longitude($core.double v) { $_setDouble(5, v); }
+  set longitude($core.double value) => $_setDouble(5, value);
   @$pb.TagNumber(6)
   $core.bool hasLongitude() => $_has(5);
   @$pb.TagNumber(6)
   void clearLongitude() => $_clearField(6);
 }
 
-
-const _omitFieldNames = $core.bool.fromEnvironment('protobuf.omit_field_names');
-const _omitMessageNames = $core.bool.fromEnvironment('protobuf.omit_message_names');
+const $core.bool _omitFieldNames =
+    $core.bool.fromEnvironment('protobuf.omit_field_names');
+const $core.bool _omitMessageNames =
+    $core.bool.fromEnvironment('protobuf.omit_message_names');

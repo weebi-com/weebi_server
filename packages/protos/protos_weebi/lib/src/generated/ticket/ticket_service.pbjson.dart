@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: ticket/ticket_service.proto
-//
+// Generated from ticket/ticket_service.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -19,7 +20,14 @@ const ReadAllTicketsRequest$json = {
   '2': [
     {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'boutiqueId', '3': 3, '4': 1, '5': 9, '10': 'boutiqueId'},
-    {'1': 'lastFetchTimestampUTC', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastFetchTimestampUTC'},
+    {
+      '1': 'lastFetchTimestampUTC',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastFetchTimestampUTC'
+    },
     {'1': 'isDeleted', '3': 5, '4': 1, '5': 8, '10': 'isDeleted'},
   ],
   '9': [
@@ -57,7 +65,14 @@ final $typed_data.Uint8List findTicketRequestDescriptor = $convert.base64Decode(
 const TicketRequest$json = {
   '1': 'TicketRequest',
   '2': [
-    {'1': 'ticket', '3': 1, '4': 1, '5': 11, '6': '.weebi.ticket.TicketPb', '10': 'ticket'},
+    {
+      '1': 'ticket',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.ticket.TicketPb',
+      '10': 'ticket'
+    },
   ],
 };
 
@@ -70,7 +85,14 @@ final $typed_data.Uint8List ticketRequestDescriptor = $convert.base64Decode(
 const TicketsRequest$json = {
   '1': 'TicketsRequest',
   '2': [
-    {'1': 'tickets', '3': 1, '4': 3, '5': 11, '6': '.weebi.ticket.TicketPb', '10': 'tickets'},
+    {
+      '1': 'tickets',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.ticket.TicketPb',
+      '10': 'tickets'
+    },
   ],
 };
 
@@ -83,7 +105,14 @@ final $typed_data.Uint8List ticketsRequestDescriptor = $convert.base64Decode(
 const TicketsResponse$json = {
   '1': 'TicketsResponse',
   '2': [
-    {'1': 'tickets', '3': 1, '4': 3, '5': 11, '6': '.weebi.ticket.TicketPb', '10': 'tickets'},
+    {
+      '1': 'tickets',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.ticket.TicketPb',
+      '10': 'tickets'
+    },
   ],
 };
 
@@ -91,4 +120,3 @@ const TicketsResponse$json = {
 final $typed_data.Uint8List ticketsResponseDescriptor = $convert.base64Decode(
     'Cg9UaWNrZXRzUmVzcG9uc2USMAoHdGlja2V0cxgBIAMoCzIWLndlZWJpLnRpY2tldC5UaWNrZX'
     'RQYlIHdGlja2V0cw==');
-

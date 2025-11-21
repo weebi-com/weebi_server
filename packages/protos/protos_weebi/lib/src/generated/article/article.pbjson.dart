@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: article/article.proto
-//
+// Generated from article/article.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -33,14 +34,35 @@ final $typed_data.Uint8List articleKindPbDescriptor = $convert.base64Decode(
 const CalibreMongo$json = {
   '1': 'CalibreMongo',
   '2': [
-    {'1': 'calibre', '3': 1, '4': 1, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibre'},
+    {
+      '1': 'calibre',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.article.CalibrePb',
+      '10': 'calibre'
+    },
     {'1': 'calibreId', '3': 2, '4': 1, '5': 5, '10': 'calibreId'},
     {'1': 'firmId', '3': 3, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 4, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'userId', '3': 5, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'creationDate', '3': 6, '4': 1, '5': 9, '10': 'creationDate'},
-    {'1': 'lastTouchTimestampUTC', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
-    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.article.CalibreMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
+    {
+      '1': 'lastTouchTimestampUTC',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastTouchTimestampUTC'
+    },
+    {
+      '1': 'additional_attributes',
+      '3': 99,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.article.CalibreMongo.AdditionalAttributesEntry',
+      '10': 'additional_attributes'
+    },
   ],
   '3': [CalibreMongo_AdditionalAttributesEntry$json],
   '9': [
@@ -80,11 +102,46 @@ const CalibrePb$json = {
     {'1': 'statusUpdateDate', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
     {'1': 'title', '3': 6, '4': 1, '5': 9, '10': 'title'},
-    {'1': 'stockUnit', '3': 7, '4': 1, '5': 14, '6': '.weebi.article.CalibrePb.StockUnit', '10': 'stockUnit'},
-    {'1': 'kind', '3': 8, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
-    {'1': 'articlesRetail', '3': 9, '4': 3, '5': 11, '6': '.weebi.article.ArticleRetailPb', '10': 'articlesRetail'},
-    {'1': 'articlesBasket', '3': 10, '4': 3, '5': 11, '6': '.weebi.article.ArticleBasketPb', '10': 'articlesBasket'},
-    {'1': 'articlesUncountable', '3': 11, '4': 3, '5': 11, '6': '.weebi.article.ArticleUncountablePb', '10': 'articlesUncountable'},
+    {
+      '1': 'stockUnit',
+      '3': 7,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.article.CalibrePb.StockUnit',
+      '10': 'stockUnit'
+    },
+    {
+      '1': 'kind',
+      '3': 8,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.article.ArticleKindPb',
+      '10': 'kind'
+    },
+    {
+      '1': 'articlesRetail',
+      '3': 9,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.article.ArticleRetailPb',
+      '10': 'articlesRetail'
+    },
+    {
+      '1': 'articlesBasket',
+      '3': 10,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.article.ArticleBasketPb',
+      '10': 'articlesBasket'
+    },
+    {
+      '1': 'articlesUncountable',
+      '3': 11,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.article.ArticleUncountablePb',
+      '10': 'articlesUncountable'
+    },
   ],
   '4': [CalibrePb_StockUnit$json],
   '9': [
@@ -163,7 +220,14 @@ const ArticleRetailPb$json = {
     {'1': 'calibreId', '3': 1, '4': 1, '5': 5, '10': 'calibreId'},
     {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
     {'1': 'designation', '3': 3, '4': 1, '5': 9, '10': 'designation'},
-    {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
+    {
+      '1': 'kind',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.article.ArticleKindPb',
+      '10': 'kind'
+    },
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
     {
       '1': 'codeShortcut',
@@ -201,7 +265,14 @@ const ArticleBasketPb$json = {
     {'1': 'calibreId', '3': 1, '4': 1, '5': 5, '10': 'calibreId'},
     {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
     {'1': 'designation', '3': 3, '4': 1, '5': 9, '10': 'designation'},
-    {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
+    {
+      '1': 'kind',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.article.ArticleKindPb',
+      '10': 'kind'
+    },
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
     {
       '1': 'codeShortcut',
@@ -214,9 +285,28 @@ const ArticleBasketPb$json = {
     {'1': 'creationDate', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
     {'1': 'updateDate', '3': 8, '4': 1, '5': 9, '10': 'updateDate'},
     {'1': 'statusUpdateDate', '3': 9, '4': 1, '5': 9, '10': 'statusUpdateDate'},
-    {'1': 'proxies', '3': 10, '4': 3, '5': 11, '6': '.weebi.article.ProxyArticlePb', '10': 'proxies'},
-    {'1': 'discountAmount', '3': 11, '4': 1, '5': 1, '10': 'discountAmountSalesOnly'},
-    {'1': 'markupAmount', '3': 12, '4': 1, '5': 1, '10': 'markupAmountSalesOnly'},
+    {
+      '1': 'proxies',
+      '3': 10,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.article.ProxyArticlePb',
+      '10': 'proxies'
+    },
+    {
+      '1': 'discountAmount',
+      '3': 11,
+      '4': 1,
+      '5': 1,
+      '10': 'discountAmountSalesOnly'
+    },
+    {
+      '1': 'markupAmount',
+      '3': 12,
+      '4': 1,
+      '5': 1,
+      '10': 'markupAmountSalesOnly'
+    },
   ],
 };
 
@@ -239,9 +329,28 @@ const ArticleBasketOnTicketPb$json = {
     {'1': 'calibreId', '3': 1, '4': 1, '5': 5, '10': 'calibreId'},
     {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
     {'1': 'designation', '3': 3, '4': 1, '5': 9, '10': 'designation'},
-    {'1': 'proxies', '3': 4, '4': 3, '5': 11, '6': '.weebi.article.ProxyArticlePb', '10': 'proxies'},
-    {'1': 'discountAmount', '3': 5, '4': 1, '5': 1, '10': 'discountAmountSalesOnly'},
-    {'1': 'markupAmount', '3': 6, '4': 1, '5': 1, '10': 'markupAmountSalesOnly'},
+    {
+      '1': 'proxies',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.article.ProxyArticlePb',
+      '10': 'proxies'
+    },
+    {
+      '1': 'discountAmount',
+      '3': 5,
+      '4': 1,
+      '5': 1,
+      '10': 'discountAmountSalesOnly'
+    },
+    {
+      '1': 'markupAmount',
+      '3': 6,
+      '4': 1,
+      '5': 1,
+      '10': 'markupAmountSalesOnly'
+    },
   ],
 };
 
@@ -263,7 +372,13 @@ const ProxyArticlePb$json = {
     {'1': 'status', '3': 4, '4': 1, '5': 8, '10': 'status'},
     {'1': 'proxyCalibreId', '3': 5, '4': 1, '5': 5, '10': 'proxyCalibreId'},
     {'1': 'proxyArticleId', '3': 6, '4': 1, '5': 5, '10': 'proxyArticleId'},
-    {'1': 'minimumUnitPerBasket', '3': 7, '4': 1, '5': 1, '10': 'minimumUnitPerBasket'},
+    {
+      '1': 'minimumUnitPerBasket',
+      '3': 7,
+      '4': 1,
+      '5': 1,
+      '10': 'minimumUnitPerBasket'
+    },
     {'1': 'articleWeight', '3': 8, '4': 1, '5': 1, '10': 'articleWeight'},
   ],
 };
@@ -290,10 +405,11 @@ const ArticleUncountableOnTicketPb$json = {
 };
 
 /// Descriptor for `ArticleUncountableOnTicketPb`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List articleUncountableOnTicketPbDescriptor = $convert.base64Decode(
-    'ChxBcnRpY2xlVW5jb3VudGFibGVPblRpY2tldFBiEhwKCWNhbGlicmVJZBgBIAEoBVIJY2FsaW'
-    'JyZUlkEg4KAmlkGAIgASgFUgJpZBIgCgtkZXNpZ25hdGlvbhgDIAEoCVILZGVzaWduYXRpb24S'
-    'FAoFcHJpY2UYBCABKAFSBXByaWNlEhIKBGNvc3QYBSABKAFSBGNvc3Q=');
+final $typed_data.Uint8List articleUncountableOnTicketPbDescriptor =
+    $convert.base64Decode(
+        'ChxBcnRpY2xlVW5jb3VudGFibGVPblRpY2tldFBiEhwKCWNhbGlicmVJZBgBIAEoBVIJY2FsaW'
+        'JyZUlkEg4KAmlkGAIgASgFUgJpZBIgCgtkZXNpZ25hdGlvbhgDIAEoCVILZGVzaWduYXRpb24S'
+        'FAoFcHJpY2UYBCABKAFSBXByaWNlEhIKBGNvc3QYBSABKAFSBGNvc3Q=');
 
 @$core.Deprecated('Use articleUncountablePbDescriptor instead')
 const ArticleUncountablePb$json = {
@@ -302,7 +418,14 @@ const ArticleUncountablePb$json = {
     {'1': 'calibreId', '3': 1, '4': 1, '5': 5, '10': 'calibreId'},
     {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
     {'1': 'designation', '3': 3, '4': 1, '5': 9, '10': 'designation'},
-    {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.weebi.article.ArticleKindPb', '10': 'kind'},
+    {
+      '1': 'kind',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.article.ArticleKindPb',
+      '10': 'kind'
+    },
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
     {
       '1': 'codeShortcut',
@@ -332,4 +455,3 @@ final $typed_data.Uint8List articleUncountablePbDescriptor = $convert.base64Deco
     'RlRGF0ZRIqChBzdGF0dXNVcGRhdGVEYXRlGAkgASgJUhBzdGF0dXNVcGRhdGVEYXRlEhQKBXBy'
     'aWNlGAogASgBUgVwcmljZRISCgRjb3N0GAsgASgBUgRjb3N0EigKD3VuaXRzSW5PbmVQaWVjZR'
     'gMIAEoAVIPdW5pdHNJbk9uZVBpZWNlEh4KCmJhcmNvZGVFQU4YDSABKAlSCmJhcmNvZGVFQU4=');
-
