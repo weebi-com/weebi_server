@@ -52,10 +52,52 @@ class JsonWebToken {
     };
   }
 
+  /// Recursively cleans a map to ensure all values are JSON-serializable
+  /// Removes null values and converts non-serializable objects
+  dynamic _cleanValue(dynamic value) {
+    if (value == null) {
+      // Skip null values to avoid JSON encoding issues
+      return null;
+    } else if (value is Map) {
+      final cleaned = <String, dynamic>{};
+      (value as Map<String, dynamic>).forEach((key, val) {
+        final cleanedVal = _cleanValue(val);
+        if (cleanedVal != null) {
+          cleaned[key] = cleanedVal;
+        }
+      });
+      return cleaned;
+    } else if (value is List) {
+      return value.map((item) => _cleanValue(item)).whereType<dynamic>().toList();
+    } else if (value is String || value is num || value is bool) {
+      // Primitive types are safe
+      return value;
+    } else {
+      // For any other type (enums, objects, etc.), convert to string
+      // This ensures JSON serialization always works
+      return value.toString();
+    }
+  }
+
+  Map<String, dynamic> _cleanPayload(Map<String, dynamic> payload) {
+    final cleaned = <String, dynamic>{};
+    payload.forEach((key, value) {
+      final cleanedValue = _cleanValue(value);
+      if (cleanedValue != null) {
+        cleaned[key] = cleanedValue;
+      }
+    });
+    return cleaned;
+  }
+
   String sign() {
     final secretKey = secretKeyFactory();
+    
+    // Clean payload to ensure JSON serialization works correctly
+    final cleanedPayload = _cleanPayload(_payload);
+    
     final encodedHeader = base64Url.encode(utf8.encode(json.encode(_header)));
-    final encodedPayload = base64Url.encode(utf8.encode(json.encode(_payload)));
+    final encodedPayload = base64Url.encode(utf8.encode(json.encode(cleanedPayload)));
 
     final signature = Hmac(sha256, utf8.encode(secretKey))
         .convert(utf8.encode('$encodedHeader.$encodedPayload'))
