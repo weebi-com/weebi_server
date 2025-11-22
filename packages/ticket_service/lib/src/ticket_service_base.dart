@@ -3,7 +3,7 @@ import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/protos_weebi.dart';
-import 'package:fence_service/logging.dart';
+import 'package:fence_service/src/weebi_logger.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectTicket(String firmId, String boutiqueId,
@@ -33,8 +33,10 @@ class TicketService extends TicketServiceBase {
   Future<StatusResponse> createOne(
       ServiceCall? call, TicketRequest request) async {
     _logger.logRpcEntry('createOne', call, requestData: {
+      'firmId': request.ticket.counterfoil.firmId,
       'chainId': request.ticket.counterfoil.chainId,
       'boutiqueId': request.ticket.counterfoil.boutiqueId,
+      'nonUniqueId': request.ticket.nonUniqueId,
     });
     
     final userPermission = isTest
@@ -83,21 +85,32 @@ class TicketService extends TicketServiceBase {
         if (result.success && result.document != null) {
           final ticketNonUniqueId = result.document!['nonUniqueId'] as int;
 
+          _logger.logRpcExit('createOne', call, resultData: {
+            'ticketNonUniqueId': ticketNonUniqueId,
+          });
           return StatusResponse.create()
             ..type = StatusResponse_Type.CREATED
             ..id = ticketNonUniqueId.toString()
             ..timestamp = DateTime.now().timestampProto;
         } else {
+          _logger.warning('createOne failed: result.ok != 1 || result.document == null', call: call);
           return StatusResponse.create()
             ..type = StatusResponse_Type.ERROR
             ..message = 'result.ok != 1 || result.document == null'
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        _logger.logRpcError('updateOne', call, e);
+        _logger.logRpcError('createOne', call, e, extra: {
+          'firmId': userPermission.firmId,
+          'boutiqueId': request.ticket.counterfoil.boutiqueId,
+          'nonUniqueId': request.ticket.nonUniqueId,
+        });
         rethrow;
       } catch (e, stacktrace) {
-        _logger.logRpcError('updateOne', call, e, stackTrace: stacktrace);
+        _logger.error('createOne unexpected error', call: call, error: e, stackTrace: stacktrace, extra: {
+          'firmId': userPermission.firmId,
+          'boutiqueId': request.ticket.counterfoil.boutiqueId,
+        });
         throw GrpcError.unknown('$e');
       }
     });
@@ -109,6 +122,7 @@ class TicketService extends TicketServiceBase {
     _logger.logRpcEntry('readAll', call, requestData: {
       'chainId': request.chainId,
       'boutiqueId': request.boutiqueId,
+      'isDeleted': request.isDeleted,
     });
     
     final userPermission = isTest
@@ -180,11 +194,17 @@ class TicketService extends TicketServiceBase {
         ticketsBis.tickets
           ..clear()
           ..addAll(tickets);
+        _logger.logRpcExit('readAll', call, resultData: {
+          'ticketCount': tickets.length,
+        });
         return ticketsBis;
-        } on GrpcError catch (e) {
-          _logger.logRpcError('readAll', call, e);
-          rethrow;
-        }
+      } on GrpcError catch (e) {
+        _logger.logRpcError('readAll', call, e, extra: {
+          'chainId': request.chainId,
+          'boutiqueId': request.boutiqueId,
+        });
+        rethrow;
+      }
     });
   }
 
@@ -193,6 +213,7 @@ class TicketService extends TicketServiceBase {
     _logger.logRpcEntry('readOne', call, requestData: {
       'ticketChainId': request.ticketChainId,
       'ticketBoutiqueId': request.ticketBoutiqueId,
+      'nonUniqueId': request.nonUniqueId,
     });
     
     final userPermission = isTest
@@ -236,17 +257,27 @@ class TicketService extends TicketServiceBase {
         }
         final ticketMongo = TicketMongo.create()
           ..mergeFromProto3Json(ticket, ignoreUnknownFields: true);
+        _logger.logRpcExit('readOne', call);
         return ticketMongo.ticket;
-        } on GrpcError catch (e) {
-          _logger.logRpcError('readOne', call, e);
-          rethrow;
-        }
+      } on GrpcError catch (e) {
+        _logger.logRpcError('readOne', call, e, extra: {
+          'ticketChainId': request.ticketChainId,
+          'nonUniqueId': request.nonUniqueId,
+        });
+        rethrow;
+      }
     });
   }
 
   @override
   Future<StatusResponse> updateStatusOne(
       ServiceCall? call, TicketRequest request) async {
+    _logger.logRpcEntry('updateStatusOne', call, requestData: {
+      'firmId': request.ticket.counterfoil.firmId,
+      'boutiqueId': request.ticket.counterfoil.boutiqueId,
+      'nonUniqueId': request.ticket.nonUniqueId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -293,21 +324,28 @@ class TicketService extends TicketServiceBase {
               'hasWriteErrors ${result.writeError!.errmsg}');
         }
         if (result.success) {
+          _logger.logRpcExit('updateStatusOne', call);
           return StatusResponse.create()
             ..type = StatusResponse_Type.UPDATED
             // ..id= mongoid
             ..timestamp = DateTime.now().timestampProto;
         } else {
+          _logger.warning('updateStatusOne failed: result.ok != 1', call: call);
           return StatusResponse.create()
             ..type = StatusResponse_Type.ERROR
             ..message = 'result.ok != 1 || result.document == null'
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        _logger.logRpcError('updateOne', call, e);
+        _logger.logRpcError('updateStatusOne', call, e, extra: {
+          'firmId': request.ticket.counterfoil.firmId,
+          'boutiqueId': request.ticket.counterfoil.boutiqueId,
+        });
         rethrow;
       } catch (e, stacktrace) {
-        _logger.logRpcError('updateOne', call, e, stackTrace: stacktrace);
+        _logger.error('updateStatusOne unexpected error', call: call, error: e, stackTrace: stacktrace, extra: {
+          'firmId': request.ticket.counterfoil.firmId,
+        });
         throw GrpcError.unknown('$e');
       }
     });
@@ -316,6 +354,12 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, TicketRequest request) async {
+    _logger.logRpcEntry('deleteOne', call, requestData: {
+      'firmId': request.ticket.counterfoil.firmId,
+      'boutiqueId': request.ticket.counterfoil.boutiqueId,
+      'nonUniqueId': request.ticket.nonUniqueId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -356,17 +400,22 @@ class TicketService extends TicketServiceBase {
           throw GrpcError.unknown(
               'hasWriteErrors ${result.writeError!.errmsg}');
         } else if (result.success) {
+          _logger.logRpcExit('deleteOne', call);
           return StatusResponse.create()
             ..type = StatusResponse_Type.DELETED
             ..timestamp = DateTime.now().timestampProto;
         } else {
+          _logger.warning('deleteOne failed: result.ok != 1', call: call);
           return StatusResponse.create()
             ..type = StatusResponse_Type.ERROR
             ..message = 'result.ok != 1 || result.document == null'
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        print(e);
+        _logger.logRpcError('deleteOne', call, e, extra: {
+          'firmId': request.ticket.counterfoil.firmId,
+          'boutiqueId': request.ticket.counterfoil.boutiqueId,
+        });
         rethrow;
       }
     });
@@ -375,6 +424,10 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall call, TicketsRequest request) async {
+    _logger.logRpcEntry('createMany', call, requestData: {
+      'ticketCount': request.tickets.length,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -435,22 +488,31 @@ class TicketService extends TicketServiceBase {
               'hasWriteErrors ${writeErrorsMessages.join("\n")}');
         }
         if (result.success) {
+          _logger.logRpcExit('createMany', call, resultData: {
+            'created': ticketsMap.length,
+            'dups': dups,
+          });
           return StatusResponse.create()
             ..type = StatusResponse_Type.CREATED
             ..timestamp = DateTime.now().timestampProto
             ..message =
                 dups > 0 ? 'dups ignored: $dups/${request.tickets.length}' : '';
         } else {
+          _logger.warning('createMany failed: result.failure but no writeErrorsMessages', call: call);
           return StatusResponse.create()
             ..type = StatusResponse_Type.ERROR
             ..message = 'result.failure but no writeErrorsMessages'
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        _logger.logRpcError('updateOne', call, e);
+        _logger.logRpcError('createMany', call, e, extra: {
+          'ticketCount': request.tickets.length,
+        });
         rethrow;
       } catch (e, stacktrace) {
-        _logger.logRpcError('updateOne', call, e, stackTrace: stacktrace);
+        _logger.error('createMany unexpected error', call: call, error: e, stackTrace: stacktrace, extra: {
+          'ticketCount': request.tickets.length,
+        });
         throw GrpcError.unknown('$e');
       }
     });
