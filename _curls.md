@@ -24,17 +24,14 @@ grpcurl -plaintext -import-path packages/protos/proto -proto packages/protos/pro
 }
 ```
 
-
-grpcurl -plaintext -proto fence_service.proto -d '{\"mail\": \"mylogin\", \"password\": \"mypassword\"}' localhost:8080 weebi.fence.service.FenceService/authenticateWithCredentials
+cd packages/protos/proto/
+grpcurl -plaintext -proto fence_service.proto -d '{\"mail\": \"test@test.test\", \"password\": \"mypassword\"}' localhost:8080 weebi.fence.service.FenceService/authenticateWithCredentials
 
 
 ## dev - TLS /S SSL 
 grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto dev.weebi.com:443 weebi.fence.service.FenceService/healthCheck
 
-
 grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto dev.weebi.com:443 describe weebi.fence.service.FenceService
-
-
 
 ## prd - TLS /S SSL 
 grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto prd.weebi.com:443 weebi.fence.service.FenceService/healthCheck
