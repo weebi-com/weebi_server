@@ -324,13 +324,38 @@ class FenceService extends FenceServiceBase {
       var jwt = JsonWebToken();
       final payload = userPermission.userPermissions.toProto3Json()
           as Map<String, dynamic>?;
+      
+      // Diagnostic logging: Check payload structure before JWT creation
+      _logger.debug('JWT payload before encoding', extra: {
+        'payloadKeys': payload?.keys.toList(),
+        'payloadSize': payload?.toString().length ?? 0,
+        'hasNullValues': payload?.values.any((v) => v == null) ?? false,
+        'payloadTypes': payload?.map((k, v) => MapEntry(k, v.runtimeType.toString())),
+      });
+      
       jwt.createPayload(
         userPermission.userPermissions.userId,
         expireIn: const Duration(days: 1),
         payload: payload,
       );
+      
+      // Diagnostic logging: Check payload after createPayload
+      _logger.debug('JWT payload after createPayload', extra: {
+        'payloadKeys': jwt.payload.keys.toList(),
+        'payloadSize': jwt.payload.toString().length,
+      });
+      
       jwt.sign();
       final accessToken = jwt.sign();
+      
+      // Diagnostic logging: Check token after signing
+      _logger.debug('JWT token generated', extra: {
+        'tokenLength': accessToken.length,
+        'tokenParts': accessToken.split('.').length,
+        'tokenPreview': accessToken.length > 100 
+            ? '${accessToken.substring(0, 50)}...${accessToken.substring(accessToken.length - 50)}'
+            : accessToken,
+      });
       jwt = JsonWebToken();
       jwt.createPayload(
         userPermission.userPermissions.userId,

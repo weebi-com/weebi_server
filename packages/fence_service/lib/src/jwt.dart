@@ -52,61 +52,44 @@ class JsonWebToken {
     };
   }
 
-  /// Recursively cleans a map to ensure all values are JSON-serializable
-  /// Removes null values and converts non-serializable objects
-  dynamic _cleanValue(dynamic value) {
-    if (value == null) {
-      // Skip null values to avoid JSON encoding issues
-      return null;
-    } else if (value is Map) {
-      final cleaned = <String, dynamic>{};
-      (value as Map<String, dynamic>).forEach((key, val) {
-        final cleanedVal = _cleanValue(val);
-        if (cleanedVal != null) {
-          cleaned[key] = cleanedVal;
-        }
-      });
-      return cleaned;
-    } else if (value is List) {
-      return value.map((item) => _cleanValue(item)).whereType<dynamic>().toList();
-    } else if (value is String || value is num || value is bool) {
-      // Primitive types are safe
-      return value;
-    } else {
-      // For any other type (enums, objects, etc.), convert to string
-      // This ensures JSON serialization always works
-      return value.toString();
-    }
-  }
-
-  Map<String, dynamic> _cleanPayload(Map<String, dynamic> payload) {
-    final cleaned = <String, dynamic>{};
-    payload.forEach((key, value) {
-      final cleanedValue = _cleanValue(value);
-      if (cleanedValue != null) {
-        cleaned[key] = cleanedValue;
-      }
-    });
-    return cleaned;
-  }
-
   String sign() {
     final secretKey = secretKeyFactory();
     
-    // Clean payload to ensure JSON serialization works correctly
-    final cleanedPayload = _cleanPayload(_payload);
-    
-    final encodedHeader = base64Url.encode(utf8.encode(json.encode(_header)));
-    final encodedPayload = base64Url.encode(utf8.encode(json.encode(cleanedPayload)));
+    // Diagnostic: Check payload before JSON encoding
+    try {
+      final jsonString = json.encode(_payload);
+      print('[JWT DEBUG] JSON encoding successful, length: ${jsonString.length}');
+      print('[JWT DEBUG] JSON preview: ${jsonString.length > 200 ? jsonString.substring(0, 200) + "..." : jsonString}');
+      
+      final utf8Bytes = utf8.encode(jsonString);
+      print('[JWT DEBUG] UTF-8 encoding successful, bytes: ${utf8Bytes.length}');
+      
+      final encodedHeader = base64Url.encode(utf8.encode(json.encode(_header)));
+      print('[JWT DEBUG] Header encoded, length: ${encodedHeader.length}');
+      
+      final encodedPayload = base64Url.encode(utf8Bytes);
+      print('[JWT DEBUG] Payload encoded, length: ${encodedPayload.length}');
+      print('[JWT DEBUG] Payload preview: ${encodedPayload.length > 100 ? encodedPayload.substring(0, 50) + "..." + encodedPayload.substring(encodedPayload.length - 50) : encodedPayload}');
 
-    final signature = Hmac(sha256, utf8.encode(secretKey))
-        .convert(utf8.encode('$encodedHeader.$encodedPayload'))
-        .bytes;
+      final signature = Hmac(sha256, utf8.encode(secretKey))
+          .convert(utf8.encode('$encodedHeader.$encodedPayload'))
+          .bytes;
 
-    final encodedSignature = base64Url.encode(signature);
+      final encodedSignature = base64Url.encode(signature);
+      print('[JWT DEBUG] Signature encoded, length: ${encodedSignature.length}');
 
-    _jwt = '$encodedHeader.$encodedPayload.$encodedSignature';
-    return _jwt;
+      _jwt = '$encodedHeader.$encodedPayload.$encodedSignature';
+      print('[JWT DEBUG] Final token length: ${_jwt.length}');
+      print('[JWT DEBUG] Token parts count: ${_jwt.split(".").length}');
+      
+      return _jwt;
+    } catch (e, stackTrace) {
+      print('[JWT ERROR] Failed during sign(): $e');
+      print('[JWT ERROR] Stack trace: $stackTrace');
+      print('[JWT ERROR] Payload keys: ${_payload.keys.toList()}');
+      print('[JWT ERROR] Payload types: ${_payload.map((k, v) => MapEntry(k, v.runtimeType.toString()))}');
+      rethrow;
+    }
   }
 
   bool verify() {
