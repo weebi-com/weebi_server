@@ -1,6 +1,11 @@
 # Specify the Dart SDK base image version using dart:<version> (ex: dart:2.12)
 FROM dart:3.6.0 AS build
 
+# Install protoc and git for proto generation
+RUN apt-get update && \
+    apt-get install -y protobuf-compiler git && \
+    rm -rf /var/lib/apt/lists/*
+
 # to check the path if needed use RUN pwd && ls
 
 # Resolve app dependencies.
@@ -11,8 +16,18 @@ COPY pubspec.* ./
 # We run the command dart pub get to get dependencies. 
 RUN dart pub get
 
+# Install protoc-gen-dart plugin
+RUN dart pub global activate protoc_plugin
+
 # copy all the source code to the container.
 COPY . .
+
+# Generate proto files (this clones the proto repo and generates Dart code)
+# Must be done after copying source code (script needs packages/protos/protos_weebi to exist)
+# but before melos bootstrap to ensure generated files are up-to-date
+RUN chmod +x packages/protos/protos_weebi/tool/generate_protos.sh && \
+    PATH="$PATH:/root/.pub-cache/bin" packages/protos/protos_weebi/tool/generate_protos.sh
+
 RUN dart pub global activate melos
 # Ensure packages are still up-to-date if anything has changed
 RUN melos bootstrap
