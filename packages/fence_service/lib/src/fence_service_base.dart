@@ -2402,17 +2402,146 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> requestPasswordReset(
       ServiceCall? call, PasswordResetRequest request) async {
-    // Password reset functionality removed - will be handled by dedicated email service
-    throw GrpcError.unimplemented(
-        'Password reset functionality temporarily unavailable');
+    _logger.logRpcEntry('requestPasswordReset', call, requestData: {
+      'mail': request.mail,
+    });
+    
+    if (request.mail.isEmpty) {
+      throw GrpcError.invalidArgument('mail cannot be empty');
+    }
+
+    // Verify user exists
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        final userMongo = await userCollection.findOne(
+            where.eq('mail', request.mail));
+
+        if (userMongo == null) {
+          // Don't reveal if email exists or not (security best practice)
+          // But still log for debugging
+          _logger.warning('Password reset requested for non-existent email',
+              extra: {'mail': request.mail});
+          // Return success anyway to prevent email enumeration
+          return StatusResponse()
+            ..type = StatusResponse_Type.SUCCESS
+            ..timestamp = DateTime.now().timestampProto;
+        }
+
+        // Call weebi_express to send password reset email (fire-and-forget)
+        _sendPasswordResetEmailAsync(email: request.mail);
+
+        _logger.logRpcExit('requestPasswordReset', call);
+        return StatusResponse()
+          ..type = StatusResponse_Type.SUCCESS
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        _logger.logRpcError('requestPasswordReset', call, e, extra: {
+          'mail': request.mail,
+        });
+        rethrow;
+      }
+    });
   }
 
   @override
   Future<StatusResponse> confirmPasswordReset(
       ServiceCall? call, PasswordResetConfirmRequest request) async {
-    // Password reset functionality removed - will be handled by dedicated email service
-    throw GrpcError.unimplemented(
-        'Password reset functionality temporarily unavailable');
+    _logger.logRpcEntry('confirmPasswordReset', call, requestData: {
+      'mail': request.mail,
+    });
+    
+    if (request.mail.isEmpty || request.newPassword.isEmpty) {
+      throw GrpcError.invalidArgument('mail and newPassword are required');
+    }
+
+    // Note: Token validation is done by weebi_express before calling this RPC
+    // We just need to update the password
+
+    final passwordNewEncrypted = _checkAndEncryptPassword(request.newPassword);
+
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        final userMongo = await userCollection.findOne(
+            where.eq('mail', request.mail));
+
+        if (userMongo == null) {
+          throw GrpcError.notFound('user with mail ${request.mail} not found');
+        }
+
+        await userCollection.update(
+            where.eq('mail', request.mail),
+            ModifierBuilder()
+                .set('passwordEncrypted', passwordNewEncrypted)
+                .set('mustChangePassword', false));
+
+        _logger.logRpcExit('confirmPasswordReset', call);
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        _logger.logRpcError('confirmPasswordReset', call, e, extra: {
+          'mail': request.mail,
+        });
+        rethrow;
+      }
+    });
+  }
+
+  /// Sends password reset email via weebi_express service (async, non-blocking)
+  /// This is fire-and-forget - errors are logged but don't affect the flow
+  void _sendPasswordResetEmailAsync({
+    required String email,
+  }) {
+    final baseUrl = AppEnvironment.weebiExpressBaseUrl;
+    if (baseUrl == null || baseUrl.isEmpty) {
+      _logger.warning('WEEBI_EXPRESS_BASE_URL not configured, skipping password reset email',
+          extra: {'email': email});
+      return;
+    }
+
+    // Create service account JWT token with weebi_express secret
+    final expressSecret = AppEnvironment.weebiExpressJwtSecretKey;
+    final jwt = JsonWebToken(secretKeyFactory: () => expressSecret);
+    jwt.createPayload(
+      'weebi_express_service_account',
+      expireIn: const Duration(hours: 1),
+    );
+    final token = jwt.sign();
+
+    // Prepare request payload
+    final payload = jsonEncode({
+      'email': email,
+    });
+
+    // Make async HTTP request (fire-and-forget)
+    final url = Uri.parse('$baseUrl/api/v1/emails/send-password-reset');
+    http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: payload,
+    ).then((response) {
+      if (response.statusCode == 200) {
+        _logger.info('Password reset email sent successfully',
+            extra: {'email': email});
+      } else {
+        _logger.warning('Failed to send password reset email',
+            extra: {
+              'email': email,
+              'statusCode': response.statusCode,
+              'response': response.body,
+            });
+      }
+    }).catchError((error) {
+      _logger.error('Error calling weebi_express send-password-reset',
+          extra: {'email': email}, error: error);
+    });
   }
 
   @override
