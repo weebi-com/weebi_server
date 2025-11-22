@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: contact/contact.proto
-//
+// Generated from contact/contact.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -17,14 +18,35 @@ import 'dart:typed_data' as $typed_data;
 const ContactMongo$json = {
   '1': 'ContactMongo',
   '2': [
-    {'1': 'contact', '3': 1, '4': 1, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contact'},
+    {
+      '1': 'contact',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.contact.ContactPb',
+      '10': 'contact'
+    },
     {'1': 'contactId', '3': 2, '4': 1, '5': 5, '10': 'contactId'},
     {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'firmId', '3': 4, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 5, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'creationDate', '3': 6, '4': 1, '5': 9, '10': 'creationDate'},
-    {'1': 'lastTouchTimestampUTC', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
-    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.contact.ContactMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
+    {
+      '1': 'lastTouchTimestampUTC',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastTouchTimestampUTC'
+    },
+    {
+      '1': 'additional_attributes',
+      '3': 99,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.contact.ContactMongo.AdditionalAttributesEntry',
+      '10': 'additional_attributes'
+    },
   ],
   '3': [ContactMongo_AdditionalAttributesEntry$json],
   '9': [
@@ -66,13 +88,34 @@ const ContactPb$json = {
     {'1': 'firstName', '3': 6, '4': 1, '5': 9, '10': 'firstName'},
     {'1': 'lastName', '3': 7, '4': 1, '5': 9, '10': 'lastName'},
     {'1': 'mail', '3': 8, '4': 1, '5': 9, '10': 'mail'},
-    {'1': 'phone', '3': 9, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
-    {'1': 'addressFull', '3': 10, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
+    {
+      '1': 'phone',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.common.phone.Phone',
+      '10': 'phone'
+    },
+    {
+      '1': 'addressFull',
+      '3': 10,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.common.address.Address',
+      '10': 'addressFull'
+    },
     {'1': 'overdraft', '3': 11, '4': 1, '5': 3, '10': 'overdraft'},
     {'1': 'tags', '3': 12, '4': 3, '5': 9, '10': 'categories'},
     {'1': 'isClient', '3': 13, '4': 1, '5': 8, '10': 'isClient'},
     {'1': 'isSupplier', '3': 14, '4': 1, '5': 8, '10': 'isSupplier'},
-    {'1': 'othersAttributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb.OthersAttributesEntry', '10': 'othersAttributes'},
+    {
+      '1': 'othersAttributes',
+      '3': 99,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.contact.ContactPb.OthersAttributesEntry',
+      '10': 'othersAttributes'
+    },
   ],
   '3': [ContactPb_OthersAttributesEntry$json],
   '9': [
@@ -104,4 +147,3 @@ final $typed_data.Uint8List contactPbDescriptor = $convert.base64Decode(
     '53ZWViaS5jb250YWN0LkNvbnRhY3RQYi5PdGhlcnNBdHRyaWJ1dGVzRW50cnlSEG90aGVyc0F0'
     'dHJpYnV0ZXMaQwoVT3RoZXJzQXR0cmlidXRlc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBX'
     'ZhbHVlGAIgASgJUgV2YWx1ZToCOAFKBAgPEGM=');
-

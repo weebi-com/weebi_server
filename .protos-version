@@ -1,0 +1,6 @@
+# Proto files version
+# This file should match the version used in weebi_express
+# Update this when updating proto dependencies
+PROTOS_VERSION=1.1.0
+PROTOS_COMMIT=main
+

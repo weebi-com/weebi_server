@@ -1,5 +1,13 @@
 # weebi dart grpc server
 
+
+## install proto tools
+
+choco install protoc
+
+cd packages\protos\protos_weebi\tool
+.\generate_protos.ps1
+
 ## test it
 grpcurl -proto packages\protos\proto\weebi_app_service.proto dev.weebicom:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion
 > for more see file `_curls.md`
@@ -15,9 +23,14 @@ dart pub global activate melos
 melos bootstrap
 cd app/server
 dart bin/server_local.dart
+
+# in another terminal 
+cd packages/protos/proto/
+grpcurl -plaintext -proto fence_service.proto -d '{\"mail\": \"test@test.test\", \"password\": \"mypassword\"}' localhost:8080 weebi.fence.service.FenceService/authenticateWithCredentials
 ```
 
 ## run in dev/prod
+
 ```shell
 $env:MONGO_DB_URI="your_mongodb_connection_string_here"
 $env:PORT="8080"
@@ -39,10 +52,10 @@ Name it something like MongoDB Outbound, click Finish.
 Platform.environment : 
 ['PORT'] -- gRPC server port (default: 8080)
 ['MONGO_DB_URI']
-['JWT_SECRET_KEY']
+['JWT_SECRET_KEY'] -- JWT secret for signing tokens (shared with weebi_express)
+['WEEBI_EXPRESS_BASE_URL'] -- Base URL of weebi_express service (optional, e.g., http://localhost:8080)
+['WEEBI_EXPRESS_JWT_SECRET_KEY'] -- JWT secret for weebi_express (optional, defaults to JWT_SECRET_KEY)
 
-Note: HTTP REST server and email functionality has been removed.
+Note: HTTP REST server and email functionality has been removed from fence_service.
+Email functionality is now handled by weebi_express service.
 Use healthCheck gRPC method for service health and version information.
-
-
-s

@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:io';
+import 'dart:convert';
 import 'package:pubspec_parse/pubspec_parse.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:collection/collection.dart';
 // ignore: unnecessary_import
@@ -16,6 +18,9 @@ import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:fence_service/fence_service.dart';
+import 'package:fence_service/src/weebi_logger.dart';
+import 'package:fence_service/src/constants/app_environment.dart';
+import 'package:fence_service/src/jwt.dart';
 
 class PermissionAndSillyBoolean {
   final UserPermissions userPermissions;
@@ -26,6 +31,7 @@ class PermissionAndSillyBoolean {
 
 class FenceService extends FenceServiceBase {
   final MongoDbPoolService _poolService;
+  final WeebiLogger _logger = WeebiLogger.forService('fence_service');
 
   //final DbCollection userCollection;
   //final DbCollection pairingCodesCollection;
@@ -88,7 +94,7 @@ class FenceService extends FenceServiceBase {
                 fenceServiceLockPaths, 'models_weebi'),
       };
     } catch (e) {
-      log('Error getting version info: $e');
+      _logger.error('Error getting version info', error: e);
       return {
         'server': 'unknown',
         'protos_weebi': 'unknown',
@@ -126,7 +132,7 @@ class FenceService extends FenceServiceBase {
     try {
       final pubspecFile = File(absolutePath);
       if (!pubspecFile.existsSync()) {
-        log('Pubspec file not found: $absolutePath');
+        _logger.debug('Pubspec file not found', extra: {'path': absolutePath});
         return 'unknown';
       }
 
@@ -135,7 +141,8 @@ class FenceService extends FenceServiceBase {
 
       return pubspec.version?.toString() ?? 'unknown';
     } catch (e) {
-      log('Error reading version from $absolutePath: $e');
+      _logger.warning('Error reading version from pubspec', extra: {'path': absolutePath});
+      _logger.debug('Version read error details', extra: {'error': e.toString()});
       return 'unknown';
     }
   }
@@ -145,7 +152,7 @@ class FenceService extends FenceServiceBase {
     try {
       final lockFile = File(lockFilePath);
       if (!lockFile.existsSync()) {
-        log('Pubspec.lock file not found: $lockFilePath');
+        _logger.debug('Pubspec.lock file not found', extra: {'path': lockFilePath});
         return 'unknown';
       }
 
@@ -161,7 +168,11 @@ class FenceService extends FenceServiceBase {
 
       return 'unknown';
     } catch (e) {
-      log('Error reading version from $lockFilePath for $packageName: $e');
+      _logger.warning('Error reading version from pubspec.lock', extra: {
+        'path': lockFilePath,
+        'packageName': packageName,
+      });
+      _logger.debug('Version read error details', extra: {'error': e.toString()});
       return 'unknown';
     }
   }
@@ -175,7 +186,7 @@ class FenceService extends FenceServiceBase {
         return true;
       });
     } catch (e) {
-      log('Database health check failed: $e');
+      _logger.error('Database health check failed', error: e);
       return false;
     }
   }
@@ -192,6 +203,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<PendingUserResponse> createPendingUser(
       ServiceCall? call, PendingUserRequest request) async {
+    _logger.logRpcEntry('createPendingUser', call, requestData: {
+      'mail': request.mail,
+      'firmId': request.permissions.firmId,
+    });
+
     final mailChecked = _checkMail(request.mail);
     final passwordEncrypted = _checkAndEncryptPassword(request.password);
 
@@ -283,7 +299,9 @@ class FenceService extends FenceServiceBase {
                 ..timestamp = timestamp);
         }
       } on GrpcError catch (e) {
-        log('user mail ${request.mail} createPendingUser error: $e');
+        _logger.logRpcError('createPendingUser', call, e, extra: {
+          'mail': request.mail,
+        });
         rethrow;
       }
     });
@@ -292,6 +310,10 @@ class FenceService extends FenceServiceBase {
   @override
   Future<Tokens> authenticateWithCredentials(
       ServiceCall? call, Credentials request) async {
+    _logger.logRpcEntry('authenticateWithCredentials', call, requestData: {
+      'mail': request.mail,
+    });
+    
     try {
       final mailAndEncyptedPassword = _checkCredentials(request);
 
@@ -321,15 +343,22 @@ class FenceService extends FenceServiceBase {
       // refresh token only contains userId & firmId
       final resfreshToken = jwt.sign();
       _updateUserLastSignIn;
-      return Tokens(
+      final tokens = Tokens(
           accessToken: accessToken,
           refreshToken: resfreshToken,
           mustChangePassword: userPermission.mustChangePassword);
+      _logger.logRpcExit('authenticateWithCredentials', call);
+      return tokens;
     } on GrpcError catch (e) {
-      log('authenticate error $e');
+      _logger.logRpcError('authenticateWithCredentials', call, e, extra: {
+        'mail': request.mail,
+      });
       rethrow;
     } on MongoDartError catch (e) {
-      log('authenticate MongoDartError ${request.mail} error $e');
+      _logger.logRpcError('authenticateWithCredentials', call, e, extra: {
+        'mail': request.mail,
+        'errorType': 'MongoDartError',
+      });
       rethrow;
     }
   }
@@ -377,6 +406,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<Tokens> authenticateWithRefreshToken(
       ServiceCall? call, RefreshToken request) async {
+    _logger.logRpcEntry('authenticateWithRefreshToken', call);
+    
     try {
       final jwtRefresh = JsonWebToken.parse(request.refreshToken);
       if (!jwtRefresh.verify()) {
@@ -405,9 +436,11 @@ class FenceService extends FenceServiceBase {
       final resfreshToken = jwt.sign();
       // ? is below really useful ?
       await _updateUserLastSignIn(userPrivate.userId);
-      return Tokens(accessToken: accessToken, refreshToken: resfreshToken);
+      final tokens = Tokens(accessToken: accessToken, refreshToken: resfreshToken);
+      _logger.logRpcExit('authenticateWithRefreshToken', call);
+      return tokens;
     } on GrpcError catch (e) {
-      log('authenticateWithRefreshToken $e');
+      _logger.logRpcError('authenticateWithRefreshToken', call, e);
       rethrow;
     }
   }
@@ -481,6 +514,10 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> updateOneUser(
       ServiceCall? call, UserPublic request) async {
+    _logger.logRpcEntry('updateOneUser', call, requestData: {
+      'userId': request.userId,
+    });
+    
     if (request.userId.isEmpty) {
       throw GrpcError.invalidArgument('userId cannot be empty');
     }
@@ -511,6 +548,10 @@ class FenceService extends FenceServiceBase {
   @override
   Future<ReadOneUserResponse> readOneUser(
       ServiceCall? call, UserId request) async {
+    _logger.logRpcEntry('readOneUser', call, requestData: {
+      'userId': request.userId,
+    });
+    
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -582,10 +623,15 @@ class FenceService extends FenceServiceBase {
             user: userFound,
             statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
       } on GrpcError catch (e) {
-        print('readOne error $e');
+        _logger.logRpcError('readOneUser', call, e, extra: {
+          'requestedUserId': request.userId,
+        });
         rethrow;
       } on MongoDartError catch (e) {
-        log('readOneUser userId ${request.userId} MongoDartError error $e');
+        _logger.logRpcError('readOneUser', call, e, extra: {
+          'requestedUserId': request.userId,
+          'errorType': 'MongoDartError',
+        });
         rethrow;
       }
     });
@@ -596,6 +642,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<CodeForPairingDevice> generateCodeForPairingDevice(
       ServiceCall? call, ChainIdAndboutiqueId request) async {
+    _logger.logRpcEntry('generateCodeForPairingDevice', call, requestData: {
+      'chainId': request.chainId,
+      'boutiqueId': request.boutiqueId,
+    });
+    
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -649,11 +700,10 @@ class FenceService extends FenceServiceBase {
           throw GrpcError.unknown('mongo error generateCodeForPairingDevice');
         }
       } on GrpcError catch (e) {
-        print(e);
+        _logger.logRpcError('generateCodeForPairingDevice', call, e);
         rethrow;
       } catch (e, stacktrace) {
-        print(e);
-        print(stacktrace);
+        _logger.logRpcError('generateCodeForPairingDevice', call, e, stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
     });
@@ -673,7 +723,7 @@ class FenceService extends FenceServiceBase {
         return CodeForPairingDevice.create()
           ..mergeFromProto3Json(d, ignoreUnknownFields: true);
       } on MongoDartError catch (e) {
-        print('_isCodeInDb error $e');
+        _logger.error('Error finding code in database', error: e);
         rethrow;
       }
     });
@@ -689,6 +739,13 @@ class FenceService extends FenceServiceBase {
   @override
   Future<CreateDeviceResponse> createDevice(
       ServiceCall? call, PendingDeviceRequest request) async {
+    _logger.logRpcEntry('createDevice', call, requestData: {
+      'code': request.code,
+      'hardwareInfo': {
+        'serialNumber': request.hardwareInfo.serialNumber,
+      },
+    });
+    
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -837,7 +894,7 @@ class FenceService extends FenceServiceBase {
             boutiqueId: device.boutiqueId,
             deviceId: device.deviceId);
       } on GrpcError catch (e) {
-        print('createDevice error $e');
+        _logger.logRpcError('createDevice', call, e);
         rethrow;
       }
     });
@@ -892,7 +949,7 @@ class FenceService extends FenceServiceBase {
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        print('pairOneDevice error $e');
+        _logger.logRpcError('updateDevicePassword', call, e);
         rethrow;
       }
     });
@@ -1610,6 +1667,10 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<SignUpResponse> signUp(ServiceCall call, SignUpRequest request) async {
+    _logger.logRpcEntry('signUp', call, requestData: {
+      'mail': request.mail,
+    });
+    
     final mailAndEncyptedPassword = _checkCredentials(
         Credentials(mail: request.mail, password: request.password));
 
@@ -1652,6 +1713,15 @@ class FenceService extends FenceServiceBase {
         final timestamp = DateTime.now().timestampProto;
         if (result.success && result.document != null) {
           final userId = result.document!['userId'];
+          
+          // Call weebi_express to send confirmation email (fire-and-forget)
+          _sendConfirmationEmailAsync(
+            userId: userId,
+            email: request.mail,
+            firstname: request.firstname,
+            lastname: request.lastname,
+          );
+          
           return SignUpResponse(
               statusResponse: StatusResponse()
                 ..id = userId
@@ -1665,9 +1735,69 @@ class FenceService extends FenceServiceBase {
                 ..timestamp = timestamp);
         }
       } on GrpcError catch (e) {
-        log('user mail ${request.mail} signup error: $e');
+        _logger.error('Signup error', extra: {'mail': request.mail}, error: e);
         rethrow;
       }
+    });
+  }
+
+  /// Sends confirmation email via weebi_express service (async, non-blocking)
+  /// This is fire-and-forget - errors are logged but don't affect the signup flow
+  void _sendConfirmationEmailAsync({
+    required String userId,
+    required String email,
+    required String firstname,
+    required String lastname,
+  }) {
+    final baseUrl = AppEnvironment.weebiExpressBaseUrl;
+    if (baseUrl == null || baseUrl.isEmpty) {
+      _logger.warning('WEEBI_EXPRESS_BASE_URL not configured, skipping confirmation email',
+          extra: {'userId': userId, 'email': email});
+      return;
+    }
+
+    // Create service account JWT token with weebi_express secret
+    final expressSecret = AppEnvironment.weebiExpressJwtSecretKey;
+    final jwt = JsonWebToken(secretKeyFactory: () => expressSecret);
+    jwt.createPayload(
+      'weebi_express_service_account',
+      expireIn: const Duration(hours: 1),
+    );
+    final token = jwt.sign();
+
+    // Prepare request payload
+    final payload = jsonEncode({
+      'userId': userId,
+      'email': email,
+      'firstname': firstname,
+      'lastname': lastname,
+    });
+
+    // Make async HTTP request (fire-and-forget)
+    final url = Uri.parse('$baseUrl/api/v1/emails/send-confirmation');
+    http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: payload,
+    ).then((response) {
+      if (response.statusCode == 200) {
+        _logger.info('Confirmation email sent successfully',
+            extra: {'userId': userId, 'email': email});
+      } else {
+        _logger.warning('Failed to send confirmation email',
+            extra: {
+              'userId': userId,
+              'email': email,
+              'statusCode': response.statusCode,
+              'response': response.body,
+            });
+      }
+    }).catchError((error) {
+      _logger.error('Error calling weebi_express send-confirmation',
+          extra: {'userId': userId, 'email': email}, error: error);
     });
   }
 
@@ -1684,7 +1814,7 @@ class FenceService extends FenceServiceBase {
           return UserPublic.create();
         }
       } catch (e) {
-        log('isMailAlreadyUsed $e');
+        _logger.error('Error checking if mail already used', extra: {'mail': mail}, error: e);
         rethrow;
       }
     });
@@ -1715,7 +1845,7 @@ class FenceService extends FenceServiceBase {
               ..timestamp = DateTime.now().timestampProto,
             userId: user.userId);
       } catch (e) {
-        log('error $e');
+        _logger.error('Error updating pending user', extra: {'userId': user.userId}, error: e);
         rethrow;
       }
     });
@@ -2275,9 +2405,105 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> confirmPasswordReset(
       ServiceCall? call, PasswordResetConfirmRequest request) async {
-    // Password reset functionality removed - will be handled by dedicated email service
-    throw GrpcError.unimplemented(
-        'Password reset functionality temporarily unavailable');
+    _logger.logRpcEntry('confirmPasswordReset', call, requestData: {
+      'mail': request.mail,
+    });
+    
+    if (request.mail.isEmpty || request.newPassword.isEmpty) {
+      throw GrpcError.invalidArgument(
+          'mail and newPassword are required');
+    }
+
+    // Note: Token validation is done by weebi_express before calling this RPC
+    // This method is called by service account, so no user permission check needed
+    final passwordNewEncrypted = _checkAndEncryptPassword(request.newPassword);
+
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        // Find user by email (case-insensitive match)
+        final selector = where.match('mail', r'^' + request.mail.trim() + r'$',
+            caseInsensitive: true);
+        final userMongo = await userCollection.findOne(selector);
+        
+        if (userMongo == null) {
+          throw GrpcError.notFound('user with email ${request.mail} not found');
+        }
+
+        final userPrivate = UserPrivate.create()
+          ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
+
+        // Update password and reset mustChangePassword flag
+        await userCollection.update(
+            where.eq('userId', userPrivate.userId),
+            ModifierBuilder()
+                .set('password', passwordNewEncrypted)
+                .set('mustChangePassword', false));
+
+        _logger.logRpcExit('confirmPasswordReset', call);
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        _logger.logRpcError('confirmPasswordReset', call, e, extra: {
+          'mail': request.mail,
+        });
+        rethrow;
+      } catch (e, stacktrace) {
+        _logger.logRpcError('confirmPasswordReset', call, e, stackTrace: stacktrace, extra: {
+          'mail': request.mail,
+        });
+        rethrow;
+      }
+    });
+  }
+
+  @override
+  Future<StatusResponse> markEmailVerified(
+      ServiceCall? call, MarkEmailVerifiedRequest request) async {
+    _logger.logRpcEntry('markEmailVerified', call, requestData: {
+      'userId': request.userId,
+    });
+    
+    if (request.userId.isEmpty) {
+      throw GrpcError.invalidArgument('userId cannot be empty');
+    }
+
+    // This method is called by service account, so no user permission check needed
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        // Find user by userId
+        final userMongo = await userCollection.findOne(
+            where.eq('userId', request.userId));
+        
+        if (userMongo == null) {
+          throw GrpcError.notFound('user with userId ${request.userId} not found');
+        }
+
+        // Update emailVerificationSent to true
+        await userCollection.update(
+            where.eq('userId', request.userId),
+            ModifierBuilder().set('emailVerificationSent', true));
+
+        _logger.logRpcExit('markEmailVerified', call);
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        _logger.logRpcError('markEmailVerified', call, e, extra: {
+          'userId': request.userId,
+        });
+        rethrow;
+      } catch (e, stacktrace) {
+        _logger.logRpcError('markEmailVerified', call, e, stackTrace: stacktrace, extra: {
+          'userId': request.userId,
+        });
+        rethrow;
+      }
+    });
   }
 
   @override
@@ -2304,7 +2530,7 @@ class FenceService extends FenceServiceBase {
         ..databaseHealthy = isDbHealthy
         ..versions = versions;
     } catch (e) {
-      log('Health check error: $e');
+      _logger.error('Health check error', error: e);
       // Return unhealthy status with unknown versions
       return HealthCheckWeebiResponse()
         ..status = 'unhealthy'

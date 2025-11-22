@@ -36,6 +36,20 @@ class AppEnvironment {
         'This is required in production. For testing, set CI=true or ENVIRONMENT=test');
   }
 
+  // weebi_express service configuration
+  static String? get weebiExpressBaseUrl {
+    return Platform.environment['WEEBI_EXPRESS_BASE_URL'];
+  }
+
+  static String get weebiExpressJwtSecretKey {
+    // Use WEEBI_EXPRESS_JWT_SECRET_KEY if set, otherwise fall back to JWT_SECRET_KEY
+    final expressSecret = Platform.environment['WEEBI_EXPRESS_JWT_SECRET_KEY'];
+    if (expressSecret != null && expressSecret.isNotEmpty) {
+      return expressSecret;
+    }
+    return jwtSecretKey;
+  }
+
   // Environment detection
   static bool get _isTestOrCI {
     // Check for CI environments

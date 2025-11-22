@@ -53,6 +53,9 @@ service FenceService {
   rpc updateUserPassword(PasswordUpdateRequest) returns (google.retail.common.StatusResponse);
   rpc deleteOneUser(UserId) returns (google.retail.common.StatusResponse);
   
+  // Email verification - marks a user's email as verified
+  rpc markEmailVerified(MarkEmailVerifiedRequest) returns (google.retail.common.StatusResponse);
+  
   rpc createOneChain(weebi.chain.Chain) returns (google.retail.common.StatusResponse);
   rpc readAllChains(weebi.common.empty.Empty) returns (ReadAllChainsResponse);
   // only update fiels not boutiques, not upsert, do nothing if unfound
@@ -248,6 +251,10 @@ message PasswordResetConfirmRequest {
   string mail = 1 [json_name = 'mail'];
   string resetToken = 2 [json_name = 'resetToken'];
   string newPassword = 3 [json_name = 'newPassword'];
+}
+
+message MarkEmailVerifiedRequest {
+  string userId = 1 [json_name = 'userId'];
 }
 
 /// Health check response with service versions

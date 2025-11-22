@@ -1,36 +1,39 @@
 # protos_weebi
 
-1 install [protobuf](https://grpc.io/docs/protoc-installation/) 
+Dart package containing generated code from proto files.
 
-## on mac
+## Proto Source
 
-brew install protobuf
+Proto files are fetched from: https://github.com/weebi-com/protos
 
-1. dart pub global activate protoc_plugin
-2. Update your PATH so that the protoc compiler can find the plugin:
-    1. $ export PATH="$PATH:$HOME/.pub-cache/bin"
+## Generating Code
 
-from protos dir
-4.  sh protos_weebi/tool/generate_protos.sh
+To regenerate Dart code from proto files:
 
-## on windows
+```bash
+cd packages/protos/protos_weebi
+bash tool/generate_protos.sh
+```
 
-using WSL
-get WSL
-install dart on linux
-install protobuf
-dart pub global activate protoc_plugin
-find a way to learn how to go back to line with linux file format
+The script will:
+1. Clone or update the proto repository from GitHub
+2. Generate Dart code using `protoc`
+3. Output generated files to `lib/src/generated/`
 
-export PATH="$PATH:$HOME/.pub-cache/bin"
-cd packages/protos && sh protos_weebi/tool/generate_protos.sh
+## Dependencies
 
-cd packages\protos; wsl bash protos_weebi/tool/generate_protos.sh
-***
+This package depends on:
+- `protobuf: ^4.0.0`
+- `grpc: ^4.0.1`
+- `fixnum: ^1.1.1`
+- `crypto: ^3.0.3`
 
-note that id are used as key for offline first objects made in the weebi app, 
-e.g. article, contact, ticket
-primary key for those common at chain level (article,contact) is id & chainId
-primary key for those at the boutique level (ticket) is id & chainId & boutiqueId
+## troubleshooting
 
-firmId is saved on all objects as a commodity
+To use a specific version:
+Tag the protos repo: git tag v1.0.0 && git push origin v1.0.0
+Update both .protos-version files:
+   PROTOS_VERSION=1.0.0   PROTOS_COMMIT=v1.0.0
+Run the generation scripts — they'll check out that tag
+
+.\scripts\check_protos_version.ps1

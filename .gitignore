@@ -30,3 +30,5 @@ kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials.k
 /kreya_api_calling/weebi/fence/service/FenceService/authenticateWithRefreshToken.krop
 kreya_api_calling/weebi/fence/service/FenceService/authenticateWithCredentials-request.json
 kreya_api_calling/weebi/fence/service/FenceService/authenticateWithRefreshToken-request.json
+mongodb_scripts/create_service_account.js
+reinstall_flutter.sh

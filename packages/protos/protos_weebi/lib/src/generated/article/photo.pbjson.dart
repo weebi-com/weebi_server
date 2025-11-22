@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: article/photo.proto
-//
+// Generated from article/photo.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -21,8 +22,22 @@ const ArticlePhotoMongo$json = {
     {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'calibreId', '3': 4, '4': 1, '5': 5, '10': 'calibreId'},
-    {'1': 'photo', '3': 5, '4': 1, '5': 11, '6': '.weebi.photo.ArticlePhotoPb', '10': 'photo'},
-    {'1': 'lastTouchTimestampUTC', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
+    {
+      '1': 'photo',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.photo.ArticlePhotoPb',
+      '10': 'photo'
+    },
+    {
+      '1': 'lastTouchTimestampUTC',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastTouchTimestampUTC'
+    },
   ],
 };
 
@@ -41,7 +56,14 @@ const ArticlePhotoPb$json = {
     {'1': 'calibreId', '3': 1, '4': 1, '5': 5, '10': 'calibreId'},
     {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
     {'1': 'data', '3': 3, '4': 1, '5': 12, '10': 'data'},
-    {'1': 'extension', '3': 4, '4': 1, '5': 14, '6': '.weebi.photo.ArticlePhotoPb.ExtensionPb', '10': 'extension'},
+    {
+      '1': 'extension',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.photo.ArticlePhotoPb.ExtensionPb',
+      '10': 'extension'
+    },
   ],
   '4': [ArticlePhotoPb_ExtensionPb$json],
 };
@@ -62,4 +84,3 @@ final $typed_data.Uint8List articlePhotoPbDescriptor = $convert.base64Decode(
     'EoBVICaWQSEgoEZGF0YRgDIAEoDFIEZGF0YRJFCglleHRlbnNpb24YBCABKA4yJy53ZWViaS5w'
     'aG90by5BcnRpY2xlUGhvdG9QYi5FeHRlbnNpb25QYlIJZXh0ZW5zaW9uIi0KC0V4dGVuc2lvbl'
     'BiEgsKB3Vua25vd24QABIHCgNwbmcQARIICgRqcGVnEAI=');
-
