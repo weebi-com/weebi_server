@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: article/article_service.proto
-//
+// Generated from article/article_service.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -33,7 +34,14 @@ const ReadAllRequest$json = {
   '1': 'ReadAllRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'lastFetchTimestampUTC', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastFetchTimestampUTC'},
+    {
+      '1': 'lastFetchTimestampUTC',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastFetchTimestampUTC'
+    },
   ],
 };
 
@@ -48,7 +56,14 @@ const CalibreRequest$json = {
   '1': 'CalibreRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'calibre', '3': 2, '4': 1, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibre'},
+    {
+      '1': 'calibre',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.article.CalibrePb',
+      '10': 'calibre'
+    },
   ],
 };
 
@@ -62,7 +77,14 @@ const CalibresRequest$json = {
   '1': 'CalibresRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'calibres', '3': 2, '4': 3, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibres'},
+    {
+      '1': 'calibres',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.article.CalibrePb',
+      '10': 'calibres'
+    },
   ],
 };
 
@@ -75,7 +97,14 @@ final $typed_data.Uint8List calibresRequestDescriptor = $convert.base64Decode(
 const CalibresResponse$json = {
   '1': 'CalibresResponse',
   '2': [
-    {'1': 'calibres', '3': 1, '4': 3, '5': 11, '6': '.weebi.article.CalibrePb', '10': 'calibres'},
+    {
+      '1': 'calibres',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.article.CalibrePb',
+      '10': 'calibres'
+    },
   ],
 };
 
@@ -93,8 +122,8 @@ const ReadIdsRequest$json = {
 };
 
 /// Descriptor for `ReadIdsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List readIdsRequestDescriptor = $convert.base64Decode(
-    'Cg5SZWFkSWRzUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklk');
+final $typed_data.Uint8List readIdsRequestDescriptor = $convert
+    .base64Decode('Cg5SZWFkSWRzUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklk');
 
 @$core.Deprecated('Use calibresIdsResponseDescriptor instead')
 const CalibresIdsResponse$json = {
@@ -105,8 +134,8 @@ const CalibresIdsResponse$json = {
 };
 
 /// Descriptor for `CalibresIdsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List calibresIdsResponseDescriptor = $convert.base64Decode(
-    'ChNDYWxpYnJlc0lkc1Jlc3BvbnNlEhAKA2lkcxgBIAMoBVIDaWRz');
+final $typed_data.Uint8List calibresIdsResponseDescriptor = $convert
+    .base64Decode('ChNDYWxpYnJlc0lkc1Jlc3BvbnNlEhAKA2lkcxgBIAMoBVIDaWRz');
 
 @$core.Deprecated('Use findCategoryRequestDescriptor instead')
 const FindCategoryRequest$json = {
@@ -131,15 +160,23 @@ const ReadCategoriesRequest$json = {
 };
 
 /// Descriptor for `ReadCategoriesRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List readCategoriesRequestDescriptor = $convert.base64Decode(
-    'ChVSZWFkQ2F0ZWdvcmllc1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZA==');
+final $typed_data.Uint8List readCategoriesRequestDescriptor =
+    $convert.base64Decode(
+        'ChVSZWFkQ2F0ZWdvcmllc1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZA==');
 
 @$core.Deprecated('Use categoryRequestDescriptor instead')
 const CategoryRequest$json = {
   '1': 'CategoryRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'category', '3': 2, '4': 1, '5': 11, '6': '.weebi.category.CategoryPb', '10': 'category'},
+    {
+      '1': 'category',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.category.CategoryPb',
+      '10': 'category'
+    },
   ],
 };
 
@@ -152,7 +189,14 @@ final $typed_data.Uint8List categoryRequestDescriptor = $convert.base64Decode(
 const CategoriesResponse$json = {
   '1': 'CategoriesResponse',
   '2': [
-    {'1': 'categories', '3': 1, '4': 3, '5': 11, '6': '.weebi.category.CategoryPb', '10': 'categories'},
+    {
+      '1': 'categories',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.category.CategoryPb',
+      '10': 'categories'
+    },
   ],
 };
 
@@ -181,7 +225,14 @@ const ReadPhotosRequest$json = {
   '1': 'ReadPhotosRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'lastFetchTimestampUTC', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastFetchTimestampUTC'},
+    {
+      '1': 'lastFetchTimestampUTC',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastFetchTimestampUTC'
+    },
     {'1': 'offset', '3': 3, '4': 1, '5': 5, '10': 'offset'},
     {'1': 'limit', '3': 4, '4': 1, '5': 5, '10': 'limit'},
   ],
@@ -199,7 +250,14 @@ const PhotoRequest$json = {
   '1': 'PhotoRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'photo', '3': 2, '4': 1, '5': 11, '6': '.weebi.photo.ArticlePhotoPb', '10': 'photo'},
+    {
+      '1': 'photo',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.photo.ArticlePhotoPb',
+      '10': 'photo'
+    },
   ],
 };
 
@@ -213,7 +271,14 @@ const PhotosRequest$json = {
   '1': 'PhotosRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'photos', '3': 2, '4': 3, '5': 11, '6': '.weebi.photo.ArticlePhotoPb', '10': 'photos'},
+    {
+      '1': 'photos',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.photo.ArticlePhotoPb',
+      '10': 'photos'
+    },
   ],
 };
 
@@ -226,7 +291,14 @@ final $typed_data.Uint8List photosRequestDescriptor = $convert.base64Decode(
 const PhotosResponse$json = {
   '1': 'PhotosResponse',
   '2': [
-    {'1': 'photos', '3': 1, '4': 3, '5': 11, '6': '.weebi.photo.ArticlePhotoPb', '10': 'photos'},
+    {
+      '1': 'photos',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.photo.ArticlePhotoPb',
+      '10': 'photos'
+    },
     {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
     {'1': 'offset', '3': 3, '4': 1, '5': 5, '10': 'offset'},
     {'1': 'hasMore', '3': 4, '4': 1, '5': 8, '10': 'hasMore'},
@@ -240,4 +312,3 @@ final $typed_data.Uint8List photosResponseDescriptor = $convert.base64Decode(
     'hvdG9QYlIGcGhvdG9zEhQKBXRvdGFsGAIgASgFUgV0b3RhbBIWCgZvZmZzZXQYAyABKAVSBm9m'
     'ZnNldBIYCgdoYXNNb3JlGAQgASgIUgdoYXNNb3JlEhwKCWJhdGNoU2l6ZRgFIAEoBVIJYmF0Y2'
     'hTaXpl');
-

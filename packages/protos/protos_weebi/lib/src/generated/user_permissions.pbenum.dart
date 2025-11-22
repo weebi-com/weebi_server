@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: user_permissions.proto
-//
+// Generated from user_permissions.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names
 
 import 'dart:core' as $core;
 
@@ -21,7 +22,7 @@ class Right extends $pb.ProtobufEnum {
   static const Right update = Right._(3, _omitEnumNames ? '' : 'update');
   static const Right delete = Right._(4, _omitEnumNames ? '' : 'delete');
 
-  static const $core.List<Right> values = <Right> [
+  static const $core.List<Right> values = <Right>[
     unknown,
     create,
     read,
@@ -29,11 +30,13 @@ class Right extends $pb.ProtobufEnum {
     delete,
   ];
 
-  static final $core.List<Right?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 4);
-  static Right? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
+  static final $core.List<Right?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 4);
+  static Right? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const Right._(super.v, super.n);
+  const Right._(super.value, super.name);
 }
 
-
-const _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');
+const $core.bool _omitEnumNames =
+    $core.bool.fromEnvironment('protobuf.omit_enum_names');

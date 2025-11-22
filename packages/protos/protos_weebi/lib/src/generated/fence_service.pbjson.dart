@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: fence_service.proto
-//
+// Generated from fence_service.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -32,7 +33,14 @@ const BoutiqueRequest$json = {
   '1': 'BoutiqueRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'boutique', '3': 2, '4': 1, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutique'},
+    {
+      '1': 'boutique',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.boutique.BoutiquePb',
+      '10': 'boutique'
+    },
     {'1': 'logo', '3': 3, '4': 1, '5': 12, '10': 'logo'},
     {'1': 'logoExtension', '3': 4, '4': 1, '5': 9, '10': 'logoExtension'},
   ],
@@ -48,7 +56,14 @@ final $typed_data.Uint8List boutiqueRequestDescriptor = $convert.base64Decode(
 const BoutiqueResponse$json = {
   '1': 'BoutiqueResponse',
   '2': [
-    {'1': 'boutique', '3': 1, '4': 1, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutique'},
+    {
+      '1': 'boutique',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.boutique.BoutiquePb',
+      '10': 'boutique'
+    },
     {'1': 'logo', '3': 2, '4': 1, '5': 12, '10': 'logo'},
     {'1': 'logoExtension', '3': 3, '4': 1, '5': 9, '10': 'logoExtension'},
   ],
@@ -64,7 +79,14 @@ final $typed_data.Uint8List boutiqueResponseDescriptor = $convert.base64Decode(
 const CreateDeviceResponse$json = {
   '1': 'CreateDeviceResponse',
   '2': [
-    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
+    {
+      '1': 'statusResponse',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.retail.common.StatusResponse',
+      '10': 'statusResponse'
+    },
     {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 3, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'boutiqueId', '3': 4, '4': 1, '5': 9, '10': 'boutiqueId'},
@@ -83,8 +105,22 @@ final $typed_data.Uint8List createDeviceResponseDescriptor = $convert.base64Deco
 const ReadOneUserResponse$json = {
   '1': 'ReadOneUserResponse',
   '2': [
-    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
-    {'1': 'user', '3': 2, '4': 1, '5': 11, '6': '.weebi.user.UserPublic', '10': 'user'},
+    {
+      '1': 'statusResponse',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.retail.common.StatusResponse',
+      '10': 'statusResponse'
+    },
+    {
+      '1': 'user',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.UserPublic',
+      '10': 'user'
+    },
   ],
 };
 
@@ -98,7 +134,14 @@ final $typed_data.Uint8List readOneUserResponseDescriptor = $convert.base64Decod
 const UsersPublic$json = {
   '1': 'UsersPublic',
   '2': [
-    {'1': 'users', '3': 1, '4': 3, '5': 11, '6': '.weebi.user.UserPublic', '10': 'users'},
+    {
+      '1': 'users',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.user.UserPublic',
+      '10': 'users'
+    },
   ],
 };
 
@@ -111,7 +154,14 @@ final $typed_data.Uint8List usersPublicDescriptor = $convert.base64Decode(
 const ReadAllChainsResponse$json = {
   '1': 'ReadAllChainsResponse',
   '2': [
-    {'1': 'chains', '3': 1, '4': 3, '5': 11, '6': '.weebi.chain.Chain', '10': 'chains'},
+    {
+      '1': 'chains',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.chain.Chain',
+      '10': 'chains'
+    },
   ],
 };
 
@@ -124,14 +174,22 @@ final $typed_data.Uint8List readAllChainsResponseDescriptor = $convert.base64Dec
 const ReadAllBoutiquesResponse$json = {
   '1': 'ReadAllBoutiquesResponse',
   '2': [
-    {'1': 'boutiques', '3': 1, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutiques'},
+    {
+      '1': 'boutiques',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.boutique.BoutiquePb',
+      '10': 'boutiques'
+    },
   ],
 };
 
 /// Descriptor for `ReadAllBoutiquesResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List readAllBoutiquesResponseDescriptor = $convert.base64Decode(
-    'ChhSZWFkQWxsQm91dGlxdWVzUmVzcG9uc2USOAoJYm91dGlxdWVzGAEgAygLMhoud2VlYmkuYm'
-    '91dGlxdWUuQm91dGlxdWVQYlIJYm91dGlxdWVz');
+final $typed_data.Uint8List readAllBoutiquesResponseDescriptor =
+    $convert.base64Decode(
+        'ChhSZWFkQWxsQm91dGlxdWVzUmVzcG9uc2USOAoJYm91dGlxdWVzGAEgAygLMhoud2VlYmkuYm'
+        '91dGlxdWUuQm91dGlxdWVQYlIJYm91dGlxdWVz');
 
 @$core.Deprecated('Use readDevicesRequestDescriptor instead')
 const ReadDevicesRequest$json = {
@@ -142,8 +200,9 @@ const ReadDevicesRequest$json = {
 };
 
 /// Descriptor for `ReadDevicesRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List readDevicesRequestDescriptor = $convert.base64Decode(
-    'ChJSZWFkRGV2aWNlc1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZA==');
+final $typed_data.Uint8List readDevicesRequestDescriptor =
+    $convert.base64Decode(
+        'ChJSZWFkRGV2aWNlc1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZA==');
 
 @$core.Deprecated('Use isADeviceInChainResponseDescriptor instead')
 const IsADeviceInChainResponse$json = {
@@ -154,9 +213,10 @@ const IsADeviceInChainResponse$json = {
 };
 
 /// Descriptor for `IsADeviceInChainResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List isADeviceInChainResponseDescriptor = $convert.base64Decode(
-    'ChhJc0FEZXZpY2VJbkNoYWluUmVzcG9uc2USHAoJaXNBRGV2aWNlGAEgASgIUglpc0FEZXZpY2'
-    'U=');
+final $typed_data.Uint8List isADeviceInChainResponseDescriptor =
+    $convert.base64Decode(
+        'ChhJc0FEZXZpY2VJbkNoYWluUmVzcG9uc2USHAoJaXNBRGV2aWNlGAEgASgIUglpc0FEZXZpY2'
+        'U=');
 
 @$core.Deprecated('Use readDeviceBtqRequestDescriptor instead')
 const ReadDeviceBtqRequest$json = {
@@ -177,7 +237,14 @@ const DeleteDeviceRequest$json = {
   '1': 'DeleteDeviceRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'device', '3': 2, '4': 1, '5': 11, '6': '.weebi.device.Device', '10': 'device'},
+    {
+      '1': 'device',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.device.Device',
+      '10': 'device'
+    },
   ],
 };
 
@@ -191,14 +258,21 @@ const MailAndEncyptedPassword$json = {
   '1': 'MailAndEncyptedPassword',
   '2': [
     {'1': 'mail', '3': 1, '4': 1, '5': 9, '10': 'mail'},
-    {'1': 'passwordEncrypted', '3': 2, '4': 1, '5': 9, '10': 'passwordEncrypted'},
+    {
+      '1': 'passwordEncrypted',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '10': 'passwordEncrypted'
+    },
   ],
 };
 
 /// Descriptor for `MailAndEncyptedPassword`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List mailAndEncyptedPasswordDescriptor = $convert.base64Decode(
-    'ChdNYWlsQW5kRW5jeXB0ZWRQYXNzd29yZBISCgRtYWlsGAEgASgJUgRtYWlsEiwKEXBhc3N3b3'
-    'JkRW5jcnlwdGVkGAIgASgJUhFwYXNzd29yZEVuY3J5cHRlZA==');
+final $typed_data.Uint8List mailAndEncyptedPasswordDescriptor =
+    $convert.base64Decode(
+        'ChdNYWlsQW5kRW5jeXB0ZWRQYXNzd29yZBISCgRtYWlsGAEgASgJUgRtYWlsEiwKEXBhc3N3b3'
+        'JkRW5jcnlwdGVkGAIgASgJUhFwYXNzd29yZEVuY3J5cHRlZA==');
 
 @$core.Deprecated('Use userIdDescriptor instead')
 const UserId$json = {
@@ -209,15 +283,29 @@ const UserId$json = {
 };
 
 /// Descriptor for `UserId`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List userIdDescriptor = $convert.base64Decode(
-    'CgZVc2VySWQSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQ=');
+final $typed_data.Uint8List userIdDescriptor =
+    $convert.base64Decode('CgZVc2VySWQSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQ=');
 
 @$core.Deprecated('Use accessDescriptor instead')
 const Access$json = {
   '1': 'Access',
   '2': [
-    {'1': 'chainIds', '3': 1, '4': 1, '5': 11, '6': '.weebi.user.permissions.ChainIds', '10': 'chainIds'},
-    {'1': 'boutiqueIds', '3': 2, '4': 1, '5': 11, '6': '.weebi.user.permissions.BoutiqueIds', '10': 'boutiqueIds'},
+    {
+      '1': 'chainIds',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.ChainIds',
+      '10': 'chainIds'
+    },
+    {
+      '1': 'boutiqueIds',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.BoutiqueIds',
+      '10': 'boutiqueIds'
+    },
   ],
 };
 
@@ -277,7 +365,13 @@ const Tokens$json = {
   '2': [
     {'1': 'accessToken', '3': 1, '4': 1, '5': 9, '10': 'accessToken'},
     {'1': 'refreshToken', '3': 2, '4': 1, '5': 9, '10': 'refreshToken'},
-    {'1': 'mustChangePassword', '3': 3, '4': 1, '5': 8, '10': 'mustChangePassword'},
+    {
+      '1': 'mustChangePassword',
+      '3': 3,
+      '4': 1,
+      '5': 8,
+      '10': 'mustChangePassword'
+    },
   ],
 };
 
@@ -292,14 +386,22 @@ const UpdateDevicePasswordRequest$json = {
   '1': 'UpdateDevicePasswordRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'device', '3': 2, '4': 1, '5': 11, '6': '.weebi.device.Device', '10': 'device'},
+    {
+      '1': 'device',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.device.Device',
+      '10': 'device'
+    },
   ],
 };
 
 /// Descriptor for `UpdateDevicePasswordRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List updateDevicePasswordRequestDescriptor = $convert.base64Decode(
-    'ChtVcGRhdGVEZXZpY2VQYXNzd29yZFJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZB'
-    'IsCgZkZXZpY2UYAiABKAsyFC53ZWViaS5kZXZpY2UuRGV2aWNlUgZkZXZpY2U=');
+final $typed_data.Uint8List updateDevicePasswordRequestDescriptor =
+    $convert.base64Decode(
+        'ChtVcGRhdGVEZXZpY2VQYXNzd29yZFJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZB'
+        'IsCgZkZXZpY2UYAiABKAsyFC53ZWViaS5kZXZpY2UuRGV2aWNlUgZkZXZpY2U=');
 
 @$core.Deprecated('Use passwordUpdateRequestDescriptor instead')
 const PasswordUpdateRequest$json = {
@@ -322,7 +424,14 @@ final $typed_data.Uint8List passwordUpdateRequestDescriptor = $convert.base64Dec
 const PendingDeviceRequest$json = {
   '1': 'PendingDeviceRequest',
   '2': [
-    {'1': 'hardwareInfo', '3': 1, '4': 1, '5': 11, '6': '.weebi.device.HardwareInfo', '10': 'hardwareInfo'},
+    {
+      '1': 'hardwareInfo',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.device.HardwareInfo',
+      '10': 'hardwareInfo'
+    },
     {'1': 'code', '3': 2, '4': 1, '5': 5, '10': 'code'},
   ],
 };
@@ -341,7 +450,14 @@ const CodeForPairingDevice$json = {
     {'1': 'boutiqueId', '3': 3, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'userId', '3': 4, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'code', '3': 5, '4': 1, '5': 5, '10': 'code'},
-    {'1': 'timestampUTC', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'timestampUTC'},
+    {
+      '1': 'timestampUTC',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'timestampUTC'
+    },
   ],
 };
 
@@ -356,7 +472,14 @@ final $typed_data.Uint8List codeForPairingDeviceDescriptor = $convert.base64Deco
 const ApproveDeviceRequest$json = {
   '1': 'ApproveDeviceRequest',
   '2': [
-    {'1': 'device', '3': 1, '4': 1, '5': 11, '6': '.weebi.device.Device', '10': 'device'},
+    {
+      '1': 'device',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.device.Device',
+      '10': 'device'
+    },
   ],
 };
 
@@ -374,8 +497,8 @@ const PasswordResetRequest$json = {
 };
 
 /// Descriptor for `PasswordResetRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List passwordResetRequestDescriptor = $convert.base64Decode(
-    'ChRQYXNzd29yZFJlc2V0UmVxdWVzdBISCgRtYWlsGAEgASgJUgRtYWls');
+final $typed_data.Uint8List passwordResetRequestDescriptor = $convert
+    .base64Decode('ChRQYXNzd29yZFJlc2V0UmVxdWVzdBISCgRtYWlsGAEgASgJUgRtYWls');
 
 @$core.Deprecated('Use passwordResetConfirmRequestDescriptor instead')
 const PasswordResetConfirmRequest$json = {
@@ -388,10 +511,24 @@ const PasswordResetConfirmRequest$json = {
 };
 
 /// Descriptor for `PasswordResetConfirmRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List passwordResetConfirmRequestDescriptor = $convert.base64Decode(
-    'ChtQYXNzd29yZFJlc2V0Q29uZmlybVJlcXVlc3QSEgoEbWFpbBgBIAEoCVIEbWFpbBIeCgpyZX'
-    'NldFRva2VuGAIgASgJUgpyZXNldFRva2VuEiAKC25ld1Bhc3N3b3JkGAMgASgJUgtuZXdQYXNz'
-    'd29yZA==');
+final $typed_data.Uint8List passwordResetConfirmRequestDescriptor =
+    $convert.base64Decode(
+        'ChtQYXNzd29yZFJlc2V0Q29uZmlybVJlcXVlc3QSEgoEbWFpbBgBIAEoCVIEbWFpbBIeCgpyZX'
+        'NldFRva2VuGAIgASgJUgpyZXNldFRva2VuEiAKC25ld1Bhc3N3b3JkGAMgASgJUgtuZXdQYXNz'
+        'd29yZA==');
+
+@$core.Deprecated('Use markEmailVerifiedRequestDescriptor instead')
+const MarkEmailVerifiedRequest$json = {
+  '1': 'MarkEmailVerifiedRequest',
+  '2': [
+    {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+  ],
+};
+
+/// Descriptor for `MarkEmailVerifiedRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List markEmailVerifiedRequestDescriptor =
+    $convert.base64Decode(
+        'ChhNYXJrRW1haWxWZXJpZmllZFJlcXVlc3QSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQ=');
 
 @$core.Deprecated('Use healthCheckWeebiResponseDescriptor instead')
 const HealthCheckWeebiResponse$json = {
@@ -399,7 +536,14 @@ const HealthCheckWeebiResponse$json = {
   '2': [
     {'1': 'status', '3': 1, '4': 1, '5': 9, '10': 'status'},
     {'1': 'timestamp', '3': 2, '4': 1, '5': 9, '10': 'timestamp'},
-    {'1': 'versions', '3': 3, '4': 1, '5': 11, '6': '.weebi.fence.service.ServiceVersions', '10': 'versions'},
+    {
+      '1': 'versions',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.fence.service.ServiceVersions',
+      '10': 'versions'
+    },
     {'1': 'databaseHealthy', '3': 4, '4': 1, '5': 8, '10': 'databaseHealthy'},
   ],
 };
@@ -427,4 +571,3 @@ final $typed_data.Uint8List serviceVersionsDescriptor = $convert.base64Decode(
     'Cg9TZXJ2aWNlVmVyc2lvbnMSFgoGc2VydmVyGAEgASgJUgZzZXJ2ZXISIgoMcHJvdG9zX3dlZW'
     'JpGAIgASgJUgxwcm90b3Nfd2VlYmkSJAoNZmVuY2Vfc2VydmljZRgDIAEoCVINZmVuY2Vfc2Vy'
     'dmljZRIiCgxtb2RlbHNfd2VlYmkYBCABKAlSDG1vZGVsc193ZWViaQ==');
-

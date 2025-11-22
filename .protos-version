@@ -1,0 +1,10 @@
+# Proto version configuration for weebi_server
+# This file specifies which version of the protos repository to use
+
+# Version tag (e.g., v1.0.0) or branch name (e.g., main)
+PROTOS_VERSION=1.1.1
+
+# Specific commit hash or tag to use (overrides PROTOS_VERSION if set)
+# Leave empty to use PROTOS_VERSION
+PROTOS_COMMIT=main
+

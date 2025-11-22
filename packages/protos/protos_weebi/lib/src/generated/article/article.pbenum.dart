@@ -1,48 +1,63 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: article/article.proto
-//
+// Generated from article/article.proto.
+
 // @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names
 
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class ArticleKindPb extends $pb.ProtobufEnum {
-  static const ArticleKindPb unknown = ArticleKindPb._(0, _omitEnumNames ? '' : 'unknown');
-  static const ArticleKindPb retail = ArticleKindPb._(1, _omitEnumNames ? '' : 'retail');
-  static const ArticleKindPb basket = ArticleKindPb._(2, _omitEnumNames ? '' : 'basket');
-  static const ArticleKindPb uncountable = ArticleKindPb._(3, _omitEnumNames ? '' : 'uncountable');
+  static const ArticleKindPb unknown =
+      ArticleKindPb._(0, _omitEnumNames ? '' : 'unknown');
+  static const ArticleKindPb retail =
+      ArticleKindPb._(1, _omitEnumNames ? '' : 'retail');
+  static const ArticleKindPb basket =
+      ArticleKindPb._(2, _omitEnumNames ? '' : 'basket');
+  static const ArticleKindPb uncountable =
+      ArticleKindPb._(3, _omitEnumNames ? '' : 'uncountable');
 
-  static const $core.List<ArticleKindPb> values = <ArticleKindPb> [
+  static const $core.List<ArticleKindPb> values = <ArticleKindPb>[
     unknown,
     retail,
     basket,
     uncountable,
   ];
 
-  static final $core.List<ArticleKindPb?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 3);
-  static ArticleKindPb? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
+  static final $core.List<ArticleKindPb?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
+  static ArticleKindPb? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const ArticleKindPb._(super.v, super.n);
+  const ArticleKindPb._(super.value, super.name);
 }
 
 class CalibrePb_StockUnit extends $pb.ProtobufEnum {
-  static const CalibrePb_StockUnit unknown = CalibrePb_StockUnit._(0, _omitEnumNames ? '' : 'unknown');
-  static const CalibrePb_StockUnit centiliter = CalibrePb_StockUnit._(1, _omitEnumNames ? '' : 'centiliter');
-  static const CalibrePb_StockUnit centimeter = CalibrePb_StockUnit._(2, _omitEnumNames ? '' : 'centimeter');
-  static const CalibrePb_StockUnit gram = CalibrePb_StockUnit._(3, _omitEnumNames ? '' : 'gram');
-  static const CalibrePb_StockUnit kilogram = CalibrePb_StockUnit._(4, _omitEnumNames ? '' : 'kilogram');
-  static const CalibrePb_StockUnit liter = CalibrePb_StockUnit._(5, _omitEnumNames ? '' : 'liter');
-  static const CalibrePb_StockUnit meter = CalibrePb_StockUnit._(6, _omitEnumNames ? '' : 'meter');
-  static const CalibrePb_StockUnit unit = CalibrePb_StockUnit._(7, _omitEnumNames ? '' : 'unit');
+  static const CalibrePb_StockUnit unknown =
+      CalibrePb_StockUnit._(0, _omitEnumNames ? '' : 'unknown');
+  static const CalibrePb_StockUnit centiliter =
+      CalibrePb_StockUnit._(1, _omitEnumNames ? '' : 'centiliter');
+  static const CalibrePb_StockUnit centimeter =
+      CalibrePb_StockUnit._(2, _omitEnumNames ? '' : 'centimeter');
+  static const CalibrePb_StockUnit gram =
+      CalibrePb_StockUnit._(3, _omitEnumNames ? '' : 'gram');
+  static const CalibrePb_StockUnit kilogram =
+      CalibrePb_StockUnit._(4, _omitEnumNames ? '' : 'kilogram');
+  static const CalibrePb_StockUnit liter =
+      CalibrePb_StockUnit._(5, _omitEnumNames ? '' : 'liter');
+  static const CalibrePb_StockUnit meter =
+      CalibrePb_StockUnit._(6, _omitEnumNames ? '' : 'meter');
+  static const CalibrePb_StockUnit unit =
+      CalibrePb_StockUnit._(7, _omitEnumNames ? '' : 'unit');
 
-  static const $core.List<CalibrePb_StockUnit> values = <CalibrePb_StockUnit> [
+  static const $core.List<CalibrePb_StockUnit> values = <CalibrePb_StockUnit>[
     unknown,
     centiliter,
     centimeter,
@@ -53,11 +68,13 @@ class CalibrePb_StockUnit extends $pb.ProtobufEnum {
     unit,
   ];
 
-  static final $core.List<CalibrePb_StockUnit?> _byValue = $pb.ProtobufEnum.$_initByValueList(values, 7);
-  static CalibrePb_StockUnit? valueOf($core.int value) =>  value < 0 || value >= _byValue.length ? null : _byValue[value];
+  static final $core.List<CalibrePb_StockUnit?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 7);
+  static CalibrePb_StockUnit? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
 
-  const CalibrePb_StockUnit._(super.v, super.n);
+  const CalibrePb_StockUnit._(super.value, super.name);
 }
 
-
-const _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');
+const $core.bool _omitEnumNames =
+    $core.bool.fromEnvironment('protobuf.omit_enum_names');
