@@ -158,6 +158,14 @@ class FenceServiceClient extends $grpc.Client {
     return $createUnaryCall(_$markEmailVerified, request, options: options);
   }
 
+  /// Update subscriber ID - links a user to a newsletter subscriber
+  $grpc.ResponseFuture<$3.StatusResponse> updateSubscriberId(
+    $1.UpdateSubscriberIdRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$updateSubscriberId, request, options: options);
+  }
+
   $grpc.ResponseFuture<$3.StatusResponse> createOneChain(
     $5.Chain request, {
     $grpc.CallOptions? options,
@@ -377,6 +385,11 @@ class FenceServiceClient extends $grpc.Client {
           '/weebi.fence.service.FenceService/markEmailVerified',
           ($1.MarkEmailVerifiedRequest value) => value.writeToBuffer(),
           $3.StatusResponse.fromBuffer);
+  static final _$updateSubscriberId =
+      $grpc.ClientMethod<$1.UpdateSubscriberIdRequest, $3.StatusResponse>(
+          '/weebi.fence.service.FenceService/updateSubscriberId',
+          ($1.UpdateSubscriberIdRequest value) => value.writeToBuffer(),
+          $3.StatusResponse.fromBuffer);
   static final _$createOneChain =
       $grpc.ClientMethod<$5.Chain, $3.StatusResponse>(
           '/weebi.fence.service.FenceService/createOneChain',
@@ -581,6 +594,15 @@ abstract class FenceServiceBase extends $grpc.Service {
             false,
             ($core.List<$core.int> value) =>
                 $1.MarkEmailVerifiedRequest.fromBuffer(value),
+            ($3.StatusResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$1.UpdateSubscriberIdRequest, $3.StatusResponse>(
+            'updateSubscriberId',
+            updateSubscriberId_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $1.UpdateSubscriberIdRequest.fromBuffer(value),
             ($3.StatusResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$5.Chain, $3.StatusResponse>(
         'createOneChain',
@@ -837,6 +859,15 @@ abstract class FenceServiceBase extends $grpc.Service {
 
   $async.Future<$3.StatusResponse> markEmailVerified(
       $grpc.ServiceCall call, $1.MarkEmailVerifiedRequest request);
+
+  $async.Future<$3.StatusResponse> updateSubscriberId_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$1.UpdateSubscriberIdRequest> $request) async {
+    return updateSubscriberId($call, await $request);
+  }
+
+  $async.Future<$3.StatusResponse> updateSubscriberId(
+      $grpc.ServiceCall call, $1.UpdateSubscriberIdRequest request);
 
   $async.Future<$3.StatusResponse> createOneChain_Pre(
       $grpc.ServiceCall $call, $async.Future<$5.Chain> $request) async {

@@ -530,6 +530,22 @@ final $typed_data.Uint8List markEmailVerifiedRequestDescriptor =
     $convert.base64Decode(
         'ChhNYXJrRW1haWxWZXJpZmllZFJlcXVlc3QSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQ=');
 
+@$core.Deprecated('Use updateSubscriberIdRequestDescriptor instead')
+const UpdateSubscriberIdRequest$json = {
+  '1': 'UpdateSubscriberIdRequest',
+  '2': [
+    {'1': 'mail', '3': 1, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'subscriberId', '3': 2, '4': 1, '5': 9, '10': 'subscriberId'},
+    {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
+  ],
+};
+
+/// Descriptor for `UpdateSubscriberIdRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List updateSubscriberIdRequestDescriptor =
+    $convert.base64Decode(
+        'ChlVcGRhdGVTdWJzY3JpYmVySWRSZXF1ZXN0EhIKBG1haWwYASABKAlSBG1haWwSIgoMc3Vic2'
+        'NyaWJlcklkGAIgASgJUgxzdWJzY3JpYmVySWQSFgoGdXNlcklkGAMgASgJUgZ1c2VySWQ=');
+
 @$core.Deprecated('Use healthCheckWeebiResponseDescriptor instead')
 const HealthCheckWeebiResponse$json = {
   '1': 'HealthCheckWeebiResponse',

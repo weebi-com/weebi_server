@@ -1960,6 +1960,86 @@ class MarkEmailVerifiedRequest extends $pb.GeneratedMessage {
   void clearUserId() => $_clearField(1);
 }
 
+class UpdateSubscriberIdRequest extends $pb.GeneratedMessage {
+  factory UpdateSubscriberIdRequest({
+    $core.String? mail,
+    $core.String? subscriberId,
+    $core.String? userId,
+  }) {
+    final result = create();
+    if (mail != null) result.mail = mail;
+    if (subscriberId != null) result.subscriberId = subscriberId;
+    if (userId != null) result.userId = userId;
+    return result;
+  }
+
+  UpdateSubscriberIdRequest._();
+
+  factory UpdateSubscriberIdRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory UpdateSubscriberIdRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'UpdateSubscriberIdRequest',
+      package:
+          const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'mail')
+    ..aOS(2, _omitFieldNames ? '' : 'subscriberId', protoName: 'subscriberId')
+    ..aOS(3, _omitFieldNames ? '' : 'userId', protoName: 'userId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateSubscriberIdRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  UpdateSubscriberIdRequest copyWith(
+          void Function(UpdateSubscriberIdRequest) updates) =>
+      super.copyWith((message) => updates(message as UpdateSubscriberIdRequest))
+          as UpdateSubscriberIdRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static UpdateSubscriberIdRequest create() => UpdateSubscriberIdRequest._();
+  @$core.override
+  UpdateSubscriberIdRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static UpdateSubscriberIdRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<UpdateSubscriberIdRequest>(create);
+  static UpdateSubscriberIdRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get mail => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set mail($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasMail() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMail() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get subscriberId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set subscriberId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasSubscriberId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSubscriberId() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get userId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set userId($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasUserId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearUserId() => $_clearField(3);
+}
+
 /// / Health check response with service versions
 class HealthCheckWeebiResponse extends $pb.GeneratedMessage {
   factory HealthCheckWeebiResponse({
