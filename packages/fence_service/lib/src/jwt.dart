@@ -64,10 +64,10 @@ class JsonWebToken {
       final utf8Bytes = utf8.encode(jsonString);
       print('[JWT DEBUG] UTF-8 encoding successful, bytes: ${utf8Bytes.length}');
       
-      final encodedHeader = base64Url.encode(utf8.encode(json.encode(_header)));
+      final encodedHeader = base64UrlNoPadding.encode(utf8.encode(json.encode(_header)));
       print('[JWT DEBUG] Header encoded, length: ${encodedHeader.length}');
       
-      final encodedPayload = base64Url.encode(utf8Bytes);
+      final encodedPayload = base64UrlNoPadding.encode(utf8Bytes);
       print('[JWT DEBUG] Payload encoded, length: ${encodedPayload.length}');
       print('[JWT DEBUG] Payload preview: ${encodedPayload.length > 100 ? encodedPayload.substring(0, 50) + "..." + encodedPayload.substring(encodedPayload.length - 50) : encodedPayload}');
 
@@ -75,7 +75,7 @@ class JsonWebToken {
           .convert(utf8.encode('$encodedHeader.$encodedPayload'))
           .bytes;
 
-      final encodedSignature = base64Url.encode(signature);
+      final encodedSignature = base64UrlNoPadding.encode(signature);
       print('[JWT DEBUG] Signature encoded, length: ${encodedSignature.length}');
 
       _jwt = '$encodedHeader.$encodedPayload.$encodedSignature';
@@ -105,7 +105,7 @@ class JsonWebToken {
 
       // 1. Verify Signature:
       final secretKey = secretKeyFactory();
-      final expectedSignature = base64Url.encode(
+      final expectedSignature = base64UrlNoPadding.encode(
           Hmac(sha256, utf8.encode(secretKey))
               .convert(utf8.encode('$encodedHeader.$encodedPayload'))
               .bytes);
