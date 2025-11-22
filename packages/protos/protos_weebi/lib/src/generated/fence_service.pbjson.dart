@@ -521,14 +521,16 @@ final $typed_data.Uint8List passwordResetConfirmRequestDescriptor =
 const MarkEmailVerifiedRequest$json = {
   '1': 'MarkEmailVerifiedRequest',
   '2': [
-    {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
+    {'1': 'mail', '3': 1, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'userId', '3': 2, '4': 1, '5': 9, '10': 'userId'},
   ],
 };
 
 /// Descriptor for `MarkEmailVerifiedRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List markEmailVerifiedRequestDescriptor =
     $convert.base64Decode(
-        'ChhNYXJrRW1haWxWZXJpZmllZFJlcXVlc3QSFgoGdXNlcklkGAEgASgJUgZ1c2VySWQ=');
+        'ChhNYXJrRW1haWxWZXJpZmllZFJlcXVlc3QSEgoEbWFpbBgBIAEoCVIEbWFpbBIWCgZ1c2VySW'
+        'QYAiABKAlSBnVzZXJJZA==');
 
 @$core.Deprecated('Use updateSubscriberIdRequestDescriptor instead')
 const UpdateSubscriberIdRequest$json = {

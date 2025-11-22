@@ -1906,9 +1906,11 @@ class PasswordResetConfirmRequest extends $pb.GeneratedMessage {
 
 class MarkEmailVerifiedRequest extends $pb.GeneratedMessage {
   factory MarkEmailVerifiedRequest({
+    $core.String? mail,
     $core.String? userId,
   }) {
     final result = create();
+    if (mail != null) result.mail = mail;
     if (userId != null) result.userId = userId;
     return result;
   }
@@ -1927,7 +1929,8 @@ class MarkEmailVerifiedRequest extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'),
       createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'userId', protoName: 'userId')
+    ..aOS(1, _omitFieldNames ? '' : 'mail')
+    ..aOS(2, _omitFieldNames ? '' : 'userId', protoName: 'userId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1951,13 +1954,22 @@ class MarkEmailVerifiedRequest extends $pb.GeneratedMessage {
   static MarkEmailVerifiedRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get userId => $_getSZ(0);
+  $core.String get mail => $_getSZ(0);
   @$pb.TagNumber(1)
-  set userId($core.String value) => $_setString(0, value);
+  set mail($core.String value) => $_setString(0, value);
   @$pb.TagNumber(1)
-  $core.bool hasUserId() => $_has(0);
+  $core.bool hasMail() => $_has(0);
   @$pb.TagNumber(1)
-  void clearUserId() => $_clearField(1);
+  void clearMail() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get userId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set userId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasUserId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearUserId() => $_clearField(2);
 }
 
 class UpdateSubscriberIdRequest extends $pb.GeneratedMessage {

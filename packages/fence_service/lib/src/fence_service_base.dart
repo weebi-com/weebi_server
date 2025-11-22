@@ -2559,6 +2559,68 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  @override
+  Future<StatusResponse> markEmailVerified(
+      ServiceCall? call, MarkEmailVerifiedRequest request) async {
+    _logger.logRpcEntry('markEmailVerified', call, requestData: {
+      'mail': request.mail,
+      'userId': request.userId.isNotEmpty ? request.userId : 'not provided',
+    });
+
+    if (request.mail.isEmpty) {
+      throw GrpcError.invalidArgument('mail cannot be empty');
+    }
+
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        // If userId is provided, use it directly for better performance
+        // Otherwise, look up by email (weebi_server guarantees unique email per user)
+        final userMongo = request.userId.isNotEmpty
+            ? await userCollection.findOne(where.eq('userId', request.userId))
+            : await userCollection.findOne(where.eq('mail', request.mail));
+
+        if (userMongo == null) {
+          final identifier = request.userId.isNotEmpty 
+              ? 'userId ${request.userId}' 
+              : 'mail ${request.mail}';
+          throw GrpcError.notFound('user with $identifier not found');
+        }
+
+        // Verify email matches if userId was provided (safety check)
+        if (request.userId.isNotEmpty && 
+            userMongo['mail'] != request.mail) {
+          _logger.warning('Email mismatch when marking email as verified',
+              extra: {
+                'providedUserId': request.userId,
+                'providedMail': request.mail,
+                'foundMail': userMongo['mail'],
+              });
+          throw GrpcError.invalidArgument(
+              'email mismatch: provided mail does not match userId');
+        }
+
+        // Update using userId (more efficient than email lookup)
+        final userId = userMongo['userId'] as String;
+        await userCollection.update(
+            where.eq('userId', userId),
+            ModifierBuilder().set('emailVerificationSent', true));
+
+        _logger.logRpcExit('markEmailVerified', call);
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        _logger.logRpcError('markEmailVerified', call, e, extra: {
+          'mail': request.mail,
+          'userId': request.userId,
+        });
+        rethrow;
+      }
+    });
+  }
+
   /// Sends password reset email via weebi_express service (async, non-blocking)
   /// This is fire-and-forget - errors are logged but don't affect the flow
   void _sendPasswordResetEmailAsync({
