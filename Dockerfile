@@ -25,8 +25,10 @@ COPY . .
 # Generate proto files (this clones the proto repo and generates Dart code)
 # Must be done after copying source code (script needs packages/protos/protos_weebi to exist)
 # but before melos bootstrap to ensure generated files are up-to-date
+# Ensure protoc-gen-dart is in PATH (from dart pub global activate protoc_plugin)
 RUN chmod +x packages/protos/protos_weebi/tool/generate_protos.sh && \
-    PATH="$PATH:/root/.pub-cache/bin" packages/protos/protos_weebi/tool/generate_protos.sh
+    export PATH="$PATH:/root/.pub-cache/bin" && \
+    packages/protos/protos_weebi/tool/generate_protos.sh
 
 RUN dart pub global activate melos
 # Ensure packages are still up-to-date if anything has changed

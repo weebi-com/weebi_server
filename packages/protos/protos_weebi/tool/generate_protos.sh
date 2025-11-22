@@ -27,20 +27,42 @@ echo "Proto source: $PROTOS_REPO"
 echo "Proto version/commit: $PROTOS_COMMIT"
 echo "Output directory: $GENERATED_DIR"
 
-# Check if protoc is installed
+# Check if protoc (Protocol Buffers compiler) is installed
+# protoc is the main compiler, installed via: apt-get install protobuf-compiler
 if ! command -v protoc &> /dev/null; then
-    echo "ERROR: protoc not found in PATH"
+    echo "ERROR: protoc (Protocol Buffers compiler) not found in PATH"
     echo "Please install protoc: https://grpc.io/docs/protoc-installation/"
+    echo "  On Debian/Ubuntu: apt-get install protobuf-compiler"
     exit 1
 fi
 
-echo "Found: $(protoc --version)"
+echo "Found: protoc ($(protoc --version))"
+
+# Check if protoc-gen-dart (Dart plugin for protoc) is available
+# protoc-gen-dart is a plugin that protoc uses to generate Dart code
+# It should be installed via: dart pub global activate protoc_plugin
+# And be in PATH: /root/.pub-cache/bin (or $HOME/.pub-cache/bin)
+if ! command -v protoc-gen-dart &> /dev/null; then
+    echo "ERROR: protoc-gen-dart (Dart plugin) not found in PATH"
+    echo "Current PATH: $PATH"
+    echo "protoc-gen-dart is different from protoc - it's a plugin that protoc uses"
+    echo "Please ensure protoc-gen-dart is installed and in PATH:"
+    echo "  dart pub global activate protoc_plugin"
+    echo "  export PATH=\"\$PATH:\$HOME/.pub-cache/bin\""
+    exit 1
+fi
+
+echo "Found: protoc-gen-dart ($(which protoc-gen-dart))"
 
 # Clone or update proto repository
 if [ -d "$PROTOS_DIR" ]; then
     echo "Updating proto repository..."
     cd "$PROTOS_DIR"
     git fetch origin --tags
+    
+    # Reset any local changes first
+    git reset --hard HEAD 2>/dev/null || true
+    
     # Checkout specific version/commit/tag
     if echo "$PROTOS_COMMIT" | grep -qE '^v?[0-9]+\.[0-9]+\.[0-9]+'; then
         # It's a version tag
@@ -55,6 +77,10 @@ if [ -d "$PROTOS_DIR" ]; then
         echo "Checking out: $PROTOS_COMMIT"
         git checkout "$PROTOS_COMMIT" 2>/dev/null || exit 1
     fi
+    
+    # Ensure we have all files (force checkout)
+    git checkout . 2>/dev/null || true
+    
     cd - > /dev/null
 else
     echo "Cloning proto repository..."
@@ -93,36 +119,69 @@ mkdir -p "$GENERATED_DIR"
 # Generate Dart code from proto files
 echo ""
 echo "Generating Dart code..."
-protoc \
+
+# Build list of proto files, checking that each exists
+PROTO_FILES=()
+PROTO_FILES_TO_CHECK=(
+  "common/address.proto"
+  "common/country.proto"
+  "common/empty.proto"
+  "common/chained_ids.proto"
+  "common/g_common.proto"
+  "common/g_timestamp.proto"
+  "common/phone.proto"
+  "article/article.proto"
+  "article/photo.proto"
+  "article/category.proto"
+  "article/article_service.proto"
+  "boutique.proto"
+  "btq_chain.proto"
+  "contact/contact.proto"
+  "contact/contact_service.proto"
+  "device.proto"
+  "firm.proto"
+  "user.proto"
+  "user_permissions.proto"
+  "fence_service.proto"
+  "ticket/ticket.proto"
+  "ticket/ticket_type.proto"
+  "ticket/ticket_service.proto"
+  "weebi_app_service.proto"
+)
+
+echo "Checking proto files exist..."
+for proto_file in "${PROTO_FILES_TO_CHECK[@]}"; do
+  proto_path="$PROTOS_DIR/$proto_file"
+  if [ -f "$proto_path" ]; then
+    PROTO_FILES+=("$proto_path")
+    echo "  ✓ $proto_file"
+  else
+    echo "  ✗ $proto_file NOT FOUND at $proto_path"
+    echo "    This file will be skipped"
+  fi
+done
+
+if [ ${#PROTO_FILES[@]} -eq 0 ]; then
+    echo "ERROR: No proto files found to generate!"
+    echo "Proto directory: $PROTOS_DIR"
+    echo "Listing directory contents:"
+    ls -la "$PROTOS_DIR" || echo "Directory does not exist!"
+    exit 1
+fi
+
+echo ""
+echo "Generating Dart code for ${#PROTO_FILES[@]} proto files..."
+
+# Run protoc with better error handling
+if ! protoc \
   --dart_out=grpc:"$GENERATED_DIR" \
   -I"$PROTOS_DIR" \
-  "$PROTOS_DIR"/common/address.proto \
-  "$PROTOS_DIR"/common/country.proto \
-  "$PROTOS_DIR"/common/empty.proto \
-  "$PROTOS_DIR"/common/chained_ids.proto \
-  "$PROTOS_DIR"/common/g_common.proto \
-  "$PROTOS_DIR"/common/g_timestamp.proto \
-  "$PROTOS_DIR"/common/phone.proto \
-  "$PROTOS_DIR"/article/article.proto \
-  "$PROTOS_DIR"/article/photo.proto \
-  "$PROTOS_DIR"/article/category.proto \
-  "$PROTOS_DIR"/article/article_service.proto \
-  "$PROTOS_DIR"/boutique.proto \
-  "$PROTOS_DIR"/btq_chain.proto \
-  "$PROTOS_DIR"/contact/contact.proto \
-  "$PROTOS_DIR"/contact/contact_service.proto \
-  "$PROTOS_DIR"/device.proto \
-  "$PROTOS_DIR"/firm.proto \
-  "$PROTOS_DIR"/user.proto \
-  "$PROTOS_DIR"/user_permissions.proto \
-  "$PROTOS_DIR"/fence_service.proto \
-  "$PROTOS_DIR"/ticket/ticket.proto \
-  "$PROTOS_DIR"/ticket/ticket_type.proto \
-  "$PROTOS_DIR"/ticket/ticket_service.proto \
-  "$PROTOS_DIR"/weebi_app_service.proto
-
-if [ $? -ne 0 ]; then
+  "${PROTO_FILES[@]}" 2>&1; then
     echo "ERROR: protoc failed"
+    echo "Check that:"
+    echo "  1. protoc-gen-dart is installed: dart pub global activate protoc_plugin"
+    echo "  2. protoc-gen-dart is in PATH: export PATH=\"\$PATH:\$HOME/.pub-cache/bin\""
+    echo "  3. All proto files exist in $PROTOS_DIR"
     exit 1
 fi
 
