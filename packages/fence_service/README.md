@@ -96,3 +96,8 @@ With permissions set manually at first.
 stange error message on update "getLastError"
 getLastError command has been deprecated in MongoDB and is no longer supported. (as of MongoDB 4.4)
 ignore
+
+
+MONGO_DB_URI
+JWT_SECRET_KEY
+WEEBI_EXPRESS_BASE_URL

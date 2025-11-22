@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:io';
+import 'dart:convert';
 import 'package:pubspec_parse/pubspec_parse.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:collection/collection.dart';
 // ignore: unnecessary_import
@@ -17,6 +19,8 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/src/weebi_logger.dart';
+import 'package:fence_service/src/constants/app_environment.dart';
+import 'package:fence_service/src/jwt.dart';
 
 class PermissionAndSillyBoolean {
   final UserPermissions userPermissions;
@@ -1709,6 +1713,20 @@ class FenceService extends FenceServiceBase {
         final timestamp = DateTime.now().timestampProto;
         if (result.success && result.document != null) {
           final userId = result.document!['userId'];
+          
+          // Call weebi_express to send confirmation email (fire-and-forget)
+          _sendConfirmationEmailAsync(
+            userId: userId,
+            email: request.mail,
+            firstname: request.firstname,
+            lastname: request.lastname,
+          );
+          
+          _logger.logRpcExit('signUp', call, resultData: {
+            'userId': userId,
+            'mail': request.mail,
+          });
+          
           return SignUpResponse(
               statusResponse: StatusResponse()
                 ..id = userId
@@ -1725,6 +1743,66 @@ class FenceService extends FenceServiceBase {
         _logger.error('Signup error', extra: {'mail': request.mail}, error: e);
         rethrow;
       }
+    });
+  }
+
+  /// Sends confirmation email via weebi_express service (async, non-blocking)
+  /// This is fire-and-forget - errors are logged but don't affect the signup flow
+  void _sendConfirmationEmailAsync({
+    required String userId,
+    required String email,
+    required String firstname,
+    required String lastname,
+  }) {
+    final baseUrl = AppEnvironment.weebiExpressBaseUrl;
+    if (baseUrl == null || baseUrl.isEmpty) {
+      _logger.warning('WEEBI_EXPRESS_BASE_URL not configured, skipping confirmation email',
+          extra: {'userId': userId, 'email': email});
+      return;
+    }
+
+    // Create service account JWT token with weebi_express secret
+    final expressSecret = AppEnvironment.weebiExpressJwtSecretKey;
+    final jwt = JsonWebToken(secretKeyFactory: () => expressSecret);
+    jwt.createPayload(
+      'weebi_express_service_account',
+      expireIn: const Duration(hours: 1),
+    );
+    final token = jwt.sign();
+
+    // Prepare request payload
+    final payload = jsonEncode({
+      'userId': userId,
+      'email': email,
+      'firstname': firstname,
+      'lastname': lastname,
+    });
+
+    // Make async HTTP request (fire-and-forget)
+    final url = Uri.parse('$baseUrl/api/v1/emails/send-confirmation');
+    http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: payload,
+    ).then((response) {
+      if (response.statusCode == 200) {
+        _logger.info('Confirmation email sent successfully',
+            extra: {'userId': userId, 'email': email});
+      } else {
+        _logger.warning('Failed to send confirmation email',
+            extra: {
+              'userId': userId,
+              'email': email,
+              'statusCode': response.statusCode,
+              'response': response.body,
+            });
+      }
+    }).catchError((error) {
+      _logger.error('Error calling weebi_express send-confirmation',
+          extra: {'userId': userId, 'email': email}, error: error);
     });
   }
 

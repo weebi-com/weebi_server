@@ -1,6 +1,0 @@
-{
-  "mail": "Summit Road Borders",
-  "firstname": "Curve Skyway Technician",
-  "lastname": "Place",
-  "pwd": "{{ faker.internet.password }}"
-}
