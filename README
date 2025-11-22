@@ -15,9 +15,14 @@ dart pub global activate melos
 melos bootstrap
 cd app/server
 dart bin/server_local.dart
+
+# in another terminal 
+cd packages/protos/proto/
+grpcurl -plaintext -proto fence_service.proto -d '{\"mail\": \"test@test.test\", \"password\": \"mypassword\"}' localhost:8080 weebi.fence.service.FenceService/authenticateWithCredentials
 ```
 
 ## run in dev/prod
+
 ```shell
 $env:MONGO_DB_URI="your_mongodb_connection_string_here"
 $env:PORT="8080"
@@ -43,6 +48,3 @@ Platform.environment :
 
 Note: HTTP REST server and email functionality has been removed.
 Use healthCheck gRPC method for service health and version information.
-
-
-s

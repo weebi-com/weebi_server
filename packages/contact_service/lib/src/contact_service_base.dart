@@ -2,6 +2,7 @@ import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 import 'package:fence_service/protos_weebi.dart';
+import 'package:fence_service/logging.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectContact(
@@ -15,6 +16,7 @@ abstract class _Helpers {
 
 class ContactService extends ContactServiceBase {
   final MongoDbPoolService _poolService;
+  final WeebiLogger _logger = WeebiLogger.forService('contact_service');
   // for unit tests only
   final bool isTest;
   final UserPermissions? userPermissionIfTest;
@@ -30,6 +32,11 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, ContactRequest request) async {
+    _logger.logRpcEntry('createOne', call, requestData: {
+      'chainId': request.chainId,
+      'contactId': request.contact.id,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -96,6 +103,11 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> updateOne(
       ServiceCall? call, ContactRequest request) async {
+    _logger.logRpcEntry('updateOne', call, requestData: {
+      'chainId': request.chainId,
+      'contactId': request.contact.id,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -155,6 +167,11 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, ContactRequest request) async {
+    _logger.logRpcEntry('deleteOne', call, requestData: {
+      'chainId': request.chainId,
+      'contactId': request.contact.id,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -192,6 +209,10 @@ class ContactService extends ContactServiceBase {
   @override
   Future<ContactsResponse> readAll(
       ServiceCall? call, ReadAllContactsRequest request) async {
+    _logger.logRpcEntry('readAll', call, requestData: {
+      'chainId': request.chainId,
+    });
+    
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -242,10 +263,10 @@ class ContactService extends ContactServiceBase {
           ..clear()
           ..addAll(contacts);
         return contactsResponse;
-      } on GrpcError catch (e) {
-        print('readAll contacts error $e');
-        rethrow;
-      }
+        } on GrpcError catch (e) {
+          _logger.logRpcError('readAll', call, e);
+          rethrow;
+        }
     });
   }
 
@@ -280,10 +301,10 @@ class ContactService extends ContactServiceBase {
         }
 
         return ContactsIdsResponse.create()..ids.addAll(idsSet);
-      } on GrpcError catch (e) {
-        print('readAllIds contacts error $e');
-        rethrow;
-      }
+        } on GrpcError catch (e) {
+          _logger.logRpcError('readAllIds', call, e);
+          rethrow;
+        }
     });
   }
 
