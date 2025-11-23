@@ -73,37 +73,37 @@ class JsonWebToken {
     // Diagnostic: Check payload before JSON encoding
     try {
       final jsonString = json.encode(_payload);
-      print('[JWT DEBUG] JSON encoding successful, length: ${jsonString.length}');
-      print('[JWT DEBUG] JSON preview: ${jsonString.length > 200 ? jsonString.substring(0, 200) + "..." : jsonString}');
+      // print('[JWT DEBUG] JSON encoding successful, length: ${jsonString.length}');
+      // print('[JWT DEBUG] JSON preview: ${jsonString.length > 200 ? jsonString.substring(0, 200) + "..." : jsonString}');
       
       final utf8Bytes = utf8.encode(jsonString);
-      print('[JWT DEBUG] UTF-8 encoding successful, bytes: ${utf8Bytes.length}');
+      // print('[JWT DEBUG] UTF-8 encoding successful, bytes: ${utf8Bytes.length}');
       
       // Encode with base64Url and remove padding (JWT spec compliance)
       final encodedHeader = _removePadding(base64Url.encode(utf8.encode(json.encode(_header))));
-      print('[JWT DEBUG] Header encoded, length: ${encodedHeader.length}');
+      // print('[JWT DEBUG] Header encoded, length: ${encodedHeader.length}');
       
       final encodedPayload = _removePadding(base64Url.encode(utf8Bytes));
-      print('[JWT DEBUG] Payload encoded, length: ${encodedPayload.length}');
-      print('[JWT DEBUG] Payload preview: ${encodedPayload.length > 100 ? encodedPayload.substring(0, 50) + "..." + encodedPayload.substring(encodedPayload.length - 50) : encodedPayload}');
+      // print('[JWT DEBUG] Payload encoded, length: ${encodedPayload.length}');
+      // print('[JWT DEBUG] Payload preview: ${encodedPayload.length > 100 ? encodedPayload.substring(0, 50) + "..." + encodedPayload.substring(encodedPayload.length - 50) : encodedPayload}');
 
       final signature = Hmac(sha256, utf8.encode(secretKey))
           .convert(utf8.encode('$encodedHeader.$encodedPayload'))
           .bytes;
 
       final encodedSignature = _removePadding(base64Url.encode(signature));
-      print('[JWT DEBUG] Signature encoded, length: ${encodedSignature.length}');
+      // print('[JWT DEBUG] Signature encoded, length: ${encodedSignature.length}');
 
       _jwt = '$encodedHeader.$encodedPayload.$encodedSignature';
-      print('[JWT DEBUG] Final token length: ${_jwt.length}');
-      print('[JWT DEBUG] Token parts count: ${_jwt.split(".").length}');
+      // print('[JWT DEBUG] Final token length: ${_jwt.length}');
+      // print('[JWT DEBUG] Token parts count: ${_jwt.split(".").length}');
       
       return _jwt;
     } catch (e, stackTrace) {
-      print('[JWT ERROR] Failed during sign(): $e');
-      print('[JWT ERROR] Stack trace: $stackTrace');
-      print('[JWT ERROR] Payload keys: ${_payload.keys.toList()}');
-      print('[JWT ERROR] Payload types: ${_payload.map((k, v) => MapEntry(k, v.runtimeType.toString()))}');
+      // print('[JWT ERROR] Failed during sign(): $e');
+      // print('[JWT ERROR] Stack trace: $stackTrace');
+      // print('[JWT ERROR] Payload keys: ${_payload.keys.toList()}');
+      // print('[JWT ERROR] Payload types: ${_payload.map((k, v) => MapEntry(k, v.runtimeType.toString()))}');
       rethrow;
     }
   }

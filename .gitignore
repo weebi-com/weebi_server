@@ -16,30 +16,3 @@ mongodb_scripts/create_service_account.js
 
 # Proto files cloned from GitHub (external dependency)
 packages/protos/proto/
-packages/protos/proto/go.mod
-packages/protos/proto/LICENSE
-packages/protos/proto/README.md
-packages/protos/protos_weebi/lib/src/generated/boutique.pb.dart
-packages/protos/protos_weebi/lib/src/generated/btq_chain.pb.dart
-packages/protos/protos_weebi/lib/src/generated/device.pb.dart
-packages/protos/protos_weebi/lib/src/generated/fence_service.pb.dart
-packages/protos/protos_weebi/lib/src/generated/fence_service.pbgrpc.dart
-packages/protos/protos_weebi/lib/src/generated/fence_service.pbjson.dart
-packages/protos/protos_weebi/lib/src/generated/firm.pb.dart
-packages/protos/protos_weebi/lib/src/generated/user_permissions.pb.dart
-packages/protos/protos_weebi/lib/src/generated/user.pb.dart
-packages/protos/protos_weebi/lib/src/generated/user.pbjson.dart
-packages/protos/protos_weebi/lib/src/generated/weebi_app_service.pb.dart
-packages/protos/protos_weebi/lib/src/generated/article/article_service.pb.dart
-packages/protos/protos_weebi/lib/src/generated/article/article.pb.dart
-packages/protos/protos_weebi/lib/src/generated/article/category.pb.dart
-packages/protos/protos_weebi/lib/src/generated/article/photo.pb.dart
-packages/protos/protos_weebi/lib/src/generated/common/address.pb.dart
-packages/protos/protos_weebi/lib/src/generated/common/chained_ids.pb.dart
-packages/protos/protos_weebi/lib/src/generated/common/g_common.pb.dart
-packages/protos/protos_weebi/lib/src/generated/common/g_timestamp.pb.dart
-packages/protos/protos_weebi/lib/src/generated/common/phone.pb.dart
-packages/protos/protos_weebi/lib/src/generated/contact/contact_service.pb.dart
-packages/protos/protos_weebi/lib/src/generated/contact/contact.pb.dart
-packages/protos/protos_weebi/lib/src/generated/ticket/ticket_service.pb.dart
-packages/protos/protos_weebi/lib/src/generated/ticket/ticket.pb.dart
