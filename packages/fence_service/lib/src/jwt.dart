@@ -18,8 +18,8 @@ class JsonWebToken {
 
   JsonWebToken({this.secretKeyFactory = _defaultJwtSecretKeyFactory});
 
-  JsonWebToken.parse(String jwt)
-      : secretKeyFactory = _defaultJwtSecretKeyFactory {
+  JsonWebToken.parse(String jwt, {String Function()? secretKeyFactory})
+      : secretKeyFactory = secretKeyFactory ?? _defaultJwtSecretKeyFactory {
     _jwt = jwt;
     final parts = jwt.split('.');
 

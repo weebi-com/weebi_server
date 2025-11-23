@@ -33,7 +33,7 @@ void main() {
           reason: 'Signature should not contain padding');
 
       // Verify token can be parsed back
-      final parsedJwt = JsonWebToken.parse(token);
+      final parsedJwt = JsonWebToken.parse(token, secretKeyFactory: () => testSecretKey);
       expect(parsedJwt.sub, equals('test_user_123'));
       expect(parsedJwt.payload['userId'], equals('test_user_123'));
       expect(parsedJwt.payload['firmId'], equals('test_firm_456'));
@@ -56,7 +56,7 @@ void main() {
       expect(jwt.verify(), isTrue, reason: 'Token should be valid');
 
       // Parse and verify again
-      final parsedJwt = JsonWebToken.parse(token);
+      final parsedJwt = JsonWebToken.parse(token, secretKeyFactory: () => testSecretKey);
       expect(parsedJwt.verify(), isTrue,
           reason: 'Parsed token should be valid');
     });
@@ -68,8 +68,7 @@ void main() {
       jwt1.createPayload('user1', payload: {'a': 'b'});
       final token1 = jwt1.sign();
       expect(token1.split('.')[1].contains('='), isFalse);
-      // Note: parse() uses default secret key factory, but we can still verify the payload
-      final parsed1 = JsonWebToken.parse(token1);
+      final parsed1 = JsonWebToken.parse(token1, secretKeyFactory: () => testSecretKey);
       expect(parsed1.sub, equals('user1'));
 
       // Test with medium payload (might need 1 padding char)
@@ -81,7 +80,7 @@ void main() {
       });
       final token2 = jwt2.sign();
       expect(token2.split('.')[1].contains('='), isFalse);
-      final parsed2 = JsonWebToken.parse(token2);
+      final parsed2 = JsonWebToken.parse(token2, secretKeyFactory: () => testSecretKey);
       expect(parsed2.sub, equals('user2'));
 
       // Test with large payload (might need 2 padding chars)
@@ -129,7 +128,7 @@ void main() {
       });
       final token3 = jwt3.sign();
       expect(token3.split('.')[1].contains('='), isFalse);
-      final parsed3 = JsonWebToken.parse(token3);
+      final parsed3 = JsonWebToken.parse(token3, secretKeyFactory: () => testSecretKey);
       expect(parsed3.sub, equals('user3'));
     });
 
@@ -150,7 +149,7 @@ void main() {
       final token = jwt.sign();
 
       // Parse back
-      final parsedJwt = JsonWebToken.parse(token);
+      final parsedJwt = JsonWebToken.parse(token, secretKeyFactory: () => testSecretKey);
 
       // Verify all fields are preserved
       expect(parsedJwt.payload['userId'], equals(originalPayload['userId']));
