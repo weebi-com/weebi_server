@@ -1,14 +1,13 @@
-// This is a generated file - do not edit.
 //
-// Generated from weebi_app_service.proto.
-
-// @dart = 3.3
+//  Generated code. Do not modify.
+//  source: weebi_app_service.proto
+//
+// @dart = 2.12
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names
-// ignore_for_file: curly_braces_in_flow_control_structures
-// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
-// ignore_for_file: non_constant_identifier_names, unused_import
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -20,21 +19,15 @@ const AppMinVersionRequest$json = {
 };
 
 /// Descriptor for `AppMinVersionRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List appMinVersionRequestDescriptor =
-    $convert.base64Decode('ChRBcHBNaW5WZXJzaW9uUmVxdWVzdA==');
+final $typed_data.Uint8List appMinVersionRequestDescriptor = $convert.base64Decode(
+    'ChRBcHBNaW5WZXJzaW9uUmVxdWVzdA==');
 
 @$core.Deprecated('Use appMinVersionResponseDescriptor instead')
 const AppMinVersionResponse$json = {
   '1': 'AppMinVersionResponse',
   '2': [
     {'1': 'minVersion', '3': 1, '4': 1, '5': 5, '10': 'minVersion'},
-    {
-      '1': 'isUpgradeImperative',
-      '3': 2,
-      '4': 1,
-      '5': 8,
-      '10': 'isUpgradeImperative'
-    },
+    {'1': 'isUpgradeImperative', '3': 2, '4': 1, '5': 8, '10': 'isUpgradeImperative'},
   ],
 };
 
@@ -42,3 +35,4 @@ const AppMinVersionResponse$json = {
 final $typed_data.Uint8List appMinVersionResponseDescriptor = $convert.base64Decode(
     'ChVBcHBNaW5WZXJzaW9uUmVzcG9uc2USHgoKbWluVmVyc2lvbhgBIAEoBVIKbWluVmVyc2lvbh'
     'IwChNpc1VwZ3JhZGVJbXBlcmF0aXZlGAIgASgIUhNpc1VwZ3JhZGVJbXBlcmF0aXZl');
+

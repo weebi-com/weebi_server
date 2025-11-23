@@ -1,96 +1,166 @@
 # Generate Dart code from proto files
 # Fetches proto files from https://github.com/weebi-com/protos
-# Requires: protoc installed and in PATH
 
 $ErrorActionPreference = "Stop"
 
-# Configuration
-$ProtosRepo = "https://github.com/weebi-com/protos.git"
-$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$ProtosWeebiDir = Split-Path -Parent $ScriptDir
-$ProtosDir = Join-Path (Split-Path -Parent $ProtosWeebiDir) "proto"
-$GeneratedDir = Join-Path $ProtosWeebiDir "lib\src\generated"
-
-# Read version from project root (shared with weebi_express)
-$ProjectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $ProtosWeebiDir))
-$VersionFile = Join-Path $ProjectRoot ".protos-version"
-if (Test-Path $VersionFile) {
-    $versionContent = Get-Content $VersionFile -Raw
-    if ($versionContent -match 'PROTOS_VERSION=([^\s]+)') {
-        $ProtosVersion = $matches[1]
-    }
-    if ($versionContent -match 'PROTOS_COMMIT=([^\s]+)') {
-        $ProtosCommit = $matches[1]
+# Helper function to run git commands without PowerShell treating stderr as error
+function Invoke-GitCommand {
+    param(
+        [string[]]$Arguments
+    )
+    $oldErrorAction = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $output = & git $Arguments 2>&1
+        $exitCode = $LASTEXITCODE
+        return @{
+            Output = $output
+            ExitCode = $exitCode
+            Success = ($exitCode -eq 0 -or ($output -match "Already on"))
+        }
+    } finally {
+        $ErrorActionPreference = $oldErrorAction
     }
 }
-# Defaults if version file not found
-if (-not $ProtosVersion) { $ProtosVersion = "main" }
-if (-not $ProtosCommit) { $ProtosCommit = "main" }
 
-Write-Host "Generating Dart code from proto files..." -ForegroundColor Green
-Write-Host "Proto source: $ProtosRepo" -ForegroundColor Cyan
-Write-Host "Proto version/commit: $ProtosCommit" -ForegroundColor Cyan
-Write-Host "Output directory: $GeneratedDir" -ForegroundColor Cyan
+$PROTOS_REPO = "https://github.com/weebi-com/protos.git"
+# Script runs from tool/ directory, so go up to protos_weebi root
+$SCRIPT_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
+$PROTOS_WEEBI_DIR = Split-Path -Parent $SCRIPT_DIR
+$PROTOS_DIR = Join-Path (Split-Path -Parent $PROTOS_WEEBI_DIR) "proto"
+$GENERATED_DIR = Join-Path $PROTOS_WEEBI_DIR "lib\src\generated"
 
-# Check if protoc is installed
+# Read version from project root (shared with weebi_express)
+$PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PROTOS_WEEBI_DIR))
+$VERSION_FILE = Join-Path $PROJECT_ROOT ".protos-version"
+
+$PROTOS_VERSION = "main"
+$PROTOS_COMMIT = "main"
+
+if (Test-Path $VERSION_FILE) {
+    $versionContent = Get-Content $VERSION_FILE
+    foreach ($line in $versionContent) {
+        if ($line -match "^PROTOS_VERSION=(.+)$") {
+            $PROTOS_VERSION = $matches[1].Trim()
+        }
+        if ($line -match "^PROTOS_COMMIT=(.+)$") {
+            $PROTOS_COMMIT = $matches[1].Trim()
+        }
+    }
+}
+
+Write-Host "Generating Dart code from proto files..."
+Write-Host "Proto source: $PROTOS_REPO"
+Write-Host "Proto version/commit: $PROTOS_COMMIT"
+Write-Host "Output directory: $GENERATED_DIR"
+
+# Check if protoc (Protocol Buffers compiler) is installed
 try {
-    $protocVersion = protoc --version
-    Write-Host "Found: $protocVersion" -ForegroundColor Green
+    $protocVersion = & protoc --version 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        throw "protoc not found"
+    }
+    Write-Host "Found: protoc ($protocVersion)"
 } catch {
-    Write-Host "ERROR: protoc not found in PATH" -ForegroundColor Red
-    Write-Host "Please install protoc: https://grpc.io/docs/protoc-installation/" -ForegroundColor Yellow
+    Write-Host "ERROR: protoc (Protocol Buffers compiler) not found in PATH" -ForegroundColor Red
+    Write-Host "Please install protoc: https://grpc.io/docs/protoc-installation/"
+    Write-Host "  On Windows: choco install protoc"
+    Write-Host "  Or download from: https://github.com/protocolbuffers/protobuf/releases"
     exit 1
 }
 
+# Check if protoc-gen-dart (Dart plugin for protoc) is available
+# protoc-gen-dart is a plugin that protoc uses to generate Dart code
+# It should be installed via: dart pub global activate protoc_plugin
+$protocGenDartPath = $null
+$pubCacheBin = Join-Path $env:USERPROFILE ".pub-cache\bin"
+$possiblePaths = @(
+    (Join-Path $pubCacheBin "protoc-gen-dart.bat"),
+    (Join-Path $pubCacheBin "protoc-gen-dart"),
+    "protoc-gen-dart"
+)
+
+foreach ($path in $possiblePaths) {
+    if (Get-Command $path -ErrorAction SilentlyContinue) {
+        $protocGenDartPath = $path
+        break
+    }
+}
+
+if (-not $protocGenDartPath) {
+    Write-Host "ERROR: protoc-gen-dart (Dart plugin) not found in PATH" -ForegroundColor Red
+    Write-Host "Current PATH: $env:PATH"
+    Write-Host "protoc-gen-dart is different from protoc - it's a plugin that protoc uses"
+    Write-Host "Please ensure protoc-gen-dart is installed and in PATH:"
+    Write-Host "  dart pub global activate protoc_plugin"
+    Write-Host "  Add to PATH: $pubCacheBin"
+    exit 1
+}
+
+Write-Host "Found: protoc-gen-dart ($protocGenDartPath)"
+
 # Clone or update proto repository
-if (Test-Path $ProtosDir) {
-    Write-Host "Updating proto repository..." -ForegroundColor Yellow
-    Push-Location $ProtosDir
+if (Test-Path $PROTOS_DIR) {
+    Write-Host "Updating proto repository..."
+    Push-Location $PROTOS_DIR
     try {
-        git fetch origin --tags
+        $null = Invoke-GitCommand -Arguments @("fetch", "origin", "--tags")
+        
+        # Reset any local changes first
+        $null = Invoke-GitCommand -Arguments @("reset", "--hard", "HEAD")
+        
         # Checkout specific version/commit/tag
-        if ($ProtosCommit -match '^v?\d+\.\d+\.\d+') {
+        if ($PROTOS_COMMIT -match '^v?\d+\.\d+\.\d+') {
             # It's a version tag
-            $tag = if ($ProtosCommit.StartsWith('v')) { $ProtosCommit } else { "v$ProtosCommit" }
-            Write-Host "Checking out tag: $tag" -ForegroundColor Cyan
-            git checkout $tag 2>&1 | Out-Null
-            if ($LASTEXITCODE -ne 0) {
-                Write-Host "WARNING: Tag $tag not found, trying commit/branch $ProtosCommit" -ForegroundColor Yellow
-                git checkout $ProtosCommit 2>&1 | Out-Null
+            $TAG = if ($PROTOS_COMMIT -match '^v') { $PROTOS_COMMIT } else { "v$PROTOS_COMMIT" }
+            Write-Host "Checking out tag: $TAG"
+            $gitResult = Invoke-GitCommand -Arguments @("checkout", $TAG)
+            if (-not $gitResult.Success) {
+                Write-Host "WARNING: Tag $TAG not found, trying commit/branch $PROTOS_COMMIT" -ForegroundColor Yellow
+                $gitResult2 = Invoke-GitCommand -Arguments @("checkout", $PROTOS_COMMIT)
+                if (-not $gitResult2.Success) {
+                    throw "Failed to checkout $PROTOS_COMMIT"
+                }
             }
         } else {
             # It's a branch or commit hash
-            Write-Host "Checking out: $ProtosCommit" -ForegroundColor Cyan
-            $currentBranch = git rev-parse --abbrev-ref HEAD 2>&1 | Out-String
-            if ($currentBranch.Trim() -ne $ProtosCommit) {
-                $checkoutOutput = git checkout $ProtosCommit 2>&1
-                if ($LASTEXITCODE -ne 0) {
-                    Write-Host "ERROR: Failed to checkout $ProtosCommit" -ForegroundColor Red
-                    Write-Host $checkoutOutput
-                    exit 1
-                }
-            } else {
-                Write-Host "Already on $ProtosCommit" -ForegroundColor Green
+            Write-Host "Checking out: $PROTOS_COMMIT"
+            $gitResult = Invoke-GitCommand -Arguments @("checkout", $PROTOS_COMMIT)
+            if (-not $gitResult.Success) {
+                throw "Failed to checkout $PROTOS_COMMIT"
             }
         }
+        
+        # Ensure we have all files (force checkout)
+        $null = Invoke-GitCommand -Arguments @("checkout", ".")
     } finally {
         Pop-Location
     }
 } else {
-    Write-Host "Cloning proto repository..." -ForegroundColor Yellow
-    git clone $ProtosRepo $ProtosDir
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "ERROR: Failed to clone proto repository" -ForegroundColor Red
-        exit 1
+    Write-Host "Cloning proto repository..."
+    $gitResult = Invoke-GitCommand -Arguments @("clone", $PROTOS_REPO, $PROTOS_DIR)
+    if (-not $gitResult.Success) {
+        throw "Failed to clone repository"
     }
-    Push-Location $ProtosDir
+    
+    Push-Location $PROTOS_DIR
     try {
-        git fetch origin --tags
-        if ($ProtosCommit -match '^v?\d+\.\d+\.\d+') {
-            $tag = if ($ProtosCommit.StartsWith('v')) { $ProtosCommit } else { "v$ProtosCommit" }
-            git checkout $tag 2>&1 | Out-Null
+        $null = Invoke-GitCommand -Arguments @("fetch", "origin", "--tags")
+        
+        if ($PROTOS_COMMIT -match '^v?\d+\.\d+\.\d+') {
+            $TAG = if ($PROTOS_COMMIT -match '^v') { $PROTOS_COMMIT } else { "v$PROTOS_COMMIT" }
+            $gitResult = Invoke-GitCommand -Arguments @("checkout", $TAG)
+            if (-not $gitResult.Success) {
+                $gitResult2 = Invoke-GitCommand -Arguments @("checkout", $PROTOS_COMMIT)
+                if (-not $gitResult2.Success) {
+                    throw "Failed to checkout $PROTOS_COMMIT"
+                }
+            }
         } else {
-            git checkout $ProtosCommit 2>&1 | Out-Null
+            $gitResult = Invoke-GitCommand -Arguments @("checkout", $PROTOS_COMMIT)
+            if (-not $gitResult.Success) {
+                throw "Failed to checkout $PROTOS_COMMIT"
+            }
         }
     } finally {
         Pop-Location
@@ -98,33 +168,45 @@ if (Test-Path $ProtosDir) {
 }
 
 # Verify version
-Push-Location $ProtosDir
+Push-Location $PROTOS_DIR
 try {
-    $currentCommit = git rev-parse HEAD
-    $currentTag = $null
-    try {
-        $tagOutput = git describe --tags --exact-match HEAD 2>&1
-        if ($LASTEXITCODE -eq 0) {
-            $currentTag = $tagOutput | Out-String
-            $currentTag = $currentTag.Trim()
-        }
-    } catch {
-        # No tags found, that's okay
+    $gitResult = Invoke-GitCommand -Arguments @("rev-parse", "HEAD")
+    if (-not $gitResult.Success) {
+        throw "Failed to get current commit"
     }
-    if ($currentTag) {
-        Write-Host "Using proto version: $currentTag (commit: $($currentCommit.Substring(0,7)))" -ForegroundColor Green
+    $CURRENT_COMMIT = ($gitResult.Output -join "").Trim()
+    
+    $gitResult2 = Invoke-GitCommand -Arguments @("describe", "--tags", "--exact-match", "HEAD")
+    $CURRENT_TAG = if ($gitResult2.Success) { 
+        ($gitResult2.Output -join "").Trim()
+    } else { 
+        $null 
+    }
+    
+    if ($CURRENT_TAG) {
+        Write-Host "Using proto version: $CURRENT_TAG (commit: $($CURRENT_COMMIT.Substring(0, 7)))"
     } else {
-        Write-Host "Using proto commit: $($currentCommit.Substring(0,7))" -ForegroundColor Green
+        Write-Host "Using proto commit: $($CURRENT_COMMIT.Substring(0, 7))"
     }
 } finally {
     Pop-Location
 }
 
-# Ensure output directory exists
-New-Item -ItemType Directory -Force -Path $GeneratedDir | Out-Null
+# Clean existing generated files to force regeneration
+if (Test-Path $GENERATED_DIR) {
+    Write-Host "Cleaning existing generated files..."
+    Remove-Item -Path (Join-Path $GENERATED_DIR "*") -Recurse -Force -ErrorAction SilentlyContinue
+}
 
-# Build list of proto files
-$ProtoFiles = @(
+# Ensure output directory exists
+New-Item -ItemType Directory -Force -Path $GENERATED_DIR | Out-Null
+
+# Generate Dart code from proto files
+Write-Host ""
+Write-Host "Generating Dart code..."
+
+# Build list of proto files, checking that each exists
+$PROTO_FILES_TO_CHECK = @(
     "common\address.proto",
     "common\country.proto",
     "common\empty.proto",
@@ -151,42 +233,54 @@ $ProtoFiles = @(
     "weebi_app_service.proto"
 )
 
-# Build full paths to proto files
-$ProtoPaths = @()
-foreach ($proto in $ProtoFiles) {
-    $protoPath = Join-Path $ProtosDir $proto
-    if (Test-Path $protoPath) {
-        $ProtoPaths += $protoPath
-        Write-Host "  Including $proto..." -ForegroundColor Cyan
+$PROTO_FILES = @()
+
+Write-Host "Checking proto files exist..."
+foreach ($proto_file in $PROTO_FILES_TO_CHECK) {
+    $proto_path = Join-Path $PROTOS_DIR $proto_file
+    if (Test-Path $proto_path) {
+        $PROTO_FILES += $proto_path
+        Write-Host "  [OK] $proto_file" -ForegroundColor Green
     } else {
-        Write-Host "  WARNING: $proto not found at $protoPath" -ForegroundColor Yellow
+        Write-Host "  [NOT FOUND] $proto_file NOT FOUND at $proto_path" -ForegroundColor Red
+        Write-Host "    This file will be skipped"
     }
 }
 
-if ($ProtoPaths.Count -eq 0) {
-    Write-Host "ERROR: No proto files found!" -ForegroundColor Red
+if ($PROTO_FILES.Count -eq 0) {
+    Write-Host "ERROR: No proto files found to generate!" -ForegroundColor Red
+    Write-Host "Proto directory: $PROTOS_DIR"
+    Write-Host "Listing directory contents:"
+    if (Test-Path $PROTOS_DIR) {
+        Get-ChildItem $PROTOS_DIR | Format-Table
+    } else {
+        Write-Host "Directory does not exist!" -ForegroundColor Red
+    }
     exit 1
 }
 
-# Generate Dart code from proto files
 Write-Host ""
-Write-Host "Generating Dart code..." -ForegroundColor Yellow
+Write-Host "Generating Dart code for $($PROTO_FILES.Count) proto files..."
 
-# Build protoc command arguments
-# protoc handles Windows paths, but we'll quote them to be safe
+# Run protoc with better error handling
 $protocArgs = @(
-    "--dart_out=grpc:$GeneratedDir",
-    "-I$ProtosDir"
-) + $ProtoPaths
+    "--dart_out=grpc:$GENERATED_DIR",
+    "-I$PROTOS_DIR"
+) + $PROTO_FILES
 
-Write-Host "Running protoc..." -ForegroundColor Yellow
-& protoc $protocArgs
-
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "ERROR: protoc failed with exit code $LASTEXITCODE" -ForegroundColor Red
+try {
+    & protoc $protocArgs 2>&1 | ForEach-Object { Write-Host $_ }
+    if ($LASTEXITCODE -ne 0) {
+        throw "protoc failed with exit code $LASTEXITCODE"
+    }
+} catch {
+    Write-Host "ERROR: protoc failed" -ForegroundColor Red
+    Write-Host "Check that:"
+    Write-Host "  1. protoc-gen-dart is installed: dart pub global activate protoc_plugin"
+    Write-Host "  2. protoc-gen-dart is in PATH: $pubCacheBin"
+    Write-Host "  3. All proto files exist in $PROTOS_DIR"
     exit 1
 }
 
 Write-Host ""
-Write-Host "Done! Generated Dart code in $GeneratedDir" -ForegroundColor Green
-
+Write-Host "Done! Generated Dart code in $GENERATED_DIR" -ForegroundColor Green

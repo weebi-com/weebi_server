@@ -1,18 +1,72 @@
 # weebi dart grpc server
 
-
 ## install proto tools
 
+### Windows
+```powershell
+# Install protoc
 choco install protoc
 
+# Install Dart plugin for protoc
+dart pub global activate protoc_plugin 21.1.0 # prototobuf < 5.0
+
+# Add to PATH (add to your PowerShell profile for permanent)
+$env:PATH += ";$env:USERPROFILE\.pub-cache\bin"
+```
+
+### WSL/Linux
+```bash
+# Install protoc
+sudo apt-get update
+sudo apt-get install -y protobuf-compiler
+
+# Install Dart plugin for protoc
+dart pub global activate protoc_plugin 21.1.0 # prototobuf < 5.0
+
+# Add to PATH (add to ~/.bashrc or ~/.zshrc for permanent)
+export PATH="$PATH:$HOME/.pub-cache/bin"
+```
+
+### Generate Dart code from proto files (fetches from GitHub)
+
+**Windows/PowerShell (Recommended):**
+```powershell
 cd packages\protos\protos_weebi\tool
 .\generate_protos.ps1
+```
+
+**WSL/Bash:**
+```bash
+cd packages/protos/protos_weebi/tool
+chmod +x generate_protos.sh
+./generate_protos.sh
+```
+
+### Check proto version consistency between projects
+
+**Bash:**
+```bash
+chmod +x scripts/check_protos_version.sh
+./scripts/check_protos_version.sh
+```
+
+in WSL
+cd weebi_server
+chmod +x scripts/check_protos_version.sh
+./scripts/check_protos_version.sh
+
+## generate them
+
+cd packages/protos/protos_weebi/tool
+chmod +x generate_protos.sh
+./generate_protos.sh
 
 ## test it
 grpcurl -proto packages\protos\proto\weebi_app_service.proto dev.weebicom:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion
 > for more see file `_curls.md`
 
-> for kreya (postman like) see folder `kreya_api_calling`
+> for kreya (postman like) see https://github.com/weebi-com/protos
+and the folder `kreya_api_calling`
 
 ## run locally
 
@@ -52,7 +106,7 @@ Name it something like MongoDB Outbound, click Finish.
 Platform.environment : 
 ['PORT'] -- gRPC server port (default: 8080)
 ['MONGO_DB_URI']
-['JWT_SECRET_KEY'] -- JWT secret for signing tokens (shared with weebi_express)
+['JWT_SECRET_KEY']
 ['WEEBI_EXPRESS_BASE_URL'] -- Base URL of weebi_express service (optional, e.g., http://localhost:8080)
 ['WEEBI_EXPRESS_JWT_SECRET_KEY'] -- JWT secret for weebi_express (optional, defaults to JWT_SECRET_KEY)
 

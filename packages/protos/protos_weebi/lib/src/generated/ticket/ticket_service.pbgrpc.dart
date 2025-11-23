@@ -1,14 +1,13 @@
-// This is a generated file - do not edit.
 //
-// Generated from ticket/ticket_service.proto.
-
-// @dart = 3.3
+//  Generated code. Do not modify.
+//  source: ticket/ticket_service.proto
+//
+// @dart = 2.12
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names
-// ignore_for_file: curly_braces_in_flow_control_structures
-// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:async' as $async;
 import 'dart:core' as $core;
@@ -16,101 +15,68 @@ import 'dart:core' as $core;
 import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_common.pb.dart' as $2;
-import 'ticket.pb.dart' as $1;
-import 'ticket_service.pb.dart' as $0;
+import '../common/g_common.pb.dart' as $1;
+import 'ticket.pb.dart' as $15;
+import 'ticket_service.pb.dart' as $14;
 
 export 'ticket_service.pb.dart';
 
 @$pb.GrpcServiceName('weebi.ticket.service.TicketService')
 class TicketServiceClient extends $grpc.Client {
-  /// The hostname for this service.
-  static const $core.String defaultHost = '';
+  static final _$readAll = $grpc.ClientMethod<$14.ReadAllTicketsRequest, $14.TicketsResponse>(
+      '/weebi.ticket.service.TicketService/readAll',
+      ($14.ReadAllTicketsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $14.TicketsResponse.fromBuffer(value));
+  static final _$readOne = $grpc.ClientMethod<$14.FindTicketRequest, $15.TicketPb>(
+      '/weebi.ticket.service.TicketService/readOne',
+      ($14.FindTicketRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $15.TicketPb.fromBuffer(value));
+  static final _$createOne = $grpc.ClientMethod<$14.TicketRequest, $1.StatusResponse>(
+      '/weebi.ticket.service.TicketService/createOne',
+      ($14.TicketRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$createMany = $grpc.ClientMethod<$14.TicketsRequest, $1.StatusResponse>(
+      '/weebi.ticket.service.TicketService/createMany',
+      ($14.TicketsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$updateStatusOne = $grpc.ClientMethod<$14.TicketRequest, $1.StatusResponse>(
+      '/weebi.ticket.service.TicketService/updateStatusOne',
+      ($14.TicketRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$deleteOne = $grpc.ClientMethod<$14.TicketRequest, $1.StatusResponse>(
+      '/weebi.ticket.service.TicketService/deleteOne',
+      ($14.TicketRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
 
-  /// OAuth scopes needed for the client.
-  static const $core.List<$core.String> oauthScopes = [
-    '',
-  ];
+  TicketServiceClient($grpc.ClientChannel channel,
+      {$grpc.CallOptions? options,
+      $core.Iterable<$grpc.ClientInterceptor>? interceptors})
+      : super(channel, options: options,
+        interceptors: interceptors);
 
-  TicketServiceClient(super.channel, {super.options, super.interceptors});
-
-  /// / allows to read tickets from all accessible boutiques
-  /// / no need to paginate yet, will conisder streaming
-  $grpc.ResponseFuture<$0.TicketsResponse> readAll(
-    $0.ReadAllTicketsRequest request, {
-    $grpc.CallOptions? options,
-  }) {
+  $grpc.ResponseFuture<$14.TicketsResponse> readAll($14.ReadAllTicketsRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readAll, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.TicketPb> readOne(
-    $0.FindTicketRequest request, {
-    $grpc.CallOptions? options,
-  }) {
+  $grpc.ResponseFuture<$15.TicketPb> readOne($14.FindTicketRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$readOne, request, options: options);
   }
 
-  $grpc.ResponseFuture<$2.StatusResponse> createOne(
-    $0.TicketRequest request, {
-    $grpc.CallOptions? options,
-  }) {
+  $grpc.ResponseFuture<$1.StatusResponse> createOne($14.TicketRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createOne, request, options: options);
   }
 
-  $grpc.ResponseFuture<$2.StatusResponse> createMany(
-    $0.TicketsRequest request, {
-    $grpc.CallOptions? options,
-  }) {
+  $grpc.ResponseFuture<$1.StatusResponse> createMany($14.TicketsRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$createMany, request, options: options);
   }
 
-  $grpc.ResponseFuture<$2.StatusResponse> updateStatusOne(
-    $0.TicketRequest request, {
-    $grpc.CallOptions? options,
-  }) {
+  $grpc.ResponseFuture<$1.StatusResponse> updateStatusOne($14.TicketRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateStatusOne, request, options: options);
   }
 
-  /// / soft delete
-  $grpc.ResponseFuture<$2.StatusResponse> deleteOne(
-    $0.TicketRequest request, {
-    $grpc.CallOptions? options,
-  }) {
+  $grpc.ResponseFuture<$1.StatusResponse> deleteOne($14.TicketRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOne, request, options: options);
   }
-
-  // method descriptors
-
-  static final _$readAll =
-      $grpc.ClientMethod<$0.ReadAllTicketsRequest, $0.TicketsResponse>(
-          '/weebi.ticket.service.TicketService/readAll',
-          ($0.ReadAllTicketsRequest value) => value.writeToBuffer(),
-          $0.TicketsResponse.fromBuffer);
-  static final _$readOne =
-      $grpc.ClientMethod<$0.FindTicketRequest, $1.TicketPb>(
-          '/weebi.ticket.service.TicketService/readOne',
-          ($0.FindTicketRequest value) => value.writeToBuffer(),
-          $1.TicketPb.fromBuffer);
-  static final _$createOne =
-      $grpc.ClientMethod<$0.TicketRequest, $2.StatusResponse>(
-          '/weebi.ticket.service.TicketService/createOne',
-          ($0.TicketRequest value) => value.writeToBuffer(),
-          $2.StatusResponse.fromBuffer);
-  static final _$createMany =
-      $grpc.ClientMethod<$0.TicketsRequest, $2.StatusResponse>(
-          '/weebi.ticket.service.TicketService/createMany',
-          ($0.TicketsRequest value) => value.writeToBuffer(),
-          $2.StatusResponse.fromBuffer);
-  static final _$updateStatusOne =
-      $grpc.ClientMethod<$0.TicketRequest, $2.StatusResponse>(
-          '/weebi.ticket.service.TicketService/updateStatusOne',
-          ($0.TicketRequest value) => value.writeToBuffer(),
-          $2.StatusResponse.fromBuffer);
-  static final _$deleteOne =
-      $grpc.ClientMethod<$0.TicketRequest, $2.StatusResponse>(
-          '/weebi.ticket.service.TicketService/deleteOne',
-          ($0.TicketRequest value) => value.writeToBuffer(),
-          $2.StatusResponse.fromBuffer);
 }
 
 @$pb.GrpcServiceName('weebi.ticket.service.TicketService')
@@ -118,97 +84,78 @@ abstract class TicketServiceBase extends $grpc.Service {
   $core.String get $name => 'weebi.ticket.service.TicketService';
 
   TicketServiceBase() {
-    $addMethod(
-        $grpc.ServiceMethod<$0.ReadAllTicketsRequest, $0.TicketsResponse>(
-            'readAll',
-            readAll_Pre,
-            false,
-            false,
-            ($core.List<$core.int> value) =>
-                $0.ReadAllTicketsRequest.fromBuffer(value),
-            ($0.TicketsResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.FindTicketRequest, $1.TicketPb>(
+    $addMethod($grpc.ServiceMethod<$14.ReadAllTicketsRequest, $14.TicketsResponse>(
+        'readAll',
+        readAll_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $14.ReadAllTicketsRequest.fromBuffer(value),
+        ($14.TicketsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$14.FindTicketRequest, $15.TicketPb>(
         'readOne',
         readOne_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.FindTicketRequest.fromBuffer(value),
-        ($1.TicketPb value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.TicketRequest, $2.StatusResponse>(
+        ($core.List<$core.int> value) => $14.FindTicketRequest.fromBuffer(value),
+        ($15.TicketPb value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$14.TicketRequest, $1.StatusResponse>(
         'createOne',
         createOne_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.TicketRequest.fromBuffer(value),
-        ($2.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.TicketsRequest, $2.StatusResponse>(
+        ($core.List<$core.int> value) => $14.TicketRequest.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$14.TicketsRequest, $1.StatusResponse>(
         'createMany',
         createMany_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.TicketsRequest.fromBuffer(value),
-        ($2.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.TicketRequest, $2.StatusResponse>(
+        ($core.List<$core.int> value) => $14.TicketsRequest.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$14.TicketRequest, $1.StatusResponse>(
         'updateStatusOne',
         updateStatusOne_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.TicketRequest.fromBuffer(value),
-        ($2.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.TicketRequest, $2.StatusResponse>(
+        ($core.List<$core.int> value) => $14.TicketRequest.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$14.TicketRequest, $1.StatusResponse>(
         'deleteOne',
         deleteOne_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.TicketRequest.fromBuffer(value),
-        ($2.StatusResponse value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) => $14.TicketRequest.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.TicketsResponse> readAll_Pre($grpc.ServiceCall $call,
-      $async.Future<$0.ReadAllTicketsRequest> $request) async {
-    return readAll($call, await $request);
+  $async.Future<$14.TicketsResponse> readAll_Pre($grpc.ServiceCall call, $async.Future<$14.ReadAllTicketsRequest> request) async {
+    return readAll(call, await request);
   }
 
-  $async.Future<$0.TicketsResponse> readAll(
-      $grpc.ServiceCall call, $0.ReadAllTicketsRequest request);
-
-  $async.Future<$1.TicketPb> readOne_Pre($grpc.ServiceCall $call,
-      $async.Future<$0.FindTicketRequest> $request) async {
-    return readOne($call, await $request);
+  $async.Future<$15.TicketPb> readOne_Pre($grpc.ServiceCall call, $async.Future<$14.FindTicketRequest> request) async {
+    return readOne(call, await request);
   }
 
-  $async.Future<$1.TicketPb> readOne(
-      $grpc.ServiceCall call, $0.FindTicketRequest request);
-
-  $async.Future<$2.StatusResponse> createOne_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.TicketRequest> $request) async {
-    return createOne($call, await $request);
+  $async.Future<$1.StatusResponse> createOne_Pre($grpc.ServiceCall call, $async.Future<$14.TicketRequest> request) async {
+    return createOne(call, await request);
   }
 
-  $async.Future<$2.StatusResponse> createOne(
-      $grpc.ServiceCall call, $0.TicketRequest request);
-
-  $async.Future<$2.StatusResponse> createMany_Pre($grpc.ServiceCall $call,
-      $async.Future<$0.TicketsRequest> $request) async {
-    return createMany($call, await $request);
+  $async.Future<$1.StatusResponse> createMany_Pre($grpc.ServiceCall call, $async.Future<$14.TicketsRequest> request) async {
+    return createMany(call, await request);
   }
 
-  $async.Future<$2.StatusResponse> createMany(
-      $grpc.ServiceCall call, $0.TicketsRequest request);
-
-  $async.Future<$2.StatusResponse> updateStatusOne_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.TicketRequest> $request) async {
-    return updateStatusOne($call, await $request);
+  $async.Future<$1.StatusResponse> updateStatusOne_Pre($grpc.ServiceCall call, $async.Future<$14.TicketRequest> request) async {
+    return updateStatusOne(call, await request);
   }
 
-  $async.Future<$2.StatusResponse> updateStatusOne(
-      $grpc.ServiceCall call, $0.TicketRequest request);
-
-  $async.Future<$2.StatusResponse> deleteOne_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.TicketRequest> $request) async {
-    return deleteOne($call, await $request);
+  $async.Future<$1.StatusResponse> deleteOne_Pre($grpc.ServiceCall call, $async.Future<$14.TicketRequest> request) async {
+    return deleteOne(call, await request);
   }
 
-  $async.Future<$2.StatusResponse> deleteOne(
-      $grpc.ServiceCall call, $0.TicketRequest request);
+  $async.Future<$14.TicketsResponse> readAll($grpc.ServiceCall call, $14.ReadAllTicketsRequest request);
+  $async.Future<$15.TicketPb> readOne($grpc.ServiceCall call, $14.FindTicketRequest request);
+  $async.Future<$1.StatusResponse> createOne($grpc.ServiceCall call, $14.TicketRequest request);
+  $async.Future<$1.StatusResponse> createMany($grpc.ServiceCall call, $14.TicketsRequest request);
+  $async.Future<$1.StatusResponse> updateStatusOne($grpc.ServiceCall call, $14.TicketRequest request);
+  $async.Future<$1.StatusResponse> deleteOne($grpc.ServiceCall call, $14.TicketRequest request);
 }

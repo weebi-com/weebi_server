@@ -19,8 +19,6 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/src/weebi_logger.dart';
-import 'package:fence_service/src/constants/app_environment.dart';
-import 'package:fence_service/src/jwt.dart';
 
 class PermissionAndSillyBoolean {
   final UserPermissions userPermissions;
@@ -324,13 +322,38 @@ class FenceService extends FenceServiceBase {
       var jwt = JsonWebToken();
       final payload = userPermission.userPermissions.toProto3Json()
           as Map<String, dynamic>?;
+      
+      // Diagnostic logging: Check payload structure before JWT creation
+      _logger.debug('JWT payload before encoding', extra: {
+        'payloadKeys': payload?.keys.toList(),
+        'payloadSize': payload?.toString().length ?? 0,
+        'hasNullValues': payload?.values.any((v) => v == null) ?? false,
+        'payloadTypes': payload?.map((k, v) => MapEntry(k, v.runtimeType.toString())),
+      });
+      
       jwt.createPayload(
         userPermission.userPermissions.userId,
         expireIn: const Duration(days: 1),
         payload: payload,
       );
+      
+      // Diagnostic logging: Check payload after createPayload
+      _logger.debug('JWT payload after createPayload', extra: {
+        'payloadKeys': jwt.payload.keys.toList(),
+        'payloadSize': jwt.payload.toString().length,
+      });
+      
       jwt.sign();
       final accessToken = jwt.sign();
+      
+      // Diagnostic logging: Check token after signing
+      _logger.debug('JWT token generated', extra: {
+        'tokenLength': accessToken.length,
+        'tokenParts': accessToken.split('.').length,
+        'tokenPreview': accessToken.length > 100 
+            ? '${accessToken.substring(0, 50)}...${accessToken.substring(accessToken.length - 50)}'
+            : accessToken,
+      });
       jwt = JsonWebToken();
       jwt.createPayload(
         userPermission.userPermissions.userId,
@@ -1722,6 +1745,11 @@ class FenceService extends FenceServiceBase {
             lastname: request.lastname,
           );
           
+          _logger.logRpcExit('signUp', call, resultData: {
+            'userId': userId,
+            'mail': request.mail,
+          });
+          
           return SignUpResponse(
               statusResponse: StatusResponse()
                 ..id = userId
@@ -2397,9 +2425,47 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> requestPasswordReset(
       ServiceCall? call, PasswordResetRequest request) async {
-    // Password reset functionality removed - will be handled by dedicated email service
-    throw GrpcError.unimplemented(
-        'Password reset functionality temporarily unavailable');
+    _logger.logRpcEntry('requestPasswordReset', call, requestData: {
+      'mail': request.mail,
+    });
+    
+    if (request.mail.isEmpty) {
+      throw GrpcError.invalidArgument('mail cannot be empty');
+    }
+
+    // Verify user exists
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        final userMongo = await userCollection.findOne(
+            where.eq('mail', request.mail));
+
+        if (userMongo == null) {
+          // Don't reveal if email exists or not (security best practice)
+          // But still log for debugging
+          _logger.warning('Password reset requested for non-existent email',
+              extra: {'mail': request.mail});
+          // Return success anyway to prevent email enumeration
+          return StatusResponse()
+            ..type = StatusResponse_Type.SUCCESS
+            ..timestamp = DateTime.now().timestampProto;
+        }
+
+        // Call weebi_express to send password reset email (fire-and-forget)
+        _sendPasswordResetEmailAsync(email: request.mail);
+
+        _logger.logRpcExit('requestPasswordReset', call);
+        return StatusResponse()
+          ..type = StatusResponse_Type.SUCCESS
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        _logger.logRpcError('requestPasswordReset', call, e, extra: {
+          'mail': request.mail,
+        });
+        rethrow;
+      }
+    });
   }
 
   @override
@@ -2410,35 +2476,29 @@ class FenceService extends FenceServiceBase {
     });
     
     if (request.mail.isEmpty || request.newPassword.isEmpty) {
-      throw GrpcError.invalidArgument(
-          'mail and newPassword are required');
+      throw GrpcError.invalidArgument('mail and newPassword are required');
     }
 
     // Note: Token validation is done by weebi_express before calling this RPC
-    // This method is called by service account, so no user permission check needed
+    // We just need to update the password
+
     final passwordNewEncrypted = _checkAndEncryptPassword(request.newPassword);
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
 
       try {
-        // Find user by email (case-insensitive match)
-        final selector = where.match('mail', r'^' + request.mail.trim() + r'$',
-            caseInsensitive: true);
-        final userMongo = await userCollection.findOne(selector);
-        
+        final userMongo = await userCollection.findOne(
+            where.eq('mail', request.mail));
+
         if (userMongo == null) {
-          throw GrpcError.notFound('user with email ${request.mail} not found');
+          throw GrpcError.notFound('user with mail ${request.mail} not found');
         }
 
-        final userPrivate = UserPrivate.create()
-          ..mergeFromProto3Json(userMongo, ignoreUnknownFields: true);
-
-        // Update password and reset mustChangePassword flag
         await userCollection.update(
-            where.eq('userId', userPrivate.userId),
+            where.eq('mail', request.mail),
             ModifierBuilder()
-                .set('password', passwordNewEncrypted)
+                .set('passwordEncrypted', passwordNewEncrypted)
                 .set('mustChangePassword', false));
 
         _logger.logRpcExit('confirmPasswordReset', call);
@@ -2450,9 +2510,72 @@ class FenceService extends FenceServiceBase {
           'mail': request.mail,
         });
         rethrow;
-      } catch (e, stacktrace) {
-        _logger.logRpcError('confirmPasswordReset', call, e, stackTrace: stacktrace, extra: {
+      }
+    });
+  }
+
+  @override
+  Future<StatusResponse> updateSubscriberId(
+      ServiceCall? call, UpdateSubscriberIdRequest request) async {
+    _logger.logRpcEntry('updateSubscriberId', call, requestData: {
+      'mail': request.mail,
+      'subscriberId': request.subscriberId,
+      'userId': request.userId.isNotEmpty ? request.userId : 'not provided',
+    });
+
+    if (request.mail.isEmpty) {
+      throw GrpcError.invalidArgument('mail cannot be empty');
+    }
+
+    if (request.subscriberId.isEmpty) {
+      throw GrpcError.invalidArgument('subscriberId cannot be empty');
+    }
+
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      final userCollection = db.collection(userCollectionName);
+
+      try {
+        // If userId is provided, use it directly for better performance
+        // Otherwise, look up by email (weebi_server guarantees unique email per user)
+        final userMongo = request.userId.isNotEmpty
+            ? await userCollection.findOne(where.eq('userId', request.userId))
+            : await userCollection.findOne(where.eq('mail', request.mail));
+
+        if (userMongo == null) {
+          final identifier = request.userId.isNotEmpty 
+              ? 'userId ${request.userId}' 
+              : 'mail ${request.mail}';
+          throw GrpcError.notFound('user with $identifier not found');
+        }
+
+        // Verify email matches if userId was provided (safety check)
+        if (request.userId.isNotEmpty && 
+            userMongo['mail'] != request.mail) {
+          _logger.warning('Email mismatch when updating subscriberId',
+              extra: {
+                'providedUserId': request.userId,
+                'providedMail': request.mail,
+                'foundMail': userMongo['mail'],
+              });
+          throw GrpcError.invalidArgument(
+              'email mismatch: provided mail does not match userId');
+        }
+
+        // Update using userId (more efficient than email lookup)
+        final userId = userMongo['userId'] as String;
+        await userCollection.update(
+            where.eq('userId', userId),
+            ModifierBuilder().set('subscriberId', request.subscriberId));
+
+        _logger.logRpcExit('updateSubscriberId', call);
+        return StatusResponse()
+          ..type = StatusResponse_Type.UPDATED
+          ..timestamp = DateTime.now().timestampProto;
+      } on GrpcError catch (e) {
+        _logger.logRpcError('updateSubscriberId', call, e, extra: {
           'mail': request.mail,
+          'subscriberId': request.subscriberId,
+          'userId': request.userId,
         });
         rethrow;
       }
@@ -2463,29 +2586,48 @@ class FenceService extends FenceServiceBase {
   Future<StatusResponse> markEmailVerified(
       ServiceCall? call, MarkEmailVerifiedRequest request) async {
     _logger.logRpcEntry('markEmailVerified', call, requestData: {
-      'userId': request.userId,
+      'mail': request.mail,
+      'userId': request.userId.isNotEmpty ? request.userId : 'not provided',
     });
-    
-    if (request.userId.isEmpty) {
-      throw GrpcError.invalidArgument('userId cannot be empty');
+
+    if (request.mail.isEmpty) {
+      throw GrpcError.invalidArgument('mail cannot be empty');
     }
 
-    // This method is called by service account, so no user permission check needed
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
 
       try {
-        // Find user by userId
-        final userMongo = await userCollection.findOne(
-            where.eq('userId', request.userId));
-        
+        // If userId is provided, use it directly for better performance
+        // Otherwise, look up by email (weebi_server guarantees unique email per user)
+        final userMongo = request.userId.isNotEmpty
+            ? await userCollection.findOne(where.eq('userId', request.userId))
+            : await userCollection.findOne(where.eq('mail', request.mail));
+
         if (userMongo == null) {
-          throw GrpcError.notFound('user with userId ${request.userId} not found');
+          final identifier = request.userId.isNotEmpty 
+              ? 'userId ${request.userId}' 
+              : 'mail ${request.mail}';
+          throw GrpcError.notFound('user with $identifier not found');
         }
 
-        // Update emailVerificationSent to true
+        // Verify email matches if userId was provided (safety check)
+        if (request.userId.isNotEmpty && 
+            userMongo['mail'] != request.mail) {
+          _logger.warning('Email mismatch when marking email as verified',
+              extra: {
+                'providedUserId': request.userId,
+                'providedMail': request.mail,
+                'foundMail': userMongo['mail'],
+              });
+          throw GrpcError.invalidArgument(
+              'email mismatch: provided mail does not match userId');
+        }
+
+        // Update using userId (more efficient than email lookup)
+        final userId = userMongo['userId'] as String;
         await userCollection.update(
-            where.eq('userId', request.userId),
+            where.eq('userId', userId),
             ModifierBuilder().set('emailVerificationSent', true));
 
         _logger.logRpcExit('markEmailVerified', call);
@@ -2494,15 +2636,64 @@ class FenceService extends FenceServiceBase {
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
         _logger.logRpcError('markEmailVerified', call, e, extra: {
-          'userId': request.userId,
-        });
-        rethrow;
-      } catch (e, stacktrace) {
-        _logger.logRpcError('markEmailVerified', call, e, stackTrace: stacktrace, extra: {
+          'mail': request.mail,
           'userId': request.userId,
         });
         rethrow;
       }
+    });
+  }
+
+  /// Sends password reset email via weebi_express service (async, non-blocking)
+  /// This is fire-and-forget - errors are logged but don't affect the flow
+  void _sendPasswordResetEmailAsync({
+    required String email,
+  }) {
+    final baseUrl = AppEnvironment.weebiExpressBaseUrl;
+    if (baseUrl == null || baseUrl.isEmpty) {
+      _logger.warning('WEEBI_EXPRESS_BASE_URL not configured, skipping password reset email',
+          extra: {'email': email});
+      return;
+    }
+
+    // Create service account JWT token with weebi_express secret
+    final expressSecret = AppEnvironment.weebiExpressJwtSecretKey;
+    final jwt = JsonWebToken(secretKeyFactory: () => expressSecret);
+    jwt.createPayload(
+      'weebi_express_service_account',
+      expireIn: const Duration(hours: 1),
+    );
+    final token = jwt.sign();
+
+    // Prepare request payload
+    final payload = jsonEncode({
+      'email': email,
+    });
+
+    // Make async HTTP request (fire-and-forget)
+    final url = Uri.parse('$baseUrl/api/v1/emails/send-password-reset');
+    http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: payload,
+    ).then((response) {
+      if (response.statusCode == 200) {
+        _logger.info('Password reset email sent successfully',
+            extra: {'email': email});
+      } else {
+        _logger.warning('Failed to send password reset email',
+            extra: {
+              'email': email,
+              'statusCode': response.statusCode,
+              'response': response.body,
+            });
+      }
+    }).catchError((error) {
+      _logger.error('Error calling weebi_express send-password-reset',
+          extra: {'email': email}, error: error);
     });
   }
 

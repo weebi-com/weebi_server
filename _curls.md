@@ -29,6 +29,8 @@ grpcurl -plaintext -proto fence_service.proto -d '{\"mail\": \"test@test.test\",
 
 
 ## dev - TLS /S SSL 
+grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto -d '{\"mail\": \"test@test.test\", \"password\": \"mypassword\"}' dev.weebi.com:443 weebi.fence.service.FenceService/authenticateWithCredentials
+
 grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto dev.weebi.com:443 weebi.fence.service.FenceService/healthCheck
 
 grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto dev.weebi.com:443 describe weebi.fence.service.FenceService

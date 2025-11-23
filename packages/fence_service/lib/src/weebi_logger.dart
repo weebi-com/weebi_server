@@ -20,7 +20,10 @@ class WeebiLogger {
   /// Initialize logging with JSON formatter for Cloud Run
   static void initialize({Level level = Level.INFO}) {
     Logger.root.level = level;
+    
     Logger.root.onRecord.listen((record) {
+      // All logs are sanitized to prevent MongoDB credentials from leaking
+      // Useful mongo_dart INFO logs are preserved, just with credentials masked
       _logToCloudRun(record);
     });
   }
@@ -30,6 +33,25 @@ class WeebiLogger {
     return Platform.environment.containsKey('K_SERVICE') ||
         Platform.environment.containsKey('K_REVISION');
   }
+  
+  /// Get the service name (Cloud Run service name or default)
+  static String get _serviceName {
+    return Platform.environment['K_SERVICE'] ?? 
+           Platform.environment['SERVICE_NAME'] ?? 
+           'weebi-server';
+  }
+  
+  /// Get the environment (production, development, etc.)
+  static String get _environment {
+    final env = Platform.environment['ENV'] ?? 
+                Platform.environment['ENVIRONMENT'] ?? 
+                'development';
+    // Normalize to production/development
+    if (env.toLowerCase() == 'prod' || env.toLowerCase() == 'production') {
+      return 'production';
+    }
+    return 'development';
+  }
 
   /// Log to stdout - JSON format for Cloud Run, readable format for local development
   static void _logToCloudRun(LogRecord record) {
@@ -37,25 +59,50 @@ class WeebiLogger {
     Map<String, dynamic>? structuredData;
     String message = record.message;
     
+    // Sanitize MongoDB URIs in the message
+    message = _sanitizeMongoUri(message);
+    
     // Check if message contains JSON structure
     if (record.message.startsWith('{') && record.message.contains('"message"')) {
       try {
         structuredData = jsonDecode(record.message) as Map<String, dynamic>;
         message = structuredData['message'] as String? ?? record.message;
+        message = _sanitizeMongoUri(message);
         structuredData.remove('message');
+        // Sanitize all values in structured data
+        structuredData = structuredData.map((key, value) {
+          if (value is String) {
+            return MapEntry(key, _sanitizeMongoUri(value));
+          }
+          return MapEntry(key, value);
+        });
       } catch (e) {
         // If parsing fails, treat as regular message
         structuredData = null;
       }
     }
 
+    // Sanitize error messages and stack traces as well
+    String? errorMessage;
+    if (record.error != null) {
+      errorMessage = _sanitizeMongoUri(record.error.toString());
+    }
+    
+    String? stackTrace;
+    if (record.stackTrace != null) {
+      stackTrace = _sanitizeMongoUri(record.stackTrace.toString());
+    }
+    
     final logData = <String, dynamic>{
       'severity': _levelToSeverity(record.level),
       'timestamp': record.time.toIso8601String(),
       'logger': record.loggerName,
       'message': message,
-      if (record.error != null) 'error': record.error.toString(),
-      if (record.stackTrace != null) 'stackTrace': record.stackTrace.toString(),
+      // Structured fields for easy filtering in GCP Logs Explorer
+      'service_name': _serviceName,
+      'environment': _environment,
+      if (errorMessage != null) 'error': errorMessage,
+      if (stackTrace != null) 'stackTrace': stackTrace,
       if (structuredData != null) ...structuredData,
     };
 
@@ -127,6 +174,16 @@ class WeebiLogger {
       default:
         return '⚪';
     }
+  }
+
+  /// Sanitize MongoDB URIs by masking credentials
+  /// Example: mongodb://user:pass@host -> mongodb://***:***@host
+  static String _sanitizeMongoUri(String text) {
+    // Pattern: mongodb://username:password@host or mongodb+srv://username:password@host
+    return text.replaceAllMapped(
+      RegExp(r'mongodb(\+srv)?://([^:]+):([^@]+)@'),
+      (match) => '${match.group(1) != null ? 'mongodb+srv' : 'mongodb'}://***:***@',
+    );
   }
 
   /// Convert Dart log level to Cloud Logging severity

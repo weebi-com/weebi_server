@@ -1,14 +1,13 @@
-// This is a generated file - do not edit.
 //
-// Generated from article/category.proto.
-
-// @dart = 3.3
+//  Generated code. Do not modify.
+//  source: article/category.proto
+//
+// @dart = 2.12
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names
-// ignore_for_file: curly_braces_in_flow_control_structures
-// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
-// ignore_for_file: non_constant_identifier_names, unused_import
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -22,22 +21,8 @@ const CategoryMongo$json = {
     {'1': 'chainId', '3': 2, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'title', '3': 4, '4': 1, '5': 9, '10': 'title'},
-    {
-      '1': 'category',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.weebi.category.CategoryPb',
-      '10': 'category'
-    },
-    {
-      '1': 'lastTouchTimestampUTC',
-      '3': 6,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'lastTouchTimestampUTC'
-    },
+    {'1': 'category', '3': 5, '4': 1, '5': 11, '6': '.weebi.category.CategoryPb', '10': 'category'},
+    {'1': 'lastTouchTimestampUTC', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
   ],
 };
 
@@ -66,3 +51,4 @@ final $typed_data.Uint8List categoryPbDescriptor = $convert.base64Decode(
     'CgpDYXRlZ29yeVBiEiAKC2NhbGlicmVzSWRzGAEgAygNUgtjYWxpYnJlc0lkcxIUCgV0aXRsZR'
     'gCIAEoCVIFdGl0bGUSFAoFY29sb3IYAyABKARSBWNvbG9yEiIKDGNyZWF0aW9uRGF0ZRgEIAEo'
     'CVIMY3JlYXRpb25EYXRlEh4KCnVwZGF0ZURhdGUYBSABKAlSCnVwZGF0ZURhdGU=');
+

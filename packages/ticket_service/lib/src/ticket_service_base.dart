@@ -2,8 +2,8 @@ import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
+import 'package:fence_service/logging.dart';
 import 'package:fence_service/protos_weebi.dart';
-import 'package:fence_service/src/weebi_logger.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectTicket(String firmId, String boutiqueId,

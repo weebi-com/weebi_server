@@ -1,3 +1,9 @@
+## 1.0.6 - 22 nov 2025
+
+integrate with weebi_express for transactional emails
+- newsletter subscription 
+- password reset
+
 ## 1.0.5 - nov 2025
 
 - fix boutique create
