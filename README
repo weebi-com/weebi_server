@@ -3,7 +3,16 @@
 ## install proto tools
 
 ### Windows
+```powershell
+# Install protoc
 choco install protoc
+
+# Install Dart plugin for protoc
+dart pub global activate protoc_plugin 21.1.0 # prototobuf < 5.0
+
+# Add to PATH (add to your PowerShell profile for permanent)
+$env:PATH += ";$env:USERPROFILE\.pub-cache\bin"
+```
 
 ### WSL/Linux
 ```bash
@@ -12,7 +21,7 @@ sudo apt-get update
 sudo apt-get install -y protobuf-compiler
 
 # Install Dart plugin for protoc
-dart pub global activate protoc_plugin
+dart pub global activate protoc_plugin 21.1.0 # prototobuf < 5.0
 
 # Add to PATH (add to ~/.bashrc or ~/.zshrc for permanent)
 export PATH="$PATH:$HOME/.pub-cache/bin"
@@ -20,7 +29,7 @@ export PATH="$PATH:$HOME/.pub-cache/bin"
 
 ### Generate Dart code from proto files (fetches from GitHub)
 
-**Windows PowerShell:**
+**Windows/PowerShell (Recommended):**
 ```powershell
 cd packages\protos\protos_weebi\tool
 .\generate_protos.ps1

@@ -19,8 +19,6 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/src/weebi_logger.dart';
-import 'package:fence_service/src/constants/app_environment.dart';
-import 'package:fence_service/src/jwt.dart';
 
 class PermissionAndSillyBoolean {
   final UserPermissions userPermissions;

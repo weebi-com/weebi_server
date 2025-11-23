@@ -99,7 +99,7 @@ class JsonWebToken {
       // print('[JWT DEBUG] Token parts count: ${_jwt.split(".").length}');
       
       return _jwt;
-    } catch (e, stackTrace) {
+    } catch (e) {
       // print('[JWT ERROR] Failed during sign(): $e');
       // print('[JWT ERROR] Stack trace: $stackTrace');
       // print('[JWT ERROR] Payload keys: ${_payload.keys.toList()}');

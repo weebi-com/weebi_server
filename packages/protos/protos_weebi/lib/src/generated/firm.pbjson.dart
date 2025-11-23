@@ -1,14 +1,13 @@
-// This is a generated file - do not edit.
 //
-// Generated from firm.proto.
-
-// @dart = 3.3
+//  Generated code. Do not modify.
+//  source: firm.proto
+//
+// @dart = 2.12
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names
-// ignore_for_file: curly_braces_in_flow_control_structures
-// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
-// ignore_for_file: non_constant_identifier_names, unused_import
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -21,62 +20,15 @@ const Firm$json = {
     {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     {'1': 'subscriptionPlan', '3': 3, '4': 1, '5': 9, '10': 'subscriptionPlan'},
-    {
-      '1': 'subscriptionSeats',
-      '3': 4,
-      '4': 1,
-      '5': 5,
-      '10': 'subscriptionSeats'
-    },
-    {
-      '1': 'subscriptionStartTimestampUTC',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'subscriptionStartTimestampUTC'
-    },
-    {
-      '1': 'subscriptionEndTimestampUTC',
-      '3': 6,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'subscriptionEndTimestampUTC'
-    },
+    {'1': 'subscriptionSeats', '3': 4, '4': 1, '5': 5, '10': 'subscriptionSeats'},
+    {'1': 'subscriptionStartTimestampUTC', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'subscriptionStartTimestampUTC'},
+    {'1': 'subscriptionEndTimestampUTC', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'subscriptionEndTimestampUTC'},
     {'1': 'status', '3': 7, '4': 1, '5': 8, '10': 'status'},
-    {
-      '1': 'statusUpdateTimestampUTC',
-      '3': 8,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'statusUpdateTimestampUTC'
-    },
-    {
-      '1': 'lastUpdateTimestampUTC',
-      '3': 9,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'lastUpdateTimestampUTC'
-    },
-    {
-      '1': 'lastUpdatedByuserId',
-      '3': 10,
-      '4': 1,
-      '5': 9,
-      '10': 'lastUpdatedByuserId'
-    },
+    {'1': 'statusUpdateTimestampUTC', '3': 8, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'statusUpdateTimestampUTC'},
+    {'1': 'lastUpdateTimestampUTC', '3': 9, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
+    {'1': 'lastUpdatedByuserId', '3': 10, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
     {'1': 'isMailVerified', '3': 11, '4': 1, '5': 8, '10': 'isMailVerified'},
-    {
-      '1': 'creationDateUTC',
-      '3': 12,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'creationDateUTC'
-    },
+    {'1': 'creationDateUTC', '3': 12, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationDateUTC'},
   ],
 };
 
@@ -105,29 +57,15 @@ const CreateFirmRequest$json = {
 };
 
 /// Descriptor for `CreateFirmRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List createFirmRequestDescriptor = $convert
-    .base64Decode('ChFDcmVhdGVGaXJtUmVxdWVzdBISCgRuYW1lGAEgASgJUgRuYW1l');
+final $typed_data.Uint8List createFirmRequestDescriptor = $convert.base64Decode(
+    'ChFDcmVhdGVGaXJtUmVxdWVzdBISCgRuYW1lGAEgASgJUgRuYW1l');
 
 @$core.Deprecated('Use createFirmResponseDescriptor instead')
 const CreateFirmResponse$json = {
   '1': 'CreateFirmResponse',
   '2': [
-    {
-      '1': 'statusResponse',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.google.retail.common.StatusResponse',
-      '10': 'statusResponse'
-    },
-    {
-      '1': 'firm',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.weebi.firm.Firm',
-      '10': 'firm'
-    },
+    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
+    {'1': 'firm', '3': 2, '4': 1, '5': 11, '6': '.weebi.firm.Firm', '10': 'firm'},
   ],
 };
 
@@ -136,3 +74,4 @@ final $typed_data.Uint8List createFirmResponseDescriptor = $convert.base64Decode
     'ChJDcmVhdGVGaXJtUmVzcG9uc2USTAoOc3RhdHVzUmVzcG9uc2UYASABKAsyJC5nb29nbGUucm'
     'V0YWlsLmNvbW1vbi5TdGF0dXNSZXNwb25zZVIOc3RhdHVzUmVzcG9uc2USJAoEZmlybRgCIAEo'
     'CzIQLndlZWJpLmZpcm0uRmlybVIEZmlybQ==');
+

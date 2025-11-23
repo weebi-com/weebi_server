@@ -33,6 +33,25 @@ class WeebiLogger {
     return Platform.environment.containsKey('K_SERVICE') ||
         Platform.environment.containsKey('K_REVISION');
   }
+  
+  /// Get the service name (Cloud Run service name or default)
+  static String get _serviceName {
+    return Platform.environment['K_SERVICE'] ?? 
+           Platform.environment['SERVICE_NAME'] ?? 
+           'weebi-server';
+  }
+  
+  /// Get the environment (production, development, etc.)
+  static String get _environment {
+    final env = Platform.environment['ENV'] ?? 
+                Platform.environment['ENVIRONMENT'] ?? 
+                'development';
+    // Normalize to production/development
+    if (env.toLowerCase() == 'prod' || env.toLowerCase() == 'production') {
+      return 'production';
+    }
+    return 'development';
+  }
 
   /// Log to stdout - JSON format for Cloud Run, readable format for local development
   static void _logToCloudRun(LogRecord record) {
@@ -79,6 +98,9 @@ class WeebiLogger {
       'timestamp': record.time.toIso8601String(),
       'logger': record.loggerName,
       'message': message,
+      // Structured fields for easy filtering in GCP Logs Explorer
+      'service_name': _serviceName,
+      'environment': _environment,
       if (errorMessage != null) 'error': errorMessage,
       if (stackTrace != null) 'stackTrace': stackTrace,
       if (structuredData != null) ...structuredData,

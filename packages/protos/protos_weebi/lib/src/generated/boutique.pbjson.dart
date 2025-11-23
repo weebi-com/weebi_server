@@ -1,14 +1,13 @@
-// This is a generated file - do not edit.
 //
-// Generated from boutique.proto.
-
-// @dart = 3.3
+//  Generated code. Do not modify.
+//  source: boutique.proto
+//
+// @dart = 2.12
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names
-// ignore_for_file: curly_braces_in_flow_control_structures
-// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
-// ignore_for_file: non_constant_identifier_names, unused_import
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -18,55 +17,20 @@ import 'dart:typed_data' as $typed_data;
 const BoutiqueMongo$json = {
   '1': 'BoutiqueMongo',
   '2': [
-    {
-      '1': 'boutique',
-      '3': 1,
-      '4': 1,
-      '5': 11,
-      '6': '.weebi.boutique.BoutiquePb',
-      '10': 'boutique'
-    },
+    {'1': 'boutique', '3': 1, '4': 1, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutique'},
     {'1': 'boutiqueId', '3': 2, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'firmId', '3': 3, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 4, '4': 1, '5': 9, '10': 'chainId'},
-    {
-      '1': 'creationTimestampUTC',
-      '3': 5,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'creationTimestampUTC'
-    },
+    {'1': 'creationTimestampUTC', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationTimestampUTC'},
     {'1': 'name', '3': 6, '4': 1, '5': 9, '10': 'name'},
-    {
-      '1': 'devices',
-      '3': 7,
-      '4': 3,
-      '5': 11,
-      '6': '.weebi.device.Device',
-      '10': 'devices'
-    },
-    {
-      '1': 'lastTouchTimestampUTC',
-      '3': 8,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'lastTouchTimestampUTC'
-    },
+    {'1': 'devices', '3': 7, '4': 3, '5': 11, '6': '.weebi.device.Device', '10': 'devices'},
+    {'1': 'lastTouchTimestampUTC', '3': 8, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
     {'1': 'logo', '3': 9, '4': 1, '5': 12, '10': 'logo'},
     {'1': 'logoExtension', '3': 10, '4': 1, '5': 9, '10': 'logoExtension'},
     {'1': 'isDeleted', '3': 11, '4': 1, '5': 8, '10': 'isDeleted'},
     {'1': 'deletedBy', '3': 12, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 13, '4': 1, '5': 9, '10': 'restoredBy'},
-    {
-      '1': 'additional_attributes',
-      '3': 99,
-      '4': 3,
-      '5': 11,
-      '6': '.weebi.boutique.BoutiqueMongo.AdditionalAttributesEntry',
-      '10': 'additional_attributes'
-    },
+    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiqueMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
   '3': [BoutiqueMongo_AdditionalAttributesEntry$json],
   '9': [
@@ -125,22 +89,8 @@ const BoutiquePb$json = {
       '10': 'status',
     },
     {'1': 'name', '3': 6, '4': 1, '5': 9, '10': 'name'},
-    {
-      '1': 'phone',
-      '3': 7,
-      '4': 1,
-      '5': 11,
-      '6': '.weebi.common.phone.Phone',
-      '10': 'phone'
-    },
-    {
-      '1': 'addressFull',
-      '3': 8,
-      '4': 1,
-      '5': 11,
-      '6': '.weebi.common.address.Address',
-      '10': 'addressFull'
-    },
+    {'1': 'phone', '3': 7, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
+    {'1': 'addressFull', '3': 8, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
     {'1': 'promo', '3': 9, '4': 1, '5': 1, '10': 'promo'},
     {'1': 'promoStart', '3': 10, '4': 1, '5': 9, '10': 'promoStart'},
     {'1': 'promoEnd', '3': 11, '4': 1, '5': 9, '10': 'promoEnd'},
@@ -148,14 +98,7 @@ const BoutiquePb$json = {
     {'1': 'deletedBy', '3': 13, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 14, '4': 1, '5': 9, '10': 'restoredBy'},
     {'1': 'mail', '3': 15, '4': 1, '5': 9, '10': 'mail'},
-    {
-      '1': 'additional_attributes',
-      '3': 99,
-      '4': 3,
-      '5': 11,
-      '6': '.weebi.boutique.BoutiquePb.AdditionalAttributesEntry',
-      '10': 'additional_attributes'
-    },
+    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiquePb.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
   '3': [BoutiquePb_AdditionalAttributesEntry$json],
   '9': [
@@ -188,3 +131,4 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'LmJvdXRpcXVlLkJvdXRpcXVlUGIuQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb2'
     '5hbF9hdHRyaWJ1dGVzGkcKGUFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJ'
     'UgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AUoECBAQYw==');
+

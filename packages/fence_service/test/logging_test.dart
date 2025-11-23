@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 import 'package:test/test.dart';
-import 'package:logging/logging.dart';
 import 'package:fence_service/logging.dart';
 
 void main() {

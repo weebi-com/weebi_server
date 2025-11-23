@@ -16,8 +16,8 @@ COPY pubspec.* ./
 # We run the command dart pub get to get dependencies. 
 RUN dart pub get
 
-# Install protoc-gen-dart plugin
-RUN dart pub global activate protoc_plugin
+# Install protoc-gen-dart plugin (pinned to version compatible with protobuf 4.0.0)
+RUN dart pub global activate protoc_plugin 21.1.0 # protobuf < 5.0
 
 # copy all the source code to the container.
 COPY . .

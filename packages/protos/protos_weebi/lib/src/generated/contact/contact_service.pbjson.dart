@@ -1,14 +1,13 @@
-// This is a generated file - do not edit.
 //
-// Generated from contact/contact_service.proto.
-
-// @dart = 3.3
+//  Generated code. Do not modify.
+//  source: contact/contact_service.proto
+//
+// @dart = 2.12
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names
-// ignore_for_file: curly_braces_in_flow_control_structures
-// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
-// ignore_for_file: non_constant_identifier_names, unused_import
+// ignore_for_file: constant_identifier_names, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -23,22 +22,8 @@ const ReadContactRequest$json = {
     {'1': 'firstName', '3': 4, '4': 1, '5': 9, '10': 'firstName'},
     {'1': 'lastName', '3': 5, '4': 1, '5': 9, '10': 'lastName'},
     {'1': 'mail', '3': 6, '4': 1, '5': 9, '10': 'mail'},
-    {
-      '1': 'phone',
-      '3': 7,
-      '4': 1,
-      '5': 11,
-      '6': '.weebi.common.phone.Phone',
-      '10': 'phone'
-    },
-    {
-      '1': 'address',
-      '3': 8,
-      '4': 1,
-      '5': 11,
-      '6': '.weebi.common.address.Address',
-      '10': 'addressFull'
-    },
+    {'1': 'phone', '3': 7, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
+    {'1': 'address', '3': 8, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
   ],
 };
 
@@ -56,14 +41,7 @@ const ReadAllContactsRequest$json = {
   '1': 'ReadAllContactsRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {
-      '1': 'lastFetchTimestampUTC',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.google.protobuf.Timestamp',
-      '10': 'lastFetchTimestampUTC'
-    },
+    {'1': 'lastFetchTimestampUTC', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastFetchTimestampUTC'},
   ],
 };
 
@@ -78,14 +56,7 @@ const ContactRequest$json = {
   '1': 'ContactRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {
-      '1': 'contact',
-      '3': 2,
-      '4': 1,
-      '5': 11,
-      '6': '.weebi.contact.ContactPb',
-      '10': 'contact'
-    },
+    {'1': 'contact', '3': 2, '4': 1, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contact'},
   ],
 };
 
@@ -99,14 +70,7 @@ const ContactsRequest$json = {
   '1': 'ContactsRequest',
   '2': [
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
-    {
-      '1': 'contacts',
-      '3': 2,
-      '4': 3,
-      '5': 11,
-      '6': '.weebi.contact.ContactPb',
-      '10': 'contacts'
-    },
+    {'1': 'contacts', '3': 2, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contacts'},
   ],
 };
 
@@ -119,14 +83,7 @@ final $typed_data.Uint8List contactsRequestDescriptor = $convert.base64Decode(
 const ContactsResponse$json = {
   '1': 'ContactsResponse',
   '2': [
-    {
-      '1': 'contacts',
-      '3': 1,
-      '4': 3,
-      '5': 11,
-      '6': '.weebi.contact.ContactPb',
-      '10': 'contacts'
-    },
+    {'1': 'contacts', '3': 1, '4': 3, '5': 11, '6': '.weebi.contact.ContactPb', '10': 'contacts'},
   ],
 };
 
@@ -144,9 +101,8 @@ const ReadContactsIdsRequest$json = {
 };
 
 /// Descriptor for `ReadContactsIdsRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List readContactsIdsRequestDescriptor =
-    $convert.base64Decode(
-        'ChZSZWFkQ29udGFjdHNJZHNSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQ=');
+final $typed_data.Uint8List readContactsIdsRequestDescriptor = $convert.base64Decode(
+    'ChZSZWFkQ29udGFjdHNJZHNSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQ=');
 
 @$core.Deprecated('Use contactsIdsResponseDescriptor instead')
 const ContactsIdsResponse$json = {
@@ -157,5 +113,6 @@ const ContactsIdsResponse$json = {
 };
 
 /// Descriptor for `ContactsIdsResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List contactsIdsResponseDescriptor = $convert
-    .base64Decode('ChNDb250YWN0c0lkc1Jlc3BvbnNlEhAKA2lkcxgBIAMoBVIDaWRz');
+final $typed_data.Uint8List contactsIdsResponseDescriptor = $convert.base64Decode(
+    'ChNDb250YWN0c0lkc1Jlc3BvbnNlEhAKA2lkcxgBIAMoBVIDaWRz');
+

@@ -16,3 +16,4 @@ mongodb_scripts/create_service_account.js
 
 # Proto files cloned from GitHub (external dependency)
 packages/protos/proto/
+docs/GCP_LOGS_QUERIES.md

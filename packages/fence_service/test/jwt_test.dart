@@ -25,9 +25,12 @@ void main() {
       expect(parts.length, equals(3), reason: 'JWT should have 3 parts');
 
       // Verify no padding in any part
-      expect(parts[0].contains('='), isFalse, reason: 'Header should not contain padding');
-      expect(parts[1].contains('='), isFalse, reason: 'Payload should not contain padding');
-      expect(parts[2].contains('='), isFalse, reason: 'Signature should not contain padding');
+      expect(parts[0].contains('='), isFalse,
+          reason: 'Header should not contain padding');
+      expect(parts[1].contains('='), isFalse,
+          reason: 'Payload should not contain padding');
+      expect(parts[2].contains('='), isFalse,
+          reason: 'Signature should not contain padding');
 
       // Verify token can be parsed back
       final parsedJwt = JsonWebToken.parse(token);
@@ -54,10 +57,12 @@ void main() {
 
       // Parse and verify again
       final parsedJwt = JsonWebToken.parse(token);
-      expect(parsedJwt.verify(), isTrue, reason: 'Parsed token should be valid');
+      expect(parsedJwt.verify(), isTrue,
+          reason: 'Parsed token should be valid');
     });
 
-    test('should handle tokens with various payload sizes (padding edge cases)', () {
+    test('should handle tokens with various payload sizes (padding edge cases)',
+        () {
       // Test with small payload (might not need padding)
       final jwt1 = JsonWebToken(secretKeyFactory: () => testSecretKey);
       jwt1.createPayload('user1', payload: {'a': 'b'});
@@ -84,16 +89,37 @@ void main() {
       jwt3.createPayload('user3', payload: {
         'userId': 'user3',
         'firmId': 'firm3',
-        'chainIds': {'ids': ['chain1', 'chain2', 'chain3']},
-        'boutiqueIds': {'ids': ['boutique1', 'boutique2']},
-        'articleRights': {'rights': [1, 2, 3, 4]},
-        'boutiqueRights': {'rights': [1, 2]},
-        'chainRights': {'rights': [1, 2, 3]},
-        'firmRights': {'rights': [1, 2, 3, 4]},
-        'contactRights': {'rights': [1, 2]},
-        'ticketRights': {'rights': [1, 2, 3]},
-        'userManagementRights': {'rights': [1, 2], 'canUpdateUserPassword': true},
-        'billingRights': {'rights': [1, 2]},
+        'chainIds': {
+          'ids': ['chain1', 'chain2', 'chain3']
+        },
+        'boutiqueIds': {
+          'ids': ['boutique1', 'boutique2']
+        },
+        'articleRights': {
+          'rights': [1, 2, 3, 4]
+        },
+        'boutiqueRights': {
+          'rights': [1, 2]
+        },
+        'chainRights': {
+          'rights': [1, 2, 3]
+        },
+        'firmRights': {
+          'rights': [1, 2, 3, 4]
+        },
+        'contactRights': {
+          'rights': [1, 2]
+        },
+        'ticketRights': {
+          'rights': [1, 2, 3]
+        },
+        'userManagementRights': {
+          'rights': [1, 2],
+          'canUpdateUserPassword': true
+        },
+        'billingRights': {
+          'rights': [1, 2]
+        },
         'boolRights': {
           'canSeeStats': true,
           'canExportData': false,
@@ -139,7 +165,7 @@ void main() {
         'exp_test_user',
         expireIn: const Duration(seconds: 1),
       );
-      final token = jwt.sign();
+      jwt.sign();
 
       // Token should be valid immediately
       expect(jwt.verify(), isTrue);
@@ -150,4 +176,3 @@ void main() {
     });
   });
 }
-
