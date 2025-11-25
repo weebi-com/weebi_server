@@ -64,19 +64,20 @@ class JsonWebToken {
   }
 
   /// Validates that a string contains only valid base64url characters
-  /// Base64url alphabet: A-Z, a-z, 0-9, -, _ (and = for padding, though we remove it)
+  /// Base64url alphabet: A-Z, a-z, 0-9, -, _ (and = for padding)
+  /// Note: Dart tokens may have padding, weebi_express tokens don't
   void _validateBase64Url(String encoded, String partName) {
     if (encoded.isEmpty) {
       throw FormatException('JWT $partName is empty', encoded);
     }
 
-    // Check for valid base64url characters (A-Z, a-z, 0-9, -, _)
-    // Note: We don't allow = here since padding should be removed in JWT tokens
-    final base64UrlPattern = RegExp(r'^[A-Za-z0-9_-]+$');
+    // Check for valid base64url characters (A-Z, a-z, 0-9, -, _, =)
+    // Allow = for padding (Dart tokens have padding, weebi_express tokens don't)
+    final base64UrlPattern = RegExp(r'^[A-Za-z0-9_=-]+$');
     if (!base64UrlPattern.hasMatch(encoded)) {
       throw FormatException(
         'JWT $partName contains invalid base64url characters. '
-        'Only A-Z, a-z, 0-9, -, and _ are allowed.',
+        'Only A-Z, a-z, 0-9, -, _, and = are allowed.',
         encoded,
       );
     }
@@ -116,6 +117,35 @@ class JsonWebToken {
 
   Map<String, dynamic> get payload => _payload;
 
+  /// Checks if this token is from a service account (weebi_express)
+  /// Service account tokens are identified by:
+  /// - userId contains "_service_" (e.g., "weebi_express_service_account")
+  /// - tags array contains "service_account"
+  /// - firmId is empty
+  bool get isServiceAccount {
+    final tags = _payload['tags'];
+    final firmId = _payload['firmId'] as String?;
+    
+    // Check if tags contain "service_account" & firmId is empty
+    if (tags is List && tags.contains('service_account') && firmId != null && firmId.isEmpty) {
+      return true;
+    }
+    
+    return false;
+  }
+
+  /// Gets the userId from the token payload
+  String? get userId => _payload['userId'] as String? ?? _payload['sub'] as String?;
+
+  /// Gets the firmId from the token payload
+  String? get firmId => _payload['firmId'] as String?;
+
+  /// Gets the tags array from the token payload
+  List<dynamic>? get tags {
+    final tagsValue = _payload['tags'];
+    return tagsValue is List ? tagsValue : null;
+  }
+
   // UserPermissions get userPermissions => UserPermissions.create()
   //   ..mergeFromProto3Json(_payload, ignoreUnknownFields: true);
 
@@ -144,11 +174,12 @@ class JsonWebToken {
       final utf8Bytes = utf8.encode(jsonString);
       // print('[JWT DEBUG] UTF-8 encoding successful, bytes: ${utf8Bytes.length}');
       
-      // Encode with base64Url and remove padding (JWT spec compliance)
-      final encodedHeader = _removePadding(base64Url.encode(utf8.encode(json.encode(_header))));
+      // Encode with base64Url (keep padding for Dart tokens - compatibility with frontend)
+      // Note: weebi_express (Go) tokens may not have padding, but _normalizeBase64Url handles both
+      final encodedHeader = base64Url.encode(utf8.encode(json.encode(_header)));
       // print('[JWT DEBUG] Header encoded, length: ${encodedHeader.length}');
       
-      final encodedPayload = _removePadding(base64Url.encode(utf8Bytes));
+      final encodedPayload = base64Url.encode(utf8Bytes);
       // print('[JWT DEBUG] Payload encoded, length: ${encodedPayload.length}');
       // print('[JWT DEBUG] Payload preview: ${encodedPayload.length > 100 ? encodedPayload.substring(0, 50) + "..." + encodedPayload.substring(encodedPayload.length - 50) : encodedPayload}');
 
@@ -156,7 +187,7 @@ class JsonWebToken {
           .convert(utf8.encode('$encodedHeader.$encodedPayload'))
           .bytes;
 
-      final encodedSignature = _removePadding(base64Url.encode(signature));
+      final encodedSignature = base64Url.encode(signature);
       // print('[JWT DEBUG] Signature encoded, length: ${encodedSignature.length}');
 
       _jwt = '$encodedHeader.$encodedPayload.$encodedSignature';
@@ -194,16 +225,25 @@ class JsonWebToken {
 
       // 1. Verify Signature:
       final secretKey = secretKeyFactory();
-      // Remove padding from header/payload for signature verification (as stored in token)
-      // Use original parts, not normalized ones, since padding was removed during encoding
-      final headerNoPadding = parts[0].trim();
-      final payloadNoPadding = parts[1].trim();
-      final expectedSignature = _removePadding(base64Url.encode(
+      // For signature verification, use the original parts as they appear in the token
+      // (may have padding for Dart tokens, or no padding for weebi_express tokens)
+      final headerForSig = parts[0].trim();
+      final payloadForSig = parts[1].trim();
+      
+      // Compute expected signature (base64Url.encode adds padding)
+      final computedSignature = base64Url.encode(
           Hmac(sha256, utf8.encode(secretKey))
-              .convert(utf8.encode('$headerNoPadding.$payloadNoPadding'))
-              .bytes));
+              .convert(utf8.encode('$headerForSig.$payloadForSig'))
+              .bytes);
+      
+      // Normalize both signatures (add padding if needed) then remove padding for comparison
+      // This handles both padded (Dart) and unpadded (weebi_express) tokens
+      final normalizedComputed = _normalizeBase64Url(computedSignature);
+      final normalizedToken = _normalizeBase64Url(encodedSignature);
+      final computedNoPadding = _removePadding(normalizedComputed);
+      final tokenNoPadding = _removePadding(normalizedToken);
 
-      if (expectedSignature != encodedSignature) {
+      if (computedNoPadding != tokenNoPadding) {
         return false; // Invalid signature
       }
 
