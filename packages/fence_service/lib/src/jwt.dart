@@ -134,9 +134,6 @@ class JsonWebToken {
     return false;
   }
 
-  /// Gets the userId from the token payload
-  String? get userId => _payload['userId'] as String? ?? _payload['sub'] as String?;
-
   /// Gets the firmId from the token payload
   String? get firmId => _payload['firmId'] as String?;
 
