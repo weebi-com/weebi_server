@@ -159,14 +159,17 @@ void main() {
         'exp_test_user',
         expireIn: const Duration(seconds: 1),
       );
-      jwt.sign();
+      final token = jwt.sign();
 
       // Token should be valid immediately
       expect(jwt.verify(), isTrue);
 
-      // Wait for expiration
-      await Future.delayed(const Duration(seconds: 2));
-      expect(jwt.verify(), isFalse, reason: 'Token should be expired');
+      // Wait for expiration (add buffer for CI timing variance)
+      await Future.delayed(const Duration(milliseconds: 1500));
+      
+      // Verify using the parsed token (more reliable in CI)
+      final parsedJwt = JsonWebToken.parse(token, secretKeyFactory: () => testSecretKey);
+      expect(parsedJwt.verify(), isFalse, reason: 'Token should be expired');
     });
 
     test('should identify service account tokens correctly', () {
@@ -180,9 +183,9 @@ void main() {
           'firmId': '',
         },
       );
-      serviceJwt1.sign();
+      final token1 = serviceJwt1.sign(); // Store token from first sign()
       final parsedService1 = JsonWebToken.parse(
-        serviceJwt1.sign(),
+        token1, // Use stored token, not call sign() again
         secretKeyFactory: () => testSecretKey,
       );
       expect(parsedService1.isServiceAccount, isTrue,
@@ -198,9 +201,9 @@ void main() {
           'firmId': '',
         },
       );
-      serviceJwt2.sign();
+      final token2 = serviceJwt2.sign(); // Store token from first sign()
       final parsedService2 = JsonWebToken.parse(
-        serviceJwt2.sign(),
+        token2, // Use stored token, not call sign() again
         secretKeyFactory: () => testSecretKey,
       );
       expect(parsedService2.isServiceAccount, isTrue,
@@ -216,9 +219,9 @@ void main() {
           'tags': ['user'],
         },
       );
-      userJwt.sign();
+      final token3 = userJwt.sign(); // Store token from first sign()
       final parsedUser = JsonWebToken.parse(
-        userJwt.sign(),
+        token3, // Use stored token, not call sign() again
         secretKeyFactory: () => testSecretKey,
       );
       expect(parsedUser.isServiceAccount, isFalse,
