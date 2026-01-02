@@ -139,8 +139,10 @@ class FenceService extends FenceServiceBase {
 
       return pubspec.version?.toString() ?? 'unknown';
     } catch (e) {
-      _logger.warning('Error reading version from pubspec', extra: {'path': absolutePath});
-      _logger.debug('Version read error details', extra: {'error': e.toString()});
+      _logger.warning('Error reading version from pubspec',
+          extra: {'path': absolutePath});
+      _logger
+          .debug('Version read error details', extra: {'error': e.toString()});
       return 'unknown';
     }
   }
@@ -150,7 +152,8 @@ class FenceService extends FenceServiceBase {
     try {
       final lockFile = File(lockFilePath);
       if (!lockFile.existsSync()) {
-        _logger.debug('Pubspec.lock file not found', extra: {'path': lockFilePath});
+        _logger.debug('Pubspec.lock file not found',
+            extra: {'path': lockFilePath});
         return 'unknown';
       }
 
@@ -170,7 +173,8 @@ class FenceService extends FenceServiceBase {
         'path': lockFilePath,
         'packageName': packageName,
       });
-      _logger.debug('Version read error details', extra: {'error': e.toString()});
+      _logger
+          .debug('Version read error details', extra: {'error': e.toString()});
       return 'unknown';
     }
   }
@@ -311,7 +315,7 @@ class FenceService extends FenceServiceBase {
     _logger.logRpcEntry('authenticateWithCredentials', call, requestData: {
       'mail': request.mail,
     });
-    
+
     try {
       final mailAndEncyptedPassword = _checkCredentials(request);
 
@@ -322,35 +326,36 @@ class FenceService extends FenceServiceBase {
       var jwt = JsonWebToken();
       final payload = userPermission.userPermissions.toProto3Json()
           as Map<String, dynamic>?;
-      
+
       // Diagnostic logging: Check payload structure before JWT creation
       _logger.debug('JWT payload before encoding', extra: {
         'payloadKeys': payload?.keys.toList(),
         'payloadSize': payload?.toString().length ?? 0,
         'hasNullValues': payload?.values.any((v) => v == null) ?? false,
-        'payloadTypes': payload?.map((k, v) => MapEntry(k, v.runtimeType.toString())),
+        'payloadTypes':
+            payload?.map((k, v) => MapEntry(k, v.runtimeType.toString())),
       });
-      
+
       jwt.createPayload(
         userPermission.userPermissions.userId,
         expireIn: const Duration(days: 1),
         payload: payload,
       );
-      
+
       // Diagnostic logging: Check payload after createPayload
       _logger.debug('JWT payload after createPayload', extra: {
         'payloadKeys': jwt.payload.keys.toList(),
         'payloadSize': jwt.payload.toString().length,
       });
-      
+
       jwt.sign();
       final accessToken = jwt.sign();
-      
+
       // Diagnostic logging: Check token after signing
       _logger.debug('JWT token generated', extra: {
         'tokenLength': accessToken.length,
         'tokenParts': accessToken.split('.').length,
-        'tokenPreview': accessToken.length > 100 
+        'tokenPreview': accessToken.length > 100
             ? '${accessToken.substring(0, 50)}...${accessToken.substring(accessToken.length - 50)}'
             : accessToken,
       });
@@ -430,7 +435,7 @@ class FenceService extends FenceServiceBase {
   Future<Tokens> authenticateWithRefreshToken(
       ServiceCall? call, RefreshToken request) async {
     _logger.logRpcEntry('authenticateWithRefreshToken', call);
-    
+
     try {
       final jwtRefresh = JsonWebToken.parse(request.refreshToken);
       if (!jwtRefresh.verify()) {
@@ -459,7 +464,8 @@ class FenceService extends FenceServiceBase {
       final resfreshToken = jwt.sign();
       // ? is below really useful ?
       await _updateUserLastSignIn(userPrivate.userId);
-      final tokens = Tokens(accessToken: accessToken, refreshToken: resfreshToken);
+      final tokens =
+          Tokens(accessToken: accessToken, refreshToken: resfreshToken);
       _logger.logRpcExit('authenticateWithRefreshToken', call);
       return tokens;
     } on GrpcError catch (e) {
@@ -540,7 +546,7 @@ class FenceService extends FenceServiceBase {
     _logger.logRpcEntry('updateOneUser', call, requestData: {
       'userId': request.userId,
     });
-    
+
     if (request.userId.isEmpty) {
       throw GrpcError.invalidArgument('userId cannot be empty');
     }
@@ -574,7 +580,7 @@ class FenceService extends FenceServiceBase {
     _logger.logRpcEntry('readOneUser', call, requestData: {
       'userId': request.userId,
     });
-    
+
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -669,7 +675,7 @@ class FenceService extends FenceServiceBase {
       'chainId': request.chainId,
       'boutiqueId': request.boutiqueId,
     });
-    
+
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -726,7 +732,8 @@ class FenceService extends FenceServiceBase {
         _logger.logRpcError('generateCodeForPairingDevice', call, e);
         rethrow;
       } catch (e, stacktrace) {
-        _logger.logRpcError('generateCodeForPairingDevice', call, e, stackTrace: stacktrace);
+        _logger.logRpcError('generateCodeForPairingDevice', call, e,
+            stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
     });
@@ -768,7 +775,7 @@ class FenceService extends FenceServiceBase {
         'serialNumber': request.hardwareInfo.serialNumber,
       },
     });
-    
+
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -787,7 +794,7 @@ class FenceService extends FenceServiceBase {
         return CreateDeviceResponse(
             statusResponse: StatusResponse(
                 type: StatusResponse_Type.ERROR,
-                message: 'no match',
+                message: 'code no match',
                 timestamp: DateTime.now().timestampProto));
       }
       if (pairingResp.firmId != userPermission.firmId) {
@@ -1463,7 +1470,7 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
 
-    if(request.boutique.boutiqueId.isEmpty) {
+    if (request.boutique.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutique.boutiqueId cannot be empty');
     }
 
@@ -1693,7 +1700,7 @@ class FenceService extends FenceServiceBase {
     _logger.logRpcEntry('signUp', call, requestData: {
       'mail': request.mail,
     });
-    
+
     final mailAndEncyptedPassword = _checkCredentials(
         Credentials(mail: request.mail, password: request.password));
 
@@ -1736,7 +1743,7 @@ class FenceService extends FenceServiceBase {
         final timestamp = DateTime.now().timestampProto;
         if (result.success && result.document != null) {
           final userId = result.document!['userId'];
-          
+
           // Call weebi_express to send confirmation email (fire-and-forget)
           _sendConfirmationEmailAsync(
             userId: userId,
@@ -1744,12 +1751,12 @@ class FenceService extends FenceServiceBase {
             firstname: request.firstname,
             lastname: request.lastname,
           );
-          
+
           _logger.logRpcExit('signUp', call, resultData: {
             'userId': userId,
             'mail': request.mail,
           });
-          
+
           return SignUpResponse(
               statusResponse: StatusResponse()
                 ..id = userId
@@ -1779,7 +1786,8 @@ class FenceService extends FenceServiceBase {
   }) {
     final baseUrl = AppEnvironment.weebiExpressBaseUrl;
     if (baseUrl == null || baseUrl.isEmpty) {
-      _logger.warning('WEEBI_EXPRESS_BASE_URL not configured, skipping confirmation email',
+      _logger.warning(
+          'WEEBI_EXPRESS_BASE_URL not configured, skipping confirmation email',
           extra: {'userId': userId, 'email': email});
       return;
     }
@@ -1803,25 +1811,26 @@ class FenceService extends FenceServiceBase {
 
     // Make async HTTP request (fire-and-forget)
     final url = Uri.parse('$baseUrl/api/v1/emails/send-confirmation');
-    http.post(
+    http
+        .post(
       url,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
       body: payload,
-    ).then((response) {
+    )
+        .then((response) {
       if (response.statusCode == 200) {
         _logger.info('Confirmation email sent successfully',
             extra: {'userId': userId, 'email': email});
       } else {
-        _logger.warning('Failed to send confirmation email',
-            extra: {
-              'userId': userId,
-              'email': email,
-              'statusCode': response.statusCode,
-              'response': response.body,
-            });
+        _logger.warning('Failed to send confirmation email', extra: {
+          'userId': userId,
+          'email': email,
+          'statusCode': response.statusCode,
+          'response': response.body,
+        });
       }
     }).catchError((error) {
       _logger.error('Error calling weebi_express send-confirmation',
@@ -1842,7 +1851,8 @@ class FenceService extends FenceServiceBase {
           return UserPublic.create();
         }
       } catch (e) {
-        _logger.error('Error checking if mail already used', extra: {'mail': mail}, error: e);
+        _logger.error('Error checking if mail already used',
+            extra: {'mail': mail}, error: e);
         rethrow;
       }
     });
@@ -1873,7 +1883,8 @@ class FenceService extends FenceServiceBase {
               ..timestamp = DateTime.now().timestampProto,
             userId: user.userId);
       } catch (e) {
-        _logger.error('Error updating pending user', extra: {'userId': user.userId}, error: e);
+        _logger.error('Error updating pending user',
+            extra: {'userId': user.userId}, error: e);
         rethrow;
       }
     });
@@ -2422,13 +2433,15 @@ class FenceService extends FenceServiceBase {
     );
   }
 
+  /// no auth verification on this endpoint
+  /// this calls WEEBI_EXPRESS `POST /api/v1/emails/send-password-reset`
+  /// using the weebi_express_service_account and password
   @override
   Future<StatusResponse> requestPasswordReset(
       ServiceCall? call, PasswordResetRequest request) async {
-    _logger.logRpcEntry('requestPasswordReset', call, requestData: {
-      'mail': request.mail,
-    });
-    
+    _logger.logRpcEntry('requestPasswordReset', call,
+        requestData: {'mail': request.mail});
+
     if (request.mail.isEmpty) {
       throw GrpcError.invalidArgument('mail cannot be empty');
     }
@@ -2438,8 +2451,8 @@ class FenceService extends FenceServiceBase {
       final userCollection = db.collection(userCollectionName);
 
       try {
-        final userMongo = await userCollection.findOne(
-            where.eq('mail', request.mail));
+        final userMongo =
+            await userCollection.findOne(where.eq('mail', request.mail));
 
         if (userMongo == null) {
           // Don't reveal if email exists or not (security best practice)
@@ -2468,28 +2481,27 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// weebi_express uses [JWT] authentication when calling this endpoint [confirmPasswordReset]
   @override
   Future<StatusResponse> confirmPasswordReset(
       ServiceCall? call, PasswordResetConfirmRequest request) async {
-    _logger.logRpcEntry('confirmPasswordReset', call, requestData: {
-      'mail': request.mail,
-    });
-    
+    _logger.logRpcEntry('confirmPasswordReset', call,
+        requestData: {'mail': request.mail});
+
     if (request.mail.isEmpty || request.newPassword.isEmpty) {
       throw GrpcError.invalidArgument('mail and newPassword are required');
     }
 
     // Note: Token validation is done by weebi_express before calling this RPC
     // We just need to update the password
-
     final passwordNewEncrypted = _checkAndEncryptPassword(request.newPassword);
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
 
       try {
-        final userMongo = await userCollection.findOne(
-            where.eq('mail', request.mail));
+        final userMongo =
+            await userCollection.findOne(where.eq('mail', request.mail));
 
         if (userMongo == null) {
           throw GrpcError.notFound('user with mail ${request.mail} not found');
@@ -2542,29 +2554,26 @@ class FenceService extends FenceServiceBase {
             : await userCollection.findOne(where.eq('mail', request.mail));
 
         if (userMongo == null) {
-          final identifier = request.userId.isNotEmpty 
-              ? 'userId ${request.userId}' 
+          final identifier = request.userId.isNotEmpty
+              ? 'userId ${request.userId}'
               : 'mail ${request.mail}';
           throw GrpcError.notFound('user with $identifier not found');
         }
 
         // Verify email matches if userId was provided (safety check)
-        if (request.userId.isNotEmpty && 
-            userMongo['mail'] != request.mail) {
-          _logger.warning('Email mismatch when updating subscriberId',
-              extra: {
-                'providedUserId': request.userId,
-                'providedMail': request.mail,
-                'foundMail': userMongo['mail'],
-              });
+        if (request.userId.isNotEmpty && userMongo['mail'] != request.mail) {
+          _logger.warning('Email mismatch when updating subscriberId', extra: {
+            'providedUserId': request.userId,
+            'providedMail': request.mail,
+            'foundMail': userMongo['mail'],
+          });
           throw GrpcError.invalidArgument(
               'email mismatch: provided mail does not match userId');
         }
 
         // Update using userId (more efficient than email lookup)
         final userId = userMongo['userId'] as String;
-        await userCollection.update(
-            where.eq('userId', userId),
+        await userCollection.update(where.eq('userId', userId),
             ModifierBuilder().set('subscriberId', request.subscriberId));
 
         _logger.logRpcExit('updateSubscriberId', call);
@@ -2605,29 +2614,27 @@ class FenceService extends FenceServiceBase {
             : await userCollection.findOne(where.eq('mail', request.mail));
 
         if (userMongo == null) {
-          final identifier = request.userId.isNotEmpty 
-              ? 'userId ${request.userId}' 
+          final identifier = request.userId.isNotEmpty
+              ? 'userId ${request.userId}'
               : 'mail ${request.mail}';
           throw GrpcError.notFound('user with $identifier not found');
         }
 
         // Verify email matches if userId was provided (safety check)
-        if (request.userId.isNotEmpty && 
-            userMongo['mail'] != request.mail) {
-          _logger.warning('Email mismatch when marking email as verified',
-              extra: {
-                'providedUserId': request.userId,
-                'providedMail': request.mail,
-                'foundMail': userMongo['mail'],
-              });
+        if (request.userId.isNotEmpty && userMongo['mail'] != request.mail) {
+          _logger
+              .warning('Email mismatch when marking email as verified', extra: {
+            'providedUserId': request.userId,
+            'providedMail': request.mail,
+            'foundMail': userMongo['mail'],
+          });
           throw GrpcError.invalidArgument(
               'email mismatch: provided mail does not match userId');
         }
 
         // Update using userId (more efficient than email lookup)
         final userId = userMongo['userId'] as String;
-        await userCollection.update(
-            where.eq('userId', userId),
+        await userCollection.update(where.eq('userId', userId),
             ModifierBuilder().set('emailVerificationSent', true));
 
         _logger.logRpcExit('markEmailVerified', call);
@@ -2646,12 +2653,11 @@ class FenceService extends FenceServiceBase {
 
   /// Sends password reset email via weebi_express service (async, non-blocking)
   /// This is fire-and-forget - errors are logged but don't affect the flow
-  void _sendPasswordResetEmailAsync({
-    required String email,
-  }) {
+  void _sendPasswordResetEmailAsync({required String email}) {
     final baseUrl = AppEnvironment.weebiExpressBaseUrl;
     if (baseUrl == null || baseUrl.isEmpty) {
-      _logger.warning('WEEBI_EXPRESS_BASE_URL not configured, skipping password reset email',
+      _logger.warning(
+          'WEEBI_EXPRESS_BASE_URL not configured, skipping password reset email',
           extra: {'email': email});
       return;
     }
@@ -2672,24 +2678,25 @@ class FenceService extends FenceServiceBase {
 
     // Make async HTTP request (fire-and-forget)
     final url = Uri.parse('$baseUrl/api/v1/emails/send-password-reset');
-    http.post(
+    http
+        .post(
       url,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
       body: payload,
-    ).then((response) {
+    )
+        .then((response) {
       if (response.statusCode == 200) {
         _logger.info('Password reset email sent successfully',
             extra: {'email': email});
       } else {
-        _logger.warning('Failed to send password reset email',
-            extra: {
-              'email': email,
-              'statusCode': response.statusCode,
-              'response': response.body,
-            });
+        _logger.warning('Failed to send password reset email', extra: {
+          'email': email,
+          'statusCode': response.statusCode,
+          'response': response.body,
+        });
       }
     }).catchError((error) {
       _logger.error('Error calling weebi_express send-password-reset',

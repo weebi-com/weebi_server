@@ -14,6 +14,9 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
   if (call.clientMetadata![':path']!.toLowerCase().contains('signup')) {
     return null; // allow all signup RPC calls
   }
+  if (call.clientMetadata![':path']!.toLowerCase().contains('requestPasswordReset')) {
+    return null; // allow requestPasswordReset RPC calls
+  }
   if (call.clientMetadata![':path']!
       .toLowerCase()
       .contains('readappminimumversion')) {
@@ -22,9 +25,9 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
   if (call.clientMetadata![':path']!
       .toLowerCase()
       .contains('healthcheck')) {
-    return null; // allow all read app min version RPC calls
+    return null; // allow healthcheck RPC calls
   }
-  // below stupid idea -> security risk
+  // ! below stupid idea -> security risk
   //if (call.clientMetadata![':path']!.toLowerCase().contains('createdevice')) {
   //  return null; // allow all createPendingDevice RPC calls
   //}
