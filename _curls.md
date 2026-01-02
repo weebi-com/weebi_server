@@ -29,7 +29,7 @@ cd packages/protos/proto/
 grpcurl -plaintext -proto fence_service.proto -d '{\"mail\": \"test@test.test\", \"password\": \"mypassword\"}' localhost:8080 weebi.fence.service.FenceService/authenticateWithCredentials
 
 ## dev - TLS /S SSL 
-grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto -d '{"mail": "service@weebi.com", "password": "Hermes"}' dev.weebi.com:443 weebi.fence.service.FenceService/authenticateWithCredentials
+grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto -d '{"mail": "service@weebi.com", "password": "mypassword"}' dev.weebi.com:443 weebi.fence.service.FenceService/authenticateWithCredentials
 
 grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto dev.weebi.com:443 weebi.fence.service.FenceService/healthCheck
 
@@ -37,5 +37,3 @@ grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_se
 
 ## prd - TLS /S SSL 
 grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto prd.weebi.com:443 weebi.fence.service.FenceService/healthCheck
-
-grpcurl -import-path packages/protos/proto -proto packages/protos/proto/fence_service.proto -d '{"mail": "service@weebi.com", "password": "H3phaistos"}' prd.weebi.com:443 weebi.fence.service.FenceService/authenticateWithCredentials
