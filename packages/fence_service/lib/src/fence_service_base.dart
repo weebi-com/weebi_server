@@ -787,7 +787,7 @@ class FenceService extends FenceServiceBase {
         return CreateDeviceResponse(
             statusResponse: StatusResponse(
                 type: StatusResponse_Type.ERROR,
-                message: 'no match',
+                message: 'code no match',
                 timestamp: DateTime.now().timestampProto));
       }
       if (pairingResp.firmId != userPermission.firmId) {

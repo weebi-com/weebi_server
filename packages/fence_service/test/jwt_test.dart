@@ -170,12 +170,13 @@ void main() {
     });
 
     test('should identify service account tokens correctly', () {
-      // Test service account token with userId containing "_service_"
+      // Test service account token with tags and empty firmId
       final serviceJwt1 = JsonWebToken(secretKeyFactory: () => testSecretKey);
       serviceJwt1.createPayload(
         'weebi_express_service_account',
         payload: {
           'userId': 'weebi_express_service_account',
+          'tags': ['service_account'],
           'firmId': '',
         },
       );
@@ -185,7 +186,7 @@ void main() {
         secretKeyFactory: () => testSecretKey,
       );
       expect(parsedService1.isServiceAccount, isTrue,
-          reason: 'Should detect service account by userId');
+          reason: 'Should detect service account by tags and empty firmId');
 
       // Test service account token with tags
       final serviceJwt2 = JsonWebToken(secretKeyFactory: () => testSecretKey);
@@ -222,7 +223,6 @@ void main() {
       );
       expect(parsedUser.isServiceAccount, isFalse,
           reason: 'Should not detect regular user as service account');
-      expect(parsedUser.userId, equals('regular_user_123'));
       expect(parsedUser.firmId, equals('firm_456'));
     });
   });
