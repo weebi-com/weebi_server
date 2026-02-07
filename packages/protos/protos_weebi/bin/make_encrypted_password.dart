@@ -1,5 +1,7 @@
 import 'package:protos_weebi/encrypter.dart';
 
+// dart bin/make_encrypted_password.dart myNewPassword
+
 void main(List<String> args) {
   if (args.isEmpty) {
     throw 'please provide a password';
