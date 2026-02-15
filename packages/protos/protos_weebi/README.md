@@ -31,7 +31,9 @@ This package depends on:
 ## downloading/updating
 
 in powershell
-``packages\protos\protos_weebi\tool\generate_protos.ps1``
+``` shell
+powershell .\packages\protos\protos_weebi\tool\generate_protos.ps1
+```
 in wsl
 
 

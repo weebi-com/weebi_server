@@ -5,15 +5,23 @@ import 'package:fence_service/grpc.dart' show ServiceCall;
 class ServiceCallTest implements ServiceCall {
   final String jwt;
   final String path;
-  ServiceCallTest(this.jwt, {this.path = ''});
+  final String? sessionId;
+
+  ServiceCallTest(this.jwt, {this.path = '', this.sessionId});
+
   @override
   // TOConsider: implement clientCertificate
   X509Certificate? get clientCertificate => throw UnimplementedError();
 
   @override
   // TOConsider: implement clientMetadata
-  Map<String, String>? get clientMetadata =>
-      <String, String>{'authorization': jwt, 'path': path};
+  Map<String, String>? get clientMetadata {
+    final meta = <String, String>{'authorization': jwt, 'path': path};
+    if (sessionId != null && sessionId!.isNotEmpty) {
+      meta['x-session-id'] = sessionId!;
+    }
+    return meta;
+  }
 
   @override
   // TOConsider: implement deadline

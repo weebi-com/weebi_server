@@ -990,6 +990,7 @@ class Credentials extends $pb.GeneratedMessage {
   factory Credentials({
     $core.String? mail,
     $core.String? password,
+    $core.bool? isWebApp,
   }) {
     final result = create();
     if (mail != null) {
@@ -997,6 +998,9 @@ class Credentials extends $pb.GeneratedMessage {
     }
     if (password != null) {
       result.password = password;
+    }
+    if (isWebApp != null) {
+      result.isWebApp = isWebApp;
     }
     return result;
   }
@@ -1007,6 +1011,7 @@ class Credentials extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Credentials', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'mail')
     ..aOS(2, _omitFieldNames ? '' : 'password')
+    ..aOB(3, _omitFieldNames ? '' : 'isWebApp', protoName: 'isWebApp')
     ..hasRequiredFields = false
   ;
 
@@ -1048,6 +1053,15 @@ class Credentials extends $pb.GeneratedMessage {
   $core.bool hasPassword() => $_has(1);
   @$pb.TagNumber(2)
   void clearPassword() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.bool get isWebApp => $_getBF(2);
+  @$pb.TagNumber(3)
+  set isWebApp($core.bool v) { $_setBool(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasIsWebApp() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearIsWebApp() => clearField(3);
 }
 
 class DeviceCredentials extends $pb.GeneratedMessage {
@@ -1211,6 +1225,7 @@ class Tokens extends $pb.GeneratedMessage {
     $core.String? accessToken,
     $core.String? refreshToken,
     $core.bool? mustChangePassword,
+    $core.String? sessionId,
   }) {
     final result = create();
     if (accessToken != null) {
@@ -1222,6 +1237,9 @@ class Tokens extends $pb.GeneratedMessage {
     if (mustChangePassword != null) {
       result.mustChangePassword = mustChangePassword;
     }
+    if (sessionId != null) {
+      result.sessionId = sessionId;
+    }
     return result;
   }
   Tokens._() : super();
@@ -1232,6 +1250,7 @@ class Tokens extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'accessToken', protoName: 'accessToken')
     ..aOS(2, _omitFieldNames ? '' : 'refreshToken', protoName: 'refreshToken')
     ..aOB(3, _omitFieldNames ? '' : 'mustChangePassword', protoName: 'mustChangePassword')
+    ..aOS(4, _omitFieldNames ? '' : 'sessionId', protoName: 'sessionId')
     ..hasRequiredFields = false
   ;
 
@@ -1282,6 +1301,15 @@ class Tokens extends $pb.GeneratedMessage {
   $core.bool hasMustChangePassword() => $_has(2);
   @$pb.TagNumber(3)
   void clearMustChangePassword() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get sessionId => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set sessionId($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasSessionId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearSessionId() => clearField(4);
 }
 
 class UpdateDevicePasswordRequest extends $pb.GeneratedMessage {

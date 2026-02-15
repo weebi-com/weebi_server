@@ -233,13 +233,14 @@ const Credentials$json = {
   '2': [
     {'1': 'mail', '3': 1, '4': 1, '5': 9, '10': 'mail'},
     {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
+    {'1': 'isWebApp', '3': 3, '4': 1, '5': 8, '10': 'isWebApp'},
   ],
 };
 
 /// Descriptor for `Credentials`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List credentialsDescriptor = $convert.base64Decode(
     'CgtDcmVkZW50aWFscxISCgRtYWlsGAEgASgJUgRtYWlsEhoKCHBhc3N3b3JkGAIgASgJUghwYX'
-    'Nzd29yZA==');
+    'Nzd29yZBIaCghpc1dlYkFwcBgDIAEoCFIIaXNXZWJBcHA=');
 
 @$core.Deprecated('Use deviceCredentialsDescriptor instead')
 const DeviceCredentials$json = {
@@ -278,6 +279,7 @@ const Tokens$json = {
     {'1': 'accessToken', '3': 1, '4': 1, '5': 9, '10': 'accessToken'},
     {'1': 'refreshToken', '3': 2, '4': 1, '5': 9, '10': 'refreshToken'},
     {'1': 'mustChangePassword', '3': 3, '4': 1, '5': 8, '10': 'mustChangePassword'},
+    {'1': 'sessionId', '3': 4, '4': 1, '5': 9, '10': 'sessionId'},
   ],
 };
 
@@ -285,7 +287,7 @@ const Tokens$json = {
 final $typed_data.Uint8List tokensDescriptor = $convert.base64Decode(
     'CgZUb2tlbnMSIAoLYWNjZXNzVG9rZW4YASABKAlSC2FjY2Vzc1Rva2VuEiIKDHJlZnJlc2hUb2'
     'tlbhgCIAEoCVIMcmVmcmVzaFRva2VuEi4KEm11c3RDaGFuZ2VQYXNzd29yZBgDIAEoCFISbXVz'
-    'dENoYW5nZVBhc3N3b3Jk');
+    'dENoYW5nZVBhc3N3b3JkEhwKCXNlc3Npb25JZBgEIAEoCVIJc2Vzc2lvbklk');
 
 @$core.Deprecated('Use updateDevicePasswordRequestDescriptor instead')
 const UpdateDevicePasswordRequest$json = {

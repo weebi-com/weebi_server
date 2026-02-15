@@ -314,7 +314,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, Credentials request) async {
     _logger.logRpcEntry('authenticateWithCredentials', call, requestData: {
       'mail': request.mail,
-      'isWeb': request.isWeb,
+      'isWebApp': request.isWebApp,
     });
 
     try {
@@ -374,7 +374,7 @@ class FenceService extends FenceServiceBase {
       _updateUserLastSignIn(userPermission.userPermissions.userId);
       
       // Handle web authentication - store session and return sessionId
-      if (request.isWeb) {
+      if (request.isWebApp) {
         final sessionId = await _createWebSession(
           accessToken: accessToken,
           refreshToken: refreshToken,
@@ -416,6 +416,37 @@ class FenceService extends FenceServiceBase {
     }
   }
 
+  @override
+  Future<Empty> logout(ServiceCall? call, Empty request) async {
+    _logger.logRpcEntry('logout', call);
+
+    try {
+      // SessionId is forwarded by Envoy from the session cookie
+      final sessionId = _getSessionIdFromMetadata(call);
+      if (sessionId != null && sessionId.isNotEmpty) {
+        await deleteWebSession(sessionId);
+        _logger.info('Web session invalidated on logout',
+            extra: {'sessionId': sessionId});
+      }
+      // Envoy detects Logout by request path and clears the cookie
+      _logger.logRpcExit('logout', call);
+      return Empty();
+    } on GrpcError catch (e) {
+      _logger.logRpcError('logout', call, e);
+      rethrow;
+    } on MongoDartError catch (e) {
+      _logger.logRpcError('logout', call, e, extra: {'errorType': 'MongoDartError'});
+      rethrow;
+    }
+  }
+
+  /// Extracts session ID from gRPC metadata (forwarded by Envoy from cookie)
+  String? _getSessionIdFromMetadata(ServiceCall? call) {
+    final metadata = call?.clientMetadata;
+    if (metadata == null) return null;
+    return metadata['x-session-id'] ?? metadata['X-Session-Id'];
+  }
+
   Future<void> _updateUserLastSignIn(String userId) async {
     return databaseMiddleware(_poolService, (db) async {
       try {
@@ -452,7 +483,7 @@ class FenceService extends FenceServiceBase {
           'refreshToken': refreshToken,
           'userId': userId,
           'createdAt': now.toIso8601String(),
-          'expiresAt': expiresAt.toIso8601String(),
+          'expiresAt': expiresAt, // BSON Date for MongoDB TTL index
           'lastAccessed': now.toIso8601String(),
         };
         
@@ -497,14 +528,17 @@ class FenceService extends FenceServiceBase {
         );
         
         if (session == null) {
-          _logger.warn('Session not found', extra: {'sessionId': sessionId});
+          _logger.warning('Session not found', extra: {'sessionId': sessionId});
           return null;
         }
         
-        // Check if session is expired
-        final expiresAt = DateTime.parse(session['expiresAt'] as String);
+        // Check if session is expired (expiresAt stored as BSON Date or ISO string)
+        final expiresAtValue = session['expiresAt'];
+        final expiresAt = expiresAtValue is DateTime
+            ? expiresAtValue
+            : DateTime.parse(expiresAtValue as String);
         if (DateTime.now().isAfter(expiresAt)) {
-          _logger.warn('Session expired', extra: {
+          _logger.warning('Session expired', extra: {
             'sessionId': sessionId,
             'expiresAt': expiresAt.toIso8601String(),
           });
@@ -544,16 +578,17 @@ class FenceService extends FenceServiceBase {
     });
   }
 
-  /// Cleans up expired web sessions (should be called periodically)
+  /// Cleans up expired web sessions (fallback when TTL index hasn't run yet)
+  /// Note: With TTL index on expiresAt (BSON Date), MongoDB auto-deletes. This is a safety net.
   Future<int> cleanupExpiredSessions() async {
     return databaseMiddleware(_poolService, (db) async {
       try {
-        final now = DateTime.now().toIso8601String();
+        final now = DateTime.now(); // BSON Date comparison
         final result = await db.collection('web_sessions').deleteMany(
           where.lt('expiresAt', now),
         );
         
-        final deletedCount = result['n'] as int? ?? 0;
+        final deletedCount = result.nRemoved;
         if (deletedCount > 0) {
           _logger.info('Cleaned up expired sessions', extra: {
             'deletedCount': deletedCount,
