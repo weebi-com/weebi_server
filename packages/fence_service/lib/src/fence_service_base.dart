@@ -314,6 +314,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, Credentials request) async {
     _logger.logRpcEntry('authenticateWithCredentials', call, requestData: {
       'mail': request.mail,
+      'isWeb': request.isWeb,
     });
 
     try {
@@ -369,11 +370,35 @@ class FenceService extends FenceServiceBase {
         },
       );
       // refresh token only contains userId & firmId
-      final resfreshToken = jwt.sign();
-      _updateUserLastSignIn;
+      final refreshToken = jwt.sign();
+      _updateUserLastSignIn(userPermission.userPermissions.userId);
+      
+      // Handle web authentication - store session and return sessionId
+      if (request.isWeb) {
+        final sessionId = await _createWebSession(
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          userId: userPermission.userPermissions.userId,
+        );
+        
+        _logger.info('Web session created', extra: {
+          'sessionId': sessionId,
+          'userId': userPermission.userPermissions.userId,
+        });
+        
+        // Return sessionId for web clients (tokens stored server-side)
+        final tokens = Tokens(
+          sessionId: sessionId,
+          mustChangePassword: userPermission.mustChangePassword,
+        );
+        _logger.logRpcExit('authenticateWithCredentials', call);
+        return tokens;
+      }
+      
+      // Standard authentication for mobile/desktop apps - return tokens directly
       final tokens = Tokens(
           accessToken: accessToken,
-          refreshToken: resfreshToken,
+          refreshToken: refreshToken,
           mustChangePassword: userPermission.mustChangePassword);
       _logger.logRpcExit('authenticateWithCredentials', call);
       return tokens;
@@ -403,6 +428,142 @@ class FenceService extends FenceServiceBase {
       } catch (e) {
         log('eroor $e');
         rethrow;
+      }
+    });
+  }
+
+  /// Creates a web session for browser-based clients
+  /// Stores JWT tokens server-side and returns a sessionId
+  Future<String> _createWebSession({
+    required String accessToken,
+    required String refreshToken,
+    required String userId,
+  }) async {
+    return databaseMiddleware(_poolService, (db) async {
+      try {
+        // Generate unique session ID using UUID v4
+        final sessionId = _generateSessionId();
+        final now = DateTime.now();
+        final expiresAt = now.add(const Duration(days: 1)); // Match JWT expiration
+        
+        final sessionDoc = {
+          '_id': sessionId,
+          'jwt': accessToken,
+          'refreshToken': refreshToken,
+          'userId': userId,
+          'createdAt': now.toIso8601String(),
+          'expiresAt': expiresAt.toIso8601String(),
+          'lastAccessed': now.toIso8601String(),
+        };
+        
+        await db.collection('web_sessions').insertOne(sessionDoc);
+        
+        _logger.debug('Web session stored in MongoDB', extra: {
+          'sessionId': sessionId,
+          'userId': userId,
+          'expiresAt': expiresAt.toIso8601String(),
+        });
+        
+        return sessionId;
+      } catch (e) {
+        _logger.error('Failed to create web session', error: e, extra: {
+          'userId': userId,
+        });
+        rethrow;
+      }
+    });
+  }
+
+  /// Generates a cryptographically secure session ID
+  String _generateSessionId() {
+    // Generate a UUID-like session ID using random bytes
+    final random = Random.secure();
+    final bytes = List<int>.generate(16, (_) => random.nextInt(256));
+    
+    // Convert to hex string (32 characters)
+    final hexString = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    
+    // Format as UUID (8-4-4-4-12)
+    return '${hexString.substring(0, 8)}-${hexString.substring(8, 12)}-${hexString.substring(12, 16)}-${hexString.substring(16, 20)}-${hexString.substring(20, 32)}';
+  }
+
+  /// Retrieves JWT from sessionId (called by Envoy proxy)
+  /// Updates lastAccessed timestamp
+  Future<String?> getJwtFromSession(String sessionId) async {
+    return databaseMiddleware(_poolService, (db) async {
+      try {
+        final session = await db.collection('web_sessions').findOne(
+          where.eq('_id', sessionId),
+        );
+        
+        if (session == null) {
+          _logger.warn('Session not found', extra: {'sessionId': sessionId});
+          return null;
+        }
+        
+        // Check if session is expired
+        final expiresAt = DateTime.parse(session['expiresAt'] as String);
+        if (DateTime.now().isAfter(expiresAt)) {
+          _logger.warn('Session expired', extra: {
+            'sessionId': sessionId,
+            'expiresAt': expiresAt.toIso8601String(),
+          });
+          // Clean up expired session
+          await db.collection('web_sessions').deleteOne(where.eq('_id', sessionId));
+          return null;
+        }
+        
+        // Update last accessed time
+        await db.collection('web_sessions').update(
+          where.eq('_id', sessionId),
+          ModifierBuilder().set('lastAccessed', DateTime.now().toIso8601String()),
+        );
+        
+        return session['jwt'] as String;
+      } catch (e) {
+        _logger.error('Failed to retrieve JWT from session', error: e, extra: {
+          'sessionId': sessionId,
+        });
+        return null;
+      }
+    });
+  }
+
+  /// Deletes a web session (logout)
+  Future<void> deleteWebSession(String sessionId) async {
+    return databaseMiddleware(_poolService, (db) async {
+      try {
+        await db.collection('web_sessions').deleteOne(where.eq('_id', sessionId));
+        _logger.info('Web session deleted', extra: {'sessionId': sessionId});
+      } catch (e) {
+        _logger.error('Failed to delete web session', error: e, extra: {
+          'sessionId': sessionId,
+        });
+        rethrow;
+      }
+    });
+  }
+
+  /// Cleans up expired web sessions (should be called periodically)
+  Future<int> cleanupExpiredSessions() async {
+    return databaseMiddleware(_poolService, (db) async {
+      try {
+        final now = DateTime.now().toIso8601String();
+        final result = await db.collection('web_sessions').deleteMany(
+          where.lt('expiresAt', now),
+        );
+        
+        final deletedCount = result['n'] as int? ?? 0;
+        if (deletedCount > 0) {
+          _logger.info('Cleaned up expired sessions', extra: {
+            'deletedCount': deletedCount,
+          });
+        }
+        
+        return deletedCount;
+      } catch (e) {
+        _logger.error('Failed to cleanup expired sessions', error: e);
+        return 0;
       }
     });
   }

@@ -28,6 +28,13 @@ This package depends on:
 - `fixnum: ^1.1.1`
 - `crypto: ^3.0.3`
 
+## downloading/updating
+
+in powershell
+``packages\protos\protos_weebi\tool\generate_protos.ps1``
+in wsl
+
+
 ## troubleshooting
 
 To use a specific version:
@@ -37,3 +44,4 @@ Update both .protos-version files:
 Run the generation scripts — they'll check out that tag
 
 .\scripts\check_protos_version.ps1
+./scripts/check_protos_version.sh
