@@ -34,6 +34,13 @@ $GENERATED_DIR = Join-Path $PROTOS_WEEBI_DIR "lib\src\generated"
 $PROJECT_ROOT = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PROTOS_WEEBI_DIR))
 $VERSION_FILE = Join-Path $PROJECT_ROOT ".protos-version"
 
+# Check for local protos repo (sibling of weebi_server, e.g. git_weebi/protos)
+$LOCAL_PROTOS = Join-Path (Split-Path -Parent $PROJECT_ROOT) "protos"
+if ((Test-Path $LOCAL_PROTOS) -and (Test-Path (Join-Path $LOCAL_PROTOS ".git"))) {
+    Write-Host "Using local protos repo: $LOCAL_PROTOS" -ForegroundColor Cyan
+    $PROTOS_DIR = $LOCAL_PROTOS
+}
+
 $PROTOS_VERSION = "main"
 $PROTOS_COMMIT = "main"
 
@@ -99,15 +106,29 @@ if (-not $protocGenDartPath) {
 
 Write-Host "Found: protoc-gen-dart ($protocGenDartPath)"
 
-# Clone or update proto repository
+# Use same protoc_plugin version as Dockerfile (compatible with protobuf ^4.0.0)
+$PROTOC_PLUGIN_VERSION = "21.1.0"
+Write-Host "Ensuring protoc_plugin $PROTOC_PLUGIN_VERSION (matches Dockerfile)..."
+& dart pub global activate protoc_plugin $PROTOC_PLUGIN_VERSION 2>&1 | Out-Null
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARNING: Could not activate protoc_plugin $PROTOC_PLUGIN_VERSION" -ForegroundColor Yellow
+}
+
+$useLocalProtos = ($PROTOS_DIR -eq $LOCAL_PROTOS)
+
+# Clone or update proto repository (skip if using local protos)
+if (-not $useLocalProtos) {
 if (Test-Path $PROTOS_DIR) {
     Write-Host "Updating proto repository..."
     Push-Location $PROTOS_DIR
     try {
         $null = Invoke-GitCommand -Arguments @("fetch", "origin", "--tags")
-        
-        # Reset any local changes first
-        $null = Invoke-GitCommand -Arguments @("reset", "--hard", "HEAD")
+        # Pull latest from remote to sync with GitHub
+        $pullResult = Invoke-GitCommand -Arguments @("pull", "origin", $PROTOS_COMMIT)
+        if (-not $pullResult.Success) {
+            Write-Host "WARNING: git pull failed, trying reset to origin/$PROTOS_COMMIT..." -ForegroundColor Yellow
+            $null = Invoke-GitCommand -Arguments @("reset", "--hard", "origin/$PROTOS_COMMIT")
+        }
         
         # Checkout specific version/commit/tag
         if ($PROTOS_COMMIT -match '^v?\d+\.\d+\.\d+') {
@@ -161,6 +182,19 @@ if (Test-Path $PROTOS_DIR) {
             if (-not $gitResult.Success) {
                 throw "Failed to checkout $PROTOS_COMMIT"
             }
+        }
+    } finally {
+        Pop-Location
+    }
+}
+} else {
+    # Using local protos repo - pull latest from origin
+    Write-Host "Pulling latest in local protos repo..."
+    Push-Location $PROTOS_DIR
+    try {
+        $pullResult = Invoke-GitCommand -Arguments @("pull", "origin", $PROTOS_COMMIT)
+        if (-not $pullResult.Success) {
+            Write-Host "WARNING: git pull failed" -ForegroundColor Yellow
         }
     } finally {
         Pop-Location

@@ -44,6 +44,10 @@ class FenceServiceClient extends $grpc.Client {
       '/weebi.fence.service.FenceService/authenticateWithRefreshToken',
       ($8.RefreshToken value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $8.Tokens.fromBuffer(value));
+  static final _$logout = $grpc.ClientMethod<$0.Empty, $0.Empty>(
+      '/weebi.fence.service.FenceService/logout',
+      ($0.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
   static final _$requestPasswordReset = $grpc.ClientMethod<$8.PasswordResetRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/requestPasswordReset',
       ($8.PasswordResetRequest value) => value.writeToBuffer(),
@@ -181,6 +185,10 @@ class FenceServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$8.Tokens> authenticateWithRefreshToken($8.RefreshToken request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$authenticateWithRefreshToken, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Empty> logout($0.Empty request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$logout, request, options: options);
   }
 
   $grpc.ResponseFuture<$1.StatusResponse> requestPasswordReset($8.PasswordResetRequest request, {$grpc.CallOptions? options}) {
@@ -333,6 +341,13 @@ abstract class FenceServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $8.RefreshToken.fromBuffer(value),
         ($8.Tokens value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $0.Empty>(
+        'logout',
+        logout_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($0.Empty value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$8.PasswordResetRequest, $1.StatusResponse>(
         'requestPasswordReset',
         requestPasswordReset_Pre,
@@ -554,6 +569,10 @@ abstract class FenceServiceBase extends $grpc.Service {
     return authenticateWithRefreshToken(call, await request);
   }
 
+  $async.Future<$0.Empty> logout_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+    return logout(call, await request);
+  }
+
   $async.Future<$1.StatusResponse> requestPasswordReset_Pre($grpc.ServiceCall call, $async.Future<$8.PasswordResetRequest> request) async {
     return requestPasswordReset(call, await request);
   }
@@ -674,6 +693,7 @@ abstract class FenceServiceBase extends $grpc.Service {
   $async.Future<$9.SignUpResponse> signUp($grpc.ServiceCall call, $9.SignUpRequest request);
   $async.Future<$8.Tokens> authenticateWithCredentials($grpc.ServiceCall call, $8.Credentials request);
   $async.Future<$8.Tokens> authenticateWithRefreshToken($grpc.ServiceCall call, $8.RefreshToken request);
+  $async.Future<$0.Empty> logout($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$1.StatusResponse> requestPasswordReset($grpc.ServiceCall call, $8.PasswordResetRequest request);
   $async.Future<$1.StatusResponse> confirmPasswordReset($grpc.ServiceCall call, $8.PasswordResetConfirmRequest request);
   $async.Future<$10.CreateFirmResponse> createFirm($grpc.ServiceCall call, $10.CreateFirmRequest request);

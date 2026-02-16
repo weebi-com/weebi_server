@@ -55,6 +55,21 @@ main() async {
 
   await db.createCollection(TicketService.collectionName);
 
+  /// WEB_SESSIONS - for web app session storage (cookie-based auth via Envoy)
+  /// TTL index: MongoDB automatically deletes expired sessions
+  const webSessionsCollectionName = 'web_sessions';
+  await db.createCollection(webSessionsCollectionName);
+  await db.runCommand({
+    'createIndexes': webSessionsCollectionName,
+    'indexes': [
+      {
+        'key': {'expiresAt': 1},
+        'name': 'expiresAt_ttl',
+        'expireAfterSeconds': 0,
+      },
+    ],
+  });
+
   // firm
   final d = await db.ensureIndex(FenceService.firmCollectionName,
       name: 'firmId', keys: {'firmId': 1});

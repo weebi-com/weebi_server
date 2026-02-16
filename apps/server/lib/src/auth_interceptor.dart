@@ -3,29 +3,37 @@ import 'dart:async';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 
+/// Returns true if the call should bypass auth (public RPCs).
+bool _isPublicRpc(String? path, String methodName) {
+  final pathLower = path?.toLowerCase() ?? '';
+  final methodLower = methodName.toLowerCase();
+
+  if (pathLower.contains('authenticate') || methodLower.contains('authenticate')) {
+    return true;
+  }
+  if (pathLower.contains('signup') || methodLower.contains('signup')) {
+    return true;
+  }
+  if (pathLower.contains('requestpasswordreset') || methodLower.contains('requestpasswordreset') ||
+      pathLower.contains('confirmpasswordreset') || methodLower.contains('confirmpasswordreset')) {
+    return true;
+  }
+  if (pathLower.contains('readappminimumversion') || methodLower.contains('readappminimumversion')) {
+    return true;
+  }
+  if (pathLower.contains('healthcheck') || methodLower.contains('healthcheck')) {
+    return true;
+  }
+  return false;
+}
+
 FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
-  if (call.clientMetadata?[':path'] == null) {
-    print('authInterceptor clientMetadata?[path] == null');
-    return GrpcError.unauthenticated();
+  final path = call.clientMetadata?[':path'] ?? call.clientMetadata?['path'];
+  if (_isPublicRpc(path, method.name)) {
+    return null; // allow public RPC calls (no auth required)
   }
-  if (call.clientMetadata![':path']!.toLowerCase().contains('authenticate')) {
-    return null; // allow all authenticate RPC calls
-  }
-  if (call.clientMetadata![':path']!.toLowerCase().contains('signup')) {
-    return null; // allow all signup RPC calls
-  }
-  if (call.clientMetadata![':path']!.toLowerCase().contains('requestPasswordReset')) {
-    return null; // allow requestPasswordReset RPC calls
-  }
-  if (call.clientMetadata![':path']!
-      .toLowerCase()
-      .contains('readappminimumversion')) {
-    return null; // allow all read app min version RPC calls
-  }
-  if (call.clientMetadata![':path']!
-      .toLowerCase()
-      .contains('healthcheck')) {
-    return null; // allow healthcheck RPC calls
+  if (path == null || path.isEmpty) {
+    print('authInterceptor path null/empty, method=${method.name}');
   }
   // ! below stupid idea -> security risk
   //if (call.clientMetadata![':path']!.toLowerCase().contains('createdevice')) {

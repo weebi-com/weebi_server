@@ -19,3 +19,5 @@ packages/protos/proto/
 docs/GCP_LOGS_QUERIES.md
 /doc/GCP_LOGS_QUERIES.md
 packages/fence_service/REGRESSION_ANALYSIS.md
+packages/fence_service/lib/src/fence_service_base.dart
+.dart_tool/pub/bin/melos/melos.dart-3.10.4.snapshot
