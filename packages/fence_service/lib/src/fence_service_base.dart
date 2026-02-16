@@ -2706,7 +2706,7 @@ class FenceService extends FenceServiceBase {
         await userCollection.update(
             where.eq('mail', request.mail),
             ModifierBuilder()
-                .set('passwordEncrypted', passwordNewEncrypted)
+                .set('password', passwordNewEncrypted)
                 .set('mustChangePassword', false));
 
         _logger.logRpcExit('confirmPasswordReset', call);
@@ -2863,6 +2863,7 @@ class FenceService extends FenceServiceBase {
     final jwt = JsonWebToken(secretKeyFactory: () => expressSecret);
     jwt.createPayload(
       'weebi_express_service_account',
+      payload: {'userId': 'weebi_express_service_account'},
       expireIn: const Duration(hours: 1),
     );
     final token = jwt.sign();
