@@ -2226,6 +2226,9 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// Returns all chains including soft-deleted chains and boutiques.
+  /// Use for chain management UI (restore, audit). Contrast with
+  /// [readAllBoutiques] which filters out soft-deleted.
   @override
   Future<ReadAllChainsResponse> readAllChains(
       ServiceCall? call, Empty request) async {
@@ -2256,6 +2259,9 @@ class FenceService extends FenceServiceBase {
     }
   }
 
+  /// Returns only active boutiques (excludes soft-deleted chains and boutiques).
+  /// Use for selection lists (tickets, devices, etc). Contrast with
+  /// [readAllChains] which includes soft-deleted for chain management.
   @override
   Future<ReadAllBoutiquesResponse> readAllBoutiques(
       ServiceCall? call, Empty request) async {
