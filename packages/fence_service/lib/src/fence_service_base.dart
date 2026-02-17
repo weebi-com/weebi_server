@@ -205,7 +205,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<PendingUserResponse> createPendingUser(
       ServiceCall? call, PendingUserRequest request) async {
-    _logger.logRpcEntry('createPendingUser', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createPendingUser', requestData: {
       'mail': request.mail,
       'firmId': request.permissions.firmId,
     });
@@ -301,7 +302,7 @@ class FenceService extends FenceServiceBase {
                 ..timestamp = timestamp);
         }
       } on GrpcError catch (e) {
-        _logger.logRpcError('createPendingUser', call, e, extra: {
+        log.logRpcError('createPendingUser', e, extra: {
           'mail': request.mail,
         });
         rethrow;
@@ -312,7 +313,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<Tokens> authenticateWithCredentials(
       ServiceCall? call, Credentials request) async {
-    _logger.logRpcEntry('authenticateWithCredentials', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('authenticateWithCredentials', requestData: {
       'mail': request.mail,
       'isWebApp': request.isWebApp,
     });
@@ -329,7 +331,7 @@ class FenceService extends FenceServiceBase {
           as Map<String, dynamic>?;
 
       // Diagnostic logging: Check payload structure before JWT creation
-      _logger.debug('JWT payload before encoding', extra: {
+      log.debug('JWT payload before encoding', extra: {
         'payloadKeys': payload?.keys.toList(),
         'payloadSize': payload?.toString().length ?? 0,
         'hasNullValues': payload?.values.any((v) => v == null) ?? false,
@@ -344,7 +346,7 @@ class FenceService extends FenceServiceBase {
       );
 
       // Diagnostic logging: Check payload after createPayload
-      _logger.debug('JWT payload after createPayload', extra: {
+      log.debug('JWT payload after createPayload', extra: {
         'payloadKeys': jwt.payload.keys.toList(),
         'payloadSize': jwt.payload.toString().length,
       });
@@ -353,7 +355,7 @@ class FenceService extends FenceServiceBase {
       final accessToken = jwt.sign();
 
       // Diagnostic logging: Check token after signing
-      _logger.debug('JWT token generated', extra: {
+      log.debug('JWT token generated', extra: {
         'tokenLength': accessToken.length,
         'tokenParts': accessToken.split('.').length,
         'tokenPreview': accessToken.length > 100
@@ -372,43 +374,44 @@ class FenceService extends FenceServiceBase {
       // refresh token only contains userId & firmId
       final refreshToken = jwt.sign();
       _updateUserLastSignIn(userPermission.userPermissions.userId);
-      
+
       // Handle web authentication - store session and return sessionId
       if (request.isWebApp) {
         final sessionId = await _createWebSession(
           accessToken: accessToken,
           refreshToken: refreshToken,
           userId: userPermission.userPermissions.userId,
+          log: log,
         );
-        
-        _logger.info('Web session created', extra: {
+
+        log.info('Web session created', extra: {
           'sessionId': sessionId,
           'userId': userPermission.userPermissions.userId,
         });
-        
+
         // Return sessionId for web clients (tokens stored server-side)
         final tokens = Tokens(
           sessionId: sessionId,
           mustChangePassword: userPermission.mustChangePassword,
         );
-        _logger.logRpcExit('authenticateWithCredentials', call);
+        log.logRpcExit('authenticateWithCredentials');
         return tokens;
       }
-      
+
       // Standard authentication for mobile/desktop apps - return tokens directly
       final tokens = Tokens(
           accessToken: accessToken,
           refreshToken: refreshToken,
           mustChangePassword: userPermission.mustChangePassword);
-      _logger.logRpcExit('authenticateWithCredentials', call);
+      log.logRpcExit('authenticateWithCredentials');
       return tokens;
     } on GrpcError catch (e) {
-      _logger.logRpcError('authenticateWithCredentials', call, e, extra: {
+      log.logRpcError('authenticateWithCredentials', e, extra: {
         'mail': request.mail,
       });
       rethrow;
     } on MongoDartError catch (e) {
-      _logger.logRpcError('authenticateWithCredentials', call, e, extra: {
+      log.logRpcError('authenticateWithCredentials', e, extra: {
         'mail': request.mail,
         'errorType': 'MongoDartError',
       });
@@ -418,24 +421,25 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<Empty> logout(ServiceCall? call, Empty request) async {
-    _logger.logRpcEntry('logout', call);
+    final log = _logger.withContext(call);
+    log.logRpcEntry('logout');
 
     try {
       // SessionId is forwarded by Envoy from the session cookie
       final sessionId = _getSessionIdFromMetadata(call);
       if (sessionId != null && sessionId.isNotEmpty) {
         await deleteWebSession(sessionId);
-        _logger.info('Web session invalidated on logout',
+        log.info('Web session invalidated on logout',
             extra: {'sessionId': sessionId});
       }
       // Envoy detects Logout by request path and clears the cookie
-      _logger.logRpcExit('logout', call);
+      log.logRpcExit('logout');
       return Empty();
     } on GrpcError catch (e) {
-      _logger.logRpcError('logout', call, e);
+      log.logRpcError('logout', e);
       rethrow;
     } on MongoDartError catch (e) {
-      _logger.logRpcError('logout', call, e, extra: {'errorType': 'MongoDartError'});
+      log.logRpcError('logout', e, extra: {'errorType': 'MongoDartError'});
       rethrow;
     }
   }
@@ -469,14 +473,16 @@ class FenceService extends FenceServiceBase {
     required String accessToken,
     required String refreshToken,
     required String userId,
+    WeebiLoggerWithContext? log,
   }) async {
     return databaseMiddleware(_poolService, (db) async {
       try {
         // Generate unique session ID using UUID v4
         final sessionId = _generateSessionId();
         final now = DateTime.now();
-        final expiresAt = now.add(const Duration(days: 1)); // Match JWT expiration
-        
+        final expiresAt =
+            now.add(const Duration(days: 1)); // Match JWT expiration
+
         final sessionDoc = {
           '_id': sessionId,
           'jwt': accessToken,
@@ -486,20 +492,34 @@ class FenceService extends FenceServiceBase {
           'expiresAt': expiresAt, // BSON Date for MongoDB TTL index
           'lastAccessed': now.toIso8601String(),
         };
-        
+
         await db.collection('web_sessions').insertOne(sessionDoc);
-        
-        _logger.debug('Web session stored in MongoDB', extra: {
-          'sessionId': sessionId,
-          'userId': userId,
-          'expiresAt': expiresAt.toIso8601String(),
-        });
-        
+
+        if (log != null) {
+          log.debug('Web session stored in MongoDB', extra: {
+            'sessionId': sessionId,
+            'userId': userId,
+            'expiresAt': expiresAt.toIso8601String(),
+          });
+        } else {
+          _logger.debug('Web session stored in MongoDB', extra: {
+            'sessionId': sessionId,
+            'userId': userId,
+            'expiresAt': expiresAt.toIso8601String(),
+          });
+        }
+
         return sessionId;
       } catch (e) {
-        _logger.error('Failed to create web session', error: e, extra: {
-          'userId': userId,
-        });
+        if (log != null) {
+          log.error('Failed to create web session', error: e, extra: {
+            'userId': userId,
+          });
+        } else {
+          _logger.error('Failed to create web session', error: e, extra: {
+            'userId': userId,
+          });
+        }
         rethrow;
       }
     });
@@ -510,10 +530,11 @@ class FenceService extends FenceServiceBase {
     // Generate a UUID-like session ID using random bytes
     final random = Random.secure();
     final bytes = List<int>.generate(16, (_) => random.nextInt(256));
-    
+
     // Convert to hex string (32 characters)
-    final hexString = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
-    
+    final hexString =
+        bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+
     // Format as UUID (8-4-4-4-12)
     return '${hexString.substring(0, 8)}-${hexString.substring(8, 12)}-${hexString.substring(12, 16)}-${hexString.substring(16, 20)}-${hexString.substring(20, 32)}';
   }
@@ -524,14 +545,14 @@ class FenceService extends FenceServiceBase {
     return databaseMiddleware(_poolService, (db) async {
       try {
         final session = await db.collection('web_sessions').findOne(
-          where.eq('_id', sessionId),
-        );
-        
+              where.eq('_id', sessionId),
+            );
+
         if (session == null) {
           _logger.warning('Session not found', extra: {'sessionId': sessionId});
           return null;
         }
-        
+
         // Check if session is expired (expiresAt stored as BSON Date or ISO string)
         final expiresAtValue = session['expiresAt'];
         final expiresAt = expiresAtValue is DateTime
@@ -543,16 +564,19 @@ class FenceService extends FenceServiceBase {
             'expiresAt': expiresAt.toIso8601String(),
           });
           // Clean up expired session
-          await db.collection('web_sessions').deleteOne(where.eq('_id', sessionId));
+          await db
+              .collection('web_sessions')
+              .deleteOne(where.eq('_id', sessionId));
           return null;
         }
-        
+
         // Update last accessed time
         await db.collection('web_sessions').update(
-          where.eq('_id', sessionId),
-          ModifierBuilder().set('lastAccessed', DateTime.now().toIso8601String()),
-        );
-        
+              where.eq('_id', sessionId),
+              ModifierBuilder()
+                  .set('lastAccessed', DateTime.now().toIso8601String()),
+            );
+
         return session['jwt'] as String;
       } catch (e) {
         _logger.error('Failed to retrieve JWT from session', error: e, extra: {
@@ -567,7 +591,9 @@ class FenceService extends FenceServiceBase {
   Future<void> deleteWebSession(String sessionId) async {
     return databaseMiddleware(_poolService, (db) async {
       try {
-        await db.collection('web_sessions').deleteOne(where.eq('_id', sessionId));
+        await db
+            .collection('web_sessions')
+            .deleteOne(where.eq('_id', sessionId));
         _logger.info('Web session deleted', extra: {'sessionId': sessionId});
       } catch (e) {
         _logger.error('Failed to delete web session', error: e, extra: {
@@ -585,16 +611,16 @@ class FenceService extends FenceServiceBase {
       try {
         final now = DateTime.now(); // BSON Date comparison
         final result = await db.collection('web_sessions').deleteMany(
-          where.lt('expiresAt', now),
-        );
-        
+              where.lt('expiresAt', now),
+            );
+
         final deletedCount = result.nRemoved;
         if (deletedCount > 0) {
           _logger.info('Cleaned up expired sessions', extra: {
             'deletedCount': deletedCount,
           });
         }
-        
+
         return deletedCount;
       } catch (e) {
         _logger.error('Failed to cleanup expired sessions', error: e);
@@ -630,7 +656,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<Tokens> authenticateWithRefreshToken(
       ServiceCall? call, RefreshToken request) async {
-    _logger.logRpcEntry('authenticateWithRefreshToken', call);
+    final log = _logger.withContext(call);
+    log.logRpcEntry('authenticateWithRefreshToken');
 
     try {
       final jwtRefresh = JsonWebToken.parse(request.refreshToken);
@@ -662,10 +689,10 @@ class FenceService extends FenceServiceBase {
       await _updateUserLastSignIn(userPrivate.userId);
       final tokens =
           Tokens(accessToken: accessToken, refreshToken: resfreshToken);
-      _logger.logRpcExit('authenticateWithRefreshToken', call);
+      log.logRpcExit('authenticateWithRefreshToken');
       return tokens;
     } on GrpcError catch (e) {
-      _logger.logRpcError('authenticateWithRefreshToken', call, e);
+      log.logRpcError('authenticateWithRefreshToken', e);
       rethrow;
     }
   }
@@ -739,7 +766,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> updateOneUser(
       ServiceCall? call, UserPublic request) async {
-    _logger.logRpcEntry('updateOneUser', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('updateOneUser', requestData: {
       'userId': request.userId,
     });
 
@@ -773,7 +801,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<ReadOneUserResponse> readOneUser(
       ServiceCall? call, UserId request) async {
-    _logger.logRpcEntry('readOneUser', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readOneUser', requestData: {
       'userId': request.userId,
     });
 
@@ -848,12 +877,12 @@ class FenceService extends FenceServiceBase {
             user: userFound,
             statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
       } on GrpcError catch (e) {
-        _logger.logRpcError('readOneUser', call, e, extra: {
+        log.logRpcError('readOneUser', e, extra: {
           'requestedUserId': request.userId,
         });
         rethrow;
       } on MongoDartError catch (e) {
-        _logger.logRpcError('readOneUser', call, e, extra: {
+        log.logRpcError('readOneUser', e, extra: {
           'requestedUserId': request.userId,
           'errorType': 'MongoDartError',
         });
@@ -867,7 +896,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<CodeForPairingDevice> generateCodeForPairingDevice(
       ServiceCall? call, ChainIdAndboutiqueId request) async {
-    _logger.logRpcEntry('generateCodeForPairingDevice', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('generateCodeForPairingDevice', requestData: {
       'chainId': request.chainId,
       'boutiqueId': request.boutiqueId,
     });
@@ -925,10 +955,10 @@ class FenceService extends FenceServiceBase {
           throw GrpcError.unknown('mongo error generateCodeForPairingDevice');
         }
       } on GrpcError catch (e) {
-        _logger.logRpcError('generateCodeForPairingDevice', call, e);
+        log.logRpcError('generateCodeForPairingDevice', e);
         rethrow;
       } catch (e, stacktrace) {
-        _logger.logRpcError('generateCodeForPairingDevice', call, e,
+        log.logRpcError('generateCodeForPairingDevice', e,
             stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
@@ -965,7 +995,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<CreateDeviceResponse> createDevice(
       ServiceCall? call, PendingDeviceRequest request) async {
-    _logger.logRpcEntry('createDevice', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createDevice', requestData: {
       'code': request.code,
       'hardwareInfo': {
         'serialNumber': request.hardwareInfo.serialNumber,
@@ -1029,8 +1060,8 @@ class FenceService extends FenceServiceBase {
         // Handle existing device by serial number (most reliable match)
         if (existingDeviceBySerial != null) {
           // Device re-enrollment case - return existing device info to allow mobile app to proceed
-          print(
-              'Device re-enrollment detected: serial ${request.hardwareInfo.serialNumber} already exists, returning existing device info');
+          log.info('Device re-enrollment detected: serial already exists',
+              extra: {'serialNumber': request.hardwareInfo.serialNumber});
 
           return CreateDeviceResponse(
               statusResponse: StatusResponse(
@@ -1068,8 +1099,11 @@ class FenceService extends FenceServiceBase {
         // Handle existing device by specs (less reliable match)
         if (existingDeviceBySpecs != null) {
           // Device re-enrollment case - return existing device info to allow mobile app to proceed
-          print(
-              'Device re-enrollment detected: specs ${request.hardwareInfo.name}-${request.hardwareInfo.brand} already exist, returning existing device info');
+          log.info('Device re-enrollment detected: specs already exist',
+              extra: {
+                'name': request.hardwareInfo.name,
+                'brand': request.hardwareInfo.brand,
+              });
 
           return CreateDeviceResponse(
               statusResponse: StatusResponse(
@@ -1095,7 +1129,7 @@ class FenceService extends FenceServiceBase {
 
         chain.boutiques[boutiqueIndex].devices.add(device);
 
-        final result = await _updateOneChainDBExec(chain);
+        final result = await _updateOneChainDBExec(chain, log: log);
 
         // _cleanPairingCodes
         // delete the already used code
@@ -1120,7 +1154,7 @@ class FenceService extends FenceServiceBase {
             boutiqueId: device.boutiqueId,
             deviceId: device.deviceId);
       } on GrpcError catch (e) {
-        _logger.logRpcError('createDevice', call, e);
+        log.logRpcError('createDevice', e);
         rethrow;
       }
     });
@@ -1129,6 +1163,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> updateDevicePassword(
       ServiceCall? call, UpdateDevicePasswordRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('updateDevicePassword', requestData: {
+      'chainId': request.chainId,
+      'deviceId': request.device.deviceId
+    });
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -1171,11 +1210,13 @@ class FenceService extends FenceServiceBase {
           throw GrpcError.unknown(
               'update != 1 ${result.document} ${result.serverResponses}');
         }
+        log.logRpcExit('updateDevicePassword',
+            resultData: {'chainId': request.chainId});
         return StatusResponse()
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        _logger.logRpcError('updateDevicePassword', call, e);
+        log.logRpcError('updateDevicePassword', e);
         rethrow;
       }
     });
@@ -1184,6 +1225,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> deleteOneUser(
       ServiceCall? call, UserId request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('deleteOneUser', requestData: {'userId': request.userId});
     if (request.userId.isEmpty) {
       throw GrpcError.invalidArgument('user oid cannot be empty');
     }
@@ -1213,11 +1256,12 @@ class FenceService extends FenceServiceBase {
         // ignore: unused_local_variable
         final result =
             await userCollection.deleteOne(where.eq('userId', request.userId));
+        log.logRpcExit('deleteOneUser', resultData: {'userId': request.userId});
         return StatusResponse()
           ..type = StatusResponse_Type.DELETED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        print(e);
+        log.logRpcError('deleteOneUser', e);
         rethrow;
       }
     });
@@ -1240,6 +1284,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<CreateFirmResponse> createFirm(
       ServiceCall? call, CreateFirmRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createFirm', requestData: {'name': request.name});
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -1295,7 +1341,8 @@ class FenceService extends FenceServiceBase {
             await _updateUserFirmIdAndPermissionsDBExec(
                 userPermission.userId, firmId, permissions);
           } on GrpcError catch (e) {
-            print('createFirm _updateUserFirmIdAndPermissionsDBExec error $e');
+            log.logRpcError('createFirm', e,
+                extra: {'step': '_updateUserFirmIdAndPermissionsDBExec'});
             rethrow;
           }
 
@@ -1314,13 +1361,15 @@ class FenceService extends FenceServiceBase {
               ]);
 
           try {
-            await _createOneChainDBExec(chain);
+            await _createOneChainDBExec(chain, log: log);
           } on GrpcError catch (e) {
-            print('createFirm _createOneChainDBExec error $e');
+            log.logRpcError('createFirm', e,
+                extra: {'step': '_createOneChainDBExec'});
             rethrow;
           }
 
           // Email/welcome mail functionality removed - will be handled by dedicated service
+          log.logRpcExit('createFirm', resultData: {'firmId': firmId});
 
           return CreateFirmResponse(
             statusResponse: StatusResponse.create()
@@ -1330,6 +1379,12 @@ class FenceService extends FenceServiceBase {
             firm: firm,
           );
         } else {
+          log.logRpcExit('createFirm', resultData: {
+            'error': 'result.ok != 1 || result.document == null',
+            'firmId': firmId,
+            'name': request.name,
+          });
+
           return CreateFirmResponse(
               statusResponse: StatusResponse.create()
                 ..type = StatusResponse_Type.ERROR
@@ -1337,11 +1392,10 @@ class FenceService extends FenceServiceBase {
                 ..timestamp = DateTime.now().timestampProto);
         }
       } on GrpcError catch (e) {
-        print('createFirm $e');
+        log.logRpcError('createFirm', e);
         rethrow;
       } catch (e, stacktrace) {
-        print('createFirm $e');
-        print(stacktrace);
+        log.logRpcError('createFirm', e, stackTrace: stacktrace);
         rethrow;
       }
     });
@@ -1405,6 +1459,8 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<Firm> readOneFirm(ServiceCall? call, Empty request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readOneFirm');
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -1418,67 +1474,87 @@ class FenceService extends FenceServiceBase {
         final firmMongo = await firmCollection
             .findOne(where.eq('firmId', userPermission.firmId));
         if (firmMongo == null) {
+          log.warning('Firm not found',
+              extra: {'firmId': userPermission.firmId});
           throw GrpcError.notFound(
               'Did not find firmId ${userPermission.firmId}');
         }
         final firm = Firm()
           ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
+        log.logRpcExit('readOneFirm');
         return firm;
       } on GrpcError catch (e) {
-        print('readFirm error $e');
+        log.logRpcError('readOneFirm', e);
         rethrow;
       }
     });
   }
 
-  // Future<Firm> _checkFirmAndProtoIt(UserPermissions userPermissions) async {
-  //   final firmMongo = await firmCollection
-  //       .findOne(where.eq('firmId', (userPermissions.firmId)));
-  //   if (firmMongo == null) {
-  //     throw GrpcError.notFound('firm not found');
-  //   }
-  //   return Firm.create()
-  //     ..mergeFromProto3Json(firmMongo, ignoreUnknownFields: true);
-  // }
-
-  Future<List<Chain>> _checkChainsAndProtoThem(
-      UserPermissions userPermissions) async {
-    return databaseMiddleware<List<Chain>>(_poolService, (db) async {
+  /// Reads chain documents from DB. No filtering.
+  Future<List<Map<String, dynamic>>> _readChainsMongoFromDb(String firmId) async {
+    return databaseMiddleware<List<Map<String, dynamic>>>(_poolService,
+        (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
-
-      try {
-        final chainsMongo = await boutiqueCollection
-            .find(where.eq('firmId', userPermissions.firmId))
-            .toList();
-        if (chainsMongo.isEmpty) {
-          return [];
-        }
-        final chains = <Chain>[];
-        for (final chainMongo in chainsMongo) {
-          final chainTemp = Chain.create()
-            ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
-
-          // Filter out soft-deleted boutiques and create new chain
-          final activeBoutiques =
-              chainTemp.boutiques.where((b) => !b.isDeleted).toList();
-
-          final chain = Chain.create()
-            ..chainId = chainTemp.chainId
-            ..firmId = chainTemp.firmId
-            ..name = chainTemp.name
-            ..lastUpdateTimestampUTC = chainTemp.lastUpdateTimestampUTC
-            ..lastUpdatedByuserId = chainTemp.lastUpdatedByuserId
-            ..creationDateUTC = chainTemp.creationDateUTC
-            ..boutiques.addAll(activeBoutiques);
-
-          chains.add(chain);
-        }
-        return chains;
-      } on GrpcError catch (e) {
-        print('_findChainsAndProtoThem $e');
-        rethrow;
-      }
+      final chainsMongo =
+          await boutiqueCollection.find(where.eq('firmId', firmId)).toList();
+      return chainsMongo.cast<Map<String, dynamic>>();
     });
+  }
+
+  /// Single place for protoing chains. [filterActiveBoutiques] and [filterActiveChains]
+  /// control whether soft-deleted boutiques/chains are excluded.
+  List<Chain> _chainsMongoToChainsProto(
+    List<Map<String, dynamic>> chainsMongo, {
+    bool filterActiveBoutiques = false,
+    bool filterActiveChains = false,
+  }) {
+    if (chainsMongo.isEmpty) {
+      return [];
+    }
+    final chains = <Chain>[];
+    for (final chainMongo in chainsMongo) {
+      final chainTemp = Chain.create()
+        ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
+
+      if (filterActiveChains && chainTemp.isDeleted) continue;
+
+      final boutiques = filterActiveBoutiques
+          ? chainTemp.boutiques.where((b) => !b.isDeleted).toList()
+          : chainTemp.boutiques;
+
+      final chain = Chain.create()
+        ..chainId = chainTemp.chainId
+        ..firmId = chainTemp.firmId
+        ..name = chainTemp.name
+        ..lastUpdateTimestampUTC = chainTemp.lastUpdateTimestampUTC
+        ..lastUpdatedByuserId = chainTemp.lastUpdatedByuserId
+        ..creationDateUTC = chainTemp.creationDateUTC
+        ..boutiques.addAll(boutiques)
+        ..isDeleted = chainTemp.isDeleted
+        ..deletedBy = chainTemp.deletedBy
+        ..restoredBy = chainTemp.restoredBy;
+
+      chains.add(chain);
+    }
+    return chains;
+  }
+
+  /// Returns all chains with all boutiques (no filtering).
+  Future<List<Chain>> _readAllChainsAndProtoThem(
+      UserPermissions userPermissions) async {
+    final chainsMongo =
+        await _readChainsMongoFromDb(userPermissions.firmId);
+    return _chainsMongoToChainsProto(chainsMongo,
+        filterActiveBoutiques: false, filterActiveChains: false);
+  }
+
+  /// Returns only active chains and active boutiques (filters out soft-deleted).
+  Future<List<Chain>> _readActiveChainsAndActiveBoutiquesAndProtoThem(
+      UserPermissions userPermissions) async {
+    final chainsMongo =
+        await _readChainsMongoFromDb(userPermissions.firmId);
+    return _chainsMongoToChainsProto(chainsMongo,
+        filterActiveBoutiques: true, filterActiveChains: true);
   }
 
   /// if no match whith firmId and chainId throws GrpcError.notFound
@@ -1503,7 +1579,7 @@ class FenceService extends FenceServiceBase {
   }
 
   // Future<List<String>> _readAllBoutiquesInChain(UserPrivate user) async {
-  //   final chains = await _checkChainsAndProtoThem(user.permissions);
+  //   final chains = await _readActiveChainsAndActiveBoutiquesAndProtoThem(user.permissions);
   //   final boutiques = <Boutique>[];
   //   for (final requestchainId in user.permissions.limitedAccess.chainIds.ids) {
   //     for (final chain in chains) {
@@ -1523,6 +1599,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> createOneBoutique(
       ServiceCall? call, BoutiqueRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createOneBoutique', requestData: {
+      'chainId': request.chainId,
+      'name': request.boutique.name
+    });
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -1558,13 +1639,17 @@ class FenceService extends FenceServiceBase {
 
     chain.boutiques.add(boutiqueMongo);
 
-    final result = await _updateOneChainDBExec(chain);
+    final result = await _updateOneChainDBExec(chain, log: log);
 
     if (result.type == StatusResponse_Type.UPDATED) {
+      log.logRpcExit('createOneBoutique',
+          resultData: {'boutiqueId': boutiqueId, 'chainId': request.chainId});
       return StatusResponse.create()
         ..type = StatusResponse_Type.CREATED
         ..timestamp = DateTime.now().timestampProto;
     } else {
+      log.logRpcError('createOneBoutique',
+          GrpcError.unknown('createOneBoutique chainUpdate error $result'));
       throw GrpcError.unknown('createOneBoutique chainUpdate error $result');
     }
   }
@@ -1572,6 +1657,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> createOneChain(
       ServiceCall? call, Chain request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createOneChain', requestData: {'firmId': request.firmId});
     if (request.firmId.isEmpty) {
       throw GrpcError.invalidArgument('request.firmId cannot be empty');
     }
@@ -1607,10 +1694,16 @@ class FenceService extends FenceServiceBase {
       ..firmId = request.firmId
       ..chainId = chainId
       ..boutiqueId = chainId;
-    return await _createOneChainDBExec(request);
+    final result = await _createOneChainDBExec(request, log: log);
+    if (result.type == StatusResponse_Type.CREATED) {
+      log.logRpcExit('createOneChain',
+          resultData: {'chainId': chainId, 'firmId': request.firmId});
+    }
+    return result;
   }
 
-  Future<StatusResponse> _createOneChainDBExec(Chain chain) async {
+  Future<StatusResponse> _createOneChainDBExec(Chain chain,
+      {WeebiLoggerWithContext? log}) async {
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
 
@@ -1634,11 +1727,19 @@ class FenceService extends FenceServiceBase {
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        print(e);
+        if (log != null) {
+          log.logRpcError('_createOneChainDBExec', e);
+        } else {
+          _logger.logRpcError('_createOneChainDBExec', null, e);
+        }
         rethrow;
       } catch (e, stacktrace) {
-        print(e);
-        print(stacktrace);
+        if (log != null) {
+          log.logRpcError('_createOneChainDBExec', e, stackTrace: stacktrace);
+        } else {
+          _logger.logRpcError('_createOneChainDBExec', null, e,
+              stackTrace: stacktrace);
+        }
         rethrow;
       }
     });
@@ -1647,6 +1748,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> updateOneBoutique(
       ServiceCall? call, BoutiqueRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('updateOneBoutique', requestData: {
+      'boutiqueId': request.boutique.boutiqueId,
+      'chainId': request.chainId
+    });
     if (request.boutique.boutiqueId.isEmpty) {
       throw GrpcError.invalidArgument('boutiqueId cannot be empty');
     }
@@ -1699,12 +1805,18 @@ class FenceService extends FenceServiceBase {
     boutique.logoExtension = request.logoExtension;
     boutique.lastTouchTimestampUTC = DateTime.now().timestampProto;
 
-    return await _updateOneChainDBExec(chain);
+    final result = await _updateOneChainDBExec(chain, log: log);
+    log.logRpcExit('updateOneBoutique',
+        resultData: {'boutiqueId': request.boutique.boutiqueId});
+    return result;
   }
 
   @override
   Future<StatusResponse> updateOneChain(
       ServiceCall? call, ChainRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('updateOneChain',
+        requestData: {'chainId': request.chainId, 'name': request.name});
 /*     if (request.boutiques.any((b) => b.firmId != request.firmId)) {
       throw GrpcError.invalidArgument(
           'each boutique.firmId must match the chain.firmId');
@@ -1746,21 +1858,24 @@ class FenceService extends FenceServiceBase {
                 DateTime.now().toUtc().timestampProto.toProto3Json(),
               ),
         );
+        log.logRpcExit('updateOneChain',
+            resultData: {'chainId': request.chainId});
         return StatusResponse()
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        print(e);
+        log.logRpcError('updateOneChain', e);
         rethrow;
       } catch (e, stacktrace) {
-        print(e);
-        print(stacktrace);
+        log.error('updateOneChain unexpected error',
+            error: e, stackTrace: stacktrace);
         rethrow;
       }
     });
   }
 
-  Future<StatusResponse> _updateOneChainDBExec(Chain chain) async {
+  Future<StatusResponse> _updateOneChainDBExec(Chain chain,
+      {WeebiLoggerWithContext? log}) async {
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
 
@@ -1782,11 +1897,19 @@ class FenceService extends FenceServiceBase {
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        print(e);
+        if (log != null) {
+          log.logRpcError('_updateOneChainDBExec', e);
+        } else {
+          _logger.logRpcError('_updateOneChainDBExec', null, e);
+        }
         rethrow;
       } catch (e, stacktrace) {
-        // the whole stacktrace is heavy
-        print(stacktrace);
+        if (log != null) {
+          log.logRpcError('_updateOneChainDBExec', e, stackTrace: stacktrace);
+        } else {
+          _logger.logRpcError('_updateOneChainDBExec', null, e,
+              stackTrace: stacktrace);
+        }
         rethrow;
       }
     });
@@ -1797,6 +1920,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> deleteOneDevice(
       ServiceCall? call, DeleteDeviceRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('deleteOneDevice', requestData: {
+      'chainId': request.chainId,
+      'deviceId': request.device.deviceId
+    });
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -1821,11 +1949,14 @@ class FenceService extends FenceServiceBase {
     // update chain in db
 
     try {
-      await _updateOneChainDBExec(chain);
+      await _updateOneChainDBExec(chain, log: log);
+      log.logRpcExit('deleteOneDevice',
+          resultData: {'chainId': request.chainId});
       return StatusResponse()
         ..type = StatusResponse_Type.DELETED
         ..timestamp = DateTime.now().timestampProto;
     } catch (e) {
+      log.logRpcError('deleteOneDevice', e);
       rethrow;
     }
   }
@@ -1833,6 +1964,9 @@ class FenceService extends FenceServiceBase {
   @override
   Future<IsADeviceInChainResponse> isADeviceInChain(
       ServiceCall? call, ReadDevicesRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('isADeviceInChain',
+        requestData: {'chainId': request.chainId});
     if (request.chainId.isEmpty) {
       throw GrpcError.invalidArgument('chainId cannot be empty');
     }
@@ -1851,12 +1985,16 @@ class FenceService extends FenceServiceBase {
         }
       }
     }
+    log.logRpcExit('isADeviceInChain',
+        resultData: {'isADevice': devices.isNotEmpty});
     return IsADeviceInChainResponse(isADevice: devices.isNotEmpty);
   }
 
   @override
   Future<Devices> readDevices(
       ServiceCall? call, ReadDevicesRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readDevices', requestData: {'chainId': request.chainId});
     if (request.chainId.isEmpty) {
       throw GrpcError.invalidArgument('chainId cannot be empty');
     }
@@ -1888,12 +2026,14 @@ class FenceService extends FenceServiceBase {
         }
       }
     }
+    log.logRpcExit('readDevices', resultData: {'deviceCount': devices.length});
     return Devices(devices: devices);
   }
 
   @override
   Future<SignUpResponse> signUp(ServiceCall call, SignUpRequest request) async {
-    _logger.logRpcEntry('signUp', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('signUp', requestData: {
       'mail': request.mail,
     });
 
@@ -1948,7 +2088,7 @@ class FenceService extends FenceServiceBase {
             lastname: request.lastname,
           );
 
-          _logger.logRpcExit('signUp', call, resultData: {
+          log.logRpcExit('signUp', resultData: {
             'userId': userId,
             'mail': request.mail,
           });
@@ -1966,7 +2106,7 @@ class FenceService extends FenceServiceBase {
                 ..timestamp = timestamp);
         }
       } on GrpcError catch (e) {
-        _logger.error('Signup error', extra: {'mail': request.mail}, error: e);
+        log.error('Signup error', extra: {'mail': request.mail}, error: e);
         rethrow;
       }
     });
@@ -2086,9 +2226,14 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// Returns all chains including soft-deleted chains and boutiques.
+  /// Use for chain management UI (restore, audit). Contrast with
+  /// [readAllBoutiques] which filters out soft-deleted.
   @override
   Future<ReadAllChainsResponse> readAllChains(
       ServiceCall? call, Empty request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readAllChains');
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -2098,13 +2243,30 @@ class FenceService extends FenceServiceBase {
           'user does not have right to read chain');
     }
 
-    final chains = await _checkChainsAndProtoThem(userPermission);
-    return ReadAllChainsResponse(chains: chains);
+    try {
+      final chains = await _readAllChainsAndProtoThem(userPermission);
+      log.logRpcExit('readAllChains', resultData: {'chainCount': chains.length});
+      return ReadAllChainsResponse(chains: chains);
+    } on GrpcError catch (e) {
+      log.logRpcError('readAllChains', e);
+      rethrow;
+    } on MongoDartError catch (e) {
+      log.logRpcError('readAllChains', e, extra: {'errorType': 'MongoDartError'});
+      rethrow;
+    } catch (e, st) {
+      log.logRpcError('readAllChains', e, stackTrace: st);
+      rethrow;
+    }
   }
 
+  /// Returns only active boutiques (excludes soft-deleted chains and boutiques).
+  /// Use for selection lists (tickets, devices, etc). Contrast with
+  /// [readAllChains] which includes soft-deleted for chain management.
   @override
   Future<ReadAllBoutiquesResponse> readAllBoutiques(
       ServiceCall? call, Empty request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readAllBoutiques');
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -2115,23 +2277,41 @@ class FenceService extends FenceServiceBase {
           'user does not have right to read boutiques');
     }
 
-    // Get all chains (this already filters out deleted boutiques)
-    final chains = await _checkChainsAndProtoThem(userPermission);
+    try {
+      // Get chains with active boutiques only (as is today)
+      final chains =
+          await _readActiveChainsAndActiveBoutiquesAndProtoThem(userPermission);
 
-    // Extract BoutiquePb from each boutique (following readOneBoutique pattern)
-    final allBoutiques = <BoutiquePb>[];
-    for (final chain in chains) {
-      for (final boutique in chain.boutiques) {
-        allBoutiques.add(boutique.boutique);
+      // Extract BoutiquePb from each boutique (following readOneBoutique pattern)
+      final allBoutiques = <BoutiquePb>[];
+      for (final chain in chains) {
+        for (final boutique in chain.boutiques) {
+          allBoutiques.add(boutique.boutique);
+        }
       }
-    }
 
-    return ReadAllBoutiquesResponse(boutiques: allBoutiques);
+      log.logRpcExit('readAllBoutiques',
+          resultData: {'boutiqueCount': allBoutiques.length});
+      return ReadAllBoutiquesResponse(boutiques: allBoutiques);
+    } on GrpcError catch (e) {
+      log.logRpcError('readAllBoutiques', e);
+      rethrow;
+    } on MongoDartError catch (e) {
+      log.logRpcError('readAllBoutiques', e,
+          extra: {'errorType': 'MongoDartError'});
+      rethrow;
+    } catch (e, st) {
+      log.logRpcError('readAllBoutiques', e, stackTrace: st);
+      rethrow;
+    }
   }
 
   @override
   Future<StatusResponse> updateUserPassword(
       ServiceCall? call, PasswordUpdateRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('updateUserPassword',
+        requestData: {'firmId': request.firmId, 'userId': request.userId});
     if (request.firmId.isEmpty ||
         request.userId.isEmpty ||
         request.passwordCurrent.isEmpty ||
@@ -2199,15 +2379,17 @@ class FenceService extends FenceServiceBase {
         // await _invalidateAllUserTokens(request.userId);
         ///... generate new token
         // final newToken = await _generateNewToken(request.userId);
+        log.logRpcExit('updateUserPassword',
+            resultData: {'userId': request.userId});
         return StatusResponse()
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        print(e);
+        log.logRpcError('updateUserPassword', e);
         rethrow;
       } catch (e, stacktrace) {
-        // the whole stacktrace is heavy
-        print(stacktrace);
+        log.error('updateUserPassword unexpected error',
+            error: e, stackTrace: stacktrace);
         rethrow;
       }
     });
@@ -2215,17 +2397,11 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<UsersPublic> readAllUsers(ServiceCall call, Empty request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readAllUsers');
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
-
-    // DEBUG: Log user permissions and firmId
-    print(
-        'DEBUG readAllUsers: userPermission.firmId = ${userPermission.firmId}');
-    print(
-        'DEBUG readAllUsers: userPermission.userManagementRights.rights = ${userPermission.userManagementRights.rights}');
-    print(
-        'DEBUG readAllUsers: userPermission.fullAccess.hasFullAccess = ${userPermission.fullAccess.hasFullAccess}');
 
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.read) ==
@@ -2241,17 +2417,8 @@ class FenceService extends FenceServiceBase {
             .find(where.eq('firmId', userPermission.firmId))
             .toList();
 
-        // DEBUG: Log database query results
-        print(
-            'DEBUG readAllUsers: Found ${usersMongo.length} users in database');
-        print('DEBUG readAllUsers: Query firmId = ${userPermission.firmId}');
-        for (int i = 0; i < usersMongo.length; i++) {
-          print(
-              'DEBUG readAllUsers: User $i: ${usersMongo[i]['firstname']} ${usersMongo[i]['lastname']} (firmId: ${usersMongo[i]['firmId']})');
-        }
-
         if (usersMongo.isEmpty) {
-          print('DEBUG readAllUsers: No users found, returning empty list');
+          log.logRpcExit('readAllUsers', resultData: {'userCount': 0});
           return UsersPublic(users: []);
         }
         final users = <UserPublic>[];
@@ -2261,8 +2428,8 @@ class FenceService extends FenceServiceBase {
         }
 
         if (userPermission.fullAccess.hasFullAccess) {
-          print(
-              'DEBUG readAllUsers: User has full access, returning ${users.length} users');
+          log.logRpcExit('readAllUsers',
+              resultData: {'userCount': users.length, 'filter': 'fullAccess'});
           return UsersPublic(users: users);
         }
         // if requestor has limitedAccess we retain only users that belong to his/her "fence"
@@ -2293,9 +2460,13 @@ class FenceService extends FenceServiceBase {
             }
             return false;
           });
+        log.logRpcExit('readAllUsers', resultData: {
+          'userCount': usersFiltered.length,
+          'filter': 'limited'
+        });
         return UsersPublic(users: usersFiltered);
       } on GrpcError catch (e) {
-        print('readOne error $e');
+        log.logRpcError('readAllUsers', e);
         rethrow;
       }
     });
@@ -2307,6 +2478,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<Device> readOnePendingDevice(
       ServiceCall call, ReadDeviceBtqRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readOnePendingDevice', requestData: {
+      'chainId': request.chainId,
+      'boutiqueId': request.boutiqueId
+    });
     if (request.chainId.isEmpty) {
       throw GrpcError.invalidArgument('chainId cannot be empty');
     }
@@ -2366,8 +2542,10 @@ class FenceService extends FenceServiceBase {
       final controller = stream.listen((changeEvent) {
         final fullDocument = changeEvent.fullDocument ?? <String, dynamic>{};
 
-        print('Detected change for "chainId" '
-            '${fullDocument['chainId']}: "${fullDocument['name']}"');
+        log.debug('Detected change for chainId', extra: {
+          'chainId': fullDocument['chainId'],
+          'name': fullDocument['name'],
+        });
         chainUpdated.mergeFromProto3Json(fullDocument,
             ignoreUnknownFields: true);
 
@@ -2399,13 +2577,13 @@ class FenceService extends FenceServiceBase {
       var waitingCount = 0;
       await Future.doWhile(() async {
         if (pleaseClose) {
-          print('Change detected, closing stream and db.');
+          log.debug('Change detected, closing stream and db.');
 
           /// This is the correct way to cancel the watch subscription
           await controller.cancel();
           return false;
         }
-        print('Waiting for change to be detected...');
+        log.debug('Waiting for change to be detected...');
         await Future.delayed(Duration(seconds: 2));
         waitingCount++;
         if (waitingCount > 60) {
@@ -2415,6 +2593,10 @@ class FenceService extends FenceServiceBase {
         return true;
       });
       if (device.boutiqueId.isNotEmpty) {
+        log.logRpcExit('readOnePendingDevice', resultData: {
+          'deviceId': device.deviceId,
+          'boutiqueId': device.boutiqueId
+        });
         return device;
       } else {
         throw GrpcError.notFound('no pendingDevice found');
@@ -2425,6 +2607,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> deleteOneBoutique(
       ServiceCall call, BoutiqueRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('deleteOneBoutique', requestData: {
+      'boutiqueId': request.boutique.boutiqueId,
+      'chainId': request.chainId
+    });
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -2468,11 +2655,14 @@ class FenceService extends FenceServiceBase {
 
     // update chain in db
     try {
-      await _updateOneChainDBExec(chain);
+      await _updateOneChainDBExec(chain, log: log);
+      log.logRpcExit('deleteOneBoutique',
+          resultData: {'boutiqueId': request.boutique.boutiqueId});
       return StatusResponse()
         ..type = StatusResponse_Type.DELETED // soft delete in fact
         ..timestamp = DateTime.now().timestampProto;
     } catch (e) {
+      log.logRpcError('deleteOneBoutique', e);
       rethrow;
     }
   }
@@ -2480,6 +2670,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> restoreOneBoutique(
       ServiceCall call, BoutiqueRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('restoreOneBoutique', requestData: {
+      'boutiqueId': request.boutique.boutiqueId,
+      'chainId': request.chainId
+    });
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -2535,11 +2730,14 @@ class FenceService extends FenceServiceBase {
 
     // update chain in db
     try {
-      await _updateOneChainDBExec(chain);
+      await _updateOneChainDBExec(chain, log: log);
+      log.logRpcExit('restoreOneBoutique',
+          resultData: {'boutiqueId': request.boutique.boutiqueId});
       return StatusResponse()
         ..type = StatusResponse_Type.UPDATED
         ..timestamp = DateTime.now().timestampProto;
     } catch (e) {
+      log.logRpcError('restoreOneBoutique', e);
       rethrow;
     }
   }
@@ -2547,6 +2745,9 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> deleteOneChain(
       ServiceCall call, ChainRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('deleteOneChain',
+        requestData: {'chainId': request.chainId});
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -2563,6 +2764,24 @@ class FenceService extends FenceServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
+    if (request.chainId == userPermission.firmId) {
+      // since most firms only have one founding chain and removing it has side effects
+      // first chain should not be deleted
+      // if the firm has multiple chains, then it could be deleted
+      // this edge case will be handled by support
+      // we deliberately do not want to check if multiple chains exist
+      // to avoid complexity and potential bugs
+      throw GrpcError.invalidArgument(
+          'first chain should not be deleted to avoid data loss');
+    }
+    final chain =
+        await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
+
+    if (chain.boutiques.any((boutique) => boutique.isDeleted == false)) {
+      // if the chain has active boutiques, then it cannot be deleted
+      throw GrpcError.failedPrecondition(
+          'chain ${request.chainId} has active boutiques, cannot be deleted, please delete boutiques first');
+    }
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
 
@@ -2570,11 +2789,13 @@ class FenceService extends FenceServiceBase {
         await boutiqueCollection.deleteOne(where
             .eq('firmId', userPermission.firmId)
             .eq('chainId', request.chainId));
+        log.logRpcExit('deleteOneChain',
+            resultData: {'chainId': request.chainId});
         return StatusResponse()
           ..type = StatusResponse_Type.DELETED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        print(e);
+        log.logRpcError('deleteOneChain', e);
         rethrow;
       }
     });
@@ -2583,6 +2804,11 @@ class FenceService extends FenceServiceBase {
   @override
   Future<BoutiqueResponse> readOneBoutique(
       ServiceCall call, BoutiqueRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readOneBoutique', requestData: {
+      'boutiqueId': request.boutique.boutiqueId,
+      'chainId': request.chainId
+    });
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -2622,6 +2848,8 @@ class FenceService extends FenceServiceBase {
       boutique.boutique.boutiqueId = boutique.boutiqueId;
     }
 
+    log.logRpcExit('readOneBoutique',
+        resultData: {'boutiqueId': request.boutique.boutiqueId});
     return BoutiqueResponse(
       boutique: boutique.boutique,
       logo: boutique.logo,
@@ -2635,7 +2863,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> requestPasswordReset(
       ServiceCall? call, PasswordResetRequest request) async {
-    _logger.logRpcEntry('requestPasswordReset', call,
+    final log = _logger.withContext(call);
+    log.logRpcEntry('requestPasswordReset',
         requestData: {'mail': request.mail});
 
     if (request.mail.isEmpty) {
@@ -2653,7 +2882,7 @@ class FenceService extends FenceServiceBase {
         if (userMongo == null) {
           // Don't reveal if email exists or not (security best practice)
           // But still log for debugging
-          _logger.warning('Password reset requested for non-existent email',
+          log.warning('Password reset requested for non-existent email',
               extra: {'mail': request.mail});
           // Return success anyway to prevent email enumeration
           return StatusResponse()
@@ -2664,12 +2893,12 @@ class FenceService extends FenceServiceBase {
         // Call weebi_express to send password reset email (fire-and-forget)
         _sendPasswordResetEmailAsync(email: request.mail);
 
-        _logger.logRpcExit('requestPasswordReset', call);
+        log.logRpcExit('requestPasswordReset');
         return StatusResponse()
           ..type = StatusResponse_Type.SUCCESS
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        _logger.logRpcError('requestPasswordReset', call, e, extra: {
+        log.logRpcError('requestPasswordReset', e, extra: {
           'mail': request.mail,
         });
         rethrow;
@@ -2681,7 +2910,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> confirmPasswordReset(
       ServiceCall? call, PasswordResetConfirmRequest request) async {
-    _logger.logRpcEntry('confirmPasswordReset', call,
+    final log = _logger.withContext(call);
+    log.logRpcEntry('confirmPasswordReset',
         requestData: {'mail': request.mail});
 
     if (request.mail.isEmpty || request.newPassword.isEmpty) {
@@ -2709,12 +2939,12 @@ class FenceService extends FenceServiceBase {
                 .set('password', passwordNewEncrypted)
                 .set('mustChangePassword', false));
 
-        _logger.logRpcExit('confirmPasswordReset', call);
+        log.logRpcExit('confirmPasswordReset');
         return StatusResponse()
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        _logger.logRpcError('confirmPasswordReset', call, e, extra: {
+        log.logRpcError('confirmPasswordReset', e, extra: {
           'mail': request.mail,
         });
         rethrow;
@@ -2725,7 +2955,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> updateSubscriberId(
       ServiceCall? call, UpdateSubscriberIdRequest request) async {
-    _logger.logRpcEntry('updateSubscriberId', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('updateSubscriberId', requestData: {
       'mail': request.mail,
       'subscriberId': request.subscriberId,
       'userId': request.userId.isNotEmpty ? request.userId : 'not provided',
@@ -2758,7 +2989,7 @@ class FenceService extends FenceServiceBase {
 
         // Verify email matches if userId was provided (safety check)
         if (request.userId.isNotEmpty && userMongo['mail'] != request.mail) {
-          _logger.warning('Email mismatch when updating subscriberId', extra: {
+          log.warning('Email mismatch when updating subscriberId', extra: {
             'providedUserId': request.userId,
             'providedMail': request.mail,
             'foundMail': userMongo['mail'],
@@ -2772,12 +3003,12 @@ class FenceService extends FenceServiceBase {
         await userCollection.update(where.eq('userId', userId),
             ModifierBuilder().set('subscriberId', request.subscriberId));
 
-        _logger.logRpcExit('updateSubscriberId', call);
+        log.logRpcExit('updateSubscriberId');
         return StatusResponse()
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        _logger.logRpcError('updateSubscriberId', call, e, extra: {
+        log.logRpcError('updateSubscriberId', e, extra: {
           'mail': request.mail,
           'subscriberId': request.subscriberId,
           'userId': request.userId,
@@ -2790,7 +3021,8 @@ class FenceService extends FenceServiceBase {
   @override
   Future<StatusResponse> markEmailVerified(
       ServiceCall? call, MarkEmailVerifiedRequest request) async {
-    _logger.logRpcEntry('markEmailVerified', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('markEmailVerified', requestData: {
       'mail': request.mail,
       'userId': request.userId.isNotEmpty ? request.userId : 'not provided',
     });
@@ -2818,8 +3050,7 @@ class FenceService extends FenceServiceBase {
 
         // Verify email matches if userId was provided (safety check)
         if (request.userId.isNotEmpty && userMongo['mail'] != request.mail) {
-          _logger
-              .warning('Email mismatch when marking email as verified', extra: {
+          log.warning('Email mismatch when marking email as verified', extra: {
             'providedUserId': request.userId,
             'providedMail': request.mail,
             'foundMail': userMongo['mail'],
@@ -2833,12 +3064,12 @@ class FenceService extends FenceServiceBase {
         await userCollection.update(where.eq('userId', userId),
             ModifierBuilder().set('emailVerificationSent', true));
 
-        _logger.logRpcExit('markEmailVerified', call);
+        log.logRpcExit('markEmailVerified');
         return StatusResponse()
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        _logger.logRpcError('markEmailVerified', call, e, extra: {
+        log.logRpcError('markEmailVerified', e, extra: {
           'mail': request.mail,
           'userId': request.userId,
         });

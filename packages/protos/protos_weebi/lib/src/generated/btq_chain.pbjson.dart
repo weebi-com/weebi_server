@@ -24,6 +24,9 @@ const Chain$json = {
     {'1': 'creationDateUTC', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationDateUTC'},
     {'1': 'lastUpdateTimestampUTC', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
     {'1': 'lastUpdatedByuserId', '3': 7, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
+    {'1': 'isDeleted', '3': 8, '4': 1, '5': 8, '10': 'isDeleted'},
+    {'1': 'deletedBy', '3': 9, '4': 1, '5': 9, '10': 'deletedBy'},
+    {'1': 'restoredBy', '3': 10, '4': 1, '5': 9, '10': 'restoredBy'},
   ],
 };
 
@@ -35,7 +38,8 @@ final $typed_data.Uint8List chainDescriptor = $convert.base64Decode(
     'dvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSD2NyZWF0aW9uRGF0ZVVUQxJSChZsYXN0VXBkYXRl'
     'VGltZXN0YW1wVVRDGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIWbGFzdFVwZG'
     'F0ZVRpbWVzdGFtcFVUQxIwChNsYXN0VXBkYXRlZEJ5dXNlcklkGAcgASgJUhNsYXN0VXBkYXRl'
-    'ZEJ5dXNlcklk');
+    'ZEJ5dXNlcklkEhwKCWlzRGVsZXRlZBgIIAEoCFIJaXNEZWxldGVkEhwKCWRlbGV0ZWRCeRgJIA'
+    'EoCVIJZGVsZXRlZEJ5Eh4KCnJlc3RvcmVkQnkYCiABKAlSCnJlc3RvcmVkQnk=');
 
 @$core.Deprecated('Use chainsDescriptor instead')
 const Chains$json = {

@@ -11,7 +11,8 @@ import 'dart:io';
 import 'service_call_impl.dart';
 
 void main() async {
-  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  final MongoDbPoolService poolService =
+      TestHelper.poolForDatabase('user_journeys_test');
   await poolService.initialize();
 
   late FenceService fenceService;

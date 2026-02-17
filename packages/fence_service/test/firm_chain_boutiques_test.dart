@@ -1,5 +1,6 @@
 import 'package:fence_service/mongo_pool.dart';
 import 'package:protos_weebi/data_dummy.dart';
+import 'package:protos_weebi/grpc.dart';
 import 'package:test/test.dart';
 // import 'package:mongo_dart/mongo_dart.dart';
 
@@ -7,15 +8,19 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 
+import 'service_call_impl.dart';
+
 // ? consider doing more stupid mongo cruds
 
 void main() async {
-  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  final MongoDbPoolService poolService =
+      TestHelper.poolForDatabase('firm_chain_boutiques_test');
   await poolService.initialize();
 
   String firmId = '';
   late Chain chain;
   late FenceService fenceService;
+  late ServiceCall _call;
 
   setUpAll(() async {
     fenceService = FenceService(
@@ -23,6 +28,7 @@ void main() async {
       isMock: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
+    _call = ServiceCallTest('');
 
     final db = await poolService.acquire();
 
@@ -98,8 +104,131 @@ void main() async {
         BoutiqueRequest(
             chainId: boutiqueLili.chainId, boutique: boutiqueLili.boutique));
     expect(response.type, StatusResponse_Type.UPDATED);
-    final response2 = await fenceService.readAllChains(null, Empty());
-    expect(response2.chains.first.boutiques.first.boutique.name,
+    // Exercises readAllChains and readAllBoutiques (filterActiveChains/filterActiveBoutiques)
+    final chainsResponse = await fenceService.readAllChains(null, Empty());
+    expect(chainsResponse.chains.first.boutiques.first.boutique.name,
         'Lili boutique test');
+    final boutiquesResponse =
+        await fenceService.readAllBoutiques(null, Empty());
+    expect(boutiquesResponse.boutiques, isNotEmpty);
+    final liliBoutiques = boutiquesResponse.boutiques
+        .where((b) => b.name == 'Lili boutique test')
+        .toList();
+    expect(liliBoutiques.length, 1);
+    expect(liliBoutiques.first.name, 'Lili boutique test');
+  });
+
+  group('boutique soft deletion', () {
+    test('deleteOneBoutique soft-deletes: boutique excluded from readAllBoutiques',
+        () async {
+      final boutique = chain.boutiques.first;
+      final response = await fenceService.deleteOneBoutique(
+          _call,
+          BoutiqueRequest(
+              chainId: boutique.chainId, boutique: boutique.boutique));
+      expect(response.type, StatusResponse_Type.DELETED);
+
+      // readAllBoutiques filters out soft-deleted
+      final boutiquesResponse =
+          await fenceService.readAllBoutiques(null, Empty());
+      final deletedBoutiques = boutiquesResponse.boutiques
+          .where((b) => b.boutiqueId == boutique.boutiqueId)
+          .toList();
+      expect(deletedBoutiques, isEmpty);
+    });
+
+    test('readOneBoutique throws notFound for soft-deleted boutique', () async {
+      final boutique = chain.boutiques.first;
+      try {
+        await fenceService.readOneBoutique(
+            _call,
+            BoutiqueRequest(
+                chainId: boutique.chainId, boutique: boutique.boutique));
+        fail('Expected GrpcError.notFound');
+      } on GrpcError catch (e) {
+        expect(e.message, contains('has been deleted'));
+      }
+    });
+
+    test('deleteOneBoutique on already-deleted throws failedPrecondition',
+        () async {
+      final boutique = chain.boutiques.first;
+      try {
+        await fenceService.deleteOneBoutique(
+            _call,
+            BoutiqueRequest(
+                chainId: boutique.chainId, boutique: boutique.boutique));
+        fail('Expected GrpcError.failedPrecondition');
+      } on GrpcError catch (e) {
+        expect(e.message, contains('already deleted'));
+      }
+    });
+
+    test('restoreOneBoutique brings boutique back', () async {
+      final boutique = chain.boutiques.first;
+      final response = await fenceService.restoreOneBoutique(
+          _call,
+          BoutiqueRequest(
+              chainId: boutique.chainId, boutique: boutique.boutique));
+      expect(response.type, StatusResponse_Type.UPDATED);
+
+      // readAllBoutiques now includes it
+      final boutiquesResponse =
+          await fenceService.readAllBoutiques(null, Empty());
+      final restoredBoutiques = boutiquesResponse.boutiques
+          .where((b) => b.boutiqueId == boutique.boutiqueId)
+          .toList();
+      expect(restoredBoutiques.length, 1);
+
+      // readOneBoutique works
+      final readResponse = await fenceService.readOneBoutique(
+          _call,
+          BoutiqueRequest(
+              chainId: boutique.chainId, boutique: boutique.boutique));
+      expect(readResponse.boutique.boutiqueId, boutique.boutiqueId);
+    });
+  });
+
+  group('chain deletion edge cases', () {
+    test('deleteOneChain fails when chain has active boutiques', () async {
+      try {
+        await fenceService.deleteOneChain(
+            _call, ChainRequest(chainId: chain.chainId));
+        fail('Expected GrpcError.failedPrecondition');
+      } on GrpcError catch (e) {
+        expect(e.message, contains('has active boutiques'));
+      }
+    });
+
+    test('deleteOneChain succeeds when all boutiques are soft-deleted',
+        () async {
+      // Soft-delete the only boutique
+      final boutique = chain.boutiques.first;
+      await fenceService.deleteOneBoutique(
+          _call,
+          BoutiqueRequest(
+              chainId: boutique.chainId, boutique: boutique.boutique));
+
+      final response =
+          await fenceService.deleteOneChain(_call, ChainRequest(chainId: chain.chainId));
+      expect(response.type, StatusResponse_Type.DELETED);
+
+      // Chain is gone from readAllChains
+      final chainsResponse = await fenceService.readAllChains(null, Empty());
+      expect(
+          chainsResponse.chains.where((c) => c.chainId == chain.chainId),
+          isEmpty);
+    });
+
+    test('deleteOneChain with chainId==firmId throws invalidArgument', () async {
+      // First chain (chainId == firmId) cannot be deleted regardless of DB state
+      try {
+        await fenceService.deleteOneChain(
+            _call, ChainRequest(chainId: firmId));
+        fail('Expected GrpcError.invalidArgument');
+      } on GrpcError catch (e) {
+        expect(e.message, contains('first chain should not be deleted'));
+      }
+    });
   });
 }

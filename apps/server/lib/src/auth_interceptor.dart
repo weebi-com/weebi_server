@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
+import 'package:fence_service/logging.dart';
 
 /// Returns true if the call should bypass auth (public RPCs).
 bool _isPublicRpc(String? path, String methodName) {
@@ -32,8 +33,9 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
   if (_isPublicRpc(path, method.name)) {
     return null; // allow public RPC calls (no auth required)
   }
+  final authLogger = WeebiLogger.forService('AuthInterceptor');
   if (path == null || path.isEmpty) {
-    print('authInterceptor path null/empty, method=${method.name}');
+    authLogger.warning('Auth: path null/empty', extra: {'rpcMethod': method.name});
   }
   // ! below stupid idea -> security risk
   //if (call.clientMetadata![':path']!.toLowerCase().contains('createdevice')) {
@@ -53,11 +55,18 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
           'jwt.verify() == false, wrong/expired token ?');
     }
     if (jwt.sub.isEmpty) {
-      print('jwt.sub.isEmpty');
+      authLogger.warning('Auth: JWT sub empty', extra: {'rpcMethod': method.name});
     }
     return null; // authenticated by signed JWT
   } on GrpcError catch (e) {
-    print('authInterceptor error $e');
+    authLogger.warning(
+      'Auth failed: ${e.message ?? "unknown"}',
+      extra: {
+        'rpcMethod': method.name,
+        'path': path ?? '',
+        'grpcCode': e.code.toString(),
+      },
+    );
     rethrow;
   }
 }
