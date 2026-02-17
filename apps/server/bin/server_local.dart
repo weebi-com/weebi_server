@@ -34,8 +34,8 @@ void main(List<String> arguments) async {
   await poolService.initialize();
 
   final interceptors = [
-    loggingInterceptor,
     authInterceptor,
+    loggingInterceptor,
   ];
 
   final articleService = ArticleService(poolService);

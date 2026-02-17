@@ -17,6 +17,23 @@ class WeebiLogger {
     return WeebiLogger._(logger);
   }
 
+  /// Returns a logger that automatically includes userId/firmId from [call]
+  /// in every log. Use at the start of an RPC handler to avoid passing call
+  /// to each _logger call.
+  ///
+  /// Example:
+  /// ```dart
+  /// Future<Firm> readOneFirm(ServiceCall? call, Empty request) async {
+  ///   final log = _logger.withContext(call);
+  ///   log.info('Reading firm');  // automatically includes userId, firmId
+  ///   log.error('Failed', error: e);  // same
+  ///   ...
+  /// }
+  /// ```
+  WeebiLoggerWithContext withContext(ServiceCall? call) {
+    return WeebiLoggerWithContext(this, call);
+  }
+
   /// Initialize logging with JSON formatter for Cloud Run
   static void initialize({Level level = Level.INFO}) {
     Logger.root.level = level;
@@ -308,5 +325,45 @@ class WeebiLogger {
     final messageWithData = _buildMessage('RPC error: $methodName', logData.isEmpty ? null : logData);
     _logger.severe(messageWithData, error, stackTrace);
   }
+}
+
+/// Logger with context bound to a specific ServiceCall.
+/// All logs automatically include userId/firmId. Use [WeebiLogger.withContext].
+class WeebiLoggerWithContext {
+  final WeebiLogger _logger;
+  final ServiceCall? _call;
+
+  WeebiLoggerWithContext(this._logger, this._call);
+
+  void info(String message, {Map<String, dynamic>? extra}) =>
+      _logger.info(message, call: _call, extra: extra);
+
+  void warning(String message, {Map<String, dynamic>? extra}) =>
+      _logger.warning(message, call: _call, extra: extra);
+
+  void error(String message, {
+    Object? error,
+    StackTrace? stackTrace,
+    Map<String, dynamic>? extra,
+  }) =>
+      _logger.error(message, call: _call, error: error, stackTrace: stackTrace, extra: extra);
+
+  void debug(String message, {Map<String, dynamic>? extra}) =>
+      _logger.debug(message, call: _call, extra: extra);
+
+  void logRpcEntry(String methodName, {Map<String, dynamic>? requestData}) =>
+      _logger.logRpcEntry(methodName, _call, requestData: requestData);
+
+  void logRpcExit(String methodName, {Map<String, dynamic>? resultData}) =>
+      _logger.logRpcExit(methodName, _call, resultData: resultData);
+
+  void logRpcError(
+    String methodName,
+    Object error, {
+    StackTrace? stackTrace,
+    Map<String, dynamic>? extra,
+  }) =>
+      _logger.logRpcError(methodName, _call, error,
+          stackTrace: stackTrace, extra: extra);
 }
 

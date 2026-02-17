@@ -17,8 +17,8 @@ void main(List<String> args) async {
   });
 
   final interceptors = <Interceptor>[
-    loggingInterceptor,
     authInterceptor,
+    loggingInterceptor,
   ];
 
   final MongoDbPoolService poolService = TestHelper.defaultPoolService;
