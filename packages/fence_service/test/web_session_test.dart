@@ -10,7 +10,8 @@ import 'service_call_impl.dart';
 const _webSessionsCollection = 'web_sessions';
 
 void main() async {
-  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  final MongoDbPoolService poolService =
+      TestHelper.poolForDatabase('web_session_test');
   await poolService.initialize();
   late FenceService fenceService;
 

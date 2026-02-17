@@ -7,7 +7,8 @@ import 'package:fence_service/models_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 
 void main() async {
-  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  final MongoDbPoolService poolService =
+      TestHelper.poolForDatabase('contact_service_test');
   await poolService.initialize();
 
   final chainId = Dummy.chain.chainId;

@@ -15,10 +15,10 @@ final _channel = ClientChannel(
   options: _channelOptions, // pass the channelOptions above.
 );
 
-void main() {
-  final poolService = TestHelper.defaultPoolService;
+void main() async {
+  final poolService = TestHelper.poolForDatabase('auth_test');
+  await poolService.initialize();
   setUpAll(() async {
-
     final db = await poolService.acquire();
     final userCollection = db.collection('user');
     await userCollection.insertOne({

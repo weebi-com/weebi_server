@@ -25,6 +25,9 @@ class Chain extends $pb.GeneratedMessage {
     $18.Timestamp? creationDateUTC,
     $18.Timestamp? lastUpdateTimestampUTC,
     $core.String? lastUpdatedByuserId,
+    $core.bool? isDeleted,
+    $core.String? deletedBy,
+    $core.String? restoredBy,
   }) {
     final result = create();
     if (chainId != null) {
@@ -48,6 +51,15 @@ class Chain extends $pb.GeneratedMessage {
     if (lastUpdatedByuserId != null) {
       result.lastUpdatedByuserId = lastUpdatedByuserId;
     }
+    if (isDeleted != null) {
+      result.isDeleted = isDeleted;
+    }
+    if (deletedBy != null) {
+      result.deletedBy = deletedBy;
+    }
+    if (restoredBy != null) {
+      result.restoredBy = restoredBy;
+    }
     return result;
   }
   Chain._() : super();
@@ -62,6 +74,9 @@ class Chain extends $pb.GeneratedMessage {
     ..aOM<$18.Timestamp>(5, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $18.Timestamp.create)
     ..aOM<$18.Timestamp>(6, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $18.Timestamp.create)
     ..aOS(7, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
+    ..aOB(8, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
+    ..aOS(9, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
+    ..aOS(10, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
     ..hasRequiredFields = false
   ;
 
@@ -146,6 +161,33 @@ class Chain extends $pb.GeneratedMessage {
   $core.bool hasLastUpdatedByuserId() => $_has(6);
   @$pb.TagNumber(7)
   void clearLastUpdatedByuserId() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.bool get isDeleted => $_getBF(7);
+  @$pb.TagNumber(8)
+  set isDeleted($core.bool v) { $_setBool(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasIsDeleted() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearIsDeleted() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get deletedBy => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set deletedBy($core.String v) { $_setString(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasDeletedBy() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearDeletedBy() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.String get restoredBy => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set restoredBy($core.String v) { $_setString(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasRestoredBy() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearRestoredBy() => clearField(10);
 }
 
 class Chains extends $pb.GeneratedMessage {

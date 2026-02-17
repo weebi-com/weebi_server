@@ -10,7 +10,8 @@ import 'package:protos_weebi/protos_weebi_io.dart';
 import 'service_call_impl.dart';
 
 void main() async {
-  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  final MongoDbPoolService poolService =
+      TestHelper.poolForDatabase('enrol_device_test');
   await poolService.initialize();
   late FenceService fenceService;
 

@@ -10,7 +10,8 @@ import 'package:fence_service/mongo_local_testing.dart';
 // ? consider doing more stupid mongo cruds
 
 void main() async {
-  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  final MongoDbPoolService poolService =
+      TestHelper.poolForDatabase('firm_chain_boutiques_test');
   await poolService.initialize();
 
   String firmId = '';
@@ -98,8 +99,17 @@ void main() async {
         BoutiqueRequest(
             chainId: boutiqueLili.chainId, boutique: boutiqueLili.boutique));
     expect(response.type, StatusResponse_Type.UPDATED);
-    final response2 = await fenceService.readAllChains(null, Empty());
-    expect(response2.chains.first.boutiques.first.boutique.name,
+    // Exercises readAllChains and readAllBoutiques (filterActiveChains/filterActiveBoutiques)
+    final chainsResponse = await fenceService.readAllChains(null, Empty());
+    expect(chainsResponse.chains.first.boutiques.first.boutique.name,
         'Lili boutique test');
+    final boutiquesResponse =
+        await fenceService.readAllBoutiques(null, Empty());
+    expect(boutiquesResponse.boutiques, isNotEmpty);
+    final liliBoutiques = boutiquesResponse.boutiques
+        .where((b) => b.name == 'Lili boutique test')
+        .toList();
+    expect(liliBoutiques.length, 1);
+    expect(liliBoutiques.first.name, 'Lili boutique test');
   });
 }

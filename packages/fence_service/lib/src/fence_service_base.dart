@@ -1490,46 +1490,71 @@ class FenceService extends FenceServiceBase {
     });
   }
 
-/// filter out soft-deleted boutiques
-/// if no chains are found, return empty list
-  Future<List<Chain>> _checkChainsAndProtoThem(
-      UserPermissions userPermissions) async {
-    return databaseMiddleware<List<Chain>>(_poolService, (db) async {
+  /// Reads chain documents from DB. No filtering.
+  Future<List<Map<String, dynamic>>> _readChainsMongoFromDb(String firmId) async {
+    return databaseMiddleware<List<Map<String, dynamic>>>(_poolService,
+        (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
-
-      try {
-        final chainsMongo = await boutiqueCollection
-            .find(where.eq('firmId', userPermissions.firmId))
-            .toList();
-        if (chainsMongo.isEmpty) {
-          return [];
-        }
-        final chains = <Chain>[];
-        for (final chainMongo in chainsMongo) {
-          final chainTemp = Chain.create()
-            ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
-
-          // Filter out soft-deleted boutiques and create new chain
-          final activeBoutiques =
-              chainTemp.boutiques.where((b) => !b.isDeleted).toList();
-
-          final chain = Chain.create()
-            ..chainId = chainTemp.chainId
-            ..firmId = chainTemp.firmId
-            ..name = chainTemp.name
-            ..lastUpdateTimestampUTC = chainTemp.lastUpdateTimestampUTC
-            ..lastUpdatedByuserId = chainTemp.lastUpdatedByuserId
-            ..creationDateUTC = chainTemp.creationDateUTC
-            ..boutiques.addAll(activeBoutiques);
-
-          chains.add(chain);
-        }
-        return chains;
-      } on GrpcError catch (e) {
-        print('_findChainsAndProtoThem $e');
-        rethrow;
-      }
+      final chainsMongo =
+          await boutiqueCollection.find(where.eq('firmId', firmId)).toList();
+      return chainsMongo.cast<Map<String, dynamic>>();
     });
+  }
+
+  /// Single place for protoing chains. [filterActiveBoutiques] and [filterActiveChains]
+  /// control whether soft-deleted boutiques/chains are excluded.
+  List<Chain> _chainsMongoToChainsProto(
+    List<Map<String, dynamic>> chainsMongo, {
+    bool filterActiveBoutiques = false,
+    bool filterActiveChains = false,
+  }) {
+    if (chainsMongo.isEmpty) {
+      return [];
+    }
+    final chains = <Chain>[];
+    for (final chainMongo in chainsMongo) {
+      final chainTemp = Chain.create()
+        ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
+
+      if (filterActiveChains && chainTemp.isDeleted) continue;
+
+      final boutiques = filterActiveBoutiques
+          ? chainTemp.boutiques.where((b) => !b.isDeleted).toList()
+          : chainTemp.boutiques;
+
+      final chain = Chain.create()
+        ..chainId = chainTemp.chainId
+        ..firmId = chainTemp.firmId
+        ..name = chainTemp.name
+        ..lastUpdateTimestampUTC = chainTemp.lastUpdateTimestampUTC
+        ..lastUpdatedByuserId = chainTemp.lastUpdatedByuserId
+        ..creationDateUTC = chainTemp.creationDateUTC
+        ..boutiques.addAll(boutiques)
+        ..isDeleted = chainTemp.isDeleted
+        ..deletedBy = chainTemp.deletedBy
+        ..restoredBy = chainTemp.restoredBy;
+
+      chains.add(chain);
+    }
+    return chains;
+  }
+
+  /// Returns all chains with all boutiques (no filtering).
+  Future<List<Chain>> _readAllChainsAndProtoThem(
+      UserPermissions userPermissions) async {
+    final chainsMongo =
+        await _readChainsMongoFromDb(userPermissions.firmId);
+    return _chainsMongoToChainsProto(chainsMongo,
+        filterActiveBoutiques: false, filterActiveChains: false);
+  }
+
+  /// Returns only active chains and active boutiques (filters out soft-deleted).
+  Future<List<Chain>> _readActiveChainsAndActiveBoutiquesAndProtoThem(
+      UserPermissions userPermissions) async {
+    final chainsMongo =
+        await _readChainsMongoFromDb(userPermissions.firmId);
+    return _chainsMongoToChainsProto(chainsMongo,
+        filterActiveBoutiques: true, filterActiveChains: true);
   }
 
   /// if no match whith firmId and chainId throws GrpcError.notFound
@@ -1554,7 +1579,7 @@ class FenceService extends FenceServiceBase {
   }
 
   // Future<List<String>> _readAllBoutiquesInChain(UserPrivate user) async {
-  //   final chains = await _checkChainsAndProtoThem(user.permissions);
+  //   final chains = await _readActiveChainsAndActiveBoutiquesAndProtoThem(user.permissions);
   //   final boutiques = <Boutique>[];
   //   for (final requestchainId in user.permissions.limitedAccess.chainIds.ids) {
   //     for (final chain in chains) {
@@ -2215,9 +2240,20 @@ class FenceService extends FenceServiceBase {
           'user does not have right to read chain');
     }
 
-    final chains = await _checkChainsAndProtoThem(userPermission);
-    log.logRpcExit('readAllChains', resultData: {'chainCount': chains.length});
-    return ReadAllChainsResponse(chains: chains);
+    try {
+      final chains = await _readAllChainsAndProtoThem(userPermission);
+      log.logRpcExit('readAllChains', resultData: {'chainCount': chains.length});
+      return ReadAllChainsResponse(chains: chains);
+    } on GrpcError catch (e) {
+      log.logRpcError('readAllChains', e);
+      rethrow;
+    } on MongoDartError catch (e) {
+      log.logRpcError('readAllChains', e, extra: {'errorType': 'MongoDartError'});
+      rethrow;
+    } catch (e, st) {
+      log.logRpcError('readAllChains', e, stackTrace: st);
+      rethrow;
+    }
   }
 
   @override
@@ -2235,20 +2271,33 @@ class FenceService extends FenceServiceBase {
           'user does not have right to read boutiques');
     }
 
-    // Get all chains (this already filters out deleted boutiques)
-    final chains = await _checkChainsAndProtoThem(userPermission);
+    try {
+      // Get chains with active boutiques only (as is today)
+      final chains =
+          await _readActiveChainsAndActiveBoutiquesAndProtoThem(userPermission);
 
-    // Extract BoutiquePb from each boutique (following readOneBoutique pattern)
-    final allBoutiques = <BoutiquePb>[];
-    for (final chain in chains) {
-      for (final boutique in chain.boutiques) {
-        allBoutiques.add(boutique.boutique);
+      // Extract BoutiquePb from each boutique (following readOneBoutique pattern)
+      final allBoutiques = <BoutiquePb>[];
+      for (final chain in chains) {
+        for (final boutique in chain.boutiques) {
+          allBoutiques.add(boutique.boutique);
+        }
       }
-    }
 
-    log.logRpcExit('readAllBoutiques',
-        resultData: {'boutiqueCount': allBoutiques.length});
-    return ReadAllBoutiquesResponse(boutiques: allBoutiques);
+      log.logRpcExit('readAllBoutiques',
+          resultData: {'boutiqueCount': allBoutiques.length});
+      return ReadAllBoutiquesResponse(boutiques: allBoutiques);
+    } on GrpcError catch (e) {
+      log.logRpcError('readAllBoutiques', e);
+      rethrow;
+    } on MongoDartError catch (e) {
+      log.logRpcError('readAllBoutiques', e,
+          extra: {'errorType': 'MongoDartError'});
+      rethrow;
+    } catch (e, st) {
+      log.logRpcError('readAllBoutiques', e, stackTrace: st);
+      rethrow;
+    }
   }
 
   @override

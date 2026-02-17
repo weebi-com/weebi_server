@@ -8,7 +8,8 @@ import 'package:fence_service/mongo_local_testing.dart';
 import 'package:ticket_service/ticket_service.dart';
 
 void main() async {
-  final MongoDbPoolService poolService = TestHelper.defaultPoolService;
+  final MongoDbPoolService poolService =
+      TestHelper.poolForDatabase('ticket_service_test');
 
   await poolService.initialize();
 
