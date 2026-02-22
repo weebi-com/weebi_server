@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:io';
 import 'dart:convert';
+import 'package:models_weebi/utils.dart' show RegExpWeebi;
 import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:http/http.dart' as http;
 
@@ -240,7 +241,7 @@ class FenceService extends FenceServiceBase {
           'you do not have right to create other users');
     }
 
-    final user = await _isMailAlreadyUsed(request.mail);
+    final user = await _isMailAlreadyUsed(mailChecked);
     if (user.userId.isNotEmpty) {
       // Always reject if email exists - force admin to use different email or contact user
       throw GrpcError.invalidArgument('mail ${request.mail} is alreadyUsed');
@@ -637,14 +638,20 @@ class FenceService extends FenceServiceBase {
   String _checkMail(String mail) {
     if (mail.isEmpty) {
       throw GrpcError.invalidArgument('mail isEmpty');
-    } else if (RegExp(
-          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-        ).hasMatch(mail.trim()) ==
-        false) {
+    }
+    final trimmed = mail.trim();
+    if (RegExpWeebi.mailFormat.hasMatch(trimmed) == false) {
       throw GrpcError.invalidArgument('incorrect mail format');
     }
-    return mail;
+    return trimmed;
   }
+
+  /// Case-insensitive mail lookup (emails are not case-sensitive per RFC 5321)
+  _selectByMail(String mail) => where.match(
+        'mail',
+        r'^' + RegExp.escape(mail.trim()) + r'$',
+        caseInsensitive: true,
+      );
 
   String _checkAndEncryptPassword(String password) {
     if (password.isEmpty || password.length < 3) {
@@ -719,9 +726,7 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, MailAndEncyptedPassword request) async {
     return databaseMiddleware<PermissionAndSillyBoolean>(_poolService,
         (db) async {
-      final selector = where
-          .match('mail', r'^' + request.mail.trim() + r'$',
-              caseInsensitive: true)
+      final selector = _selectByMail(request.mail)
           .eq('password', request.passwordEncrypted);
       try {
         final userPrivateMongo =
@@ -1491,7 +1496,8 @@ class FenceService extends FenceServiceBase {
   }
 
   /// Reads chain documents from DB. No filtering.
-  Future<List<Map<String, dynamic>>> _readChainsMongoFromDb(String firmId) async {
+  Future<List<Map<String, dynamic>>> _readChainsMongoFromDb(
+      String firmId) async {
     return databaseMiddleware<List<Map<String, dynamic>>>(_poolService,
         (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
@@ -1542,8 +1548,7 @@ class FenceService extends FenceServiceBase {
   /// Returns all chains with all boutiques (no filtering).
   Future<List<Chain>> _readAllChainsAndProtoThem(
       UserPermissions userPermissions) async {
-    final chainsMongo =
-        await _readChainsMongoFromDb(userPermissions.firmId);
+    final chainsMongo = await _readChainsMongoFromDb(userPermissions.firmId);
     return _chainsMongoToChainsProto(chainsMongo,
         filterActiveBoutiques: false, filterActiveChains: false);
   }
@@ -1551,8 +1556,7 @@ class FenceService extends FenceServiceBase {
   /// Returns only active chains and active boutiques (filters out soft-deleted).
   Future<List<Chain>> _readActiveChainsAndActiveBoutiquesAndProtoThem(
       UserPermissions userPermissions) async {
-    final chainsMongo =
-        await _readChainsMongoFromDb(userPermissions.firmId);
+    final chainsMongo = await _readChainsMongoFromDb(userPermissions.firmId);
     return _chainsMongoToChainsProto(chainsMongo,
         filterActiveBoutiques: true, filterActiveChains: true);
   }
@@ -2063,7 +2067,7 @@ class FenceService extends FenceServiceBase {
           userId: userId,
           permissions: permissions,
           passwordEncrypted: mailAndEncyptedPassword.passwordEncrypted,
-          mail: request.mail,
+          mail: mailAndEncyptedPassword.mail,
           firstname: request.firstname,
           lastname: request.lastname,
           mustChangePassword: false,
@@ -2179,7 +2183,8 @@ class FenceService extends FenceServiceBase {
     return databaseMiddleware<UserPublic>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
       try {
-        final userMap = await userCollection.findOne(where.eq('mail', mail));
+        final userMap =
+            await userCollection.findOne(_selectByMail(mail));
         if (userMap != null) {
           return UserPublic.create()
             ..mergeFromProto3Json(userMap, ignoreUnknownFields: true);
@@ -2245,13 +2250,15 @@ class FenceService extends FenceServiceBase {
 
     try {
       final chains = await _readAllChainsAndProtoThem(userPermission);
-      log.logRpcExit('readAllChains', resultData: {'chainCount': chains.length});
+      log.logRpcExit('readAllChains',
+          resultData: {'chainCount': chains.length});
       return ReadAllChainsResponse(chains: chains);
     } on GrpcError catch (e) {
       log.logRpcError('readAllChains', e);
       rethrow;
     } on MongoDartError catch (e) {
-      log.logRpcError('readAllChains', e, extra: {'errorType': 'MongoDartError'});
+      log.logRpcError('readAllChains', e,
+          extra: {'errorType': 'MongoDartError'});
       rethrow;
     } catch (e, st) {
       log.logRpcError('readAllChains', e, stackTrace: st);
@@ -2877,7 +2884,7 @@ class FenceService extends FenceServiceBase {
 
       try {
         final userMongo =
-            await userCollection.findOne(where.eq('mail', request.mail));
+            await userCollection.findOne(_selectByMail(request.mail));
 
         if (userMongo == null) {
           // Don't reveal if email exists or not (security best practice)
@@ -2927,14 +2934,14 @@ class FenceService extends FenceServiceBase {
 
       try {
         final userMongo =
-            await userCollection.findOne(where.eq('mail', request.mail));
+            await userCollection.findOne(_selectByMail(request.mail));
 
         if (userMongo == null) {
           throw GrpcError.notFound('user with mail ${request.mail} not found');
         }
 
         await userCollection.update(
-            where.eq('mail', request.mail),
+            _selectByMail(request.mail),
             ModifierBuilder()
                 .set('password', passwordNewEncrypted)
                 .set('mustChangePassword', false));
@@ -2978,7 +2985,7 @@ class FenceService extends FenceServiceBase {
         // Otherwise, look up by email (weebi_server guarantees unique email per user)
         final userMongo = request.userId.isNotEmpty
             ? await userCollection.findOne(where.eq('userId', request.userId))
-            : await userCollection.findOne(where.eq('mail', request.mail));
+            : await userCollection.findOne(_selectByMail(request.mail));
 
         if (userMongo == null) {
           final identifier = request.userId.isNotEmpty
@@ -2987,8 +2994,11 @@ class FenceService extends FenceServiceBase {
           throw GrpcError.notFound('user with $identifier not found');
         }
 
-        // Verify email matches if userId was provided (safety check)
-        if (request.userId.isNotEmpty && userMongo['mail'] != request.mail) {
+        // Verify email matches if userId was provided (safety check, case-insensitive)
+        if (request.userId.isNotEmpty &&
+            (userMongo['mail'] as String?)
+                    ?.toLowerCase() !=
+                request.mail.trim().toLowerCase()) {
           log.warning('Email mismatch when updating subscriberId', extra: {
             'providedUserId': request.userId,
             'providedMail': request.mail,
@@ -3039,7 +3049,7 @@ class FenceService extends FenceServiceBase {
         // Otherwise, look up by email (weebi_server guarantees unique email per user)
         final userMongo = request.userId.isNotEmpty
             ? await userCollection.findOne(where.eq('userId', request.userId))
-            : await userCollection.findOne(where.eq('mail', request.mail));
+            : await userCollection.findOne(_selectByMail(request.mail));
 
         if (userMongo == null) {
           final identifier = request.userId.isNotEmpty
@@ -3048,8 +3058,11 @@ class FenceService extends FenceServiceBase {
           throw GrpcError.notFound('user with $identifier not found');
         }
 
-        // Verify email matches if userId was provided (safety check)
-        if (request.userId.isNotEmpty && userMongo['mail'] != request.mail) {
+        // Verify email matches if userId was provided (safety check, case-insensitive)
+        if (request.userId.isNotEmpty &&
+            (userMongo['mail'] as String?)
+                    ?.toLowerCase() !=
+                request.mail.trim().toLowerCase()) {
           log.warning('Email mismatch when marking email as verified', extra: {
             'providedUserId': request.userId,
             'providedMail': request.mail,
