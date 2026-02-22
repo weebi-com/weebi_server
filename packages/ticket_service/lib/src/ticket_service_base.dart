@@ -32,13 +32,14 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, TicketRequest request) async {
-    _logger.logRpcEntry('createOne', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createOne', requestData: {
       'firmId': request.ticket.counterfoil.firmId,
       'chainId': request.ticket.counterfoil.chainId,
       'boutiqueId': request.ticket.counterfoil.boutiqueId,
       'nonUniqueId': request.ticket.nonUniqueId,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -85,7 +86,7 @@ class TicketService extends TicketServiceBase {
         if (result.success && result.document != null) {
           final ticketNonUniqueId = result.document!['nonUniqueId'] as int;
 
-          _logger.logRpcExit('createOne', call, resultData: {
+          log.logRpcExit('createOne', resultData: {
             'ticketNonUniqueId': ticketNonUniqueId,
           });
           return StatusResponse.create()
@@ -93,21 +94,21 @@ class TicketService extends TicketServiceBase {
             ..id = ticketNonUniqueId.toString()
             ..timestamp = DateTime.now().timestampProto;
         } else {
-          _logger.warning('createOne failed: result.ok != 1 || result.document == null', call: call);
+          log.warning('createOne failed: result.ok != 1 || result.document == null');
           return StatusResponse.create()
             ..type = StatusResponse_Type.ERROR
             ..message = 'result.ok != 1 || result.document == null'
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        _logger.logRpcError('createOne', call, e, extra: {
+        log.logRpcError('createOne', e, extra: {
           'firmId': userPermission.firmId,
           'boutiqueId': request.ticket.counterfoil.boutiqueId,
           'nonUniqueId': request.ticket.nonUniqueId,
         });
         rethrow;
       } catch (e, stacktrace) {
-        _logger.error('createOne unexpected error', call: call, error: e, stackTrace: stacktrace, extra: {
+        log.logRpcError('createOne', e, stackTrace: stacktrace, extra: {
           'firmId': userPermission.firmId,
           'boutiqueId': request.ticket.counterfoil.boutiqueId,
         });
@@ -119,12 +120,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<TicketsResponse> readAll(
       ServiceCall? call, ReadAllTicketsRequest request) async {
-    _logger.logRpcEntry('readAll', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readAll', requestData: {
       'chainId': request.chainId,
       'boutiqueId': request.boutiqueId,
       'isDeleted': request.isDeleted,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -148,7 +150,7 @@ class TicketService extends TicketServiceBase {
       isOneBoutiqueFilter = true;
     }
 
-    _logger.debug('readTickets', call: call, extra: {
+    log.debug('readTickets', extra: {
       'firmId': userPermission.firmId,
       'chainId': request.chainId,
       'isOneBoutiqueFilter': isOneBoutiqueFilter,
@@ -194,12 +196,12 @@ class TicketService extends TicketServiceBase {
         ticketsBis.tickets
           ..clear()
           ..addAll(tickets);
-        _logger.logRpcExit('readAll', call, resultData: {
+        log.logRpcExit('readAll', resultData: {
           'ticketCount': tickets.length,
         });
         return ticketsBis;
       } on GrpcError catch (e) {
-        _logger.logRpcError('readAll', call, e, extra: {
+        log.logRpcError('readAll', e, extra: {
           'chainId': request.chainId,
           'boutiqueId': request.boutiqueId,
         });
@@ -210,12 +212,13 @@ class TicketService extends TicketServiceBase {
 
   @override
   Future<TicketPb> readOne(ServiceCall? call, FindTicketRequest request) async {
-    _logger.logRpcEntry('readOne', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readOne', requestData: {
       'ticketChainId': request.ticketChainId,
       'ticketBoutiqueId': request.ticketBoutiqueId,
       'nonUniqueId': request.nonUniqueId,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -257,10 +260,10 @@ class TicketService extends TicketServiceBase {
         }
         final ticketMongo = TicketMongo.create()
           ..mergeFromProto3Json(ticket, ignoreUnknownFields: true);
-        _logger.logRpcExit('readOne', call);
+        log.logRpcExit('readOne');
         return ticketMongo.ticket;
       } on GrpcError catch (e) {
-        _logger.logRpcError('readOne', call, e, extra: {
+        log.logRpcError('readOne', e, extra: {
           'ticketChainId': request.ticketChainId,
           'nonUniqueId': request.nonUniqueId,
         });
@@ -272,12 +275,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> updateStatusOne(
       ServiceCall? call, TicketRequest request) async {
-    _logger.logRpcEntry('updateStatusOne', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('updateStatusOne', requestData: {
       'firmId': request.ticket.counterfoil.firmId,
       'boutiqueId': request.ticket.counterfoil.boutiqueId,
       'nonUniqueId': request.ticket.nonUniqueId,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -324,26 +328,26 @@ class TicketService extends TicketServiceBase {
               'hasWriteErrors ${result.writeError!.errmsg}');
         }
         if (result.success) {
-          _logger.logRpcExit('updateStatusOne', call);
+          log.logRpcExit('updateStatusOne');
           return StatusResponse.create()
             ..type = StatusResponse_Type.UPDATED
             // ..id= mongoid
             ..timestamp = DateTime.now().timestampProto;
         } else {
-          _logger.warning('updateStatusOne failed: result.ok != 1', call: call);
+          log.warning('updateStatusOne failed: result.ok != 1');
           return StatusResponse.create()
             ..type = StatusResponse_Type.ERROR
             ..message = 'result.ok != 1 || result.document == null'
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        _logger.logRpcError('updateStatusOne', call, e, extra: {
+        log.logRpcError('updateStatusOne', e, extra: {
           'firmId': request.ticket.counterfoil.firmId,
           'boutiqueId': request.ticket.counterfoil.boutiqueId,
         });
         rethrow;
       } catch (e, stacktrace) {
-        _logger.error('updateStatusOne unexpected error', call: call, error: e, stackTrace: stacktrace, extra: {
+        log.logRpcError('updateStatusOne', e, stackTrace: stacktrace, extra: {
           'firmId': request.ticket.counterfoil.firmId,
         });
         throw GrpcError.unknown('$e');
@@ -354,12 +358,13 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, TicketRequest request) async {
-    _logger.logRpcEntry('deleteOne', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('deleteOne', requestData: {
       'firmId': request.ticket.counterfoil.firmId,
       'boutiqueId': request.ticket.counterfoil.boutiqueId,
       'nonUniqueId': request.ticket.nonUniqueId,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -400,19 +405,19 @@ class TicketService extends TicketServiceBase {
           throw GrpcError.unknown(
               'hasWriteErrors ${result.writeError!.errmsg}');
         } else if (result.success) {
-          _logger.logRpcExit('deleteOne', call);
+          log.logRpcExit('deleteOne');
           return StatusResponse.create()
             ..type = StatusResponse_Type.DELETED
             ..timestamp = DateTime.now().timestampProto;
         } else {
-          _logger.warning('deleteOne failed: result.ok != 1', call: call);
+          log.warning('deleteOne failed: result.ok != 1');
           return StatusResponse.create()
             ..type = StatusResponse_Type.ERROR
             ..message = 'result.ok != 1 || result.document == null'
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        _logger.logRpcError('deleteOne', call, e, extra: {
+        log.logRpcError('deleteOne', e, extra: {
           'firmId': request.ticket.counterfoil.firmId,
           'boutiqueId': request.ticket.counterfoil.boutiqueId,
         });
@@ -424,10 +429,11 @@ class TicketService extends TicketServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall call, TicketsRequest request) async {
-    _logger.logRpcEntry('createMany', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createMany', requestData: {
       'ticketCount': request.tickets.length,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -488,7 +494,7 @@ class TicketService extends TicketServiceBase {
               'hasWriteErrors ${writeErrorsMessages.join("\n")}');
         }
         if (result.success) {
-          _logger.logRpcExit('createMany', call, resultData: {
+          log.logRpcExit('createMany', resultData: {
             'created': ticketsMap.length,
             'dups': dups,
           });
@@ -498,19 +504,19 @@ class TicketService extends TicketServiceBase {
             ..message =
                 dups > 0 ? 'dups ignored: $dups/${request.tickets.length}' : '';
         } else {
-          _logger.warning('createMany failed: result.failure but no writeErrorsMessages', call: call);
+          log.warning('createMany failed: result.failure but no writeErrorsMessages');
           return StatusResponse.create()
             ..type = StatusResponse_Type.ERROR
             ..message = 'result.failure but no writeErrorsMessages'
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        _logger.logRpcError('createMany', call, e, extra: {
+        log.logRpcError('createMany', e, extra: {
           'ticketCount': request.tickets.length,
         });
         rethrow;
       } catch (e, stacktrace) {
-        _logger.error('createMany unexpected error', call: call, error: e, stackTrace: stacktrace, extra: {
+        log.logRpcError('createMany', e, stackTrace: stacktrace, extra: {
           'ticketCount': request.tickets.length,
         });
         throw GrpcError.unknown('$e');

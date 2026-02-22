@@ -1,3 +1,10 @@
+## 1.0.7 - february 2026
+
+- ForgotPaswword feature is (finally) available
+- The user cannot delete the first chain of stores
+- To delete a chain, all the stores it contains must be deleted
+- The data for a deleted chain of stores is retained for archiving/recovery if needed
+
 ## 1.0.6 - 22 nov 2025
 
 integrate with weebi_express for transactional emails

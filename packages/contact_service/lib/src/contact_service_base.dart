@@ -32,11 +32,12 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, ContactRequest request) async {
-    _logger.logRpcEntry('createOne', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createOne', requestData: {
       'chainId': request.chainId,
       'contactId': request.contact.id,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -90,11 +91,10 @@ class ContactService extends ContactServiceBase {
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        print(e);
+        log.logRpcError('createOne', e);
         rethrow;
       } catch (e, stacktrace) {
-        // the whole stacktrace is heavy
-        print(stacktrace);
+        log.logRpcError('createOne', e, stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
     });
@@ -103,11 +103,12 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> updateOne(
       ServiceCall? call, ContactRequest request) async {
-    _logger.logRpcEntry('updateOne', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('updateOne', requestData: {
       'chainId': request.chainId,
       'contactId': request.contact.id,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -154,11 +155,10 @@ class ContactService extends ContactServiceBase {
           ..type = StatusResponse_Type.UPDATED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        print(e);
+        log.logRpcError('updateOne', e);
         rethrow;
       } catch (e, stacktrace) {
-        // the whole stacktrace is heavy
-        print(stacktrace);
+        log.logRpcError('updateOne', e, stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
     });
@@ -167,11 +167,12 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> deleteOne(
       ServiceCall? call, ContactRequest request) async {
-    _logger.logRpcEntry('deleteOne', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('deleteOne', requestData: {
       'chainId': request.chainId,
       'contactId': request.contact.id,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -200,7 +201,7 @@ class ContactService extends ContactServiceBase {
           ..type = StatusResponse_Type.DELETED
           ..timestamp = DateTime.now().timestampProto;
       } on GrpcError catch (e) {
-        print(e);
+        log.logRpcError('deleteOne', e);
         rethrow;
       }
     });
@@ -209,10 +210,11 @@ class ContactService extends ContactServiceBase {
   @override
   Future<ContactsResponse> readAll(
       ServiceCall? call, ReadAllContactsRequest request) async {
-    _logger.logRpcEntry('readAll', call, requestData: {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readAll', requestData: {
       'chainId': request.chainId,
     });
-    
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -264,7 +266,7 @@ class ContactService extends ContactServiceBase {
           ..addAll(contacts);
         return contactsResponse;
         } on GrpcError catch (e) {
-          _logger.logRpcError('readAll', call, e);
+          log.logRpcError('readAll', e);
           rethrow;
         }
     });
@@ -273,6 +275,7 @@ class ContactService extends ContactServiceBase {
   @override
   Future<ContactsIdsResponse> readAllIds(
       ServiceCall? call, ReadContactsIdsRequest request) async {
+    final log = _logger.withContext(call);
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -302,7 +305,7 @@ class ContactService extends ContactServiceBase {
 
         return ContactsIdsResponse.create()..ids.addAll(idsSet);
         } on GrpcError catch (e) {
-          _logger.logRpcError('readAllIds', call, e);
+          log.logRpcError('readAllIds', e);
           rethrow;
         }
     });
@@ -311,6 +314,12 @@ class ContactService extends ContactServiceBase {
   @override
   Future<ContactPb> readOne(
       ServiceCall? call, ReadContactRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('readOne', requestData: {
+      'chainId': request.contactChainId,
+      'contactId': request.contactId,
+    });
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -374,7 +383,7 @@ class ContactService extends ContactServiceBase {
           return ContactPb.getDefault();
         }
       } on GrpcError catch (e) {
-        print(e);
+        log.logRpcError('readOne', e);
         rethrow;
       }
     });
@@ -383,6 +392,12 @@ class ContactService extends ContactServiceBase {
   @override
   Future<StatusResponse> createMany(
       ServiceCall call, ContactsRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createMany', requestData: {
+      'chainId': request.chainId,
+      'count': request.contacts.length,
+    });
+
     final userPermission = isTest
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
@@ -448,11 +463,10 @@ class ContactService extends ContactServiceBase {
             ..timestamp = DateTime.now().timestampProto;
         }
       } on GrpcError catch (e) {
-        print(e);
+        log.logRpcError('createMany', e);
         rethrow;
       } catch (e, stacktrace) {
-        // the whole stacktrace is heavy
-        print(stacktrace);
+        log.logRpcError('createMany', e, stackTrace: stacktrace);
         throw GrpcError.unknown('$e');
       }
     });

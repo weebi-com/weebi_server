@@ -4,7 +4,8 @@ import 'package:fence_service/mongo_dart.dart';
 
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
-import 'package:fence_service/mongo_local_testing.dart';
+
+import 'views/all_views.dart';
 
 /* For compound indexes, this rule of thumb is helpful in deciding the order of fields in the index:
 
@@ -38,8 +39,11 @@ TODO: also include search index
 ]
 
  */
+
+/// This never run in the server,
+/// to be run manually in the mongo shell
 main() async {
-  final db = await Db.create(TestHelper.local);
+  final db = await Db.create('mongodb+srv://username:password@xxx.yyy.mongodb.net/dbName');
   final isOpened = await db.open();
   print(isOpened);
 
@@ -144,7 +148,7 @@ main() async {
 
   /// for search
   await db.ensureIndex(ContactService.collectionName,
-      name: 'lastName_firstName_phone.number_mail',
+      name: 'lastName_firstName_phone_mail',
       keys: {
         'contact.lastName': -1,
         'contact.firstName': -1,
@@ -190,5 +194,33 @@ main() async {
         'ticket.payment_type': 1
       });
 
+  /// VIEWS
+  /// Create views if they don't exist. MongoDB's create returns success when
+  /// view already exists with same definition (idempotent).
+  for (final view in allViews) {
+    await _ensureView(db, view.name, view.source, view.pipeline);
+  }
+
+  print('finished indexes and views');
+  await db.close();
   return;
+}
+
+/// Creates a view if it doesn't exist. Idempotent: MongoDB returns success
+/// when view already exists with same definition.
+Future<void> _ensureView(Db db, String viewName, String sourceCollection,
+    List<Map<String, dynamic>> pipeline) async {
+  try {
+    await db.runCommand({
+      'create': viewName,
+      'viewOn': sourceCollection,
+      'pipeline': pipeline,
+    });
+    print('View $viewName created or already exists');
+  } catch (e) {
+    // If view exists with different definition, MongoDB throws. Re-throw so
+    // user can manually drop the view and re-run.
+    print('Failed to ensure view $viewName: $e');
+    rethrow;
+  }
 }
