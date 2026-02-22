@@ -1,5 +1,9 @@
 # changelog
 
+## 1.0.18
+
+- export utils - RegExp email
+
 ## 1.0.17
 
 - export crypto
