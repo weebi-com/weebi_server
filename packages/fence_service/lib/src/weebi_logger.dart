@@ -58,18 +58,6 @@ class WeebiLogger {
            'weebi-server';
   }
   
-  /// Get the environment (production, development, etc.)
-  static String get _environment {
-    final env = Platform.environment['ENV'] ?? 
-                Platform.environment['ENVIRONMENT'] ?? 
-                'development';
-    // Normalize to production/development
-    if (env.toLowerCase() == 'prod' || env.toLowerCase() == 'production') {
-      return 'production';
-    }
-    return 'development';
-  }
-
   /// Log to stdout - JSON format for Cloud Run, readable format for local development
   static void _logToCloudRun(LogRecord record) {
     // Parse structured data from message if it contains JSON
@@ -115,9 +103,7 @@ class WeebiLogger {
       'timestamp': record.time.toIso8601String(),
       'logger': record.loggerName,
       'message': message,
-      // Structured fields for easy filtering in GCP Logs Explorer
       'service_name': _serviceName,
-      'environment': _environment,
       if (errorMessage != null) 'error': errorMessage,
       if (stackTrace != null) 'stackTrace': stackTrace,
       if (structuredData != null) ...structuredData,
@@ -160,20 +146,12 @@ class WeebiLogger {
     // Additional structured data (excluding already printed fields)
     final extraData = <String, dynamic>{};
     for (final entry in logData.entries) {
-      if (!['severity', 'timestamp', 'logger', 'message', 'userId', 'firmId', 'rpcMethod'].contains(entry.key)) {
+      if (!['severity', 'timestamp', 'logger', 'message', 'service_name', 'userId', 'firmId', 'rpcMethod'].contains(entry.key)) {
         extraData[entry.key] = entry.value;
       }
     }
     if (extraData.isNotEmpty) {
       print('  └─ ${jsonEncode(extraData)}');
-    }
-    
-    // Error and stack trace
-    if (record.error != null) {
-      print('  └─ Error: ${record.error}');
-    }
-    if (record.stackTrace != null && severity == 'ERROR') {
-      print('  └─ StackTrace:\n${record.stackTrace}');
     }
   }
 
