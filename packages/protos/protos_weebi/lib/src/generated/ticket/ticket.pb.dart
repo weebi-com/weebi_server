@@ -14,9 +14,9 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../article/article.pb.dart' as $3;
-import '../common/g_timestamp.pb.dart' as $18;
+import '../common/g_timestamp.pb.dart' as $19;
 import 'ticket.pbenum.dart';
-import 'ticket_type.pbenum.dart' as $23;
+import 'ticket_type.pbenum.dart' as $25;
 
 export 'ticket.pbenum.dart';
 
@@ -31,7 +31,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     $core.String? firmId,
     $core.String? chainId,
     $core.String? creationDate,
-    $18.Timestamp? lastTouchTimestampUTC,
+    $19.Timestamp? lastTouchTimestampUTC,
     $core.bool? isDeleted,
     $core.int? contactId,
     $core.Map<$core.String, $core.String>? additionalAttributes,
@@ -84,7 +84,7 @@ class TicketMongo extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(6, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(7, _omitFieldNames ? '' : 'creationDate', protoName: 'creationDate')
-    ..aOM<$18.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$19.Timestamp>(8, _omitFieldNames ? '' : 'lastTouchTimestampUTC', protoName: 'lastTouchTimestampUTC', subBuilder: $19.Timestamp.create)
     ..aOB(9, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..a<$core.int>(10, _omitFieldNames ? '' : 'contactId', $pb.PbFieldType.O3, protoName: 'contactId')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'TicketMongo.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.ticket'))
@@ -178,15 +178,15 @@ class TicketMongo extends $pb.GeneratedMessage {
   void clearCreationDate() => clearField(7);
 
   @$pb.TagNumber(8)
-  $18.Timestamp get lastTouchTimestampUTC => $_getN(7);
+  $19.Timestamp get lastTouchTimestampUTC => $_getN(7);
   @$pb.TagNumber(8)
-  set lastTouchTimestampUTC($18.Timestamp v) { setField(8, v); }
+  set lastTouchTimestampUTC($19.Timestamp v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasLastTouchTimestampUTC() => $_has(7);
   @$pb.TagNumber(8)
   void clearLastTouchTimestampUTC() => clearField(8);
   @$pb.TagNumber(8)
-  $18.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
+  $19.Timestamp ensureLastTouchTimestampUTC() => $_ensure(7);
 
   @$pb.TagNumber(9)
   $core.bool get isDeleted => $_getBF(8);
@@ -218,7 +218,7 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? statusUpdateDate,
     $core.bool? status,
     $core.Iterable<ItemCartPb>? items,
-    $23.TicketTypePb? ticketType,
+    $25.TicketTypePb? ticketType,
     TicketPb_PaymentTypePb? paymentType,
     $core.int? contactId,
     TaxPb? taxe,
@@ -303,7 +303,7 @@ class TicketPb extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'statusUpdateDate', protoName: 'statusUpdateDate')
     ..aOB(5, _omitFieldNames ? '' : 'status')
     ..pc<ItemCartPb>(6, _omitFieldNames ? '' : 'items', $pb.PbFieldType.PM, subBuilder: ItemCartPb.create)
-    ..e<$23.TicketTypePb>(7, _omitFieldNames ? '' : 'ticketType', $pb.PbFieldType.OE, protoName: 'ticketType', defaultOrMaker: $23.TicketTypePb.unknown, valueOf: $23.TicketTypePb.valueOf, enumValues: $23.TicketTypePb.values)
+    ..e<$25.TicketTypePb>(7, _omitFieldNames ? '' : 'ticketType', $pb.PbFieldType.OE, protoName: 'ticketType', defaultOrMaker: $25.TicketTypePb.unknown, valueOf: $25.TicketTypePb.valueOf, enumValues: $25.TicketTypePb.values)
     ..e<TicketPb_PaymentTypePb>(8, _omitFieldNames ? '' : 'paymentType', $pb.PbFieldType.OE, protoName: 'paymentType', defaultOrMaker: TicketPb_PaymentTypePb.unknown, valueOf: TicketPb_PaymentTypePb.valueOf, enumValues: TicketPb_PaymentTypePb.values)
     ..a<$core.int>(9, _omitFieldNames ? '' : 'contactId', $pb.PbFieldType.O3, protoName: 'contactId')
     ..aOM<TaxPb>(10, _omitFieldNames ? '' : 'taxe', subBuilder: TaxPb.create)
@@ -395,9 +395,9 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.List<ItemCartPb> get items => $_getList(5);
 
   @$pb.TagNumber(7)
-  $23.TicketTypePb get ticketType => $_getN(6);
+  $25.TicketTypePb get ticketType => $_getN(6);
   @$pb.TagNumber(7)
-  set ticketType($23.TicketTypePb v) { setField(7, v); }
+  set ticketType($25.TicketTypePb v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasTicketType() => $_has(6);
   @$pb.TagNumber(7)

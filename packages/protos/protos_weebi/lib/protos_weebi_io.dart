@@ -31,6 +31,10 @@ export 'package:protos_weebi/src/generated/firm.pb.dart';
 export 'package:protos_weebi/src/generated/firm.pbenum.dart';
 export 'package:protos_weebi/src/generated/firm.pbjson.dart';
 
+export 'package:protos_weebi/src/generated/license.pb.dart';
+export 'package:protos_weebi/src/generated/license.pbenum.dart';
+export 'package:protos_weebi/src/generated/license.pbjson.dart';
+
 export 'package:protos_weebi/src/generated/device.pb.dart';
 export 'package:protos_weebi/src/generated/device.pbenum.dart';
 export 'package:protos_weebi/src/generated/device.pbjson.dart';
@@ -56,6 +60,11 @@ export 'package:protos_weebi/src/generated/fence_service.pb.dart';
 export 'package:protos_weebi/src/generated/fence_service.pbenum.dart';
 export 'package:protos_weebi/src/generated/fence_service.pbgrpc.dart';
 export 'package:protos_weebi/src/generated/fence_service.pbjson.dart';
+
+export 'package:protos_weebi/src/generated/billing_service.pb.dart';
+export 'package:protos_weebi/src/generated/billing_service.pbenum.dart';
+export 'package:protos_weebi/src/generated/billing_service.pbgrpc.dart';
+export 'package:protos_weebi/src/generated/billing_service.pbjson.dart';
 
 export 'package:protos_weebi/src/generated/common/empty.pb.dart';
 export 'package:protos_weebi/src/generated/common/empty.pbenum.dart';
