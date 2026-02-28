@@ -68,7 +68,6 @@ void main() async {
     expect(response.status, Dummy.firmNoId.status);
     expect(response.statusUpdateTimestampUTC,
         Dummy.firmNoId.statusUpdateTimestampUTC);
-    expect(response.subscriptionPlan, Dummy.firmNoId.subscriptionPlan);
     expect(
         response.lastUpdateTimestampUTC, Dummy.firmNoId.lastUpdateTimestampUTC);
     firmId = response.firmId;

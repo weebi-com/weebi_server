@@ -13,14 +13,14 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../common/g_timestamp.pb.dart' as $18;
-import 'ticket.pb.dart' as $15;
+import '../common/g_timestamp.pb.dart' as $19;
+import 'ticket.pb.dart' as $16;
 
 class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   factory ReadAllTicketsRequest({
     $core.String? chainId,
     $core.String? boutiqueId,
-    $18.Timestamp? lastFetchTimestampUTC,
+    $19.Timestamp? lastFetchTimestampUTC,
     $core.bool? isDeleted,
   }) {
     final result = create();
@@ -45,7 +45,7 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAllTicketsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
     ..aOS(2, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(3, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
-    ..aOM<$18.Timestamp>(4, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $18.Timestamp.create)
+    ..aOM<$19.Timestamp>(4, _omitFieldNames ? '' : 'lastFetchTimestampUTC', protoName: 'lastFetchTimestampUTC', subBuilder: $19.Timestamp.create)
     ..aOB(5, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..hasRequiredFields = false
   ;
@@ -91,15 +91,15 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
 
   /// optional used for weebi_app device back online
   @$pb.TagNumber(4)
-  $18.Timestamp get lastFetchTimestampUTC => $_getN(2);
+  $19.Timestamp get lastFetchTimestampUTC => $_getN(2);
   @$pb.TagNumber(4)
-  set lastFetchTimestampUTC($18.Timestamp v) { setField(4, v); }
+  set lastFetchTimestampUTC($19.Timestamp v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasLastFetchTimestampUTC() => $_has(2);
   @$pb.TagNumber(4)
   void clearLastFetchTimestampUTC() => clearField(4);
   @$pb.TagNumber(4)
-  $18.Timestamp ensureLastFetchTimestampUTC() => $_ensure(2);
+  $19.Timestamp ensureLastFetchTimestampUTC() => $_ensure(2);
 
   /// optional used for weebi_app device to remove deleted tickets
   @$pb.TagNumber(5)
@@ -223,7 +223,7 @@ class FindTicketRequest extends $pb.GeneratedMessage {
 
 class TicketRequest extends $pb.GeneratedMessage {
   factory TicketRequest({
-    $15.TicketPb? ticket,
+    $16.TicketPb? ticket,
   }) {
     final result = create();
     if (ticket != null) {
@@ -236,7 +236,7 @@ class TicketRequest extends $pb.GeneratedMessage {
   factory TicketRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
-    ..aOM<$15.TicketPb>(1, _omitFieldNames ? '' : 'ticket', subBuilder: $15.TicketPb.create)
+    ..aOM<$16.TicketPb>(1, _omitFieldNames ? '' : 'ticket', subBuilder: $16.TicketPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -262,20 +262,20 @@ class TicketRequest extends $pb.GeneratedMessage {
   static TicketRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $15.TicketPb get ticket => $_getN(0);
+  $16.TicketPb get ticket => $_getN(0);
   @$pb.TagNumber(1)
-  set ticket($15.TicketPb v) { setField(1, v); }
+  set ticket($16.TicketPb v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasTicket() => $_has(0);
   @$pb.TagNumber(1)
   void clearTicket() => clearField(1);
   @$pb.TagNumber(1)
-  $15.TicketPb ensureTicket() => $_ensure(0);
+  $16.TicketPb ensureTicket() => $_ensure(0);
 }
 
 class TicketsRequest extends $pb.GeneratedMessage {
   factory TicketsRequest({
-    $core.Iterable<$15.TicketPb>? tickets,
+    $core.Iterable<$16.TicketPb>? tickets,
   }) {
     final result = create();
     if (tickets != null) {
@@ -288,7 +288,7 @@ class TicketsRequest extends $pb.GeneratedMessage {
   factory TicketsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
-    ..pc<$15.TicketPb>(1, _omitFieldNames ? '' : 'tickets', $pb.PbFieldType.PM, subBuilder: $15.TicketPb.create)
+    ..pc<$16.TicketPb>(1, _omitFieldNames ? '' : 'tickets', $pb.PbFieldType.PM, subBuilder: $16.TicketPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -314,12 +314,12 @@ class TicketsRequest extends $pb.GeneratedMessage {
   static TicketsRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$15.TicketPb> get tickets => $_getList(0);
+  $core.List<$16.TicketPb> get tickets => $_getList(0);
 }
 
 class TicketsResponse extends $pb.GeneratedMessage {
   factory TicketsResponse({
-    $core.Iterable<$15.TicketPb>? tickets,
+    $core.Iterable<$16.TicketPb>? tickets,
   }) {
     final result = create();
     if (tickets != null) {
@@ -332,7 +332,7 @@ class TicketsResponse extends $pb.GeneratedMessage {
   factory TicketsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketsResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket.service'), createEmptyInstance: create)
-    ..pc<$15.TicketPb>(1, _omitFieldNames ? '' : 'tickets', $pb.PbFieldType.PM, subBuilder: $15.TicketPb.create)
+    ..pc<$16.TicketPb>(1, _omitFieldNames ? '' : 'tickets', $pb.PbFieldType.PM, subBuilder: $16.TicketPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -358,7 +358,7 @@ class TicketsResponse extends $pb.GeneratedMessage {
   static TicketsResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$15.TicketPb> get tickets => $_getList(0);
+  $core.List<$16.TicketPb> get tickets => $_getList(0);
 }
 
 
