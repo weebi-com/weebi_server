@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:article_service/article_service.dart';
 import 'package:billing_service/billing_service.dart';
 import 'package:contact_service/contact_service.dart';
@@ -42,9 +44,19 @@ TODO: also include search index
  */
 
 /// This never run in the server,
-/// to be run manually in the mongo shell
-main() async {
-  final db = await Db.create('mongodb+srv://username:password@xxx.yyy.mongodb.net/dbName');
+/// to be run manually from the command line
+/// dart run apps/server/utils/create_indexes_views.dart "mongodb+srv://user:pass@xxx.yyy.mongodb.net/dbName"
+Future<void> main(List<String> args) async {
+  final connectionString =
+      args.isNotEmpty ? args.first : Platform.environment['MONGO_URI'];
+
+  if (connectionString == null || connectionString.isEmpty) {
+    stderr.writeln(
+        'Missing MongoDB connection string. Pass it as first argument or set MONGO_URI env var.');
+    exit(1);
+  }
+
+  final db = await Db.create(connectionString);
   final isOpened = await db.open();
   print(isOpened);
 

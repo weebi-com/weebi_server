@@ -1,3 +1,7 @@
+## 1.0.8 - march 2026
+
+- billing_service and payment integration
+
 ## 1.0.7 - february 2026
 
 - ForgotPaswword feature is (finally) available
