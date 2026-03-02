@@ -38,6 +38,8 @@ class Firm extends $pb.GeneratedMessage {
     $core.String? stripeCustomerId,
     $core.Iterable<$23.License>? licenses,
     $core.Map<$core.String, $core.String>? providerCustomerIds,
+    $core.String? referralCode,
+    $core.int? referralCreditBalanceCents,
   }) {
     final result = create();
     if (firmId != null) {
@@ -89,6 +91,12 @@ class Firm extends $pb.GeneratedMessage {
     if (providerCustomerIds != null) {
       result.providerCustomerIds.addAll(providerCustomerIds);
     }
+    if (referralCode != null) {
+      result.referralCode = referralCode;
+    }
+    if (referralCreditBalanceCents != null) {
+      result.referralCreditBalanceCents = referralCreditBalanceCents;
+    }
     return result;
   }
   Firm._() : super();
@@ -111,6 +119,8 @@ class Firm extends $pb.GeneratedMessage {
     ..aOS(13, _omitFieldNames ? '' : 'stripeCustomerId', protoName: 'stripeCustomerId')
     ..pc<$23.License>(14, _omitFieldNames ? '' : 'licenses', $pb.PbFieldType.PM, subBuilder: $23.License.create)
     ..m<$core.String, $core.String>(15, _omitFieldNames ? '' : 'providerCustomerIds', protoName: 'providerCustomerIds', entryClassName: 'Firm.ProviderCustomerIdsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.firm'))
+    ..aOS(16, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
+    ..a<$core.int>(17, _omitFieldNames ? '' : 'referralCreditBalanceCents', $pb.PbFieldType.O3, protoName: 'referralCreditBalanceCents')
     ..hasRequiredFields = false
   ;
 
@@ -291,6 +301,26 @@ class Firm extends $pb.GeneratedMessage {
   /// / Customer IDs per payment provider. Keys: "stripe", "pawapay", etc.
   @$pb.TagNumber(15)
   $core.Map<$core.String, $core.String> get providerCustomerIds => $_getMap(14);
+
+  /// / Per-firm referral code. Share with others; 20% commission on referred license sales.
+  @$pb.TagNumber(16)
+  $core.String get referralCode => $_getSZ(15);
+  @$pb.TagNumber(16)
+  set referralCode($core.String v) { $_setString(15, v); }
+  @$pb.TagNumber(16)
+  $core.bool hasReferralCode() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearReferralCode() => clearField(16);
+
+  /// / Referral credit balance in EUR cents. Auto-applied at checkout or cash-out above €15.
+  @$pb.TagNumber(17)
+  $core.int get referralCreditBalanceCents => $_getIZ(16);
+  @$pb.TagNumber(17)
+  set referralCreditBalanceCents($core.int v) { $_setSignedInt32(16, v); }
+  @$pb.TagNumber(17)
+  $core.bool hasReferralCreditBalanceCents() => $_has(16);
+  @$pb.TagNumber(17)
+  void clearReferralCreditBalanceCents() => clearField(17);
 }
 
 class CreateFirmRequest extends $pb.GeneratedMessage {

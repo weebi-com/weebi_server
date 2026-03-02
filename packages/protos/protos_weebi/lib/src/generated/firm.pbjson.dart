@@ -62,6 +62,8 @@ const Firm$json = {
     {'1': 'stripeCustomerId', '3': 13, '4': 1, '5': 9, '10': 'stripeCustomerId'},
     {'1': 'licenses', '3': 14, '4': 3, '5': 11, '6': '.weebi.license.License', '10': 'licenses'},
     {'1': 'providerCustomerIds', '3': 15, '4': 3, '5': 11, '6': '.weebi.firm.Firm.ProviderCustomerIdsEntry', '10': 'providerCustomerIds'},
+    {'1': 'referralCode', '3': 16, '4': 1, '5': 9, '10': 'referralCode'},
+    {'1': 'referralCreditBalanceCents', '3': 17, '4': 1, '5': 5, '10': 'referralCreditBalanceCents'},
   ],
   '3': [Firm_ProviderCustomerIdsEntry$json],
 };
@@ -94,8 +96,10 @@ final $typed_data.Uint8List firmDescriptor = $convert.base64Decode(
     'JJZBgNIAEoCVIQc3RyaXBlQ3VzdG9tZXJJZBIyCghsaWNlbnNlcxgOIAMoCzIWLndlZWJpLmxp'
     'Y2Vuc2UuTGljZW5zZVIIbGljZW5zZXMSWwoTcHJvdmlkZXJDdXN0b21lcklkcxgPIAMoCzIpLn'
     'dlZWJpLmZpcm0uRmlybS5Qcm92aWRlckN1c3RvbWVySWRzRW50cnlSE3Byb3ZpZGVyQ3VzdG9t'
-    'ZXJJZHMaRgoYUHJvdmlkZXJDdXN0b21lcklkc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBX'
-    'ZhbHVlGAIgASgJUgV2YWx1ZToCOAE=');
+    'ZXJJZHMSIgoMcmVmZXJyYWxDb2RlGBAgASgJUgxyZWZlcnJhbENvZGUSPgoacmVmZXJyYWxDcm'
+    'VkaXRCYWxhbmNlQ2VudHMYESABKAVSGnJlZmVycmFsQ3JlZGl0QmFsYW5jZUNlbnRzGkYKGFBy'
+    'b3ZpZGVyQ3VzdG9tZXJJZHNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCV'
+    'IFdmFsdWU6AjgB');
 
 @$core.Deprecated('Use createFirmRequestDescriptor instead')
 const CreateFirmRequest$json = {

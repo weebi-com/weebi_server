@@ -18,16 +18,31 @@ const LicensePlan$json = {
   '1': 'LicensePlan',
   '2': [
     {'1': 'LICENSE_PLAN_UNKNOWN', '2': 0},
-    {'1': 'STARTER', '2': 1},
-    {'1': 'BOUTIQUE_3X3', '2': 2},
+    {'1': 'SOLO', '2': 1},
+    {'1': 'TRIO', '2': 2},
     {'1': 'PRO', '2': 3},
   ],
 };
 
 /// Descriptor for `LicensePlan`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List licensePlanDescriptor = $convert.base64Decode(
-    'CgtMaWNlbnNlUGxhbhIYChRMSUNFTlNFX1BMQU5fVU5LTk9XThAAEgsKB1NUQVJURVIQARIQCg'
-    'xCT1VUSVFVRV8zWDMQAhIHCgNQUk8QAw==');
+    'CgtMaWNlbnNlUGxhbhIYChRMSUNFTlNFX1BMQU5fVU5LTk9XThAAEggKBFNPTE8QARIICgRUUk'
+    'lPEAISBwoDUFJPEAM=');
+
+@$core.Deprecated('Use paymentProviderDescriptor instead')
+const PaymentProvider$json = {
+  '1': 'PaymentProvider',
+  '2': [
+    {'1': 'PAYMENT_PROVIDER_UNKNOWN', '2': 0},
+    {'1': 'PAYMENT_PROVIDER_STRIPE', '2': 1},
+    {'1': 'PAYMENT_PROVIDER_PAWAPAY', '2': 2},
+  ],
+};
+
+/// Descriptor for `PaymentProvider`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List paymentProviderDescriptor = $convert.base64Decode(
+    'Cg9QYXltZW50UHJvdmlkZXISHAoYUEFZTUVOVF9QUk9WSURFUl9VTktOT1dOEAASGwoXUEFZTU'
+    'VOVF9QUk9WSURFUl9TVFJJUEUQARIcChhQQVlNRU5UX1BST1ZJREVSX1BBV0FQQVkQAg==');
 
 @$core.Deprecated('Use licenseDescriptor instead')
 const License$json = {
@@ -41,7 +56,9 @@ const License$json = {
     {'1': 'validFrom', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'validFrom'},
     {'1': 'validUntil', '3': 7, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'validUntil'},
     {'1': 'seats', '3': 8, '4': 3, '5': 11, '6': '.weebi.license.LicenseSeat', '10': 'seats'},
-    {'1': 'paymentProvider', '3': 9, '4': 1, '5': 9, '10': 'paymentProvider'},
+    {'1': 'paymentProvider', '3': 9, '4': 1, '5': 14, '6': '.weebi.license.PaymentProvider', '10': 'paymentProvider'},
+    {'1': 'referredByFirmId', '3': 10, '4': 1, '5': 9, '10': 'referredByFirmId'},
+    {'1': 'creditAppliedCents', '3': 11, '4': 1, '5': 5, '10': 'creditAppliedCents'},
   ],
 };
 
@@ -53,8 +70,10 @@ final $typed_data.Uint8List licenseDescriptor = $convert.base64Decode(
     'gEIAEoCVIPcHJvdmlkZXJQcmljZUlkEhoKCG1heFVzZXJzGAUgASgFUghtYXhVc2VycxI4Cgl2'
     'YWxpZEZyb20YBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUgl2YWxpZEZyb20SOg'
     'oKdmFsaWRVbnRpbBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSCnZhbGlkVW50'
-    'aWwSMAoFc2VhdHMYCCADKAsyGi53ZWViaS5saWNlbnNlLkxpY2Vuc2VTZWF0UgVzZWF0cxIoCg'
-    '9wYXltZW50UHJvdmlkZXIYCSABKAlSD3BheW1lbnRQcm92aWRlcg==');
+    'aWwSMAoFc2VhdHMYCCADKAsyGi53ZWViaS5saWNlbnNlLkxpY2Vuc2VTZWF0UgVzZWF0cxJICg'
+    '9wYXltZW50UHJvdmlkZXIYCSABKA4yHi53ZWViaS5saWNlbnNlLlBheW1lbnRQcm92aWRlclIP'
+    'cGF5bWVudFByb3ZpZGVyEioKEHJlZmVycmVkQnlGaXJtSWQYCiABKAlSEHJlZmVycmVkQnlGaX'
+    'JtSWQSLgoSY3JlZGl0QXBwbGllZENlbnRzGAsgASgFUhJjcmVkaXRBcHBsaWVkQ2VudHM=');
 
 @$core.Deprecated('Use licenseSeatDescriptor instead')
 const LicenseSeat$json = {

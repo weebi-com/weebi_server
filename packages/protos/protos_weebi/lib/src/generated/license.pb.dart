@@ -30,7 +30,9 @@ class License extends $pb.GeneratedMessage {
     $19.Timestamp? validFrom,
     $19.Timestamp? validUntil,
     $core.Iterable<LicenseSeat>? seats,
-    $core.String? paymentProvider,
+    PaymentProvider? paymentProvider,
+    $core.String? referredByFirmId,
+    $core.int? creditAppliedCents,
   }) {
     final result = create();
     if (licenseId != null) {
@@ -60,6 +62,12 @@ class License extends $pb.GeneratedMessage {
     if (paymentProvider != null) {
       result.paymentProvider = paymentProvider;
     }
+    if (referredByFirmId != null) {
+      result.referredByFirmId = referredByFirmId;
+    }
+    if (creditAppliedCents != null) {
+      result.creditAppliedCents = creditAppliedCents;
+    }
     return result;
   }
   License._() : super();
@@ -75,7 +83,9 @@ class License extends $pb.GeneratedMessage {
     ..aOM<$19.Timestamp>(6, _omitFieldNames ? '' : 'validFrom', protoName: 'validFrom', subBuilder: $19.Timestamp.create)
     ..aOM<$19.Timestamp>(7, _omitFieldNames ? '' : 'validUntil', protoName: 'validUntil', subBuilder: $19.Timestamp.create)
     ..pc<LicenseSeat>(8, _omitFieldNames ? '' : 'seats', $pb.PbFieldType.PM, subBuilder: LicenseSeat.create)
-    ..aOS(9, _omitFieldNames ? '' : 'paymentProvider', protoName: 'paymentProvider')
+    ..e<PaymentProvider>(9, _omitFieldNames ? '' : 'paymentProvider', $pb.PbFieldType.OE, protoName: 'paymentProvider', defaultOrMaker: PaymentProvider.PAYMENT_PROVIDER_UNKNOWN, valueOf: PaymentProvider.valueOf, enumValues: PaymentProvider.values)
+    ..aOS(10, _omitFieldNames ? '' : 'referredByFirmId', protoName: 'referredByFirmId')
+    ..a<$core.int>(11, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
     ..hasRequiredFields = false
   ;
 
@@ -171,15 +181,35 @@ class License extends $pb.GeneratedMessage {
   @$pb.TagNumber(8)
   $core.List<LicenseSeat> get seats => $_getList(7);
 
-  /// / Which provider processed this purchase: "stripe", "pawapay", etc.
+  /// / Which provider processed this purchase.
   @$pb.TagNumber(9)
-  $core.String get paymentProvider => $_getSZ(8);
+  PaymentProvider get paymentProvider => $_getN(8);
   @$pb.TagNumber(9)
-  set paymentProvider($core.String v) { $_setString(8, v); }
+  set paymentProvider(PaymentProvider v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasPaymentProvider() => $_has(8);
   @$pb.TagNumber(9)
   void clearPaymentProvider() => clearField(9);
+
+  /// / Firm that referred this purchase (referrer). Set when buyer used referrer's code.
+  @$pb.TagNumber(10)
+  $core.String get referredByFirmId => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set referredByFirmId($core.String v) { $_setString(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasReferredByFirmId() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearReferredByFirmId() => clearField(10);
+
+  /// / Amount of referral credit (cents) applied to this purchase. Deducted from buyer's firm.
+  @$pb.TagNumber(11)
+  $core.int get creditAppliedCents => $_getIZ(10);
+  @$pb.TagNumber(11)
+  set creditAppliedCents($core.int v) { $_setSignedInt32(10, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasCreditAppliedCents() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearCreditAppliedCents() => clearField(11);
 }
 
 /// / Per-seat validity. Each user (seat) has its own start/end dates.

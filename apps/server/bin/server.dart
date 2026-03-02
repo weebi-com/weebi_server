@@ -105,6 +105,7 @@ void main(List<String> arguments) async {
 
     print('gRPC Server running on ip $ip port ${server.port}');
     print('Use healthCheck RPC for service health and version information');
+    print('Stripe webhook is handled by weebi_express at POST /webhooks/stripe');
   } catch (e) {
     log('Failed to create gRPC server: $e');
   }

@@ -69,13 +69,13 @@ abstract class Dummy {
   /// Starter license (1 user, lifetime). Use for tests.
   static final licenseDummy = License(
     licenseId: 'dummy-license-id',
-    licensePlan: LicensePlan.STARTER,
+    licensePlan: LicensePlan.SOLO,
     providerProductId: 'prod_dummy',
     providerPriceId: 'price_dummy',
     maxUsers: 1,
     validFrom: Timestamp(seconds: Int64.ONE, nanos: 0),
     // validUntil omitted = lifetime
-    paymentProvider: 'stripe',
+    paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
   );
 
   /// Deprecated fields kept for backward compat; use licenseDummy / licenses instead.

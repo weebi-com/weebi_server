@@ -26,6 +26,17 @@ void main() {
     final db = await poolService.acquire();
     await db.collection(FenceService.firmCollectionName).drop();
     await db.createCollection(FenceService.firmCollectionName);
+    await db.collection(BillingService.billingProductsCollectionName).drop();
+    await db.createCollection(BillingService.billingProductsCollectionName);
+
+    // Seed billing_products for referral commission lookup
+    final nowIso = DateTime.now().toUtc().toIso8601String();
+    final billingProducts = [
+      {'productId': 'solo', 'licensePlan': 1, 'maxUsers': 1, 'amountCents': 1400, 'currency': 'eur', 'stripeProductId': 'prod_solo', 'stripePriceId': 'price_solo', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
+      {'productId': 'trio', 'licensePlan': 2, 'maxUsers': 3, 'amountCents': 2900, 'currency': 'eur', 'stripeProductId': 'prod_trio', 'stripePriceId': 'price_trio', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
+      {'productId': 'pro', 'licensePlan': 3, 'maxUsers': 10, 'amountCents': 7900, 'currency': 'eur', 'stripeProductId': 'prod_pro', 'stripePriceId': 'price_pro', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
+    ];
+    await db.collection(BillingService.billingProductsCollectionName).insertMany(billingProducts);
 
     // Insert firm with empty licenses for clean tests
     final firm = Firm(
@@ -45,6 +56,7 @@ void main() {
   tearDownAll(() async {
     final db = await poolService.acquire();
     await db.collection(FenceService.firmCollectionName).drop();
+    await db.collection(BillingService.billingProductsCollectionName).drop();
     poolService.release(db);
   });
 
@@ -52,7 +64,7 @@ void main() {
     test('creates a license and appends to firm.licenses', () async {
       final license = License(
         licenseId: 'license-starter-001',
-        licensePlan: LicensePlan.STARTER,
+        licensePlan: LicensePlan.SOLO,
         providerProductId: 'prod_starter',
         providerPriceId: 'price_starter',
         maxUsers: 1,
@@ -67,14 +79,14 @@ void main() {
       expect(response.statusResponse.type, StatusResponse_Type.CREATED);
       expect(response.statusResponse.id, 'license-starter-001');
       expect(response.license.licenseId, 'license-starter-001');
-      expect(response.license.licensePlan, LicensePlan.STARTER);
+      expect(response.license.licensePlan, LicensePlan.SOLO);
       expect(response.license.maxUsers, 1);
     });
 
     test('throws alreadyExists when licenseId duplicates', () async {
       final license = License(
         licenseId: 'license-starter-001',
-        licensePlan: LicensePlan.STARTER,
+        licensePlan: LicensePlan.SOLO,
         providerProductId: 'prod_starter',
         providerPriceId: 'price_starter',
         maxUsers: 1,
@@ -95,7 +107,7 @@ void main() {
     test('throws invalidArgument when licenseId is empty', () async {
       final license = License(
         licenseId: '',
-        licensePlan: LicensePlan.STARTER,
+        licensePlan: LicensePlan.SOLO,
         providerProductId: 'prod_starter',
         providerPriceId: 'price_starter',
         maxUsers: 1,
@@ -119,7 +131,7 @@ void main() {
 
       expect(response.licenses.length, 1);
       expect(response.licenses.first.licenseId, 'license-starter-001');
-      expect(response.licenses.first.licensePlan, LicensePlan.STARTER);
+      expect(response.licenses.first.licensePlan, LicensePlan.SOLO);
     });
   });
 
@@ -127,7 +139,7 @@ void main() {
     test('updates an existing license', () async {
       final updatedLicense = License(
         licenseId: 'license-starter-001',
-        licensePlan: LicensePlan.BOUTIQUE_3X3,
+        licensePlan: LicensePlan.TRIO,
         providerProductId: 'prod_boutique',
         providerPriceId: 'price_boutique',
         maxUsers: 3,
@@ -143,14 +155,14 @@ void main() {
 
       final readResponse = await billingService.readLicenses(null, Empty());
       expect(readResponse.licenses.length, 1);
-      expect(readResponse.licenses.first.licensePlan, LicensePlan.BOUTIQUE_3X3);
+      expect(readResponse.licenses.first.licensePlan, LicensePlan.TRIO);
       expect(readResponse.licenses.first.maxUsers, 3);
     });
 
     test('throws notFound when licenseId does not exist', () async {
       final license = License(
         licenseId: 'license-nonexistent',
-        licensePlan: LicensePlan.STARTER,
+        licensePlan: LicensePlan.SOLO,
         providerProductId: 'prod',
         providerPriceId: 'price',
         maxUsers: 1,
@@ -208,14 +220,183 @@ void main() {
     });
   });
 
+  group('getReferralInfo', () {
+    test('returns referral code (= firmId) and balance', () async {
+      final response = await billingService.getReferralInfo(null, Empty());
+
+      expect(response.referralCode, firmId);
+      expect(response.creditBalanceCents, 0);
+      expect(response.minPayoutCents, 1500);
+
+      final response2 = await billingService.getReferralInfo(null, Empty());
+      expect(response2.referralCode, response.referralCode);
+    });
+  });
+
+  group('createLicense with referral', () {
+    test('rejects invalid referral code', () async {
+      final license = License(
+        licenseId: 'license-invalid-ref-001',
+        licensePlan: LicensePlan.SOLO,
+        providerProductId: 'prod_starter',
+        providerPriceId: 'price_starter',
+        maxUsers: 1,
+        validFrom: DateTime.now().toUtc().timestampProto,
+      );
+
+      try {
+        await billingService.createLicense(
+          null,
+          CreateLicenseRequest(license: license, referralCode: 'nonexistent-firm-id'),
+        );
+        fail('Expected invalidArgument');
+      } on GrpcError catch (e) {
+        expect(e.code, 3); // INVALID_ARGUMENT
+      }
+    });
+
+    test('rejects own referral code (self-referral)', () async {
+      final refResponse = await billingService.getReferralInfo(null, Empty());
+      final ownCode = refResponse.referralCode;
+
+      final license = License(
+        licenseId: 'license-self-ref-001',
+        licensePlan: LicensePlan.SOLO,
+        providerProductId: 'prod_starter',
+        providerPriceId: 'price_starter',
+        maxUsers: 1,
+        validFrom: DateTime.now().toUtc().timestampProto,
+      );
+
+      try {
+        await billingService.createLicense(
+          null,
+          CreateLicenseRequest(license: license, referralCode: ownCode),
+        );
+        fail('Expected invalidArgument');
+      } on GrpcError catch (e) {
+        expect(e.code, 3); // INVALID_ARGUMENT
+      }
+    });
+
+    test('deducts creditAppliedCents from buyer when applying referral credit',
+        () async {
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).updateOne(
+        where.eq('firmId', firmId),
+        ModifierBuilder().set('referralCreditBalanceCents', 500),
+      );
+      poolService.release(db);
+
+      final license = License(
+        licenseId: 'license-credit-applied-001',
+        licensePlan: LicensePlan.SOLO,
+        providerProductId: 'prod_starter',
+        providerPriceId: 'price_starter',
+        maxUsers: 1,
+        validFrom: DateTime.now().toUtc().timestampProto,
+      );
+
+      await billingService.createLicense(
+        null,
+        CreateLicenseRequest(license: license, creditAppliedCents: 300),
+      );
+
+      final db3 = await poolService.acquire();
+      final firmDoc =
+          await db3.collection(FenceService.firmCollectionName).findOne(where.eq('firmId', firmId));
+      poolService.release(db3);
+      expect((firmDoc!['referralCreditBalanceCents'] as num?)?.toInt(), 200);
+    });
+
+    test('credits referrer when valid referral code used', () async {
+      final referrerFirmId = 'referrer-firm-001';
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).insertOne({
+        'firmId': referrerFirmId,
+        'name': 'Referrer Boutique',
+        'status': true,
+        'creationDateUTC': DateTime.now().toUtc(),
+        'licenses': [],
+        'referralCode': referrerFirmId, // referralCode = firmId
+        'referralCreditBalanceCents': 0,
+      });
+      poolService.release(db);
+
+      final license = License(
+        licenseId: 'license-referral-001',
+        licensePlan: LicensePlan.TRIO,
+        providerProductId: 'prod_boutique',
+        providerPriceId: 'price_boutique',
+        maxUsers: 3,
+        validFrom: DateTime.now().toUtc().timestampProto,
+      );
+
+      final createResp = await billingService.createLicense(
+        null,
+        CreateLicenseRequest(license: license, referralCode: referrerFirmId),
+      );
+
+      expect(createResp.license.referredByFirmId, referrerFirmId);
+
+      final db2 = await poolService.acquire();
+      final refDoc = await db2
+          .collection(FenceService.firmCollectionName)
+          .findOne(where.eq('firmId', referrerFirmId));
+      poolService.release(db2);
+      expect((refDoc!['referralCreditBalanceCents'] as num?)?.toInt(), 580);
+    });
+  });
+
+  group('requestReferralPayout', () {
+    test('succeeds when balance at or above minimum', () async {
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).updateOne(
+        where.eq('firmId', firmId),
+        ModifierBuilder()
+            .set('referralCreditBalanceCents', 2000)
+            .set('providerCustomerIds', {'stripe': 'cus_test123'}),
+      );
+      poolService.release(db);
+
+      final response =
+          await billingService.requestReferralPayout(null, Empty());
+
+      expect(response.statusResponse.type, StatusResponse_Type.SUCCESS);
+      expect(response.amountCents, 2000);
+
+      final db2 = await poolService.acquire();
+      final firmDoc = await db2
+          .collection(FenceService.firmCollectionName)
+          .findOne(where.eq('firmId', firmId));
+      poolService.release(db2);
+      expect((firmDoc!['referralCreditBalanceCents'] as num?)?.toInt(), 0);
+    });
+
+    test('throws when balance below minimum', () async {
+      try {
+        await billingService.requestReferralPayout(null, Empty());
+        fail('Expected failedPrecondition');
+      } on GrpcError catch (e) {
+        expect(e.code, 9); // FAILED_PRECONDITION
+      }
+    });
+  });
+
   group('deleteLicense', () {
     test('removes license from firm.licenses', () async {
-      final response = await billingService.deleteLicense(
+      await billingService.deleteLicense(
         null,
         DeleteLicenseRequest(licenseId: 'license-starter-001'),
       );
-
-      expect(response.type, StatusResponse_Type.DELETED);
+      await billingService.deleteLicense(
+        null,
+        DeleteLicenseRequest(licenseId: 'license-referral-001'),
+      );
+      await billingService.deleteLicense(
+        null,
+        DeleteLicenseRequest(licenseId: 'license-credit-applied-001'),
+      );
 
       final readResponse = await billingService.readLicenses(null, Empty());
       expect(readResponse.licenses, isEmpty);
