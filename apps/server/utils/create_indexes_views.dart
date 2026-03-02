@@ -1,4 +1,5 @@
 import 'package:article_service/article_service.dart';
+import 'package:billing_service/billing_service.dart';
 import 'package:contact_service/contact_service.dart';
 import 'package:fence_service/mongo_dart.dart';
 
@@ -59,6 +60,8 @@ main() async {
 
   await db.createCollection(TicketService.collectionName);
 
+  await db.createCollection(BillingService.billingProductsCollectionName);
+
   /// WEB_SESSIONS - for web app session storage (cookie-based auth via Envoy)
   /// TTL index: MongoDB automatically deletes expired sessions
   const webSessionsCollectionName = 'web_sessions';
@@ -80,6 +83,16 @@ main() async {
   print(d);
   await db.ensureIndex(FenceService.firmCollectionName,
       name: 'name', keys: {'name': -1});
+  await db.ensureIndex(FenceService.firmCollectionName,
+      name: 'referralCode', keys: {'referralCode': 1}, sparse: true, unique: true);
+  await db.ensureIndex(FenceService.firmCollectionName,
+      name: 'licenses_licenseId', keys: {'licenses.licenseId': 1});
+
+  // billing_products
+  await db.ensureIndex(BillingService.billingProductsCollectionName,
+      name: 'stripePriceId', keys: {'stripePriceId': 1});
+  await db.ensureIndex(BillingService.billingProductsCollectionName,
+      name: 'productId_isDeleted', keys: {'productId': 1, 'isDeleted': 1});
 
   //user
   await db.ensureIndex(FenceService.userCollectionName,

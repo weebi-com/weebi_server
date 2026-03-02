@@ -16,14 +16,14 @@ import 'package:protobuf/protobuf.dart' as $pb;
 /// / License plan tiers. Maps to payment provider products.
 class LicensePlan extends $pb.ProtobufEnum {
   static const LicensePlan LICENSE_PLAN_UNKNOWN = LicensePlan._(0, _omitEnumNames ? '' : 'LICENSE_PLAN_UNKNOWN');
-  static const LicensePlan STARTER = LicensePlan._(1, _omitEnumNames ? '' : 'STARTER');
-  static const LicensePlan BOUTIQUE_3X3 = LicensePlan._(2, _omitEnumNames ? '' : 'BOUTIQUE_3X3');
+  static const LicensePlan SOLO = LicensePlan._(1, _omitEnumNames ? '' : 'SOLO');
+  static const LicensePlan TRIO = LicensePlan._(2, _omitEnumNames ? '' : 'TRIO');
   static const LicensePlan PRO = LicensePlan._(3, _omitEnumNames ? '' : 'PRO');
 
   static const $core.List<LicensePlan> values = <LicensePlan> [
     LICENSE_PLAN_UNKNOWN,
-    STARTER,
-    BOUTIQUE_3X3,
+    SOLO,
+    TRIO,
     PRO,
   ];
 
@@ -31,6 +31,24 @@ class LicensePlan extends $pb.ProtobufEnum {
   static LicensePlan? valueOf($core.int value) => _byValue[value];
 
   const LicensePlan._($core.int v, $core.String n) : super(v, n);
+}
+
+/// / Payment provider that processed the purchase.
+class PaymentProvider extends $pb.ProtobufEnum {
+  static const PaymentProvider PAYMENT_PROVIDER_UNKNOWN = PaymentProvider._(0, _omitEnumNames ? '' : 'PAYMENT_PROVIDER_UNKNOWN');
+  static const PaymentProvider PAYMENT_PROVIDER_STRIPE = PaymentProvider._(1, _omitEnumNames ? '' : 'PAYMENT_PROVIDER_STRIPE');
+  static const PaymentProvider PAYMENT_PROVIDER_PAWAPAY = PaymentProvider._(2, _omitEnumNames ? '' : 'PAYMENT_PROVIDER_PAWAPAY');
+
+  static const $core.List<PaymentProvider> values = <PaymentProvider> [
+    PAYMENT_PROVIDER_UNKNOWN,
+    PAYMENT_PROVIDER_STRIPE,
+    PAYMENT_PROVIDER_PAWAPAY,
+  ];
+
+  static final $core.Map<$core.int, PaymentProvider> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static PaymentProvider? valueOf($core.int value) => _byValue[value];
+
+  const PaymentProvider._($core.int v, $core.String n) : super(v, n);
 }
 
 

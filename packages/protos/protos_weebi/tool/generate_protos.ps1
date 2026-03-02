@@ -188,20 +188,32 @@ if (Test-Path $PROTOS_DIR) {
     }
 }
 } else {
-    # Using local protos repo - pull latest from origin
-    Write-Host "Pulling latest in local protos repo..."
+    # Using local protos repo - ensure we're on the branch and pull latest from origin
+    Write-Host "Updating local protos repo (checkout $PROTOS_COMMIT, pull latest)..."
     Push-Location $PROTOS_DIR
     try {
+        $null = Invoke-GitCommand -Arguments @("fetch", "origin", "--tags")
+        $checkoutResult = Invoke-GitCommand -Arguments @("checkout", $PROTOS_COMMIT)
+        if (-not $checkoutResult.Success) {
+            Write-Host "WARNING: git checkout $PROTOS_COMMIT failed (e.g. detached HEAD); trying to create/switch to branch" -ForegroundColor Yellow
+            $null = Invoke-GitCommand -Arguments @("checkout", "-B", $PROTOS_COMMIT, "origin/$PROTOS_COMMIT")
+        }
         $pullResult = Invoke-GitCommand -Arguments @("pull", "origin", $PROTOS_COMMIT)
         if (-not $pullResult.Success) {
             Write-Host "WARNING: git pull failed" -ForegroundColor Yellow
+        }
+        # Show VERSION file so user sees which proto version is used
+        $versionPath = Join-Path $PROTOS_DIR "VERSION"
+        if (Test-Path $versionPath) {
+            $ver = (Get-Content $versionPath -Raw).Trim()
+            Write-Host "Proto VERSION file: $ver" -ForegroundColor Cyan
         }
     } finally {
         Pop-Location
     }
 }
 
-# Verify version
+# Verify version and show VERSION file
 Push-Location $PROTOS_DIR
 try {
     $gitResult = Invoke-GitCommand -Arguments @("rev-parse", "HEAD")
@@ -221,6 +233,11 @@ try {
         Write-Host "Using proto version: $CURRENT_TAG (commit: $($CURRENT_COMMIT.Substring(0, 7)))"
     } else {
         Write-Host "Using proto commit: $($CURRENT_COMMIT.Substring(0, 7))"
+    }
+    $versionPath = Join-Path $PROTOS_DIR "VERSION"
+    if (Test-Path $versionPath) {
+        $ver = (Get-Content $versionPath -Raw).Trim()
+        Write-Host "Proto VERSION file: $ver" -ForegroundColor Cyan
     }
 } finally {
     Pop-Location
