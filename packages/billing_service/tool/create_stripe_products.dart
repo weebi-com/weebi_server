@@ -8,6 +8,7 @@
 /// Optional: MONGO_DB_URI - if set, inserts into billing_products collection
 library;
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:fence_service/mongo_dart.dart';
@@ -16,22 +17,24 @@ import 'package:http/http.dart' as http;
 
 import 'package:billing_service/billing_service.dart';
 
-void main() async {
-  final key = Platform.environment['STRIPE_SECRET_KEY'];
+void main(List<String> args) async {
+  final key =
+      args.isNotEmpty ? args.first : Platform.environment['STRIPE_SECRET_KEY'];
   if (key == null || key.isEmpty) {
     print('ERROR: Set STRIPE_SECRET_KEY');
     exit(1);
   }
 
-  final mongoUri = Platform.environment['MONGO_DB_URI'];
-  Db? db;
-  if (mongoUri != null && mongoUri.isNotEmpty) {
-    db = Db(mongoUri);
-    await db.open();
-    print('Connected to MongoDB');
-  } else {
+  final mongoUri = args.isNotEmpty
+      ? args.elementAt(1)
+      : Platform.environment['MONGO_DB_URI'];
+  if (mongoUri == null || mongoUri.isEmpty) {
     print('MONGO_DB_URI not set - skipping billing_products insert');
   }
+  final db = await Db.create(mongoUri!);
+  final isOpened = await db.open();
+  print(isOpened);
+  print('Connected to MongoDB');
 
   final plans = [
     ('Solo', 'solo', LicensePlan.SOLO, 'Weebi Solo - 1 user', 1400, 1),
@@ -39,7 +42,8 @@ void main() async {
     ('Pro', 'pro', LicensePlan.PRO, 'Weebi Pro - 10 users', 7900, 10),
   ];
 
-  for (final (name, productId, licensePlan, desc, amountCents, maxUsers) in plans) {
+  for (final (name, productId, licensePlan, desc, amountCents, maxUsers)
+      in plans) {
     final product = await _createProduct(key, name, desc);
     final price = await _createPrice(key, product['id']!, amountCents);
     print('$name:');
@@ -47,7 +51,6 @@ void main() async {
     print('  stripePriceId=${price['id']}');
     print('');
 
-    if (db != null) {
       final now = DateTime.now().toUtc();
       final billingProduct = BillingProduct()
         ..productId = productId
@@ -63,15 +66,15 @@ void main() async {
         ..isDeleted = false;
 
       final doc = billingProduct.toProto3Json() as Map<String, dynamic>;
-      await db.collection(BillingService.billingProductsCollectionName).insertOne(doc);
+      await db
+          .collection(BillingService.billingProductsCollectionName)
+          .insertOne(doc);
       print('  Inserted into billing_products');
-    }
   }
 
-  if (db != null) {
-    await db.close();
-    print('Done. billing_products seeded.');
-  }
+  await db.close();
+  print('Done. billing_products seeded.');
+  exit(0);
 }
 
 Future<Map<String, dynamic>> _createProduct(
@@ -88,6 +91,7 @@ Future<Map<String, dynamic>> _createProduct(
     body: {'name': name, 'description': description},
   );
   if (r.statusCode != 200) {
+    print('Product create failed: ${r.statusCode} ${r.body}');
     throw Exception('Product create failed: ${r.statusCode} ${r.body}');
   }
   return _parseStripeResponse(r.body);
@@ -111,18 +115,16 @@ Future<Map<String, dynamic>> _createPrice(
     },
   );
   if (r.statusCode != 200) {
+    print('Price create failed: ${r.statusCode} ${r.body}');
     throw Exception('Price create failed: ${r.statusCode} ${r.body}');
   }
   return _parseStripeResponse(r.body);
 }
 
 Map<String, dynamic> _parseStripeResponse(String body) {
-  final out = <String, dynamic>{};
-  for (final line in body.split('&')) {
-    final parts = line.split('=');
-    if (parts.length == 2) {
-      out[Uri.decodeComponent(parts[0])] = Uri.decodeComponent(parts[1]);
-    }
+  final decoded = jsonDecode(body);
+  if (decoded is Map<String, dynamic>) {
+    return decoded;
   }
-  return out;
+  throw Exception('Unexpected Stripe response format: $decoded');
 }
