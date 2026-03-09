@@ -231,6 +231,7 @@ class BillingService extends BillingServiceBase {
   }
 
   /// Internal: fulfill a license after Stripe payment. Called by RPC (service account) or tests.
+  /// Idempotent: if license already exists (e.g. webhook retry or sync-after-redirect), returns success.
   Future<CreateLicenseResponse> _fulfillLicenseFromStripeInternal(
     String firmId,
     String licenseId,
@@ -255,11 +256,33 @@ class BillingService extends BillingServiceBase {
       referralCode: referralCode ?? '',
       creditAppliedCents: creditAppliedCents,
     );
-    final response = await _doCreateLicense(null, firmId, request);
-    if (stripeCustomerId != null && stripeCustomerId.isNotEmpty) {
-      await _updateStripeCustomerId(firmId, stripeCustomerId);
+    try {
+      final response = await _doCreateLicense(null, firmId, request);
+      if (stripeCustomerId != null && stripeCustomerId.isNotEmpty) {
+        await _updateStripeCustomerId(firmId, stripeCustomerId);
+      }
+      return response;
+    } on GrpcError catch (e) {
+      if (e.code == StatusCode.alreadyExists) {
+        // Webhook retry or user-triggered sync: license already created.
+        if (stripeCustomerId != null && stripeCustomerId.isNotEmpty) {
+          await _updateStripeCustomerId(firmId, stripeCustomerId);
+        }
+        return CreateLicenseResponse()
+          ..statusResponse = (StatusResponse()
+            ..type = StatusResponse_Type.SUCCESS
+            ..message = 'License already fulfilled')
+          ..license = License(
+            licenseId: licenseId,
+            licensePlan: plan,
+            providerProductId: providerProductId,
+            providerPriceId: providerPriceId,
+            maxUsers: maxUsers,
+            paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
+          );
+      }
+      rethrow;
     }
-    return response;
   }
 
   Future<void> _updateStripeCustomerId(String firmId, String customerId) async {
@@ -612,5 +635,91 @@ class BillingService extends BillingServiceBase {
     } on StripeCheckoutException catch (e) {
       throw GrpcError.internal(e.message);
     }
+  }
+
+  @override
+  Future<CreateLicenseResponse> fulfillFromStripeCheckoutSession(
+      ServiceCall? call, FulfillFromStripeCheckoutSessionRequest request) async {
+    final log = _logger.withContext(call);
+    final userPermission = _userPermissions(call);
+    _requireFirmId(userPermission);
+    _requireBillingRight(userPermission, Right.create);
+
+    if (request.checkoutSessionId.isEmpty) {
+      throw GrpcError.invalidArgument('checkoutSessionId is required');
+    }
+
+    final secretKey = AppEnvironment.stripeSecretKey;
+    if (secretKey == null || secretKey.isEmpty) {
+      throw GrpcError.failedPrecondition('Stripe not configured');
+    }
+
+    StripeCheckoutSessionInfo sessionInfo;
+    try {
+      sessionInfo = await fetchStripeCheckoutSession(
+        sessionId: request.checkoutSessionId,
+        stripeSecretKey: secretKey,
+      );
+    } on StripeCheckoutException catch (e) {
+      throw GrpcError.notFound('Could not load checkout session: ${e.message}');
+    }
+
+    if (sessionInfo.paymentStatus != 'paid') {
+      throw GrpcError.failedPrecondition(
+        'Session is not paid yet (status: ${sessionInfo.paymentStatus})',
+      );
+    }
+
+    final firmIdFromSession = sessionInfo.metadata['firmId'] ?? '';
+    if (firmIdFromSession != userPermission.firmId) {
+      throw GrpcError.permissionDenied(
+        'This checkout session does not belong to your firm',
+      );
+    }
+
+    if (sessionInfo.priceId.isEmpty) {
+      throw GrpcError.internal('No price in checkout session');
+    }
+
+    final product = await databaseMiddleware<BillingProduct?>(
+      _poolService,
+      (db) async => _lookupBillingProductByStripePriceId(db, sessionInfo.priceId),
+    );
+    if (product == null) {
+      throw GrpcError.invalidArgument('Unknown price: ${sessionInfo.priceId}');
+    }
+
+    final licenseId = 'lic_stripe_${_sanitizeStripeSessionId(sessionInfo.id)}';
+
+    int creditAppliedCents = 0;
+    final creditStr = sessionInfo.metadata['creditAppliedCents'];
+    if (creditStr != null && creditStr.isNotEmpty) {
+      creditAppliedCents = int.tryParse(creditStr) ?? 0;
+    }
+    final referralCode = sessionInfo.metadata['referralCode'] ?? '';
+
+    log.logRpcEntry('fulfillFromStripeCheckoutSession', requestData: {
+      'firmId': userPermission.firmId,
+      'sessionId': sessionInfo.id,
+    });
+
+    final response = await _fulfillLicenseFromStripeInternal(
+      userPermission.firmId,
+      licenseId,
+      product.licensePlan,
+      product.stripeProductId,
+      product.stripePriceId,
+      product.maxUsers,
+      stripeCustomerId: sessionInfo.customer,
+      referralCode: referralCode.isNotEmpty ? referralCode : null,
+      creditAppliedCents: creditAppliedCents,
+    );
+
+    log.logRpcExit('fulfillFromStripeCheckoutSession');
+    return response;
+  }
+
+  static String _sanitizeStripeSessionId(String sessionId) {
+    return sessionId.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_');
   }
 }
