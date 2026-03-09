@@ -117,21 +117,18 @@ class JsonWebToken {
 
   Map<String, dynamic> get payload => _payload;
 
-  /// Checks if this token is from a service account (weebi_express)
-  /// Service account tokens are identified by:
-  /// - userId contains "_service_" (e.g., "weebi_express_service_account")
-  /// - tags array contains "service_account"
-  /// - firmId is empty
+  /// Whether this token is from a service account (e.g. weebi_express calling
+  /// FulfillLicenseFromStripe). Uses a strict rule: both conditions required.
+  /// - [tags] (in payload) must contain "service_account". Tags are not in
+  ///   UserPermissions proto; fence_service injects them from the user
+  ///   document's top-level "tags" when issuing the JWT (Option B).
+  /// - [firmId] must be present and empty (service accounts have no firm).
   bool get isServiceAccount {
     final tags = _payload['tags'];
     final firmId = _payload['firmId'] as String?;
-    
-    // Check if tags contain "service_account" & firmId is empty
-    if (tags is List && tags.contains('service_account') && firmId != null && firmId.isEmpty) {
-      return true;
-    }
-    
-    return false;
+    if (firmId == null || firmId.isNotEmpty) return false;
+    if (tags is! List || !tags.contains('service_account')) return false;
+    return true;
   }
 
   /// Gets the firmId from the token payload

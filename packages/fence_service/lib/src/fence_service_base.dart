@@ -24,8 +24,15 @@ import 'package:fence_service/src/weebi_logger.dart';
 class PermissionAndSillyBoolean {
   final UserPermissions userPermissions;
   final bool mustChangePassword;
-  PermissionAndSillyBoolean(
-      {required this.userPermissions, required this.mustChangePassword});
+  /// Top-level tags from the user document. Injected into the JWT payload by
+  /// fence_service (Option B) so isServiceAccount can use the strict
+  /// tags + empty firmId rule. Not part of UserPermissions proto.
+  final List<String>? tags;
+  PermissionAndSillyBoolean({
+    required this.userPermissions,
+    required this.mustChangePassword,
+    this.tags,
+  });
 }
 
 class FenceService extends FenceServiceBase {
@@ -329,15 +336,20 @@ class FenceService extends FenceServiceBase {
           call, mailAndEncyptedPassword);
       var jwt = JsonWebToken();
       final payload = userPermission.userPermissions.toProto3Json()
-          as Map<String, dynamic>?;
+          as Map<String, dynamic>? ?? <String, dynamic>{};
+      // Option B: inject top-level user tags into JWT so isServiceAccount
+      // (strict rule: tags contains "service_account" and empty firmId) works.
+      if (userPermission.tags != null && userPermission.tags!.isNotEmpty) {
+        payload['tags'] = userPermission.tags!;
+      }
 
       // Diagnostic logging: Check payload structure before JWT creation
       log.debug('JWT payload before encoding', extra: {
-        'payloadKeys': payload?.keys.toList(),
-        'payloadSize': payload?.toString().length ?? 0,
-        'hasNullValues': payload?.values.any((v) => v == null) ?? false,
+        'payloadKeys': payload.keys.toList(),
+        'payloadSize': payload.toString().length,
+        'hasNullValues': payload.values.any((v) => v == null),
         'payloadTypes':
-            payload?.map((k, v) => MapEntry(k, v.runtimeType.toString())),
+            payload.map((k, v) => MapEntry(k, v.runtimeType.toString())),
       });
 
       jwt.createPayload(
@@ -745,9 +757,19 @@ class FenceService extends FenceServiceBase {
         final userPermission = UserPermissions.create()
           ..mergeFromProto3Json(
               userPrivate.permissions.toProto3Json() as Map<String, dynamic>);
+        // Option B: pass top-level user "tags" through so they can be injected
+        // into the JWT payload (UserPermissions proto has no tags field).
+        final rawTags = userPrivateMongo['tags'];
+        final List<String>? tags = rawTags is List
+            ? rawTags
+                .map((e) => e?.toString())
+                .whereType<String>()
+                .toList()
+            : null;
         return PermissionAndSillyBoolean(
             userPermissions: userPermission,
-            mustChangePassword: userPrivate.mustChangePassword);
+            mustChangePassword: userPrivate.mustChangePassword,
+            tags: tags?.isEmpty == true ? null : tags);
       } on GrpcError catch (e) {
         log('$e');
         rethrow;
