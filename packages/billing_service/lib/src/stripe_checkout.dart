@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 /// Creates a Stripe Checkout Session for a one-time license purchase.
@@ -57,16 +59,13 @@ Future<String> createStripeCheckoutSession({
 }
 
 Map<String, dynamic> _parseStripeResponse(String body) {
-  final out = <String, dynamic>{};
-  for (final line in body.split('&')) {
-    final idx = line.indexOf('=');
-    if (idx > 0) {
-      final key = Uri.decodeComponent(line.substring(0, idx));
-      final value = Uri.decodeComponent(line.substring(idx + 1));
-      out[key] = value;
-    }
+  final decoded = jsonDecode(body);
+  if (decoded is Map<String, dynamic>) {
+    return decoded;
   }
-  return out;
+  throw StripeCheckoutException(
+    'Unexpected Stripe response from Checkout: ${decoded.runtimeType}',
+  );
 }
 
 class StripeCheckoutException implements Exception {

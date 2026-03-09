@@ -48,7 +48,7 @@ TODO: also include search index
 /// dart run apps/server/utils/create_indexes_views.dart "mongodb+srv://user:pass@xxx.yyy.mongodb.net/dbName"
 Future<void> main(List<String> args) async {
   final connectionString =
-      args.isNotEmpty ? args.first : Platform.environment['MONGO_URI'];
+      args.isNotEmpty ? args.first : Platform.environment['MONGO_DB_URI'];
 
   if (connectionString == null || connectionString.isEmpty) {
     stderr.writeln(

@@ -1,5 +1,9 @@
 # changelog
 
+## 1.1.0 - 2026 march
+
+- add billing_service and related protos
+
 ## 1.0.18
 
 - export utils - RegExp email
