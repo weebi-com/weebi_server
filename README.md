@@ -35,12 +35,12 @@ cd packages\protos\protos_weebi\tool
 .\generate_protos.ps1
 ```
 
-**WSL/Bash:**
+**WSL/Bash:** (run from weebi_server root, same pattern as weebi_express)
 ```bash
-cd packages/protos/protos_weebi/tool
-chmod +x generate_protos.sh
-./generate_protos.sh
+chmod +x packages/protos/protos_weebi/tool/generate_protos.sh
+./packages/protos/protos_weebi/tool/generate_protos.sh
 ```
+A sibling `protos` repo (e.g. `git_weebi/protos`) is used automatically when present.
 
 ### Check proto version consistency between projects
 
@@ -57,9 +57,7 @@ chmod +x scripts/check_protos_version.sh
 
 ## generate them
 
-cd packages/protos/protos_weebi/tool
-chmod +x generate_protos.sh
-./generate_protos.sh
+From weebi_server root: see **Generate Dart code from proto files** above (PowerShell or WSL/Bash).
 
 ## test it
 grpcurl -proto packages\protos\proto\weebi_app_service.proto dev.weebicom:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion

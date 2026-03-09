@@ -818,6 +818,57 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
   void clearCreditAppliedCents() => clearField(6);
 }
 
+/// / Request to fulfill a license from a Stripe Checkout Session (e.g. after success redirect).
+class FulfillFromStripeCheckoutSessionRequest extends $pb.GeneratedMessage {
+  factory FulfillFromStripeCheckoutSessionRequest({
+    $core.String? checkoutSessionId,
+  }) {
+    final result = create();
+    if (checkoutSessionId != null) {
+      result.checkoutSessionId = checkoutSessionId;
+    }
+    return result;
+  }
+  FulfillFromStripeCheckoutSessionRequest._() : super();
+  factory FulfillFromStripeCheckoutSessionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory FulfillFromStripeCheckoutSessionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FulfillFromStripeCheckoutSessionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'checkoutSessionId', protoName: 'checkoutSessionId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  FulfillFromStripeCheckoutSessionRequest clone() => FulfillFromStripeCheckoutSessionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  FulfillFromStripeCheckoutSessionRequest copyWith(void Function(FulfillFromStripeCheckoutSessionRequest) updates) => super.copyWith((message) => updates(message as FulfillFromStripeCheckoutSessionRequest)) as FulfillFromStripeCheckoutSessionRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FulfillFromStripeCheckoutSessionRequest create() => FulfillFromStripeCheckoutSessionRequest._();
+  FulfillFromStripeCheckoutSessionRequest createEmptyInstance() => create();
+  static $pb.PbList<FulfillFromStripeCheckoutSessionRequest> createRepeated() => $pb.PbList<FulfillFromStripeCheckoutSessionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FulfillFromStripeCheckoutSessionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FulfillFromStripeCheckoutSessionRequest>(create);
+  static FulfillFromStripeCheckoutSessionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get checkoutSessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set checkoutSessionId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCheckoutSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCheckoutSessionId() => clearField(1);
+}
+
 /// / Billing product (license plan). Stored in billing_products collection.
 /// / Single source of truth for price mapping; replaces STRIPE_PRICE_* and STRIPE_PRODUCT_* env vars.
 class BillingProduct extends $pb.GeneratedMessage {

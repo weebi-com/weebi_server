@@ -63,6 +63,10 @@ class BillingServiceClient extends $grpc.Client {
       '/weebi.billing.service.BillingService/fulfillLicenseFromStripe',
       ($14.FulfillLicenseFromStripeRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $14.CreateLicenseResponse.fromBuffer(value));
+  static final _$fulfillFromStripeCheckoutSession = $grpc.ClientMethod<$14.FulfillFromStripeCheckoutSessionRequest, $14.CreateLicenseResponse>(
+      '/weebi.billing.service.BillingService/fulfillFromStripeCheckoutSession',
+      ($14.FulfillFromStripeCheckoutSessionRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $14.CreateLicenseResponse.fromBuffer(value));
 
   BillingServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -108,6 +112,10 @@ class BillingServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$14.CreateLicenseResponse> fulfillLicenseFromStripe($14.FulfillLicenseFromStripeRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$fulfillLicenseFromStripe, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$14.CreateLicenseResponse> fulfillFromStripeCheckoutSession($14.FulfillFromStripeCheckoutSessionRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$fulfillFromStripeCheckoutSession, request, options: options);
   }
 }
 
@@ -186,6 +194,13 @@ abstract class BillingServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $14.FulfillLicenseFromStripeRequest.fromBuffer(value),
         ($14.CreateLicenseResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$14.FulfillFromStripeCheckoutSessionRequest, $14.CreateLicenseResponse>(
+        'fulfillFromStripeCheckoutSession',
+        fulfillFromStripeCheckoutSession_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $14.FulfillFromStripeCheckoutSessionRequest.fromBuffer(value),
+        ($14.CreateLicenseResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$14.CreateLicenseResponse> createLicense_Pre($grpc.ServiceCall call, $async.Future<$14.CreateLicenseRequest> request) async {
@@ -228,6 +243,10 @@ abstract class BillingServiceBase extends $grpc.Service {
     return fulfillLicenseFromStripe(call, await request);
   }
 
+  $async.Future<$14.CreateLicenseResponse> fulfillFromStripeCheckoutSession_Pre($grpc.ServiceCall call, $async.Future<$14.FulfillFromStripeCheckoutSessionRequest> request) async {
+    return fulfillFromStripeCheckoutSession(call, await request);
+  }
+
   $async.Future<$14.CreateLicenseResponse> createLicense($grpc.ServiceCall call, $14.CreateLicenseRequest request);
   $async.Future<$14.ReadLicensesResponse> readLicenses($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$14.ReadBillingProductsResponse> readBillingProducts($grpc.ServiceCall call, $0.Empty request);
@@ -238,4 +257,5 @@ abstract class BillingServiceBase extends $grpc.Service {
   $async.Future<$14.RequestReferralPayoutResponse> requestReferralPayout($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$14.CreateCheckoutSessionResponse> createCheckoutSession($grpc.ServiceCall call, $14.CreateCheckoutSessionRequest request);
   $async.Future<$14.CreateLicenseResponse> fulfillLicenseFromStripe($grpc.ServiceCall call, $14.FulfillLicenseFromStripeRequest request);
+  $async.Future<$14.CreateLicenseResponse> fulfillFromStripeCheckoutSession($grpc.ServiceCall call, $14.FulfillFromStripeCheckoutSessionRequest request);
 }

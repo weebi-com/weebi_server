@@ -181,6 +181,19 @@ final $typed_data.Uint8List fulfillLicenseFromStripeRequestDescriptor = $convert
     'JhbENvZGUYBSABKAlSDHJlZmVycmFsQ29kZRIuChJjcmVkaXRBcHBsaWVkQ2VudHMYBiABKAVS'
     'EmNyZWRpdEFwcGxpZWRDZW50cw==');
 
+@$core.Deprecated('Use fulfillFromStripeCheckoutSessionRequestDescriptor instead')
+const FulfillFromStripeCheckoutSessionRequest$json = {
+  '1': 'FulfillFromStripeCheckoutSessionRequest',
+  '2': [
+    {'1': 'checkoutSessionId', '3': 1, '4': 1, '5': 9, '10': 'checkoutSessionId'},
+  ],
+};
+
+/// Descriptor for `FulfillFromStripeCheckoutSessionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fulfillFromStripeCheckoutSessionRequestDescriptor = $convert.base64Decode(
+    'CidGdWxmaWxsRnJvbVN0cmlwZUNoZWNrb3V0U2Vzc2lvblJlcXVlc3QSLAoRY2hlY2tvdXRTZX'
+    'NzaW9uSWQYASABKAlSEWNoZWNrb3V0U2Vzc2lvbklk');
+
 @$core.Deprecated('Use billingProductDescriptor instead')
 const BillingProduct$json = {
   '1': 'BillingProduct',
