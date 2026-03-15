@@ -1,5 +1,4 @@
 import 'package:fence_service/grpc.dart' show GrpcError;
-import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
