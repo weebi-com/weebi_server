@@ -19,34 +19,87 @@ const Firm$json = {
   '2': [
     {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'subscriptionPlan', '3': 3, '4': 1, '5': 9, '10': 'subscriptionPlan'},
-    {'1': 'subscriptionSeats', '3': 4, '4': 1, '5': 5, '10': 'subscriptionSeats'},
-    {'1': 'subscriptionStartTimestampUTC', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'subscriptionStartTimestampUTC'},
-    {'1': 'subscriptionEndTimestampUTC', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'subscriptionEndTimestampUTC'},
+    {
+      '1': 'subscriptionPlan',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '8': {'3': true},
+      '10': 'subscriptionPlan',
+    },
+    {
+      '1': 'subscriptionSeats',
+      '3': 4,
+      '4': 1,
+      '5': 5,
+      '8': {'3': true},
+      '10': 'subscriptionSeats',
+    },
+    {
+      '1': 'subscriptionStartTimestampUTC',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '8': {'3': true},
+      '10': 'subscriptionStartTimestampUTC',
+    },
+    {
+      '1': 'subscriptionEndTimestampUTC',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '8': {'3': true},
+      '10': 'subscriptionEndTimestampUTC',
+    },
     {'1': 'status', '3': 7, '4': 1, '5': 8, '10': 'status'},
     {'1': 'statusUpdateTimestampUTC', '3': 8, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'statusUpdateTimestampUTC'},
     {'1': 'lastUpdateTimestampUTC', '3': 9, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
     {'1': 'lastUpdatedByuserId', '3': 10, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
     {'1': 'isMailVerified', '3': 11, '4': 1, '5': 8, '10': 'isMailVerified'},
     {'1': 'creationDateUTC', '3': 12, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationDateUTC'},
+    {'1': 'stripeCustomerId', '3': 13, '4': 1, '5': 9, '10': 'stripeCustomerId'},
+    {'1': 'licenses', '3': 14, '4': 3, '5': 11, '6': '.weebi.license.License', '10': 'licenses'},
+    {'1': 'providerCustomerIds', '3': 15, '4': 3, '5': 11, '6': '.weebi.firm.Firm.ProviderCustomerIdsEntry', '10': 'providerCustomerIds'},
+    {'1': 'referralCode', '3': 16, '4': 1, '5': 9, '10': 'referralCode'},
+    {'1': 'referralCreditBalanceCents', '3': 17, '4': 1, '5': 5, '10': 'referralCreditBalanceCents'},
   ],
+  '3': [Firm_ProviderCustomerIdsEntry$json],
+};
+
+@$core.Deprecated('Use firmDescriptor instead')
+const Firm_ProviderCustomerIdsEntry$json = {
+  '1': 'ProviderCustomerIdsEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+  '7': {'7': true},
 };
 
 /// Descriptor for `Firm`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List firmDescriptor = $convert.base64Decode(
-    'CgRGaXJtEhYKBmZpcm1JZBgBIAEoCVIGZmlybUlkEhIKBG5hbWUYAiABKAlSBG5hbWUSKgoQc3'
-    'Vic2NyaXB0aW9uUGxhbhgDIAEoCVIQc3Vic2NyaXB0aW9uUGxhbhIsChFzdWJzY3JpcHRpb25T'
-    'ZWF0cxgEIAEoBVIRc3Vic2NyaXB0aW9uU2VhdHMSYAodc3Vic2NyaXB0aW9uU3RhcnRUaW1lc3'
-    'RhbXBVVEMYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUh1zdWJzY3JpcHRpb25T'
-    'dGFydFRpbWVzdGFtcFVUQxJcChtzdWJzY3JpcHRpb25FbmRUaW1lc3RhbXBVVEMYBiABKAsyGi'
-    '5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wUhtzdWJzY3JpcHRpb25FbmRUaW1lc3RhbXBVVEMS'
-    'FgoGc3RhdHVzGAcgASgIUgZzdGF0dXMSVgoYc3RhdHVzVXBkYXRlVGltZXN0YW1wVVRDGAggAS'
-    'gLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIYc3RhdHVzVXBkYXRlVGltZXN0YW1wVVRD'
-    'ElIKFmxhc3RVcGRhdGVUaW1lc3RhbXBVVEMYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZX'
-    'N0YW1wUhZsYXN0VXBkYXRlVGltZXN0YW1wVVRDEjAKE2xhc3RVcGRhdGVkQnl1c2VySWQYCiAB'
-    'KAlSE2xhc3RVcGRhdGVkQnl1c2VySWQSJgoOaXNNYWlsVmVyaWZpZWQYCyABKAhSDmlzTWFpbF'
-    'ZlcmlmaWVkEkQKD2NyZWF0aW9uRGF0ZVVUQxgMIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1l'
-    'c3RhbXBSD2NyZWF0aW9uRGF0ZVVUQw==');
+    'CgRGaXJtEhYKBmZpcm1JZBgBIAEoCVIGZmlybUlkEhIKBG5hbWUYAiABKAlSBG5hbWUSLgoQc3'
+    'Vic2NyaXB0aW9uUGxhbhgDIAEoCUICGAFSEHN1YnNjcmlwdGlvblBsYW4SMAoRc3Vic2NyaXB0'
+    'aW9uU2VhdHMYBCABKAVCAhgBUhFzdWJzY3JpcHRpb25TZWF0cxJkCh1zdWJzY3JpcHRpb25TdG'
+    'FydFRpbWVzdGFtcFVUQxgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCAhgBUh1z'
+    'dWJzY3JpcHRpb25TdGFydFRpbWVzdGFtcFVUQxJgChtzdWJzY3JpcHRpb25FbmRUaW1lc3RhbX'
+    'BVVEMYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgIYAVIbc3Vic2NyaXB0aW9u'
+    'RW5kVGltZXN0YW1wVVRDEhYKBnN0YXR1cxgHIAEoCFIGc3RhdHVzElYKGHN0YXR1c1VwZGF0ZV'
+    'RpbWVzdGFtcFVUQxgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSGHN0YXR1c1Vw'
+    'ZGF0ZVRpbWVzdGFtcFVUQxJSChZsYXN0VXBkYXRlVGltZXN0YW1wVVRDGAkgASgLMhouZ29vZ2'
+    'xlLnByb3RvYnVmLlRpbWVzdGFtcFIWbGFzdFVwZGF0ZVRpbWVzdGFtcFVUQxIwChNsYXN0VXBk'
+    'YXRlZEJ5dXNlcklkGAogASgJUhNsYXN0VXBkYXRlZEJ5dXNlcklkEiYKDmlzTWFpbFZlcmlmaW'
+    'VkGAsgASgIUg5pc01haWxWZXJpZmllZBJECg9jcmVhdGlvbkRhdGVVVEMYDCABKAsyGi5nb29n'
+    'bGUucHJvdG9idWYuVGltZXN0YW1wUg9jcmVhdGlvbkRhdGVVVEMSKgoQc3RyaXBlQ3VzdG9tZX'
+    'JJZBgNIAEoCVIQc3RyaXBlQ3VzdG9tZXJJZBIyCghsaWNlbnNlcxgOIAMoCzIWLndlZWJpLmxp'
+    'Y2Vuc2UuTGljZW5zZVIIbGljZW5zZXMSWwoTcHJvdmlkZXJDdXN0b21lcklkcxgPIAMoCzIpLn'
+    'dlZWJpLmZpcm0uRmlybS5Qcm92aWRlckN1c3RvbWVySWRzRW50cnlSE3Byb3ZpZGVyQ3VzdG9t'
+    'ZXJJZHMSIgoMcmVmZXJyYWxDb2RlGBAgASgJUgxyZWZlcnJhbENvZGUSPgoacmVmZXJyYWxDcm'
+    'VkaXRCYWxhbmNlQ2VudHMYESABKAVSGnJlZmVycmFsQ3JlZGl0QmFsYW5jZUNlbnRzGkYKGFBy'
+    'b3ZpZGVyQ3VzdG9tZXJJZHNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCV'
+    'IFdmFsdWU6AjgB');
 
 @$core.Deprecated('Use createFirmRequestDescriptor instead')
 const CreateFirmRequest$json = {

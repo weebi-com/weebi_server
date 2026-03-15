@@ -66,6 +66,19 @@ abstract class Dummy {
     
     ;
 
+  /// Starter license (1 user, lifetime). Use for tests.
+  static final licenseDummy = License(
+    licenseId: 'dummy-license-id',
+    licensePlan: LicensePlan.SOLO,
+    providerProductId: 'prod_dummy',
+    providerPriceId: 'price_dummy',
+    maxUsers: 1,
+    validFrom: Timestamp(seconds: Int64.ONE, nanos: 0),
+    // validUntil omitted = lifetime
+    paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
+  );
+
+  /// Deprecated fields kept for backward compat; use licenseDummy / licenses instead.
   static final firmNoId = Firm(
     name: 'firmDummy',
     subscriptionPlan: 'test',
@@ -76,6 +89,7 @@ abstract class Dummy {
     statusUpdateTimestampUTC: Timestamp(seconds: Int64.ONE, nanos: 0),
     lastUpdateTimestampUTC: Timestamp(seconds: Int64.ONE, nanos: 0),
     lastUpdatedByuserId: '1',
+    licenses: [licenseDummy],
   );
 
   static final firm = firmNoId..firmId = '123456789';

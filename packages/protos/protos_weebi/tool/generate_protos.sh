@@ -15,12 +15,21 @@ GENERATED_DIR="$PROTOS_WEEBI_DIR/lib/src/generated"
 PROJECT_ROOT="$(cd "$PROTOS_WEEBI_DIR/../../.." && pwd)"
 VERSION_FILE="$PROJECT_ROOT/.protos-version"
 if [ -f "$VERSION_FILE" ]; then
-    PROTOS_VERSION=$(grep "^PROTOS_VERSION=" "$VERSION_FILE" | cut -d'=' -f2 | tr -d '\r\n' || echo "")
-    PROTOS_COMMIT=$(grep "^PROTOS_COMMIT=" "$VERSION_FILE" | cut -d'=' -f2 | tr -d '\r\n' || echo "")
+    PROTOS_VERSION=$(grep "^PROTOS_VERSION=" "$VERSION_FILE" 2>/dev/null | cut -d'=' -f2 | tr -d '\r\n' || true)
+    PROTOS_COMMIT=$(grep "^PROTOS_COMMIT=" "$VERSION_FILE" 2>/dev/null | cut -d'=' -f2 | tr -d '\r\n' || true)
 fi
 # Defaults if version file not found
 PROTOS_VERSION=${PROTOS_VERSION:-main}
 PROTOS_COMMIT=${PROTOS_COMMIT:-main}
+
+# Check for local protos repo (sibling of weebi_server, e.g. git_weebi/protos)
+USE_LOCAL_PROTOS=false
+LOCAL_PROTOS="$(cd "$PROJECT_ROOT/.." 2>/dev/null && pwd)/protos"
+if [ -d "$LOCAL_PROTOS" ] && [ -d "$LOCAL_PROTOS/.git" ]; then
+    echo "Using local protos repo: $LOCAL_PROTOS"
+    PROTOS_DIR="$LOCAL_PROTOS"
+    USE_LOCAL_PROTOS=true
+fi
 
 echo "Generating Dart code from proto files..."
 echo "Proto source: $PROTOS_REPO"
@@ -64,10 +73,12 @@ if [ -d "$PROTOS_DIR" ]; then
     echo "Updating proto repository..."
     cd "$PROTOS_DIR"
     git fetch origin --tags
-    
-    # Reset any local changes first
-    git reset --hard HEAD 2>/dev/null || true
-    
+
+    # Reset any local changes first (skip if local protos to avoid losing work)
+    if [ "$USE_LOCAL_PROTOS" != "true" ]; then
+        git reset --hard HEAD 2>/dev/null || true
+    fi
+
     # Checkout specific version/commit/tag
     if echo "$PROTOS_COMMIT" | grep -qE '^v?[0-9]+\.[0-9]+\.[0-9]+'; then
         # It's a version tag
@@ -78,14 +89,29 @@ if [ -d "$PROTOS_DIR" ]; then
             git checkout "$PROTOS_COMMIT" 2>/dev/null || exit 1
         }
     else
-        # It's a branch or commit hash
+        # It's a branch or commit hash - checkout then pull to get latest
         echo "Checking out: $PROTOS_COMMIT"
-        git checkout "$PROTOS_COMMIT" 2>/dev/null || exit 1
+        git checkout "$PROTOS_COMMIT" 2>/dev/null || {
+            # If detached HEAD, try to checkout branch from origin
+            git checkout -B "$PROTOS_COMMIT" "origin/$PROTOS_COMMIT" 2>/dev/null || exit 1
+        }
+        # Pull latest when on a branch (e.g. main)
+        if git symbolic-ref -q HEAD >/dev/null 2>&1; then
+            echo "Pulling latest from origin/$PROTOS_COMMIT..."
+            git pull origin "$PROTOS_COMMIT" 2>/dev/null || true
+        fi
     fi
-    
-    # Ensure we have all files (force checkout)
-    git checkout . 2>/dev/null || true
-    
+
+    # Ensure we have all files (force checkout) only for non-local clone
+    if [ "$USE_LOCAL_PROTOS" != "true" ]; then
+        git checkout . 2>/dev/null || true
+    fi
+
+    # Show VERSION file
+    if [ -f "VERSION" ]; then
+        echo "Proto VERSION file: $(cat VERSION | tr -d '\r\n')"
+    fi
+
     cd - > /dev/null
 else
     echo "Cloning proto repository..."
@@ -144,10 +170,12 @@ PROTO_FILES_TO_CHECK=(
   "contact/contact.proto"
   "contact/contact_service.proto"
   "device.proto"
+  "license.proto"
   "firm.proto"
   "user.proto"
   "user_permissions.proto"
   "fence_service.proto"
+  "billing_service.proto"
   "ticket/ticket.proto"
   "ticket/ticket_type.proto"
   "ticket/ticket_service.proto"

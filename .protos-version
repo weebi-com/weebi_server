@@ -2,9 +2,8 @@
 # This file specifies which version of the protos repository to use
 
 # Version tag (e.g., v1.0.0) or branch name (e.g., main)
-PROTOS_VERSION=1.1.5
+#PROTOS_VERSION=1.1.9
 
-# Specific commit hash or tag to use (overrides PROTOS_VERSION if set)
-# Leave empty to use PROTOS_VERSION
-# PROTOS_COMMIT=main
+# Branch or tag to checkout (use main for latest)
+PROTOS_COMMIT=main
 

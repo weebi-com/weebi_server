@@ -15,6 +15,7 @@ import 'package:server/server_interceptors.dart';
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/weebi_app_service.dart';
+import 'package:billing_service/billing_service.dart';
 
 // * in a production environment, it’s generally not recommended to use * due to security concern
 // ? consider adding weebi domain cors here ?
@@ -83,6 +84,7 @@ void main(List<String> arguments) async {
     final ticketService = TicketService(poolService);
     final weebiAppService = WeebiAppService(poolService);
     final fenceService = FenceService(poolService);
+    final billingService = BillingService(poolService);
 
     final server = Server.create(
       services: [
@@ -90,7 +92,8 @@ void main(List<String> arguments) async {
         contactService,
         ticketService,
         fenceService,
-        weebiAppService
+        weebiAppService,
+        billingService,
       ],
       interceptors: interceptors,
     );
@@ -102,6 +105,7 @@ void main(List<String> arguments) async {
 
     print('gRPC Server running on ip $ip port ${server.port}');
     print('Use healthCheck RPC for service health and version information');
+    print('Stripe webhook is handled by weebi_express at POST /webhooks/stripe');
   } catch (e) {
     log('Failed to create gRPC server: $e');
   }
