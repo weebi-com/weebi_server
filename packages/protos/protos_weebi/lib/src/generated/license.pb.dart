@@ -33,6 +33,7 @@ class License extends $pb.GeneratedMessage {
     PaymentProvider? paymentProvider,
     $core.String? referredByFirmId,
     $core.int? creditAppliedCents,
+    $core.String? legalTermsVersionDate,
   }) {
     final result = create();
     if (licenseId != null) {
@@ -68,6 +69,9 @@ class License extends $pb.GeneratedMessage {
     if (creditAppliedCents != null) {
       result.creditAppliedCents = creditAppliedCents;
     }
+    if (legalTermsVersionDate != null) {
+      result.legalTermsVersionDate = legalTermsVersionDate;
+    }
     return result;
   }
   License._() : super();
@@ -86,6 +90,7 @@ class License extends $pb.GeneratedMessage {
     ..e<PaymentProvider>(9, _omitFieldNames ? '' : 'paymentProvider', $pb.PbFieldType.OE, protoName: 'paymentProvider', defaultOrMaker: PaymentProvider.PAYMENT_PROVIDER_UNKNOWN, valueOf: PaymentProvider.valueOf, enumValues: PaymentProvider.values)
     ..aOS(10, _omitFieldNames ? '' : 'referredByFirmId', protoName: 'referredByFirmId')
     ..a<$core.int>(11, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
+    ..aOS(12, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
     ..hasRequiredFields = false
   ;
 
@@ -210,6 +215,16 @@ class License extends $pb.GeneratedMessage {
   $core.bool hasCreditAppliedCents() => $_has(10);
   @$pb.TagNumber(11)
   void clearCreditAppliedCents() => clearField(11);
+
+  /// / CGV / terms version accepted for this purchase (YYYY-MM-DD).
+  @$pb.TagNumber(12)
+  $core.String get legalTermsVersionDate => $_getSZ(11);
+  @$pb.TagNumber(12)
+  set legalTermsVersionDate($core.String v) { $_setString(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasLegalTermsVersionDate() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearLegalTermsVersionDate() => clearField(12);
 }
 
 /// / Per-seat validity. Each user (seat) has its own start/end dates.

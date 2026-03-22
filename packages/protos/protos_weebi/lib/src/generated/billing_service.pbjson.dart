@@ -137,6 +137,7 @@ const CreateCheckoutSessionRequest$json = {
     {'1': 'cancelUrl', '3': 3, '4': 1, '5': 9, '10': 'cancelUrl'},
     {'1': 'referralCode', '3': 4, '4': 1, '5': 9, '10': 'referralCode'},
     {'1': 'creditAppliedCents', '3': 5, '4': 1, '5': 5, '10': 'creditAppliedCents'},
+    {'1': 'legalTermsVersionDate', '3': 6, '4': 1, '5': 9, '10': 'legalTermsVersionDate'},
   ],
 };
 
@@ -145,7 +146,8 @@ final $typed_data.Uint8List createCheckoutSessionRequestDescriptor = $convert.ba
     'ChxDcmVhdGVDaGVja291dFNlc3Npb25SZXF1ZXN0EhgKB3ByaWNlSWQYASABKAlSB3ByaWNlSW'
     'QSHgoKc3VjY2Vzc1VybBgCIAEoCVIKc3VjY2Vzc1VybBIcCgljYW5jZWxVcmwYAyABKAlSCWNh'
     'bmNlbFVybBIiCgxyZWZlcnJhbENvZGUYBCABKAlSDHJlZmVycmFsQ29kZRIuChJjcmVkaXRBcH'
-    'BsaWVkQ2VudHMYBSABKAVSEmNyZWRpdEFwcGxpZWRDZW50cw==');
+    'BsaWVkQ2VudHMYBSABKAVSEmNyZWRpdEFwcGxpZWRDZW50cxI0ChVsZWdhbFRlcm1zVmVyc2lv'
+    'bkRhdGUYBiABKAlSFWxlZ2FsVGVybXNWZXJzaW9uRGF0ZQ==');
 
 @$core.Deprecated('Use createCheckoutSessionResponseDescriptor instead')
 const CreateCheckoutSessionResponse$json = {
@@ -170,6 +172,7 @@ const FulfillLicenseFromStripeRequest$json = {
     {'1': 'stripeCustomerId', '3': 4, '4': 1, '5': 9, '10': 'stripeCustomerId'},
     {'1': 'referralCode', '3': 5, '4': 1, '5': 9, '10': 'referralCode'},
     {'1': 'creditAppliedCents', '3': 6, '4': 1, '5': 5, '10': 'creditAppliedCents'},
+    {'1': 'legalTermsVersionDate', '3': 7, '4': 1, '5': 9, '10': 'legalTermsVersionDate'},
   ],
 };
 
@@ -179,20 +182,23 @@ final $typed_data.Uint8List fulfillLicenseFromStripeRequestDescriptor = $convert
     'lkEhwKCWxpY2Vuc2VJZBgCIAEoCVIJbGljZW5zZUlkEhgKB3ByaWNlSWQYAyABKAlSB3ByaWNl'
     'SWQSKgoQc3RyaXBlQ3VzdG9tZXJJZBgEIAEoCVIQc3RyaXBlQ3VzdG9tZXJJZBIiCgxyZWZlcn'
     'JhbENvZGUYBSABKAlSDHJlZmVycmFsQ29kZRIuChJjcmVkaXRBcHBsaWVkQ2VudHMYBiABKAVS'
-    'EmNyZWRpdEFwcGxpZWRDZW50cw==');
+    'EmNyZWRpdEFwcGxpZWRDZW50cxI0ChVsZWdhbFRlcm1zVmVyc2lvbkRhdGUYByABKAlSFWxlZ2'
+    'FsVGVybXNWZXJzaW9uRGF0ZQ==');
 
 @$core.Deprecated('Use fulfillFromStripeCheckoutSessionRequestDescriptor instead')
 const FulfillFromStripeCheckoutSessionRequest$json = {
   '1': 'FulfillFromStripeCheckoutSessionRequest',
   '2': [
     {'1': 'checkoutSessionId', '3': 1, '4': 1, '5': 9, '10': 'checkoutSessionId'},
+    {'1': 'legalTermsVersionDate', '3': 2, '4': 1, '5': 9, '10': 'legalTermsVersionDate'},
   ],
 };
 
 /// Descriptor for `FulfillFromStripeCheckoutSessionRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List fulfillFromStripeCheckoutSessionRequestDescriptor = $convert.base64Decode(
     'CidGdWxmaWxsRnJvbVN0cmlwZUNoZWNrb3V0U2Vzc2lvblJlcXVlc3QSLAoRY2hlY2tvdXRTZX'
-    'NzaW9uSWQYASABKAlSEWNoZWNrb3V0U2Vzc2lvbklk');
+    'NzaW9uSWQYASABKAlSEWNoZWNrb3V0U2Vzc2lvbklkEjQKFWxlZ2FsVGVybXNWZXJzaW9uRGF0'
+    'ZRgCIAEoCVIVbGVnYWxUZXJtc1ZlcnNpb25EYXRl');
 
 @$core.Deprecated('Use billingProductDescriptor instead')
 const BillingProduct$json = {

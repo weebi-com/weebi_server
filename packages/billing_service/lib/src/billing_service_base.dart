@@ -227,7 +227,26 @@ class BillingService extends BillingServiceBase {
       stripeCustomerId: request.stripeCustomerId.isNotEmpty ? request.stripeCustomerId : null,
       referralCode: request.referralCode.isNotEmpty ? request.referralCode : null,
       creditAppliedCents: request.creditAppliedCents,
+      legalTermsVersionDate: request.legalTermsVersionDate.isNotEmpty
+          ? request.legalTermsVersionDate
+          : null,
     );
+  }
+
+  static final RegExp _legalTermsDatePattern = RegExp(r'^\d{4}-\d{2}-\d{2}$');
+
+  void _validateLegalTermsVersionDate(String value) {
+    final v = value.trim();
+    if (v.isEmpty) {
+      throw GrpcError.invalidArgument(
+        'legalTermsVersionDate is required (YYYY-MM-DD)',
+      );
+    }
+    if (!_legalTermsDatePattern.hasMatch(v)) {
+      throw GrpcError.invalidArgument(
+        'legalTermsVersionDate must be YYYY-MM-DD',
+      );
+    }
   }
 
   /// Internal: fulfill a license after Stripe payment. Called by RPC (service account) or tests.
@@ -242,7 +261,9 @@ class BillingService extends BillingServiceBase {
     String? stripeCustomerId,
     String? referralCode,
     int creditAppliedCents = 0,
+    String? legalTermsVersionDate,
   }) async {
+    final termsDate = legalTermsVersionDate?.trim() ?? '';
     final request = CreateLicenseRequest(
       license: License(
         licenseId: licenseId,
@@ -252,6 +273,7 @@ class BillingService extends BillingServiceBase {
         maxUsers: maxUsers,
         validFrom: DateTime.now().toUtc().timestampProto,
         paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
+        legalTermsVersionDate: termsDate,
       ),
       referralCode: referralCode ?? '',
       creditAppliedCents: creditAppliedCents,
@@ -268,6 +290,9 @@ class BillingService extends BillingServiceBase {
         if (stripeCustomerId != null && stripeCustomerId.isNotEmpty) {
           await _updateStripeCustomerId(firmId, stripeCustomerId);
         }
+        if (termsDate.isNotEmpty) {
+          await _backfillLegalTermsOnExistingLicense(firmId, licenseId, termsDate);
+        }
         return CreateLicenseResponse()
           ..statusResponse = (StatusResponse()
             ..type = StatusResponse_Type.SUCCESS
@@ -279,6 +304,7 @@ class BillingService extends BillingServiceBase {
             providerPriceId: providerPriceId,
             maxUsers: maxUsers,
             paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
+            legalTermsVersionDate: termsDate,
           );
       }
       rethrow;
@@ -291,6 +317,54 @@ class BillingService extends BillingServiceBase {
         where.eq('firmId', firmId),
         ModifierBuilder().set('providerCustomerIds.stripe', customerId),
       );
+    });
+  }
+
+  /// When the webhook created the license first, [legalTermsVersionDate] may be empty; set it once from the client sync RPC.
+  Future<void> _backfillLegalTermsOnExistingLicense(
+    String firmId,
+    String licenseId,
+    String termsDate,
+  ) async {
+    if (termsDate.isEmpty) return;
+    await databaseMiddleware<void>(_poolService, (db) async {
+      final coll = db.collection(FenceService.firmCollectionName);
+      final firm = await coll.findOne(where.eq('firmId', firmId));
+      if (firm == null) return;
+      final rawList = firm['licenses'] as List?;
+      if (rawList == null || rawList.isEmpty) return;
+
+      var targetIndex = -1;
+      for (var i = 0; i < rawList.length; i++) {
+        final m = Map<String, dynamic>.from(rawList[i] as Map);
+        if (m['licenseId'] != licenseId) continue;
+        final existing = (m['legalTermsVersionDate'] as String?)?.trim() ?? '';
+        if (existing.isNotEmpty) return;
+        targetIndex = i;
+        break;
+      }
+      if (targetIndex < 0) return;
+
+      final newList = <dynamic>[];
+      for (var i = 0; i < rawList.length; i++) {
+        if (i == targetIndex) {
+          final copy = Map<String, dynamic>.from(rawList[i] as Map);
+          copy['legalTermsVersionDate'] = termsDate;
+          newList.add(copy);
+        } else {
+          newList.add(rawList[i]);
+        }
+      }
+
+      final result = await coll.updateOne(
+        where.eq('firmId', firmId),
+        ModifierBuilder().set('licenses', newList),
+      );
+      if (result.nModified != 1) {
+        _logger.warning(
+          'backfill legalTermsVersionDate: expected nModified=1 got ${result.nModified} firm=$firmId license=$licenseId',
+        );
+      }
     });
   }
 
@@ -585,6 +659,7 @@ class BillingService extends BillingServiceBase {
     if (request.cancelUrl.isEmpty) {
       throw GrpcError.invalidArgument('cancelUrl is required');
     }
+    _validateLegalTermsVersionDate(request.legalTermsVersionDate);
 
     final secretKey = AppEnvironment.stripeSecretKey;
     if (secretKey == null || secretKey.isEmpty) {
@@ -601,6 +676,7 @@ class BillingService extends BillingServiceBase {
     log.logRpcEntry('createCheckoutSession', requestData: {
       'firmId': userPermission.firmId,
       'priceId': request.priceId,
+      'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
     });
 
     final customerId = await databaseMiddleware<String?>(_poolService, (db) async {
@@ -648,6 +724,7 @@ class BillingService extends BillingServiceBase {
     if (request.checkoutSessionId.isEmpty) {
       throw GrpcError.invalidArgument('checkoutSessionId is required');
     }
+    _validateLegalTermsVersionDate(request.legalTermsVersionDate);
 
     final secretKey = AppEnvironment.stripeSecretKey;
     if (secretKey == null || secretKey.isEmpty) {
@@ -698,9 +775,12 @@ class BillingService extends BillingServiceBase {
     }
     final referralCode = sessionInfo.metadata['referralCode'] ?? '';
 
+    final termsForLicense = request.legalTermsVersionDate.trim();
+
     log.logRpcEntry('fulfillFromStripeCheckoutSession', requestData: {
       'firmId': userPermission.firmId,
       'sessionId': sessionInfo.id,
+      'legalTermsVersionDate': termsForLicense,
     });
 
     final response = await _fulfillLicenseFromStripeInternal(
@@ -713,6 +793,7 @@ class BillingService extends BillingServiceBase {
       stripeCustomerId: sessionInfo.customer,
       referralCode: referralCode.isNotEmpty ? referralCode : null,
       creditAppliedCents: creditAppliedCents,
+      legalTermsVersionDate: termsForLicense,
     );
 
     log.logRpcExit('fulfillFromStripeCheckoutSession');

@@ -543,6 +543,7 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
     $core.String? cancelUrl,
     $core.String? referralCode,
     $core.int? creditAppliedCents,
+    $core.String? legalTermsVersionDate,
   }) {
     final result = create();
     if (priceId != null) {
@@ -560,6 +561,9 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
     if (creditAppliedCents != null) {
       result.creditAppliedCents = creditAppliedCents;
     }
+    if (legalTermsVersionDate != null) {
+      result.legalTermsVersionDate = legalTermsVersionDate;
+    }
     return result;
   }
   CreateCheckoutSessionRequest._() : super();
@@ -572,6 +576,7 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'cancelUrl', protoName: 'cancelUrl')
     ..aOS(4, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(5, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
+    ..aOS(6, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
     ..hasRequiredFields = false
   ;
 
@@ -645,6 +650,16 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
   $core.bool hasCreditAppliedCents() => $_has(4);
   @$pb.TagNumber(5)
   void clearCreditAppliedCents() => clearField(5);
+
+  /// / CGV / terms version the buyer accepted before checkout (YYYY-MM-DD, one revision per day).
+  @$pb.TagNumber(6)
+  $core.String get legalTermsVersionDate => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set legalTermsVersionDate($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasLegalTermsVersionDate() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearLegalTermsVersionDate() => clearField(6);
 }
 
 class CreateCheckoutSessionResponse extends $pb.GeneratedMessage {
@@ -706,6 +721,7 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
     $core.String? stripeCustomerId,
     $core.String? referralCode,
     $core.int? creditAppliedCents,
+    $core.String? legalTermsVersionDate,
   }) {
     final result = create();
     if (firmId != null) {
@@ -726,6 +742,9 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
     if (creditAppliedCents != null) {
       result.creditAppliedCents = creditAppliedCents;
     }
+    if (legalTermsVersionDate != null) {
+      result.legalTermsVersionDate = legalTermsVersionDate;
+    }
     return result;
   }
   FulfillLicenseFromStripeRequest._() : super();
@@ -739,6 +758,7 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'stripeCustomerId', protoName: 'stripeCustomerId')
     ..aOS(5, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(6, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
+    ..aOS(7, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
     ..hasRequiredFields = false
   ;
 
@@ -816,16 +836,30 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
   $core.bool hasCreditAppliedCents() => $_has(5);
   @$pb.TagNumber(6)
   void clearCreditAppliedCents() => clearField(6);
+
+  /// / CGV / terms version from checkout session metadata (YYYY-MM-DD).
+  @$pb.TagNumber(7)
+  $core.String get legalTermsVersionDate => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set legalTermsVersionDate($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasLegalTermsVersionDate() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearLegalTermsVersionDate() => clearField(7);
 }
 
 /// / Request to fulfill a license from a Stripe Checkout Session (e.g. after success redirect).
 class FulfillFromStripeCheckoutSessionRequest extends $pb.GeneratedMessage {
   factory FulfillFromStripeCheckoutSessionRequest({
     $core.String? checkoutSessionId,
+    $core.String? legalTermsVersionDate,
   }) {
     final result = create();
     if (checkoutSessionId != null) {
       result.checkoutSessionId = checkoutSessionId;
+    }
+    if (legalTermsVersionDate != null) {
+      result.legalTermsVersionDate = legalTermsVersionDate;
     }
     return result;
   }
@@ -835,6 +869,7 @@ class FulfillFromStripeCheckoutSessionRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FulfillFromStripeCheckoutSessionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'checkoutSessionId', protoName: 'checkoutSessionId')
+    ..aOS(2, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
     ..hasRequiredFields = false
   ;
 
@@ -867,6 +902,16 @@ class FulfillFromStripeCheckoutSessionRequest extends $pb.GeneratedMessage {
   $core.bool hasCheckoutSessionId() => $_has(0);
   @$pb.TagNumber(1)
   void clearCheckoutSessionId() => clearField(1);
+
+  /// / Same value as sent to createCheckoutSession (YYYY-MM-DD). Persisted on the license; not read from Stripe.
+  @$pb.TagNumber(2)
+  $core.String get legalTermsVersionDate => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set legalTermsVersionDate($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLegalTermsVersionDate() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLegalTermsVersionDate() => clearField(2);
 }
 
 /// / Billing product (license plan). Stored in billing_products collection.

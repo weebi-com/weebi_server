@@ -1,5 +1,9 @@
 # changelog
 
+## 1.1.2 - 2026 march
+
+- added termsVersion in license
+
 ## 1.1.1 - 2026 march
 
 - add fulfillFromStripeCheckoutSession in billingServiceClient
