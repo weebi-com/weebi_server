@@ -1,3 +1,8 @@
+# changelog
+## 1.0.9 - march 2026
+
+- terms and conditions versions
+
 ## 1.0.8 - march 2026
 
 - billing_service and payment integration

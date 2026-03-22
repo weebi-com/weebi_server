@@ -59,6 +59,7 @@ const License$json = {
     {'1': 'paymentProvider', '3': 9, '4': 1, '5': 14, '6': '.weebi.license.PaymentProvider', '10': 'paymentProvider'},
     {'1': 'referredByFirmId', '3': 10, '4': 1, '5': 9, '10': 'referredByFirmId'},
     {'1': 'creditAppliedCents', '3': 11, '4': 1, '5': 5, '10': 'creditAppliedCents'},
+    {'1': 'legalTermsVersionDate', '3': 12, '4': 1, '5': 9, '10': 'legalTermsVersionDate'},
   ],
 };
 
@@ -73,7 +74,8 @@ final $typed_data.Uint8List licenseDescriptor = $convert.base64Decode(
     'aWwSMAoFc2VhdHMYCCADKAsyGi53ZWViaS5saWNlbnNlLkxpY2Vuc2VTZWF0UgVzZWF0cxJICg'
     '9wYXltZW50UHJvdmlkZXIYCSABKA4yHi53ZWViaS5saWNlbnNlLlBheW1lbnRQcm92aWRlclIP'
     'cGF5bWVudFByb3ZpZGVyEioKEHJlZmVycmVkQnlGaXJtSWQYCiABKAlSEHJlZmVycmVkQnlGaX'
-    'JtSWQSLgoSY3JlZGl0QXBwbGllZENlbnRzGAsgASgFUhJjcmVkaXRBcHBsaWVkQ2VudHM=');
+    'JtSWQSLgoSY3JlZGl0QXBwbGllZENlbnRzGAsgASgFUhJjcmVkaXRBcHBsaWVkQ2VudHMSNAoV'
+    'bGVnYWxUZXJtc1ZlcnNpb25EYXRlGAwgASgJUhVsZWdhbFRlcm1zVmVyc2lvbkRhdGU=');
 
 @$core.Deprecated('Use licenseSeatDescriptor instead')
 const LicenseSeat$json = {
