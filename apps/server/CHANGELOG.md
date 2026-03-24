@@ -1,4 +1,8 @@
 # changelog
+## 1.1.0 - march 2026
+
+- hide tickets from other boutiques from unlicenced users
+
 ## 1.0.9 - march 2026
 
 - terms and conditions versions
