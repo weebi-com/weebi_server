@@ -1,9 +1,27 @@
+import 'package:billing_service/billing_service.dart' show LicenseEntitlement;
 import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/logging.dart';
 import 'package:fence_service/protos_weebi.dart';
+
+/// Loads [Firm.licenses] from Mongo (same source as [BillingService.readLicenses]).
+Future<List<License>> _readFirmLicenses(Db db, String firmId) async {
+  if (firmId.isEmpty) return [];
+  final firmCollection = db.collection(FenceService.firmCollectionName);
+  final firmDoc = await firmCollection.findOne(where.eq('firmId', firmId));
+  if (firmDoc == null) return [];
+  final licensesJson = firmDoc['licenses'] as List? ?? [];
+  return [
+    for (final l in licensesJson)
+      (License()
+        ..mergeFromProto3Json(
+          Map<String, dynamic>.from(l as Map),
+          ignoreUnknownFields: true,
+        )),
+  ];
+}
 
 abstract class _Helpers {
   static SelectorBuilder selectTicket(String firmId, String boutiqueId,
@@ -117,6 +135,24 @@ class TicketService extends TicketServiceBase {
     });
   }
 
+  /// Lists tickets for [request.chainId] (firm from the authenticated user).
+  ///
+  /// **Boutique scope** follows the convention that the first chain and first boutique share
+  /// the same id as [UserPermissions.firmId].
+  ///
+  /// * **No active license seat** for this user ([LicenseEntitlement.userHasActiveLicensedSeat]):
+  ///   only tickets with `boutiqueId == firmId` are returned. If the client passes a non-empty
+  ///   [ReadAllTicketsRequest.boutiqueId] different from [UserPermissions.firmId],
+  ///   [GrpcError.permissionDenied] (a license seat is required to read other stores).
+  ///
+  /// * **With a license seat**:
+  ///   * [UserPermissions.fullAccess] — all boutiques in the chain, or only
+  ///     [ReadAllTicketsRequest.boutiqueId] when it is set (after [isBoutiqueAccessible]).
+  ///   * Limited boutique access — tickets are restricted to
+  ///     [AccessLimited.boutiqueIds], or to [ReadAllTicketsRequest.boutiqueId] when set
+  ///     (after [isBoutiqueAccessible]).
+  ///
+  /// See [LicenseEntitlement.userHasActiveLicensedSeat] for seat matching rules.
   @override
   Future<TicketsResponse> readAll(
       ServiceCall? call, ReadAllTicketsRequest request) async {
@@ -140,45 +176,81 @@ class TicketService extends TicketServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
 
-    // the boss and managers can access tickets from several boutiques
-    bool isOneBoutiqueFilter = false;
-    if (request.boutiqueId.isNotEmpty) {
-      if (userPermission.isBoutiqueAccessible(request.boutiqueId) == false) {
-        throw GrpcError.permissionDenied(
-            'user cannot access data from boutique ${request.boutiqueId}');
-      }
-      isOneBoutiqueFilter = true;
-    }
-
-    log.debug('readTickets', extra: {
-      'firmId': userPermission.firmId,
-      'chainId': request.chainId,
-      'isOneBoutiqueFilter': isOneBoutiqueFilter,
-    });
-
-    final selector = where
-        .eq('firmId', userPermission.firmId)
-        .eq('chainId', request.chainId);
-
-    if (isOneBoutiqueFilter) {
-      selector.and(where.eq('boutiqueId', request.boutiqueId));
-    }
-
-    if (request.lastFetchTimestampUTC.isNotEmpty) {
-      selector.and(where.gte('lastTouchTimestampUTC',
-          request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
-    }
-
-    if (request.isDeleted) {
-      /// will look for deleted tickets
-      selector.and(where.eq('isDeleted', true));
-    } else {
-      /// regular search for tickets
-      selector
-          .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
-    }
-
     return databaseMiddleware<TicketsResponse>(_poolService, (db) async {
+      final licenses = await _readFirmLicenses(db, userPermission.firmId);
+      final hasLicensedSeat = userPermission.userId.isNotEmpty &&
+          LicenseEntitlement.userHasActiveLicensedSeat(
+            userPermission.userId,
+            licenses,
+          );
+
+      final selector = where
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', request.chainId);
+
+      // Summary for logs: how `boutiqueId` is constrained (see [readAll] dartdoc).
+      var effectiveBoutiqueFilter = '';
+
+      if (!hasLicensedSeat) {
+        if (request.boutiqueId.isNotEmpty &&
+            request.boutiqueId != userPermission.firmId) {
+          throw GrpcError.permissionDenied(
+            'reading tickets outside the default boutique (firmId) requires a license seat',
+          );
+        }
+        selector.and(where.eq('boutiqueId', userPermission.firmId));
+        effectiveBoutiqueFilter = userPermission.firmId;
+      } else if (userPermission.fullAccess.hasFullAccess) {
+        if (request.boutiqueId.isNotEmpty) {
+          if (userPermission.isBoutiqueAccessible(request.boutiqueId) == false) {
+            throw GrpcError.permissionDenied(
+                'user cannot access data from boutique ${request.boutiqueId}');
+          }
+          selector.and(where.eq('boutiqueId', request.boutiqueId));
+          effectiveBoutiqueFilter = request.boutiqueId;
+        } else {
+          effectiveBoutiqueFilter = '(chain-wide)';
+        }
+      } else {
+        final allowed =
+            List<String>.from(userPermission.limitedAccess.boutiqueIds.ids);
+        if (allowed.isEmpty) {
+          throw GrpcError.permissionDenied('user has no boutique access');
+        }
+        if (request.boutiqueId.isNotEmpty) {
+          if (userPermission.isBoutiqueAccessible(request.boutiqueId) == false) {
+            throw GrpcError.permissionDenied(
+                'user cannot access data from boutique ${request.boutiqueId}');
+          }
+          selector.and(where.eq('boutiqueId', request.boutiqueId));
+          effectiveBoutiqueFilter = request.boutiqueId;
+        } else {
+          selector.and(where.oneFrom('boutiqueId', allowed));
+          effectiveBoutiqueFilter = 'in(${allowed.length})';
+        }
+      }
+
+      log.debug('readTickets', extra: {
+        'firmId': userPermission.firmId,
+        'chainId': request.chainId,
+        'hasLicensedSeat': hasLicensedSeat,
+        'effectiveBoutiqueFilter': effectiveBoutiqueFilter,
+      });
+
+      if (request.lastFetchTimestampUTC.isNotEmpty) {
+        selector.and(where.gte('lastTouchTimestampUTC',
+            request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
+      }
+
+      if (request.isDeleted) {
+        // will look for deleted tickets
+        selector.and(where.eq('isDeleted', true));
+      } else {
+        // regular search for tickets
+        selector
+            .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
+      }
+
       final collection = db.collection(collectionName);
 
       try {
@@ -204,6 +276,7 @@ class TicketService extends TicketServiceBase {
         log.logRpcError('readAll', e, extra: {
           'chainId': request.chainId,
           'boutiqueId': request.boutiqueId,
+          'effectiveBoutiqueFilter': effectiveBoutiqueFilter,
         });
         rethrow;
       }
