@@ -39,10 +39,6 @@ class AppEnvironment {
   // Stripe configuration
   static String? get stripeSecretKey =>
       Platform.environment['STRIPE_SECRET_KEY'];
-  static String? get stripePublishableKey =>
-      Platform.environment['STRIPE_PUBLISHABLE_KEY'];
-  static String? get stripeWebhookSecret =>
-      Platform.environment['STRIPE_WEBHOOK_SECRET'];
 
   // weebi_express service configuration
   static String? get weebiExpressBaseUrl {
