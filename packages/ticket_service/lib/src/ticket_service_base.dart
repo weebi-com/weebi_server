@@ -5,6 +5,7 @@ import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/logging.dart';
 import 'package:fence_service/protos_weebi.dart';
+import 'fx_snapshot_validation.dart';
 
 /// Loads [Firm.licenses] from Mongo (same source as [BillingService.readLicenses]).
 Future<List<License>> _readFirmLicenses(Db db, String firmId) async {
@@ -71,6 +72,8 @@ class TicketService extends TicketServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to create ticket');
     }
+
+    assertValidFxSnapshot(request.ticket);
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final collection = db.collection(collectionName);
@@ -523,6 +526,10 @@ class TicketService extends TicketServiceBase {
         false) {
       throw GrpcError.permissionDenied(
           'user does not have right to create ticket');
+    }
+
+    for (final ticketPb in request.tickets) {
+      assertValidFxSnapshot(ticketPb);
     }
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {

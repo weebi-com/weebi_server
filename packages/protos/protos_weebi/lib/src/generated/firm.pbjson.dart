@@ -64,8 +64,16 @@ const Firm$json = {
     {'1': 'providerCustomerIds', '3': 15, '4': 3, '5': 11, '6': '.weebi.firm.Firm.ProviderCustomerIdsEntry', '10': 'providerCustomerIds'},
     {'1': 'referralCode', '3': 16, '4': 1, '5': 9, '10': 'referralCode'},
     {'1': 'referralCreditBalanceCents', '3': 17, '4': 1, '5': 5, '10': 'referralCreditBalanceCents'},
+    {'1': 'default_currency', '3': 18, '4': 1, '5': 9, '9': 0, '10': 'defaultCurrency', '17': true},
+    {'1': 'dual_currency_enabled', '3': 19, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
+    {'1': 'secondary_display_currency', '3': 20, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
   ],
   '3': [Firm_ProviderCustomerIdsEntry$json],
+  '8': [
+    {'1': '_default_currency'},
+    {'1': '_dual_currency_enabled'},
+    {'1': '_secondary_display_currency'},
+  ],
 };
 
 @$core.Deprecated('Use firmDescriptor instead')
@@ -97,21 +105,30 @@ final $typed_data.Uint8List firmDescriptor = $convert.base64Decode(
     'Y2Vuc2UuTGljZW5zZVIIbGljZW5zZXMSWwoTcHJvdmlkZXJDdXN0b21lcklkcxgPIAMoCzIpLn'
     'dlZWJpLmZpcm0uRmlybS5Qcm92aWRlckN1c3RvbWVySWRzRW50cnlSE3Byb3ZpZGVyQ3VzdG9t'
     'ZXJJZHMSIgoMcmVmZXJyYWxDb2RlGBAgASgJUgxyZWZlcnJhbENvZGUSPgoacmVmZXJyYWxDcm'
-    'VkaXRCYWxhbmNlQ2VudHMYESABKAVSGnJlZmVycmFsQ3JlZGl0QmFsYW5jZUNlbnRzGkYKGFBy'
-    'b3ZpZGVyQ3VzdG9tZXJJZHNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCV'
-    'IFdmFsdWU6AjgB');
+    'VkaXRCYWxhbmNlQ2VudHMYESABKAVSGnJlZmVycmFsQ3JlZGl0QmFsYW5jZUNlbnRzEi4KEGRl'
+    'ZmF1bHRfY3VycmVuY3kYEiABKAlIAFIPZGVmYXVsdEN1cnJlbmN5iAEBEjcKFWR1YWxfY3Vycm'
+    'VuY3lfZW5hYmxlZBgTIAEoCEgBUhNkdWFsQ3VycmVuY3lFbmFibGVkiAEBEkEKGnNlY29uZGFy'
+    'eV9kaXNwbGF5X2N1cnJlbmN5GBQgASgJSAJSGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeYgBAR'
+    'pGChhQcm92aWRlckN1c3RvbWVySWRzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUY'
+    'AiABKAlSBXZhbHVlOgI4AUITChFfZGVmYXVsdF9jdXJyZW5jeUIYChZfZHVhbF9jdXJyZW5jeV'
+    '9lbmFibGVkQh0KG19zZWNvbmRhcnlfZGlzcGxheV9jdXJyZW5jeQ==');
 
 @$core.Deprecated('Use createFirmRequestDescriptor instead')
 const CreateFirmRequest$json = {
   '1': 'CreateFirmRequest',
   '2': [
     {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
+    {'1': 'default_currency', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'defaultCurrency', '17': true},
+  ],
+  '8': [
+    {'1': '_default_currency'},
   ],
 };
 
 /// Descriptor for `CreateFirmRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List createFirmRequestDescriptor = $convert.base64Decode(
-    'ChFDcmVhdGVGaXJtUmVxdWVzdBISCgRuYW1lGAEgASgJUgRuYW1l');
+    'ChFDcmVhdGVGaXJtUmVxdWVzdBISCgRuYW1lGAEgASgJUgRuYW1lEi4KEGRlZmF1bHRfY3Vycm'
+    'VuY3kYAiABKAlIAFIPZGVmYXVsdEN1cnJlbmN5iAEBQhMKEV9kZWZhdWx0X2N1cnJlbmN5');
 
 @$core.Deprecated('Use createFirmResponseDescriptor instead')
 const CreateFirmResponse$json = {

@@ -1,5 +1,9 @@
 # changelog
 
+## 1.2.3 - 2026 march
+
+- currency
+
 ## 1.1.2 - 2026 march
 
 - added termsVersion in license

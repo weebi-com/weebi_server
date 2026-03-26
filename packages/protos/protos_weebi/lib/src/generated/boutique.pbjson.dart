@@ -98,11 +98,15 @@ const BoutiquePb$json = {
     {'1': 'deletedBy', '3': 13, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 14, '4': 1, '5': 9, '10': 'restoredBy'},
     {'1': 'mail', '3': 15, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'currency', '3': 16, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
     {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiquePb.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
   '3': [BoutiquePb_AdditionalAttributesEntry$json],
+  '8': [
+    {'1': '_currency'},
+  ],
   '9': [
-    {'1': 16, '2': 99},
+    {'1': 17, '2': 99},
   ],
 };
 
@@ -127,8 +131,9 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'IAEoAVIFcHJvbW8SHgoKcHJvbW9TdGFydBgKIAEoCVIKcHJvbW9TdGFydBIaCghwcm9tb0VuZB'
     'gLIAEoCVIIcHJvbW9FbmQSHAoJaXNEZWxldGVkGAwgASgIUglpc0RlbGV0ZWQSHAoJZGVsZXRl'
     'ZEJ5GA0gASgJUglkZWxldGVkQnkSHgoKcmVzdG9yZWRCeRgOIAEoCVIKcmVzdG9yZWRCeRISCg'
-    'RtYWlsGA8gASgJUgRtYWlsEmoKFWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI0LndlZWJp'
-    'LmJvdXRpcXVlLkJvdXRpcXVlUGIuQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb2'
-    '5hbF9hdHRyaWJ1dGVzGkcKGUFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJ'
-    'UgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AUoECBAQYw==');
+    'RtYWlsGA8gASgJUgRtYWlsEh8KCGN1cnJlbmN5GBAgASgJSABSCGN1cnJlbmN5iAEBEmoKFWFk'
+    'ZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI0LndlZWJpLmJvdXRpcXVlLkJvdXRpcXVlUGIuQW'
+    'RkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb25hbF9hdHRyaWJ1dGVzGkcKGUFkZGl0'
+    'aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBX'
+    'ZhbHVlOgI4AUILCglfY3VycmVuY3lKBAgREGM=');
 

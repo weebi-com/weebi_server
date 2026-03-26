@@ -54,6 +54,15 @@ class AppEnvironment {
     return jwtSecretKey;
   }
 
+  /// ISO 4217 default when firm/chain/boutique omit currency (override via FIRMS_DEFAULT_CURRENCY).
+  static String get platformDefaultCurrency {
+    final v = Platform.environment['FIRMS_DEFAULT_CURRENCY']?.trim();
+    if (v != null && v.length == 3) {
+      return v.toUpperCase();
+    }
+    return 'EUR';
+  }
+
   // Environment detection
   static bool get _isTestOrCI {
     // Check for CI environments

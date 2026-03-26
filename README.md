@@ -50,14 +50,6 @@ chmod +x scripts/check_protos_version.sh
 ./scripts/check_protos_version.sh
 ```
 
-in WSL
-cd weebi_server
-chmod +x scripts/check_protos_version.sh
-./scripts/check_protos_version.sh
-
-## generate them
-
-From weebi_server root: see **Generate Dart code from proto files** above (PowerShell or WSL/Bash).
 
 ## test it
 grpcurl -proto packages\protos\proto\weebi_app_service.proto dev.weebicom:443 weebi.weebi_app.service.WeebiAppService/readAppMinimumVersion
