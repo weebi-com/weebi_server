@@ -98,12 +98,13 @@ const UserPermissions$json = {
     {'1': 'userManagementRights', '3': 12, '4': 1, '5': 11, '6': '.weebi.user.permissions.UserManagementRights', '10': 'userManagementRights'},
     {'1': 'billingRights', '3': 13, '4': 1, '5': 11, '6': '.weebi.user.permissions.BillingRights', '10': 'billingRights'},
     {'1': 'boolRights', '3': 14, '4': 1, '5': 11, '6': '.weebi.user.permissions.BoolRights', '10': 'boolRights'},
+    {'1': 'is_firm_creator', '3': 15, '4': 1, '5': 8, '10': 'isFirmCreator'},
   ],
   '8': [
     {'1': 'access'},
   ],
   '9': [
-    {'1': 15, '2': 99},
+    {'1': 16, '2': 99},
   ],
 };
 
@@ -125,7 +126,8 @@ final $typed_data.Uint8List userPermissionsDescriptor = $convert.base64Decode(
     '1hbmFnZW1lbnRSaWdodHNSFHVzZXJNYW5hZ2VtZW50UmlnaHRzEksKDWJpbGxpbmdSaWdodHMY'
     'DSABKAsyJS53ZWViaS51c2VyLnBlcm1pc3Npb25zLkJpbGxpbmdSaWdodHNSDWJpbGxpbmdSaW'
     'dodHMSQgoKYm9vbFJpZ2h0cxgOIAEoCzIiLndlZWJpLnVzZXIucGVybWlzc2lvbnMuQm9vbFJp'
-    'Z2h0c1IKYm9vbFJpZ2h0c0IICgZhY2Nlc3NKBAgPEGM=');
+    'Z2h0c1IKYm9vbFJpZ2h0cxImCg9pc19maXJtX2NyZWF0b3IYDyABKAhSDWlzRmlybUNyZWF0b3'
+    'JCCAoGYWNjZXNzSgQIEBBj');
 
 @$core.Deprecated('Use articleRightsDescriptor instead')
 const ArticleRights$json = {

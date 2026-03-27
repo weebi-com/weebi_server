@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/protos_weebi.dart';
@@ -30,6 +31,13 @@ void main() async {
     final db = await poolService.acquire();
     await db.createCollection(FenceService.userCollectionName);
     await db.createCollection(FenceService.boutiqueCollectionName);
+    await db.createCollection(FenceService.firmCollectionName);
+    await db.collection(FenceService.firmCollectionName).deleteMany(
+        where.eq('firmId', Dummy.firm.firmId));
+    await db.collection(FenceService.firmCollectionName).insertOne({
+      'firmId': Dummy.firm.firmId,
+      'licenses': <dynamic>[],
+    });
 
     fenceService.userPermissionIfTest = Dummy.adminPermission;
     final counterfoil = Counterfoil.create()
@@ -54,6 +62,7 @@ void main() async {
   tearDownAll(() async {
     final db = await poolService.acquire();
     await db.collection(TicketService.collectionName).drop();
+    await db.collection(FenceService.firmCollectionName).drop();
     poolService.release(db);
   });
 

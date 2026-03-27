@@ -1,8 +1,14 @@
 import 'package:fence_service/protos_weebi.dart';
 
-/// Computes effective entitlement from firm.licenses.
-/// Use this instead of deprecated subscriptionPlan/subscriptionSeats.
-class LicenseEntitlement {
+/// License validity and seated users ([Firm.licenses]) for operational access checks.
+///
+/// [License.validFrom] is always interpreted in UTC. Optional [License.validUntil] and
+/// seat-level dates exist in the proto for trials / subscriptions; if you omit them,
+/// entitlement behaves as "started at validFrom, no end" (typical lifetime license).
+class LicenseSeatEntitlement {
+  /// Protobuf [Timestamp] → Dart [DateTime] (UTC). Used for every license/seat date
+  /// field, not only expiry—e.g. [License.validFrom] must be compared to [now] even
+  /// when [validUntil] is unset.
   static DateTime _toDateTime(dynamic t) {
     final s = t.seconds.toInt();
     final n = t.nanos;
@@ -23,7 +29,7 @@ class LicenseEntitlement {
     return true;
   }
 
-  /// Seat time window at [now] when seat defines its own dates; otherwise open.
+  /// Seat may narrow the time window relative to the parent license (optional).
   static bool _isSeatTimeWindowActive(LicenseSeat seat, DateTime at) {
     if (seat.hasValidFrom()) {
       final from = _toDateTime(seat.validFrom);
@@ -57,7 +63,6 @@ class LicenseEntitlement {
   }
 
   /// Sum of maxUsers from all currently valid licenses.
-  /// Valid = validFrom <= now and (validUntil absent or validUntil > now).
   static int effectiveMaxUsers(Iterable<License> licenses, {DateTime? now}) {
     final at = now ?? DateTime.now().toUtc();
     var total = 0;
@@ -68,13 +73,12 @@ class LicenseEntitlement {
     return total;
   }
 
-  /// Whether the firm has at least one valid license.
+  /// Whether the firm has at least one valid license with positive capacity.
   static bool hasValidLicense(Iterable<License> licenses, {DateTime? now}) {
     return effectiveMaxUsers(licenses, now: now) > 0;
   }
 
-  /// For backward compatibility: if licenses are empty but firm has
-  /// subscriptionSeats (deprecated), return that. Otherwise use licenses.
+  /// If licenses yield no capacity, fall back to deprecated subscriptionSeats.
   static int effectiveMaxUsersWithFallback(
     Iterable<License> licenses,
     int deprecatedSubscriptionSeats, {

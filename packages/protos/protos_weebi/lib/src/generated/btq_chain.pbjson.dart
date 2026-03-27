@@ -27,6 +27,14 @@ const Chain$json = {
     {'1': 'isDeleted', '3': 8, '4': 1, '5': 8, '10': 'isDeleted'},
     {'1': 'deletedBy', '3': 9, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 10, '4': 1, '5': 9, '10': 'restoredBy'},
+    {'1': 'currency', '3': 11, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
+    {'1': 'dual_currency_enabled', '3': 12, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
+    {'1': 'secondary_display_currency', '3': 13, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
+  ],
+  '8': [
+    {'1': '_currency'},
+    {'1': '_dual_currency_enabled'},
+    {'1': '_secondary_display_currency'},
   ],
 };
 
@@ -39,7 +47,11 @@ final $typed_data.Uint8List chainDescriptor = $convert.base64Decode(
     'VGltZXN0YW1wVVRDGAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIWbGFzdFVwZG'
     'F0ZVRpbWVzdGFtcFVUQxIwChNsYXN0VXBkYXRlZEJ5dXNlcklkGAcgASgJUhNsYXN0VXBkYXRl'
     'ZEJ5dXNlcklkEhwKCWlzRGVsZXRlZBgIIAEoCFIJaXNEZWxldGVkEhwKCWRlbGV0ZWRCeRgJIA'
-    'EoCVIJZGVsZXRlZEJ5Eh4KCnJlc3RvcmVkQnkYCiABKAlSCnJlc3RvcmVkQnk=');
+    'EoCVIJZGVsZXRlZEJ5Eh4KCnJlc3RvcmVkQnkYCiABKAlSCnJlc3RvcmVkQnkSHwoIY3VycmVu'
+    'Y3kYCyABKAlIAFIIY3VycmVuY3mIAQESNwoVZHVhbF9jdXJyZW5jeV9lbmFibGVkGAwgASgISA'
+    'FSE2R1YWxDdXJyZW5jeUVuYWJsZWSIAQESQQoac2Vjb25kYXJ5X2Rpc3BsYXlfY3VycmVuY3kY'
+    'DSABKAlIAlIYc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5iAEBQgsKCV9jdXJyZW5jeUIYChZfZH'
+    'VhbF9jdXJyZW5jeV9lbmFibGVkQh0KG19zZWNvbmRhcnlfZGlzcGxheV9jdXJyZW5jeQ==');
 
 @$core.Deprecated('Use chainsDescriptor instead')
 const Chains$json = {

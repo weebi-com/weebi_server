@@ -39,10 +39,6 @@ class AppEnvironment {
   // Stripe configuration
   static String? get stripeSecretKey =>
       Platform.environment['STRIPE_SECRET_KEY'];
-  static String? get stripePublishableKey =>
-      Platform.environment['STRIPE_PUBLISHABLE_KEY'];
-  static String? get stripeWebhookSecret =>
-      Platform.environment['STRIPE_WEBHOOK_SECRET'];
 
   // weebi_express service configuration
   static String? get weebiExpressBaseUrl {
@@ -56,6 +52,15 @@ class AppEnvironment {
       return expressSecret;
     }
     return jwtSecretKey;
+  }
+
+  /// ISO 4217 default when firm/chain/boutique omit currency (override via FIRMS_DEFAULT_CURRENCY).
+  static String get platformDefaultCurrency {
+    final v = Platform.environment['FIRMS_DEFAULT_CURRENCY']?.trim();
+    if (v != null && v.length == 3) {
+      return v.toUpperCase();
+    }
+    return 'EUR';
   }
 
   // Environment detection

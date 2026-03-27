@@ -1,4 +1,8 @@
 # changelog
+## 1.1.1 - march 2026
+
+- handle currency
+
 ## 1.1.0 - march 2026
 
 - hide tickets from other boutiques from unlicenced users

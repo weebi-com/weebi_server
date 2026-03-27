@@ -8,7 +8,13 @@ Proto files are fetched from: https://github.com/weebi-com/protos
 
 ## Generating Code
 
-To regenerate Dart code from proto files:
+From the **weebi_server** repository root (parent of `packages/`):
+
+```bash
+bash packages/protos/protos_weebi/tool/generate_protos.sh
+```
+
+Or:
 
 ```bash
 cd packages/protos/protos_weebi
@@ -30,12 +36,16 @@ This package depends on:
 
 ## downloading/updating
 
-in powershell
-``` shell
-powershell .\packages\protos\protos_weebi\tool\generate_protos.ps1
+**Windows (from weebi_server root):**
+```powershell
+cd packages\protos\protos_weebi\tool
+.\generate_protos.ps1
 ```
-in wsl
 
+**WSL/Linux/macOS (from weebi_server root):**
+```bash
+bash packages/protos/protos_weebi/tool/generate_protos.sh
+```
 
 ## troubleshooting
 
