@@ -5,6 +5,15 @@ import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/logging.dart';
 import 'package:billing_service/src/stripe_checkout.dart';
 
+Set<String> _distinctNonEmptySeatUserIds(License license) {
+  final ids = <String>{};
+  for (final s in license.seats) {
+    final u = s.userId.trim();
+    if (u.isNotEmpty) ids.add(u);
+  }
+  return ids;
+}
+
 /// License CRUD on Firm.licenses (embedded). firmId from authenticated user.
 class BillingService extends BillingServiceBase {
   static const String billingProductsCollectionName = 'billing_products';
@@ -46,6 +55,61 @@ class BillingService extends BillingServiceBase {
       copy.seats[i].firmId = firmId;
     }
     return copy;
+  }
+
+  void _assertPerLicenseSeatCap(License license) {
+    final maxUsers = license.maxUsers;
+    if (maxUsers <= 0) return;
+    final n = _distinctNonEmptySeatUserIds(license).length;
+    if (n > maxUsers) {
+      throw GrpcError.invalidArgument(
+        'LICENSE_SEATS_EXCEED_MAX_USERS: $n distinct users exceed maxUsers ($maxUsers)',
+      );
+    }
+  }
+
+  /// After merging one updated [License] into the firm's list: total distinct
+  /// assignees must not exceed the sum of positive [License.maxUsers] caps.
+  void _assertFirmWideSeatCap(Iterable<License> licenses) {
+    var sumMax = 0;
+    final allUsers = <String>{};
+    for (final lic in licenses) {
+      final m = lic.maxUsers;
+      if (m > 0) sumMax += m;
+      allUsers.addAll(_distinctNonEmptySeatUserIds(lic));
+    }
+    if (sumMax <= 0) return;
+    if (allUsers.length > sumMax) {
+      throw GrpcError.invalidArgument(
+        'LICENSE_FIRM_WIDE_SEATS_EXCEED_CAP: ${allUsers.length} distinct users exceed total purchased seats ($sumMax)',
+      );
+    }
+  }
+
+  List<License> _licensesAfterReplacingOne({
+    required List<dynamic> licensesJson,
+    required String updatedLicenseId,
+    required License replacement,
+  }) {
+    final merged = <License>[];
+    var found = false;
+    for (final raw in licensesJson) {
+      final lic = License()
+        ..mergeFromProto3Json(
+          Map<String, dynamic>.from(raw as Map),
+          ignoreUnknownFields: true,
+        );
+      if (lic.licenseId == updatedLicenseId) {
+        merged.add(replacement);
+        found = true;
+      } else {
+        merged.add(lic);
+      }
+    }
+    if (!found) {
+      merged.add(replacement);
+    }
+    return merged;
   }
 
   int _commissionCents(int amountCents) {
@@ -440,7 +504,21 @@ class BillingService extends BillingServiceBase {
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final firmCollection = db.collection(FenceService.firmCollectionName);
 
+      final firmDoc = await firmCollection.findOne(where.eq('firmId', userPermission.firmId));
+      if (firmDoc == null) {
+        throw GrpcError.notFound('firm not found');
+      }
+      final licensesJson = firmDoc['licenses'] as List? ?? [];
+
       final licenseWithFirmIds = _licenseWithSeatFirmIds(request.license, userPermission.firmId);
+      final mergedLicenses = _licensesAfterReplacingOne(
+        licensesJson: licensesJson,
+        updatedLicenseId: request.licenseId,
+        replacement: licenseWithFirmIds,
+      );
+      _assertPerLicenseSeatCap(licenseWithFirmIds);
+      _assertFirmWideSeatCap(mergedLicenses);
+
       final licenseJson = licenseWithFirmIds.toProto3Json() as Map<String, dynamic>;
 
       final result = await firmCollection.updateOne(

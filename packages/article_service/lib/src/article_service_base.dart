@@ -1,8 +1,9 @@
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
+import 'package:fence_service/logging.dart';
+import 'package:fence_service/mongo_dart.dart' show Db;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/protos_weebi.dart';
-import 'package:fence_service/logging.dart';
 
 abstract class _Helpers {
   static SelectorBuilder select(String firmId, CalibreRequest request) => where
@@ -42,6 +43,18 @@ class ArticleService extends ArticleServiceBase {
     this.userPermissionIfTest,
   });
 
+  Future<void> _assertOperationalLicense(
+    Db db,
+    ServiceCall? call,
+    UserPermissions userPermission,
+  ) async {
+    await assertUserHasOperationalLicenseWithDb(
+      db,
+      userPermissions: userPermission,
+      authorizationHeader: isTest ? '' : (call?.bearer ?? ''),
+    );
+  }
+
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, CalibreRequest request) async {
@@ -65,6 +78,7 @@ class ArticleService extends ArticleServiceBase {
     }
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collectionArticle = db.collection(collectionArticleName);
 
       try {
@@ -136,6 +150,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionArticle = db.collection(collectionArticleName);
         try {
           final calibreMongo = CalibreMongo.create()
@@ -197,6 +212,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         try {
           final collectionArticle = db.collection(collectionArticleName);
 
@@ -237,6 +253,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<CalibresResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         try {
           final selector = SelectorBuilder()
               .eq('firmId', userPermission.firmId)
@@ -302,6 +319,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<CalibresIdsResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         try {
           final collectionArticle = db.collection(collectionArticleName);
 
@@ -348,6 +366,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<CalibrePb>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionArticle = db.collection(collectionArticleName);
         try {
           final selector = where
@@ -402,6 +421,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionCategory = db.collection(collectionCategoryName);
         try {
           final snapshot = await collectionCategory
@@ -470,6 +490,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionCategory = db.collection(collectionCategoryName);
 
         try {
@@ -529,6 +550,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionCategory = db.collection(collectionCategoryName);
 
         try {
@@ -566,6 +588,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<CategoriesResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionCategory = db.collection(collectionCategoryName);
 
         try {
@@ -614,6 +637,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<CategoryPb>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionCategory = db.collection(collectionCategoryName);
 
         try {
@@ -668,6 +692,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionArticle = db.collection(collectionArticleName);
 
         final calibresMap = <Map<String, dynamic>>[];
@@ -759,6 +784,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionPhoto = db.collection(collectionPhotoName);
         final map = <Map<String, dynamic>>[];
         final now = DateTime.now().toUtc().timestampProto;
@@ -838,6 +864,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionPhoto = db.collection(collectionPhotoName);
         try {
           final snapshot = await collectionPhoto
@@ -902,6 +929,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionPhoto = db.collection(collectionPhotoName);
         try {
           await collectionPhoto
@@ -937,6 +965,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<PhotosResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionPhoto = db.collection(collectionPhotoName);
         try {
           final selector = SelectorBuilder()
@@ -1013,6 +1042,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<ArticlePhotoPb>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionPhoto = db.collection(collectionPhotoName);
         try {
           final selector = where
@@ -1054,6 +1084,7 @@ class ArticleService extends ArticleServiceBase {
     return databaseMiddleware<StatusResponse>(
       _poolService,
       (db) async {
+        await _assertOperationalLicense(db, call, userPermission);
         final collectionPhoto = db.collection(collectionPhotoName);
         try {
           final photoMongo = ArticlePhotoMongo.create()

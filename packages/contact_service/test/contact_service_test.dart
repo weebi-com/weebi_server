@@ -1,3 +1,5 @@
+import 'package:fence_service/fence_service.dart';
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:test/test.dart';
 
@@ -27,6 +29,13 @@ void main() async {
       isTest: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
+    await db.createCollection(FenceService.firmCollectionName);
+    await db.collection(FenceService.firmCollectionName).deleteMany(
+        where.eq('firmId', Dummy.firm.firmId));
+    await db.collection(FenceService.firmCollectionName).insertOne({
+      'firmId': Dummy.firm.firmId,
+      'licenses': <dynamic>[],
+    });
     await db.collection(ContactService.collectionName).drop();
     await db.createCollection(ContactService.collectionName);
     poolService.release(db);
@@ -35,6 +44,7 @@ void main() async {
   tearDownAll(() async {
     final db = await poolService.acquire();
     await db.collection(ContactService.collectionName).drop();
+    await db.collection(FenceService.firmCollectionName).drop();
     poolService.release(db);
   });
 

@@ -8,7 +8,7 @@
 choco install protoc
 
 # Install Dart plugin for protoc
-dart pub global activate protoc_plugin 21.1.0 # prototobuf < 5.0
+dart pub global activate protoc_plugin 21.1.0 # protobuf < 5.0
 
 # Add to PATH (add to your PowerShell profile for permanent)
 $env:PATH += ";$env:USERPROFILE\.pub-cache\bin"
@@ -21,7 +21,7 @@ sudo apt-get update
 sudo apt-get install -y protobuf-compiler
 
 # Install Dart plugin for protoc
-dart pub global activate protoc_plugin 21.1.0 # prototobuf < 5.0
+dart pub global activate protoc_plugin 21.1.0 # protobuf < 5.0
 
 # Add to PATH (add to ~/.bashrc or ~/.zshrc for permanent)
 export PATH="$PATH:$HOME/.pub-cache/bin"
@@ -29,17 +29,21 @@ export PATH="$PATH:$HOME/.pub-cache/bin"
 
 ### Generate Dart code from proto files (fetches from GitHub)
 
-**Windows/PowerShell (Recommended):**
+Run these from the **weebi_server** repository root (the folder that contains `packages/` and `apps/`).
+
+**Windows/PowerShell:**
 ```powershell
 cd packages\protos\protos_weebi\tool
 .\generate_protos.ps1
 ```
 
-**WSL/Bash:** (run from weebi_server root, same pattern as weebi_express)
+**WSL/Linux/macOS (Bash):** prefer `bash` so you do not need `chmod +x`, and the path works from any cwd (the script resolves itself):
 ```bash
-chmod +x packages/protos/protos_weebi/tool/generate_protos.sh
-./packages/protos/protos_weebi/tool/generate_protos.sh
+bash packages/protos/protos_weebi/tool/generate_protos.sh
 ```
+
+If Bash reports `$'\r': command not found` or similar, the shell script has Windows line endings — fix once with `sed -i 's/\r$//' packages/protos/protos_weebi/tool/generate_protos.sh` (WSL) or set `core.autocrlf` / re-checkout for `*.sh`.
+
 A sibling `protos` repo (e.g. `git_weebi/protos`) is used automatically when present.
 
 ### Check proto version consistency between projects

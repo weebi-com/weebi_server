@@ -1,28 +1,11 @@
-import 'package:billing_service/billing_service.dart' show LicenseEntitlement;
 import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/logging.dart';
+import 'package:fence_service/mongo_dart.dart' show Db;
 import 'package:fence_service/protos_weebi.dart';
 import 'fx_snapshot_validation.dart';
-
-/// Loads [Firm.licenses] from Mongo (same source as [BillingService.readLicenses]).
-Future<List<License>> _readFirmLicenses(Db db, String firmId) async {
-  if (firmId.isEmpty) return [];
-  final firmCollection = db.collection(FenceService.firmCollectionName);
-  final firmDoc = await firmCollection.findOne(where.eq('firmId', firmId));
-  if (firmDoc == null) return [];
-  final licensesJson = firmDoc['licenses'] as List? ?? [];
-  return [
-    for (final l in licensesJson)
-      (License()
-        ..mergeFromProto3Json(
-          Map<String, dynamic>.from(l as Map),
-          ignoreUnknownFields: true,
-        )),
-  ];
-}
 
 abstract class _Helpers {
   static SelectorBuilder selectTicket(String firmId, String boutiqueId,
@@ -48,6 +31,19 @@ class TicketService extends TicketServiceBase {
     this.isTest = false,
     this.userPermissionIfTest,
   });
+
+  Future<void> _assertOperationalLicense(
+    Db db,
+    ServiceCall? call,
+    UserPermissions userPermission,
+  ) async {
+    await assertUserHasOperationalLicenseWithDb(
+      db,
+      userPermissions: userPermission,
+      authorizationHeader: isTest ? '' : (call?.bearer ?? ''),
+    );
+  }
+
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, TicketRequest request) async {
@@ -76,6 +72,7 @@ class TicketService extends TicketServiceBase {
     assertValidFxSnapshot(request.ticket);
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -140,22 +137,11 @@ class TicketService extends TicketServiceBase {
 
   /// Lists tickets for [request.chainId] (firm from the authenticated user).
   ///
-  /// **Boutique scope** follows the convention that the first chain and first boutique share
-  /// the same id as [UserPermissions.firmId].
+  /// Requires firm creator (JWT) or active license seat ([assertUserHasOperationalLicenseWithDb]).
   ///
-  /// * **No active license seat** for this user ([LicenseEntitlement.userHasActiveLicensedSeat]):
-  ///   only tickets with `boutiqueId == firmId` are returned. If the client passes a non-empty
-  ///   [ReadAllTicketsRequest.boutiqueId] different from [UserPermissions.firmId],
-  ///   [GrpcError.permissionDenied] (a license seat is required to read other stores).
-  ///
-  /// * **With a license seat**:
-  ///   * [UserPermissions.fullAccess] — all boutiques in the chain, or only
-  ///     [ReadAllTicketsRequest.boutiqueId] when it is set (after [isBoutiqueAccessible]).
-  ///   * Limited boutique access — tickets are restricted to
-  ///     [AccessLimited.boutiqueIds], or to [ReadAllTicketsRequest.boutiqueId] when set
-  ///     (after [isBoutiqueAccessible]).
-  ///
-  /// See [LicenseEntitlement.userHasActiveLicensedSeat] for seat matching rules.
+  /// **Boutique scope**: first chain/boutique may share [UserPermissions.firmId].
+  /// [UserPermissions.fullAccess] — all boutiques in the chain, or filter by
+  /// [ReadAllTicketsRequest.boutiqueId] when set. Limited access uses [AccessLimited.boutiqueIds].
   @override
   Future<TicketsResponse> readAll(
       ServiceCall? call, ReadAllTicketsRequest request) async {
@@ -180,30 +166,15 @@ class TicketService extends TicketServiceBase {
     }
 
     return databaseMiddleware<TicketsResponse>(_poolService, (db) async {
-      final licenses = await _readFirmLicenses(db, userPermission.firmId);
-      final hasLicensedSeat = userPermission.userId.isNotEmpty &&
-          LicenseEntitlement.userHasActiveLicensedSeat(
-            userPermission.userId,
-            licenses,
-          );
+      await _assertOperationalLicense(db, call, userPermission);
 
       final selector = where
           .eq('firmId', userPermission.firmId)
           .eq('chainId', request.chainId);
 
-      // Summary for logs: how `boutiqueId` is constrained (see [readAll] dartdoc).
       var effectiveBoutiqueFilter = '';
 
-      if (!hasLicensedSeat) {
-        if (request.boutiqueId.isNotEmpty &&
-            request.boutiqueId != userPermission.firmId) {
-          throw GrpcError.permissionDenied(
-            'reading tickets outside the default boutique (firmId) requires a license seat',
-          );
-        }
-        selector.and(where.eq('boutiqueId', userPermission.firmId));
-        effectiveBoutiqueFilter = userPermission.firmId;
-      } else if (userPermission.fullAccess.hasFullAccess) {
+      if (userPermission.fullAccess.hasFullAccess) {
         if (request.boutiqueId.isNotEmpty) {
           if (userPermission.isBoutiqueAccessible(request.boutiqueId) == false) {
             throw GrpcError.permissionDenied(
@@ -236,7 +207,6 @@ class TicketService extends TicketServiceBase {
       log.debug('readTickets', extra: {
         'firmId': userPermission.firmId,
         'chainId': request.chainId,
-        'hasLicensedSeat': hasLicensedSeat,
         'effectiveBoutiqueFilter': effectiveBoutiqueFilter,
       });
 
@@ -279,7 +249,8 @@ class TicketService extends TicketServiceBase {
         log.logRpcError('readAll', e, extra: {
           'chainId': request.chainId,
           'boutiqueId': request.boutiqueId,
-          'effectiveBoutiqueFilter': effectiveBoutiqueFilter,
+          if (effectiveBoutiqueFilter.isNotEmpty)
+            'effectiveBoutiqueFilter': effectiveBoutiqueFilter,
         });
         rethrow;
       }
@@ -327,6 +298,7 @@ class TicketService extends TicketServiceBase {
     }
 
     return databaseMiddleware<TicketPb>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -385,6 +357,7 @@ class TicketService extends TicketServiceBase {
     );
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -467,6 +440,7 @@ class TicketService extends TicketServiceBase {
     );
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -533,6 +507,7 @@ class TicketService extends TicketServiceBase {
     }
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       final ticketsMap = <Map<String, dynamic>>[];

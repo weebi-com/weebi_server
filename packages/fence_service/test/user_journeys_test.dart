@@ -74,6 +74,22 @@ void main() async {
     expect(createFirmResponse.firm.firmId.isNotEmpty, isTrue);
     expect(createFirmResponse.statusResponse.type, StatusResponse_Type.CREATED);
     expect(createFirmResponse.firm.name, "Lili's Big Biz");
+    final dbFirmCheck = await poolService.acquire();
+    try {
+      final firmDoc = await dbFirmCheck
+          .collection(FenceService.firmCollectionName)
+          .findOne(where.eq('firmId', createFirmResponse.firm.firmId));
+      expect(firmDoc, isNotNull);
+
+      final userDoc = await dbFirmCheck
+          .collection(FenceService.userCollectionName)
+          .findOne(where.eq('userId', response.userId));
+      expect(userDoc, isNotNull);
+      final perm = userDoc!['permissions'] as Map<String, dynamic>?;
+      expect(perm?['isFirmCreator'], isTrue);
+    } finally {
+      poolService.release(dbFirmCheck);
+    }
 
     // boss permissions should not longer allow firm creation
     final tokensBoss2 = await fenceService.authenticateWithRefreshToken(

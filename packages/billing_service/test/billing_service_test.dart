@@ -179,6 +179,157 @@ void main() {
     });
   });
 
+  group('updateLicense seat caps', () {
+    setUp(() async {
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).drop();
+      await db.createCollection(FenceService.firmCollectionName);
+      final ts = DateTime.now().toUtc().timestampProto;
+      final firm = Firm(
+        firmId: firmId,
+        name: Dummy.firm.name,
+        status: true,
+        creationDateUTC: ts,
+        licenses: [
+          License(
+            licenseId: 'cap-a',
+            licensePlan: LicensePlan.SOLO,
+            providerProductId: 'p',
+            providerPriceId: 'pr',
+            maxUsers: 0,
+            validFrom: ts,
+          ),
+          License(
+            licenseId: 'cap-b',
+            licensePlan: LicensePlan.TRIO,
+            providerProductId: 'p',
+            providerPriceId: 'pr',
+            maxUsers: 2,
+            validFrom: ts,
+          ),
+        ],
+      );
+      await db
+          .collection(FenceService.firmCollectionName)
+          .insertOne(firm.toProto3Json() as Map<String, dynamic>);
+      poolService.release(db);
+    });
+
+    test('throws invalidArgument when distinct seats exceed that license maxUsers', () async {
+      final ts = DateTime.now().toUtc().timestampProto;
+      final bad = License(
+        licenseId: 'cap-b',
+        licensePlan: LicensePlan.TRIO,
+        providerProductId: 'p',
+        providerPriceId: 'pr',
+        maxUsers: 2,
+        validFrom: ts,
+        seats: [
+          LicenseSeat(userId: 'u1', firmId: firmId, validFrom: ts),
+          LicenseSeat(userId: 'u2', firmId: firmId, validFrom: ts),
+          LicenseSeat(userId: 'u3', firmId: firmId, validFrom: ts),
+        ],
+      );
+      try {
+        await billingService.updateLicense(
+          null,
+          UpdateLicenseRequest(licenseId: 'cap-b', license: bad),
+        );
+        fail('Expected GrpcError.invalidArgument');
+      } on GrpcError catch (e) {
+        expect(e.code, 3); // INVALID_ARGUMENT
+      }
+    });
+
+    test('throws invalidArgument when firm-wide distinct users exceed sum of maxUsers', () async {
+      final ts = DateTime.now().toUtc().timestampProto;
+      await billingService.updateLicense(
+        null,
+        UpdateLicenseRequest(
+          licenseId: 'cap-a',
+          license: License(
+            licenseId: 'cap-a',
+            licensePlan: LicensePlan.SOLO,
+            providerProductId: 'p',
+            providerPriceId: 'pr',
+            maxUsers: 0,
+            validFrom: ts,
+            seats: [
+              LicenseSeat(userId: 'a1', firmId: firmId, validFrom: ts),
+              LicenseSeat(userId: 'a2', firmId: firmId, validFrom: ts),
+            ],
+          ),
+        ),
+      );
+
+      try {
+        await billingService.updateLicense(
+          null,
+          UpdateLicenseRequest(
+            licenseId: 'cap-b',
+            license: License(
+              licenseId: 'cap-b',
+              licensePlan: LicensePlan.TRIO,
+              providerProductId: 'p',
+              providerPriceId: 'pr',
+              maxUsers: 2,
+              validFrom: ts,
+              seats: [LicenseSeat(userId: 'b1', firmId: firmId, validFrom: ts)],
+            ),
+          ),
+        );
+        fail('Expected GrpcError.invalidArgument');
+      } on GrpcError catch (e) {
+        expect(e.code, 3);
+      }
+    });
+
+    tearDownAll(() async {
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).drop();
+      await db.createCollection(FenceService.firmCollectionName);
+      final firm = Firm(
+        firmId: firmId,
+        name: Dummy.firm.name,
+        status: true,
+        creationDateUTC: DateTime.now().toUtc().timestampProto,
+        licenses: [],
+      );
+      await db
+          .collection(FenceService.firmCollectionName)
+          .insertOne(firm.toProto3Json() as Map<String, dynamic>);
+      poolService.release(db);
+
+      await billingService.createLicense(
+        null,
+        CreateLicenseRequest(
+          license: License(
+            licenseId: 'license-starter-001',
+            licensePlan: LicensePlan.SOLO,
+            providerProductId: 'prod_starter',
+            providerPriceId: 'price_starter',
+            maxUsers: 1,
+            validFrom: DateTime.now().toUtc().timestampProto,
+          ),
+        ),
+      );
+      await billingService.updateLicense(
+        null,
+        UpdateLicenseRequest(
+          licenseId: 'license-starter-001',
+          license: License(
+            licenseId: 'license-starter-001',
+            licensePlan: LicensePlan.TRIO,
+            providerProductId: 'prod_boutique',
+            providerPriceId: 'price_boutique',
+            maxUsers: 3,
+            validFrom: Dummy.licenseDummy.validFrom,
+          ),
+        ),
+      );
+    });
+  });
+
   group('updatePaymentCustomerId', () {
     test('sets providerCustomerIds[provider] on the firm', () async {
       final response = await billingService.updatePaymentCustomerId(
@@ -413,4 +564,5 @@ void main() {
       }
     });
   });
+
 }
