@@ -388,4 +388,19 @@ void main() {
       );
     });
   });
+
+  group('entitlement_helpers', () {
+    test('firmCreatorOperationalJoker mirrors isFirmCreator', () {
+      expect(
+        firmCreatorOperationalJoker(
+          UserPermissions.create()..isFirmCreator = true,
+        ),
+        isTrue,
+      );
+      expect(
+        firmCreatorOperationalJoker(UserPermissions.create()),
+        isFalse,
+      );
+    });
+  });
 }
