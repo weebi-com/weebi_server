@@ -1592,6 +1592,15 @@ class FenceService extends FenceServiceBase {
         ..isDeleted = chainTemp.isDeleted
         ..deletedBy = chainTemp.deletedBy
         ..restoredBy = chainTemp.restoredBy;
+      if (chainTemp.hasCurrency()) {
+        chain.currency = chainTemp.currency;
+      }
+      if (chainTemp.hasDualCurrencyEnabled()) {
+        chain.dualCurrencyEnabled = chainTemp.dualCurrencyEnabled;
+      }
+      if (chainTemp.hasSecondaryDisplayCurrency()) {
+        chain.secondaryDisplayCurrency = chainTemp.secondaryDisplayCurrency;
+      }
 
       chains.add(chain);
     }
@@ -1923,8 +1932,15 @@ class FenceService extends FenceServiceBase {
   Future<StatusResponse> updateOneChain(
       ServiceCall? call, ChainRequest request) async {
     final log = _logger.withContext(call);
-    log.logRpcEntry('updateOneChain',
-        requestData: {'chainId': request.chainId, 'name': request.name});
+    log.logRpcEntry('updateOneChain', requestData: {
+      'chainId': request.chainId,
+      'name': request.name,
+      if (request.hasCurrency()) 'currency': request.currency,
+      if (request.hasDualCurrencyEnabled())
+        'dualCurrencyEnabled': request.dualCurrencyEnabled,
+      if (request.hasSecondaryDisplayCurrency())
+        'secondaryDisplayCurrency': request.secondaryDisplayCurrency,
+    });
 /*     if (request.boutiques.any((b) => b.firmId != request.firmId)) {
       throw GrpcError.invalidArgument(
           'each boutique.firmId must match the chain.firmId');
@@ -1954,17 +1970,58 @@ class FenceService extends FenceServiceBase {
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
       try {
+        final needsFirmForCurrency = request.hasCurrency() ||
+            request.hasSecondaryDisplayCurrency();
+        final Firm? firmForCurrency = needsFirmForCurrency
+            ? await _readFirmFromDb(userPermission.firmId)
+            : null;
+        final platformCurrency = AppEnvironment.platformDefaultCurrency;
+
+        var modifier = ModifierBuilder()
+            .set('name', request.name)
+            .set('lastUpdatedByuserId', userPermission.userId)
+            .set(
+              'lastUpdateTimestampUTC',
+              DateTime.now().toUtc().timestampProto.toProto3Json(),
+            );
+
+        if (firmForCurrency != null) {
+          final firmDefault = CurrencyResolution.firmDefaultOrPlatform(
+              firmForCurrency, platformCurrency);
+          if (request.hasCurrency()) {
+            final trimmed = request.currency.trim();
+            if (trimmed.isEmpty) {
+              modifier = modifier.unset('currency');
+            } else {
+              modifier = modifier.set(
+                'currency',
+                CurrencyResolution.normalizeOr(trimmed, firmDefault),
+              );
+            }
+          }
+          if (request.hasSecondaryDisplayCurrency()) {
+            final s = request.secondaryDisplayCurrency.trim();
+            if (s.isEmpty) {
+              modifier = modifier.unset('secondaryDisplayCurrency');
+            } else {
+              modifier = modifier.set(
+                'secondaryDisplayCurrency',
+                CurrencyResolution.normalizeOr(s, firmDefault),
+              );
+            }
+          }
+        }
+
+        if (request.hasDualCurrencyEnabled()) {
+          modifier =
+              modifier.set('dualCurrencyEnabled', request.dualCurrencyEnabled);
+        }
+
         await boutiqueCollection.update(
           where
               .eq('firmId', userPermission.firmId)
               .eq('chainId', request.chainId),
-          ModifierBuilder()
-              .set('name', request.name)
-              .set('lastUpdatedByuserId', userPermission.userId)
-              .set(
-                'lastUpdateTimestampUTC',
-                DateTime.now().toUtc().timestampProto.toProto3Json(),
-              ),
+          modifier,
         );
         log.logRpcExit('updateOneChain',
             resultData: {'chainId': request.chainId});
@@ -2855,7 +2912,7 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<StatusResponse> deleteOneChain(
-      ServiceCall call, ChainRequest request) async {
+      ServiceCall call, DeleteChainRequest request) async {
     final log = _logger.withContext(call);
     log.logRpcEntry('deleteOneChain',
         requestData: {'chainId': request.chainId});

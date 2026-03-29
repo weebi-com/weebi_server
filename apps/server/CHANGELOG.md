@@ -1,7 +1,9 @@
 # changelog
-## 1.1.1 - march 2026
+## 1.1.2 - march 2026
 
 - handle currency
+- handle dual currency
+- handle entitlements (licenses)
 
 ## 1.1.0 - march 2026
 

@@ -2,8 +2,9 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/mongo_dart.dart';
 import 'package:fence_service/protos_weebi.dart';
 
+import 'constants/app_environment.dart';
 import 'jwt.dart';
-import 'license_seat_entitlement.dart';
+import 'entitlement_helpers.dart';
 
 // Keep in sync with [FenceService.firmCollectionName] (avoid importing the main library here).
 const String _firmCollectionName = 'firm';
@@ -31,13 +32,21 @@ Future<List<License>> loadFirmLicenses(Db db, String firmId) async {
 
 /// Throws [GrpcError.failedPrecondition] if the user may not use ticket/article/contact flows.
 ///
+/// **Firm creator operational joker:** [UserPermissions.isFirmCreator] bypasses the
+/// seat check here only — a narrow preview/sync path. Subscription-backed product
+/// features (e.g. portal ticket store filter/group) must use [userHasActiveLicensedSeat]
+/// without this bypass (see `entitlement_helpers.dart`, webapp `SeatCapability`).
+///
 /// No-op when [UserPermissions.firmId] is empty, or the bearer is a service-account JWT.
-/// Firm creator ([UserPermissions.isFirmCreator]) skips the DB seat read.
+///
+/// No-op when [AppEnvironment.isLicenseCheckEnforced] is `false` (grace-period deploy).
 void assertUserHasOperationalLicense({
   required UserPermissions userPermissions,
   required String authorizationHeader,
   required List<License> licenses,
 }) {
+  if (!AppEnvironment.isLicenseCheckEnforced) return;
+
   if (userPermissions.firmId.isEmpty) return;
 
   var token = authorizationHeader.trim();
@@ -58,12 +67,9 @@ void assertUserHasOperationalLicense({
     );
   }
 
-  if (userPermissions.isFirmCreator) return;
+  if (firmCreatorOperationalJoker(userPermissions)) return;
 
-  if (LicenseSeatEntitlement.userHasActiveLicensedSeat(
-    userPermissions.userId,
-    licenses,
-  )) {
+  if (userHasActiveLicensedSeat(userPermissions.userId, licenses)) {
     return;
   }
 
@@ -78,6 +84,8 @@ Future<void> assertUserHasOperationalLicenseWithDb(
   required UserPermissions userPermissions,
   required String authorizationHeader,
 }) async {
+  if (!AppEnvironment.isLicenseCheckEnforced) return;
+
   final licenses = await loadFirmLicenses(db, userPermissions.firmId);
   assertUserHasOperationalLicense(
     userPermissions: userPermissions,

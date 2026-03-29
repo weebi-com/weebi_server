@@ -137,7 +137,11 @@ class TicketService extends TicketServiceBase {
 
   /// Lists tickets for [request.chainId] (firm from the authenticated user).
   ///
-  /// Requires firm creator (JWT) or active license seat ([assertUserHasOperationalLicenseWithDb]).
+  /// **Operational access:** firm creator joker or active license seat
+  /// ([assertUserHasOperationalLicenseWithDb]). Seat-gated portal features
+  /// (e.g. store filter/group) are enforced client-side with
+  /// [LicenseSeatEntitlement]-style seat checks (no firm-creator bypass), not in
+  /// this RPC.
   ///
   /// **Boutique scope**: first chain/boutique may share [UserPermissions.firmId].
   /// [UserPermissions.fullAccess] — all boutiques in the chain, or filter by

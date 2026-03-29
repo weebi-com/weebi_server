@@ -247,6 +247,10 @@ void main() {
   });
 
   group('assertUserHasOperationalLicense', () {
+    tearDown(() {
+      AppEnvironment.debugLicenseCheckEnforcedOverride = null;
+    });
+
     final past = DateTime.utc(2020, 1, 1);
 
     License licenseWithSeat(String userId) => License(
@@ -263,6 +267,20 @@ void main() {
       expect(
         () => assertUserHasOperationalLicense(
           userPermissions: UserPermissions.create()..userId = 'u',
+          authorizationHeader: '',
+          licenses: [],
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('no-op when license check not enforced (grace period)', () {
+      AppEnvironment.debugLicenseCheckEnforcedOverride = false;
+      expect(
+        () => assertUserHasOperationalLicense(
+          userPermissions: UserPermissions.create()
+            ..firmId = 'f'
+            ..userId = '',
           authorizationHeader: '',
           licenses: [],
         ),
@@ -367,6 +385,21 @@ void main() {
           licenses: [],
         ),
         throwsA(isA<GrpcError>()),
+      );
+    });
+  });
+
+  group('entitlement_helpers', () {
+    test('firmCreatorOperationalJoker mirrors isFirmCreator', () {
+      expect(
+        firmCreatorOperationalJoker(
+          UserPermissions.create()..isFirmCreator = true,
+        ),
+        isTrue,
+      );
+      expect(
+        firmCreatorOperationalJoker(UserPermissions.create()),
+        isFalse,
       );
     });
   });

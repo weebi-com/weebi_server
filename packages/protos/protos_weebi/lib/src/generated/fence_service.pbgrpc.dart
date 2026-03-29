@@ -108,9 +108,9 @@ class FenceServiceClient extends $grpc.Client {
       '/weebi.fence.service.FenceService/updateOneChain',
       ($8.ChainRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
-  static final _$deleteOneChain = $grpc.ClientMethod<$8.ChainRequest, $1.StatusResponse>(
+  static final _$deleteOneChain = $grpc.ClientMethod<$8.DeleteChainRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/deleteOneChain',
-      ($8.ChainRequest value) => value.writeToBuffer(),
+      ($8.DeleteChainRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
   static final _$createOneBoutique = $grpc.ClientMethod<$8.BoutiqueRequest, $1.StatusResponse>(
       '/weebi.fence.service.FenceService/createOneBoutique',
@@ -251,7 +251,7 @@ class FenceServiceClient extends $grpc.Client {
     return $createUnaryCall(_$updateOneChain, request, options: options);
   }
 
-  $grpc.ResponseFuture<$1.StatusResponse> deleteOneChain($8.ChainRequest request, {$grpc.CallOptions? options}) {
+  $grpc.ResponseFuture<$1.StatusResponse> deleteOneChain($8.DeleteChainRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$deleteOneChain, request, options: options);
   }
 
@@ -453,12 +453,12 @@ abstract class FenceServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $8.ChainRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$8.ChainRequest, $1.StatusResponse>(
+    $addMethod($grpc.ServiceMethod<$8.DeleteChainRequest, $1.StatusResponse>(
         'deleteOneChain',
         deleteOneChain_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $8.ChainRequest.fromBuffer(value),
+        ($core.List<$core.int> value) => $8.DeleteChainRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$8.BoutiqueRequest, $1.StatusResponse>(
         'createOneBoutique',
@@ -633,7 +633,7 @@ abstract class FenceServiceBase extends $grpc.Service {
     return updateOneChain(call, await request);
   }
 
-  $async.Future<$1.StatusResponse> deleteOneChain_Pre($grpc.ServiceCall call, $async.Future<$8.ChainRequest> request) async {
+  $async.Future<$1.StatusResponse> deleteOneChain_Pre($grpc.ServiceCall call, $async.Future<$8.DeleteChainRequest> request) async {
     return deleteOneChain(call, await request);
   }
 
@@ -709,7 +709,7 @@ abstract class FenceServiceBase extends $grpc.Service {
   $async.Future<$1.StatusResponse> createOneChain($grpc.ServiceCall call, $11.Chain request);
   $async.Future<$8.ReadAllChainsResponse> readAllChains($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$1.StatusResponse> updateOneChain($grpc.ServiceCall call, $8.ChainRequest request);
-  $async.Future<$1.StatusResponse> deleteOneChain($grpc.ServiceCall call, $8.ChainRequest request);
+  $async.Future<$1.StatusResponse> deleteOneChain($grpc.ServiceCall call, $8.DeleteChainRequest request);
   $async.Future<$1.StatusResponse> createOneBoutique($grpc.ServiceCall call, $8.BoutiqueRequest request);
   $async.Future<$8.BoutiqueResponse> readOneBoutique($grpc.ServiceCall call, $8.BoutiqueRequest request);
   $async.Future<$1.StatusResponse> updateOneBoutique($grpc.ServiceCall call, $8.BoutiqueRequest request);
