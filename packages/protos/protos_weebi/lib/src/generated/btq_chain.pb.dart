@@ -90,8 +90,8 @@ class Chain extends $pb.GeneratedMessage {
     ..aOS(9, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
     ..aOS(10, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
     ..aOS(11, _omitFieldNames ? '' : 'currency')
-    ..aOB(12, _omitFieldNames ? '' : 'dualCurrencyEnabled')
-    ..aOS(13, _omitFieldNames ? '' : 'secondaryDisplayCurrency')
+    ..aOB(12, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'dualCurrencyEnabled')
+    ..aOS(13, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..hasRequiredFields = false
   ;
 

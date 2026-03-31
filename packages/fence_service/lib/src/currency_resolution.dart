@@ -12,8 +12,8 @@ class CurrencyResolution {
 
   /// Firm document default, else [platformDefault].
   static String firmDefaultOrPlatform(Firm firm, String platformDefault) {
-    if (firm.hasDefaultCurrency() && firm.defaultCurrency.trim().isNotEmpty) {
-      return normalizeOr(firm.defaultCurrency, platformDefault);
+    if (firm.hasCurrency() && firm.currency.trim().isNotEmpty) {
+      return normalizeOr(firm.currency, platformDefault);
     }
     return platformDefault;
   }

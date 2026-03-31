@@ -16,7 +16,7 @@ Effective billing currency for a boutique:
 
 ## Dual currency and tickets
 
-- `Firm` / `Chain` may define `dual_currency_enabled` and `secondary_display_currency` (e.g. USD) for product policy; enforcement of licenses is not wired in code yet.
+- `Firm` / `Chain` may define `dualCurrencyEnabled` and `secondaryDisplayCurrency` (e.g. USD) for product policy; enforcement of licenses is not wired in code yet.
 - Each ticket may store an optional FX **snapshot** set at sale time by the client:
   - `snapshot_secondary_currency`
   - `snapshot_local_per_secondary` — units of **local** currency for **one** unit of the secondary currency (e.g. `2800` means 1 USD = 2800 CDF).

@@ -40,7 +40,7 @@ class Firm extends $pb.GeneratedMessage {
     $core.Map<$core.String, $core.String>? providerCustomerIds,
     $core.String? referralCode,
     $core.int? referralCreditBalanceCents,
-    $core.String? defaultCurrency,
+    $core.String? currency,
     $core.bool? dualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
   }) {
@@ -100,8 +100,8 @@ class Firm extends $pb.GeneratedMessage {
     if (referralCreditBalanceCents != null) {
       result.referralCreditBalanceCents = referralCreditBalanceCents;
     }
-    if (defaultCurrency != null) {
-      result.defaultCurrency = defaultCurrency;
+    if (currency != null) {
+      result.currency = currency;
     }
     if (dualCurrencyEnabled != null) {
       result.dualCurrencyEnabled = dualCurrencyEnabled;
@@ -133,9 +133,9 @@ class Firm extends $pb.GeneratedMessage {
     ..m<$core.String, $core.String>(15, _omitFieldNames ? '' : 'providerCustomerIds', protoName: 'providerCustomerIds', entryClassName: 'Firm.ProviderCustomerIdsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.firm'))
     ..aOS(16, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(17, _omitFieldNames ? '' : 'referralCreditBalanceCents', $pb.PbFieldType.O3, protoName: 'referralCreditBalanceCents')
-    ..aOS(18, _omitFieldNames ? '' : 'defaultCurrency')
-    ..aOB(19, _omitFieldNames ? '' : 'dualCurrencyEnabled')
-    ..aOS(20, _omitFieldNames ? '' : 'secondaryDisplayCurrency')
+    ..aOS(18, _omitFieldNames ? '' : 'currency')
+    ..aOB(19, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'dualCurrencyEnabled')
+    ..aOS(20, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..hasRequiredFields = false
   ;
 
@@ -339,15 +339,15 @@ class Firm extends $pb.GeneratedMessage {
 
   /// / ISO 4217 code (e.g. EUR, XOF). Default for new chains/boutiques; resolved with platform default if empty.
   @$pb.TagNumber(18)
-  $core.String get defaultCurrency => $_getSZ(17);
+  $core.String get currency => $_getSZ(17);
   @$pb.TagNumber(18)
-  set defaultCurrency($core.String v) { $_setString(17, v); }
+  set currency($core.String v) { $_setString(17, v); }
   @$pb.TagNumber(18)
-  $core.bool hasDefaultCurrency() => $_has(17);
+  $core.bool hasCurrency() => $_has(17);
   @$pb.TagNumber(18)
-  void clearDefaultCurrency() => clearField(18);
+  void clearCurrency() => clearField(18);
 
-  /// / When true, clients may show amounts in secondary_display_currency using per-ticket FX snapshot.
+  /// / When true, clients may show amounts in secondaryDisplayCurrency using per-ticket FX snapshot.
   @$pb.TagNumber(19)
   $core.bool get dualCurrencyEnabled => $_getBF(18);
   @$pb.TagNumber(19)
@@ -357,7 +357,7 @@ class Firm extends $pb.GeneratedMessage {
   @$pb.TagNumber(19)
   void clearDualCurrencyEnabled() => clearField(19);
 
-  /// / ISO 4217 secondary display code (e.g. USD). Meaningful when dual_currency_enabled is true.
+  /// / ISO 4217 secondary display code (e.g. USD). Meaningful when dualCurrencyEnabled is true.
   @$pb.TagNumber(20)
   $core.String get secondaryDisplayCurrency => $_getSZ(19);
   @$pb.TagNumber(20)
@@ -371,14 +371,14 @@ class Firm extends $pb.GeneratedMessage {
 class CreateFirmRequest extends $pb.GeneratedMessage {
   factory CreateFirmRequest({
     $core.String? name,
-    $core.String? defaultCurrency,
+    $core.String? currency,
   }) {
     final result = create();
     if (name != null) {
       result.name = name;
     }
-    if (defaultCurrency != null) {
-      result.defaultCurrency = defaultCurrency;
+    if (currency != null) {
+      result.currency = currency;
     }
     return result;
   }
@@ -388,7 +388,7 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateFirmRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
-    ..aOS(2, _omitFieldNames ? '' : 'defaultCurrency')
+    ..aOS(2, _omitFieldNames ? '' : 'currency')
     ..hasRequiredFields = false
   ;
 
@@ -425,13 +425,13 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
 
   /// / Optional ISO 4217 default stamped on firm and first chain/boutique; server fills platform default if omitted.
   @$pb.TagNumber(2)
-  $core.String get defaultCurrency => $_getSZ(1);
+  $core.String get currency => $_getSZ(1);
   @$pb.TagNumber(2)
-  set defaultCurrency($core.String v) { $_setString(1, v); }
+  set currency($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasDefaultCurrency() => $_has(1);
+  $core.bool hasCurrency() => $_has(1);
   @$pb.TagNumber(2)
-  void clearDefaultCurrency() => clearField(2);
+  void clearCurrency() => clearField(2);
 }
 
 class CreateFirmResponse extends $pb.GeneratedMessage {

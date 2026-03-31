@@ -99,14 +99,18 @@ const BoutiquePb$json = {
     {'1': 'restoredBy', '3': 14, '4': 1, '5': 9, '10': 'restoredBy'},
     {'1': 'mail', '3': 15, '4': 1, '5': 9, '10': 'mail'},
     {'1': 'currency', '3': 16, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
+    {'1': 'dualCurrencyEnabled', '3': 17, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
+    {'1': 'secondaryDisplayCurrency', '3': 18, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
     {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiquePb.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
   '3': [BoutiquePb_AdditionalAttributesEntry$json],
   '8': [
     {'1': '_currency'},
+    {'1': '_dualCurrencyEnabled'},
+    {'1': '_secondaryDisplayCurrency'},
   ],
   '9': [
-    {'1': 17, '2': 99},
+    {'1': 19, '2': 99},
   ],
 };
 
@@ -131,9 +135,12 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'IAEoAVIFcHJvbW8SHgoKcHJvbW9TdGFydBgKIAEoCVIKcHJvbW9TdGFydBIaCghwcm9tb0VuZB'
     'gLIAEoCVIIcHJvbW9FbmQSHAoJaXNEZWxldGVkGAwgASgIUglpc0RlbGV0ZWQSHAoJZGVsZXRl'
     'ZEJ5GA0gASgJUglkZWxldGVkQnkSHgoKcmVzdG9yZWRCeRgOIAEoCVIKcmVzdG9yZWRCeRISCg'
-    'RtYWlsGA8gASgJUgRtYWlsEh8KCGN1cnJlbmN5GBAgASgJSABSCGN1cnJlbmN5iAEBEmoKFWFk'
-    'ZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI0LndlZWJpLmJvdXRpcXVlLkJvdXRpcXVlUGIuQW'
-    'RkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb25hbF9hdHRyaWJ1dGVzGkcKGUFkZGl0'
-    'aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBX'
-    'ZhbHVlOgI4AUILCglfY3VycmVuY3lKBAgREGM=');
+    'RtYWlsGA8gASgJUgRtYWlsEh8KCGN1cnJlbmN5GBAgASgJSABSCGN1cnJlbmN5iAEBEjUKE2R1'
+    'YWxDdXJyZW5jeUVuYWJsZWQYESABKAhIAVITZHVhbEN1cnJlbmN5RW5hYmxlZIgBARI/ChhzZW'
+    'NvbmRhcnlEaXNwbGF5Q3VycmVuY3kYEiABKAlIAlIYc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5'
+    'iAEBEmoKFWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI0LndlZWJpLmJvdXRpcXVlLkJvdX'
+    'RpcXVlUGIuQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb25hbF9hdHRyaWJ1dGVz'
+    'GkcKGUFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdW'
+    'UYAiABKAlSBXZhbHVlOgI4AUILCglfY3VycmVuY3lCFgoUX2R1YWxDdXJyZW5jeUVuYWJsZWRC'
+    'GwoZX3NlY29uZGFyeURpc3BsYXlDdXJyZW5jeUoECBMQYw==');
 

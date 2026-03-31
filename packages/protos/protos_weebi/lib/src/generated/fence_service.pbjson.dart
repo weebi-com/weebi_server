@@ -20,24 +20,24 @@ const ChainRequest$json = {
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     {'1': 'currency', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
-    {'1': 'dual_currency_enabled', '3': 4, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
-    {'1': 'secondary_display_currency', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
+    {'1': 'dualCurrencyEnabled', '3': 4, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
+    {'1': 'secondaryDisplayCurrency', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
   ],
   '8': [
     {'1': '_currency'},
-    {'1': '_dual_currency_enabled'},
-    {'1': '_secondary_display_currency'},
+    {'1': '_dualCurrencyEnabled'},
+    {'1': '_secondaryDisplayCurrency'},
   ],
 };
 
 /// Descriptor for `ChainRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List chainRequestDescriptor = $convert.base64Decode(
     'CgxDaGFpblJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBISCgRuYW1lGAIgASgJUg'
-    'RuYW1lEh8KCGN1cnJlbmN5GAMgASgJSABSCGN1cnJlbmN5iAEBEjcKFWR1YWxfY3VycmVuY3lf'
-    'ZW5hYmxlZBgEIAEoCEgBUhNkdWFsQ3VycmVuY3lFbmFibGVkiAEBEkEKGnNlY29uZGFyeV9kaX'
-    'NwbGF5X2N1cnJlbmN5GAUgASgJSAJSGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeYgBAUILCglf'
-    'Y3VycmVuY3lCGAoWX2R1YWxfY3VycmVuY3lfZW5hYmxlZEIdChtfc2Vjb25kYXJ5X2Rpc3BsYX'
-    'lfY3VycmVuY3k=');
+    'RuYW1lEh8KCGN1cnJlbmN5GAMgASgJSABSCGN1cnJlbmN5iAEBEjUKE2R1YWxDdXJyZW5jeUVu'
+    'YWJsZWQYBCABKAhIAVITZHVhbEN1cnJlbmN5RW5hYmxlZIgBARI/ChhzZWNvbmRhcnlEaXNwbG'
+    'F5Q3VycmVuY3kYBSABKAlIAlIYc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5iAEBQgsKCV9jdXJy'
+    'ZW5jeUIWChRfZHVhbEN1cnJlbmN5RW5hYmxlZEIbChlfc2Vjb25kYXJ5RGlzcGxheUN1cnJlbm'
+    'N5');
 
 @$core.Deprecated('Use deleteChainRequestDescriptor instead')
 const DeleteChainRequest$json = {

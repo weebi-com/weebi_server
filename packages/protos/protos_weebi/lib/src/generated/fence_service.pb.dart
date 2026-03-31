@@ -57,8 +57,8 @@ class ChainRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aOS(3, _omitFieldNames ? '' : 'currency')
-    ..aOB(4, _omitFieldNames ? '' : 'dualCurrencyEnabled')
-    ..aOS(5, _omitFieldNames ? '' : 'secondaryDisplayCurrency')
+    ..aOB(4, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'dualCurrencyEnabled')
+    ..aOS(5, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..hasRequiredFields = false
   ;
 
