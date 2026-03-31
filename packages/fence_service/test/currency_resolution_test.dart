@@ -23,7 +23,7 @@ void main() {
     test('uses boutique currency when set', () {
       final boutique = BoutiquePb.create()..currency = 'xof';
       final chain = Chain.create()..currency = 'USD';
-      final firm = Firm.create()..defaultCurrency = 'EUR';
+      final firm = Firm.create()..currency = 'EUR';
 
       final res = CurrencyResolution.effectiveForBoutique(
         boutique: boutique,
@@ -38,7 +38,7 @@ void main() {
     test('falls back to chain currency', () {
       final boutique = BoutiquePb.create(); // no currency
       final chain = Chain.create()..currency = 'USD';
-      final firm = Firm.create()..defaultCurrency = 'EUR';
+      final firm = Firm.create()..currency = 'EUR';
 
       final res = CurrencyResolution.effectiveForBoutique(
         boutique: boutique,
@@ -53,7 +53,7 @@ void main() {
     test('falls back to firm default currency', () {
       final boutique = BoutiquePb.create();
       final chain = Chain.create();
-      final firm = Firm.create()..defaultCurrency = 'cdf';
+      final firm = Firm.create()..currency = 'cdf';
 
       final res = CurrencyResolution.effectiveForBoutique(
         boutique: boutique,

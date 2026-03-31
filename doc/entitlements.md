@@ -25,5 +25,6 @@ Server reference: [`license_seat_entitlement.dart`](../../weebi_server/packages/
 
 - **Webapp:** Prefer [`SeatCapability`](../lib/billing/seat_capability.dart) for seat-gated UI instead of ad hoc `LicenseSeatClient` calls.
 - **Server:** Prefer [`entitlement_helpers.dart`](../../weebi_server/packages/fence_service/lib/src/entitlement_helpers.dart) names (`firmCreatorOperationalJoker`, `userHasActiveLicensedSeat`) alongside `LicenseSeatEntitlement` for clarity.
+- **Dart packages (`users_weebi`):** [`firm_license_seat_utils`](../../weebi/packages/users/lib/src/firm_license_seat_utils.dart) exposes `firmCreatorOperationalJoker` (same meaning as server) and `userHasActiveLicensedSeat` for portal/access UI copy; seat checks stay strict—only messaging distinguishes the joker when `isFirmCreator` and there is no seat.
 
 Future firm-level entitlements (e.g. metered analytics) should be documented here as a third category when introduced.

@@ -1,8 +1,9 @@
 # changelog
 
-## 1.2.3 - 2026 march
+## 1.2.7 - 2026 march
 
 - currency
+- 2nd currency display
 
 ## 1.1.2 - 2026 march
 

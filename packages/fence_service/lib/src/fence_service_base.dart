@@ -1351,10 +1351,10 @@ class FenceService extends FenceServiceBase {
 
     final firmId = DateTime.now().objectIdString;
     final platformCurrency = AppEnvironment.platformDefaultCurrency;
-    final defaultCurrencyCode = request.hasDefaultCurrency() &&
-            request.defaultCurrency.trim().isNotEmpty
+    final defaultCurrencyCode = request.hasCurrency() &&
+            request.currency.trim().isNotEmpty
         ? CurrencyResolution.normalizeOr(
-            request.defaultCurrency, platformCurrency)
+            request.currency, platformCurrency)
         : platformCurrency;
 
     final firm = Firm(
@@ -1362,7 +1362,7 @@ class FenceService extends FenceServiceBase {
       name: request.name,
       status: true,
       creationDateUTC: nowProtoUTC,
-    )..defaultCurrency = defaultCurrencyCode;
+    )..currency = defaultCurrencyCode;
 
     return databaseMiddleware<CreateFirmResponse>(_poolService, (db) async {
       final firmCollection = db.collection(firmCollectionName);

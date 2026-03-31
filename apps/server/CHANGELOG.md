@@ -1,5 +1,7 @@
 # changelog
-## 1.1.2 - march 2026
+
+
+## 1.1.3 - march 2026
 
 - handle currency
 - handle dual currency
