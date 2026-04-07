@@ -1,9 +1,8 @@
 # changelog
 
-## 1.2.7 - 2026 march
+## 1.2.9 - 2026 march
 
-- currency
-- 2nd currency display
+- currency && 2nd currency display on boutique and ticket
 
 ## 1.1.2 - 2026 march
 

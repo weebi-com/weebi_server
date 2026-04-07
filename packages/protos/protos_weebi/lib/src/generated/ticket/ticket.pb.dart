@@ -231,6 +231,7 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? contactLastName,
     $core.String? contactPhone,
     $core.String? contactMail,
+    $core.String? currency,
     $core.String? snapshotSecondaryCurrency,
     $core.double? snapshotLocalPerSecondary,
   }) {
@@ -292,6 +293,9 @@ class TicketPb extends $pb.GeneratedMessage {
     if (contactMail != null) {
       result.contactMail = contactMail;
     }
+    if (currency != null) {
+      result.currency = currency;
+    }
     if (snapshotSecondaryCurrency != null) {
       result.snapshotSecondaryCurrency = snapshotSecondaryCurrency;
     }
@@ -324,8 +328,9 @@ class TicketPb extends $pb.GeneratedMessage {
     ..aOS(17, _omitFieldNames ? '' : 'contactLastName', protoName: 'contactLastName')
     ..aOS(18, _omitFieldNames ? '' : 'contactPhone', protoName: 'contactPhone')
     ..aOS(19, _omitFieldNames ? '' : 'contactMail', protoName: 'contactMail')
-    ..aOS(20, _omitFieldNames ? '' : 'snapshotSecondaryCurrency')
-    ..a<$core.double>(21, _omitFieldNames ? '' : 'snapshotLocalPerSecondary', $pb.PbFieldType.OD)
+    ..aOS(20, _omitFieldNames ? '' : 'currency')
+    ..aOS(21, _omitFieldNames ? '' : 'snapshotSecondaryCurrency')
+    ..a<$core.double>(22, _omitFieldNames ? '' : 'snapshotLocalPerSecondary', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
   ;
 
@@ -526,22 +531,31 @@ class TicketPb extends $pb.GeneratedMessage {
   void clearContactMail() => clearField(19);
 
   @$pb.TagNumber(20)
-  $core.String get snapshotSecondaryCurrency => $_getSZ(19);
+  $core.String get currency => $_getSZ(19);
   @$pb.TagNumber(20)
-  set snapshotSecondaryCurrency($core.String v) { $_setString(19, v); }
+  set currency($core.String v) { $_setString(19, v); }
   @$pb.TagNumber(20)
-  $core.bool hasSnapshotSecondaryCurrency() => $_has(19);
+  $core.bool hasCurrency() => $_has(19);
   @$pb.TagNumber(20)
-  void clearSnapshotSecondaryCurrency() => clearField(20);
+  void clearCurrency() => clearField(20);
 
   @$pb.TagNumber(21)
-  $core.double get snapshotLocalPerSecondary => $_getN(20);
+  $core.String get snapshotSecondaryCurrency => $_getSZ(20);
   @$pb.TagNumber(21)
-  set snapshotLocalPerSecondary($core.double v) { $_setDouble(20, v); }
+  set snapshotSecondaryCurrency($core.String v) { $_setString(20, v); }
   @$pb.TagNumber(21)
-  $core.bool hasSnapshotLocalPerSecondary() => $_has(20);
+  $core.bool hasSnapshotSecondaryCurrency() => $_has(20);
   @$pb.TagNumber(21)
-  void clearSnapshotLocalPerSecondary() => clearField(21);
+  void clearSnapshotSecondaryCurrency() => clearField(21);
+
+  @$pb.TagNumber(22)
+  $core.double get snapshotLocalPerSecondary => $_getN(21);
+  @$pb.TagNumber(22)
+  set snapshotLocalPerSecondary($core.double v) { $_setDouble(21, v); }
+  @$pb.TagNumber(22)
+  $core.bool hasSnapshotLocalPerSecondary() => $_has(21);
+  @$pb.TagNumber(22)
+  void clearSnapshotLocalPerSecondary() => clearField(22);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {

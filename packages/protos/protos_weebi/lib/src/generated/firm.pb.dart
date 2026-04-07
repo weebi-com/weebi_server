@@ -41,7 +41,7 @@ class Firm extends $pb.GeneratedMessage {
     $core.String? referralCode,
     $core.int? referralCreditBalanceCents,
     $core.String? currency,
-    $core.bool? dualCurrencyEnabled,
+    $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
   }) {
     final result = create();
@@ -103,8 +103,8 @@ class Firm extends $pb.GeneratedMessage {
     if (currency != null) {
       result.currency = currency;
     }
-    if (dualCurrencyEnabled != null) {
-      result.dualCurrencyEnabled = dualCurrencyEnabled;
+    if (isDualCurrencyEnabled != null) {
+      result.isDualCurrencyEnabled = isDualCurrencyEnabled;
     }
     if (secondaryDisplayCurrency != null) {
       result.secondaryDisplayCurrency = secondaryDisplayCurrency;
@@ -134,7 +134,7 @@ class Firm extends $pb.GeneratedMessage {
     ..aOS(16, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(17, _omitFieldNames ? '' : 'referralCreditBalanceCents', $pb.PbFieldType.O3, protoName: 'referralCreditBalanceCents')
     ..aOS(18, _omitFieldNames ? '' : 'currency')
-    ..aOB(19, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'dualCurrencyEnabled')
+    ..aOB(19, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(20, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..hasRequiredFields = false
   ;
@@ -349,13 +349,13 @@ class Firm extends $pb.GeneratedMessage {
 
   /// / When true, clients may show amounts in secondaryDisplayCurrency using per-ticket FX snapshot.
   @$pb.TagNumber(19)
-  $core.bool get dualCurrencyEnabled => $_getBF(18);
+  $core.bool get isDualCurrencyEnabled => $_getBF(18);
   @$pb.TagNumber(19)
-  set dualCurrencyEnabled($core.bool v) { $_setBool(18, v); }
+  set isDualCurrencyEnabled($core.bool v) { $_setBool(18, v); }
   @$pb.TagNumber(19)
-  $core.bool hasDualCurrencyEnabled() => $_has(18);
+  $core.bool hasIsDualCurrencyEnabled() => $_has(18);
   @$pb.TagNumber(19)
-  void clearDualCurrencyEnabled() => clearField(19);
+  void clearIsDualCurrencyEnabled() => clearField(19);
 
   /// / ISO 4217 secondary display code (e.g. USD). Meaningful when dualCurrencyEnabled is true.
   @$pb.TagNumber(20)

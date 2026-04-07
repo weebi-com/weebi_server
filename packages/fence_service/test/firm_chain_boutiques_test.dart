@@ -100,7 +100,7 @@ void main() async {
           chainId: chain.chainId,
           name: chain.name,
           currency: 'EUR',
-          dualCurrencyEnabled: true,
+          isDualCurrencyEnabled: true,
           secondaryDisplayCurrency: 'USD',
         ));
     expect(response.type, StatusResponse_Type.UPDATED);
@@ -108,7 +108,7 @@ void main() async {
     final updated =
         again.chains.firstWhere((c) => c.chainId == chain.chainId);
     expect(updated.currency, 'EUR');
-    expect(updated.dualCurrencyEnabled, isTrue);
+    expect(updated.isDualCurrencyEnabled, isTrue);
     expect(updated.secondaryDisplayCurrency, 'USD');
     chain = updated;
   });

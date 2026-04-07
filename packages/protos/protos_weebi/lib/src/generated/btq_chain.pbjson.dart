@@ -28,12 +28,12 @@ const Chain$json = {
     {'1': 'deletedBy', '3': 9, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 10, '4': 1, '5': 9, '10': 'restoredBy'},
     {'1': 'currency', '3': 11, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
-    {'1': 'dualCurrencyEnabled', '3': 12, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
+    {'1': 'isDualCurrencyEnabled', '3': 12, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 13, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
   ],
   '8': [
     {'1': '_currency'},
-    {'1': '_dualCurrencyEnabled'},
+    {'1': '_isDualCurrencyEnabled'},
     {'1': '_secondaryDisplayCurrency'},
   ],
 };
@@ -48,10 +48,10 @@ final $typed_data.Uint8List chainDescriptor = $convert.base64Decode(
     'F0ZVRpbWVzdGFtcFVUQxIwChNsYXN0VXBkYXRlZEJ5dXNlcklkGAcgASgJUhNsYXN0VXBkYXRl'
     'ZEJ5dXNlcklkEhwKCWlzRGVsZXRlZBgIIAEoCFIJaXNEZWxldGVkEhwKCWRlbGV0ZWRCeRgJIA'
     'EoCVIJZGVsZXRlZEJ5Eh4KCnJlc3RvcmVkQnkYCiABKAlSCnJlc3RvcmVkQnkSHwoIY3VycmVu'
-    'Y3kYCyABKAlIAFIIY3VycmVuY3mIAQESNQoTZHVhbEN1cnJlbmN5RW5hYmxlZBgMIAEoCEgBUh'
-    'NkdWFsQ3VycmVuY3lFbmFibGVkiAEBEj8KGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeRgNIAEo'
-    'CUgCUhhzZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3mIAQFCCwoJX2N1cnJlbmN5QhYKFF9kdWFsQ3'
-    'VycmVuY3lFbmFibGVkQhsKGV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3k=');
+    'Y3kYCyABKAlIAFIIY3VycmVuY3mIAQESOQoVaXNEdWFsQ3VycmVuY3lFbmFibGVkGAwgASgISA'
+    'FSFWlzRHVhbEN1cnJlbmN5RW5hYmxlZIgBARI/ChhzZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3kY'
+    'DSABKAlIAlIYc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5iAEBQgsKCV9jdXJyZW5jeUIYChZfaX'
+    'NEdWFsQ3VycmVuY3lFbmFibGVkQhsKGV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3k=');
 
 @$core.Deprecated('Use chainsDescriptor instead')
 const Chains$json = {

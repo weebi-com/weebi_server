@@ -65,13 +65,13 @@ const Firm$json = {
     {'1': 'referralCode', '3': 16, '4': 1, '5': 9, '10': 'referralCode'},
     {'1': 'referralCreditBalanceCents', '3': 17, '4': 1, '5': 5, '10': 'referralCreditBalanceCents'},
     {'1': 'currency', '3': 18, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
-    {'1': 'dualCurrencyEnabled', '3': 19, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
+    {'1': 'isDualCurrencyEnabled', '3': 19, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 20, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
   ],
   '3': [Firm_ProviderCustomerIdsEntry$json],
   '8': [
     {'1': '_currency'},
-    {'1': '_dualCurrencyEnabled'},
+    {'1': '_isDualCurrencyEnabled'},
     {'1': '_secondaryDisplayCurrency'},
   ],
 };
@@ -106,12 +106,12 @@ final $typed_data.Uint8List firmDescriptor = $convert.base64Decode(
     'dlZWJpLmZpcm0uRmlybS5Qcm92aWRlckN1c3RvbWVySWRzRW50cnlSE3Byb3ZpZGVyQ3VzdG9t'
     'ZXJJZHMSIgoMcmVmZXJyYWxDb2RlGBAgASgJUgxyZWZlcnJhbENvZGUSPgoacmVmZXJyYWxDcm'
     'VkaXRCYWxhbmNlQ2VudHMYESABKAVSGnJlZmVycmFsQ3JlZGl0QmFsYW5jZUNlbnRzEh8KCGN1'
-    'cnJlbmN5GBIgASgJSABSCGN1cnJlbmN5iAEBEjUKE2R1YWxDdXJyZW5jeUVuYWJsZWQYEyABKA'
-    'hIAVITZHVhbEN1cnJlbmN5RW5hYmxlZIgBARI/ChhzZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3kY'
-    'FCABKAlIAlIYc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5iAEBGkYKGFByb3ZpZGVyQ3VzdG9tZX'
-    'JJZHNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBQgsK'
-    'CV9jdXJyZW5jeUIWChRfZHVhbEN1cnJlbmN5RW5hYmxlZEIbChlfc2Vjb25kYXJ5RGlzcGxheU'
-    'N1cnJlbmN5');
+    'cnJlbmN5GBIgASgJSABSCGN1cnJlbmN5iAEBEjkKFWlzRHVhbEN1cnJlbmN5RW5hYmxlZBgTIA'
+    'EoCEgBUhVpc0R1YWxDdXJyZW5jeUVuYWJsZWSIAQESPwoYc2Vjb25kYXJ5RGlzcGxheUN1cnJl'
+    'bmN5GBQgASgJSAJSGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeYgBARpGChhQcm92aWRlckN1c3'
+    'RvbWVySWRzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4'
+    'AUILCglfY3VycmVuY3lCGAoWX2lzRHVhbEN1cnJlbmN5RW5hYmxlZEIbChlfc2Vjb25kYXJ5RG'
+    'lzcGxheUN1cnJlbmN5');
 
 @$core.Deprecated('Use createFirmRequestDescriptor instead')
 const CreateFirmRequest$json = {
