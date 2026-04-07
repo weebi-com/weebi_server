@@ -29,7 +29,7 @@ class Chain extends $pb.GeneratedMessage {
     $core.String? deletedBy,
     $core.String? restoredBy,
     $core.String? currency,
-    $core.bool? dualCurrencyEnabled,
+    $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
   }) {
     final result = create();
@@ -66,8 +66,8 @@ class Chain extends $pb.GeneratedMessage {
     if (currency != null) {
       result.currency = currency;
     }
-    if (dualCurrencyEnabled != null) {
-      result.dualCurrencyEnabled = dualCurrencyEnabled;
+    if (isDualCurrencyEnabled != null) {
+      result.isDualCurrencyEnabled = isDualCurrencyEnabled;
     }
     if (secondaryDisplayCurrency != null) {
       result.secondaryDisplayCurrency = secondaryDisplayCurrency;
@@ -90,7 +90,7 @@ class Chain extends $pb.GeneratedMessage {
     ..aOS(9, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
     ..aOS(10, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
     ..aOS(11, _omitFieldNames ? '' : 'currency')
-    ..aOB(12, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'dualCurrencyEnabled')
+    ..aOB(12, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(13, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..hasRequiredFields = false
   ;
@@ -215,13 +215,13 @@ class Chain extends $pb.GeneratedMessage {
   void clearCurrency() => clearField(11);
 
   @$pb.TagNumber(12)
-  $core.bool get dualCurrencyEnabled => $_getBF(11);
+  $core.bool get isDualCurrencyEnabled => $_getBF(11);
   @$pb.TagNumber(12)
-  set dualCurrencyEnabled($core.bool v) { $_setBool(11, v); }
+  set isDualCurrencyEnabled($core.bool v) { $_setBool(11, v); }
   @$pb.TagNumber(12)
-  $core.bool hasDualCurrencyEnabled() => $_has(11);
+  $core.bool hasIsDualCurrencyEnabled() => $_has(11);
   @$pb.TagNumber(12)
-  void clearDualCurrencyEnabled() => clearField(12);
+  void clearIsDualCurrencyEnabled() => clearField(12);
 
   @$pb.TagNumber(13)
   $core.String get secondaryDisplayCurrency => $_getSZ(12);

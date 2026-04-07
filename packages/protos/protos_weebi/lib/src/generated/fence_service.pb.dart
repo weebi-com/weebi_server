@@ -28,7 +28,7 @@ class ChainRequest extends $pb.GeneratedMessage {
     $core.String? chainId,
     $core.String? name,
     $core.String? currency,
-    $core.bool? dualCurrencyEnabled,
+    $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
   }) {
     final result = create();
@@ -41,8 +41,8 @@ class ChainRequest extends $pb.GeneratedMessage {
     if (currency != null) {
       result.currency = currency;
     }
-    if (dualCurrencyEnabled != null) {
-      result.dualCurrencyEnabled = dualCurrencyEnabled;
+    if (isDualCurrencyEnabled != null) {
+      result.isDualCurrencyEnabled = isDualCurrencyEnabled;
     }
     if (secondaryDisplayCurrency != null) {
       result.secondaryDisplayCurrency = secondaryDisplayCurrency;
@@ -57,7 +57,7 @@ class ChainRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aOS(3, _omitFieldNames ? '' : 'currency')
-    ..aOB(4, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'dualCurrencyEnabled')
+    ..aOB(4, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(5, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..hasRequiredFields = false
   ;
@@ -111,13 +111,13 @@ class ChainRequest extends $pb.GeneratedMessage {
   void clearCurrency() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.bool get dualCurrencyEnabled => $_getBF(3);
+  $core.bool get isDualCurrencyEnabled => $_getBF(3);
   @$pb.TagNumber(4)
-  set dualCurrencyEnabled($core.bool v) { $_setBool(3, v); }
+  set isDualCurrencyEnabled($core.bool v) { $_setBool(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasDualCurrencyEnabled() => $_has(3);
+  $core.bool hasIsDualCurrencyEnabled() => $_has(3);
   @$pb.TagNumber(4)
-  void clearDualCurrencyEnabled() => clearField(4);
+  void clearIsDualCurrencyEnabled() => clearField(4);
 
   @$pb.TagNumber(5)
   $core.String get secondaryDisplayCurrency => $_getSZ(4);

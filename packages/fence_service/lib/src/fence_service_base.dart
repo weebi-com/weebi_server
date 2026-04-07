@@ -1595,8 +1595,8 @@ class FenceService extends FenceServiceBase {
       if (chainTemp.hasCurrency()) {
         chain.currency = chainTemp.currency;
       }
-      if (chainTemp.hasDualCurrencyEnabled()) {
-        chain.dualCurrencyEnabled = chainTemp.dualCurrencyEnabled;
+      if (chainTemp.hasIsDualCurrencyEnabled()) {
+        chain.isDualCurrencyEnabled = chainTemp.isDualCurrencyEnabled;
       }
       if (chainTemp.hasSecondaryDisplayCurrency()) {
         chain.secondaryDisplayCurrency = chainTemp.secondaryDisplayCurrency;
@@ -1936,8 +1936,8 @@ class FenceService extends FenceServiceBase {
       'chainId': request.chainId,
       'name': request.name,
       if (request.hasCurrency()) 'currency': request.currency,
-      if (request.hasDualCurrencyEnabled())
-        'dualCurrencyEnabled': request.dualCurrencyEnabled,
+      if (request.hasIsDualCurrencyEnabled())
+        'isDualCurrencyEnabled': request.isDualCurrencyEnabled,
       if (request.hasSecondaryDisplayCurrency())
         'secondaryDisplayCurrency': request.secondaryDisplayCurrency,
     });
@@ -2012,9 +2012,9 @@ class FenceService extends FenceServiceBase {
           }
         }
 
-        if (request.hasDualCurrencyEnabled()) {
+        if (request.hasIsDualCurrencyEnabled()) {
           modifier =
-              modifier.set('dualCurrencyEnabled', request.dualCurrencyEnabled);
+              modifier.set('isDualCurrencyEnabled', request.isDualCurrencyEnabled);
         }
 
         await boutiqueCollection.update(
