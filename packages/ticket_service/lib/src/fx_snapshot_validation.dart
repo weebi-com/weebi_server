@@ -8,17 +8,16 @@ import 'package:fence_service/protos_weebi.dart';
 /// - `snapshotLocalPerSecondary` is the number of **local** currency units
 ///   for **one** unit of the secondary currency (e.g. 2800 means 1 USD = 2800 local).
 void assertValidFxSnapshot(TicketPb t) {
-  final hasC = t.currency.isNotEmpty;
-  final hasR = t.snapshotSecondaryCurrency.isNotEmpty &&  t.snapshotLocalPerSecondary > 0
-      ;
+  final hasSecondary = t.snapshotSecondaryCurrency.isNotEmpty;
+  final hasRate = t.snapshotLocalPerSecondary > 0;
 
-  if (hasC != hasR) {
+  if (hasSecondary != hasRate) {
     throw GrpcError.invalidArgument(
       'snapshotSecondaryCurrency and snapshotLocalPerSecondary must both be set or both omitted',
     );
   }
 
-  if (hasR) {
+  if (hasSecondary) {
     final rate = t.snapshotLocalPerSecondary;
     if (rate <= 0 || rate > 1e9 || rate.isNaN || rate.isInfinite) {
       throw GrpcError.invalidArgument(
