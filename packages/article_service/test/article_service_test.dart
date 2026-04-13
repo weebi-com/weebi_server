@@ -1,6 +1,9 @@
 import 'package:test/test.dart';
 
 import 'package:article_service/article_service.dart';
+import 'package:fence_service/fence_service.dart';
+// ignore: unnecessary_import
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/models_weebi.dart';
 import 'package:fence_service/protos_weebi.dart';
@@ -33,6 +36,13 @@ void main() async {
       isTest: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
+    await db.createCollection(FenceService.firmCollectionName);
+    await db.collection(FenceService.firmCollectionName).deleteMany(
+        where.eq('firmId', Dummy.firm.firmId));
+    await db.collection(FenceService.firmCollectionName).insertOne({
+      'firmId': Dummy.firm.firmId,
+      'licenses': <dynamic>[],
+    });
     await db.collection(ArticleService.collectionArticleName).drop();
     await db.createCollection(ArticleService.collectionArticleName);
     await db.createCollection(ArticleService.collectionCategoryName);
@@ -44,6 +54,7 @@ void main() async {
 
     await db.collection(ArticleService.collectionArticleName).drop();
     await db.collection(ArticleService.collectionCategoryName).drop();
+    await db.collection(FenceService.firmCollectionName).drop();
     poolService.release(db);
   });
 

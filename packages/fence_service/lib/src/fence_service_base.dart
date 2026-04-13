@@ -683,11 +683,16 @@ class FenceService extends FenceServiceBase {
       if (!jwtRefresh.verify()) {
         throw GrpcError.unauthenticated('invalid jwtRefresh ');
       }
-      final userPrivate = await _readUserByUserId(jwtRefresh.sub);
+      final read = await _readUserPrivateAndTags(jwtRefresh.sub);
+      final userPrivate = read.user;
 
       var jwt = JsonWebToken();
       final payload =
-          userPrivate.permissions.toProto3Json() as Map<String, dynamic>?;
+          userPrivate.permissions.toProto3Json() as Map<String, dynamic>? ??
+              <String, dynamic>{};
+      if (read.tags != null && read.tags!.isNotEmpty) {
+        payload['tags'] = read.tags!;
+      }
       jwt.createPayload(
         userPrivate.userId,
         expireIn: const Duration(days: 1),
@@ -716,17 +721,29 @@ class FenceService extends FenceServiceBase {
     }
   }
 
-  Future<UserPrivate> _readUserByUserId(String userId) async {
-    return databaseMiddleware<UserPrivate>(_poolService, (db) async {
+  Future<({UserPrivate user, List<String>? tags})> _readUserPrivateAndTags(
+      String userId) async {
+    return databaseMiddleware<({UserPrivate user, List<String>? tags})>(
+        _poolService, (db) async {
       try {
-        final userPrivate = await db.collection(userCollectionName).findOne(
-              where.eq('userId', userId),
-            );
-        if (userPrivate == null) {
+        final doc =
+            await db.collection(userCollectionName).findOne(where.eq('userId', userId));
+        if (doc == null) {
           throw GrpcError.notFound('userId $userId');
         }
-        return UserPrivate()
-          ..mergeFromProto3Json(userPrivate, ignoreUnknownFields: true);
+        final user = UserPrivate()
+          ..mergeFromProto3Json(doc, ignoreUnknownFields: true);
+        final rawTags = doc['tags'];
+        final List<String>? tags = rawTags is List
+            ? rawTags
+                .map((e) => e?.toString())
+                .whereType<String>()
+                .toList()
+            : null;
+        return (
+          user: user,
+          tags: tags?.isEmpty == true ? null : tags,
+        );
       } on GrpcError catch (e) {
         log('$e');
         rethrow;
@@ -1333,11 +1350,19 @@ class FenceService extends FenceServiceBase {
     final nowProtoUTC = DateTime.now().toUtc().timestampProto;
 
     final firmId = DateTime.now().objectIdString;
+    final platformCurrency = AppEnvironment.platformDefaultCurrency;
+    final defaultCurrencyCode = request.hasCurrency() &&
+            request.currency.trim().isNotEmpty
+        ? CurrencyResolution.normalizeOr(
+            request.currency, platformCurrency)
+        : platformCurrency;
+
     final firm = Firm(
-        firmId: firmId,
-        name: request.name,
-        status: true,
-        creationDateUTC: nowProtoUTC);
+      firmId: firmId,
+      name: request.name,
+      status: true,
+      creationDateUTC: nowProtoUTC,
+    )..currency = defaultCurrencyCode;
 
     return databaseMiddleware<CreateFirmResponse>(_poolService, (db) async {
       final firmCollection = db.collection(firmCollectionName);
@@ -1362,6 +1387,7 @@ class FenceService extends FenceServiceBase {
             ..billingRights = RightsAdmin.billing
             ..firmId = firmId
             ..userId = userPermission.userId
+            ..isFirmCreator = true
             ..fullAccess = AccessFull(hasFullAccess: true);
 
           try {
@@ -1378,6 +1404,7 @@ class FenceService extends FenceServiceBase {
               chainId: firmId,
               name: request.name,
               creationDateUTC: nowProtoUTC,
+              currency: defaultCurrencyCode,
               boutiques: [
                 BoutiqueMongo.create()
                   ..firmId = firmId
@@ -1385,6 +1412,10 @@ class FenceService extends FenceServiceBase {
                   ..boutiqueId = firmId
                   ..name = request.name
                   ..creationTimestampUTC = nowProtoUTC
+                  ..boutique = (BoutiquePb.create()
+                    ..boutiqueId = firmId
+                    ..name = request.name
+                    ..currency = defaultCurrencyCode)
               ]);
 
           try {
@@ -1561,6 +1592,15 @@ class FenceService extends FenceServiceBase {
         ..isDeleted = chainTemp.isDeleted
         ..deletedBy = chainTemp.deletedBy
         ..restoredBy = chainTemp.restoredBy;
+      if (chainTemp.hasCurrency()) {
+        chain.currency = chainTemp.currency;
+      }
+      if (chainTemp.hasIsDualCurrencyEnabled()) {
+        chain.isDualCurrencyEnabled = chainTemp.isDualCurrencyEnabled;
+      }
+      if (chainTemp.hasSecondaryDisplayCurrency()) {
+        chain.secondaryDisplayCurrency = chainTemp.secondaryDisplayCurrency;
+      }
 
       chains.add(chain);
     }
@@ -1601,6 +1641,21 @@ class FenceService extends FenceServiceBase {
         print('_checkOneChainAndProtoIt $e');
         rethrow;
       }
+    });
+  }
+
+  Future<Firm> _readFirmFromDb(String firmId) async {
+    if (firmId.isEmpty) return Firm();
+    return databaseMiddleware<Firm>(_poolService, (db) async {
+      final doc = await db
+          .collection(firmCollectionName)
+          .findOne(where.eq('firmId', firmId));
+      if (doc == null) return Firm();
+      return Firm()
+        ..mergeFromProto3Json(
+          Map<String, dynamic>.from(doc),
+          ignoreUnknownFields: true,
+        );
     });
   }
 
@@ -1649,9 +1704,24 @@ class FenceService extends FenceServiceBase {
     final chain =
         await _checkOneChainAndProtoIt(userPermission.firmId, request.chainId);
 
+    final firm = await _readFirmFromDb(userPermission.firmId);
+    final platformCurrency = AppEnvironment.platformDefaultCurrency;
+
     final nowProtoUTC = DateTime.now().toUtc().timestampProto;
     final boutiqueId = DateTime.now().objectIdString;
     final boutiqueRequest = request.boutique..boutiqueId = boutiqueId;
+    if (!boutiqueRequest.hasCurrency() ||
+        boutiqueRequest.currency.trim().isEmpty) {
+      boutiqueRequest.currency = CurrencyResolution.effectiveForBoutique(
+        boutique: boutiqueRequest,
+        chain: chain,
+        firm: firm,
+        platformDefault: platformCurrency,
+      );
+    } else {
+      boutiqueRequest.currency = CurrencyResolution.normalizeOr(
+          boutiqueRequest.currency, platformCurrency);
+    }
 
     final boutiqueMongo = BoutiqueMongo.create()
       ..firmId = userPermission.firmId
@@ -1720,6 +1790,27 @@ class FenceService extends FenceServiceBase {
       ..firmId = request.firmId
       ..chainId = chainId
       ..boutiqueId = chainId;
+
+    final firm = await _readFirmFromDb(request.firmId);
+    final platformCurrency = AppEnvironment.platformDefaultCurrency;
+    final firmDefault =
+        CurrencyResolution.firmDefaultOrPlatform(firm, platformCurrency);
+    if (!request.hasCurrency() || request.currency.trim().isEmpty) {
+      request.currency = firmDefault;
+    } else {
+      request.currency = CurrencyResolution.normalizeOr(
+          request.currency, firmDefault);
+    }
+    final firstBoutique = request.boutiques.first;
+    firstBoutique.ensureBoutique();
+    final inner = firstBoutique.boutique;
+    if (!inner.hasCurrency() || inner.currency.trim().isEmpty) {
+      inner.currency = request.currency;
+    } else {
+      inner.currency =
+          CurrencyResolution.normalizeOr(inner.currency, firmDefault);
+    }
+
     final result = await _createOneChainDBExec(request, log: log);
     if (result.type == StatusResponse_Type.CREATED) {
       log.logRpcExit('createOneChain',
@@ -1841,8 +1932,15 @@ class FenceService extends FenceServiceBase {
   Future<StatusResponse> updateOneChain(
       ServiceCall? call, ChainRequest request) async {
     final log = _logger.withContext(call);
-    log.logRpcEntry('updateOneChain',
-        requestData: {'chainId': request.chainId, 'name': request.name});
+    log.logRpcEntry('updateOneChain', requestData: {
+      'chainId': request.chainId,
+      'name': request.name,
+      if (request.hasCurrency()) 'currency': request.currency,
+      if (request.hasIsDualCurrencyEnabled())
+        'isDualCurrencyEnabled': request.isDualCurrencyEnabled,
+      if (request.hasSecondaryDisplayCurrency())
+        'secondaryDisplayCurrency': request.secondaryDisplayCurrency,
+    });
 /*     if (request.boutiques.any((b) => b.firmId != request.firmId)) {
       throw GrpcError.invalidArgument(
           'each boutique.firmId must match the chain.firmId');
@@ -1872,17 +1970,58 @@ class FenceService extends FenceServiceBase {
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
       try {
+        final needsFirmForCurrency = request.hasCurrency() ||
+            request.hasSecondaryDisplayCurrency();
+        final Firm? firmForCurrency = needsFirmForCurrency
+            ? await _readFirmFromDb(userPermission.firmId)
+            : null;
+        final platformCurrency = AppEnvironment.platformDefaultCurrency;
+
+        var modifier = ModifierBuilder()
+            .set('name', request.name)
+            .set('lastUpdatedByuserId', userPermission.userId)
+            .set(
+              'lastUpdateTimestampUTC',
+              DateTime.now().toUtc().timestampProto.toProto3Json(),
+            );
+
+        if (firmForCurrency != null) {
+          final firmDefault = CurrencyResolution.firmDefaultOrPlatform(
+              firmForCurrency, platformCurrency);
+          if (request.hasCurrency()) {
+            final trimmed = request.currency.trim();
+            if (trimmed.isEmpty) {
+              modifier = modifier.unset('currency');
+            } else {
+              modifier = modifier.set(
+                'currency',
+                CurrencyResolution.normalizeOr(trimmed, firmDefault),
+              );
+            }
+          }
+          if (request.hasSecondaryDisplayCurrency()) {
+            final s = request.secondaryDisplayCurrency.trim();
+            if (s.isEmpty) {
+              modifier = modifier.unset('secondaryDisplayCurrency');
+            } else {
+              modifier = modifier.set(
+                'secondaryDisplayCurrency',
+                CurrencyResolution.normalizeOr(s, firmDefault),
+              );
+            }
+          }
+        }
+
+        if (request.hasIsDualCurrencyEnabled()) {
+          modifier =
+              modifier.set('isDualCurrencyEnabled', request.isDualCurrencyEnabled);
+        }
+
         await boutiqueCollection.update(
           where
               .eq('firmId', userPermission.firmId)
               .eq('chainId', request.chainId),
-          ModifierBuilder()
-              .set('name', request.name)
-              .set('lastUpdatedByuserId', userPermission.userId)
-              .set(
-                'lastUpdateTimestampUTC',
-                DateTime.now().toUtc().timestampProto.toProto3Json(),
-              ),
+          modifier,
         );
         log.logRpcExit('updateOneChain',
             resultData: {'chainId': request.chainId});
@@ -2773,7 +2912,7 @@ class FenceService extends FenceServiceBase {
 
   @override
   Future<StatusResponse> deleteOneChain(
-      ServiceCall call, ChainRequest request) async {
+      ServiceCall call, DeleteChainRequest request) async {
     final log = _logger.withContext(call);
     log.logRpcEntry('deleteOneChain',
         requestData: {'chainId': request.chainId});

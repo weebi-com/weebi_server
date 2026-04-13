@@ -244,6 +244,7 @@ class UserPermissions extends $pb.GeneratedMessage {
     UserManagementRights? userManagementRights,
     BillingRights? billingRights,
     BoolRights? boolRights,
+    $core.bool? isFirmCreator,
   }) {
     final result = create();
     if (userId != null) {
@@ -285,6 +286,9 @@ class UserPermissions extends $pb.GeneratedMessage {
     if (boolRights != null) {
       result.boolRights = boolRights;
     }
+    if (isFirmCreator != null) {
+      result.isFirmCreator = isFirmCreator;
+    }
     return result;
   }
   UserPermissions._() : super();
@@ -311,6 +315,7 @@ class UserPermissions extends $pb.GeneratedMessage {
     ..aOM<UserManagementRights>(12, _omitFieldNames ? '' : 'userManagementRights', protoName: 'userManagementRights', subBuilder: UserManagementRights.create)
     ..aOM<BillingRights>(13, _omitFieldNames ? '' : 'billingRights', protoName: 'billingRights', subBuilder: BillingRights.create)
     ..aOM<BoolRights>(14, _omitFieldNames ? '' : 'boolRights', protoName: 'boolRights', subBuilder: BoolRights.create)
+    ..aOB(15, _omitFieldNames ? '' : 'isFirmCreator')
     ..hasRequiredFields = false
   ;
 
@@ -476,6 +481,15 @@ class UserPermissions extends $pb.GeneratedMessage {
   void clearBoolRights() => clearField(14);
   @$pb.TagNumber(14)
   BoolRights ensureBoolRights() => $_ensure(12);
+
+  @$pb.TagNumber(15)
+  $core.bool get isFirmCreator => $_getBF(13);
+  @$pb.TagNumber(15)
+  set isFirmCreator($core.bool v) { $_setBool(13, v); }
+  @$pb.TagNumber(15)
+  $core.bool hasIsFirmCreator() => $_has(13);
+  @$pb.TagNumber(15)
+  void clearIsFirmCreator() => clearField(15);
 }
 
 class ArticleRights extends $pb.GeneratedMessage {

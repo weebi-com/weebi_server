@@ -1,8 +1,8 @@
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
+import 'package:fence_service/logging.dart';
 import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 import 'package:fence_service/protos_weebi.dart';
-import 'package:fence_service/logging.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectContact(
@@ -29,6 +29,18 @@ class ContactService extends ContactServiceBase {
     this.userPermissionIfTest,
   });
 
+  Future<void> _assertOperationalLicense(
+    Db db,
+    ServiceCall? call,
+    UserPermissions userPermission,
+  ) async {
+    await assertUserHasOperationalLicenseWithDb(
+      db,
+      userPermissions: userPermission,
+      authorizationHeader: isTest ? '' : (call?.bearer ?? ''),
+    );
+  }
+
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, ContactRequest request) async {
@@ -51,6 +63,7 @@ class ContactService extends ContactServiceBase {
           'user does not have right to create articles');
     }
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -122,6 +135,7 @@ class ContactService extends ContactServiceBase {
           'user does not have right to update contacts');
     }
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -186,6 +200,7 @@ class ContactService extends ContactServiceBase {
           'user cannot access data from chain ${request.chainId}');
     }
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -229,6 +244,7 @@ class ContactService extends ContactServiceBase {
     }
 
     return databaseMiddleware<ContactsResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -290,6 +306,7 @@ class ContactService extends ContactServiceBase {
     }
 
     return databaseMiddleware<ContactsIdsResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -335,6 +352,7 @@ class ContactService extends ContactServiceBase {
     }
 
     return databaseMiddleware<ContactPb>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
 
       try {
@@ -412,6 +430,7 @@ class ContactService extends ContactServiceBase {
     }
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
       final nowProto = DateTime.now().toUtc().timestampProto;
       final contactsMap = <Map<String, dynamic>>[];

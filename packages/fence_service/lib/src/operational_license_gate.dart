@@ -1,0 +1,95 @@
+import 'package:fence_service/grpc.dart';
+import 'package:fence_service/mongo_dart.dart';
+import 'package:fence_service/protos_weebi.dart';
+
+import 'constants/app_environment.dart';
+import 'jwt.dart';
+import 'entitlement_helpers.dart';
+
+// Keep in sync with [FenceService.firmCollectionName] (avoid importing the main library here).
+const String _firmCollectionName = 'firm';
+
+/// Substring in [GrpcError.message] for clients (e.g. webapp) to detect license gating.
+/// Treat as a stable API: changing this string is a breaking change for those clients.
+const String kOperationalLicenseRequired = 'OPERATIONAL_LICENSE_REQUIRED';
+
+/// Loads [Firm.licenses] from Mongo (no firm creator field; creator is [UserPermissions.isFirmCreator] on the user/JWT).
+Future<List<License>> loadFirmLicenses(Db db, String firmId) async {
+  if (firmId.trim().isEmpty) return [];
+  final firmCollection = db.collection(_firmCollectionName);
+  final firmDoc = await firmCollection.findOne(where.eq('firmId', firmId));
+  if (firmDoc == null) return [];
+  final licensesJson = firmDoc['licenses'] as List? ?? [];
+  return [
+    for (final l in licensesJson)
+      (License()
+        ..mergeFromProto3Json(
+          Map<String, dynamic>.from(l as Map),
+          ignoreUnknownFields: true,
+        )),
+  ];
+}
+
+/// Throws [GrpcError.failedPrecondition] if the user may not use ticket/article/contact flows.
+///
+/// **Firm creator operational joker:** [UserPermissions.isFirmCreator] bypasses the
+/// seat check here only — a narrow preview/sync path. Subscription-backed product
+/// features (e.g. portal ticket store filter/group) must use [userHasActiveLicensedSeat]
+/// without this bypass (see `entitlement_helpers.dart`, webapp `SeatCapability`).
+///
+/// No-op when [UserPermissions.firmId] is empty, or the bearer is a service-account JWT.
+///
+/// No-op when [AppEnvironment.isLicenseCheckEnforced] is `false` (grace-period deploy).
+void assertUserHasOperationalLicense({
+  required UserPermissions userPermissions,
+  required String authorizationHeader,
+  required List<License> licenses,
+}) {
+  if (!AppEnvironment.isLicenseCheckEnforced) return;
+
+  if (userPermissions.firmId.isEmpty) return;
+
+  var token = authorizationHeader.trim();
+  if (token.startsWith('Bearer ')) {
+    token = token.substring(7).trim();
+  }
+  if (token.isNotEmpty) {
+    try {
+      if (JsonWebToken.parse(token).isServiceAccount) return;
+    } on FormatException {
+      // Still enforce normal license path if token shape is wrong.
+    }
+  }
+
+  if (userPermissions.userId.trim().isEmpty) {
+    throw GrpcError.failedPrecondition(
+      '$kOperationalLicenseRequired: userId missing',
+    );
+  }
+
+  if (firmCreatorOperationalJoker(userPermissions)) return;
+
+  if (userHasActiveLicensedSeat(userPermissions.userId, licenses)) {
+    return;
+  }
+
+  throw GrpcError.failedPrecondition(
+    '$kOperationalLicenseRequired: assign an active license seat or sign in as the firm creator',
+  );
+}
+
+/// Loads firm licenses then [assertUserHasOperationalLicense].
+Future<void> assertUserHasOperationalLicenseWithDb(
+  Db db, {
+  required UserPermissions userPermissions,
+  required String authorizationHeader,
+}) async {
+  if (!AppEnvironment.isLicenseCheckEnforced) return;
+
+  final licenses = await loadFirmLicenses(db, userPermissions.firmId);
+  assertUserHasOperationalLicense(
+    userPermissions: userPermissions,
+    authorizationHeader: authorizationHeader,
+    licenses: licenses,
+  );
+}

@@ -39,10 +39,6 @@ class AppEnvironment {
   // Stripe configuration
   static String? get stripeSecretKey =>
       Platform.environment['STRIPE_SECRET_KEY'];
-  static String? get stripePublishableKey =>
-      Platform.environment['STRIPE_PUBLISHABLE_KEY'];
-  static String? get stripeWebhookSecret =>
-      Platform.environment['STRIPE_WEBHOOK_SECRET'];
 
   // weebi_express service configuration
   static String? get weebiExpressBaseUrl {
@@ -56,6 +52,37 @@ class AppEnvironment {
       return expressSecret;
     }
     return jwtSecretKey;
+  }
+
+  /// false by default
+  /// When `true` ticket/article/contact RPCs require that user is either 
+  /// firm creator 
+  /// an active license seat
+  /// (see [assertUserHasOperationalLicense]).
+  ///
+  /// For unit tests, [debugLicenseCheckEnforcedOverride] takes precedence when non-null.
+  static bool? debugLicenseCheckEnforcedOverride;
+
+  static bool get isLicenseCheckEnforced {
+    if (debugLicenseCheckEnforcedOverride != null) {
+      return debugLicenseCheckEnforcedOverride!;
+    }
+    final v =
+        Platform.environment['LICENSE_CHECK_ENFORCED']?.trim().toLowerCase();
+    if (v == null || v.isEmpty) {
+      return false;
+    } else {
+      return v == 'true' || v == '1' || v == 'yes' || v == 'on';
+    }
+  }
+
+  /// ISO 4217 default when firm/chain/boutique omit currency (override via FIRMS_DEFAULT_CURRENCY).
+  static String get platformDefaultCurrency {
+    final v = Platform.environment['FIRMS_DEFAULT_CURRENCY']?.trim();
+    if (v != null && v.length == 3) {
+      return v.toUpperCase();
+    }
+    return 'EUR';
   }
 
   // Environment detection

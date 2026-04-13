@@ -231,6 +231,9 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? contactLastName,
     $core.String? contactPhone,
     $core.String? contactMail,
+    $core.String? currency,
+    $core.String? snapshotSecondaryCurrency,
+    $core.double? snapshotLocalPerSecondary,
   }) {
     final result = create();
     if (nonUniqueId != null) {
@@ -290,6 +293,15 @@ class TicketPb extends $pb.GeneratedMessage {
     if (contactMail != null) {
       result.contactMail = contactMail;
     }
+    if (currency != null) {
+      result.currency = currency;
+    }
+    if (snapshotSecondaryCurrency != null) {
+      result.snapshotSecondaryCurrency = snapshotSecondaryCurrency;
+    }
+    if (snapshotLocalPerSecondary != null) {
+      result.snapshotLocalPerSecondary = snapshotLocalPerSecondary;
+    }
     return result;
   }
   TicketPb._() : super();
@@ -316,6 +328,9 @@ class TicketPb extends $pb.GeneratedMessage {
     ..aOS(17, _omitFieldNames ? '' : 'contactLastName', protoName: 'contactLastName')
     ..aOS(18, _omitFieldNames ? '' : 'contactPhone', protoName: 'contactPhone')
     ..aOS(19, _omitFieldNames ? '' : 'contactMail', protoName: 'contactMail')
+    ..aOS(20, _omitFieldNames ? '' : 'currency')
+    ..aOS(21, _omitFieldNames ? '' : 'snapshotSecondaryCurrency')
+    ..a<$core.double>(22, _omitFieldNames ? '' : 'snapshotLocalPerSecondary', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
   ;
 
@@ -514,6 +529,33 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.bool hasContactMail() => $_has(18);
   @$pb.TagNumber(19)
   void clearContactMail() => clearField(19);
+
+  @$pb.TagNumber(20)
+  $core.String get currency => $_getSZ(19);
+  @$pb.TagNumber(20)
+  set currency($core.String v) { $_setString(19, v); }
+  @$pb.TagNumber(20)
+  $core.bool hasCurrency() => $_has(19);
+  @$pb.TagNumber(20)
+  void clearCurrency() => clearField(20);
+
+  @$pb.TagNumber(21)
+  $core.String get snapshotSecondaryCurrency => $_getSZ(20);
+  @$pb.TagNumber(21)
+  set snapshotSecondaryCurrency($core.String v) { $_setString(20, v); }
+  @$pb.TagNumber(21)
+  $core.bool hasSnapshotSecondaryCurrency() => $_has(20);
+  @$pb.TagNumber(21)
+  void clearSnapshotSecondaryCurrency() => clearField(21);
+
+  @$pb.TagNumber(22)
+  $core.double get snapshotLocalPerSecondary => $_getN(21);
+  @$pb.TagNumber(22)
+  set snapshotLocalPerSecondary($core.double v) { $_setDouble(21, v); }
+  @$pb.TagNumber(22)
+  $core.bool hasSnapshotLocalPerSecondary() => $_has(21);
+  @$pb.TagNumber(22)
+  void clearSnapshotLocalPerSecondary() => clearField(22);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {

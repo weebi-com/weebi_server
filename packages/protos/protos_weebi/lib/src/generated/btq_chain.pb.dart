@@ -28,6 +28,9 @@ class Chain extends $pb.GeneratedMessage {
     $core.bool? isDeleted,
     $core.String? deletedBy,
     $core.String? restoredBy,
+    $core.String? currency,
+    $core.bool? isDualCurrencyEnabled,
+    $core.String? secondaryDisplayCurrency,
   }) {
     final result = create();
     if (chainId != null) {
@@ -60,6 +63,15 @@ class Chain extends $pb.GeneratedMessage {
     if (restoredBy != null) {
       result.restoredBy = restoredBy;
     }
+    if (currency != null) {
+      result.currency = currency;
+    }
+    if (isDualCurrencyEnabled != null) {
+      result.isDualCurrencyEnabled = isDualCurrencyEnabled;
+    }
+    if (secondaryDisplayCurrency != null) {
+      result.secondaryDisplayCurrency = secondaryDisplayCurrency;
+    }
     return result;
   }
   Chain._() : super();
@@ -77,6 +89,9 @@ class Chain extends $pb.GeneratedMessage {
     ..aOB(8, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..aOS(9, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
     ..aOS(10, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
+    ..aOS(11, _omitFieldNames ? '' : 'currency')
+    ..aOB(12, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
+    ..aOS(13, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..hasRequiredFields = false
   ;
 
@@ -188,6 +203,34 @@ class Chain extends $pb.GeneratedMessage {
   $core.bool hasRestoredBy() => $_has(9);
   @$pb.TagNumber(10)
   void clearRestoredBy() => clearField(10);
+
+  /// / ISO 4217; overrides firm default_currency for boutiques in this chain when boutique.currency is empty.
+  @$pb.TagNumber(11)
+  $core.String get currency => $_getSZ(10);
+  @$pb.TagNumber(11)
+  set currency($core.String v) { $_setString(10, v); }
+  @$pb.TagNumber(11)
+  $core.bool hasCurrency() => $_has(10);
+  @$pb.TagNumber(11)
+  void clearCurrency() => clearField(11);
+
+  @$pb.TagNumber(12)
+  $core.bool get isDualCurrencyEnabled => $_getBF(11);
+  @$pb.TagNumber(12)
+  set isDualCurrencyEnabled($core.bool v) { $_setBool(11, v); }
+  @$pb.TagNumber(12)
+  $core.bool hasIsDualCurrencyEnabled() => $_has(11);
+  @$pb.TagNumber(12)
+  void clearIsDualCurrencyEnabled() => clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.String get secondaryDisplayCurrency => $_getSZ(12);
+  @$pb.TagNumber(13)
+  set secondaryDisplayCurrency($core.String v) { $_setString(12, v); }
+  @$pb.TagNumber(13)
+  $core.bool hasSecondaryDisplayCurrency() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearSecondaryDisplayCurrency() => clearField(13);
 }
 
 class Chains extends $pb.GeneratedMessage {

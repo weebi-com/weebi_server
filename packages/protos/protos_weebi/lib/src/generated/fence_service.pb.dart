@@ -21,11 +21,15 @@ import 'device.pb.dart' as $12;
 import 'user.pb.dart' as $9;
 import 'user_permissions.pb.dart' as $24;
 
-/// /
+/// / Patch-style chain update (not a full Chain). Omitted optional fields are left unchanged in storage.
+/// / Currency fields align with weebi.chain.Chain.
 class ChainRequest extends $pb.GeneratedMessage {
   factory ChainRequest({
     $core.String? chainId,
     $core.String? name,
+    $core.String? currency,
+    $core.bool? isDualCurrencyEnabled,
+    $core.String? secondaryDisplayCurrency,
   }) {
     final result = create();
     if (chainId != null) {
@@ -33,6 +37,15 @@ class ChainRequest extends $pb.GeneratedMessage {
     }
     if (name != null) {
       result.name = name;
+    }
+    if (currency != null) {
+      result.currency = currency;
+    }
+    if (isDualCurrencyEnabled != null) {
+      result.isDualCurrencyEnabled = isDualCurrencyEnabled;
+    }
+    if (secondaryDisplayCurrency != null) {
+      result.secondaryDisplayCurrency = secondaryDisplayCurrency;
     }
     return result;
   }
@@ -43,6 +56,9 @@ class ChainRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ChainRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..aOS(3, _omitFieldNames ? '' : 'currency')
+    ..aOB(4, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
+    ..aOS(5, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..hasRequiredFields = false
   ;
 
@@ -84,9 +100,87 @@ class ChainRequest extends $pb.GeneratedMessage {
   $core.bool hasName() => $_has(1);
   @$pb.TagNumber(2)
   void clearName() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get currency => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set currency($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasCurrency() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearCurrency() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get isDualCurrencyEnabled => $_getBF(3);
+  @$pb.TagNumber(4)
+  set isDualCurrencyEnabled($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasIsDualCurrencyEnabled() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearIsDualCurrencyEnabled() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get secondaryDisplayCurrency => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set secondaryDisplayCurrency($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasSecondaryDisplayCurrency() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSecondaryDisplayCurrency() => clearField(5);
 }
 
-/// / one boutique creation the server will assign the boutiqueId
+/// / Identifies a chain for deleteOneChain only (wire-compatible with ChainRequest carrying field 1 alone).
+class DeleteChainRequest extends $pb.GeneratedMessage {
+  factory DeleteChainRequest({
+    $core.String? chainId,
+  }) {
+    final result = create();
+    if (chainId != null) {
+      result.chainId = chainId;
+    }
+    return result;
+  }
+  DeleteChainRequest._() : super();
+  factory DeleteChainRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory DeleteChainRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'DeleteChainRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  DeleteChainRequest clone() => DeleteChainRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  DeleteChainRequest copyWith(void Function(DeleteChainRequest) updates) => super.copyWith((message) => updates(message as DeleteChainRequest)) as DeleteChainRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteChainRequest create() => DeleteChainRequest._();
+  DeleteChainRequest createEmptyInstance() => create();
+  static $pb.PbList<DeleteChainRequest> createRepeated() => $pb.PbList<DeleteChainRequest>();
+  @$core.pragma('dart2js:noInline')
+  static DeleteChainRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<DeleteChainRequest>(create);
+  static DeleteChainRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => clearField(1);
+}
+
+/// / chainId, nested boutique, optional logo. Billing ISO 4217 is [boutique.currency] on BoutiquePb (not a top-level field).
 class BoutiqueRequest extends $pb.GeneratedMessage {
   factory BoutiqueRequest({
     $core.String? chainId,

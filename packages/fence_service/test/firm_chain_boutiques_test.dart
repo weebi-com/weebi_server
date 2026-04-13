@@ -93,6 +93,26 @@ void main() async {
     chain = response2.chains.first;
   });
 
+  test('updateOneChain persists chain currency fields', () async {
+    final response = await fenceService.updateOneChain(
+        null,
+        ChainRequest(
+          chainId: chain.chainId,
+          name: chain.name,
+          currency: 'EUR',
+          isDualCurrencyEnabled: true,
+          secondaryDisplayCurrency: 'USD',
+        ));
+    expect(response.type, StatusResponse_Type.UPDATED);
+    final again = await fenceService.readAllChains(null, Empty());
+    final updated =
+        again.chains.firstWhere((c) => c.chainId == chain.chainId);
+    expect(updated.currency, 'EUR');
+    expect(updated.isDualCurrencyEnabled, isTrue);
+    expect(updated.secondaryDisplayCurrency, 'USD');
+    chain = updated;
+  });
+
   test('test upsertOneBoutique', () async {
     final boutiqueLili = chain.boutiques.first
       ..boutiqueId = chain.chainId
@@ -192,7 +212,7 @@ void main() async {
     test('deleteOneChain fails when chain has active boutiques', () async {
       try {
         await fenceService.deleteOneChain(
-            _call, ChainRequest(chainId: chain.chainId));
+            _call, DeleteChainRequest(chainId: chain.chainId));
         fail('Expected GrpcError.failedPrecondition');
       } on GrpcError catch (e) {
         expect(e.message, contains('has active boutiques'));
@@ -209,7 +229,8 @@ void main() async {
               chainId: boutique.chainId, boutique: boutique.boutique));
 
       final response =
-          await fenceService.deleteOneChain(_call, ChainRequest(chainId: chain.chainId));
+          await fenceService.deleteOneChain(
+              _call, DeleteChainRequest(chainId: chain.chainId));
       expect(response.type, StatusResponse_Type.DELETED);
 
       // Chain is gone from readAllChains
@@ -223,7 +244,7 @@ void main() async {
       // First chain (chainId == firmId) cannot be deleted regardless of DB state
       try {
         await fenceService.deleteOneChain(
-            _call, ChainRequest(chainId: firmId));
+            _call, DeleteChainRequest(chainId: firmId));
         fail('Expected GrpcError.invalidArgument');
       } on GrpcError catch (e) {
         expect(e.message, contains('first chain should not be deleted'));

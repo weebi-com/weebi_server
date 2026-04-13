@@ -264,6 +264,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.String? deletedBy,
     $core.String? restoredBy,
     $core.String? mail,
+    $core.String? currency,
+    $core.bool? isDualCurrencyEnabled,
+    $core.String? secondaryDisplayCurrency,
     $core.Map<$core.String, $core.String>? additionalAttributes,
   }) {
     final result = create();
@@ -314,6 +317,15 @@ class BoutiquePb extends $pb.GeneratedMessage {
     if (mail != null) {
       result.mail = mail;
     }
+    if (currency != null) {
+      result.currency = currency;
+    }
+    if (isDualCurrencyEnabled != null) {
+      result.isDualCurrencyEnabled = isDualCurrencyEnabled;
+    }
+    if (secondaryDisplayCurrency != null) {
+      result.secondaryDisplayCurrency = secondaryDisplayCurrency;
+    }
     if (additionalAttributes != null) {
       result.additionalAttributes.addAll(additionalAttributes);
     }
@@ -339,6 +351,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     ..aOS(13, _omitFieldNames ? '' : 'deletedBy', protoName: 'deletedBy')
     ..aOS(14, _omitFieldNames ? '' : 'restoredBy', protoName: 'restoredBy')
     ..aOS(15, _omitFieldNames ? '' : 'mail')
+    ..aOS(16, _omitFieldNames ? '' : 'currency')
+    ..aOB(17, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
+    ..aOS(18, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiquePb.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
     ..hasRequiredFields = false
   ;
@@ -511,8 +526,38 @@ class BoutiquePb extends $pb.GeneratedMessage {
   @$pb.TagNumber(15)
   void clearMail() => clearField(15);
 
+  /// / ISO 4217 billing currency for this boutique. Empty: inherit chain then firm then platform default.
+  @$pb.TagNumber(16)
+  $core.String get currency => $_getSZ(15);
+  @$pb.TagNumber(16)
+  set currency($core.String v) { $_setString(15, v); }
+  @$pb.TagNumber(16)
+  $core.bool hasCurrency() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearCurrency() => clearField(16);
+
+  /// / When true, PoS/web clients may show amounts in secondaryDisplayCurrency (display-only; same semantics as chain/firm).
+  @$pb.TagNumber(17)
+  $core.bool get isDualCurrencyEnabled => $_getBF(16);
+  @$pb.TagNumber(17)
+  set isDualCurrencyEnabled($core.bool v) { $_setBool(16, v); }
+  @$pb.TagNumber(17)
+  $core.bool hasIsDualCurrencyEnabled() => $_has(16);
+  @$pb.TagNumber(17)
+  void clearIsDualCurrencyEnabled() => clearField(17);
+
+  /// / ISO 4217 secondary display code (e.g. USD). Meaningful when isDualCurrencyEnabled is true.
+  @$pb.TagNumber(18)
+  $core.String get secondaryDisplayCurrency => $_getSZ(17);
+  @$pb.TagNumber(18)
+  set secondaryDisplayCurrency($core.String v) { $_setString(17, v); }
+  @$pb.TagNumber(18)
+  $core.bool hasSecondaryDisplayCurrency() => $_has(17);
+  @$pb.TagNumber(18)
+  void clearSecondaryDisplayCurrency() => clearField(18);
+
   @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(15);
+  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(18);
 }
 
 

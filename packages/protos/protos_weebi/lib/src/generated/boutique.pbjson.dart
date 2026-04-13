@@ -98,11 +98,19 @@ const BoutiquePb$json = {
     {'1': 'deletedBy', '3': 13, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 14, '4': 1, '5': 9, '10': 'restoredBy'},
     {'1': 'mail', '3': 15, '4': 1, '5': 9, '10': 'mail'},
+    {'1': 'currency', '3': 16, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
+    {'1': 'isDualCurrencyEnabled', '3': 17, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
+    {'1': 'secondaryDisplayCurrency', '3': 18, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
     {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiquePb.AdditionalAttributesEntry', '10': 'additional_attributes'},
   ],
   '3': [BoutiquePb_AdditionalAttributesEntry$json],
+  '8': [
+    {'1': '_currency'},
+    {'1': '_isDualCurrencyEnabled'},
+    {'1': '_secondaryDisplayCurrency'},
+  ],
   '9': [
-    {'1': 16, '2': 99},
+    {'1': 19, '2': 99},
   ],
 };
 
@@ -127,8 +135,12 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'IAEoAVIFcHJvbW8SHgoKcHJvbW9TdGFydBgKIAEoCVIKcHJvbW9TdGFydBIaCghwcm9tb0VuZB'
     'gLIAEoCVIIcHJvbW9FbmQSHAoJaXNEZWxldGVkGAwgASgIUglpc0RlbGV0ZWQSHAoJZGVsZXRl'
     'ZEJ5GA0gASgJUglkZWxldGVkQnkSHgoKcmVzdG9yZWRCeRgOIAEoCVIKcmVzdG9yZWRCeRISCg'
-    'RtYWlsGA8gASgJUgRtYWlsEmoKFWFkZGl0aW9uYWxfYXR0cmlidXRlcxhjIAMoCzI0LndlZWJp'
-    'LmJvdXRpcXVlLkJvdXRpcXVlUGIuQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeVIVYWRkaXRpb2'
-    '5hbF9hdHRyaWJ1dGVzGkcKGUFkZGl0aW9uYWxBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJ'
-    'UgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVlOgI4AUoECBAQYw==');
+    'RtYWlsGA8gASgJUgRtYWlsEh8KCGN1cnJlbmN5GBAgASgJSABSCGN1cnJlbmN5iAEBEjcKFWlz'
+    'RHVhbEN1cnJlbmN5RW5hYmxlZBgRIAEoCEgBUhNkdWFsQ3VycmVuY3lFbmFibGVkiAEBEj8KGH'
+    'NlY29uZGFyeURpc3BsYXlDdXJyZW5jeRgSIAEoCUgCUhhzZWNvbmRhcnlEaXNwbGF5Q3VycmVu'
+    'Y3mIAQESagoVYWRkaXRpb25hbF9hdHRyaWJ1dGVzGGMgAygLMjQud2VlYmkuYm91dGlxdWUuQm'
+    '91dGlxdWVQYi5BZGRpdGlvbmFsQXR0cmlidXRlc0VudHJ5UhVhZGRpdGlvbmFsX2F0dHJpYnV0'
+    'ZXMaRwoZQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YW'
+    'x1ZRgCIAEoCVIFdmFsdWU6AjgBQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3VycmVuY3lFbmFi'
+    'bGVkQhsKGV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3lKBAgTEGM=');
 

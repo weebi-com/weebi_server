@@ -81,10 +81,6 @@ abstract class Dummy {
   /// Deprecated fields kept for backward compat; use licenseDummy / licenses instead.
   static final firmNoId = Firm(
     name: 'firmDummy',
-    subscriptionPlan: 'test',
-    subscriptionSeats: 1,
-    subscriptionStartTimestampUTC: Timestamp(seconds: Int64.ONE, nanos: 0),
-    subscriptionEndTimestampUTC: null, // everlasting subs
     status: true,
     statusUpdateTimestampUTC: Timestamp(seconds: Int64.ONE, nanos: 0),
     lastUpdateTimestampUTC: Timestamp(seconds: Int64.ONE, nanos: 0),
@@ -112,6 +108,7 @@ abstract class Dummy {
   static final adminPermission = UserPermissions.create()
     ..firmId = '123456789'
     ..userId = '987654321'
+    ..isFirmCreator = true
     ..articleRights = RightsAdmin.article
     ..boutiqueRights = RightsAdmin.boutique
     ..contactRights = RightsAdmin.contact

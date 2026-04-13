@@ -6,3 +6,7 @@ export 'src/bearer_ext.dart';
 export 'src/user_perm_ext.dart';
 export 'src/extension.dart';
 export 'src/constants/app_environment.dart';
+export 'src/currency_resolution.dart';
+export 'src/license_seat_entitlement.dart';
+export 'src/entitlement_helpers.dart';
+export 'src/operational_license_gate.dart';

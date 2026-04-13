@@ -1,5 +1,9 @@
 # changelog
 
+## 1.2.9 - 2026 march
+
+- currency && 2nd currency display on boutique and ticket
+
 ## 1.1.2 - 2026 march
 
 - added termsVersion in license
