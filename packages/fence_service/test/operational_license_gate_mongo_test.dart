@@ -95,6 +95,14 @@ void main() {
   });
 
   group('assertUserHasOperationalLicenseWithDb (mongo)', () {
+    setUp(() {
+      AppEnvironment.debugLicenseCheckEnforcedOverride = true;
+    });
+
+    tearDown(() {
+      AppEnvironment.debugLicenseCheckEnforcedOverride = null;
+    });
+
     test('non-creator denied when DB firm has empty licenses', () async {
       final db = await pool.acquire();
       const id = 'gate_db_empty_lic';

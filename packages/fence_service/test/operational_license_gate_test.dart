@@ -247,6 +247,10 @@ void main() {
   });
 
   group('assertUserHasOperationalLicense', () {
+    setUp(() {
+      AppEnvironment.debugLicenseCheckEnforcedOverride = true;
+    });
+
     tearDown(() {
       AppEnvironment.debugLicenseCheckEnforcedOverride = null;
     });
