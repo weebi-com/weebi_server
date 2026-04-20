@@ -464,6 +464,104 @@ class FenceService extends FenceServiceBase {
     return metadata['x-session-id'] ?? metadata['X-Session-Id'];
   }
 
+  /// Internal endpoint used by Envoy to retrieve session data
+  /// Called by Envoy's Lua script when a session cookie is present
+  /// Path: /weebi.fence.service.FenceService/getSessionInternal
+  @override
+  Future<Tokens> getSessionInternal(ServiceCall? call, SessionRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('getSessionInternal', requestData: {'sessionId': request.sessionId});
+
+    try {
+      // Validate Envoy authentication (API key)
+      final apiKey = call?.clientMetadata?['x-api-key'];
+      if (apiKey != AppEnvironment.envoyApiKey) {
+        log.logRpcError(
+          'getSessionInternal',
+          GrpcError.permissionDenied('Invalid Envoy API key'),
+          extra: {'note': 'Only Envoy should call this internal RPC'},
+        );
+        throw GrpcError.permissionDenied('Invalid API key for internal RPC');
+      }
+
+      if (request.sessionId.isEmpty) {
+        log.debug('getSessionInternal called with empty sessionId');
+        throw GrpcError.invalidArgument('Session ID required');
+      }
+
+      log.info('Envoy querying session', extra: {
+        'sessionId': request.sessionId,
+        'caller': 'envoy_lua_injector',
+      });
+
+      // Query MongoDB for the session
+      final session = await databaseMiddleware(_poolService, (db) async {
+        return await db.collection('web_sessions').findOne({'_id': request.sessionId});
+      });
+
+      if (session == null) {
+        log.debug('Session not found', extra: {
+          'sessionId': request.sessionId,
+          'action': 'envoy_will_return_401',
+        });
+        throw GrpcError.notFound('Session not found');
+      }
+
+      // Check if session has expired
+      final expiresAt = session['expiresAt'];
+      if (expiresAt != null) {
+        final expiresAtDateTime = expiresAt is DateTime ? expiresAt : DateTime.parse(expiresAt.toString());
+        if (DateTime.now().isAfter(expiresAtDateTime)) {
+          log.debug('Session expired', extra: {
+            'sessionId': request.sessionId,
+            'expiresAt': expiresAtDateTime.toIso8601String(),
+            'now': DateTime.now().toIso8601String(),
+            'action': 'envoy_will_return_401',
+          });
+          // Use failedPrecondition instead of unauthenticated - semantically clearer
+          // Lua script treats all non-200 as invalid session → 401
+          throw GrpcError.failedPrecondition('Session expired');
+        }
+      }
+
+      // Extract JWT and refresh token
+      final jwt = session['jwt'] as String?;
+      final refreshToken = session['refreshToken'] as String?;
+
+      if (jwt == null || jwt.isEmpty) {
+        log.error('Session corrupted - no JWT', extra: {
+          'sessionId': request.sessionId,
+          'action': 'envoy_will_return_500',
+        });
+        throw GrpcError.internal('Session data corrupted: missing JWT');
+      }
+
+      log.info('Session validated - JWT will be injected by Envoy', extra: {
+        'sessionId': request.sessionId,
+        'userId': session['userId'],
+        'jwtLength': jwt.length,
+        'hasRefreshToken': refreshToken != null && refreshToken.isNotEmpty,
+      });
+
+      return Tokens(
+        accessToken: jwt,
+        refreshToken: refreshToken ?? '',
+      );
+    } on GrpcError catch (e) {
+      log.logRpcError('getSessionInternal', e, extra: {
+        'errorCode': e.code,
+        'note': 'Envoy Lua will interpret this as: 404→401 response, 401→401 response, 500→401 response',
+      });
+      rethrow;
+    } catch (e) {
+      log.error('Unexpected error in getSessionInternal', error: e, extra: {
+        'sessionId': request.sessionId,
+        'action': 'envoy_will_return_500',
+      });
+      throw GrpcError.internal('Failed to retrieve session: $e');
+    }
+  }
+
   Future<void> _updateUserLastSignIn(String userId) async {
     return databaseMiddleware(_poolService, (db) async {
       try {
@@ -676,7 +774,7 @@ class FenceService extends FenceServiceBase {
   Future<Tokens> authenticateWithRefreshToken(
       ServiceCall? call, RefreshToken request) async {
     final log = _logger.withContext(call);
-    log.logRpcEntry('authenticateWithRefreshToken');
+    log.logRpcEntry('authenticateWithRefreshToken', requestData: {'isWebApp': request.isWebApp});
 
     try {
       final jwtRefresh = JsonWebToken.parse(request.refreshToken);
@@ -709,8 +807,30 @@ class FenceService extends FenceServiceBase {
           });
       // refresh token only contains userId
       final resfreshToken = jwt.sign();
-      // ? is below really useful ?
       await _updateUserLastSignIn(userPrivate.userId);
+
+      // Handle web app mode: store session in MongoDB
+      if (request.isWebApp) {
+        final sessionId = await _createWebSession(
+          accessToken: accessToken,
+          refreshToken: resfreshToken,
+          userId: userPrivate.userId,
+          log: log,
+        );
+
+        log.info('Web session refreshed', extra: {
+          'sessionId': sessionId,
+          'userId': userPrivate.userId,
+        });
+
+        log.logRpcExit('authenticateWithRefreshToken');
+        return Tokens(
+          sessionId: sessionId,
+          mustChangePassword: false,
+        );
+      }
+
+      // Standard (non-web) mode: return tokens directly
       final tokens =
           Tokens(accessToken: accessToken, refreshToken: resfreshToken);
       log.logRpcExit('authenticateWithRefreshToken');

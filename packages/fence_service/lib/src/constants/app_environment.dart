@@ -54,6 +54,19 @@ class AppEnvironment {
     return jwtSecretKey;
   }
 
+  // Envoy BFF configuration
+  static String get envoyApiKey {
+    final apiKey = Platform.environment['ENVOY_API_KEY'];
+    if (apiKey != null && apiKey.isNotEmpty) {
+      return apiKey;
+    }
+    throw Exception(
+      'Missing required environment variable: ENVOY_API_KEY\n'
+      'This is required for Envoy to authenticate with FenceService.getSessionInternal\n'
+      'Set this in your Cloud Run / deployment environment'
+    );
+  }
+
   /// false by default
   /// When `true` ticket/article/contact RPCs require that user is either 
   /// firm creator 
