@@ -25,32 +25,33 @@ bool _isPublicRpc(String? path, String methodName) {
   if (pathLower.contains('healthcheck') || methodLower.contains('healthcheck')) {
     return true;
   }
-  if (pathLower.contains('getsessioninternal') || methodLower.contains('getsessioninternal')) {
-    return true;
-  }
   return false;
 }
 
 FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
   final path = call.clientMetadata?[':path'] ?? call.clientMetadata?['path'];
+  
+  // Check if this is getSessionInternal - it needs API key auth instead of Bearer
+  if (path != null && path.toLowerCase().contains('getsessioninternal')) {
+    final apiKey = call.clientMetadata?['x-api-key'];
+    if (apiKey == AppEnvironment.envoyApiKey) {
+      return null; // API key is valid
+    } else {
+      return GrpcError.permissionDenied('Invalid or missing API key for getSessionInternal');
+    }
+  }
+  
+  // For all other RPC that are public, skip auth
   if (_isPublicRpc(path, method.name)) {
     return null; // allow public RPC calls (no auth required)
   }
+  
   final authLogger = WeebiLogger.forService('AuthInterceptor');
   if (path == null || path.isEmpty) {
     authLogger.warning('Auth: path null/empty', extra: {'rpcMethod': method.name});
   }
-  // ! below stupid idea -> security risk
-  //if (call.clientMetadata![':path']!.toLowerCase().contains('createdevice')) {
-  //  return null; // allow all createPendingDevice RPC calls
-  //}
+  
   try {
-    // final jwt2 = call.clientMetadata!['authorization'];
-    // print('jwt2');
-    // print(jwt2);
-    // * front app will also use an interceptor to add the token
-    // * the method can only add metadata, parse in the bearer getter below
-    // * then removing the potential Bearer + trailing space that could be added
     final bearerRaw = call.bearer.replaceAll('Bearer ', '');
     final jwt = JsonWebToken.parse(bearerRaw);
     if (jwt.verify() == false) {
