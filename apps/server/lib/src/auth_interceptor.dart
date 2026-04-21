@@ -25,6 +25,9 @@ bool _isPublicRpc(String? path, String methodName) {
   if (pathLower.contains('healthcheck') || methodLower.contains('healthcheck')) {
     return true;
   }
+  if (pathLower.contains('getsessioninternal') || methodLower.contains('getsessioninternal')) {
+    return true;
+  }
   return false;
 }
 
