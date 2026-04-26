@@ -966,15 +966,22 @@ class FenceService extends FenceServiceBase {
   Future<ReadOneUserResponse> readOneUser(
       ServiceCall? call, UserId request) async {
     final log = _logger.withContext(call);
-    log.logRpcEntry('readOneUser', requestData: {
-      'userId': request.userId,
-    });
-
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
 
-    final isReadingOwnUser = userPermission.userId == request.userId;
+    // In BFF mode the browser authenticates with a session cookie. The client
+    // can ask for "me" by omitting userId; Envoy has already resolved the
+    // session into bearer permissions before the RPC reaches this service.
+    final requestedUserId =
+        request.userId.isEmpty ? userPermission.userId : request.userId;
+
+    log.logRpcEntry('readOneUser', requestData: {
+      'userId': requestedUserId,
+      'requestedUserIdWasEmpty': request.userId.isEmpty,
+    });
+
+    final isReadingOwnUser = userPermission.userId == requestedUserId;
 
     if (isReadingOwnUser == false &&
         userPermission.userManagementRights.rights
@@ -986,7 +993,7 @@ class FenceService extends FenceServiceBase {
       try {
         final userMongo = await db
             .collection(userCollectionName)
-            .findOne(where.eq('userId', request.userId));
+            .findOne(where.eq('userId', requestedUserId));
         if (userMongo == null) {
           throw GrpcError.notFound('user not found');
         }
@@ -1042,12 +1049,14 @@ class FenceService extends FenceServiceBase {
             statusResponse: StatusResponse(type: StatusResponse_Type.SUCCESS));
       } on GrpcError catch (e) {
         log.logRpcError('readOneUser', e, extra: {
-          'requestedUserId': request.userId,
+          'requestedUserId': requestedUserId,
+          'requestedUserIdWasEmpty': request.userId.isEmpty,
         });
         rethrow;
       } on MongoDartError catch (e) {
         log.logRpcError('readOneUser', e, extra: {
-          'requestedUserId': request.userId,
+          'requestedUserId': requestedUserId,
+          'requestedUserIdWasEmpty': request.userId.isEmpty,
           'errorType': 'MongoDartError',
         });
         rethrow;
