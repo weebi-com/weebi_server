@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 
+// ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/fence_service.dart';

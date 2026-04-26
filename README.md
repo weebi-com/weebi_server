@@ -31,7 +31,6 @@ export PATH="$PATH:$HOME/.pub-cache/bin"
 
 Run these from the **weebi_server** repository root (the folder that contains `packages/` and `apps/`).
 
-**Windows/PowerShell:**
 ```powershell
 cd packages\protos\protos_weebi\tool
 .\generate_protos.ps1

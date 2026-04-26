@@ -539,6 +539,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(20)
   void clearCurrency() => clearField(20);
 
+  /// / ISO 4217 secondary currency (e.g. USD) shown at sale time alongside local amounts. Empty = no snapshot.
   @$pb.TagNumber(21)
   $core.String get snapshotSecondaryCurrency => $_getSZ(20);
   @$pb.TagNumber(21)
@@ -548,6 +549,7 @@ class TicketPb extends $pb.GeneratedMessage {
   @$pb.TagNumber(21)
   void clearSnapshotSecondaryCurrency() => clearField(21);
 
+  /// / Units of local (boutique) currency for one unit of snapshot_secondary_currency (e.g. 2800 means 1 USD = 2800 CDF).
   @$pb.TagNumber(22)
   $core.double get snapshotLocalPerSecondary => $_getN(21);
   @$pb.TagNumber(22)

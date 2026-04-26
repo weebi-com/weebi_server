@@ -289,12 +289,26 @@ const RefreshToken$json = {
   '1': 'RefreshToken',
   '2': [
     {'1': 'refreshToken', '3': 1, '4': 1, '5': 9, '10': 'refreshToken'},
+    {'1': 'isWebApp', '3': 2, '4': 1, '5': 8, '10': 'isWebApp'},
   ],
 };
 
 /// Descriptor for `RefreshToken`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List refreshTokenDescriptor = $convert.base64Decode(
-    'CgxSZWZyZXNoVG9rZW4SIgoMcmVmcmVzaFRva2VuGAEgASgJUgxyZWZyZXNoVG9rZW4=');
+    'CgxSZWZyZXNoVG9rZW4SIgoMcmVmcmVzaFRva2VuGAEgASgJUgxyZWZyZXNoVG9rZW4SGgoIaX'
+    'NXZWJBcHAYAiABKAhSCGlzV2ViQXBw');
+
+@$core.Deprecated('Use sessionRequestDescriptor instead')
+const SessionRequest$json = {
+  '1': 'SessionRequest',
+  '2': [
+    {'1': 'sessionId', '3': 1, '4': 1, '5': 9, '10': 'sessionId'},
+  ],
+};
+
+/// Descriptor for `SessionRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List sessionRequestDescriptor = $convert.base64Decode(
+    'Cg5TZXNzaW9uUmVxdWVzdBIcCglzZXNzaW9uSWQYASABKAlSCXNlc3Npb25JZA==');
 
 @$core.Deprecated('Use tokensDescriptor instead')
 const Tokens$json = {

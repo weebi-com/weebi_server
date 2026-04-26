@@ -1267,10 +1267,14 @@ class DeviceCredentials extends $pb.GeneratedMessage {
 class RefreshToken extends $pb.GeneratedMessage {
   factory RefreshToken({
     $core.String? refreshToken,
+    $core.bool? isWebApp,
   }) {
     final result = create();
     if (refreshToken != null) {
       result.refreshToken = refreshToken;
+    }
+    if (isWebApp != null) {
+      result.isWebApp = isWebApp;
     }
     return result;
   }
@@ -1280,6 +1284,7 @@ class RefreshToken extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'RefreshToken', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'refreshToken', protoName: 'refreshToken')
+    ..aOB(2, _omitFieldNames ? '' : 'isWebApp', protoName: 'isWebApp')
     ..hasRequiredFields = false
   ;
 
@@ -1312,6 +1317,66 @@ class RefreshToken extends $pb.GeneratedMessage {
   $core.bool hasRefreshToken() => $_has(0);
   @$pb.TagNumber(1)
   void clearRefreshToken() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.bool get isWebApp => $_getBF(1);
+  @$pb.TagNumber(2)
+  set isWebApp($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasIsWebApp() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearIsWebApp() => clearField(2);
+}
+
+/// / Request for internal getSessionInternal RPC (used by Envoy)
+class SessionRequest extends $pb.GeneratedMessage {
+  factory SessionRequest({
+    $core.String? sessionId,
+  }) {
+    final result = create();
+    if (sessionId != null) {
+      result.sessionId = sessionId;
+    }
+    return result;
+  }
+  SessionRequest._() : super();
+  factory SessionRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SessionRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SessionRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'sessionId', protoName: 'sessionId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SessionRequest clone() => SessionRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SessionRequest copyWith(void Function(SessionRequest) updates) => super.copyWith((message) => updates(message as SessionRequest)) as SessionRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static SessionRequest create() => SessionRequest._();
+  SessionRequest createEmptyInstance() => create();
+  static $pb.PbList<SessionRequest> createRepeated() => $pb.PbList<SessionRequest>();
+  @$core.pragma('dart2js:noInline')
+  static SessionRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SessionRequest>(create);
+  static SessionRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get sessionId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set sessionId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSessionId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSessionId() => clearField(1);
 }
 
 class Tokens extends $pb.GeneratedMessage {
