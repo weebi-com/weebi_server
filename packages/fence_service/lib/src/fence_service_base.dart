@@ -991,9 +991,23 @@ class FenceService extends FenceServiceBase {
     }
     return databaseMiddleware<ReadOneUserResponse>(_poolService, (db) async {
       try {
-        final userMongo = await db
-            .collection(userCollectionName)
-            .findOne(where.eq('userId', requestedUserId));
+        // Tenant isolation:
+        // - users may always read themselves;
+        // - reading another user requires userManagement.read above;
+        // - other-user reads are scoped to the caller's firm at query time so
+        //   knowing another firm's userId does not reveal that the user exists.
+        // If the target user exists but belongs to another firm, Mongo returns no document and the code falls through to:
+        // throw GrpcError.notFound('user not found');
+        final selector = where.eq('userId', requestedUserId);
+        if (isReadingOwnUser == false) {
+          if (userPermission.firmId.isEmpty) {
+            throw GrpcError.permissionDenied('user does not belong to a firm');
+          }
+          selector.eq('firmId', userPermission.firmId);
+        }
+
+        final userMongo =
+            await db.collection(userCollectionName).findOne(selector);
         if (userMongo == null) {
           throw GrpcError.notFound('user not found');
         }
