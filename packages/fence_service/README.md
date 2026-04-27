@@ -1,4 +1,13 @@
-# permissions
+# fence_service
+
+## license gate
+### LicenseSeatEntitlement
+Syncing features have a firm-creator bypass.
+There is a tolerance for firm user so that can they benefit from data backup.
+
+Other checks for other users are enforced client-side using [LicenseSeatEntitlement] checks.
+For example avanced features such as ticket filtering by stores and charts are checked on client-side using assertUserHasOperationalLicenseWithDb.
+TODO: implement server-side check to avoid firm-creator bypass on advanced tickets/analytics
 
 ## explain standard user journey
 
@@ -96,8 +105,3 @@ With permissions set manually at first.
 stange error message on update "getLastError"
 getLastError command has been deprecated in MongoDB and is no longer supported. (as of MongoDB 4.4)
 ignore
-
-
-MONGO_DB_URI
-JWT_SECRET_KEY
-WEEBI_EXPRESS_BASE_URL

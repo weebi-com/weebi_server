@@ -4,7 +4,7 @@ import 'dart:isolate'
 
 /// keeping this code for archive in case we consider parallelizing request in isolates
 /// need to adapt arguments to request etc
-/// used this code initially to see if parsing mongoResponse in isolate increased perf, which it did not
+/// used this code initially to see if parsing mongoResponse in isolate increased perf, which it did not !!
 Future<Object?> handleRequest(List<Map<String, dynamic>> dbResult) async {
   final worker = await TicketWorker.spawn();
   final list = await worker.parseDbResult(dbResult);

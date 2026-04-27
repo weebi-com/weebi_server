@@ -22,7 +22,7 @@ import 'user.pb.dart' as $9;
 import 'user_permissions.pb.dart' as $24;
 
 /// / Patch-style chain update (not a full Chain). Omitted optional fields are left unchanged in storage.
-/// / Currency fields align with weebi.chain.Chain.
+/// / Currency and business rule fields align with weebi.chain.Chain.
 class ChainRequest extends $pb.GeneratedMessage {
   factory ChainRequest({
     $core.String? chainId,
@@ -30,6 +30,7 @@ class ChainRequest extends $pb.GeneratedMessage {
     $core.String? currency,
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
+    $22.BusinessRules? businessRules,
   }) {
     final result = create();
     if (chainId != null) {
@@ -47,6 +48,9 @@ class ChainRequest extends $pb.GeneratedMessage {
     if (secondaryDisplayCurrency != null) {
       result.secondaryDisplayCurrency = secondaryDisplayCurrency;
     }
+    if (businessRules != null) {
+      result.businessRules = businessRules;
+    }
     return result;
   }
   ChainRequest._() : super();
@@ -59,6 +63,7 @@ class ChainRequest extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'currency')
     ..aOB(4, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(5, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
+    ..aOM<$22.BusinessRules>(6, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: $22.BusinessRules.create)
     ..hasRequiredFields = false
   ;
 
@@ -127,6 +132,17 @@ class ChainRequest extends $pb.GeneratedMessage {
   $core.bool hasSecondaryDisplayCurrency() => $_has(4);
   @$pb.TagNumber(5)
   void clearSecondaryDisplayCurrency() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $22.BusinessRules get businessRules => $_getN(5);
+  @$pb.TagNumber(6)
+  set businessRules($22.BusinessRules v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasBusinessRules() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearBusinessRules() => clearField(6);
+  @$pb.TagNumber(6)
+  $22.BusinessRules ensureBusinessRules() => $_ensure(5);
 }
 
 /// / Identifies a chain for deleteOneChain only (wire-compatible with ChainRequest carrying field 1 alone).

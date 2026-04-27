@@ -1,5 +1,12 @@
 # changelog
 
+## 1.3.2 - 2026 april
+
+- add business rules in boutique and chain to provide : 
+    - guard against operation that would yield negative stocks 
+    - allow recent ticket edition/catch up
+- export ProtobufEnum
+
 ## 1.2.9 - 2026 march
 
 - currency && 2nd currency display on boutique and ticket

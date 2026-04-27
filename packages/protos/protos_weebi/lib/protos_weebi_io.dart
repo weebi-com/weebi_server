@@ -1,6 +1,6 @@
 library protos_weebi_io;
 
-export 'package:protobuf/protobuf.dart' show GeneratedMessage, PbList;
+export 'package:protobuf/protobuf.dart' show GeneratedMessage, PbList, ProtobufEnum;
 
 export 'package:protos_weebi/src/generated/article/article.pb.dart';
 export 'package:protos_weebi/src/generated/article/article.pbenum.dart';
