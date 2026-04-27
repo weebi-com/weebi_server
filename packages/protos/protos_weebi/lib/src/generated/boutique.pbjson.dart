@@ -101,27 +101,17 @@ const BoutiquePb$json = {
     {'1': 'currency', '3': 16, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
     {'1': 'isDualCurrencyEnabled', '3': 17, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 18, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
-    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiquePb.AdditionalAttributesEntry', '10': 'additional_attributes'},
+    {'1': 'businessRules', '3': 19, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
   ],
-  '3': [BoutiquePb_AdditionalAttributesEntry$json],
   '8': [
     {'1': '_currency'},
     {'1': '_isDualCurrencyEnabled'},
     {'1': '_secondaryDisplayCurrency'},
+    {'1': '_businessRules'},
   ],
   '9': [
-    {'1': 19, '2': 99},
+    {'1': 20, '2': 101},
   ],
-};
-
-@$core.Deprecated('Use boutiquePbDescriptor instead')
-const BoutiquePb_AdditionalAttributesEntry$json = {
-  '1': 'AdditionalAttributesEntry',
-  '2': [
-    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
-    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
-  ],
-  '7': {'7': true},
 };
 
 /// Descriptor for `BoutiquePb`. Decode as a `google.protobuf.DescriptorProto`.
@@ -138,9 +128,25 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'RtYWlsGA8gASgJUgRtYWlsEh8KCGN1cnJlbmN5GBAgASgJSABSCGN1cnJlbmN5iAEBEjcKFWlz'
     'RHVhbEN1cnJlbmN5RW5hYmxlZBgRIAEoCEgBUhNkdWFsQ3VycmVuY3lFbmFibGVkiAEBEj8KGH'
     'NlY29uZGFyeURpc3BsYXlDdXJyZW5jeRgSIAEoCUgCUhhzZWNvbmRhcnlEaXNwbGF5Q3VycmVu'
-    'Y3mIAQESagoVYWRkaXRpb25hbF9hdHRyaWJ1dGVzGGMgAygLMjQud2VlYmkuYm91dGlxdWUuQm'
-    '91dGlxdWVQYi5BZGRpdGlvbmFsQXR0cmlidXRlc0VudHJ5UhVhZGRpdGlvbmFsX2F0dHJpYnV0'
-    'ZXMaRwoZQWRkaXRpb25hbEF0dHJpYnV0ZXNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YW'
-    'x1ZRgCIAEoCVIFdmFsdWU6AjgBQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3VycmVuY3lFbmFi'
-    'bGVkQhsKGV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3lKBAgTEGM=');
+    'Y3mIAQESSAoNYnVzaW5lc3NSdWxlcxgTIAEoCzIdLndlZWJpLmJvdXRpcXVlLkJ1c2luZXNzUn'
+    'VsZXNIA1INYnVzaW5lc3NSdWxlc4gBAUILCglfY3VycmVuY3lCGAoWX2lzRHVhbEN1cnJlbmN5'
+    'RW5hYmxlZEIbChlfc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5QhAKDl9idXNpbmVzc1J1bGVzSg'
+    'QIFBBl');
+
+@$core.Deprecated('Use businessRulesDescriptor instead')
+const BusinessRules$json = {
+  '1': 'BusinessRules',
+  '2': [
+    {'1': 'isNegativeStockGuardEnabled', '3': 1, '4': 1, '5': 8, '10': 'isNegativeStockGuardEnabled'},
+    {'1': 'isRecentTicketEditEnabled', '3': 2, '4': 1, '5': 8, '10': 'isRecentTicketEditEnabled'},
+    {'1': 'recentTicketEditWindowMinutes', '3': 3, '4': 1, '5': 5, '10': 'recentTicketEditWindowMinutes'},
+  ],
+};
+
+/// Descriptor for `BusinessRules`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List businessRulesDescriptor = $convert.base64Decode(
+    'Cg1CdXNpbmVzc1J1bGVzEkAKG2lzTmVnYXRpdmVTdG9ja0d1YXJkRW5hYmxlZBgBIAEoCFIbaX'
+    'NOZWdhdGl2ZVN0b2NrR3VhcmRFbmFibGVkEjwKGWlzUmVjZW50VGlja2V0RWRpdEVuYWJsZWQY'
+    'AiABKAhSGWlzUmVjZW50VGlja2V0RWRpdEVuYWJsZWQSRAodcmVjZW50VGlja2V0RWRpdFdpbm'
+    'Rvd01pbnV0ZXMYAyABKAVSHXJlY2VudFRpY2tldEVkaXRXaW5kb3dNaW51dGVz');
 

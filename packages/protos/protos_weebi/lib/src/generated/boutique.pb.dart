@@ -267,7 +267,7 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.String? currency,
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
-    $core.Map<$core.String, $core.String>? additionalAttributes,
+    BusinessRules? businessRules,
   }) {
     final result = create();
     if (boutiqueId != null) {
@@ -326,8 +326,8 @@ class BoutiquePb extends $pb.GeneratedMessage {
     if (secondaryDisplayCurrency != null) {
       result.secondaryDisplayCurrency = secondaryDisplayCurrency;
     }
-    if (additionalAttributes != null) {
-      result.additionalAttributes.addAll(additionalAttributes);
+    if (businessRules != null) {
+      result.businessRules = businessRules;
     }
     return result;
   }
@@ -354,7 +354,7 @@ class BoutiquePb extends $pb.GeneratedMessage {
     ..aOS(16, _omitFieldNames ? '' : 'currency')
     ..aOB(17, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(18, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
-    ..m<$core.String, $core.String>(99, _omitFieldNames ? '' : 'additional_attributes', entryClassName: 'BoutiquePb.AdditionalAttributesEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.boutique'))
+    ..aOM<BusinessRules>(19, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: BusinessRules.create)
     ..hasRequiredFields = false
   ;
 
@@ -556,8 +556,99 @@ class BoutiquePb extends $pb.GeneratedMessage {
   @$pb.TagNumber(18)
   void clearSecondaryDisplayCurrency() => clearField(18);
 
-  @$pb.TagNumber(99)
-  $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(18);
+  @$pb.TagNumber(19)
+  BusinessRules get businessRules => $_getN(18);
+  @$pb.TagNumber(19)
+  set businessRules(BusinessRules v) { setField(19, v); }
+  @$pb.TagNumber(19)
+  $core.bool hasBusinessRules() => $_has(18);
+  @$pb.TagNumber(19)
+  void clearBusinessRules() => clearField(19);
+  @$pb.TagNumber(19)
+  BusinessRules ensureBusinessRules() => $_ensure(18);
+}
+
+/// since a firm may contain different chains with different business realities.
+/// we prefer to put business rules at the chain level
+/// declared here to avoid circular dependency with boutique.proto
+class BusinessRules extends $pb.GeneratedMessage {
+  factory BusinessRules({
+    $core.bool? isNegativeStockGuardEnabled,
+    $core.bool? isRecentTicketEditEnabled,
+    $core.int? recentTicketEditWindowMinutes,
+  }) {
+    final result = create();
+    if (isNegativeStockGuardEnabled != null) {
+      result.isNegativeStockGuardEnabled = isNegativeStockGuardEnabled;
+    }
+    if (isRecentTicketEditEnabled != null) {
+      result.isRecentTicketEditEnabled = isRecentTicketEditEnabled;
+    }
+    if (recentTicketEditWindowMinutes != null) {
+      result.recentTicketEditWindowMinutes = recentTicketEditWindowMinutes;
+    }
+    return result;
+  }
+  BusinessRules._() : super();
+  factory BusinessRules.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BusinessRules.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BusinessRules', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'isNegativeStockGuardEnabled', protoName: 'isNegativeStockGuardEnabled')
+    ..aOB(2, _omitFieldNames ? '' : 'isRecentTicketEditEnabled', protoName: 'isRecentTicketEditEnabled')
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'recentTicketEditWindowMinutes', $pb.PbFieldType.O3, protoName: 'recentTicketEditWindowMinutes')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BusinessRules clone() => BusinessRules()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BusinessRules copyWith(void Function(BusinessRules) updates) => super.copyWith((message) => updates(message as BusinessRules)) as BusinessRules;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static BusinessRules create() => BusinessRules._();
+  BusinessRules createEmptyInstance() => create();
+  static $pb.PbList<BusinessRules> createRepeated() => $pb.PbList<BusinessRules>();
+  @$core.pragma('dart2js:noInline')
+  static BusinessRules getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BusinessRules>(create);
+  static BusinessRules? _defaultInstance;
+
+  /// guard against negative stocks in the chain when true
+  @$pb.TagNumber(1)
+  $core.bool get isNegativeStockGuardEnabled => $_getBF(0);
+  @$pb.TagNumber(1)
+  set isNegativeStockGuardEnabled($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasIsNegativeStockGuardEnabled() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearIsNegativeStockGuardEnabled() => clearField(1);
+
+  /// allow recent ticket edit in the chain when true
+  @$pb.TagNumber(2)
+  $core.bool get isRecentTicketEditEnabled => $_getBF(1);
+  @$pb.TagNumber(2)
+  set isRecentTicketEditEnabled($core.bool v) { $_setBool(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasIsRecentTicketEditEnabled() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearIsRecentTicketEditEnabled() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get recentTicketEditWindowMinutes => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set recentTicketEditWindowMinutes($core.int v) { $_setSignedInt32(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasRecentTicketEditWindowMinutes() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRecentTicketEditWindowMinutes() => clearField(3);
 }
 
 
