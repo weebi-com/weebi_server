@@ -24,6 +24,7 @@ import 'package:fence_service/src/weebi_logger.dart';
 class PermissionAndSillyBoolean {
   final UserPermissions userPermissions;
   final bool mustChangePassword;
+
   /// Top-level tags from the user document. Injected into the JWT payload by
   /// fence_service (Option B) so isServiceAccount can use the strict
   /// tags + empty firmId rule. Not part of UserPermissions proto.
@@ -336,7 +337,8 @@ class FenceService extends FenceServiceBase {
           call, mailAndEncyptedPassword);
       var jwt = JsonWebToken();
       final payload = userPermission.userPermissions.toProto3Json()
-          as Map<String, dynamic>? ?? <String, dynamic>{};
+              as Map<String, dynamic>? ??
+          <String, dynamic>{};
       // Option B: inject top-level user tags into JWT so isServiceAccount
       // (strict rule: tags contains "service_account" and empty firmId) works.
       if (userPermission.tags != null && userPermission.tags!.isNotEmpty) {
@@ -468,9 +470,11 @@ class FenceService extends FenceServiceBase {
   /// Called by Envoy's Lua script when a session cookie is present
   /// Path: /weebi.fence.service.FenceService/getSessionInternal
   @override
-  Future<Tokens> getSessionInternal(ServiceCall? call, SessionRequest request) async {
+  Future<Tokens> getSessionInternal(
+      ServiceCall? call, SessionRequest request) async {
     final log = _logger.withContext(call);
-    log.logRpcEntry('getSessionInternal', requestData: {'sessionId': request.sessionId});
+    log.logRpcEntry('getSessionInternal',
+        requestData: {'sessionId': request.sessionId});
 
     try {
       // Validate Envoy authentication (API key)
@@ -496,7 +500,9 @@ class FenceService extends FenceServiceBase {
 
       // Query MongoDB for the session
       final session = await databaseMiddleware(_poolService, (db) async {
-        return await db.collection('web_sessions').findOne({'_id': request.sessionId});
+        return await db
+            .collection('web_sessions')
+            .findOne({'_id': request.sessionId});
       });
 
       if (session == null) {
@@ -510,7 +516,9 @@ class FenceService extends FenceServiceBase {
       // Check if session has expired
       final expiresAt = session['expiresAt'];
       if (expiresAt != null) {
-        final expiresAtDateTime = expiresAt is DateTime ? expiresAt : DateTime.parse(expiresAt.toString());
+        final expiresAtDateTime = expiresAt is DateTime
+            ? expiresAt
+            : DateTime.parse(expiresAt.toString());
         if (DateTime.now().isAfter(expiresAtDateTime)) {
           log.debug('Session expired', extra: {
             'sessionId': request.sessionId,
@@ -550,7 +558,8 @@ class FenceService extends FenceServiceBase {
     } on GrpcError catch (e) {
       log.logRpcError('getSessionInternal', e, extra: {
         'errorCode': e.code,
-        'note': 'Envoy Lua will interpret this as: 404→401 response, 401→401 response, 500→401 response',
+        'note':
+            'Envoy Lua will interpret this as: 404→401 response, 401→401 response, 500→401 response',
       });
       rethrow;
     } catch (e) {
@@ -774,7 +783,8 @@ class FenceService extends FenceServiceBase {
   Future<Tokens> authenticateWithRefreshToken(
       ServiceCall? call, RefreshToken request) async {
     final log = _logger.withContext(call);
-    log.logRpcEntry('authenticateWithRefreshToken', requestData: {'isWebApp': request.isWebApp});
+    log.logRpcEntry('authenticateWithRefreshToken',
+        requestData: {'isWebApp': request.isWebApp});
 
     try {
       final jwtRefresh = JsonWebToken.parse(request.refreshToken);
@@ -846,8 +856,9 @@ class FenceService extends FenceServiceBase {
     return databaseMiddleware<({UserPrivate user, List<String>? tags})>(
         _poolService, (db) async {
       try {
-        final doc =
-            await db.collection(userCollectionName).findOne(where.eq('userId', userId));
+        final doc = await db
+            .collection(userCollectionName)
+            .findOne(where.eq('userId', userId));
         if (doc == null) {
           throw GrpcError.notFound('userId $userId');
         }
@@ -855,10 +866,7 @@ class FenceService extends FenceServiceBase {
           ..mergeFromProto3Json(doc, ignoreUnknownFields: true);
         final rawTags = doc['tags'];
         final List<String>? tags = rawTags is List
-            ? rawTags
-                .map((e) => e?.toString())
-                .whereType<String>()
-                .toList()
+            ? rawTags.map((e) => e?.toString()).whereType<String>().toList()
             : null;
         return (
           user: user,
@@ -875,8 +883,8 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, MailAndEncyptedPassword request) async {
     return databaseMiddleware<PermissionAndSillyBoolean>(_poolService,
         (db) async {
-      final selector = _selectByMail(request.mail)
-          .eq('password', request.passwordEncrypted);
+      final selector =
+          _selectByMail(request.mail).eq('password', request.passwordEncrypted);
       try {
         final userPrivateMongo =
             await db.collection(userCollectionName).findOne(selector);
@@ -898,10 +906,7 @@ class FenceService extends FenceServiceBase {
         // into the JWT payload (UserPermissions proto has no tags field).
         final rawTags = userPrivateMongo['tags'];
         final List<String>? tags = rawTags is List
-            ? rawTags
-                .map((e) => e?.toString())
-                .whereType<String>()
-                .toList()
+            ? rawTags.map((e) => e?.toString()).whereType<String>().toList()
             : null;
         return PermissionAndSillyBoolean(
             userPermissions: userPermission,
@@ -1494,11 +1499,10 @@ class FenceService extends FenceServiceBase {
 
     final firmId = DateTime.now().objectIdString;
     final platformCurrency = AppEnvironment.platformDefaultCurrency;
-    final defaultCurrencyCode = request.hasCurrency() &&
-            request.currency.trim().isNotEmpty
-        ? CurrencyResolution.normalizeOr(
-            request.currency, platformCurrency)
-        : platformCurrency;
+    final defaultCurrencyCode =
+        request.hasCurrency() && request.currency.trim().isNotEmpty
+            ? CurrencyResolution.normalizeOr(request.currency, platformCurrency)
+            : platformCurrency;
 
     final firm = Firm(
       firmId: firmId,
@@ -1898,20 +1902,6 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, Chain request) async {
     final log = _logger.withContext(call);
     log.logRpcEntry('createOneChain', requestData: {'firmId': request.firmId});
-    if (request.firmId.isEmpty) {
-      throw GrpcError.invalidArgument('request.firmId cannot be empty');
-    }
-    if (request.boutiques.length > 1) {
-      throw GrpcError.invalidArgument('create chain with 1 boutique only');
-    }
-    if (request.boutiques.first.firmId != request.firmId) {
-      throw GrpcError.invalidArgument(
-          'boutique.firmId must match the chain.firmId');
-    }
-    if (request.boutiques.first.chainId != request.chainId) {
-      throw GrpcError.invalidArgument(
-          'boutique.chainId must match the chainId');
-    }
 
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
@@ -1922,10 +1912,14 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user does not have right to create chain');
     }
-    if (request.firmId != userPermission.firmId) {
+
+    if (request.firmId.isEmpty) {
+      request.firmId = userPermission.firmId;
+    } else if (request.firmId != userPermission.firmId) {
       throw GrpcError.permissionDenied(
-          'user cannot access firm ${request.firmId}');
+          'user cannot create chain for firm ${request.firmId}');
     }
+
 
     final chainId = DateTime.now().objectIdString;
     request.chainId = chainId;
@@ -1941,8 +1935,8 @@ class FenceService extends FenceServiceBase {
     if (!request.hasCurrency() || request.currency.trim().isEmpty) {
       request.currency = firmDefault;
     } else {
-      request.currency = CurrencyResolution.normalizeOr(
-          request.currency, firmDefault);
+      request.currency =
+          CurrencyResolution.normalizeOr(request.currency, firmDefault);
     }
     final firstBoutique = request.boutiques.first;
     firstBoutique.ensureBoutique();
@@ -2113,8 +2107,8 @@ class FenceService extends FenceServiceBase {
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
       try {
-        final needsFirmForCurrency = request.hasCurrency() ||
-            request.hasSecondaryDisplayCurrency();
+        final needsFirmForCurrency =
+            request.hasCurrency() || request.hasSecondaryDisplayCurrency();
         final Firm? firmForCurrency = needsFirmForCurrency
             ? await _readFirmFromDb(userPermission.firmId)
             : null;
@@ -2156,8 +2150,8 @@ class FenceService extends FenceServiceBase {
         }
 
         if (request.hasIsDualCurrencyEnabled()) {
-          modifier =
-              modifier.set('isDualCurrencyEnabled', request.isDualCurrencyEnabled);
+          modifier = modifier.set(
+              'isDualCurrencyEnabled', request.isDualCurrencyEnabled);
         }
 
         await boutiqueCollection.update(
@@ -2487,8 +2481,7 @@ class FenceService extends FenceServiceBase {
     return databaseMiddleware<UserPublic>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
       try {
-        final userMap =
-            await userCollection.findOne(_selectByMail(mail));
+        final userMap = await userCollection.findOne(_selectByMail(mail));
         if (userMap != null) {
           return UserPublic.create()
             ..mergeFromProto3Json(userMap, ignoreUnknownFields: true);
@@ -3300,8 +3293,7 @@ class FenceService extends FenceServiceBase {
 
         // Verify email matches if userId was provided (safety check, case-insensitive)
         if (request.userId.isNotEmpty &&
-            (userMongo['mail'] as String?)
-                    ?.toLowerCase() !=
+            (userMongo['mail'] as String?)?.toLowerCase() !=
                 request.mail.trim().toLowerCase()) {
           log.warning('Email mismatch when updating subscriberId', extra: {
             'providedUserId': request.userId,
@@ -3364,8 +3356,7 @@ class FenceService extends FenceServiceBase {
 
         // Verify email matches if userId was provided (safety check, case-insensitive)
         if (request.userId.isNotEmpty &&
-            (userMongo['mail'] as String?)
-                    ?.toLowerCase() !=
+            (userMongo['mail'] as String?)?.toLowerCase() !=
                 request.mail.trim().toLowerCase()) {
           log.warning('Email mismatch when marking email as verified', extra: {
             'providedUserId': request.userId,
