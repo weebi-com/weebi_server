@@ -1770,6 +1770,17 @@ class FenceService extends FenceServiceBase {
         filterActiveBoutiques: true, filterActiveChains: true);
   }
 
+  List<Chain> _filterChainsByAccess(
+      UserPermissions userPermissions, List<Chain> chains) {
+    if (userPermissions.fullAccess.hasFullAccess) {
+      return chains;
+    }
+    final allowedChainIds = userPermissions.limitedAccess.chainIds.ids.toSet();
+    return chains
+        .where((chain) => allowedChainIds.contains(chain.chainId))
+        .toList();
+  }
+
   /// if no match whith firmId and chainId throws GrpcError.notFound
   Future<Chain> _checkOneChainAndProtoIt(String firmId, String chainId) async {
     return databaseMiddleware<Chain>(_poolService, (db) async {
@@ -1920,13 +1931,11 @@ class FenceService extends FenceServiceBase {
           'user cannot create chain for firm ${request.firmId}');
     }
 
-
     final chainId = DateTime.now().objectIdString;
     request.chainId = chainId;
-    request.boutiques.first
-      ..firmId = request.firmId
-      ..chainId = chainId
-      ..boutiqueId = chainId;
+    if (request.boutiques.length > 1) {
+      throw GrpcError.invalidArgument('create chain with 1 boutique only');
+    }
 
     final firm = await _readFirmFromDb(request.firmId);
     final platformCurrency = AppEnvironment.platformDefaultCurrency;
@@ -1938,14 +1947,19 @@ class FenceService extends FenceServiceBase {
       request.currency =
           CurrencyResolution.normalizeOr(request.currency, firmDefault);
     }
-    final firstBoutique = request.boutiques.first;
-    firstBoutique.ensureBoutique();
-    final inner = firstBoutique.boutique;
-    if (!inner.hasCurrency() || inner.currency.trim().isEmpty) {
-      inner.currency = request.currency;
-    } else {
-      inner.currency =
-          CurrencyResolution.normalizeOr(inner.currency, firmDefault);
+    if (request.boutiques.isNotEmpty) {
+      final firstBoutique = request.boutiques.first
+        ..firmId = request.firmId
+        ..chainId = chainId
+        ..boutiqueId = chainId;
+      firstBoutique.ensureBoutique();
+      final inner = firstBoutique.boutique;
+      if (!inner.hasCurrency() || inner.currency.trim().isEmpty) {
+        inner.currency = request.currency;
+      } else {
+        inner.currency =
+            CurrencyResolution.normalizeOr(inner.currency, firmDefault);
+      }
     }
 
     final result = await _createOneChainDBExec(request, log: log);
@@ -2154,12 +2168,19 @@ class FenceService extends FenceServiceBase {
               'isDualCurrencyEnabled', request.isDualCurrencyEnabled);
         }
 
-        await boutiqueCollection.update(
+        final result = await boutiqueCollection.updateOne(
           where
               .eq('firmId', userPermission.firmId)
               .eq('chainId', request.chainId),
           modifier,
         );
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        }
+        if (result.nMatched == 0) {
+          throw GrpcError.notFound('chain ${request.chainId} not found');
+        }
         log.logRpcExit('updateOneChain',
             resultData: {'chainId': request.chainId});
         return StatusResponse()
@@ -2546,7 +2567,10 @@ class FenceService extends FenceServiceBase {
     }
 
     try {
-      final chains = await _readAllChainsAndProtoThem(userPermission);
+      final chains = _filterChainsByAccess(
+        userPermission,
+        await _readAllChainsAndProtoThem(userPermission),
+      );
       log.logRpcExit('readAllChains',
           resultData: {'chainCount': chains.length});
       return ReadAllChainsResponse(chains: chains);
@@ -2583,14 +2607,21 @@ class FenceService extends FenceServiceBase {
 
     try {
       // Get chains with active boutiques only (as is today)
-      final chains =
-          await _readActiveChainsAndActiveBoutiquesAndProtoThem(userPermission);
+      final chains = _filterChainsByAccess(
+        userPermission,
+        await _readActiveChainsAndActiveBoutiquesAndProtoThem(userPermission),
+      );
+      final allowedBoutiqueIds =
+          userPermission.limitedAccess.boutiqueIds.ids.toSet();
 
       // Extract BoutiquePb from each boutique (following readOneBoutique pattern)
       final allBoutiques = <BoutiquePb>[];
       for (final chain in chains) {
         for (final boutique in chain.boutiques) {
-          allBoutiques.add(boutique.boutique);
+          if (userPermission.fullAccess.hasFullAccess ||
+              allowedBoutiqueIds.contains(boutique.boutiqueId)) {
+            allBoutiques.add(boutique.boutique);
+          }
         }
       }
 

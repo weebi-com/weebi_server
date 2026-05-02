@@ -16,7 +16,7 @@ extension UserPermissionsExtension on UserPermissions {
 
   bool isBoutiqueAccessible(String boutiqueId) => fullAccess.hasFullAccess
       ? true
-      : limitedAccess.boutiqueIds.ids.contains(boutiqueId) == false;
+      : limitedAccess.boutiqueIds.ids.contains(boutiqueId);
 }
 
 extension UserPermExt2 on ChainIds {
