@@ -22,11 +22,13 @@ const ChainRequest$json = {
     {'1': 'currency', '3': 3, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
     {'1': 'isDualCurrencyEnabled', '3': 4, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
+    {'1': 'businessRules', '3': 6, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
   ],
   '8': [
     {'1': '_currency'},
     {'1': '_isDualCurrencyEnabled'},
     {'1': '_secondaryDisplayCurrency'},
+    {'1': '_businessRules'},
   ],
 };
 
@@ -35,9 +37,10 @@ final $typed_data.Uint8List chainRequestDescriptor = $convert.base64Decode(
     'CgxDaGFpblJlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZBISCgRuYW1lGAIgASgJUg'
     'RuYW1lEh8KCGN1cnJlbmN5GAMgASgJSABSCGN1cnJlbmN5iAEBEjkKFWlzRHVhbEN1cnJlbmN5'
     'RW5hYmxlZBgEIAEoCEgBUhVpc0R1YWxDdXJyZW5jeUVuYWJsZWSIAQESPwoYc2Vjb25kYXJ5RG'
-    'lzcGxheUN1cnJlbmN5GAUgASgJSAJSGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeYgBAUILCglf'
-    'Y3VycmVuY3lCGAoWX2lzRHVhbEN1cnJlbmN5RW5hYmxlZEIbChlfc2Vjb25kYXJ5RGlzcGxheU'
-    'N1cnJlbmN5');
+    'lzcGxheUN1cnJlbmN5GAUgASgJSAJSGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeYgBARJICg1i'
+    'dXNpbmVzc1J1bGVzGAYgASgLMh0ud2VlYmkuYm91dGlxdWUuQnVzaW5lc3NSdWxlc0gDUg1idX'
+    'NpbmVzc1J1bGVziAEBQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3VycmVuY3lFbmFibGVkQhsK'
+    'GV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3lCEAoOX2J1c2luZXNzUnVsZXM=');
 
 @$core.Deprecated('Use deleteChainRequestDescriptor instead')
 const DeleteChainRequest$json = {

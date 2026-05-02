@@ -103,6 +103,5 @@ Platform.environment :
 ['WEEBI_EXPRESS_BASE_URL'] -- Base URL of weebi_express service (optional, e.g., http://localhost:8080)
 ['WEEBI_EXPRESS_JWT_SECRET_KEY'] -- JWT secret for weebi_express (optional, defaults to JWT_SECRET_KEY)
 
-Note: HTTP REST server and email functionality has been removed from fence_service.
-Email functionality is now handled by weebi_express service.
+Email functionality is handled by weebi_express service.
 Use healthCheck gRPC method for service health and version information.

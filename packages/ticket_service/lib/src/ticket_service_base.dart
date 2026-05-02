@@ -1,9 +1,8 @@
 import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 
-import 'package:fence_service/fence_service.dart';
+import 'package:fence_service/fence_service.dart' ;
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/logging.dart';
-import 'package:fence_service/mongo_dart.dart' show Db;
 import 'package:fence_service/protos_weebi.dart';
 import 'fx_snapshot_validation.dart';
 
@@ -140,8 +139,7 @@ class TicketService extends TicketServiceBase {
   /// **Operational access:** firm creator joker or active license seat
   /// ([assertUserHasOperationalLicenseWithDb]). Seat-gated portal features
   /// (e.g. store filter/group) are enforced client-side with
-  /// [LicenseSeatEntitlement]-style seat checks (no firm-creator bypass), not in
-  /// this RPC.
+  /// [LicenseSeatEntitlement]-style seat checks (no firm-creator bypass), not in this RPC.
   ///
   /// **Boutique scope**: first chain/boutique may share [UserPermissions.firmId].
   /// [UserPermissions.fullAccess] — all boutiques in the chain, or filter by

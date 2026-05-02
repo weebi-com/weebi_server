@@ -31,6 +31,7 @@ class Chain extends $pb.GeneratedMessage {
     $core.String? currency,
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
+    $22.BusinessRules? businessRules,
   }) {
     final result = create();
     if (chainId != null) {
@@ -72,6 +73,9 @@ class Chain extends $pb.GeneratedMessage {
     if (secondaryDisplayCurrency != null) {
       result.secondaryDisplayCurrency = secondaryDisplayCurrency;
     }
+    if (businessRules != null) {
+      result.businessRules = businessRules;
+    }
     return result;
   }
   Chain._() : super();
@@ -92,6 +96,7 @@ class Chain extends $pb.GeneratedMessage {
     ..aOS(11, _omitFieldNames ? '' : 'currency')
     ..aOB(12, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(13, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
+    ..aOM<$22.BusinessRules>(14, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: $22.BusinessRules.create)
     ..hasRequiredFields = false
   ;
 
@@ -231,6 +236,17 @@ class Chain extends $pb.GeneratedMessage {
   $core.bool hasSecondaryDisplayCurrency() => $_has(12);
   @$pb.TagNumber(13)
   void clearSecondaryDisplayCurrency() => clearField(13);
+
+  @$pb.TagNumber(14)
+  $22.BusinessRules get businessRules => $_getN(13);
+  @$pb.TagNumber(14)
+  set businessRules($22.BusinessRules v) { setField(14, v); }
+  @$pb.TagNumber(14)
+  $core.bool hasBusinessRules() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearBusinessRules() => clearField(14);
+  @$pb.TagNumber(14)
+  $22.BusinessRules ensureBusinessRules() => $_ensure(13);
 }
 
 class Chains extends $pb.GeneratedMessage {
