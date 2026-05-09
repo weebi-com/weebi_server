@@ -85,6 +85,7 @@ export 'package:protos_weebi/src/generated/common/country.pbjson.dart';
 export 'package:protos_weebi/src/generated/common/phone.pb.dart';
 export 'package:protos_weebi/src/generated/common/phone.pbenum.dart';
 export 'package:protos_weebi/src/generated/common/phone.pbjson.dart';
+export 'package:protos_weebi/src/generated/common/options.pb.dart';
 
 export 'package:protos_weebi/src/generated/common/chained_ids.pb.dart';
 export 'package:protos_weebi/src/generated/common/chained_ids.pbenum.dart';
@@ -97,6 +98,7 @@ export 'package:protos_weebi/src/generated/common/g_common.pbjson.dart';
 export 'package:protos_weebi/src/generated/ticket/ticket.pb.dart';
 export 'package:protos_weebi/src/generated/ticket/ticket.pbenum.dart';
 export 'package:protos_weebi/src/generated/ticket/ticket.pbjson.dart';
+export 'package:protos_weebi/src/generated/ticket/ticket_type.pbenum.dart';
 
 export 'package:protos_weebi/src/generated/ticket/ticket_service.pb.dart';
 export 'package:protos_weebi/src/generated/ticket/ticket_service.pbenum.dart';
@@ -107,3 +109,4 @@ export 'package:protos_weebi/src/generated/weebi_app_service.pb.dart';
 export 'package:protos_weebi/src/generated/weebi_app_service.pbenum.dart';
 export 'package:protos_weebi/src/generated/weebi_app_service.pbgrpc.dart';
 export 'package:protos_weebi/src/generated/weebi_app_service.pbjson.dart';
+export 'package:protos_weebi/src/ticket_logic.dart';
