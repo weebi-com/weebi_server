@@ -210,6 +210,340 @@ class TicketMongo extends $pb.GeneratedMessage {
   $core.Map<$core.String, $core.String> get additionalAttributes => $_getMap(10);
 }
 
+/// Sell totals — set when ticketType is sell or sellDeferred.
+class TicketSellTotalsPb extends $pb.GeneratedMessage {
+  factory TicketSellTotalsPb({
+    $core.double? itemsOnly,
+    $core.double? promoVal,
+    $core.double? markdownsVal,
+    $core.double? markdownsIncludedTaxExcluded,
+    $core.double? taxesValue,
+    $core.double? markdownsAndTaxIncluded,
+    $core.double? change,
+  }) {
+    final result = create();
+    if (itemsOnly != null) {
+      result.itemsOnly = itemsOnly;
+    }
+    if (promoVal != null) {
+      result.promoVal = promoVal;
+    }
+    if (markdownsVal != null) {
+      result.markdownsVal = markdownsVal;
+    }
+    if (markdownsIncludedTaxExcluded != null) {
+      result.markdownsIncludedTaxExcluded = markdownsIncludedTaxExcluded;
+    }
+    if (taxesValue != null) {
+      result.taxesValue = taxesValue;
+    }
+    if (markdownsAndTaxIncluded != null) {
+      result.markdownsAndTaxIncluded = markdownsAndTaxIncluded;
+    }
+    if (change != null) {
+      result.change = change;
+    }
+    return result;
+  }
+  TicketSellTotalsPb._() : super();
+  factory TicketSellTotalsPb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory TicketSellTotalsPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketSellTotalsPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
+    ..a<$core.double>(1, _omitFieldNames ? '' : 'itemsOnly', $pb.PbFieldType.OD)
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'promoVal', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'markdownsVal', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'markdownsIncludedTaxExcluded', $pb.PbFieldType.OD)
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'taxesValue', $pb.PbFieldType.OD)
+    ..a<$core.double>(6, _omitFieldNames ? '' : 'markdownsAndTaxIncluded', $pb.PbFieldType.OD)
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'change', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  TicketSellTotalsPb clone() => TicketSellTotalsPb()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  TicketSellTotalsPb copyWith(void Function(TicketSellTotalsPb) updates) => super.copyWith((message) => updates(message as TicketSellTotalsPb)) as TicketSellTotalsPb;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static TicketSellTotalsPb create() => TicketSellTotalsPb._();
+  TicketSellTotalsPb createEmptyInstance() => create();
+  static $pb.PbList<TicketSellTotalsPb> createRepeated() => $pb.PbList<TicketSellTotalsPb>();
+  @$core.pragma('dart2js:noInline')
+  static TicketSellTotalsPb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TicketSellTotalsPb>(create);
+  static TicketSellTotalsPb? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get itemsOnly => $_getN(0);
+  @$pb.TagNumber(1)
+  set itemsOnly($core.double v) { $_setDouble(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasItemsOnly() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearItemsOnly() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get promoVal => $_getN(1);
+  @$pb.TagNumber(2)
+  set promoVal($core.double v) { $_setDouble(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPromoVal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPromoVal() => clearField(2);
+
+  /// promo_val + discountAmount
+  @$pb.TagNumber(3)
+  $core.double get markdownsVal => $_getN(2);
+  @$pb.TagNumber(3)
+  set markdownsVal($core.double v) { $_setDouble(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasMarkdownsVal() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMarkdownsVal() => clearField(3);
+
+  /// items_only minus all markdowns, before taxes
+  @$pb.TagNumber(4)
+  $core.double get markdownsIncludedTaxExcluded => $_getN(3);
+  @$pb.TagNumber(4)
+  set markdownsIncludedTaxExcluded($core.double v) { $_setDouble(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasMarkdownsIncludedTaxExcluded() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMarkdownsIncludedTaxExcluded() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.double get taxesValue => $_getN(4);
+  @$pb.TagNumber(5)
+  set taxesValue($core.double v) { $_setDouble(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasTaxesValue() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearTaxesValue() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.double get markdownsAndTaxIncluded => $_getN(5);
+  @$pb.TagNumber(6)
+  set markdownsAndTaxIncluded($core.double v) { $_setDouble(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasMarkdownsAndTaxIncluded() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearMarkdownsAndTaxIncluded() => clearField(6);
+
+  /// received − markdowns_and_tax_included; 0 when sellDeferred
+  @$pb.TagNumber(7)
+  $core.double get change => $_getN(6);
+  @$pb.TagNumber(7)
+  set change($core.double v) { $_setDouble(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasChange() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearChange() => clearField(7);
+}
+
+/// Spend totals — set when ticketType is spend or spendDeferred.
+/// Same computation chain as TicketSellTotalsPb but items_only sums total_cost.
+class TicketSpendTotalsPb extends $pb.GeneratedMessage {
+  factory TicketSpendTotalsPb({
+    $core.double? itemsOnly,
+    $core.double? promoVal,
+    $core.double? markdownsVal,
+    $core.double? markdownsIncludedTaxExcluded,
+    $core.double? taxesValue,
+    $core.double? markdownsAndTaxIncluded,
+    $core.double? change,
+  }) {
+    final result = create();
+    if (itemsOnly != null) {
+      result.itemsOnly = itemsOnly;
+    }
+    if (promoVal != null) {
+      result.promoVal = promoVal;
+    }
+    if (markdownsVal != null) {
+      result.markdownsVal = markdownsVal;
+    }
+    if (markdownsIncludedTaxExcluded != null) {
+      result.markdownsIncludedTaxExcluded = markdownsIncludedTaxExcluded;
+    }
+    if (taxesValue != null) {
+      result.taxesValue = taxesValue;
+    }
+    if (markdownsAndTaxIncluded != null) {
+      result.markdownsAndTaxIncluded = markdownsAndTaxIncluded;
+    }
+    if (change != null) {
+      result.change = change;
+    }
+    return result;
+  }
+  TicketSpendTotalsPb._() : super();
+  factory TicketSpendTotalsPb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory TicketSpendTotalsPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketSpendTotalsPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
+    ..a<$core.double>(1, _omitFieldNames ? '' : 'itemsOnly', $pb.PbFieldType.OD)
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'promoVal', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'markdownsVal', $pb.PbFieldType.OD)
+    ..a<$core.double>(4, _omitFieldNames ? '' : 'markdownsIncludedTaxExcluded', $pb.PbFieldType.OD)
+    ..a<$core.double>(5, _omitFieldNames ? '' : 'taxesValue', $pb.PbFieldType.OD)
+    ..a<$core.double>(6, _omitFieldNames ? '' : 'markdownsAndTaxIncluded', $pb.PbFieldType.OD)
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'change', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  TicketSpendTotalsPb clone() => TicketSpendTotalsPb()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  TicketSpendTotalsPb copyWith(void Function(TicketSpendTotalsPb) updates) => super.copyWith((message) => updates(message as TicketSpendTotalsPb)) as TicketSpendTotalsPb;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static TicketSpendTotalsPb create() => TicketSpendTotalsPb._();
+  TicketSpendTotalsPb createEmptyInstance() => create();
+  static $pb.PbList<TicketSpendTotalsPb> createRepeated() => $pb.PbList<TicketSpendTotalsPb>();
+  @$core.pragma('dart2js:noInline')
+  static TicketSpendTotalsPb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TicketSpendTotalsPb>(create);
+  static TicketSpendTotalsPb? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get itemsOnly => $_getN(0);
+  @$pb.TagNumber(1)
+  set itemsOnly($core.double v) { $_setDouble(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasItemsOnly() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearItemsOnly() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.double get promoVal => $_getN(1);
+  @$pb.TagNumber(2)
+  set promoVal($core.double v) { $_setDouble(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasPromoVal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearPromoVal() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.double get markdownsVal => $_getN(2);
+  @$pb.TagNumber(3)
+  set markdownsVal($core.double v) { $_setDouble(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasMarkdownsVal() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearMarkdownsVal() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.double get markdownsIncludedTaxExcluded => $_getN(3);
+  @$pb.TagNumber(4)
+  set markdownsIncludedTaxExcluded($core.double v) { $_setDouble(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasMarkdownsIncludedTaxExcluded() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearMarkdownsIncludedTaxExcluded() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.double get taxesValue => $_getN(4);
+  @$pb.TagNumber(5)
+  set taxesValue($core.double v) { $_setDouble(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasTaxesValue() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearTaxesValue() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.double get markdownsAndTaxIncluded => $_getN(5);
+  @$pb.TagNumber(6)
+  set markdownsAndTaxIncluded($core.double v) { $_setDouble(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasMarkdownsAndTaxIncluded() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearMarkdownsAndTaxIncluded() => clearField(6);
+
+  /// received − markdowns_and_tax_included; 0 when spendDeferred
+  @$pb.TagNumber(7)
+  $core.double get change => $_getN(6);
+  @$pb.TagNumber(7)
+  set change($core.double v) { $_setDouble(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasChange() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearChange() => clearField(7);
+}
+
+/// Cover totals — set when ticketType is sellCovered, spendCovered, or wage.
+/// No item computation: total equals the received amount.
+class TicketCoverTotalPb extends $pb.GeneratedMessage {
+  factory TicketCoverTotalPb({
+    $core.double? total,
+  }) {
+    final result = create();
+    if (total != null) {
+      result.total = total;
+    }
+    return result;
+  }
+  TicketCoverTotalPb._() : super();
+  factory TicketCoverTotalPb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory TicketCoverTotalPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketCoverTotalPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
+    ..a<$core.double>(1, _omitFieldNames ? '' : 'total', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  TicketCoverTotalPb clone() => TicketCoverTotalPb()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  TicketCoverTotalPb copyWith(void Function(TicketCoverTotalPb) updates) => super.copyWith((message) => updates(message as TicketCoverTotalPb)) as TicketCoverTotalPb;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static TicketCoverTotalPb create() => TicketCoverTotalPb._();
+  TicketCoverTotalPb createEmptyInstance() => create();
+  static $pb.PbList<TicketCoverTotalPb> createRepeated() => $pb.PbList<TicketCoverTotalPb>();
+  @$core.pragma('dart2js:noInline')
+  static TicketCoverTotalPb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TicketCoverTotalPb>(create);
+  static TicketCoverTotalPb? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.double get total => $_getN(0);
+  @$pb.TagNumber(1)
+  set total($core.double v) { $_setDouble(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTotal() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTotal() => clearField(1);
+}
+
+enum TicketPb_Totals {
+  sellTotals, 
+  spendTotals, 
+  coverTotals, 
+  notSet
+}
+
 class TicketPb extends $pb.GeneratedMessage {
   factory TicketPb({
     $core.int? nonUniqueId,
@@ -234,6 +568,9 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? currency,
     $core.String? snapshotSecondaryCurrency,
     $core.double? snapshotLocalPerSecondary,
+    TicketSellTotalsPb? sellTotals,
+    TicketSpendTotalsPb? spendTotals,
+    TicketCoverTotalPb? coverTotals,
   }) {
     final result = create();
     if (nonUniqueId != null) {
@@ -302,13 +639,29 @@ class TicketPb extends $pb.GeneratedMessage {
     if (snapshotLocalPerSecondary != null) {
       result.snapshotLocalPerSecondary = snapshotLocalPerSecondary;
     }
+    if (sellTotals != null) {
+      result.sellTotals = sellTotals;
+    }
+    if (spendTotals != null) {
+      result.spendTotals = spendTotals;
+    }
+    if (coverTotals != null) {
+      result.coverTotals = coverTotals;
+    }
     return result;
   }
   TicketPb._() : super();
   factory TicketPb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory TicketPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
+  static const $core.Map<$core.int, TicketPb_Totals> _TicketPb_TotalsByTag = {
+    23 : TicketPb_Totals.sellTotals,
+    24 : TicketPb_Totals.spendTotals,
+    25 : TicketPb_Totals.coverTotals,
+    0 : TicketPb_Totals.notSet
+  };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TicketPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.ticket'), createEmptyInstance: create)
+    ..oo(0, [23, 24, 25])
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3, protoName: 'nonUniqueId')
     ..aOM<Counterfoil>(2, _omitFieldNames ? '' : 'counterfoil', subBuilder: Counterfoil.create)
     ..aOS(3, _omitFieldNames ? '' : 'date')
@@ -331,6 +684,9 @@ class TicketPb extends $pb.GeneratedMessage {
     ..aOS(20, _omitFieldNames ? '' : 'currency')
     ..aOS(21, _omitFieldNames ? '' : 'snapshotSecondaryCurrency')
     ..a<$core.double>(22, _omitFieldNames ? '' : 'snapshotLocalPerSecondary', $pb.PbFieldType.OD)
+    ..aOM<TicketSellTotalsPb>(23, _omitFieldNames ? '' : 'sellTotals', subBuilder: TicketSellTotalsPb.create)
+    ..aOM<TicketSpendTotalsPb>(24, _omitFieldNames ? '' : 'spendTotals', subBuilder: TicketSpendTotalsPb.create)
+    ..aOM<TicketCoverTotalPb>(25, _omitFieldNames ? '' : 'coverTotals', subBuilder: TicketCoverTotalPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -354,6 +710,9 @@ class TicketPb extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static TicketPb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TicketPb>(create);
   static TicketPb? _defaultInstance;
+
+  TicketPb_Totals whichTotals() => _TicketPb_TotalsByTag[$_whichOneof(0)]!;
+  void clearTotals() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
   $core.int get nonUniqueId => $_getIZ(0);
@@ -558,6 +917,39 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.bool hasSnapshotLocalPerSecondary() => $_has(21);
   @$pb.TagNumber(22)
   void clearSnapshotLocalPerSecondary() => clearField(22);
+
+  @$pb.TagNumber(23)
+  TicketSellTotalsPb get sellTotals => $_getN(22);
+  @$pb.TagNumber(23)
+  set sellTotals(TicketSellTotalsPb v) { setField(23, v); }
+  @$pb.TagNumber(23)
+  $core.bool hasSellTotals() => $_has(22);
+  @$pb.TagNumber(23)
+  void clearSellTotals() => clearField(23);
+  @$pb.TagNumber(23)
+  TicketSellTotalsPb ensureSellTotals() => $_ensure(22);
+
+  @$pb.TagNumber(24)
+  TicketSpendTotalsPb get spendTotals => $_getN(23);
+  @$pb.TagNumber(24)
+  set spendTotals(TicketSpendTotalsPb v) { setField(24, v); }
+  @$pb.TagNumber(24)
+  $core.bool hasSpendTotals() => $_has(23);
+  @$pb.TagNumber(24)
+  void clearSpendTotals() => clearField(24);
+  @$pb.TagNumber(24)
+  TicketSpendTotalsPb ensureSpendTotals() => $_ensure(23);
+
+  @$pb.TagNumber(25)
+  TicketCoverTotalPb get coverTotals => $_getN(24);
+  @$pb.TagNumber(25)
+  set coverTotals(TicketCoverTotalPb v) { setField(25, v); }
+  @$pb.TagNumber(25)
+  $core.bool hasCoverTotals() => $_has(24);
+  @$pb.TagNumber(25)
+  void clearCoverTotals() => clearField(25);
+  @$pb.TagNumber(25)
+  TicketCoverTotalPb ensureCoverTotals() => $_ensure(24);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {
@@ -999,6 +1391,8 @@ class ItemCartPb extends $pb.GeneratedMessage {
     $core.double? quantity,
     $core.Iterable<ProxyArticleWorthPb>? proxiesWorth,
     $core.double? inventoryAbsoluteQt,
+    $core.double? totalPrice,
+    $core.double? totalCost,
   }) {
     final result = create();
     if (articleRetail != null) {
@@ -1019,6 +1413,12 @@ class ItemCartPb extends $pb.GeneratedMessage {
     if (inventoryAbsoluteQt != null) {
       result.inventoryAbsoluteQt = inventoryAbsoluteQt;
     }
+    if (totalPrice != null) {
+      result.totalPrice = totalPrice;
+    }
+    if (totalCost != null) {
+      result.totalCost = totalCost;
+    }
     return result;
   }
   ItemCartPb._() : super();
@@ -1032,6 +1432,8 @@ class ItemCartPb extends $pb.GeneratedMessage {
     ..a<$core.double>(4, _omitFieldNames ? '' : 'quantity', $pb.PbFieldType.OD)
     ..pc<ProxyArticleWorthPb>(5, _omitFieldNames ? '' : 'proxiesWorth', $pb.PbFieldType.PM, subBuilder: ProxyArticleWorthPb.create)
     ..a<$core.double>(6, _omitFieldNames ? '' : 'inventoryAbsoluteQt', $pb.PbFieldType.OD, protoName: 'inventoryAbsoluteQt')
+    ..a<$core.double>(7, _omitFieldNames ? '' : 'totalPrice', $pb.PbFieldType.OD)
+    ..a<$core.double>(8, _omitFieldNames ? '' : 'totalCost', $pb.PbFieldType.OD)
     ..hasRequiredFields = false
   ;
 
@@ -1109,6 +1511,36 @@ class ItemCartPb extends $pb.GeneratedMessage {
   $core.bool hasInventoryAbsoluteQt() => $_has(5);
   @$pb.TagNumber(6)
   void clearInventoryAbsoluteQt() => clearField(6);
+
+  /// client_computed
+  /// quantity × articlePrice, where articlePrice resolves as:
+  ///   retail      → articleRetail.price
+  ///   uncountable → articleUncountable.price  (quantity is always 1)
+  ///   basket      → sum(round(p.price × p.minimumUnitPerBasket) for p in proxies_worth)
+  ///                 − articleBasket.discountAmount + articleBasket.markupAmount
+  @$pb.TagNumber(7)
+  $core.double get totalPrice => $_getN(6);
+  @$pb.TagNumber(7)
+  set totalPrice($core.double v) { $_setDouble(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasTotalPrice() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearTotalPrice() => clearField(7);
+
+  /// client_computed
+  /// quantity × articleCost, where articleCost resolves as:
+  ///   retail      → articleRetail.cost
+  ///   uncountable → articleUncountable.cost   (quantity is always 1)
+  ///   basket      → sum(round(p.cost × p.minimumUnitPerBasket) for p in proxies_worth)
+  ///                 (no discount or markup on the cost side — purchase)
+  @$pb.TagNumber(8)
+  $core.double get totalCost => $_getN(7);
+  @$pb.TagNumber(8)
+  set totalCost($core.double v) { $_setDouble(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasTotalCost() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearTotalCost() => clearField(8);
 }
 
 

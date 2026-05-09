@@ -59,6 +59,78 @@ final $typed_data.Uint8List ticketMongoDescriptor = $convert.base64Decode(
     'xBdHRyaWJ1dGVzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAlSBXZhbHVl'
     'OgI4AUoECAsQYw==');
 
+@$core.Deprecated('Use ticketSellTotalsPbDescriptor instead')
+const TicketSellTotalsPb$json = {
+  '1': 'TicketSellTotalsPb',
+  '2': [
+    {'1': 'items_only', '3': 1, '4': 1, '5': 1, '8': {}, '10': 'itemsOnly'},
+    {'1': 'promo_val', '3': 2, '4': 1, '5': 1, '8': {}, '10': 'promoVal'},
+    {'1': 'markdowns_val', '3': 3, '4': 1, '5': 1, '8': {}, '10': 'markdownsVal'},
+    {'1': 'markdowns_included_tax_excluded', '3': 4, '4': 1, '5': 1, '8': {}, '10': 'markdownsIncludedTaxExcluded'},
+    {'1': 'taxes_value', '3': 5, '4': 1, '5': 1, '8': {}, '10': 'taxesValue'},
+    {'1': 'markdowns_and_tax_included', '3': 6, '4': 1, '5': 1, '8': {}, '10': 'markdownsAndTaxIncluded'},
+    {'1': 'change', '3': 7, '4': 1, '5': 1, '8': {}, '10': 'change'},
+  ],
+};
+
+/// Descriptor for `TicketSellTotalsPb`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List ticketSellTotalsPbDescriptor = $convert.base64Decode(
+    'ChJUaWNrZXRTZWxsVG90YWxzUGISPgoKaXRlbXNfb25seRgBIAEoAUIfirUYG2l0ZW1zLnN1bS'
+    'hpLCBpLnRvdGFsX3ByaWNlKVIJaXRlbXNPbmx5EkEKCXByb21vX3ZhbBgCIAEoAUIkirUYIHJv'
+    'dW5kNChpdGVtc19vbmx5ICogcHJvbW8gLyAxMDApUghwcm9tb1ZhbBJDCg1tYXJrZG93bnNfdm'
+    'FsGAMgASgBQh6KtRgacHJvbW9fdmFsICsgZGlzY291bnRBbW91bnRSDG1hcmtkb3duc1ZhbBJl'
+    'Ch9tYXJrZG93bnNfaW5jbHVkZWRfdGF4X2V4Y2x1ZGVkGAQgASgBQh6KtRgaaXRlbXNfb25seS'
+    'AtIG1hcmtkb3duc192YWxSHG1hcmtkb3duc0luY2x1ZGVkVGF4RXhjbHVkZWQShAEKC3RheGVz'
+    'X3ZhbHVlGAUgASgBQmOKtRhfdGF4ZS5wZXJjZW50YWdlID4gMC4wID8gcm91bmQ0KG1hcmtkb3'
+    'duc19pbmNsdWRlZF90YXhfZXhjbHVkZWQgKiAodGF4ZS5wZXJjZW50YWdlIC8gMTAwKSkgOiAw'
+    'LjBSCnRheGVzVmFsdWUSbgoabWFya2Rvd25zX2FuZF90YXhfaW5jbHVkZWQYBiABKAFCMYq1GC'
+    '1tYXJrZG93bnNfaW5jbHVkZWRfdGF4X2V4Y2x1ZGVkICsgdGF4ZXNfdmFsdWVSF21hcmtkb3du'
+    'c0FuZFRheEluY2x1ZGVkEl4KBmNoYW5nZRgHIAEoAUJGirUYQnRpY2tldFR5cGUgPT0gJ3NlbG'
+    'wnID8gcmVjZWl2ZWQgLSBtYXJrZG93bnNfYW5kX3RheF9pbmNsdWRlZCA6IDAuMFIGY2hhbmdl');
+
+@$core.Deprecated('Use ticketSpendTotalsPbDescriptor instead')
+const TicketSpendTotalsPb$json = {
+  '1': 'TicketSpendTotalsPb',
+  '2': [
+    {'1': 'items_only', '3': 1, '4': 1, '5': 1, '8': {}, '10': 'itemsOnly'},
+    {'1': 'promo_val', '3': 2, '4': 1, '5': 1, '8': {}, '10': 'promoVal'},
+    {'1': 'markdowns_val', '3': 3, '4': 1, '5': 1, '8': {}, '10': 'markdownsVal'},
+    {'1': 'markdowns_included_tax_excluded', '3': 4, '4': 1, '5': 1, '8': {}, '10': 'markdownsIncludedTaxExcluded'},
+    {'1': 'taxes_value', '3': 5, '4': 1, '5': 1, '8': {}, '10': 'taxesValue'},
+    {'1': 'markdowns_and_tax_included', '3': 6, '4': 1, '5': 1, '8': {}, '10': 'markdownsAndTaxIncluded'},
+    {'1': 'change', '3': 7, '4': 1, '5': 1, '8': {}, '10': 'change'},
+  ],
+};
+
+/// Descriptor for `TicketSpendTotalsPb`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List ticketSpendTotalsPbDescriptor = $convert.base64Decode(
+    'ChNUaWNrZXRTcGVuZFRvdGFsc1BiEj0KCml0ZW1zX29ubHkYASABKAFCHoq1GBppdGVtcy5zdW'
+    '0oaSwgaS50b3RhbF9jb3N0KVIJaXRlbXNPbmx5EkEKCXByb21vX3ZhbBgCIAEoAUIkirUYIHJv'
+    'dW5kNChpdGVtc19vbmx5ICogcHJvbW8gLyAxMDApUghwcm9tb1ZhbBJDCg1tYXJrZG93bnNfdm'
+    'FsGAMgASgBQh6KtRgacHJvbW9fdmFsICsgZGlzY291bnRBbW91bnRSDG1hcmtkb3duc1ZhbBJl'
+    'Ch9tYXJrZG93bnNfaW5jbHVkZWRfdGF4X2V4Y2x1ZGVkGAQgASgBQh6KtRgaaXRlbXNfb25seS'
+    'AtIG1hcmtkb3duc192YWxSHG1hcmtkb3duc0luY2x1ZGVkVGF4RXhjbHVkZWQShAEKC3RheGVz'
+    'X3ZhbHVlGAUgASgBQmOKtRhfdGF4ZS5wZXJjZW50YWdlID4gMC4wID8gcm91bmQ0KG1hcmtkb3'
+    'duc19pbmNsdWRlZF90YXhfZXhjbHVkZWQgKiAodGF4ZS5wZXJjZW50YWdlIC8gMTAwKSkgOiAw'
+    'LjBSCnRheGVzVmFsdWUSbgoabWFya2Rvd25zX2FuZF90YXhfaW5jbHVkZWQYBiABKAFCMYq1GC'
+    '1tYXJrZG93bnNfaW5jbHVkZWRfdGF4X2V4Y2x1ZGVkICsgdGF4ZXNfdmFsdWVSF21hcmtkb3du'
+    'c0FuZFRheEluY2x1ZGVkEl8KBmNoYW5nZRgHIAEoAUJHirUYQ3RpY2tldFR5cGUgPT0gJ3NwZW'
+    '5kJyA/IHJlY2VpdmVkIC0gbWFya2Rvd25zX2FuZF90YXhfaW5jbHVkZWQgOiAwLjBSBmNoYW5n'
+    'ZQ==');
+
+@$core.Deprecated('Use ticketCoverTotalPbDescriptor instead')
+const TicketCoverTotalPb$json = {
+  '1': 'TicketCoverTotalPb',
+  '2': [
+    {'1': 'total', '3': 1, '4': 1, '5': 1, '8': {}, '10': 'total'},
+  ],
+};
+
+/// Descriptor for `TicketCoverTotalPb`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List ticketCoverTotalPbDescriptor = $convert.base64Decode(
+    'ChJUaWNrZXRDb3ZlclRvdGFsUGISIgoFdG90YWwYASABKAFCDIq1GAhyZWNlaXZlZFIFdG90YW'
+    'w=');
+
 @$core.Deprecated('Use ticketPbDescriptor instead')
 const TicketPb$json = {
   '1': 'TicketPb',
@@ -82,18 +154,22 @@ const TicketPb$json = {
     {'1': 'contactLastName', '3': 17, '4': 1, '5': 9, '10': 'contactLastName'},
     {'1': 'contactPhone', '3': 18, '4': 1, '5': 9, '10': 'contactPhone'},
     {'1': 'contactMail', '3': 19, '4': 1, '5': 9, '10': 'contactMail'},
-    {'1': 'currency', '3': 20, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
-    {'1': 'snapshot_secondary_currency', '3': 21, '4': 1, '5': 9, '9': 1, '10': 'snapshotSecondaryCurrency', '17': true},
-    {'1': 'snapshot_local_per_secondary', '3': 22, '4': 1, '5': 1, '9': 2, '10': 'snapshotLocalPerSecondary', '17': true},
+    {'1': 'currency', '3': 20, '4': 1, '5': 9, '9': 1, '10': 'currency', '17': true},
+    {'1': 'snapshot_secondary_currency', '3': 21, '4': 1, '5': 9, '9': 2, '10': 'snapshotSecondaryCurrency', '17': true},
+    {'1': 'snapshot_local_per_secondary', '3': 22, '4': 1, '5': 1, '9': 3, '10': 'snapshotLocalPerSecondary', '17': true},
+    {'1': 'sell_totals', '3': 23, '4': 1, '5': 11, '6': '.weebi.ticket.TicketSellTotalsPb', '9': 0, '10': 'sellTotals'},
+    {'1': 'spend_totals', '3': 24, '4': 1, '5': 11, '6': '.weebi.ticket.TicketSpendTotalsPb', '9': 0, '10': 'spendTotals'},
+    {'1': 'cover_totals', '3': 25, '4': 1, '5': 11, '6': '.weebi.ticket.TicketCoverTotalPb', '9': 0, '10': 'coverTotals'},
   ],
   '4': [TicketPb_PaymentTypePb$json],
   '8': [
+    {'1': 'totals'},
     {'1': '_currency'},
     {'1': '_snapshot_secondary_currency'},
     {'1': '_snapshot_local_per_secondary'},
   ],
   '9': [
-    {'1': 23, '2': 99},
+    {'1': 26, '2': 99},
   ],
 };
 
@@ -126,13 +202,17 @@ final $typed_data.Uint8List ticketPbDescriptor = $convert.base64Decode(
     'dBIiCgxjcmVhdGlvbkRhdGUYDyABKAlSDGNyZWF0aW9uRGF0ZRIqChBjb250YWN0Rmlyc3ROYW'
     '1lGBAgASgJUhBjb250YWN0Rmlyc3ROYW1lEigKD2NvbnRhY3RMYXN0TmFtZRgRIAEoCVIPY29u'
     'dGFjdExhc3ROYW1lEiIKDGNvbnRhY3RQaG9uZRgSIAEoCVIMY29udGFjdFBob25lEiAKC2Nvbn'
-    'RhY3RNYWlsGBMgASgJUgtjb250YWN0TWFpbBIfCghjdXJyZW5jeRgUIAEoCUgAUghjdXJyZW5j'
-    'eYgBARJDChtzbmFwc2hvdF9zZWNvbmRhcnlfY3VycmVuY3kYFSABKAlIAVIZc25hcHNob3RTZW'
+    'RhY3RNYWlsGBMgASgJUgtjb250YWN0TWFpbBIfCghjdXJyZW5jeRgUIAEoCUgBUghjdXJyZW5j'
+    'eYgBARJDChtzbmFwc2hvdF9zZWNvbmRhcnlfY3VycmVuY3kYFSABKAlIAlIZc25hcHNob3RTZW'
     'NvbmRhcnlDdXJyZW5jeYgBARJEChxzbmFwc2hvdF9sb2NhbF9wZXJfc2Vjb25kYXJ5GBYgASgB'
-    'SAJSGXNuYXBzaG90TG9jYWxQZXJTZWNvbmRhcnmIAQEiaAoNUGF5bWVudFR5cGVQYhILCgd1bm'
-    'tub3duEAASCAoEY2FzaBABEggKBG5vcGUQAhIPCgttb2JpbGVNb25leRADEgoKBmNoZXF1ZRAE'
-    'Eg4KCmNyZWRpdENhcmQQBRIJCgVnb29kcxAGQgsKCV9jdXJyZW5jeUIeChxfc25hcHNob3Rfc2'
-    'Vjb25kYXJ5X2N1cnJlbmN5Qh8KHV9zbmFwc2hvdF9sb2NhbF9wZXJfc2Vjb25kYXJ5SgQIFxBj');
+    'SANSGXNuYXBzaG90TG9jYWxQZXJTZWNvbmRhcnmIAQESQwoLc2VsbF90b3RhbHMYFyABKAsyIC'
+    '53ZWViaS50aWNrZXQuVGlja2V0U2VsbFRvdGFsc1BiSABSCnNlbGxUb3RhbHMSRgoMc3BlbmRf'
+    'dG90YWxzGBggASgLMiEud2VlYmkudGlja2V0LlRpY2tldFNwZW5kVG90YWxzUGJIAFILc3Blbm'
+    'RUb3RhbHMSRQoMY292ZXJfdG90YWxzGBkgASgLMiAud2VlYmkudGlja2V0LlRpY2tldENvdmVy'
+    'VG90YWxQYkgAUgtjb3ZlclRvdGFscyJoCg1QYXltZW50VHlwZVBiEgsKB3Vua25vd24QABIICg'
+    'RjYXNoEAESCAoEbm9wZRACEg8KC21vYmlsZU1vbmV5EAMSCgoGY2hlcXVlEAQSDgoKY3JlZGl0'
+    'Q2FyZBAFEgkKBWdvb2RzEAZCCAoGdG90YWxzQgsKCV9jdXJyZW5jeUIeChxfc25hcHNob3Rfc2'
+    'Vjb25kYXJ5X2N1cnJlbmN5Qh8KHV9zbmFwc2hvdF9sb2NhbF9wZXJfc2Vjb25kYXJ5SgQIGhBj');
 
 @$core.Deprecated('Use counterfoilDescriptor instead')
 const Counterfoil$json = {
@@ -211,6 +291,8 @@ const ItemCartPb$json = {
     {'1': 'quantity', '3': 4, '4': 1, '5': 1, '10': 'quantity'},
     {'1': 'proxies_worth', '3': 5, '4': 3, '5': 11, '6': '.weebi.ticket.ProxyArticleWorthPb', '10': 'proxiesWorth'},
     {'1': 'inventoryAbsoluteQt', '3': 6, '4': 1, '5': 1, '10': 'inventoryAbsoluteQt'},
+    {'1': 'total_price', '3': 7, '4': 1, '5': 1, '8': {}, '10': 'totalPrice'},
+    {'1': 'total_cost', '3': 8, '4': 1, '5': 1, '8': {}, '10': 'totalCost'},
   ],
 };
 
@@ -223,5 +305,7 @@ final $typed_data.Uint8List itemCartPbDescriptor = $convert.base64Decode(
     'Y291bnRhYmxlT25UaWNrZXRQYlISYXJ0aWNsZVVuY291bnRhYmxlEhoKCHF1YW50aXR5GAQgAS'
     'gBUghxdWFudGl0eRJGCg1wcm94aWVzX3dvcnRoGAUgAygLMiEud2VlYmkudGlja2V0LlByb3h5'
     'QXJ0aWNsZVdvcnRoUGJSDHByb3hpZXNXb3J0aBIwChNpbnZlbnRvcnlBYnNvbHV0ZVF0GAYgAS'
-    'gBUhNpbnZlbnRvcnlBYnNvbHV0ZVF0');
+    'gBUhNpbnZlbnRvcnlBYnNvbHV0ZVF0EjwKC3RvdGFsX3ByaWNlGAcgASgBQhuKtRgXcXVhbnRp'
+    'dHkgKiBhcnRpY2xlUHJpY2VSCnRvdGFsUHJpY2USOQoKdG90YWxfY29zdBgIIAEoAUIairUYFn'
+    'F1YW50aXR5ICogYXJ0aWNsZUNvc3RSCXRvdGFsQ29zdA==');
 

@@ -724,6 +724,26 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// Revokes all web sessions for a specific user
+  Future<void> _revokeAllUserSessions(String userId, Db db) async {
+    try {
+      final result = await db
+          .collection('web_sessions')
+          .deleteMany(where.eq('userId', userId));
+      if (result.nRemoved > 0) {
+        _logger.info('Web sessions revoked for user', extra: {
+          'userId': userId,
+          'revokedCount': result.nRemoved,
+        });
+      }
+    } catch (e) {
+      _logger.error('Failed to revoke web sessions for user',
+          error: e, extra: {'userId': userId});
+      // We don't rethrow here to avoid failing the main operation (e.g. password reset)
+      // as the password update itself was successful.
+    }
+  }
+
   /// Cleans up expired web sessions (fallback when TTL index hasn't run yet)
   /// Note: With TTL index on expiresAt (BSON Date), MongoDB auto-deletes. This is a safety net.
   Future<int> cleanupExpiredSessions() async {
@@ -2710,10 +2730,9 @@ class FenceService extends FenceServiceBase {
                 .set('password', passwordNewEncrypted)
                 .set('mustChangePassword', false));
 
-        ///TODO: invalidate all existing tokens for this user
-        // await _invalidateAllUserTokens(request.userId);
-        ///... generate new token
-        // final newToken = await _generateNewToken(request.userId);
+        // Revoke all web sessions for this user
+        await _revokeAllUserSessions(request.userId, db);
+
         log.logRpcExit('updateUserPassword',
             resultData: {'userId': request.userId});
         return StatusResponse()
@@ -3273,6 +3292,12 @@ class FenceService extends FenceServiceBase {
             ModifierBuilder()
                 .set('password', passwordNewEncrypted)
                 .set('mustChangePassword', false));
+
+        // Revoke all web sessions for this user
+        final userId = userMongo['userId'] as String?;
+        if (userId != null && userId.isNotEmpty) {
+          await _revokeAllUserSessions(userId, db);
+        }
 
         log.logRpcExit('confirmPasswordReset');
         return StatusResponse()

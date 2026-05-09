@@ -1,5 +1,11 @@
 # changelog
 
+## 1.3.3 - 2026 may
+
+- add retail total logic in ticket
+- add cel evaluator 
+
+
 ## 1.3.2 - 2026 april
 
 - add business rules in boutique and chain to provide : 
