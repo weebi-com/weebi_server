@@ -393,6 +393,128 @@ void main() {
     });
   });
 
+  group('businessRulesRequireLicensedSeat', () {
+    test('false when all guards off', () {
+      expect(
+        businessRulesRequireLicensedSeat(BusinessRules()),
+        isFalse,
+      );
+    });
+
+    test('true when negative stock guard enabled', () {
+      expect(
+        businessRulesRequireLicensedSeat(BusinessRules()
+          ..isNegativeStockGuardEnabled = true),
+        isTrue,
+      );
+    });
+
+    test('true when recent ticket edit enabled', () {
+      expect(
+        businessRulesRequireLicensedSeat(BusinessRules()
+          ..isRecentTicketEditEnabled = true),
+        isTrue,
+      );
+    });
+  });
+
+  group('assertUserMayPersistBusinessRules', () {
+    setUp(() {
+      AppEnvironment.debugLicenseCheckEnforcedOverride = true;
+    });
+
+    tearDown(() {
+      AppEnvironment.debugLicenseCheckEnforcedOverride = null;
+    });
+
+    final past = DateTime.utc(2020, 1, 1);
+
+    License licenseWithSeat(String userId) => License(
+          licenseId: 'l1',
+          licensePlan: LicensePlan.SOLO,
+          providerProductId: 'p',
+          providerPriceId: 'pr',
+          maxUsers: 1,
+          validFrom: past.timestampProto,
+          seats: [LicenseSeat(userId: userId, firmId: 'f')],
+        );
+
+    BusinessRules rulesWithGuard() => BusinessRules()
+      ..isNegativeStockGuardEnabled = true;
+
+    test('no-op when rules do not require licence', () {
+      expect(
+        () => assertUserMayPersistBusinessRules(
+          userPermissions: UserPermissions.create()
+            ..firmId = 'f'
+            ..userId = 'u2',
+          licenses: [],
+          rules: BusinessRules(),
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('no-op when license check not enforced', () {
+      AppEnvironment.debugLicenseCheckEnforcedOverride = false;
+      expect(
+        () => assertUserMayPersistBusinessRules(
+          userPermissions: UserPermissions.create()
+            ..firmId = 'f'
+            ..userId = 'u2',
+          licenses: [],
+          rules: rulesWithGuard(),
+        ),
+        returnsNormally,
+      );
+    });
+
+    test('allows user with active seat', () {
+      assertUserMayPersistBusinessRules(
+        userPermissions: UserPermissions.create()
+          ..firmId = 'f'
+          ..userId = 'u2',
+        licenses: [licenseWithSeat('u2')],
+        rules: rulesWithGuard(),
+      );
+    });
+
+    test('denies firm creator without seat (no joker)', () {
+      expect(
+        () => assertUserMayPersistBusinessRules(
+          userPermissions: UserPermissions.create()
+            ..firmId = 'f'
+            ..userId = 'u1'
+            ..isFirmCreator = true,
+          licenses: [],
+          rules: rulesWithGuard(),
+        ),
+        throwsA(
+          isA<GrpcError>()
+              .having((e) => e.code, 'code', 9)
+              .having(
+                (e) => e.message ?? '',
+                'message',
+                contains(kBusinessRulesLicenseRequired),
+              ),
+        ),
+      );
+    });
+
+    test('denies non-creator without seat', () {
+      expect(
+        () => assertUserMayPersistBusinessRules(
+          userPermissions: UserPermissions.create()
+            ..firmId = 'f'
+            ..userId = 'u2',
+          licenses: [],
+          rules: rulesWithGuard(),
+        ),
+        throwsA(isA<GrpcError>().having((e) => e.code, 'code', 9)),
+      );
+    });
+  });
+
   group('entitlement_helpers', () {
     test('firmCreatorOperationalJoker mirrors isFirmCreator', () {
       expect(
