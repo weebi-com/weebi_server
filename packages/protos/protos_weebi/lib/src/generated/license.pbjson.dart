@@ -18,16 +18,15 @@ const LicensePlan$json = {
   '1': 'LicensePlan',
   '2': [
     {'1': 'LICENSE_PLAN_UNKNOWN', '2': 0},
-    {'1': 'SOLO', '2': 1},
-    {'1': 'TRIO', '2': 2},
-    {'1': 'PRO', '2': 3},
+    {'1': 'ENTERPRISE', '2': 1},
+    {'1': 'PREMIUM', '2': 2},
   ],
 };
 
 /// Descriptor for `LicensePlan`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List licensePlanDescriptor = $convert.base64Decode(
-    'CgtMaWNlbnNlUGxhbhIYChRMSUNFTlNFX1BMQU5fVU5LTk9XThAAEggKBFNPTE8QARIICgRUUk'
-    'lPEAISBwoDUFJPEAM=');
+    'CgtMaWNlbnNlUGxhbhIYChRMSUNFTlNFX1BMQU5fVU5LTk9XThAAEg4KCkVOVEVSUFJJU0UQAR'
+    'ILCgdQUkVNSVVNEAI=');
 
 @$core.Deprecated('Use paymentProviderDescriptor instead')
 const PaymentProvider$json = {

@@ -17,8 +17,8 @@ import 'package:http/http.dart' as http;
 
 import 'package:billing_service/billing_service.dart';
 
-/// Retire legacy Stripe rows before re-seeding current catalog (solo, trio, pro).
-const _legacyProductIds = ['solo', 'trio', 'pro'];
+/// Retire legacy Stripe rows before re-seeding current catalog.
+const _legacyProductIds = ['solo', 'trio', 'pro', 'entreprise', 'premium'];
 
 void main(List<String> args) async {
   final key =
@@ -67,20 +67,20 @@ void main(List<String> args) async {
     print('No active legacy billing_products to soft-delete');
   }
 
-  // Per-user plans (reuse SOLO/TRIO enums). maxUsers=1 per purchased seat.
+  // Per-user plans. maxUsers=1 per purchased seat.
   final plans = [
     (
       'Weebi Entreprise',
-      'solo',
-      LicensePlan.SOLO,
+      'entreprise',
+      LicensePlan.ENTERPRISE,
       'Weebi Entreprise — 14 € / user',
       1400,
       1,
     ),
     (
       'Weebi Premium',
-      'trio',
-      LicensePlan.TRIO,
+      'premium',
+      LicensePlan.PREMIUM,
       'Weebi Premium — 29 € / user',
       2900,
       1,
@@ -124,7 +124,7 @@ void main(List<String> args) async {
   }
 
   await db.close();
-  print('Done. billing_products updated (solo=Entreprise, trio=Premium).');
+  print('Done. billing_products updated (entreprise, premium).');
   exit(0);
 }
 

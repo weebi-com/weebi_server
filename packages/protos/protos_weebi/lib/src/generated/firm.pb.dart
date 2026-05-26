@@ -178,7 +178,7 @@ class Firm extends $pb.GeneratedMessage {
   @$pb.TagNumber(2)
   void clearName() => clearField(2);
 
-  /// / @deprecated Use licenses instead.
+  /// / @deprecated Use licenses[].licensePlan instead.
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(3)
   $core.String get subscriptionPlan => $_getSZ(2);
@@ -192,7 +192,7 @@ class Firm extends $pb.GeneratedMessage {
   @$pb.TagNumber(3)
   void clearSubscriptionPlan() => clearField(3);
 
-  /// / @deprecated Use licenses[].maxUsers instead.
+  /// / @deprecated Use licenses[].maxUsers instead (per purchased seat).
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(4)
   $core.int get subscriptionSeats => $_getIZ(3);
@@ -309,7 +309,7 @@ class Firm extends $pb.GeneratedMessage {
   @$pb.TagNumber(13)
   void clearStripeCustomerId() => clearField(13);
 
-  /// / Active licenses. A firm can have multiple licenses (e.g. add-ons, renewals).
+  /// / Active licenses. A firm can have multiple licenses (e.g. seat packs, renewals).
   @$pb.TagNumber(14)
   $core.List<$23.License> get licenses => $_getList(13);
 

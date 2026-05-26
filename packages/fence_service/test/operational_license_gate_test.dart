@@ -27,7 +27,7 @@ void main() {
     test('false when validFrom is missing', () {
       final lic = License(
         licenseId: 'l',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'p',
         providerPriceId: 'pr',
         maxUsers: 1,
@@ -38,7 +38,7 @@ void main() {
     test('false when validFrom is in the future', () {
       final lic = License(
         licenseId: 'l',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'p',
         providerPriceId: 'pr',
         maxUsers: 1,
@@ -50,7 +50,7 @@ void main() {
     test('true for lifetime license (validFrom only, no validUntil)', () {
       final lic = License(
         licenseId: 'l',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'p',
         providerPriceId: 'pr',
         maxUsers: 1,
@@ -62,7 +62,7 @@ void main() {
     test('false when validUntil is before now', () {
       final lic = License(
         licenseId: 'l',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'p',
         providerPriceId: 'pr',
         maxUsers: 1,
@@ -80,7 +80,7 @@ void main() {
 
     License validLicenseWithSeat(String userId) => License(
           licenseId: 'l1',
-          licensePlan: LicensePlan.SOLO,
+          licensePlan: LicensePlan.ENTERPRISE,
           providerProductId: 'p',
           providerPriceId: 'pr',
           maxUsers: 1,
@@ -141,7 +141,7 @@ void main() {
     test('seat validFrom in future denies access', () {
       final lic = License(
         licenseId: 'l1',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'p',
         providerPriceId: 'pr',
         maxUsers: 1,
@@ -163,7 +163,7 @@ void main() {
     test('expired license (validUntil) denied even with matching seat', () {
       final lic = License(
         licenseId: 'l1',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'p',
         providerPriceId: 'pr',
         maxUsers: 1,
@@ -191,7 +191,7 @@ void main() {
     License lic(String id, int max, {DateTime? until}) {
       return License(
         licenseId: id,
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'p',
         providerPriceId: 'pr',
         maxUsers: max,
@@ -259,7 +259,7 @@ void main() {
 
     License licenseWithSeat(String userId) => License(
           licenseId: 'l1',
-          licensePlan: LicensePlan.SOLO,
+          licensePlan: LicensePlan.ENTERPRISE,
           providerProductId: 'p',
           providerPriceId: 'pr',
           maxUsers: 1,
@@ -431,7 +431,7 @@ void main() {
 
     License licenseWithSeat(String userId) => License(
           licenseId: 'l1',
-          licensePlan: LicensePlan.SOLO,
+          licensePlan: LicensePlan.ENTERPRISE,
           providerProductId: 'p',
           providerPriceId: 'pr',
           maxUsers: 1,

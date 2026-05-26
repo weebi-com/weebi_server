@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 /// Returns the session URL for redirecting the customer.
 ///
 /// [stripeSecretKey] required.
-/// [priceId] must be a valid Stripe price ID (e.g. STRIPE_PRICE_SOLO).
+/// [priceId] must be a valid Stripe price ID from billing_products.
 /// [metadata] will be passed to the session (firmId required for webhook).
 /// [customerId] optional - use existing Stripe customer to avoid creating a new one.
 Future<String> createStripeCheckoutSession({

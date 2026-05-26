@@ -13,18 +13,16 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-/// / License plan tiers. Maps to payment provider products.
+/// / License plan tiers. Maps to payment provider products (billing_products).
 class LicensePlan extends $pb.ProtobufEnum {
   static const LicensePlan LICENSE_PLAN_UNKNOWN = LicensePlan._(0, _omitEnumNames ? '' : 'LICENSE_PLAN_UNKNOWN');
-  static const LicensePlan SOLO = LicensePlan._(1, _omitEnumNames ? '' : 'SOLO');
-  static const LicensePlan TRIO = LicensePlan._(2, _omitEnumNames ? '' : 'TRIO');
-  static const LicensePlan PRO = LicensePlan._(3, _omitEnumNames ? '' : 'PRO');
+  static const LicensePlan ENTERPRISE = LicensePlan._(1, _omitEnumNames ? '' : 'ENTERPRISE');
+  static const LicensePlan PREMIUM = LicensePlan._(2, _omitEnumNames ? '' : 'PREMIUM');
 
   static const $core.List<LicensePlan> values = <LicensePlan> [
     LICENSE_PLAN_UNKNOWN,
-    SOLO,
-    TRIO,
-    PRO,
+    ENTERPRISE,
+    PREMIUM,
   ];
 
   static final $core.Map<$core.int, LicensePlan> _byValue = $pb.ProtobufEnum.initByValue(values);

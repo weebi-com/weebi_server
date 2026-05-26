@@ -127,8 +127,8 @@ class BillingService extends BillingServiceBase {
   }
 
   static const _planToProductId = <LicensePlan, String>{
-    LicensePlan.SOLO: 'solo',
-    LicensePlan.TRIO: 'trio',
+    LicensePlan.ENTERPRISE: 'entreprise',
+    LicensePlan.PREMIUM: 'premium',
   };
 
   /// Lookup billing product by license plan. Returns null if not found or deleted.
