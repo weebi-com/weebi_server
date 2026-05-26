@@ -1,5 +1,9 @@
 # changelog
 
+## 1.3.4 - 2026 may
+
+- simpler offer : entreprise or premium
+
 ## 1.3.3 - 2026 may
 
 - add retail total logic in ticket
