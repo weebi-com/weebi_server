@@ -1,6 +1,6 @@
-/// Pure unit tests (in-memory licenses, JWT shape). Mongo integration for
-/// `loadFirmLicenses` / `assertUserHasOperationalLicenseWithDb`: see
-/// `operational_license_gate_mongo_test.dart`.
+// Pure unit tests (in-memory licenses, JWT shape). Mongo integration for
+// loadFirmLicenses / assertUserHasOperationalLicenseWithDb: see
+// operational_license_gate_mongo_test.dart.
 import 'dart:convert';
 
 import 'package:fence_service/fence_service.dart';
