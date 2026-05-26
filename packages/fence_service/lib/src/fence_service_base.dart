@@ -724,6 +724,26 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// Revokes all web sessions for a specific user
+  Future<void> _revokeAllUserSessions(String userId, Db db) async {
+    try {
+      final result = await db
+          .collection('web_sessions')
+          .deleteMany(where.eq('userId', userId));
+      if (result.nRemoved > 0) {
+        _logger.info('Web sessions revoked for user', extra: {
+          'userId': userId,
+          'revokedCount': result.nRemoved,
+        });
+      }
+    } catch (e) {
+      _logger.error('Failed to revoke web sessions for user',
+          error: e, extra: {'userId': userId});
+      // We don't rethrow here to avoid failing the main operation (e.g. password reset)
+      // as the password update itself was successful.
+    }
+  }
+
   /// Cleans up expired web sessions (fallback when TTL index hasn't run yet)
   /// Note: With TTL index on expiresAt (BSON Date), MongoDB auto-deletes. This is a safety net.
   Future<int> cleanupExpiredSessions() async {
@@ -1891,6 +1911,13 @@ class FenceService extends FenceServiceBase {
       ..logo = request.logo
       ..logoExtension = request.logoExtension;
 
+    if (boutiqueRequest.hasBusinessRules()) {
+      await _assertBusinessRulesLicenseEntitlement(
+        userPermission,
+        rules: boutiqueRequest.businessRules,
+      );
+    }
+
     chain.boutiques.add(boutiqueMongo);
 
     final result = await _updateOneChainDBExec(chain, log: log);
@@ -1959,6 +1986,21 @@ class FenceService extends FenceServiceBase {
       } else {
         inner.currency =
             CurrencyResolution.normalizeOr(inner.currency, firmDefault);
+      }
+    }
+
+    if (request.hasBusinessRules()) {
+      await _assertBusinessRulesLicenseEntitlement(
+        userPermission,
+        rules: request.businessRules,
+      );
+    }
+    for (final boutiqueMongo in request.boutiques) {
+      if (boutiqueMongo.boutique.hasBusinessRules()) {
+        await _assertBusinessRulesLicenseEntitlement(
+          userPermission,
+          rules: boutiqueMongo.boutique.businessRules,
+        );
       }
     }
 
@@ -2061,6 +2103,13 @@ class FenceService extends FenceServiceBase {
           'cannot update deleted boutique ${request.boutique.boutiqueId}');
     }
 
+    if (request.boutique.hasBusinessRules()) {
+      await _assertBusinessRulesLicenseEntitlement(
+        userPermission,
+        rules: request.boutique.businessRules,
+      );
+    }
+
     boutique.boutique = request.boutique;
     boutique.name = request.boutique
         .name; // Sync the outer name field with the nested boutique name
@@ -2118,6 +2167,14 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot access data from firm ${userPermission.firmId} or chain ${request.chainId}');
     }
+
+    if (request.hasBusinessRules()) {
+      await _assertBusinessRulesLicenseEntitlement(
+        userPermission,
+        rules: request.businessRules,
+      );
+    }
+
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
       try {
@@ -2168,6 +2225,13 @@ class FenceService extends FenceServiceBase {
               'isDualCurrencyEnabled', request.isDualCurrencyEnabled);
         }
 
+        if (request.hasBusinessRules()) {
+          modifier = modifier.set(
+            'businessRules',
+            request.businessRules.toProto3Json(),
+          );
+        }
+
         final result = await boutiqueCollection.updateOne(
           where
               .eq('firmId', userPermission.firmId)
@@ -2194,6 +2258,22 @@ class FenceService extends FenceServiceBase {
             error: e, stackTrace: stacktrace);
         rethrow;
       }
+    });
+  }
+
+  /// Licence gate for chain/boutique [BusinessRules] (no firm-creator joker).
+  Future<void> _assertBusinessRulesLicenseEntitlement(
+    UserPermissions userPermissions, {
+    required BusinessRules rules,
+  }) async {
+    if (!businessRulesRequireLicensedSeat(rules)) return;
+
+    await databaseMiddleware<void>(_poolService, (db) async {
+      await assertUserMayPersistBusinessRulesWithDb(
+        db,
+        userPermissions: userPermissions,
+        rules: rules,
+      );
     });
   }
 
@@ -2710,10 +2790,9 @@ class FenceService extends FenceServiceBase {
                 .set('password', passwordNewEncrypted)
                 .set('mustChangePassword', false));
 
-        ///TODO: invalidate all existing tokens for this user
-        // await _invalidateAllUserTokens(request.userId);
-        ///... generate new token
-        // final newToken = await _generateNewToken(request.userId);
+        // Revoke all web sessions for this user
+        await _revokeAllUserSessions(request.userId, db);
+
         log.logRpcExit('updateUserPassword',
             resultData: {'userId': request.userId});
         return StatusResponse()
@@ -3273,6 +3352,12 @@ class FenceService extends FenceServiceBase {
             ModifierBuilder()
                 .set('password', passwordNewEncrypted)
                 .set('mustChangePassword', false));
+
+        // Revoke all web sessions for this user
+        final userId = userMongo['userId'] as String?;
+        if (userId != null && userId.isNotEmpty) {
+          await _revokeAllUserSessions(userId, db);
+        }
 
         log.logRpcExit('confirmPasswordReset');
         return StatusResponse()

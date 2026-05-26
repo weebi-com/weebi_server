@@ -31,9 +31,8 @@ void main() {
     // Seed billing_products for referral commission lookup
     final nowIso = DateTime.now().toUtc().toIso8601String();
     final billingProducts = [
-      {'productId': 'solo', 'licensePlan': 1, 'maxUsers': 1, 'amountCents': 1400, 'currency': 'eur', 'stripeProductId': 'prod_solo', 'stripePriceId': 'price_solo', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
-      {'productId': 'trio', 'licensePlan': 2, 'maxUsers': 3, 'amountCents': 2900, 'currency': 'eur', 'stripeProductId': 'prod_trio', 'stripePriceId': 'price_trio', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
-      {'productId': 'pro', 'licensePlan': 3, 'maxUsers': 10, 'amountCents': 7900, 'currency': 'eur', 'stripeProductId': 'prod_pro', 'stripePriceId': 'price_pro', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
+      {'productId': 'entreprise', 'licensePlan': 1, 'maxUsers': 1, 'amountCents': 1400, 'currency': 'eur', 'stripeProductId': 'prod_entreprise', 'stripePriceId': 'price_entreprise', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
+      {'productId': 'premium', 'licensePlan': 2, 'maxUsers': 1, 'amountCents': 2900, 'currency': 'eur', 'stripeProductId': 'prod_premium', 'stripePriceId': 'price_premium', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
     ];
     await db.collection(BillingService.billingProductsCollectionName).insertMany(billingProducts);
 
@@ -63,7 +62,7 @@ void main() {
     test('creates a license and appends to firm.licenses', () async {
       final license = License(
         licenseId: 'license-starter-001',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'prod_starter',
         providerPriceId: 'price_starter',
         maxUsers: 1,
@@ -78,14 +77,14 @@ void main() {
       expect(response.statusResponse.type, StatusResponse_Type.CREATED);
       expect(response.statusResponse.id, 'license-starter-001');
       expect(response.license.licenseId, 'license-starter-001');
-      expect(response.license.licensePlan, LicensePlan.SOLO);
+      expect(response.license.licensePlan, LicensePlan.ENTERPRISE);
       expect(response.license.maxUsers, 1);
     });
 
     test('throws alreadyExists when licenseId duplicates', () async {
       final license = License(
         licenseId: 'license-starter-001',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'prod_starter',
         providerPriceId: 'price_starter',
         maxUsers: 1,
@@ -106,7 +105,7 @@ void main() {
     test('throws invalidArgument when licenseId is empty', () async {
       final license = License(
         licenseId: '',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'prod_starter',
         providerPriceId: 'price_starter',
         maxUsers: 1,
@@ -130,7 +129,7 @@ void main() {
 
       expect(response.licenses.length, 1);
       expect(response.licenses.first.licenseId, 'license-starter-001');
-      expect(response.licenses.first.licensePlan, LicensePlan.SOLO);
+      expect(response.licenses.first.licensePlan, LicensePlan.ENTERPRISE);
     });
   });
 
@@ -138,7 +137,7 @@ void main() {
     test('updates an existing license', () async {
       final updatedLicense = License(
         licenseId: 'license-starter-001',
-        licensePlan: LicensePlan.TRIO,
+        licensePlan: LicensePlan.PREMIUM,
         providerProductId: 'prod_boutique',
         providerPriceId: 'price_boutique',
         maxUsers: 3,
@@ -154,14 +153,14 @@ void main() {
 
       final readResponse = await billingService.readLicenses(null, Empty());
       expect(readResponse.licenses.length, 1);
-      expect(readResponse.licenses.first.licensePlan, LicensePlan.TRIO);
+      expect(readResponse.licenses.first.licensePlan, LicensePlan.PREMIUM);
       expect(readResponse.licenses.first.maxUsers, 3);
     });
 
     test('throws notFound when licenseId does not exist', () async {
       final license = License(
         licenseId: 'license-nonexistent',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'prod',
         providerPriceId: 'price',
         maxUsers: 1,
@@ -193,7 +192,7 @@ void main() {
         licenses: [
           License(
             licenseId: 'cap-a',
-            licensePlan: LicensePlan.SOLO,
+            licensePlan: LicensePlan.ENTERPRISE,
             providerProductId: 'p',
             providerPriceId: 'pr',
             maxUsers: 0,
@@ -201,7 +200,7 @@ void main() {
           ),
           License(
             licenseId: 'cap-b',
-            licensePlan: LicensePlan.TRIO,
+            licensePlan: LicensePlan.PREMIUM,
             providerProductId: 'p',
             providerPriceId: 'pr',
             maxUsers: 2,
@@ -219,7 +218,7 @@ void main() {
       final ts = DateTime.now().toUtc().timestampProto;
       final bad = License(
         licenseId: 'cap-b',
-        licensePlan: LicensePlan.TRIO,
+        licensePlan: LicensePlan.PREMIUM,
         providerProductId: 'p',
         providerPriceId: 'pr',
         maxUsers: 2,
@@ -249,7 +248,7 @@ void main() {
           licenseId: 'cap-a',
           license: License(
             licenseId: 'cap-a',
-            licensePlan: LicensePlan.SOLO,
+            licensePlan: LicensePlan.ENTERPRISE,
             providerProductId: 'p',
             providerPriceId: 'pr',
             maxUsers: 0,
@@ -269,7 +268,7 @@ void main() {
             licenseId: 'cap-b',
             license: License(
               licenseId: 'cap-b',
-              licensePlan: LicensePlan.TRIO,
+              licensePlan: LicensePlan.PREMIUM,
               providerProductId: 'p',
               providerPriceId: 'pr',
               maxUsers: 2,
@@ -305,7 +304,7 @@ void main() {
         CreateLicenseRequest(
           license: License(
             licenseId: 'license-starter-001',
-            licensePlan: LicensePlan.SOLO,
+            licensePlan: LicensePlan.ENTERPRISE,
             providerProductId: 'prod_starter',
             providerPriceId: 'price_starter',
             maxUsers: 1,
@@ -319,7 +318,7 @@ void main() {
           licenseId: 'license-starter-001',
           license: License(
             licenseId: 'license-starter-001',
-            licensePlan: LicensePlan.TRIO,
+            licensePlan: LicensePlan.PREMIUM,
             providerProductId: 'prod_boutique',
             providerPriceId: 'price_boutique',
             maxUsers: 3,
@@ -387,7 +386,7 @@ void main() {
     test('rejects invalid referral code', () async {
       final license = License(
         licenseId: 'license-invalid-ref-001',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'prod_starter',
         providerPriceId: 'price_starter',
         maxUsers: 1,
@@ -411,7 +410,7 @@ void main() {
 
       final license = License(
         licenseId: 'license-self-ref-001',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'prod_starter',
         providerPriceId: 'price_starter',
         maxUsers: 1,
@@ -440,7 +439,7 @@ void main() {
 
       final license = License(
         licenseId: 'license-credit-applied-001',
-        licensePlan: LicensePlan.SOLO,
+        licensePlan: LicensePlan.ENTERPRISE,
         providerProductId: 'prod_starter',
         providerPriceId: 'price_starter',
         maxUsers: 1,
@@ -475,7 +474,7 @@ void main() {
 
       final license = License(
         licenseId: 'license-referral-001',
-        licensePlan: LicensePlan.TRIO,
+        licensePlan: LicensePlan.PREMIUM,
         providerProductId: 'prod_boutique',
         providerPriceId: 'price_boutique',
         maxUsers: 3,
