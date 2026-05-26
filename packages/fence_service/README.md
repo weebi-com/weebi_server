@@ -6,8 +6,16 @@ Syncing features have a firm-creator bypass.
 There is a tolerance for firm user so that can they benefit from data backup.
 
 Other checks for other users are enforced client-side using [LicenseSeatEntitlement] checks.
-For example avanced features such as ticket filtering by stores and charts are checked on client-side using assertUserHasOperationalLicenseWithDb.
+For example advanced features such as ticket filtering by stores and charts are checked on client-side using assertUserHasOperationalLicenseWithDb.
 TODO: implement server-side check to avoid firm-creator bypass on advanced tickets/analytics
+
+### Business rules (chain / boutique)
+
+Persisting licence-gated [BusinessRules] (negative stock guard, recent ticket edit) on
+`createOneChain`, `updateOneChain`, `createOneBoutique`, and `updateOneBoutique` is enforced
+server-side via [assertUserMayPersistBusinessRules] / [assertUserMayPersistBusinessRulesWithDb]
+in `business_rules_license_gate.dart`. **No firm-creator joker** — active seat required, aligned
+with portal `SeatCapability.businessRulesEditable`.
 
 ## explain standard user journey
 

@@ -69,7 +69,7 @@ abstract class Dummy {
   /// Starter license (1 user, lifetime). Use for tests.
   static final licenseDummy = License(
     licenseId: 'dummy-license-id',
-    licensePlan: LicensePlan.SOLO,
+    licensePlan: LicensePlan.ENTERPRISE,
     providerProductId: 'prod_dummy',
     providerPriceId: 'price_dummy',
     maxUsers: 1,

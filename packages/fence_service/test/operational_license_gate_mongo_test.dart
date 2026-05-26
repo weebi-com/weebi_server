@@ -55,7 +55,7 @@ void main() {
         final past = DateTime.utc(2020, 1, 1);
         final license = License(
           licenseId: 'mongo-lic-1',
-          licensePlan: LicensePlan.SOLO,
+          licensePlan: LicensePlan.ENTERPRISE,
           providerProductId: 'p',
           providerPriceId: 'pr',
           maxUsers: 3,
@@ -141,7 +141,7 @@ void main() {
         final past = DateTime.utc(2020, 1, 1);
         final license = License(
           licenseId: 'lic-seat',
-          licensePlan: LicensePlan.SOLO,
+          licensePlan: LicensePlan.ENTERPRISE,
           providerProductId: 'p',
           providerPriceId: 'pr',
           maxUsers: 5,
