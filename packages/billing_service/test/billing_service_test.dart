@@ -32,8 +32,7 @@ void main() {
     final nowIso = DateTime.now().toUtc().toIso8601String();
     final billingProducts = [
       {'productId': 'solo', 'licensePlan': 1, 'maxUsers': 1, 'amountCents': 1400, 'currency': 'eur', 'stripeProductId': 'prod_solo', 'stripePriceId': 'price_solo', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
-      {'productId': 'trio', 'licensePlan': 2, 'maxUsers': 3, 'amountCents': 2900, 'currency': 'eur', 'stripeProductId': 'prod_trio', 'stripePriceId': 'price_trio', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
-      {'productId': 'pro', 'licensePlan': 3, 'maxUsers': 10, 'amountCents': 7900, 'currency': 'eur', 'stripeProductId': 'prod_pro', 'stripePriceId': 'price_pro', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
+      {'productId': 'trio', 'licensePlan': 2, 'maxUsers': 1, 'amountCents': 2900, 'currency': 'eur', 'stripeProductId': 'prod_trio', 'stripePriceId': 'price_trio', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
     ];
     await db.collection(BillingService.billingProductsCollectionName).insertMany(billingProducts);
 
