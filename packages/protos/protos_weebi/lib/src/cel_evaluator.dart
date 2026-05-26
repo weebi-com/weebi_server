@@ -32,7 +32,7 @@ class CelEvaluator {
     final map = <String, dynamic>{};
     for (final field in message.info_.fieldInfo.values) {
       final value = message.getField(field.tagNumber);
-      map[field.protoName ?? field.name] = _valueToCel(value);
+      map[field.protoName] = _valueToCel(value);
       if (field.protoName != field.name) {
         map[field.name] = _valueToCel(value);
       }

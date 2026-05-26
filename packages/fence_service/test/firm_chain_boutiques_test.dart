@@ -20,7 +20,7 @@ void main() async {
   String firmId = '';
   late Chain chain;
   late FenceService fenceService;
-  late ServiceCall _call;
+  late ServiceCall call;
 
   setUpAll(() async {
     fenceService = FenceService(
@@ -28,7 +28,7 @@ void main() async {
       isMock: true,
       userPermissionIfTest: Dummy.adminPermission,
     );
-    _call = ServiceCallTest('');
+    call = ServiceCallTest('');
 
     final db = await poolService.acquire();
 
@@ -142,7 +142,7 @@ void main() async {
         () async {
       final boutique = chain.boutiques.first;
       final response = await fenceService.deleteOneBoutique(
-          _call,
+          call,
           BoutiqueRequest(
               chainId: boutique.chainId, boutique: boutique.boutique));
       expect(response.type, StatusResponse_Type.DELETED);
@@ -160,7 +160,7 @@ void main() async {
       final boutique = chain.boutiques.first;
       try {
         await fenceService.readOneBoutique(
-            _call,
+            call,
             BoutiqueRequest(
                 chainId: boutique.chainId, boutique: boutique.boutique));
         fail('Expected GrpcError.notFound');
@@ -174,7 +174,7 @@ void main() async {
       final boutique = chain.boutiques.first;
       try {
         await fenceService.deleteOneBoutique(
-            _call,
+            call,
             BoutiqueRequest(
                 chainId: boutique.chainId, boutique: boutique.boutique));
         fail('Expected GrpcError.failedPrecondition');
@@ -186,7 +186,7 @@ void main() async {
     test('restoreOneBoutique brings boutique back', () async {
       final boutique = chain.boutiques.first;
       final response = await fenceService.restoreOneBoutique(
-          _call,
+          call,
           BoutiqueRequest(
               chainId: boutique.chainId, boutique: boutique.boutique));
       expect(response.type, StatusResponse_Type.UPDATED);
@@ -201,7 +201,7 @@ void main() async {
 
       // readOneBoutique works
       final readResponse = await fenceService.readOneBoutique(
-          _call,
+          call,
           BoutiqueRequest(
               chainId: boutique.chainId, boutique: boutique.boutique));
       expect(readResponse.boutique.boutiqueId, boutique.boutiqueId);
@@ -212,7 +212,7 @@ void main() async {
     test('deleteOneChain fails when chain has active boutiques', () async {
       try {
         await fenceService.deleteOneChain(
-            _call, DeleteChainRequest(chainId: chain.chainId));
+            call, DeleteChainRequest(chainId: chain.chainId));
         fail('Expected GrpcError.failedPrecondition');
       } on GrpcError catch (e) {
         expect(e.message, contains('has active boutiques'));
@@ -224,13 +224,13 @@ void main() async {
       // Soft-delete the only boutique
       final boutique = chain.boutiques.first;
       await fenceService.deleteOneBoutique(
-          _call,
+          call,
           BoutiqueRequest(
               chainId: boutique.chainId, boutique: boutique.boutique));
 
       final response =
           await fenceService.deleteOneChain(
-              _call, DeleteChainRequest(chainId: chain.chainId));
+              call, DeleteChainRequest(chainId: chain.chainId));
       expect(response.type, StatusResponse_Type.DELETED);
 
       // Chain is gone from readAllChains
@@ -244,7 +244,7 @@ void main() async {
       // First chain (chainId == firmId) cannot be deleted regardless of DB state
       try {
         await fenceService.deleteOneChain(
-            _call, DeleteChainRequest(chainId: firmId));
+            call, DeleteChainRequest(chainId: firmId));
         fail('Expected GrpcError.invalidArgument');
       } on GrpcError catch (e) {
         expect(e.message, contains('first chain should not be deleted'));
