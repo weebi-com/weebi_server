@@ -160,6 +160,7 @@ PROTO_FILES_TO_CHECK=(
   "common/chained_ids.proto"
   "common/g_common.proto"
   "common/g_timestamp.proto"
+  "common/options.proto"
   "common/phone.proto"
   "article/article.proto"
   "article/photo.proto"
