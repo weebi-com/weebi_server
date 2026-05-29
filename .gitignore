@@ -23,3 +23,6 @@ doc/STRIPE_INTEGRATION.md
 
 doc/GCP_LOGS_QUERIES.md
 doc/memo.md
+packages/protos/protos_weebi/TEST_INVENTORY.md
+packages/protos/protos_weebi/TEST_QUICK_START.md
+packages/protos/protos_weebi/TESTING_SUMMARY.md
