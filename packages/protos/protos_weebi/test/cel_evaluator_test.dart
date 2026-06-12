@@ -1,5 +1,7 @@
-import 'package:protos_weebi/protos_weebi_io.dart';
 import 'package:protos_weebi/src/cel_evaluator.dart';
+import 'package:protos_weebi/src/generated/article/article.pb.dart';
+import 'package:protos_weebi/src/generated/ticket/ticket.pb.dart';
+import 'package:protos_weebi/src/generated/ticket/ticket_type.pb.dart';
 import 'package:test/test.dart';
 
 // ─── CEL Evaluator Robustness Tests ─────────────────────────────────────────
