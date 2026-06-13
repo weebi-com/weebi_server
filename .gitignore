@@ -27,3 +27,5 @@ packages/protos/protos_weebi/TEST_INVENTORY.md
 packages/protos/protos_weebi/TEST_QUICK_START.md
 packages/protos/protos_weebi/TESTING_SUMMARY.md
 packages/charts_service/pubspec.lock
+packages/stats_service/.dart_tool/extension_discovery/vs_code.json
+packages/charts_service/pubspec.lock
