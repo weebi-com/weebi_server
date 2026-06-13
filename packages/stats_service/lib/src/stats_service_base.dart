@@ -38,7 +38,8 @@ class StatsService extends pb.StatsServiceBase {
     }
 
     if (userPermission.firmId != request.firmId) {
-      throw GrpcError.permissionDenied('user cannot access data from another firm');
+      throw GrpcError.permissionDenied(
+          'user cannot access data from another firm (user: ${userPermission.firmId}, request: ${request.firmId})');
     }
 
     // Filter boutique IDs based on user permissions
