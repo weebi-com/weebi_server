@@ -2,8 +2,8 @@ import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:grpc/grpc.dart';
 import 'package:fence_service/logging.dart';
-import 'package:fence_service/protos_weebi.dart' as pb;
-import 'package:charts_service/charts_service.dart';
+import 'package:protos_weebi/protos_weebi_io.dart' as pb;
+import 'package:charts_service/charts_service.dart' as charts;
 
 class StatsService extends pb.StatsServiceBase {
   final MongoDbPoolService _poolService;
@@ -57,7 +57,7 @@ class StatsService extends pb.StatsServiceBase {
         authorizationHeader: isTest ? '' : (call?.bearer ?? ''),
       );
 
-      final query = FinancialChartQuery(
+      final query = charts.FinancialChartQuery(
         firmId: request.firmId,
         boutiqueIds: accessibleBoutiqueIds,
         start: request.start.toDateTime(),
@@ -66,12 +66,12 @@ class StatsService extends pb.StatsServiceBase {
         metric: _mapMetric(request.metric),
       );
 
-      final aggregator = MongoTicketFinancialAggregator();
+      final aggregator = charts.MongoTicketFinancialAggregator();
       String svgContent;
 
       if (request.stackedByBoutique) {
         final rows = await aggregator.aggregateStackedByBoutique(db, query);
-        svgContent = renderFinancialStackedBarChartSvg(
+        svgContent = charts.renderFinancialStackedBarChartSvg(
           rows: rows,
           boutiqueIds: accessibleBoutiqueIds,
           timePeriod: query.timePeriod,
@@ -79,7 +79,7 @@ class StatsService extends pb.StatsServiceBase {
         );
       } else {
         final rows = await aggregator.aggregate(db, query);
-        svgContent = renderFinancialBarChartSvg(
+        svgContent = charts.renderFinancialBarChartSvg(
           rows: rows,
           timePeriod: query.timePeriod,
           metric: query.metric,
@@ -90,31 +90,31 @@ class StatsService extends pb.StatsServiceBase {
     });
   }
 
-  ChartTimePeriod _mapTimePeriod(pb.ChartTimePeriod proto) {
+  charts.ChartTimePeriod _mapTimePeriod(pb.ChartTimePeriod proto) {
     switch (proto) {
       case pb.ChartTimePeriod.DAY:
-        return ChartTimePeriod.day;
+        return charts.ChartTimePeriod.day;
       case pb.ChartTimePeriod.WEEK:
-        return ChartTimePeriod.week;
+        return charts.ChartTimePeriod.week;
       case pb.ChartTimePeriod.MONTH:
-        return ChartTimePeriod.month;
+        return charts.ChartTimePeriod.month;
       default:
-        return ChartTimePeriod.day;
+        return charts.ChartTimePeriod.day;
     }
   }
 
-  FinancialChartMetric _mapMetric(pb.FinancialChartMetric proto) {
+  charts.FinancialChartMetric _mapMetric(pb.FinancialChartMetric proto) {
     switch (proto) {
       case pb.FinancialChartMetric.CASHFLOW_INCOME:
-        return FinancialChartMetric.cashflowIncome;
+        return charts.FinancialChartMetric.cashflowIncome;
       case pb.FinancialChartMetric.CASHFLOW_SPENDING:
-        return FinancialChartMetric.cashflowSpending;
+        return charts.FinancialChartMetric.cashflowSpending;
       case pb.FinancialChartMetric.ALL_INCOME:
-        return FinancialChartMetric.allIncome;
+        return charts.FinancialChartMetric.allIncome;
       case pb.FinancialChartMetric.ALL_SPENDING:
-        return FinancialChartMetric.allSpending;
+        return charts.FinancialChartMetric.allSpending;
       default:
-        return FinancialChartMetric.cashflowIncome;
+        return charts.FinancialChartMetric.cashflowIncome;
     }
   }
 }
