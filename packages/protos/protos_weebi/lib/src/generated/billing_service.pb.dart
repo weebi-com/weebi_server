@@ -14,13 +14,13 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'common/g_common.pb.dart' as $1;
-import 'common/g_timestamp.pb.dart' as $19;
-import 'license.pb.dart' as $23;
-import 'license.pbenum.dart' as $23;
+import 'common/g_timestamp.pb.dart' as $20;
+import 'license.pb.dart' as $24;
+import 'license.pbenum.dart' as $24;
 
 class CreateLicenseRequest extends $pb.GeneratedMessage {
   factory CreateLicenseRequest({
-    $23.License? license,
+    $24.License? license,
     $core.String? referralCode,
     $core.int? creditAppliedCents,
   }) {
@@ -41,7 +41,7 @@ class CreateLicenseRequest extends $pb.GeneratedMessage {
   factory CreateLicenseRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateLicenseRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
-    ..aOM<$23.License>(1, _omitFieldNames ? '' : 'license', subBuilder: $23.License.create)
+    ..aOM<$24.License>(1, _omitFieldNames ? '' : 'license', subBuilder: $24.License.create)
     ..aOS(2, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
     ..hasRequiredFields = false
@@ -69,15 +69,15 @@ class CreateLicenseRequest extends $pb.GeneratedMessage {
   static CreateLicenseRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $23.License get license => $_getN(0);
+  $24.License get license => $_getN(0);
   @$pb.TagNumber(1)
-  set license($23.License v) { setField(1, v); }
+  set license($24.License v) { setField(1, v); }
   @$pb.TagNumber(1)
   $core.bool hasLicense() => $_has(0);
   @$pb.TagNumber(1)
   void clearLicense() => clearField(1);
   @$pb.TagNumber(1)
-  $23.License ensureLicense() => $_ensure(0);
+  $24.License ensureLicense() => $_ensure(0);
 
   /// / Referral code used by the buyer (e.g. from shopkeeper who referred them).
   @$pb.TagNumber(2)
@@ -103,7 +103,7 @@ class CreateLicenseRequest extends $pb.GeneratedMessage {
 class CreateLicenseResponse extends $pb.GeneratedMessage {
   factory CreateLicenseResponse({
     $1.StatusResponse? statusResponse,
-    $23.License? license,
+    $24.License? license,
   }) {
     final result = create();
     if (statusResponse != null) {
@@ -120,7 +120,7 @@ class CreateLicenseResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateLicenseResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
     ..aOM<$1.StatusResponse>(1, _omitFieldNames ? '' : 'statusResponse', protoName: 'statusResponse', subBuilder: $1.StatusResponse.create)
-    ..aOM<$23.License>(2, _omitFieldNames ? '' : 'license', subBuilder: $23.License.create)
+    ..aOM<$24.License>(2, _omitFieldNames ? '' : 'license', subBuilder: $24.License.create)
     ..hasRequiredFields = false
   ;
 
@@ -157,20 +157,20 @@ class CreateLicenseResponse extends $pb.GeneratedMessage {
   $1.StatusResponse ensureStatusResponse() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $23.License get license => $_getN(1);
+  $24.License get license => $_getN(1);
   @$pb.TagNumber(2)
-  set license($23.License v) { setField(2, v); }
+  set license($24.License v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLicense() => $_has(1);
   @$pb.TagNumber(2)
   void clearLicense() => clearField(2);
   @$pb.TagNumber(2)
-  $23.License ensureLicense() => $_ensure(1);
+  $24.License ensureLicense() => $_ensure(1);
 }
 
 class ReadLicensesResponse extends $pb.GeneratedMessage {
   factory ReadLicensesResponse({
-    $core.Iterable<$23.License>? licenses,
+    $core.Iterable<$24.License>? licenses,
   }) {
     final result = create();
     if (licenses != null) {
@@ -183,7 +183,7 @@ class ReadLicensesResponse extends $pb.GeneratedMessage {
   factory ReadLicensesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadLicensesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
-    ..pc<$23.License>(1, _omitFieldNames ? '' : 'licenses', $pb.PbFieldType.PM, subBuilder: $23.License.create)
+    ..pc<$24.License>(1, _omitFieldNames ? '' : 'licenses', $pb.PbFieldType.PM, subBuilder: $24.License.create)
     ..hasRequiredFields = false
   ;
 
@@ -209,13 +209,13 @@ class ReadLicensesResponse extends $pb.GeneratedMessage {
   static ReadLicensesResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<$23.License> get licenses => $_getList(0);
+  $core.List<$24.License> get licenses => $_getList(0);
 }
 
 class UpdateLicenseRequest extends $pb.GeneratedMessage {
   factory UpdateLicenseRequest({
     $core.String? licenseId,
-    $23.License? license,
+    $24.License? license,
   }) {
     final result = create();
     if (licenseId != null) {
@@ -232,7 +232,7 @@ class UpdateLicenseRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateLicenseRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'licenseId', protoName: 'licenseId')
-    ..aOM<$23.License>(2, _omitFieldNames ? '' : 'license', subBuilder: $23.License.create)
+    ..aOM<$24.License>(2, _omitFieldNames ? '' : 'license', subBuilder: $24.License.create)
     ..hasRequiredFields = false
   ;
 
@@ -267,15 +267,15 @@ class UpdateLicenseRequest extends $pb.GeneratedMessage {
   void clearLicenseId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $23.License get license => $_getN(1);
+  $24.License get license => $_getN(1);
   @$pb.TagNumber(2)
-  set license($23.License v) { setField(2, v); }
+  set license($24.License v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLicense() => $_has(1);
   @$pb.TagNumber(2)
   void clearLicense() => clearField(2);
   @$pb.TagNumber(2)
-  $23.License ensureLicense() => $_ensure(1);
+  $24.License ensureLicense() => $_ensure(1);
 }
 
 class DeleteLicenseRequest extends $pb.GeneratedMessage {
@@ -919,16 +919,16 @@ class FulfillFromStripeCheckoutSessionRequest extends $pb.GeneratedMessage {
 class BillingProduct extends $pb.GeneratedMessage {
   factory BillingProduct({
     $core.String? productId,
-    $23.LicensePlan? licensePlan,
+    $24.LicensePlan? licensePlan,
     $core.int? maxUsers,
     $core.int? amountCents,
     $core.String? currency,
     $core.String? stripeProductId,
     $core.String? stripePriceId,
     $core.String? pawapayProductId,
-    $19.Timestamp? creationDateUTC,
-    $19.Timestamp? updateDateUTC,
-    $19.Timestamp? deletionDateUTC,
+    $20.Timestamp? creationDateUTC,
+    $20.Timestamp? updateDateUTC,
+    $20.Timestamp? deletionDateUTC,
     $core.bool? isDeleted,
   }) {
     final result = create();
@@ -976,16 +976,16 @@ class BillingProduct extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BillingProduct', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'productId', protoName: 'productId')
-    ..e<$23.LicensePlan>(2, _omitFieldNames ? '' : 'licensePlan', $pb.PbFieldType.OE, protoName: 'licensePlan', defaultOrMaker: $23.LicensePlan.LICENSE_PLAN_UNKNOWN, valueOf: $23.LicensePlan.valueOf, enumValues: $23.LicensePlan.values)
+    ..e<$24.LicensePlan>(2, _omitFieldNames ? '' : 'licensePlan', $pb.PbFieldType.OE, protoName: 'licensePlan', defaultOrMaker: $24.LicensePlan.LICENSE_PLAN_UNKNOWN, valueOf: $24.LicensePlan.valueOf, enumValues: $24.LicensePlan.values)
     ..a<$core.int>(3, _omitFieldNames ? '' : 'maxUsers', $pb.PbFieldType.O3, protoName: 'maxUsers')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'amountCents', $pb.PbFieldType.O3, protoName: 'amountCents')
     ..aOS(5, _omitFieldNames ? '' : 'currency')
     ..aOS(6, _omitFieldNames ? '' : 'stripeProductId', protoName: 'stripeProductId')
     ..aOS(7, _omitFieldNames ? '' : 'stripePriceId', protoName: 'stripePriceId')
     ..aOS(8, _omitFieldNames ? '' : 'pawapayProductId', protoName: 'pawapayProductId')
-    ..aOM<$19.Timestamp>(9, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $19.Timestamp.create)
-    ..aOM<$19.Timestamp>(10, _omitFieldNames ? '' : 'updateDateUTC', protoName: 'updateDateUTC', subBuilder: $19.Timestamp.create)
-    ..aOM<$19.Timestamp>(11, _omitFieldNames ? '' : 'deletionDateUTC', protoName: 'deletionDateUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$20.Timestamp>(9, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $20.Timestamp.create)
+    ..aOM<$20.Timestamp>(10, _omitFieldNames ? '' : 'updateDateUTC', protoName: 'updateDateUTC', subBuilder: $20.Timestamp.create)
+    ..aOM<$20.Timestamp>(11, _omitFieldNames ? '' : 'deletionDateUTC', protoName: 'deletionDateUTC', subBuilder: $20.Timestamp.create)
     ..aOB(12, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
     ..hasRequiredFields = false
   ;
@@ -1021,9 +1021,9 @@ class BillingProduct extends $pb.GeneratedMessage {
   void clearProductId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $23.LicensePlan get licensePlan => $_getN(1);
+  $24.LicensePlan get licensePlan => $_getN(1);
   @$pb.TagNumber(2)
-  set licensePlan($23.LicensePlan v) { setField(2, v); }
+  set licensePlan($24.LicensePlan v) { setField(2, v); }
   @$pb.TagNumber(2)
   $core.bool hasLicensePlan() => $_has(1);
   @$pb.TagNumber(2)
@@ -1084,37 +1084,37 @@ class BillingProduct extends $pb.GeneratedMessage {
   void clearPawapayProductId() => clearField(8);
 
   @$pb.TagNumber(9)
-  $19.Timestamp get creationDateUTC => $_getN(8);
+  $20.Timestamp get creationDateUTC => $_getN(8);
   @$pb.TagNumber(9)
-  set creationDateUTC($19.Timestamp v) { setField(9, v); }
+  set creationDateUTC($20.Timestamp v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasCreationDateUTC() => $_has(8);
   @$pb.TagNumber(9)
   void clearCreationDateUTC() => clearField(9);
   @$pb.TagNumber(9)
-  $19.Timestamp ensureCreationDateUTC() => $_ensure(8);
+  $20.Timestamp ensureCreationDateUTC() => $_ensure(8);
 
   @$pb.TagNumber(10)
-  $19.Timestamp get updateDateUTC => $_getN(9);
+  $20.Timestamp get updateDateUTC => $_getN(9);
   @$pb.TagNumber(10)
-  set updateDateUTC($19.Timestamp v) { setField(10, v); }
+  set updateDateUTC($20.Timestamp v) { setField(10, v); }
   @$pb.TagNumber(10)
   $core.bool hasUpdateDateUTC() => $_has(9);
   @$pb.TagNumber(10)
   void clearUpdateDateUTC() => clearField(10);
   @$pb.TagNumber(10)
-  $19.Timestamp ensureUpdateDateUTC() => $_ensure(9);
+  $20.Timestamp ensureUpdateDateUTC() => $_ensure(9);
 
   @$pb.TagNumber(11)
-  $19.Timestamp get deletionDateUTC => $_getN(10);
+  $20.Timestamp get deletionDateUTC => $_getN(10);
   @$pb.TagNumber(11)
-  set deletionDateUTC($19.Timestamp v) { setField(11, v); }
+  set deletionDateUTC($20.Timestamp v) { setField(11, v); }
   @$pb.TagNumber(11)
   $core.bool hasDeletionDateUTC() => $_has(10);
   @$pb.TagNumber(11)
   void clearDeletionDateUTC() => clearField(11);
   @$pb.TagNumber(11)
-  $19.Timestamp ensureDeletionDateUTC() => $_ensure(10);
+  $20.Timestamp ensureDeletionDateUTC() => $_ensure(10);
 
   @$pb.TagNumber(12)
   $core.bool get isDeleted => $_getBF(11);

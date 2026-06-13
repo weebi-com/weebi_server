@@ -281,10 +281,12 @@ $PROTO_FILES_TO_CHECK = @(
     "user_permissions.proto",
     "fence_service.proto",
     "billing_service.proto",
+    "stats_service.proto",
     "ticket\ticket.proto",
     "ticket\ticket_type.proto",
     "ticket\ticket_service.proto",
-    "weebi_app_service.proto"
+    "weebi_app_service.proto",
+    "stats_service.proto"
 )
 
 $PROTO_FILES = @()

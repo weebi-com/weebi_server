@@ -1,0 +1,19 @@
+name: stats_service
+description: gRPC service for statistics and charts.
+version: 0.0.1
+publish_to: 'none'
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  logging: ^1.3.0
+  fence_service:
+    path: ../fence_service
+  charts_service:
+    path: ../charts_service
+
+dev_dependencies:
+  test: ^1.25.8
+  lints: ^5.0.0
+  mockito: ^5.4.4
