@@ -13,7 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'common/g_timestamp.pb.dart' as $19;
+import 'common/g_timestamp.pb.dart' as $20;
 import 'license.pbenum.dart';
 
 export 'license.pbenum.dart';
@@ -27,8 +27,8 @@ class License extends $pb.GeneratedMessage {
     $core.String? providerProductId,
     $core.String? providerPriceId,
     $core.int? maxUsers,
-    $19.Timestamp? validFrom,
-    $19.Timestamp? validUntil,
+    $20.Timestamp? validFrom,
+    $20.Timestamp? validUntil,
     $core.Iterable<LicenseSeat>? seats,
     PaymentProvider? paymentProvider,
     $core.String? referredByFirmId,
@@ -84,8 +84,8 @@ class License extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'providerProductId', protoName: 'providerProductId')
     ..aOS(4, _omitFieldNames ? '' : 'providerPriceId', protoName: 'providerPriceId')
     ..a<$core.int>(5, _omitFieldNames ? '' : 'maxUsers', $pb.PbFieldType.O3, protoName: 'maxUsers')
-    ..aOM<$19.Timestamp>(6, _omitFieldNames ? '' : 'validFrom', protoName: 'validFrom', subBuilder: $19.Timestamp.create)
-    ..aOM<$19.Timestamp>(7, _omitFieldNames ? '' : 'validUntil', protoName: 'validUntil', subBuilder: $19.Timestamp.create)
+    ..aOM<$20.Timestamp>(6, _omitFieldNames ? '' : 'validFrom', protoName: 'validFrom', subBuilder: $20.Timestamp.create)
+    ..aOM<$20.Timestamp>(7, _omitFieldNames ? '' : 'validUntil', protoName: 'validUntil', subBuilder: $20.Timestamp.create)
     ..pc<LicenseSeat>(8, _omitFieldNames ? '' : 'seats', $pb.PbFieldType.PM, subBuilder: LicenseSeat.create)
     ..e<PaymentProvider>(9, _omitFieldNames ? '' : 'paymentProvider', $pb.PbFieldType.OE, protoName: 'paymentProvider', defaultOrMaker: PaymentProvider.PAYMENT_PROVIDER_UNKNOWN, valueOf: PaymentProvider.valueOf, enumValues: PaymentProvider.values)
     ..aOS(10, _omitFieldNames ? '' : 'referredByFirmId', protoName: 'referredByFirmId')
@@ -161,27 +161,27 @@ class License extends $pb.GeneratedMessage {
   void clearMaxUsers() => clearField(5);
 
   @$pb.TagNumber(6)
-  $19.Timestamp get validFrom => $_getN(5);
+  $20.Timestamp get validFrom => $_getN(5);
   @$pb.TagNumber(6)
-  set validFrom($19.Timestamp v) { setField(6, v); }
+  set validFrom($20.Timestamp v) { setField(6, v); }
   @$pb.TagNumber(6)
   $core.bool hasValidFrom() => $_has(5);
   @$pb.TagNumber(6)
   void clearValidFrom() => clearField(6);
   @$pb.TagNumber(6)
-  $19.Timestamp ensureValidFrom() => $_ensure(5);
+  $20.Timestamp ensureValidFrom() => $_ensure(5);
 
   /// / Omitted = lifetime license
   @$pb.TagNumber(7)
-  $19.Timestamp get validUntil => $_getN(6);
+  $20.Timestamp get validUntil => $_getN(6);
   @$pb.TagNumber(7)
-  set validUntil($19.Timestamp v) { setField(7, v); }
+  set validUntil($20.Timestamp v) { setField(7, v); }
   @$pb.TagNumber(7)
   $core.bool hasValidUntil() => $_has(6);
   @$pb.TagNumber(7)
   void clearValidUntil() => clearField(7);
   @$pb.TagNumber(7)
-  $19.Timestamp ensureValidUntil() => $_ensure(6);
+  $20.Timestamp ensureValidUntil() => $_ensure(6);
 
   @$pb.TagNumber(8)
   $core.List<LicenseSeat> get seats => $_getList(7);
@@ -233,8 +233,8 @@ class LicenseSeat extends $pb.GeneratedMessage {
   factory LicenseSeat({
     $core.String? firmId,
     $core.String? userId,
-    $19.Timestamp? validFrom,
-    $19.Timestamp? validUntil,
+    $20.Timestamp? validFrom,
+    $20.Timestamp? validUntil,
   }) {
     final result = create();
     if (firmId != null) {
@@ -258,8 +258,8 @@ class LicenseSeat extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LicenseSeat', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.license'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
     ..aOS(2, _omitFieldNames ? '' : 'userId', protoName: 'userId')
-    ..aOM<$19.Timestamp>(3, _omitFieldNames ? '' : 'validFrom', protoName: 'validFrom', subBuilder: $19.Timestamp.create)
-    ..aOM<$19.Timestamp>(4, _omitFieldNames ? '' : 'validUntil', protoName: 'validUntil', subBuilder: $19.Timestamp.create)
+    ..aOM<$20.Timestamp>(3, _omitFieldNames ? '' : 'validFrom', protoName: 'validFrom', subBuilder: $20.Timestamp.create)
+    ..aOM<$20.Timestamp>(4, _omitFieldNames ? '' : 'validUntil', protoName: 'validUntil', subBuilder: $20.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -303,27 +303,27 @@ class LicenseSeat extends $pb.GeneratedMessage {
   void clearUserId() => clearField(2);
 
   @$pb.TagNumber(3)
-  $19.Timestamp get validFrom => $_getN(2);
+  $20.Timestamp get validFrom => $_getN(2);
   @$pb.TagNumber(3)
-  set validFrom($19.Timestamp v) { setField(3, v); }
+  set validFrom($20.Timestamp v) { setField(3, v); }
   @$pb.TagNumber(3)
   $core.bool hasValidFrom() => $_has(2);
   @$pb.TagNumber(3)
   void clearValidFrom() => clearField(3);
   @$pb.TagNumber(3)
-  $19.Timestamp ensureValidFrom() => $_ensure(2);
+  $20.Timestamp ensureValidFrom() => $_ensure(2);
 
   /// / Omitted = lifetime for this seat
   @$pb.TagNumber(4)
-  $19.Timestamp get validUntil => $_getN(3);
+  $20.Timestamp get validUntil => $_getN(3);
   @$pb.TagNumber(4)
-  set validUntil($19.Timestamp v) { setField(4, v); }
+  set validUntil($20.Timestamp v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasValidUntil() => $_has(3);
   @$pb.TagNumber(4)
   void clearValidUntil() => clearField(4);
   @$pb.TagNumber(4)
-  $19.Timestamp ensureValidUntil() => $_ensure(3);
+  $20.Timestamp ensureValidUntil() => $_ensure(3);
 }
 
 
