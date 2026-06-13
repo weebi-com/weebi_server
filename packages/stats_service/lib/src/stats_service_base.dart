@@ -1,5 +1,6 @@
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/fence_service.dart';
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:grpc/grpc.dart';
 import 'package:fence_service/logging.dart';
 import 'package:protos_weebi/protos_weebi_io.dart' as pb;
@@ -43,24 +44,56 @@ class StatsService extends pb.StatsServiceBase {
     }
 
     // Filter boutique IDs based on user permissions
-    final accessibleBoutiqueIds = request.boutiqueIds
-        .where((id) => userPermission.isBoutiqueAccessible(id))
-        .toList();
+    final List<String> accessibleBoutiqueIds;
 
-    if (accessibleBoutiqueIds.isEmpty && request.boutiqueIds.isNotEmpty) {
-      throw GrpcError.permissionDenied('user cannot access any of the requested boutiques');
+    if (request.boutiqueIds.isEmpty) {
+      if (userPermission.fullAccess.hasFullAccess) {
+        // We will fetch all boutiques for the firm inside the databaseMiddleware
+        accessibleBoutiqueIds = [];
+      } else {
+        accessibleBoutiqueIds = userPermission.limitedAccess.boutiqueIds.ids;
+      }
+    } else {
+      accessibleBoutiqueIds = request.boutiqueIds
+          .where((id) => userPermission.isBoutiqueAccessible(id))
+          .toList();
+      if (accessibleBoutiqueIds.isEmpty) {
+        throw GrpcError.permissionDenied(
+            'user cannot access any of the requested boutiques');
+      }
     }
 
-    return databaseMiddleware<pb.FinancialChartResponse>(_poolService, (db) async {
+    return databaseMiddleware<pb.FinancialChartResponse>(_poolService,
+        (db) async {
       await assertUserHasOperationalLicenseWithDb(
         db,
         userPermissions: userPermission,
         authorizationHeader: isTest ? '' : (call?.bearer ?? ''),
       );
 
+      final List<String> finalBoutiqueIds;
+      if (accessibleBoutiqueIds.isEmpty &&
+          userPermission.fullAccess.hasFullAccess) {
+        // Fetch all boutiques for the firm
+        final boutiques = await db
+            .collection(FenceService.boutiqueCollectionName)
+            .find(where.eq('firmId', request.firmId).eq('status', true))
+            .toList();
+        finalBoutiqueIds = boutiques
+            .map((b) => b['boutiqueId'] as String? ?? '')
+            .where((id) => id.isNotEmpty)
+            .toList();
+      } else {
+        finalBoutiqueIds = accessibleBoutiqueIds;
+      }
+
+      if (finalBoutiqueIds.isEmpty) {
+        return pb.FinancialChartResponse(svgContent: '');
+      }
+
       final query = charts.FinancialChartQuery(
         firmId: request.firmId,
-        boutiqueIds: accessibleBoutiqueIds,
+        boutiqueIds: finalBoutiqueIds,
         start: request.start.toDateTime(),
         end: request.end.toDateTime(),
         timePeriod: _mapTimePeriod(request.timePeriod),
@@ -74,7 +107,7 @@ class StatsService extends pb.StatsServiceBase {
         final rows = await aggregator.aggregateStackedByBoutique(db, query);
         svgContent = charts.renderFinancialStackedBarChartSvg(
           rows: rows,
-          boutiqueIds: accessibleBoutiqueIds,
+          boutiqueIds: finalBoutiqueIds,
           timePeriod: query.timePeriod,
           metric: query.metric,
         );
