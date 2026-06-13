@@ -1,7 +1,7 @@
 name: charts_service
 description: A service for generating charts for weebi
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+publish_to: none
 
 environment:
   sdk: ^3.7.2
