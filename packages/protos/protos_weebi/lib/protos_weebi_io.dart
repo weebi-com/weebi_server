@@ -109,4 +109,10 @@ export 'package:protos_weebi/src/generated/weebi_app_service.pb.dart';
 export 'package:protos_weebi/src/generated/weebi_app_service.pbenum.dart';
 export 'package:protos_weebi/src/generated/weebi_app_service.pbgrpc.dart';
 export 'package:protos_weebi/src/generated/weebi_app_service.pbjson.dart';
+
+export 'package:protos_weebi/src/generated/stats_service.pb.dart';
+export 'package:protos_weebi/src/generated/stats_service.pbenum.dart';
+export 'package:protos_weebi/src/generated/stats_service.pbgrpc.dart';
+export 'package:protos_weebi/src/generated/stats_service.pbjson.dart';
+
 export 'package:protos_weebi/src/ticket_logic.dart';

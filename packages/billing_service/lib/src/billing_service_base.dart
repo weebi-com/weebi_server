@@ -764,9 +764,25 @@ class BillingService extends BillingServiceBase {
       return ids?['stripe'] as String?;
     });
 
+    final purchaserEmail = await databaseMiddleware<String?>(_poolService, (db) async {
+      final userId = userPermission.userId.trim();
+      if (userId.isEmpty) return null;
+      final userDoc = await db
+          .collection(FenceService.userCollectionName)
+          .findOne(where.eq('userId', userId));
+      final mail = userDoc?['mail'] as String?;
+      final trimmed = mail?.trim();
+      if (trimmed == null || trimmed.isEmpty) return null;
+      return trimmed;
+    });
+
     final metadata = <String, String>{
       'firmId': userPermission.firmId,
+      'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
     };
+    if (purchaserEmail != null) {
+      metadata['purchaserEmail'] = purchaserEmail;
+    }
     if (request.referralCode.isNotEmpty) {
       metadata['referralCode'] = request.referralCode;
     }

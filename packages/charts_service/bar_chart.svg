@@ -1,0 +1,87 @@
+<svg width="600.0" height="400.0" viewBox="0 0 600.0 400.0" xmlns="http://www.w3.org/2000/svg">
+  <rect x="65.9154929577465" y="149.52380952380955" width="53.239436619718305" height="190.47619047619045" fill="#2196F3" />
+<rect x="125.07042253521128" y="109.84126984126985" width="53.239436619718305" height="230.15873015873015" fill="#2196F3" />
+<rect x="184.2253521126761" y="184.44444444444446" width="53.239436619718305" height="155.55555555555554" fill="#2196F3" />
+<rect x="243.38028169014086" y="74.12698412698411" width="53.239436619718305" height="265.8730158730159" fill="#2196F3" />
+<rect x="302.53521126760563" y="130.47619047619048" width="53.239436619718305" height="209.52380952380952" fill="#2196F3" />
+<rect x="361.6901408450704" y="40.0" width="53.239436619718305" height="300.0" fill="#2196F3" />
+<rect x="420.84507042253523" y="95.55555555555557" width="53.239436619718305" height="244.44444444444443" fill="#2196F3" />
+  <g class="axis axis-bottom">
+  <line x1="60.0" y1="340.0" x2="480.0" y2="340.0" stroke="black" />
+  <g transform="translate(92.53521126760565, 340.0)">
+  <line y2="6" stroke="black" />
+  <text y="20" text-anchor="middle" font-size="10">01/05/2026</text>
+</g>
+<g transform="translate(151.69014084507043, 340.0)">
+  <line y2="6" stroke="black" />
+  <text y="20" text-anchor="middle" font-size="10">02/05/2026</text>
+</g>
+<g transform="translate(210.84507042253523, 340.0)">
+  <line y2="6" stroke="black" />
+  <text y="20" text-anchor="middle" font-size="10">03/05/2026</text>
+</g>
+<g transform="translate(270.0, 340.0)">
+  <line y2="6" stroke="black" />
+  <text y="20" text-anchor="middle" font-size="10">04/05/2026</text>
+</g>
+<g transform="translate(329.15492957746477, 340.0)">
+  <line y2="6" stroke="black" />
+  <text y="20" text-anchor="middle" font-size="10">05/05/2026</text>
+</g>
+<g transform="translate(388.30985915492954, 340.0)">
+  <line y2="6" stroke="black" />
+  <text y="20" text-anchor="middle" font-size="10">06/05/2026</text>
+</g>
+<g transform="translate(447.46478873239437, 340.0)">
+  <line y2="6" stroke="black" />
+  <text y="20" text-anchor="middle" font-size="10">07/05/2026</text>
+</g>
+</g>
+<g class="axis axis-left">
+  <line x1="60.0" y1="40.0" x2="60.0" y2="340.0" stroke="black" />
+  <g transform="translate(60.0, 340.0)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">0.0 €</text>
+</g>
+<g transform="translate(60.0, 308.25396825396825)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">200.0 €</text>
+</g>
+<g transform="translate(60.0, 276.5079365079365)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">400.0 €</text>
+</g>
+<g transform="translate(60.0, 244.7619047619048)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">600.0 €</text>
+</g>
+<g transform="translate(60.0, 213.01587301587304)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">800.0 €</text>
+</g>
+<g transform="translate(60.0, 181.2698412698413)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">1000.0 €</text>
+</g>
+<g transform="translate(60.0, 149.52380952380955)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">1200.0 €</text>
+</g>
+<g transform="translate(60.0, 117.7777777777778)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">1400.0 €</text>
+</g>
+<g transform="translate(60.0, 86.03174603174605)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">1600.0 €</text>
+</g>
+<g transform="translate(60.0, 54.285714285714306)">
+  <line x2="-6" stroke="black" />
+  <text x="-10" y="4" text-anchor="end" font-size="10">1800.0 €</text>
+</g>
+</g>
+  <g class="legend"><g transform="translate(490.0, 40.0)">
+  <rect width="12" height="12" fill="#2196F3" />
+  <text x="18" y="10" font-family="sans-serif" font-size="12">Value</text>
+</g></g>
+</svg>

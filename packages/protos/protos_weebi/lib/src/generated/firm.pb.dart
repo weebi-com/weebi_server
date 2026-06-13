@@ -14,8 +14,8 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'common/g_common.pb.dart' as $1;
-import 'common/g_timestamp.pb.dart' as $19;
-import 'license.pb.dart' as $23;
+import 'common/g_timestamp.pb.dart' as $20;
+import 'license.pb.dart' as $24;
 
 class Firm extends $pb.GeneratedMessage {
   factory Firm({
@@ -26,17 +26,17 @@ class Firm extends $pb.GeneratedMessage {
   @$core.Deprecated('This field is deprecated.')
     $core.int? subscriptionSeats,
   @$core.Deprecated('This field is deprecated.')
-    $19.Timestamp? subscriptionStartTimestampUTC,
+    $20.Timestamp? subscriptionStartTimestampUTC,
   @$core.Deprecated('This field is deprecated.')
-    $19.Timestamp? subscriptionEndTimestampUTC,
+    $20.Timestamp? subscriptionEndTimestampUTC,
     $core.bool? status,
-    $19.Timestamp? statusUpdateTimestampUTC,
-    $19.Timestamp? lastUpdateTimestampUTC,
+    $20.Timestamp? statusUpdateTimestampUTC,
+    $20.Timestamp? lastUpdateTimestampUTC,
     $core.String? lastUpdatedByuserId,
     $core.bool? isMailVerified,
-    $19.Timestamp? creationDateUTC,
+    $20.Timestamp? creationDateUTC,
     $core.String? stripeCustomerId,
-    $core.Iterable<$23.License>? licenses,
+    $core.Iterable<$24.License>? licenses,
     $core.Map<$core.String, $core.String>? providerCustomerIds,
     $core.String? referralCode,
     $core.int? referralCreditBalanceCents,
@@ -120,16 +120,16 @@ class Firm extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'name')
     ..aOS(3, _omitFieldNames ? '' : 'subscriptionPlan', protoName: 'subscriptionPlan')
     ..a<$core.int>(4, _omitFieldNames ? '' : 'subscriptionSeats', $pb.PbFieldType.O3, protoName: 'subscriptionSeats')
-    ..aOM<$19.Timestamp>(5, _omitFieldNames ? '' : 'subscriptionStartTimestampUTC', protoName: 'subscriptionStartTimestampUTC', subBuilder: $19.Timestamp.create)
-    ..aOM<$19.Timestamp>(6, _omitFieldNames ? '' : 'subscriptionEndTimestampUTC', protoName: 'subscriptionEndTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$20.Timestamp>(5, _omitFieldNames ? '' : 'subscriptionStartTimestampUTC', protoName: 'subscriptionStartTimestampUTC', subBuilder: $20.Timestamp.create)
+    ..aOM<$20.Timestamp>(6, _omitFieldNames ? '' : 'subscriptionEndTimestampUTC', protoName: 'subscriptionEndTimestampUTC', subBuilder: $20.Timestamp.create)
     ..aOB(7, _omitFieldNames ? '' : 'status')
-    ..aOM<$19.Timestamp>(8, _omitFieldNames ? '' : 'statusUpdateTimestampUTC', protoName: 'statusUpdateTimestampUTC', subBuilder: $19.Timestamp.create)
-    ..aOM<$19.Timestamp>(9, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$20.Timestamp>(8, _omitFieldNames ? '' : 'statusUpdateTimestampUTC', protoName: 'statusUpdateTimestampUTC', subBuilder: $20.Timestamp.create)
+    ..aOM<$20.Timestamp>(9, _omitFieldNames ? '' : 'lastUpdateTimestampUTC', protoName: 'lastUpdateTimestampUTC', subBuilder: $20.Timestamp.create)
     ..aOS(10, _omitFieldNames ? '' : 'lastUpdatedByuserId', protoName: 'lastUpdatedByuserId')
     ..aOB(11, _omitFieldNames ? '' : 'isMailVerified', protoName: 'isMailVerified')
-    ..aOM<$19.Timestamp>(12, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $19.Timestamp.create)
+    ..aOM<$20.Timestamp>(12, _omitFieldNames ? '' : 'creationDateUTC', protoName: 'creationDateUTC', subBuilder: $20.Timestamp.create)
     ..aOS(13, _omitFieldNames ? '' : 'stripeCustomerId', protoName: 'stripeCustomerId')
-    ..pc<$23.License>(14, _omitFieldNames ? '' : 'licenses', $pb.PbFieldType.PM, subBuilder: $23.License.create)
+    ..pc<$24.License>(14, _omitFieldNames ? '' : 'licenses', $pb.PbFieldType.PM, subBuilder: $24.License.create)
     ..m<$core.String, $core.String>(15, _omitFieldNames ? '' : 'providerCustomerIds', protoName: 'providerCustomerIds', entryClassName: 'Firm.ProviderCustomerIdsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('weebi.firm'))
     ..aOS(16, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(17, _omitFieldNames ? '' : 'referralCreditBalanceCents', $pb.PbFieldType.O3, protoName: 'referralCreditBalanceCents')
@@ -209,10 +209,10 @@ class Firm extends $pb.GeneratedMessage {
   /// / @deprecated Use licenses[].validFrom instead.
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
-  $19.Timestamp get subscriptionStartTimestampUTC => $_getN(4);
+  $20.Timestamp get subscriptionStartTimestampUTC => $_getN(4);
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
-  set subscriptionStartTimestampUTC($19.Timestamp v) { setField(5, v); }
+  set subscriptionStartTimestampUTC($20.Timestamp v) { setField(5, v); }
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
   $core.bool hasSubscriptionStartTimestampUTC() => $_has(4);
@@ -221,15 +221,15 @@ class Firm extends $pb.GeneratedMessage {
   void clearSubscriptionStartTimestampUTC() => clearField(5);
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(5)
-  $19.Timestamp ensureSubscriptionStartTimestampUTC() => $_ensure(4);
+  $20.Timestamp ensureSubscriptionStartTimestampUTC() => $_ensure(4);
 
   /// / @deprecated Use licenses[].validUntil and LicenseSeat.validUntil instead.
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
-  $19.Timestamp get subscriptionEndTimestampUTC => $_getN(5);
+  $20.Timestamp get subscriptionEndTimestampUTC => $_getN(5);
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
-  set subscriptionEndTimestampUTC($19.Timestamp v) { setField(6, v); }
+  set subscriptionEndTimestampUTC($20.Timestamp v) { setField(6, v); }
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
   $core.bool hasSubscriptionEndTimestampUTC() => $_has(5);
@@ -238,7 +238,7 @@ class Firm extends $pb.GeneratedMessage {
   void clearSubscriptionEndTimestampUTC() => clearField(6);
   @$core.Deprecated('This field is deprecated.')
   @$pb.TagNumber(6)
-  $19.Timestamp ensureSubscriptionEndTimestampUTC() => $_ensure(5);
+  $20.Timestamp ensureSubscriptionEndTimestampUTC() => $_ensure(5);
 
   @$pb.TagNumber(7)
   $core.bool get status => $_getBF(6);
@@ -250,26 +250,26 @@ class Firm extends $pb.GeneratedMessage {
   void clearStatus() => clearField(7);
 
   @$pb.TagNumber(8)
-  $19.Timestamp get statusUpdateTimestampUTC => $_getN(7);
+  $20.Timestamp get statusUpdateTimestampUTC => $_getN(7);
   @$pb.TagNumber(8)
-  set statusUpdateTimestampUTC($19.Timestamp v) { setField(8, v); }
+  set statusUpdateTimestampUTC($20.Timestamp v) { setField(8, v); }
   @$pb.TagNumber(8)
   $core.bool hasStatusUpdateTimestampUTC() => $_has(7);
   @$pb.TagNumber(8)
   void clearStatusUpdateTimestampUTC() => clearField(8);
   @$pb.TagNumber(8)
-  $19.Timestamp ensureStatusUpdateTimestampUTC() => $_ensure(7);
+  $20.Timestamp ensureStatusUpdateTimestampUTC() => $_ensure(7);
 
   @$pb.TagNumber(9)
-  $19.Timestamp get lastUpdateTimestampUTC => $_getN(8);
+  $20.Timestamp get lastUpdateTimestampUTC => $_getN(8);
   @$pb.TagNumber(9)
-  set lastUpdateTimestampUTC($19.Timestamp v) { setField(9, v); }
+  set lastUpdateTimestampUTC($20.Timestamp v) { setField(9, v); }
   @$pb.TagNumber(9)
   $core.bool hasLastUpdateTimestampUTC() => $_has(8);
   @$pb.TagNumber(9)
   void clearLastUpdateTimestampUTC() => clearField(9);
   @$pb.TagNumber(9)
-  $19.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(8);
+  $20.Timestamp ensureLastUpdateTimestampUTC() => $_ensure(8);
 
   @$pb.TagNumber(10)
   $core.String get lastUpdatedByuserId => $_getSZ(9);
@@ -290,15 +290,15 @@ class Firm extends $pb.GeneratedMessage {
   void clearIsMailVerified() => clearField(11);
 
   @$pb.TagNumber(12)
-  $19.Timestamp get creationDateUTC => $_getN(11);
+  $20.Timestamp get creationDateUTC => $_getN(11);
   @$pb.TagNumber(12)
-  set creationDateUTC($19.Timestamp v) { setField(12, v); }
+  set creationDateUTC($20.Timestamp v) { setField(12, v); }
   @$pb.TagNumber(12)
   $core.bool hasCreationDateUTC() => $_has(11);
   @$pb.TagNumber(12)
   void clearCreationDateUTC() => clearField(12);
   @$pb.TagNumber(12)
-  $19.Timestamp ensureCreationDateUTC() => $_ensure(11);
+  $20.Timestamp ensureCreationDateUTC() => $_ensure(11);
 
   @$pb.TagNumber(13)
   $core.String get stripeCustomerId => $_getSZ(12);
@@ -311,7 +311,7 @@ class Firm extends $pb.GeneratedMessage {
 
   /// / Active licenses. A firm can have multiple licenses (e.g. seat packs, renewals).
   @$pb.TagNumber(14)
-  $core.List<$23.License> get licenses => $_getList(13);
+  $core.List<$24.License> get licenses => $_getList(13);
 
   /// / Customer IDs per payment provider. Keys: "stripe", "pawapay", etc.
   @$pb.TagNumber(15)

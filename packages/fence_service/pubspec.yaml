@@ -10,7 +10,7 @@ environment:
 # Add regular dependencies here.
 dependencies:
   # below are weebi's kitchen
-  protos_weebi: #^1.0.4
+  protos_weebi:
     path: ../protos/protos_weebi
   models_weebi: ^1.1.19
 

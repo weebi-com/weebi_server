@@ -21,6 +21,8 @@ dependencies:
     path: ../../packages/fence_service
   billing_service:
     path: ../../packages/billing_service
+  stats_service:
+    path: ../../packages/stats_service
 
 dev_dependencies:
   test: ^1.25.8
