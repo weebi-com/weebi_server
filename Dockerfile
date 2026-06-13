@@ -49,6 +49,8 @@ COPY --from=build app/apps/server/pubspec.yaml apps/server/
 COPY --from=build app/packages/protos/protos_weebi/pubspec.yaml packages/protos/protos_weebi/
 COPY --from=build app/packages/fence_service/pubspec.yaml packages/fence_service/
 COPY --from=build app/packages/fence_service/pubspec.lock packages/fence_service/
+COPY --from=build app/packages/stats_service/pubspec.yaml packages/stats_service/
+COPY --from=build app/packages/charts_service/pubspec.yaml packages/charts_service/
 
 # Start server.
 # Expose gRPC port
