@@ -44,8 +44,7 @@ class MongoTicketFinancialAggregator {
     return where
         .eq('firmId', query.firmId)
         .oneFrom('boutiqueId', query.boutiqueIds)
-        .eq('isDeleted', false)
-        .eq('ticket.status', true)
+        .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)))
         .gte('ticket.date', startIso)
         .lte('ticket.date', endIso);
   }

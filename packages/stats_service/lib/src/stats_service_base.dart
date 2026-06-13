@@ -77,7 +77,8 @@ class StatsService extends pb.StatsServiceBase {
         // Fetch all boutiques for the firm
         final boutiques = await db
             .collection(FenceService.boutiqueCollectionName)
-            .find(where.eq('firmId', request.firmId).eq('status', true))
+            .find(where.eq('firmId', request.firmId).and(
+                where.eq('isDeleted', false).or(where.eq('isDeleted', null))))
             .toList();
         finalBoutiqueIds = boutiques
             .map((b) => b['boutiqueId'] as String? ?? '')

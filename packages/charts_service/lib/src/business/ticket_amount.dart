@@ -21,7 +21,9 @@ double ticketAmountForMetric(
 }
 
 bool ticketIsActive(Map<String, dynamic> ticketJson) {
-  return ticketJson['status'] == true;
+  // If status is missing, we assume it's true (active)
+  // Only explicitly false means cancelled.
+  return ticketJson['status'] != false;
 }
 
 DateTime? parseTicketBusinessDate(Map<String, dynamic> ticketJson) {
