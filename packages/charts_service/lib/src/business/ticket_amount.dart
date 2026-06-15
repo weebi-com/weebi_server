@@ -17,7 +17,16 @@ double ticketAmountForMetric(
   if (!metric.includesTicketType(ticketType)) {
     return 0;
   }
-  return ticket.totalComputed;
+  final amount = ticket.totalComputed;
+  if (amount == 0) {
+    // Fallback for cases where totalComputed might be 0 due to parsing issues
+    // but received is present in the map
+    final received = ticketJson['received'];
+    if (received is num) {
+      return received.toDouble();
+    }
+  }
+  return amount;
 }
 
 bool ticketIsActive(Map<String, dynamic> ticketJson) {
@@ -28,6 +37,12 @@ bool ticketIsActive(Map<String, dynamic> ticketJson) {
 
 DateTime? parseTicketBusinessDate(Map<String, dynamic> ticketJson) {
   final raw = ticketJson['date'];
+  if (raw == null) {
+    return null;
+  }
+  if (raw is DateTime) {
+    return raw;
+  }
   if (raw is! String || raw.isEmpty) {
     return null;
   }

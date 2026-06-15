@@ -12,6 +12,7 @@ List<FinancialBucketRow> aggregateTicketDocuments({
   required FinancialChartQuery query,
 }) {
   final buckets = <DateTime, double>{};
+  // print('aggregating ${documents.length} documents for metric ${query.metric}');
 
   for (final document in documents) {
     if (document['isDeleted'] == true) {
@@ -49,6 +50,7 @@ List<FinancialBucketRow> aggregateTicketDocuments({
     final period = floorChartPeriod(date, query.timePeriod);
     buckets[period] = (buckets[period] ?? 0) + amount;
   }
+  // print('aggregated into ${buckets.length} buckets');
 
   final rows = buckets.entries
       .map(
@@ -68,6 +70,7 @@ List<FinancialStackedBucketRow> aggregateTicketDocumentsStackedByBoutique({
   required FinancialChartQuery query,
 }) {
   final buckets = <DateTime, Map<String, double>>{};
+  // print('aggregating stacked ${documents.length} documents for metric ${query.metric}');
 
   for (final document in documents) {
     if (document['isDeleted'] == true) {
@@ -106,6 +109,7 @@ List<FinancialStackedBucketRow> aggregateTicketDocumentsStackedByBoutique({
     final byBoutique = buckets.putIfAbsent(period, () => <String, double>{});
     byBoutique[boutiqueId] = (byBoutique[boutiqueId] ?? 0) + amount;
   }
+  // print('aggregated stacked into ${buckets.length} buckets');
 
   final sortedPeriods = buckets.keys.toList()..sort((a, b) => a.compareTo(b));
   return [

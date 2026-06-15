@@ -84,11 +84,20 @@ class StatsService extends pb.StatsServiceBase {
             .map((b) => b['boutiqueId'] as String? ?? '')
             .where((id) => id.isNotEmpty)
             .toList();
+        log.debug('resolved all boutiques for firm', extra: {
+          'firmId': request.firmId,
+          'count': finalBoutiqueIds.length,
+          'boutiqueIds': finalBoutiqueIds,
+        });
       } else {
         finalBoutiqueIds = accessibleBoutiqueIds;
       }
 
       if (finalBoutiqueIds.isEmpty) {
+        log.warning('no accessible boutiques found', extra: {
+          'firmId': request.firmId,
+          'requestBoutiqueIds': request.boutiqueIds,
+        });
         return pb.FinancialChartResponse(svgContent: '');
       }
 
@@ -106,6 +115,9 @@ class StatsService extends pb.StatsServiceBase {
 
       if (request.stackedByBoutique) {
         final rows = await aggregator.aggregateStackedByBoutique(db, query);
+        log.debug('aggregated stacked rows', extra: {
+          'rowCount': rows.length,
+        });
         svgContent = charts.renderFinancialStackedBarChartSvg(
           rows: rows,
           boutiqueIds: finalBoutiqueIds,
@@ -114,6 +126,9 @@ class StatsService extends pb.StatsServiceBase {
         );
       } else {
         final rows = await aggregator.aggregate(db, query);
+        log.debug('aggregated rows', extra: {
+          'rowCount': rows.length,
+        });
         svgContent = charts.renderFinancialBarChartSvg(
           rows: rows,
           timePeriod: query.timePeriod,
@@ -121,6 +136,9 @@ class StatsService extends pb.StatsServiceBase {
         );
       }
 
+      log.logRpcExit('getFinancialChart', resultData: {
+        'svgLength': svgContent.length,
+      });
       return pb.FinancialChartResponse(svgContent: svgContent);
     });
   }
