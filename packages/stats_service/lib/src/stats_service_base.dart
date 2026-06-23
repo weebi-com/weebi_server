@@ -1,10 +1,11 @@
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/fence_service.dart';
+// ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:grpc/grpc.dart';
 import 'package:fence_service/logging.dart';
 import 'package:protos_weebi/protos_weebi_io.dart' as pb;
-import 'package:charts_service/charts_service.dart' as charts;
+import '../stats_service.dart' as charts;
 
 class StatsService extends pb.StatsServiceBase {
   final MongoDbPoolService _poolService;

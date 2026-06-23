@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
-import 'package:charts_service/src/charts/bar_chart_time_granularity.dart';
-import 'package:charts_service/src/components/bar_chart_time_widget.dart';
-import 'package:charts_service/src/core/dimensions.dart';
+import 'package:stats_service/src/charts/bar_chart_time_granularity.dart';
+import 'package:stats_service/src/components/bar_chart_time_widget.dart';
+import 'package:stats_service/src/core/dimensions.dart';
 
 void main() {
   group('BarChartTimeGranularity', () {
@@ -71,3 +71,4 @@ void main() {
     });
   });
 }
+

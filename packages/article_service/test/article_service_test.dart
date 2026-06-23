@@ -5,7 +5,6 @@ import 'package:fence_service/fence_service.dart';
 // ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
-import 'package:fence_service/models_weebi.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 
@@ -15,14 +14,43 @@ void main() async {
   await poolService.initialize();
 
   late ArticleService articleService;
-  final cal = CalibreWeebi.dummyRetail.toMap(isProto: true);
+  final cal = {
+    'id': 1,
+    'creationDate': '2020-02-02T00:00:00.000',
+    'status': true,
+    'title': 'dummy',
+    'stockUnit': 'unit',
+    'kind': 'retail',
+    'articlesRetail': [
+      {
+        'calibreId': 1,
+        'id': 1,
+        'designation': 'dummy',
+        'kind': 'retail',
+        'status': true,
+        'creationDate': '2020-02-02T00:00:00.000',
+        'updateDate': '2020-02-02T00:00:00.000',
+        'statusUpdateDate': '2020-02-02T00:00:00.000',
+        'price': 100.0,
+        'cost': 80.0,
+        'unitsInOnePiece': 1.0,
+        'barcodeEAN': 'barcodeEAN'
+      }
+    ]
+  };
   final calibreDummy = CalibrePb.create()
     ..mergeFromProto3Json(
       cal,
       ignoreUnknownFields: true,
     );
 
-  final cat = CategoryWeebi.dummy.toMap();
+  final cat = {
+    'title': 'test category',
+    'creationDate': '2020-02-02T00:00:00.000',
+    'updateDate': null,
+    'calibresIds': [1],
+    'color': 4294198070
+  };
   final categoryDummy = CategoryPb.create()
     ..mergeFromProto3Json(
       cat,
@@ -84,10 +112,12 @@ void main() async {
   });
 
   test('test updateOne article and readOne', () async {
-    final lili = CalibreWeebi.dummyRetail.copyWith(title: 'Lili biscuit');
     final calibreLili = CalibrePb.create()
       ..mergeFromProto3Json(
-        lili.toMap(isProto: true),
+        {
+          ...cal,
+          'title': 'Lili biscuit',
+        },
         ignoreUnknownFields: true,
       );
 
@@ -142,11 +172,13 @@ void main() async {
   });
 
   test('test replaceOne category and readOne', () async {
-    final lili = CategoryWeebi.dummy
-        .copyWith(title: 'Lili category', calibresIds: {2, 3});
     final categoryLili = CategoryPb.create()
       ..mergeFromProto3Json(
-        lili.toMap(),
+        {
+          ...cat,
+          'title': 'Lili category',
+          'calibresIds': [2, 3],
+        },
         ignoreUnknownFields: true,
       );
 

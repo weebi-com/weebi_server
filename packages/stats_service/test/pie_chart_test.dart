@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
-import 'package:charts_service/src/charts/pie_chart.dart';
-import 'package:charts_service/src/core/dimensions.dart';
+import 'package:stats_service/src/charts/pie_chart.dart';
+import 'package:stats_service/src/core/dimensions.dart';
 
 void main() {
   group('PieChart', () {
@@ -25,3 +25,4 @@ void main() {
     });
   });
 }
+

@@ -1,11 +1,11 @@
 import 'package:test/test.dart';
-import 'package:charts_service/src/business/chart_time_period.dart';
-import 'package:charts_service/src/business/financial_chart_metric.dart';
-import 'package:charts_service/src/business/financial_chart_query.dart';
-import 'package:charts_service/src/business/render_financial_bar_chart.dart';
-import 'package:charts_service/src/charts/bar_chart_time_granularity.dart';
-import 'package:charts_service/src/charts/stacked_bar_chart.dart';
-import 'package:charts_service/src/core/dimensions.dart';
+import 'package:stats_service/src/business/chart_time_period.dart';
+import 'package:stats_service/src/business/financial_chart_metric.dart';
+import 'package:stats_service/src/business/financial_chart_query.dart';
+import 'package:stats_service/src/business/render_financial_bar_chart.dart';
+import 'package:stats_service/src/charts/bar_chart_time_granularity.dart';
+import 'package:stats_service/src/charts/stacked_bar_chart.dart';
+import 'package:stats_service/src/core/dimensions.dart';
 
 void main() {
   group('StackedBarChart', () {
@@ -91,3 +91,4 @@ void main() {
     });
   });
 }
+
