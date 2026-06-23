@@ -1,9 +1,11 @@
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/fence_service.dart';
+// ignore: unnecessary_import
+import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:grpc/grpc.dart';
 import 'package:fence_service/logging.dart';
-import 'package:fence_service/protos_weebi.dart' as pb;
-import 'package:charts_service/charts_service.dart';
+import 'package:protos_weebi/protos_weebi_io.dart' as pb;
+import '../stats_service.dart' as charts;
 
 class StatsService extends pb.StatsServiceBase {
   final MongoDbPoolService _poolService;
@@ -38,83 +40,135 @@ class StatsService extends pb.StatsServiceBase {
     }
 
     if (userPermission.firmId != request.firmId) {
-      throw GrpcError.permissionDenied('user cannot access data from another firm');
+      throw GrpcError.permissionDenied(
+          'user cannot access data from another firm (user: ${userPermission.firmId}, request: ${request.firmId})');
     }
 
     // Filter boutique IDs based on user permissions
-    final accessibleBoutiqueIds = request.boutiqueIds
-        .where((id) => userPermission.isBoutiqueAccessible(id))
-        .toList();
+    final List<String> accessibleBoutiqueIds;
 
-    if (accessibleBoutiqueIds.isEmpty && request.boutiqueIds.isNotEmpty) {
-      throw GrpcError.permissionDenied('user cannot access any of the requested boutiques');
+    if (request.boutiqueIds.isEmpty) {
+      if (userPermission.fullAccess.hasFullAccess) {
+        // We will fetch all boutiques for the firm inside the databaseMiddleware
+        accessibleBoutiqueIds = [];
+      } else {
+        accessibleBoutiqueIds = userPermission.limitedAccess.boutiqueIds.ids;
+      }
+    } else {
+      accessibleBoutiqueIds = request.boutiqueIds
+          .where((id) => userPermission.isBoutiqueAccessible(id))
+          .toList();
+      if (accessibleBoutiqueIds.isEmpty) {
+        throw GrpcError.permissionDenied(
+            'user cannot access any of the requested boutiques');
+      }
     }
 
-    return databaseMiddleware<pb.FinancialChartResponse>(_poolService, (db) async {
+    return databaseMiddleware<pb.FinancialChartResponse>(_poolService,
+        (db) async {
       await assertUserHasOperationalLicenseWithDb(
         db,
         userPermissions: userPermission,
         authorizationHeader: isTest ? '' : (call?.bearer ?? ''),
       );
 
-      final query = FinancialChartQuery(
+      final List<String> finalBoutiqueIds;
+      if (accessibleBoutiqueIds.isEmpty &&
+          userPermission.fullAccess.hasFullAccess) {
+        // Fetch all boutiques for the firm
+        final boutiques = await db
+            .collection(FenceService.boutiqueCollectionName)
+            .find(where.eq('firmId', request.firmId).and(
+                where.eq('isDeleted', false).or(where.eq('isDeleted', null))))
+            .toList();
+        finalBoutiqueIds = boutiques
+            .map((b) => b['boutiqueId'] as String? ?? '')
+            .where((id) => id.isNotEmpty)
+            .toList();
+        log.debug('resolved all boutiques for firm', extra: {
+          'firmId': request.firmId,
+          'count': finalBoutiqueIds.length,
+          'boutiqueIds': finalBoutiqueIds,
+        });
+      } else {
+        finalBoutiqueIds = accessibleBoutiqueIds;
+      }
+
+      if (finalBoutiqueIds.isEmpty) {
+        log.warning('no accessible boutiques found', extra: {
+          'firmId': request.firmId,
+          'requestBoutiqueIds': request.boutiqueIds,
+        });
+        return pb.FinancialChartResponse(svgContent: '');
+      }
+
+      final query = charts.FinancialChartQuery(
         firmId: request.firmId,
-        boutiqueIds: accessibleBoutiqueIds,
+        boutiqueIds: finalBoutiqueIds,
         start: request.start.toDateTime(),
         end: request.end.toDateTime(),
         timePeriod: _mapTimePeriod(request.timePeriod),
         metric: _mapMetric(request.metric),
       );
 
-      final aggregator = MongoTicketFinancialAggregator();
+      final aggregator = charts.MongoTicketFinancialAggregator();
       String svgContent;
 
       if (request.stackedByBoutique) {
         final rows = await aggregator.aggregateStackedByBoutique(db, query);
-        svgContent = renderFinancialStackedBarChartSvg(
+        log.debug('aggregated stacked rows', extra: {
+          'rowCount': rows.length,
+        });
+        svgContent = charts.renderFinancialStackedBarChartSvg(
           rows: rows,
-          boutiqueIds: accessibleBoutiqueIds,
+          boutiqueIds: finalBoutiqueIds,
           timePeriod: query.timePeriod,
           metric: query.metric,
         );
       } else {
         final rows = await aggregator.aggregate(db, query);
-        svgContent = renderFinancialBarChartSvg(
+        log.debug('aggregated rows', extra: {
+          'rowCount': rows.length,
+        });
+        svgContent = charts.renderFinancialBarChartSvg(
           rows: rows,
           timePeriod: query.timePeriod,
           metric: query.metric,
         );
       }
 
+      log.logRpcExit('getFinancialChart', resultData: {
+        'svgLength': svgContent.length,
+      });
       return pb.FinancialChartResponse(svgContent: svgContent);
     });
   }
 
-  ChartTimePeriod _mapTimePeriod(pb.ChartTimePeriod proto) {
+  charts.ChartTimePeriod _mapTimePeriod(pb.ChartTimePeriod proto) {
     switch (proto) {
       case pb.ChartTimePeriod.DAY:
-        return ChartTimePeriod.day;
+        return charts.ChartTimePeriod.day;
       case pb.ChartTimePeriod.WEEK:
-        return ChartTimePeriod.week;
+        return charts.ChartTimePeriod.week;
       case pb.ChartTimePeriod.MONTH:
-        return ChartTimePeriod.month;
+        return charts.ChartTimePeriod.month;
       default:
-        return ChartTimePeriod.day;
+        return charts.ChartTimePeriod.day;
     }
   }
 
-  FinancialChartMetric _mapMetric(pb.FinancialChartMetric proto) {
+  charts.FinancialChartMetric _mapMetric(pb.FinancialChartMetric proto) {
     switch (proto) {
       case pb.FinancialChartMetric.CASHFLOW_INCOME:
-        return FinancialChartMetric.cashflowIncome;
+        return charts.FinancialChartMetric.cashflowIncome;
       case pb.FinancialChartMetric.CASHFLOW_SPENDING:
-        return FinancialChartMetric.cashflowSpending;
+        return charts.FinancialChartMetric.cashflowSpending;
       case pb.FinancialChartMetric.ALL_INCOME:
-        return FinancialChartMetric.allIncome;
+        return charts.FinancialChartMetric.allIncome;
       case pb.FinancialChartMetric.ALL_SPENDING:
-        return FinancialChartMetric.allSpending;
+        return charts.FinancialChartMetric.allSpending;
       default:
-        return FinancialChartMetric.cashflowIncome;
+        return charts.FinancialChartMetric.cashflowIncome;
     }
   }
 }

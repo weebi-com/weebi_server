@@ -1,3 +1,19 @@
-library stats_service;
+library;
 
 export 'src/stats_service_base.dart';
+export 'src/core/dimensions.dart';
+export 'src/core/chart.dart';
+export 'src/charts/bar_chart.dart';
+export 'src/charts/stacked_bar_chart.dart';
+export 'src/charts/bar_chart_time_granularity.dart';
+export 'src/charts/pie_chart.dart';
+export 'src/components/axis.dart';
+export 'src/components/bar_chart_time_widget.dart';
+export 'src/components/legend.dart';
+export 'src/business/chart_time_period.dart';
+export 'src/business/financial_chart_metric.dart';
+export 'src/business/financial_chart_query.dart';
+export 'src/business/mongo_ticket_financial_aggregator.dart';
+export 'src/business/render_financial_bar_chart.dart';
+export 'src/business/ticket_amount.dart';
+export 'src/business/ticket_financial_aggregator.dart';

@@ -5,7 +5,6 @@ import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/protos_weebi.dart';
-import 'package:fence_service/models_weebi.dart' show TicketWeebi;
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:ticket_service/ticket_service.dart';
 
@@ -19,7 +18,20 @@ void main() async {
   late Counterfoil counterfoilDummy;
   final ticketDummy = TicketPb.create()
     ..mergeFromProto3Json(
-      TicketWeebi.dummySell.toMap(isProto: true),
+      {
+        'id': '1',
+        'status': true,
+        'creationDate': '2020-02-02T00:00:00.000',
+        'totalPrice': 100.0,
+        'type': 'sell',
+        'items': [
+          {
+            'designation': 'item',
+            'price': 100.0,
+            'quantity': 1.0,
+          }
+        ]
+      },
       ignoreUnknownFields: true,
     );
 
@@ -83,13 +95,22 @@ void main() async {
     expect(response.tickets.length, 1);
   });
   test('test updateStatus ', () async {
-    final lili = TicketWeebi.dummySell.copyWith(
-      status: false,
-      statusUpdateDate: DateTime.now(),
-    );
     final ticketLili = TicketPb.create()
       ..mergeFromProto3Json(
-        lili.toMap(isProto: true),
+        {
+          'id': '1',
+          'status': false,
+          'statusUpdateDate': DateTime.now().toIso8601String(),
+          'totalPrice': 100.0,
+          'type': 'sell',
+          'items': [
+            {
+              'designation': 'item',
+              'price': 100.0,
+              'quantity': 1.0,
+            }
+          ]
+        },
         ignoreUnknownFields: true,
       );
     ticketLili.counterfoil = counterfoilDummy;
