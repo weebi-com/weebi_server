@@ -15,9 +15,9 @@ class MongoTicketFinancialAggregator {
     FinancialChartQuery query,
   ) async {
     final collection = db.collection(collectionName);
-    final documents = await collection
-        .find(_selectorFor(query))
-        .toList();
+    final selector = _selectorFor(query);
+    final documents = await collection.find(selector).toList();
+    // print('Found ${documents.length} documents for query');
     return aggregateTicketDocuments(
       documents: documents.cast<Map<String, dynamic>>(),
       query: query,
@@ -29,8 +29,9 @@ class MongoTicketFinancialAggregator {
     FinancialChartQuery query,
   ) async {
     final collection = db.collection(collectionName);
-    final documents =
-        await collection.find(_selectorFor(query)).toList();
+    final selector = _selectorFor(query);
+    final documents = await collection.find(selector).toList();
+    // print('Found ${documents.length} documents for stacked query');
     return aggregateTicketDocumentsStackedByBoutique(
       documents: documents.cast<Map<String, dynamic>>(),
       query: query,
@@ -41,12 +42,15 @@ class MongoTicketFinancialAggregator {
     final startIso = query.start.toIso8601String();
     final endIso = query.end.toIso8601String();
 
-    return where
+    final selector = where
         .eq('firmId', query.firmId)
         .oneFrom('boutiqueId', query.boutiqueIds)
         .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)))
         .gte('ticket.date', startIso)
         .lte('ticket.date', endIso);
+    
+    // print('Query selector: ${selector.map}');
+    return selector;
   }
 }
 
