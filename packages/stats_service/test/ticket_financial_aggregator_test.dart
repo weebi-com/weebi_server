@@ -1,13 +1,13 @@
 import 'package:protos_weebi/protos_weebi_io.dart' hide FinancialChartMetric, ChartTimePeriod;
 import 'package:test/test.dart';
-import 'package:charts_service/src/business/chart_time_period.dart';
-import 'package:charts_service/src/business/financial_chart_metric.dart';
-import 'package:charts_service/src/business/financial_chart_query.dart';
-import 'package:charts_service/src/business/render_financial_bar_chart.dart';
-import 'package:charts_service/src/business/ticket_amount.dart';
-import 'package:charts_service/src/business/ticket_financial_aggregator.dart';
-import 'package:charts_service/src/charts/bar_chart_time_granularity.dart';
-import 'package:charts_service/src/fixtures/demo_tickets.dart';
+import 'package:stats_service/src/business/chart_time_period.dart';
+import 'package:stats_service/src/business/financial_chart_metric.dart';
+import 'package:stats_service/src/business/financial_chart_query.dart';
+import 'package:stats_service/src/business/render_financial_bar_chart.dart';
+import 'package:stats_service/src/business/ticket_amount.dart';
+import 'package:stats_service/src/business/ticket_financial_aggregator.dart';
+import 'package:stats_service/src/charts/bar_chart_time_granularity.dart';
+import 'package:stats_service/src/fixtures/demo_tickets.dart';
 
 void main() {
   final anchor = DateTime(2024, 6, 15);
@@ -398,3 +398,4 @@ Map<String, dynamic> _mongoDocument({
 
   return ticketMongo.toProto3Json() as Map<String, dynamic>;
 }
+

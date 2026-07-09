@@ -160,6 +160,7 @@ const TicketPb$json = {
     {'1': 'sell_totals', '3': 23, '4': 1, '5': 11, '6': '.weebi.ticket.TicketSellTotalsPb', '9': 0, '10': 'sellTotals'},
     {'1': 'spend_totals', '3': 24, '4': 1, '5': 11, '6': '.weebi.ticket.TicketSpendTotalsPb', '9': 0, '10': 'spendTotals'},
     {'1': 'cover_totals', '3': 25, '4': 1, '5': 11, '6': '.weebi.ticket.TicketCoverTotalPb', '9': 0, '10': 'coverTotals'},
+    {'1': 'replaced_ticket_id', '3': 26, '4': 1, '5': 9, '9': 4, '10': 'replacedTicketId', '17': true},
   ],
   '4': [TicketPb_PaymentTypePb$json],
   '8': [
@@ -167,9 +168,10 @@ const TicketPb$json = {
     {'1': '_currency'},
     {'1': '_snapshot_secondary_currency'},
     {'1': '_snapshot_local_per_secondary'},
+    {'1': '_replaced_ticket_id'},
   ],
   '9': [
-    {'1': 26, '2': 99},
+    {'1': 27, '2': 99},
   ],
 };
 
@@ -209,10 +211,12 @@ final $typed_data.Uint8List ticketPbDescriptor = $convert.base64Decode(
     '53ZWViaS50aWNrZXQuVGlja2V0U2VsbFRvdGFsc1BiSABSCnNlbGxUb3RhbHMSRgoMc3BlbmRf'
     'dG90YWxzGBggASgLMiEud2VlYmkudGlja2V0LlRpY2tldFNwZW5kVG90YWxzUGJIAFILc3Blbm'
     'RUb3RhbHMSRQoMY292ZXJfdG90YWxzGBkgASgLMiAud2VlYmkudGlja2V0LlRpY2tldENvdmVy'
-    'VG90YWxQYkgAUgtjb3ZlclRvdGFscyJoCg1QYXltZW50VHlwZVBiEgsKB3Vua25vd24QABIICg'
-    'RjYXNoEAESCAoEbm9wZRACEg8KC21vYmlsZU1vbmV5EAMSCgoGY2hlcXVlEAQSDgoKY3JlZGl0'
-    'Q2FyZBAFEgkKBWdvb2RzEAZCCAoGdG90YWxzQgsKCV9jdXJyZW5jeUIeChxfc25hcHNob3Rfc2'
-    'Vjb25kYXJ5X2N1cnJlbmN5Qh8KHV9zbmFwc2hvdF9sb2NhbF9wZXJfc2Vjb25kYXJ5SgQIGhBj');
+    'VG90YWxQYkgAUgtjb3ZlclRvdGFscxIxChJyZXBsYWNlZF90aWNrZXRfaWQYGiABKAlIBFIQcm'
+    'VwbGFjZWRUaWNrZXRJZIgBASJoCg1QYXltZW50VHlwZVBiEgsKB3Vua25vd24QABIICgRjYXNo'
+    'EAESCAoEbm9wZRACEg8KC21vYmlsZU1vbmV5EAMSCgoGY2hlcXVlEAQSDgoKY3JlZGl0Q2FyZB'
+    'AFEgkKBWdvb2RzEAZCCAoGdG90YWxzQgsKCV9jdXJyZW5jeUIeChxfc25hcHNob3Rfc2Vjb25k'
+    'YXJ5X2N1cnJlbmN5Qh8KHV9zbmFwc2hvdF9sb2NhbF9wZXJfc2Vjb25kYXJ5QhUKE19yZXBsYW'
+    'NlZF90aWNrZXRfaWRKBAgbEGM=');
 
 @$core.Deprecated('Use counterfoilDescriptor instead')
 const Counterfoil$json = {

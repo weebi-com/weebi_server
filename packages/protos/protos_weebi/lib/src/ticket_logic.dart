@@ -17,7 +17,7 @@ extension ItemCartPbLogic on ItemCartPb {
   bool get isUncountable => hasArticleUncountable();
   bool get isBasket => hasArticleBasket();
 
-  // Mirrors AggregateProxies.basketTotalPrice in models_weebi:
+  // Mirrors AggregateProxies.basketTotalPrice in weebi historic classes:
   //   worth = sum(round(p.price × p.minimumUnitPerBasket) for each proxy)
   //   articlePrice = worth − articleBasket.discountAmount + articleBasket.markupAmount
   double get articlePrice {
@@ -34,8 +34,7 @@ extension ItemCartPbLogic on ItemCartPb {
     return 0.0;
   }
 
-  // Mirrors AggregateProxies.basketTotalCost in models_weebi:
-  //   worth = sum(round(p.cost × p.minimumUnitPerBasket) for each proxy)
+  // Mirrors AggregateProxies.basketTotalPrice in weebi historic classes:  //   worth = sum(round(p.cost × p.minimumUnitPerBasket) for each proxy)
   //   no discount or markup on the cost side (purchase)
   double get articleCost {
     if (hasArticleRetail()) return articleRetail.cost;

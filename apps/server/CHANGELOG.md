@@ -1,6 +1,12 @@
 # changelog
 
 
+## 1.1.4 - july 2026
+
+- bump protos
+- serve charts
+- control license entitlements further
+
 ## 1.1.3 - march 2026
 
 - handle currency

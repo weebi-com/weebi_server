@@ -7,7 +7,7 @@ gRPC service for statistics and charts.
 - Provides a gRPC interface for clients to request financial charts.
 - Enforces user permissions (`canSeeStats`) and firm-level access.
 - Gates access behind premium license entitlements.
-- Uses `charts_service` for data aggregation and SVG rendering.
+- Aggregates financial data (tickets) from MongoDB and renders SVG charts.
 
 ## RPCs
 

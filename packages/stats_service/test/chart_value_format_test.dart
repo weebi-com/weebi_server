@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:charts_service/src/core/chart_value_format.dart';
+import 'package:stats_service/src/core/chart_value_format.dart';
 
 void main() {
   group('formatChartCurrencyAxisTick', () {
@@ -21,3 +21,4 @@ void main() {
     });
   });
 }
+

@@ -5,7 +5,6 @@ import 'package:test/test.dart';
 
 import 'package:contact_service/contact_service.dart';
 import 'package:fence_service/protos_weebi.dart';
-import 'package:fence_service/models_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 
 void main() async {
@@ -18,7 +17,14 @@ void main() async {
 
   final contactDummy = ContactPb.create()
     ..mergeFromProto3Json(
-      ContactWeebi.dummy.toMap(),
+      {
+        'id': 1,
+        'firstName': 'John',
+        'lastName': 'Doe',
+        'overdraft': 0,
+        'status': true,
+        'creationDate': '2020-02-02T00:00:00.000',
+      },
       ignoreUnknownFields: true,
     );
 
@@ -81,13 +87,16 @@ void main() async {
   });
 
   test('test upsertOne ', () async {
-    final lili =
-        ContactWeebi.dummy.copyWith(firstName: 'Lili', lastName: 'Gancel');
-    print('lili ${lili.firstName}');
-
     final contactLili = ContactPb.create()
       ..mergeFromProto3Json(
-        lili.toMap(),
+        {
+          'id': 1,
+          'firstName': 'Lili',
+          'lastName': 'Gancel',
+          'overdraft': 0,
+          'status': true,
+          'creationDate': '2020-02-02T00:00:00.000',
+        },
         ignoreUnknownFields: true,
       );
     final contactRequest = ContactRequest(
