@@ -807,7 +807,35 @@ class FenceService extends FenceServiceBase {
         requestData: {'isWebApp': request.isWebApp});
 
     try {
-      final jwtRefresh = JsonWebToken.parse(request.refreshToken);
+      String refreshToken = request.refreshToken;
+
+      // In web app mode, if the refresh token is not provided in the request,
+      // try to retrieve it from the server-side session.
+      if (request.isWebApp && refreshToken.isEmpty) {
+        final sessionId = _getSessionIdFromMetadata(call);
+        if (sessionId != null && sessionId.isNotEmpty) {
+          final session = await databaseMiddleware(_poolService, (db) async {
+            return await db
+                .collection('web_sessions')
+                .findOne({'_id': sessionId});
+          });
+
+          if (session != null) {
+            final sessionRefreshToken = session['refreshToken'] as String?;
+            if (sessionRefreshToken != null && sessionRefreshToken.isNotEmpty) {
+              refreshToken = sessionRefreshToken;
+              log.debug('Using refresh token from session',
+                  extra: {'sessionId': sessionId});
+            }
+          }
+        }
+      }
+
+      if (refreshToken.isEmpty) {
+        throw GrpcError.unauthenticated('refresh token is empty');
+      }
+
+      final jwtRefresh = JsonWebToken.parse(refreshToken);
       if (!jwtRefresh.verify()) {
         throw GrpcError.unauthenticated('invalid jwtRefresh ');
       }
@@ -836,14 +864,14 @@ class FenceService extends FenceServiceBase {
             //'firmId': userPrivate.firmId
           });
       // refresh token only contains userId
-      final resfreshToken = jwt.sign();
+      final newResfreshToken = jwt.sign();
       await _updateUserLastSignIn(userPrivate.userId);
 
       // Handle web app mode: store session in MongoDB
       if (request.isWebApp) {
         final sessionId = await _createWebSession(
           accessToken: accessToken,
-          refreshToken: resfreshToken,
+          refreshToken: newResfreshToken,
           userId: userPrivate.userId,
           log: log,
         );
@@ -862,7 +890,7 @@ class FenceService extends FenceServiceBase {
 
       // Standard (non-web) mode: return tokens directly
       final tokens =
-          Tokens(accessToken: accessToken, refreshToken: resfreshToken);
+          Tokens(accessToken: accessToken, refreshToken: newResfreshToken);
       log.logRpcExit('authenticateWithRefreshToken');
       return tokens;
     } on GrpcError catch (e) {
