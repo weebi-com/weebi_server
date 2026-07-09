@@ -571,6 +571,7 @@ class TicketPb extends $pb.GeneratedMessage {
     TicketSellTotalsPb? sellTotals,
     TicketSpendTotalsPb? spendTotals,
     TicketCoverTotalPb? coverTotals,
+    $core.String? replacedTicketId,
   }) {
     final result = create();
     if (nonUniqueId != null) {
@@ -648,6 +649,9 @@ class TicketPb extends $pb.GeneratedMessage {
     if (coverTotals != null) {
       result.coverTotals = coverTotals;
     }
+    if (replacedTicketId != null) {
+      result.replacedTicketId = replacedTicketId;
+    }
     return result;
   }
   TicketPb._() : super();
@@ -687,6 +691,7 @@ class TicketPb extends $pb.GeneratedMessage {
     ..aOM<TicketSellTotalsPb>(23, _omitFieldNames ? '' : 'sellTotals', subBuilder: TicketSellTotalsPb.create)
     ..aOM<TicketSpendTotalsPb>(24, _omitFieldNames ? '' : 'spendTotals', subBuilder: TicketSpendTotalsPb.create)
     ..aOM<TicketCoverTotalPb>(25, _omitFieldNames ? '' : 'coverTotals', subBuilder: TicketCoverTotalPb.create)
+    ..aOS(26, _omitFieldNames ? '' : 'replacedTicketId')
     ..hasRequiredFields = false
   ;
 
@@ -950,6 +955,15 @@ class TicketPb extends $pb.GeneratedMessage {
   void clearCoverTotals() => clearField(25);
   @$pb.TagNumber(25)
   TicketCoverTotalPb ensureCoverTotals() => $_ensure(24);
+
+  @$pb.TagNumber(26)
+  $core.String get replacedTicketId => $_getSZ(25);
+  @$pb.TagNumber(26)
+  set replacedTicketId($core.String v) { $_setString(25, v); }
+  @$pb.TagNumber(26)
+  $core.bool hasReplacedTicketId() => $_has(25);
+  @$pb.TagNumber(26)
+  void clearReplacedTicketId() => clearField(26);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {

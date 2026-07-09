@@ -6,20 +6,21 @@ class CelEvaluator {
 
   static double _round4(double v) => (v * 10000).round() / 10000;
 
-  static double evaluate(GeneratedMessage message, String formula, {Map<String, dynamic>? additionalContext}) {
+  static double evaluate(GeneratedMessage message, String formula,
+      {Map<String, dynamic>? additionalContext}) {
     if (formula.isEmpty) return 0.0;
 
     try {
       final ast = _env.compile(formula);
       final program = _env.makeProgram(ast);
-      
+
       final context = _messageToMap(message);
       if (additionalContext != null) {
         context.addAll(additionalContext);
       }
       // Provide 'this' as the context itself for 'this.field' access
       context['this'] = context;
-      
+
       final result = program.evaluate(context);
       if (result is num) return _round4(result.toDouble());
       return 0.0;
