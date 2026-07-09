@@ -39,15 +39,16 @@ class MongoTicketFinancialAggregator {
   }
 
   SelectorBuilder _selectorFor(FinancialChartQuery query) {
-    final startIso = query.start.toIso8601String();
-    final endIso = query.end.toIso8601String();
-
     final selector = where
         .eq('firmId', query.firmId)
         .oneFrom('boutiqueId', query.boutiqueIds)
         .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)))
-        .gte('ticket.date', startIso)
-        .lte('ticket.date', endIso);
+        // We broaden the range by 1 day to account for potential timezone differences in string comparison
+        // The in-memory aggregator will filter exactly.
+        .gte('ticket.date',
+            query.start.subtract(const Duration(days: 1)).toIso8601String())
+        .lte('ticket.date',
+            query.end.add(const Duration(days: 1)).toIso8601String());
     
     // print('Query selector: ${selector.map}');
     return selector;
@@ -68,8 +69,9 @@ List<Map<String, dynamic>> buildMongoAggregationPipeline(
         'isDeleted': false,
         'ticket.status': true,
         'ticket.date': {
-          r'$gte': query.start.toIso8601String(),
-          r'$lte': query.end.toIso8601String(),
+          r'$gte':
+              query.start.subtract(const Duration(days: 1)).toIso8601String(),
+          r'$lte': query.end.add(const Duration(days: 1)).toIso8601String(),
         },
         'ticket.ticketType': {r'$in': ticketTypes},
       },
