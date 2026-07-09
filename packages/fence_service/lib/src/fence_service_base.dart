@@ -1770,6 +1770,26 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  void _sanitizeMongoDoc(Map<String, dynamic> doc) {
+    doc.remove('_id');
+    for (final key in doc.keys.toList()) {
+      final value = doc[key];
+      if (value is Map<String, dynamic>) {
+        _sanitizeMongoDoc(value);
+      } else if (value is List) {
+        for (final item in value) {
+          if (item is Map<String, dynamic>) {
+            _sanitizeMongoDoc(item);
+          }
+        }
+      }
+      // Remove known problematic/huge fields
+      if (key == 'logo' || key == 'devices') {
+        doc.remove(key);
+      }
+    }
+  }
+
   /// Single place for protoing chains. [filterActiveBoutiques] and [filterActiveChains]
   /// control whether soft-deleted boutiques/chains are excluded.
   List<Chain> _chainsMongoToChainsProto(
@@ -2709,6 +2729,16 @@ class FenceService extends FenceServiceBase {
     }
 
     try {
+      final userPermission = isMock
+          ? userPermissionIfTest ?? UserPermissions()
+          : call.bearer.userPermissions;
+      if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
+          false) {
+        print('DEBUG: readAllChains permission denied');
+        throw GrpcError.permissionDenied(
+            'user does not have right to read chain');
+      }
+
       final chains = _filterChainsByAccess(
         userPermission,
         await _readAllChainsAndProtoThem(userPermission),

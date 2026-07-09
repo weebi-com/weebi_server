@@ -71,6 +71,6 @@ FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
         'grpcCode': e.code.toString(),
       },
     );
-    rethrow;
+    return e;
   }
 }

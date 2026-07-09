@@ -75,11 +75,13 @@ class StatsService extends pb.StatsServiceBase {
       final List<String> finalBoutiqueIds;
       if (accessibleBoutiqueIds.isEmpty &&
           userPermission.fullAccess.hasFullAccess) {
-        // Fetch all boutiques for the firm
+        // Fetch only boutiqueId for the firm to avoid huge payloads (logos, devices)
         final boutiques = await db
             .collection(FenceService.boutiqueCollectionName)
-            .find(where.eq('firmId', request.firmId).and(
-                where.eq('isDeleted', false).or(where.eq('isDeleted', null))))
+            .find(where
+                .eq('firmId', request.firmId)
+                .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)))
+                .fields(['boutiqueId']))
             .toList();
         finalBoutiqueIds = boutiques
             .map((b) => b['boutiqueId'] as String? ?? '')
