@@ -1,5 +1,10 @@
 # changelog
 
+## 1.3.6 - 2026 july
+
+- replaced_ticket_id to track if a ticket is a fix of a previous one (for transparency towards customers and managers)
+
+
 ## 1.3.4 - 2026 may
 
 - simpler offer : entreprise or premium
