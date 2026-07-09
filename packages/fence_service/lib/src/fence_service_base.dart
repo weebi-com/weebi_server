@@ -1750,24 +1750,67 @@ class FenceService extends FenceServiceBase {
         (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
       print('DEBUG: _readChainsMongoFromDb fetching for firmId: $firmId');
+      
+      // Use projection to only fetch fields we need, avoiding huge logos/devices
       final chainsMongo = await boutiqueCollection
-          .find(where.eq('firmId', firmId).limit(100))
+          .find(where.eq('firmId', firmId).limit(100).fields([
+            'chainId',
+            'firmId',
+            'name',
+            'creationDateUTC',
+            'lastUpdateTimestampUTC',
+            'lastUpdatedByuserId',
+            'isDeleted',
+            'deletedBy',
+            'restoredBy',
+            'currency',
+            'isDualCurrencyEnabled',
+            'secondaryDisplayCurrency',
+            'businessRules',
+            // Fetch boutiques but exclude their logos and devices
+            'boutiques.boutiqueId',
+            'boutiques.firmId',
+            'boutiques.chainId',
+            'boutiques.creationTimestampUTC',
+            'boutiques.name',
+            'boutiques.lastTouchTimestampUTC',
+            'boutiques.isDeleted',
+            'boutiques.deletedBy',
+            'boutiques.restoredBy',
+            'boutiques.additionalAttributes',
+            'boutiques.boutique',
+          ]))
           .toList();
+      
       print('DEBUG: _readChainsMongoFromDb fetched ${chainsMongo.length} chains');
 
-      // We manually strip logos to avoid huge payloads and BsonBinary parsing issues
-      // which are known to cause 502/CORS errors in gRPC-web
+      // Recursively sanitize to remove any remaining _id or binary data
       for (final chain in chainsMongo) {
-        if (chain.containsKey('boutiques') && chain['boutiques'] is List) {
-          for (final boutique in chain['boutiques']) {
-            if (boutique is Map) {
-              boutique.remove('logo');
-            }
+        _sanitizeMongoDoc(chain);
+      }
+      
+      return chainsMongo.cast<Map<String, dynamic>>();
+    });
+  }
+
+  void _sanitizeMongoDoc(Map<String, dynamic> doc) {
+    doc.remove('_id');
+    for (final key in doc.keys.toList()) {
+      final value = doc[key];
+      if (value is Map<String, dynamic>) {
+        _sanitizeMongoDoc(value);
+      } else if (value is List) {
+        for (final item in value) {
+          if (item is Map<String, dynamic>) {
+            _sanitizeMongoDoc(item);
           }
         }
       }
-      return chainsMongo.cast<Map<String, dynamic>>();
-    });
+      // Remove known problematic/huge fields
+      if (key == 'logo' || key == 'devices') {
+        doc.remove(key);
+      }
+    }
   }
 
   /// Single place for protoing chains. [filterActiveBoutiques] and [filterActiveChains]
@@ -2698,17 +2741,17 @@ class FenceService extends FenceServiceBase {
     final log = _logger.withContext(call);
     log.logRpcEntry('readAllChains');
     print('DEBUG: readAllChains entry');
-    final userPermission = isMock
-        ? userPermissionIfTest ?? UserPermissions()
-        : call.bearer.userPermissions;
-    if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
-        false) {
-      print('DEBUG: readAllChains permission denied');
-      throw GrpcError.permissionDenied(
-          'user does not have right to read chain');
-    }
-
     try {
+      final userPermission = isMock
+          ? userPermissionIfTest ?? UserPermissions()
+          : call.bearer.userPermissions;
+      if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
+          false) {
+        print('DEBUG: readAllChains permission denied');
+        throw GrpcError.permissionDenied(
+            'user does not have right to read chain');
+      }
+
       final chains = _filterChainsByAccess(
         userPermission,
         await _readAllChainsAndProtoThem(userPermission),
