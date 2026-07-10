@@ -59,7 +59,7 @@ jobs:
       - name: Trigger Cloud Build Deployment
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          curl -X POST "${{ secrets.WEEBI_SERVER_PRD_DEPLOYMENT_TRIGGER }}" \
+          curl -X POST "${{ secrets.CLOUD_WEBHOOK_URL }}&secret=${{ secrets.WEEBI_SERVER_PRD_DEPLOYMENT_TRIGGER }}" \
                 -H "Content-Type: application/json" \
                 -d '{
                   "branchName": "${{ github.ref_name }}",
