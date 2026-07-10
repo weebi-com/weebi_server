@@ -1770,26 +1770,6 @@ class FenceService extends FenceServiceBase {
     });
   }
 
-  void _sanitizeMongoDoc(Map<String, dynamic> doc) {
-    doc.remove('_id');
-    for (final key in doc.keys.toList()) {
-      final value = doc[key];
-      if (value is Map<String, dynamic>) {
-        _sanitizeMongoDoc(value);
-      } else if (value is List) {
-        for (final item in value) {
-          if (item is Map<String, dynamic>) {
-            _sanitizeMongoDoc(item);
-          }
-        }
-      }
-      // Remove known problematic/huge fields
-      if (key == 'logo' || key == 'devices') {
-        doc.remove(key);
-      }
-    }
-  }
-
   /// Single place for protoing chains. [filterActiveBoutiques] and [filterActiveChains]
   /// control whether soft-deleted boutiques/chains are excluded.
   List<Chain> _chainsMongoToChainsProto(
@@ -1885,14 +1865,8 @@ class FenceService extends FenceServiceBase {
           throw GrpcError.notFound(
               'firm/chain not found firmId: $firmId chainId:$chainId');
         }
-        // Strip logos to avoid 502/CORS issues with large payloads/BsonBinary
-        if (chainMongo.containsKey('boutiques') && chainMongo['boutiques'] is List) {
-          for (final boutique in chainMongo['boutiques']) {
-            if (boutique is Map) {
-              boutique.remove('logo');
-            }
-          }
-        }
+        // Recursively sanitize to remove any remaining _id or binary data
+        _sanitizeMongoDoc(chainMongo);
         return Chain.create()
           ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
       } on GrpcError catch (e) {
@@ -3691,4 +3665,24 @@ class FenceService extends FenceServiceBase {
   }
 
   // Email-related methods removed - preserved in lib/src/mail/ folder for future use
+}
+
+void _sanitizeMongoDoc(Map<String, dynamic> doc) {
+  doc.remove('_id');
+  for (final key in doc.keys.toList()) {
+    final value = doc[key];
+    if (value is Map<String, dynamic>) {
+      _sanitizeMongoDoc(value);
+    } else if (value is List) {
+      for (final item in value) {
+        if (item is Map<String, dynamic>) {
+          _sanitizeMongoDoc(item);
+        }
+      }
+    }
+    // Remove known problematic/huge fields
+    if (key == 'logo' || key == 'devices') {
+      doc.remove(key);
+    }
+  }
 }
