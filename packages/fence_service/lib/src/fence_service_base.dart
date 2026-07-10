@@ -807,7 +807,35 @@ class FenceService extends FenceServiceBase {
         requestData: {'isWebApp': request.isWebApp});
 
     try {
-      final jwtRefresh = JsonWebToken.parse(request.refreshToken);
+      String refreshToken = request.refreshToken;
+
+      // In web app mode, if the refresh token is not provided in the request,
+      // try to retrieve it from the server-side session.
+      if (request.isWebApp && refreshToken.isEmpty) {
+        final sessionId = _getSessionIdFromMetadata(call);
+        if (sessionId != null && sessionId.isNotEmpty) {
+          final session = await databaseMiddleware(_poolService, (db) async {
+            return await db
+                .collection('web_sessions')
+                .findOne({'_id': sessionId});
+          });
+
+          if (session != null) {
+            final sessionRefreshToken = session['refreshToken'] as String?;
+            if (sessionRefreshToken != null && sessionRefreshToken.isNotEmpty) {
+              refreshToken = sessionRefreshToken;
+              log.debug('Using refresh token from session',
+                  extra: {'sessionId': sessionId});
+            }
+          }
+        }
+      }
+
+      if (refreshToken.isEmpty) {
+        throw GrpcError.unauthenticated('refresh token is empty');
+      }
+
+      final jwtRefresh = JsonWebToken.parse(refreshToken);
       if (!jwtRefresh.verify()) {
         throw GrpcError.unauthenticated('invalid jwtRefresh ');
       }
@@ -836,14 +864,14 @@ class FenceService extends FenceServiceBase {
             //'firmId': userPrivate.firmId
           });
       // refresh token only contains userId
-      final resfreshToken = jwt.sign();
+      final newResfreshToken = jwt.sign();
       await _updateUserLastSignIn(userPrivate.userId);
 
       // Handle web app mode: store session in MongoDB
       if (request.isWebApp) {
         final sessionId = await _createWebSession(
           accessToken: accessToken,
-          refreshToken: resfreshToken,
+          refreshToken: newResfreshToken,
           userId: userPrivate.userId,
           log: log,
         );
@@ -862,7 +890,7 @@ class FenceService extends FenceServiceBase {
 
       // Standard (non-web) mode: return tokens directly
       final tokens =
-          Tokens(accessToken: accessToken, refreshToken: resfreshToken);
+          Tokens(accessToken: accessToken, refreshToken: newResfreshToken);
       log.logRpcExit('authenticateWithRefreshToken');
       return tokens;
     } on GrpcError catch (e) {
@@ -1721,8 +1749,23 @@ class FenceService extends FenceServiceBase {
     return databaseMiddleware<List<Map<String, dynamic>>>(_poolService,
         (db) async {
       final boutiqueCollection = db.collection(boutiqueCollectionName);
-      final chainsMongo =
-          await boutiqueCollection.find(where.eq('firmId', firmId)).toList();
+      print('DEBUG: _readChainsMongoFromDb fetching for firmId: $firmId');
+      final chainsMongo = await boutiqueCollection
+          .find(where.eq('firmId', firmId).limit(100))
+          .toList();
+      print('DEBUG: _readChainsMongoFromDb fetched ${chainsMongo.length} chains');
+
+      // We manually strip logos to avoid huge payloads and BsonBinary parsing issues
+      // which are known to cause 502/CORS errors in gRPC-web
+      for (final chain in chainsMongo) {
+        if (chain.containsKey('boutiques') && chain['boutiques'] is List) {
+          for (final boutique in chain['boutiques']) {
+            if (boutique is Map) {
+              boutique.remove('logo');
+            }
+          }
+        }
+      }
       return chainsMongo.cast<Map<String, dynamic>>();
     });
   }
@@ -1739,37 +1782,46 @@ class FenceService extends FenceServiceBase {
     }
     final chains = <Chain>[];
     for (final chainMongo in chainsMongo) {
-      final chainTemp = Chain.create()
-        ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
+      try {
+        final chainTemp = Chain.create()
+          ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
 
-      if (filterActiveChains && chainTemp.isDeleted) continue;
+        if (filterActiveChains && chainTemp.isDeleted) continue;
 
-      final boutiques = filterActiveBoutiques
-          ? chainTemp.boutiques.where((b) => !b.isDeleted).toList()
-          : chainTemp.boutiques;
+        final boutiques = filterActiveBoutiques
+            ? chainTemp.boutiques.where((b) => !b.isDeleted).toList()
+            : chainTemp.boutiques;
 
-      final chain = Chain.create()
-        ..chainId = chainTemp.chainId
-        ..firmId = chainTemp.firmId
-        ..name = chainTemp.name
-        ..lastUpdateTimestampUTC = chainTemp.lastUpdateTimestampUTC
-        ..lastUpdatedByuserId = chainTemp.lastUpdatedByuserId
-        ..creationDateUTC = chainTemp.creationDateUTC
-        ..boutiques.addAll(boutiques)
-        ..isDeleted = chainTemp.isDeleted
-        ..deletedBy = chainTemp.deletedBy
-        ..restoredBy = chainTemp.restoredBy;
-      if (chainTemp.hasCurrency()) {
-        chain.currency = chainTemp.currency;
+        final chain = Chain.create()
+          ..chainId = chainTemp.chainId
+          ..firmId = chainTemp.firmId
+          ..name = chainTemp.name
+          ..lastUpdateTimestampUTC = chainTemp.lastUpdateTimestampUTC
+          ..lastUpdatedByuserId = chainTemp.lastUpdatedByuserId
+          ..creationDateUTC = chainTemp.creationDateUTC
+          ..boutiques.addAll(boutiques)
+          ..isDeleted = chainTemp.isDeleted
+          ..deletedBy = chainTemp.deletedBy
+          ..restoredBy = chainTemp.restoredBy;
+        if (chainTemp.hasCurrency()) {
+          chain.currency = chainTemp.currency;
+        }
+        if (chainTemp.hasIsDualCurrencyEnabled()) {
+          chain.isDualCurrencyEnabled = chainTemp.isDualCurrencyEnabled;
+        }
+        if (chainTemp.hasSecondaryDisplayCurrency()) {
+          chain.secondaryDisplayCurrency = chainTemp.secondaryDisplayCurrency;
+        }
+
+        chains.add(chain);
+      } catch (e, stackTrace) {
+        print('DEBUG: _chainsMongoToChainsProto failed for chain ${chainMongo['chainId']}: $e');
+        _logger.error('Failed to parse chain document from MongoDB',
+            extra: {'chainId': chainMongo['chainId']},
+            error: e,
+            stackTrace: stackTrace);
+        // Continue to next chain instead of failing the whole request
       }
-      if (chainTemp.hasIsDualCurrencyEnabled()) {
-        chain.isDualCurrencyEnabled = chainTemp.isDualCurrencyEnabled;
-      }
-      if (chainTemp.hasSecondaryDisplayCurrency()) {
-        chain.secondaryDisplayCurrency = chainTemp.secondaryDisplayCurrency;
-      }
-
-      chains.add(chain);
     }
     return chains;
   }
@@ -1813,6 +1865,8 @@ class FenceService extends FenceServiceBase {
           throw GrpcError.notFound(
               'firm/chain not found firmId: $firmId chainId:$chainId');
         }
+        // Recursively sanitize to remove any remaining _id or binary data
+        _sanitizeMongoDoc(chainMongo);
         return Chain.create()
           ..mergeFromProto3Json(chainMongo, ignoreUnknownFields: true);
       } on GrpcError catch (e) {
@@ -2637,31 +2691,47 @@ class FenceService extends FenceServiceBase {
       ServiceCall? call, Empty request) async {
     final log = _logger.withContext(call);
     log.logRpcEntry('readAllChains');
+    print('DEBUG: readAllChains entry');
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
     if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
         false) {
+      print('DEBUG: readAllChains permission denied');
       throw GrpcError.permissionDenied(
           'user does not have right to read chain');
     }
 
     try {
+      final userPermission = isMock
+          ? userPermissionIfTest ?? UserPermissions()
+          : call.bearer.userPermissions;
+      if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
+          false) {
+        print('DEBUG: readAllChains permission denied');
+        throw GrpcError.permissionDenied(
+            'user does not have right to read chain');
+      }
+
       final chains = _filterChainsByAccess(
         userPermission,
         await _readAllChainsAndProtoThem(userPermission),
       );
+      print('DEBUG: readAllChains success, count: ${chains.length}');
       log.logRpcExit('readAllChains',
           resultData: {'chainCount': chains.length});
       return ReadAllChainsResponse(chains: chains);
     } on GrpcError catch (e) {
+      print('DEBUG: readAllChains GrpcError: ${e.code} ${e.message}');
       log.logRpcError('readAllChains', e);
       rethrow;
     } on MongoDartError catch (e) {
+      print('DEBUG: readAllChains MongoDartError: $e');
       log.logRpcError('readAllChains', e,
           extra: {'errorType': 'MongoDartError'});
       rethrow;
     } catch (e, st) {
+      print('DEBUG: readAllChains unexpected error: $e');
       log.logRpcError('readAllChains', e, stackTrace: st);
       rethrow;
     }
@@ -3595,4 +3665,24 @@ class FenceService extends FenceServiceBase {
   }
 
   // Email-related methods removed - preserved in lib/src/mail/ folder for future use
+}
+
+void _sanitizeMongoDoc(Map<String, dynamic> doc) {
+  doc.remove('_id');
+  for (final key in doc.keys.toList()) {
+    final value = doc[key];
+    if (value is Map<String, dynamic>) {
+      _sanitizeMongoDoc(value);
+    } else if (value is List) {
+      for (final item in value) {
+        if (item is Map<String, dynamic>) {
+          _sanitizeMongoDoc(item);
+        }
+      }
+    }
+    // Remove known problematic/huge fields
+    if (key == 'logo') {
+      doc.remove(key);
+    }
+  }
 }

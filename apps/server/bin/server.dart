@@ -21,8 +21,9 @@ import 'package:stats_service/stats_service.dart';
 // * in a production environment, it’s generally not recommended to use * due to security concern
 // ? consider adding weebi domain cors here ?
 FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
+  final origin = call.clientMetadata?['origin'] ?? '*';
   call.headers!.addAll({
-    HttpHeaders.accessControlAllowOriginHeader: '*',
+    HttpHeaders.accessControlAllowOriginHeader: origin,
     HttpHeaders.accessControlAllowMethodsHeader:
         'GET, POST, PUT, DELETE, OPTIONS',
     HttpHeaders.accessControlAllowHeadersHeader: '*',
@@ -77,8 +78,8 @@ void main(List<String> arguments) async {
   try {
 //    final pool = ConnectionPool(5, () => Db(AppEnvironment.mongoDbUri));
     //  final db = await pool.connect();
-    // Auth first so loggingInterceptor can extract userId/firmId from bearer
-    final interceptors = [authInterceptor, loggingInterceptor, corsInterceptor];
+    // corsInterceptor MUST be first to ensure CORS headers are added even if auth fails
+    final interceptors = [corsInterceptor, authInterceptor, loggingInterceptor];
 
     final articleService = ArticleService(poolService);
     final contactService = ContactService(poolService);
