@@ -3681,7 +3681,7 @@ void _sanitizeMongoDoc(Map<String, dynamic> doc) {
       }
     }
     // Remove known problematic/huge fields
-    if (key == 'logo' || key == 'devices') {
+    if (key == 'logo') {
       doc.remove(key);
     }
   }
