@@ -645,6 +645,60 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// Updates an existing web session with refreshed tokens.
+  Future<void> _updateWebSession({
+    required String sessionId,
+    required String accessToken,
+    required String refreshToken,
+    WeebiLoggerWithContext? log,
+  }) async {
+    return databaseMiddleware(_poolService, (db) async {
+      try {
+        final now = DateTime.now();
+        final expiresAt = now.add(const Duration(days: 1));
+
+        await db.collection('web_sessions').update(
+              where.eq('_id', sessionId),
+              ModifierBuilder()
+                  .set('jwt', accessToken)
+                  .set('refreshToken', refreshToken)
+                  .set('expiresAt', expiresAt)
+                  .set('lastAccessed', now.toIso8601String()),
+            );
+
+        final updated = await db
+            .collection('web_sessions')
+            .findOne(where.eq('_id', sessionId));
+        if (updated == null) {
+          throw GrpcError.notFound('Session not found');
+        }
+
+        if (log != null) {
+          log.debug('Web session updated in MongoDB', extra: {
+            'sessionId': sessionId,
+            'expiresAt': expiresAt.toIso8601String(),
+          });
+        } else {
+          _logger.debug('Web session updated in MongoDB', extra: {
+            'sessionId': sessionId,
+            'expiresAt': expiresAt.toIso8601String(),
+          });
+        }
+      } catch (e) {
+        if (log != null) {
+          log.error('Failed to update web session', error: e, extra: {
+            'sessionId': sessionId,
+          });
+        } else {
+          _logger.error('Failed to update web session', error: e, extra: {
+            'sessionId': sessionId,
+          });
+        }
+        rethrow;
+      }
+    });
+  }
+
   /// Generates a cryptographically secure session ID
   String _generateSessionId() {
     // Generate a UUID-like session ID using random bytes
@@ -869,6 +923,27 @@ class FenceService extends FenceServiceBase {
 
       // Handle web app mode: store session in MongoDB
       if (request.isWebApp) {
+        final existingSessionId = _getSessionIdFromMetadata(call);
+        if (existingSessionId != null && existingSessionId.isNotEmpty) {
+          await _updateWebSession(
+            sessionId: existingSessionId,
+            accessToken: accessToken,
+            refreshToken: newResfreshToken,
+            log: log,
+          );
+
+          log.info('Web session refreshed (updated)', extra: {
+            'sessionId': existingSessionId,
+            'userId': userPrivate.userId,
+          });
+
+          log.logRpcExit('authenticateWithRefreshToken');
+          return Tokens(
+            sessionId: existingSessionId,
+            mustChangePassword: false,
+          );
+        }
+
         final sessionId = await _createWebSession(
           accessToken: accessToken,
           refreshToken: newResfreshToken,
@@ -876,7 +951,7 @@ class FenceService extends FenceServiceBase {
           log: log,
         );
 
-        log.info('Web session refreshed', extra: {
+        log.info('Web session refreshed (created)', extra: {
           'sessionId': sessionId,
           'userId': userPrivate.userId,
         });

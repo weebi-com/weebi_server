@@ -42,6 +42,42 @@ void main() async {
     poolService.release(db);
   });
 
+  test('authenticateWithRefreshToken updates existing web session instead of creating a new one',
+      () async {
+    final tokens = await fenceService.authenticateWithCredentials(
+      null,
+      Credentials(
+        mail: Dummy.userPublic.mail,
+        password: '1234',
+        isWebApp: true,
+      ),
+    );
+    expect(tokens.sessionId.isNotEmpty, isTrue);
+    final sessionId = tokens.sessionId;
+
+    final refreshed = await fenceService.authenticateWithRefreshToken(
+      ServiceCallTest('', sessionId: sessionId),
+      RefreshToken(isWebApp: true),
+    );
+
+    expect(refreshed.sessionId, equals(sessionId));
+
+    final db = await poolService.acquire();
+    final sessions = await db
+        .collection(_webSessionsCollection)
+        .find(where.eq('userId', Dummy.userPublic.userId))
+        .toList();
+    poolService.release(db);
+
+    expect(sessions.length, equals(1));
+    expect(sessions.single['_id'], equals(sessionId));
+
+    await fenceService.logout(
+      ServiceCallTest('', sessionId: sessionId),
+      Empty(),
+    );
+  });
+
   test('logout deletes session: create session → logout with x-session-id → assert deleted',
       () async {
     // 1. Authenticate as web app to create a session
