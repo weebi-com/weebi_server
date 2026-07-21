@@ -3,11 +3,12 @@ import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:io';
 import 'dart:convert';
-import 'package:models_weebi/utils.dart' show RegExpWeebi;
 import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:collection/collection.dart';
+// ignore: unnecessary_import
+import 'package:protos_weebi/utils.dart' show RegExpWeebi;
 // ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
