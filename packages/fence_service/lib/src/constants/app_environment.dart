@@ -40,6 +40,16 @@ class AppEnvironment {
   static String? get stripeSecretKey =>
       Platform.environment['STRIPE_SECRET_KEY'];
 
+  // PawaPay Merchant API (billing_service create/fetch checkout)
+  static String? get pawapayApiToken =>
+      Platform.environment['PAWAPAY_API_TOKEN'];
+
+  static String? get pawapayApiBaseUrl {
+    final v = Platform.environment['PAWAPAY_API_BASE_URL']?.trim();
+    if (v != null && v.isNotEmpty) return v;
+    return null;
+  }
+
   // weebi_express service configuration
   static String? get weebiExpressBaseUrl {
     return Platform.environment['WEEBI_EXPRESS_BASE_URL'];
@@ -52,6 +62,22 @@ class AppEnvironment {
       return expressSecret;
     }
     return jwtSecretKey;
+  }
+
+  /// Public webapp origin used to build App->Web magic-link URLs.
+  /// Example: https://portal.weebi.com
+  static String get webappBaseUrl {
+    final url = Platform.environment['WEBAPP_BASE_URL']?.trim();
+    if (url != null && url.isNotEmpty) {
+      return url;
+    }
+    if (_isTestOrCI) {
+      return 'https://portal.weebi.test';
+    }
+    throw Exception(
+      'Missing required environment variable: WEBAPP_BASE_URL\n'
+      'This is required to build createWebBridgeLink URLs for the web portal',
+    );
   }
 
   // Envoy BFF configuration

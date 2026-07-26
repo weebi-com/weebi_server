@@ -119,5 +119,32 @@ void main() {
 
       expect(result.purchases.map((e) => e['year']), [2025]);
     });
+
+    test('is idempotent for the same pawapayCheckoutId', () {
+      final existing = [
+        buildAccountingYearPurchase(
+          year: 2025,
+          pawapayCheckoutId: 'pp_old',
+          paymentProvider: 'PAYMENT_PROVIDER_PAWAPAY',
+          paidAtUTC: DateTime.utc(2025, 1, 1),
+          amountCents: 290,
+          currency: 'eur',
+        ),
+      ];
+      final purchase = buildAccountingYearPurchase(
+        year: 2026,
+        pawapayCheckoutId: 'pp_old',
+        paymentProvider: 'PAYMENT_PROVIDER_PAWAPAY',
+        paidAtUTC: DateTime.utc(2025, 3, 1),
+        amountCents: 290,
+        currency: 'eur',
+      );
+      final result = mergeAccountingYearPurchase(
+        existing: existing,
+        purchase: purchase,
+      );
+      expect(result.alreadyFulfilled, isTrue);
+      expect(result.purchases, hasLength(1));
+    });
   });
 }

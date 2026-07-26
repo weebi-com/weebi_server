@@ -67,7 +67,7 @@ const Firm$json = {
     {'1': 'currency', '3': 18, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
     {'1': 'isDualCurrencyEnabled', '3': 19, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 20, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
-    {'1': 'closed_years', '3': 21, '4': 3, '5': 5, '10': 'closedYears'},
+    {'1': 'closed_years', '3': 21, '4': 3, '5': 11, '6': '.weebi.boutique.ClosedYearPb', '10': 'closedYears'},
   ],
   '3': [Firm_ProviderCustomerIdsEntry$json],
   '8': [
@@ -109,10 +109,11 @@ final $typed_data.Uint8List firmDescriptor = $convert.base64Decode(
     'VkaXRCYWxhbmNlQ2VudHMYESABKAVSGnJlZmVycmFsQ3JlZGl0QmFsYW5jZUNlbnRzEh8KCGN1'
     'cnJlbmN5GBIgASgJSABSCGN1cnJlbmN5iAEBEjkKFWlzRHVhbEN1cnJlbmN5RW5hYmxlZBgTIA'
     'EoCEgBUhVpc0R1YWxDdXJyZW5jeUVuYWJsZWSIAQESPwoYc2Vjb25kYXJ5RGlzcGxheUN1cnJl'
-    'bmN5GBQgASgJSAJSGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeYgBARIhCgxjbG9zZWRfeWVhcn'
-    'MYFSADKAVSC2Nsb3NlZFllYXJzGkYKGFByb3ZpZGVyQ3VzdG9tZXJJZHNFbnRyeRIQCgNrZXkY'
-    'ASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCVIFdmFsdWU6AjgBQgsKCV9jdXJyZW5jeUIYChZfaX'
-    'NEdWFsQ3VycmVuY3lFbmFibGVkQhsKGV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3k=');
+    'bmN5GBQgASgJSAJSGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeYgBARI/CgxjbG9zZWRfeWVhcn'
+    'MYFSADKAsyHC53ZWViaS5ib3V0aXF1ZS5DbG9zZWRZZWFyUGJSC2Nsb3NlZFllYXJzGkYKGFBy'
+    'b3ZpZGVyQ3VzdG9tZXJJZHNFbnRyeRIQCgNrZXkYASABKAlSA2tleRIUCgV2YWx1ZRgCIAEoCV'
+    'IFdmFsdWU6AjgBQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3VycmVuY3lFbmFibGVkQhsKGV9z'
+    'ZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3k=');
 
 @$core.Deprecated('Use createFirmRequestDescriptor instead')
 const CreateFirmRequest$json = {

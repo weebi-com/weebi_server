@@ -76,17 +76,18 @@ const TicketSellTotalsPb$json = {
 /// Descriptor for `TicketSellTotalsPb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List ticketSellTotalsPbDescriptor = $convert.base64Decode(
     'ChJUaWNrZXRTZWxsVG90YWxzUGISPgoKaXRlbXNfb25seRgBIAEoAUIfirUYG2l0ZW1zLnN1bS'
-    'hpLCBpLnRvdGFsX3ByaWNlKVIJaXRlbXNPbmx5EkEKCXByb21vX3ZhbBgCIAEoAUIkirUYIHJv'
-    'dW5kNChpdGVtc19vbmx5ICogcHJvbW8gLyAxMDApUghwcm9tb1ZhbBJDCg1tYXJrZG93bnNfdm'
-    'FsGAMgASgBQh6KtRgacHJvbW9fdmFsICsgZGlzY291bnRBbW91bnRSDG1hcmtkb3duc1ZhbBJl'
-    'Ch9tYXJrZG93bnNfaW5jbHVkZWRfdGF4X2V4Y2x1ZGVkGAQgASgBQh6KtRgaaXRlbXNfb25seS'
-    'AtIG1hcmtkb3duc192YWxSHG1hcmtkb3duc0luY2x1ZGVkVGF4RXhjbHVkZWQShAEKC3RheGVz'
-    'X3ZhbHVlGAUgASgBQmOKtRhfdGF4ZS5wZXJjZW50YWdlID4gMC4wID8gcm91bmQ0KG1hcmtkb3'
-    'duc19pbmNsdWRlZF90YXhfZXhjbHVkZWQgKiAodGF4ZS5wZXJjZW50YWdlIC8gMTAwKSkgOiAw'
-    'LjBSCnRheGVzVmFsdWUSbgoabWFya2Rvd25zX2FuZF90YXhfaW5jbHVkZWQYBiABKAFCMYq1GC'
-    '1tYXJrZG93bnNfaW5jbHVkZWRfdGF4X2V4Y2x1ZGVkICsgdGF4ZXNfdmFsdWVSF21hcmtkb3du'
-    'c0FuZFRheEluY2x1ZGVkEl4KBmNoYW5nZRgHIAEoAUJGirUYQnRpY2tldFR5cGUgPT0gJ3NlbG'
-    'wnID8gcmVjZWl2ZWQgLSBtYXJrZG93bnNfYW5kX3RheF9pbmNsdWRlZCA6IDAuMFIGY2hhbmdl');
+    'hpLCBpLnRvdGFsX3ByaWNlKVIJaXRlbXNPbmx5EkUKCXByb21vX3ZhbBgCIAEoAUIoirUYJHJv'
+    'dW5kTW9uZXkoaXRlbXNfb25seSAqIHByb21vIC8gMTAwKVIIcHJvbW9WYWwSQwoNbWFya2Rvd2'
+    '5zX3ZhbBgDIAEoAUIeirUYGnByb21vX3ZhbCArIGRpc2NvdW50QW1vdW50UgxtYXJrZG93bnNW'
+    'YWwScQofbWFya2Rvd25zX2luY2x1ZGVkX3RheF9leGNsdWRlZBgEIAEoAUIqirUYJnJvdW5kTW'
+    '9uZXkoaXRlbXNfb25seSAtIG1hcmtkb3duc192YWwpUhxtYXJrZG93bnNJbmNsdWRlZFRheEV4'
+    'Y2x1ZGVkEogBCgt0YXhlc192YWx1ZRgFIAEoAUJnirUYY3RheGUucGVyY2VudGFnZSA+IDAuMC'
+    'A/IHJvdW5kTW9uZXkobWFya2Rvd25zX2luY2x1ZGVkX3RheF9leGNsdWRlZCAqICh0YXhlLnBl'
+    'cmNlbnRhZ2UgLyAxMDApKSA6IDAuMFIKdGF4ZXNWYWx1ZRJ6ChptYXJrZG93bnNfYW5kX3RheF'
+    '9pbmNsdWRlZBgGIAEoAUI9irUYOXJvdW5kTW9uZXkobWFya2Rvd25zX2luY2x1ZGVkX3RheF9l'
+    'eGNsdWRlZCArIHRheGVzX3ZhbHVlKVIXbWFya2Rvd25zQW5kVGF4SW5jbHVkZWQSXgoGY2hhbm'
+    'dlGAcgASgBQkaKtRhCdGlja2V0VHlwZSA9PSAnc2VsbCcgPyByZWNlaXZlZCAtIG1hcmtkb3du'
+    'c19hbmRfdGF4X2luY2x1ZGVkIDogMC4wUgZjaGFuZ2U=');
 
 @$core.Deprecated('Use ticketSpendTotalsPbDescriptor instead')
 const TicketSpendTotalsPb$json = {
@@ -105,18 +106,18 @@ const TicketSpendTotalsPb$json = {
 /// Descriptor for `TicketSpendTotalsPb`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List ticketSpendTotalsPbDescriptor = $convert.base64Decode(
     'ChNUaWNrZXRTcGVuZFRvdGFsc1BiEj0KCml0ZW1zX29ubHkYASABKAFCHoq1GBppdGVtcy5zdW'
-    '0oaSwgaS50b3RhbF9jb3N0KVIJaXRlbXNPbmx5EkEKCXByb21vX3ZhbBgCIAEoAUIkirUYIHJv'
-    'dW5kNChpdGVtc19vbmx5ICogcHJvbW8gLyAxMDApUghwcm9tb1ZhbBJDCg1tYXJrZG93bnNfdm'
-    'FsGAMgASgBQh6KtRgacHJvbW9fdmFsICsgZGlzY291bnRBbW91bnRSDG1hcmtkb3duc1ZhbBJl'
-    'Ch9tYXJrZG93bnNfaW5jbHVkZWRfdGF4X2V4Y2x1ZGVkGAQgASgBQh6KtRgaaXRlbXNfb25seS'
-    'AtIG1hcmtkb3duc192YWxSHG1hcmtkb3duc0luY2x1ZGVkVGF4RXhjbHVkZWQShAEKC3RheGVz'
-    'X3ZhbHVlGAUgASgBQmOKtRhfdGF4ZS5wZXJjZW50YWdlID4gMC4wID8gcm91bmQ0KG1hcmtkb3'
-    'duc19pbmNsdWRlZF90YXhfZXhjbHVkZWQgKiAodGF4ZS5wZXJjZW50YWdlIC8gMTAwKSkgOiAw'
-    'LjBSCnRheGVzVmFsdWUSbgoabWFya2Rvd25zX2FuZF90YXhfaW5jbHVkZWQYBiABKAFCMYq1GC'
-    '1tYXJrZG93bnNfaW5jbHVkZWRfdGF4X2V4Y2x1ZGVkICsgdGF4ZXNfdmFsdWVSF21hcmtkb3du'
-    'c0FuZFRheEluY2x1ZGVkEl8KBmNoYW5nZRgHIAEoAUJHirUYQ3RpY2tldFR5cGUgPT0gJ3NwZW'
-    '5kJyA/IHJlY2VpdmVkIC0gbWFya2Rvd25zX2FuZF90YXhfaW5jbHVkZWQgOiAwLjBSBmNoYW5n'
-    'ZQ==');
+    '0oaSwgaS50b3RhbF9jb3N0KVIJaXRlbXNPbmx5EkUKCXByb21vX3ZhbBgCIAEoAUIoirUYJHJv'
+    'dW5kTW9uZXkoaXRlbXNfb25seSAqIHByb21vIC8gMTAwKVIIcHJvbW9WYWwSQwoNbWFya2Rvd2'
+    '5zX3ZhbBgDIAEoAUIeirUYGnByb21vX3ZhbCArIGRpc2NvdW50QW1vdW50UgxtYXJrZG93bnNW'
+    'YWwScQofbWFya2Rvd25zX2luY2x1ZGVkX3RheF9leGNsdWRlZBgEIAEoAUIqirUYJnJvdW5kTW'
+    '9uZXkoaXRlbXNfb25seSAtIG1hcmtkb3duc192YWwpUhxtYXJrZG93bnNJbmNsdWRlZFRheEV4'
+    'Y2x1ZGVkEogBCgt0YXhlc192YWx1ZRgFIAEoAUJnirUYY3RheGUucGVyY2VudGFnZSA+IDAuMC'
+    'A/IHJvdW5kTW9uZXkobWFya2Rvd25zX2luY2x1ZGVkX3RheF9leGNsdWRlZCAqICh0YXhlLnBl'
+    'cmNlbnRhZ2UgLyAxMDApKSA6IDAuMFIKdGF4ZXNWYWx1ZRJ6ChptYXJrZG93bnNfYW5kX3RheF'
+    '9pbmNsdWRlZBgGIAEoAUI9irUYOXJvdW5kTW9uZXkobWFya2Rvd25zX2luY2x1ZGVkX3RheF9l'
+    'eGNsdWRlZCArIHRheGVzX3ZhbHVlKVIXbWFya2Rvd25zQW5kVGF4SW5jbHVkZWQSXwoGY2hhbm'
+    'dlGAcgASgBQkeKtRhDdGlja2V0VHlwZSA9PSAnc3BlbmQnID8gcmVjZWl2ZWQgLSBtYXJrZG93'
+    'bnNfYW5kX3RheF9pbmNsdWRlZCA6IDAuMFIGY2hhbmdl');
 
 @$core.Deprecated('Use ticketCoverTotalPbDescriptor instead')
 const TicketCoverTotalPb$json = {

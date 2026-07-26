@@ -32,7 +32,7 @@ class Chain extends $pb.GeneratedMessage {
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
     $23.BusinessRules? businessRules,
-    $core.Iterable<$core.int>? closedYears,
+    $core.Iterable<$23.ClosedYearPb>? closedYears,
   }) {
     final result = create();
     if (chainId != null) {
@@ -101,7 +101,7 @@ class Chain extends $pb.GeneratedMessage {
     ..aOB(12, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(13, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..aOM<$23.BusinessRules>(14, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: $23.BusinessRules.create)
-    ..p<$core.int>(15, _omitFieldNames ? '' : 'closedYears', $pb.PbFieldType.K3)
+    ..pc<$23.ClosedYearPb>(15, _omitFieldNames ? '' : 'closedYears', $pb.PbFieldType.PM, subBuilder: $23.ClosedYearPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -255,7 +255,7 @@ class Chain extends $pb.GeneratedMessage {
 
   /// / Soft-closed calendar years for SMT (waterfall with firm + boutique).
   @$pb.TagNumber(15)
-  $core.List<$core.int> get closedYears => $_getList(14);
+  $core.List<$23.ClosedYearPb> get closedYears => $_getList(14);
 }
 
 class Chains extends $pb.GeneratedMessage {

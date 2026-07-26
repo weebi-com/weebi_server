@@ -23,20 +23,33 @@ int validateFiscalYear(int year) {
 
 Map<String, dynamic> buildAccountingYearPurchase({
   required int year,
-  required String stripeCheckoutSessionId,
-  required String stripePriceId,
   required DateTime paidAtUTC,
   required int amountCents,
   required String currency,
+  String stripeCheckoutSessionId = '',
+  String stripePriceId = '',
+  String pawapayCheckoutId = '',
+  String paymentProvider = '',
 }) {
-  return {
+  final map = <String, dynamic>{
     'year': validateFiscalYear(year),
-    'stripeCheckoutSessionId': stripeCheckoutSessionId,
-    'stripePriceId': stripePriceId,
     'paidAtUTC': paidAtUTC.toUtc().toIso8601String(),
     'amountCents': amountCents,
     'currency': currency,
   };
+  if (stripeCheckoutSessionId.isNotEmpty) {
+    map['stripeCheckoutSessionId'] = stripeCheckoutSessionId;
+  }
+  if (stripePriceId.isNotEmpty) {
+    map['stripePriceId'] = stripePriceId;
+  }
+  if (pawapayCheckoutId.isNotEmpty) {
+    map['pawapayCheckoutId'] = pawapayCheckoutId;
+  }
+  if (paymentProvider.isNotEmpty) {
+    map['paymentProvider'] = paymentProvider;
+  }
+  return map;
 }
 
 class MergeAccountingYearPurchaseResult {
@@ -55,11 +68,19 @@ MergeAccountingYearPurchaseResult mergeAccountingYearPurchase({
   required Map<String, dynamic> purchase,
 }) {
   final sessionId = purchase['stripeCheckoutSessionId'] as String? ?? '';
+  final pawapayId = purchase['pawapayCheckoutId'] as String? ?? '';
   final year = (purchase['year'] as num?)?.toInt();
 
   for (final e in existing) {
     final existingSession = e['stripeCheckoutSessionId'] as String? ?? '';
     if (sessionId.isNotEmpty && existingSession == sessionId) {
+      return MergeAccountingYearPurchaseResult(
+        purchases: List<Map<String, dynamic>>.from(existing),
+        alreadyFulfilled: true,
+      );
+    }
+    final existingPawapay = e['pawapayCheckoutId'] as String? ?? '';
+    if (pawapayId.isNotEmpty && existingPawapay == pawapayId) {
       return MergeAccountingYearPurchaseResult(
         purchases: List<Map<String, dynamic>>.from(existing),
         alreadyFulfilled: true,

@@ -313,6 +313,49 @@ const SessionRequest$json = {
 final $typed_data.Uint8List sessionRequestDescriptor = $convert.base64Decode(
     'Cg5TZXNzaW9uUmVxdWVzdBIcCglzZXNzaW9uSWQYASABKAlSCXNlc3Npb25JZA==');
 
+@$core.Deprecated('Use createWebBridgeLinkRequestDescriptor instead')
+const CreateWebBridgeLinkRequest$json = {
+  '1': 'CreateWebBridgeLinkRequest',
+  '2': [
+    {'1': 'productId', '3': 1, '4': 1, '5': 9, '10': 'productId'},
+    {'1': 'fiscalYear', '3': 2, '4': 1, '5': 5, '10': 'fiscalYear'},
+    {'1': 'returnDeepLink', '3': 3, '4': 1, '5': 9, '10': 'returnDeepLink'},
+  ],
+};
+
+/// Descriptor for `CreateWebBridgeLinkRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createWebBridgeLinkRequestDescriptor = $convert.base64Decode(
+    'ChpDcmVhdGVXZWJCcmlkZ2VMaW5rUmVxdWVzdBIcCglwcm9kdWN0SWQYASABKAlSCXByb2R1Y3'
+    'RJZBIeCgpmaXNjYWxZZWFyGAIgASgFUgpmaXNjYWxZZWFyEiYKDnJldHVybkRlZXBMaW5rGAMg'
+    'ASgJUg5yZXR1cm5EZWVwTGluaw==');
+
+@$core.Deprecated('Use createWebBridgeLinkResponseDescriptor instead')
+const CreateWebBridgeLinkResponse$json = {
+  '1': 'CreateWebBridgeLinkResponse',
+  '2': [
+    {'1': 'url', '3': 1, '4': 1, '5': 9, '10': 'url'},
+    {'1': 'token', '3': 2, '4': 1, '5': 9, '10': 'token'},
+    {'1': 'expiresAtUnix', '3': 3, '4': 1, '5': 3, '10': 'expiresAtUnix'},
+  ],
+};
+
+/// Descriptor for `CreateWebBridgeLinkResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createWebBridgeLinkResponseDescriptor = $convert.base64Decode(
+    'ChtDcmVhdGVXZWJCcmlkZ2VMaW5rUmVzcG9uc2USEAoDdXJsGAEgASgJUgN1cmwSFAoFdG9rZW'
+    '4YAiABKAlSBXRva2VuEiQKDWV4cGlyZXNBdFVuaXgYAyABKANSDWV4cGlyZXNBdFVuaXg=');
+
+@$core.Deprecated('Use exchangeWebBridgeTokenRequestDescriptor instead')
+const ExchangeWebBridgeTokenRequest$json = {
+  '1': 'ExchangeWebBridgeTokenRequest',
+  '2': [
+    {'1': 'token', '3': 1, '4': 1, '5': 9, '10': 'token'},
+  ],
+};
+
+/// Descriptor for `ExchangeWebBridgeTokenRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List exchangeWebBridgeTokenRequestDescriptor = $convert.base64Decode(
+    'Ch1FeGNoYW5nZVdlYkJyaWRnZVRva2VuUmVxdWVzdBIUCgV0b2tlbhgBIAEoCVIFdG9rZW4=');
+
 @$core.Deprecated('Use tokensDescriptor instead')
 const Tokens$json = {
   '1': 'Tokens',

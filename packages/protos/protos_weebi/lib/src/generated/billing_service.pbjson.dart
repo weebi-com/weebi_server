@@ -203,6 +203,80 @@ final $typed_data.Uint8List fulfillFromStripeCheckoutSessionRequestDescriptor = 
     'NzaW9uSWQYASABKAlSEWNoZWNrb3V0U2Vzc2lvbklkEjQKFWxlZ2FsVGVybXNWZXJzaW9uRGF0'
     'ZRgCIAEoCVIVbGVnYWxUZXJtc1ZlcnNpb25EYXRl');
 
+@$core.Deprecated('Use createPawapayCheckoutRequestDescriptor instead')
+const CreatePawapayCheckoutRequest$json = {
+  '1': 'CreatePawapayCheckoutRequest',
+  '2': [
+    {'1': 'productId', '3': 1, '4': 1, '5': 9, '10': 'productId'},
+    {'1': 'returnUrl', '3': 2, '4': 1, '5': 9, '10': 'returnUrl'},
+    {'1': 'referralCode', '3': 3, '4': 1, '5': 9, '10': 'referralCode'},
+    {'1': 'creditAppliedCents', '3': 4, '4': 1, '5': 5, '10': 'creditAppliedCents'},
+    {'1': 'legalTermsVersionDate', '3': 5, '4': 1, '5': 9, '10': 'legalTermsVersionDate'},
+    {'1': 'fiscalYear', '3': 6, '4': 1, '5': 5, '10': 'fiscalYear'},
+  ],
+};
+
+/// Descriptor for `CreatePawapayCheckoutRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createPawapayCheckoutRequestDescriptor = $convert.base64Decode(
+    'ChxDcmVhdGVQYXdhcGF5Q2hlY2tvdXRSZXF1ZXN0EhwKCXByb2R1Y3RJZBgBIAEoCVIJcHJvZH'
+    'VjdElkEhwKCXJldHVyblVybBgCIAEoCVIJcmV0dXJuVXJsEiIKDHJlZmVycmFsQ29kZRgDIAEo'
+    'CVIMcmVmZXJyYWxDb2RlEi4KEmNyZWRpdEFwcGxpZWRDZW50cxgEIAEoBVISY3JlZGl0QXBwbG'
+    'llZENlbnRzEjQKFWxlZ2FsVGVybXNWZXJzaW9uRGF0ZRgFIAEoCVIVbGVnYWxUZXJtc1ZlcnNp'
+    'b25EYXRlEh4KCmZpc2NhbFllYXIYBiABKAVSCmZpc2NhbFllYXI=');
+
+@$core.Deprecated('Use createPawapayCheckoutResponseDescriptor instead')
+const CreatePawapayCheckoutResponse$json = {
+  '1': 'CreatePawapayCheckoutResponse',
+  '2': [
+    {'1': 'checkoutId', '3': 1, '4': 1, '5': 9, '10': 'checkoutId'},
+    {'1': 'redirectUrl', '3': 2, '4': 1, '5': 9, '10': 'redirectUrl'},
+  ],
+};
+
+/// Descriptor for `CreatePawapayCheckoutResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createPawapayCheckoutResponseDescriptor = $convert.base64Decode(
+    'Ch1DcmVhdGVQYXdhcGF5Q2hlY2tvdXRSZXNwb25zZRIeCgpjaGVja291dElkGAEgASgJUgpjaG'
+    'Vja291dElkEiAKC3JlZGlyZWN0VXJsGAIgASgJUgtyZWRpcmVjdFVybA==');
+
+@$core.Deprecated('Use fulfillLicenseFromPawapayRequestDescriptor instead')
+const FulfillLicenseFromPawapayRequest$json = {
+  '1': 'FulfillLicenseFromPawapayRequest',
+  '2': [
+    {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
+    {'1': 'licenseId', '3': 2, '4': 1, '5': 9, '10': 'licenseId'},
+    {'1': 'checkoutId', '3': 3, '4': 1, '5': 9, '10': 'checkoutId'},
+    {'1': 'productId', '3': 4, '4': 1, '5': 9, '10': 'productId'},
+    {'1': 'referralCode', '3': 5, '4': 1, '5': 9, '10': 'referralCode'},
+    {'1': 'creditAppliedCents', '3': 6, '4': 1, '5': 5, '10': 'creditAppliedCents'},
+    {'1': 'legalTermsVersionDate', '3': 7, '4': 1, '5': 9, '10': 'legalTermsVersionDate'},
+    {'1': 'fiscalYear', '3': 8, '4': 1, '5': 5, '10': 'fiscalYear'},
+  ],
+};
+
+/// Descriptor for `FulfillLicenseFromPawapayRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fulfillLicenseFromPawapayRequestDescriptor = $convert.base64Decode(
+    'CiBGdWxmaWxsTGljZW5zZUZyb21QYXdhcGF5UmVxdWVzdBIWCgZmaXJtSWQYASABKAlSBmZpcm'
+    '1JZBIcCglsaWNlbnNlSWQYAiABKAlSCWxpY2Vuc2VJZBIeCgpjaGVja291dElkGAMgASgJUgpj'
+    'aGVja291dElkEhwKCXByb2R1Y3RJZBgEIAEoCVIJcHJvZHVjdElkEiIKDHJlZmVycmFsQ29kZR'
+    'gFIAEoCVIMcmVmZXJyYWxDb2RlEi4KEmNyZWRpdEFwcGxpZWRDZW50cxgGIAEoBVISY3JlZGl0'
+    'QXBwbGllZENlbnRzEjQKFWxlZ2FsVGVybXNWZXJzaW9uRGF0ZRgHIAEoCVIVbGVnYWxUZXJtc1'
+    'ZlcnNpb25EYXRlEh4KCmZpc2NhbFllYXIYCCABKAVSCmZpc2NhbFllYXI=');
+
+@$core.Deprecated('Use fulfillFromPawapayCheckoutRequestDescriptor instead')
+const FulfillFromPawapayCheckoutRequest$json = {
+  '1': 'FulfillFromPawapayCheckoutRequest',
+  '2': [
+    {'1': 'checkoutId', '3': 1, '4': 1, '5': 9, '10': 'checkoutId'},
+    {'1': 'legalTermsVersionDate', '3': 2, '4': 1, '5': 9, '10': 'legalTermsVersionDate'},
+  ],
+};
+
+/// Descriptor for `FulfillFromPawapayCheckoutRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List fulfillFromPawapayCheckoutRequestDescriptor = $convert.base64Decode(
+    'CiFGdWxmaWxsRnJvbVBhd2FwYXlDaGVja291dFJlcXVlc3QSHgoKY2hlY2tvdXRJZBgBIAEoCV'
+    'IKY2hlY2tvdXRJZBI0ChVsZWdhbFRlcm1zVmVyc2lvbkRhdGUYAiABKAlSFWxlZ2FsVGVybXNW'
+    'ZXJzaW9uRGF0ZQ==');
+
 @$core.Deprecated('Use billingProductDescriptor instead')
 const BillingProduct$json = {
   '1': 'BillingProduct',
@@ -259,6 +333,8 @@ const AccountingYearPurchase$json = {
     {'1': 'paidAtUTC', '3': 4, '4': 1, '5': 9, '10': 'paidAtUTC'},
     {'1': 'amountCents', '3': 5, '4': 1, '5': 5, '10': 'amountCents'},
     {'1': 'currency', '3': 6, '4': 1, '5': 9, '10': 'currency'},
+    {'1': 'pawapayCheckoutId', '3': 7, '4': 1, '5': 9, '10': 'pawapayCheckoutId'},
+    {'1': 'paymentProvider', '3': 8, '4': 1, '5': 14, '6': '.weebi.license.PaymentProvider', '10': 'paymentProvider'},
   ],
 };
 
@@ -268,7 +344,9 @@ final $typed_data.Uint8List accountingYearPurchaseDescriptor = $convert.base64De
     'hlY2tvdXRTZXNzaW9uSWQYAiABKAlSF3N0cmlwZUNoZWNrb3V0U2Vzc2lvbklkEiQKDXN0cmlw'
     'ZVByaWNlSWQYAyABKAlSDXN0cmlwZVByaWNlSWQSHAoJcGFpZEF0VVRDGAQgASgJUglwYWlkQX'
     'RVVEMSIAoLYW1vdW50Q2VudHMYBSABKAVSC2Ftb3VudENlbnRzEhoKCGN1cnJlbmN5GAYgASgJ'
-    'UghjdXJyZW5jeQ==');
+    'UghjdXJyZW5jeRIsChFwYXdhcGF5Q2hlY2tvdXRJZBgHIAEoCVIRcGF3YXBheUNoZWNrb3V0SW'
+    'QSSAoPcGF5bWVudFByb3ZpZGVyGAggASgOMh4ud2VlYmkubGljZW5zZS5QYXltZW50UHJvdmlk'
+    'ZXJSD3BheW1lbnRQcm92aWRlcg==');
 
 @$core.Deprecated('Use readAccountingYearPurchasesResponseDescriptor instead')
 const ReadAccountingYearPurchasesResponse$json = {

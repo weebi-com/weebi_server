@@ -268,7 +268,7 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
     BusinessRules? businessRules,
-    $core.Iterable<$core.int>? closedYears,
+    $core.Iterable<ClosedYearPb>? closedYears,
   }) {
     final result = create();
     if (boutiqueId != null) {
@@ -359,7 +359,7 @@ class BoutiquePb extends $pb.GeneratedMessage {
     ..aOB(17, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(18, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..aOM<BusinessRules>(19, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: BusinessRules.create)
-    ..p<$core.int>(20, _omitFieldNames ? '' : 'closedYears', $pb.PbFieldType.K3)
+    ..pc<ClosedYearPb>(20, _omitFieldNames ? '' : 'closedYears', $pb.PbFieldType.PM, subBuilder: ClosedYearPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -572,9 +572,106 @@ class BoutiquePb extends $pb.GeneratedMessage {
   @$pb.TagNumber(19)
   BusinessRules ensureBusinessRules() => $_ensure(18);
 
-  /// / Calendar years soft-closed for SYSCOHADA SMT (client writes; server may ignore until fence supports it).
+  /// / Soft-closed calendar years for SYSCOHADA SMT (client writes; server may
+  /// / ignore until fence supports it). Carries résultat + treasury for ranking.
   @$pb.TagNumber(20)
-  $core.List<$core.int> get closedYears => $_getList(19);
+  $core.List<ClosedYearPb> get closedYears => $_getList(19);
+}
+
+/// / One soft-closed calendar year + minimal SMT snapshot (loan-potential hook).
+class ClosedYearPb extends $pb.GeneratedMessage {
+  factory ClosedYearPb({
+    $core.int? year,
+    $core.double? resultat,
+    $core.double? treasuryTotal,
+    $core.String? closedAt,
+  }) {
+    final result = create();
+    if (year != null) {
+      result.year = year;
+    }
+    if (resultat != null) {
+      result.resultat = resultat;
+    }
+    if (treasuryTotal != null) {
+      result.treasuryTotal = treasuryTotal;
+    }
+    if (closedAt != null) {
+      result.closedAt = closedAt;
+    }
+    return result;
+  }
+  ClosedYearPb._() : super();
+  factory ClosedYearPb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ClosedYearPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ClosedYearPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'year', $pb.PbFieldType.O3)
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'resultat', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'treasuryTotal', $pb.PbFieldType.OD)
+    ..aOS(4, _omitFieldNames ? '' : 'closedAt')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ClosedYearPb clone() => ClosedYearPb()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ClosedYearPb copyWith(void Function(ClosedYearPb) updates) => super.copyWith((message) => updates(message as ClosedYearPb)) as ClosedYearPb;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ClosedYearPb create() => ClosedYearPb._();
+  ClosedYearPb createEmptyInstance() => create();
+  static $pb.PbList<ClosedYearPb> createRepeated() => $pb.PbList<ClosedYearPb>();
+  @$core.pragma('dart2js:noInline')
+  static ClosedYearPb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ClosedYearPb>(create);
+  static ClosedYearPb? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get year => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set year($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasYear() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearYear() => clearField(1);
+
+  /// / Cash-basis SMT résultat (recettes − dépenses) for the closed year.
+  @$pb.TagNumber(2)
+  $core.double get resultat => $_getN(1);
+  @$pb.TagNumber(2)
+  set resultat($core.double v) { $_setDouble(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasResultat() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearResultat() => clearField(2);
+
+  /// / Sum of treasury closing balances (571+521+554) at 31/12.
+  @$pb.TagNumber(3)
+  $core.double get treasuryTotal => $_getN(2);
+  @$pb.TagNumber(3)
+  set treasuryTotal($core.double v) { $_setDouble(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasTreasuryTotal() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTreasuryTotal() => clearField(3);
+
+  /// / ISO-8601 when the year was closed (optional; client fill).
+  @$pb.TagNumber(4)
+  $core.String get closedAt => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set closedAt($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasClosedAt() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearClosedAt() => clearField(4);
 }
 
 /// since a firm may contain different chains with different business realities.
@@ -585,6 +682,7 @@ class BusinessRules extends $pb.GeneratedMessage {
     $core.bool? isNegativeStockGuardEnabled,
     $core.bool? isRecentTicketEditEnabled,
     $core.int? recentTicketEditWindowMinutes,
+    $core.bool? isVatSelectionEnabled,
   }) {
     final result = create();
     if (isNegativeStockGuardEnabled != null) {
@@ -596,6 +694,9 @@ class BusinessRules extends $pb.GeneratedMessage {
     if (recentTicketEditWindowMinutes != null) {
       result.recentTicketEditWindowMinutes = recentTicketEditWindowMinutes;
     }
+    if (isVatSelectionEnabled != null) {
+      result.isVatSelectionEnabled = isVatSelectionEnabled;
+    }
     return result;
   }
   BusinessRules._() : super();
@@ -606,6 +707,7 @@ class BusinessRules extends $pb.GeneratedMessage {
     ..aOB(1, _omitFieldNames ? '' : 'isNegativeStockGuardEnabled', protoName: 'isNegativeStockGuardEnabled')
     ..aOB(2, _omitFieldNames ? '' : 'isRecentTicketEditEnabled', protoName: 'isRecentTicketEditEnabled')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'recentTicketEditWindowMinutes', $pb.PbFieldType.O3, protoName: 'recentTicketEditWindowMinutes')
+    ..aOB(4, _omitFieldNames ? '' : 'isVatSelectionEnabled', protoName: 'isVatSelectionEnabled')
     ..hasRequiredFields = false
   ;
 
@@ -658,6 +760,16 @@ class BusinessRules extends $pb.GeneratedMessage {
   $core.bool hasRecentTicketEditWindowMinutes() => $_has(2);
   @$pb.TagNumber(3)
   void clearRecentTicketEditWindowMinutes() => clearField(3);
+
+  /// OHADA: when true, show VAT selection on tickets (hidden by default for OHADA countries)
+  @$pb.TagNumber(4)
+  $core.bool get isVatSelectionEnabled => $_getBF(3);
+  @$pb.TagNumber(4)
+  set isVatSelectionEnabled($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasIsVatSelectionEnabled() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearIsVatSelectionEnabled() => clearField(4);
 }
 
 

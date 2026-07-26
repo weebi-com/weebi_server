@@ -31,7 +31,7 @@ const Chain$json = {
     {'1': 'isDualCurrencyEnabled', '3': 12, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 13, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
     {'1': 'businessRules', '3': 14, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
-    {'1': 'closed_years', '3': 15, '4': 3, '5': 5, '10': 'closedYears'},
+    {'1': 'closed_years', '3': 15, '4': 3, '5': 11, '6': '.weebi.boutique.ClosedYearPb', '10': 'closedYears'},
   ],
   '8': [
     {'1': '_currency'},
@@ -58,9 +58,9 @@ final $typed_data.Uint8List chainDescriptor = $convert.base64Decode(
     'FSFWlzRHVhbEN1cnJlbmN5RW5hYmxlZIgBARI/ChhzZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3kY'
     'DSABKAlIAlIYc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5iAEBEkgKDWJ1c2luZXNzUnVsZXMYDi'
     'ABKAsyHS53ZWViaS5ib3V0aXF1ZS5CdXNpbmVzc1J1bGVzSANSDWJ1c2luZXNzUnVsZXOIAQES'
-    'IQoMY2xvc2VkX3llYXJzGA8gAygFUgtjbG9zZWRZZWFyc0ILCglfY3VycmVuY3lCGAoWX2lzRH'
-    'VhbEN1cnJlbmN5RW5hYmxlZEIbChlfc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5QhAKDl9idXNp'
-    'bmVzc1J1bGVzSgQIEBBl');
+    'PwoMY2xvc2VkX3llYXJzGA8gAygLMhwud2VlYmkuYm91dGlxdWUuQ2xvc2VkWWVhclBiUgtjbG'
+    '9zZWRZZWFyc0ILCglfY3VycmVuY3lCGAoWX2lzRHVhbEN1cnJlbmN5RW5hYmxlZEIbChlfc2Vj'
+    'b25kYXJ5RGlzcGxheUN1cnJlbmN5QhAKDl9idXNpbmVzc1J1bGVzSgQIEBBl');
 
 @$core.Deprecated('Use chainsDescriptor instead')
 const Chains$json = {

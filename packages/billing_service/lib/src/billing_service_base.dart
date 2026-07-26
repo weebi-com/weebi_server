@@ -4,6 +4,7 @@ import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/logging.dart';
 import 'package:billing_service/src/accounting_year_purchase.dart';
+import 'package:billing_service/src/pawapay_checkout.dart';
 import 'package:billing_service/src/stripe_checkout.dart';
 
 Set<String> _distinctNonEmptySeatUserIds(License license) {
@@ -24,11 +25,25 @@ class BillingService extends BillingServiceBase {
   final bool isTest;
   final UserPermissions? userPermissionIfTest;
 
+  /// Injectable PawaPay client (tests inject [FakePawapayCheckoutClient]).
+  final PawapayCheckoutClient? pawapayClient;
+
   BillingService(
     this._poolService, {
     this.isTest = false,
     this.userPermissionIfTest,
+    this.pawapayClient,
   });
+
+  PawapayCheckoutClient _requirePawapayClient() {
+    if (pawapayClient != null) return pawapayClient!;
+    final token = AppEnvironment.pawapayApiToken;
+    final base = AppEnvironment.pawapayApiBaseUrl;
+    if (token == null || token.isEmpty || base == null || base.isEmpty) {
+      throw GrpcError.failedPrecondition('PawaPay not configured');
+    }
+    return PawapayHttpCheckoutClient(apiBaseUrl: base, apiToken: token);
+  }
 
   UserPermissions _userPermissions(ServiceCall? call) =>
       isTest ? (userPermissionIfTest ?? UserPermissions()) : call!.bearer.userPermissions;
@@ -136,11 +151,19 @@ class BillingService extends BillingServiceBase {
   Future<BillingProduct?> _lookupBillingProductByPlan(Db db, LicensePlan plan) async {
     final productId = _planToProductId[plan];
     if (productId == null) return null;
+    return _lookupBillingProductByProductId(db, productId);
+  }
+
+  /// Lookup billing product by Weebi [productId] (e.g. premium, syscohada).
+  Future<BillingProduct?> _lookupBillingProductByProductId(Db db, String productId) async {
+    final id = productId.trim();
+    if (id.isEmpty) return null;
     final doc = await db
         .collection(billingProductsCollectionName)
-        .findOne(where.eq('productId', productId).eq('isDeleted', false));
+        .findOne(where.eq('productId', id).eq('isDeleted', false));
     if (doc == null) return null;
-    final product = BillingProduct()..mergeFromProto3Json(Map<String, dynamic>.from(doc), ignoreUnknownFields: true);
+    final product = BillingProduct()
+      ..mergeFromProto3Json(Map<String, dynamic>.from(doc), ignoreUnknownFields: true);
     return product;
   }
 
@@ -265,16 +288,22 @@ class BillingService extends BillingServiceBase {
   }
 
   /// Punctual SYSCOHADA year purchase (not a license seat, not a subscription).
-  /// Idempotent on [stripeCheckoutSessionId] and on [fiscalYear].
+  /// Idempotent on provider payment id and on [fiscalYear].
   Future<CreateLicenseResponse> recordAccountingYearPurchase({
     required String firmId,
     required int fiscalYear,
-    required String stripeCheckoutSessionId,
     required BillingProduct product,
+    String stripeCheckoutSessionId = '',
+    String pawapayCheckoutId = '',
+    PaymentProvider paymentProvider = PaymentProvider.PAYMENT_PROVIDER_STRIPE,
   }) async {
     final year = validateFiscalYear(fiscalYear);
-    if (stripeCheckoutSessionId.trim().isEmpty) {
-      throw GrpcError.invalidArgument('stripeCheckoutSessionId is required');
+    final stripeId = stripeCheckoutSessionId.trim();
+    final pawapayId = pawapayCheckoutId.trim();
+    if (stripeId.isEmpty && pawapayId.isEmpty) {
+      throw GrpcError.invalidArgument(
+        'stripeCheckoutSessionId or pawapayCheckoutId is required',
+      );
     }
     if (!isSyscohadaProductId(product.productId)) {
       throw GrpcError.invalidArgument(
@@ -294,8 +323,10 @@ class BillingService extends BillingServiceBase {
       );
       final purchase = buildAccountingYearPurchase(
         year: year,
-        stripeCheckoutSessionId: stripeCheckoutSessionId.trim(),
+        stripeCheckoutSessionId: stripeId,
         stripePriceId: product.stripePriceId,
+        pawapayCheckoutId: pawapayId,
+        paymentProvider: paymentProvider.name,
         paidAtUTC: DateTime.now().toUtc(),
         amountCents: product.amountCents,
         currency: product.currency.isNotEmpty ? product.currency : 'eur',
@@ -354,6 +385,11 @@ class BillingService extends BillingServiceBase {
 
     final raw = await listAccountingYearPurchases(userPermission.firmId);
     final purchases = raw.map((e) {
+      final providerName = e['paymentProvider'] as String? ?? '';
+      final provider = PaymentProvider.values.firstWhere(
+        (p) => p.name == providerName,
+        orElse: () => PaymentProvider.PAYMENT_PROVIDER_UNKNOWN,
+      );
       return AccountingYearPurchase(
         year: (e['year'] as num?)?.toInt() ?? 0,
         stripeCheckoutSessionId: e['stripeCheckoutSessionId'] as String? ?? '',
@@ -361,6 +397,8 @@ class BillingService extends BillingServiceBase {
         paidAtUTC: e['paidAtUTC'] as String? ?? '',
         amountCents: (e['amountCents'] as num?)?.toInt() ?? 0,
         currency: e['currency'] as String? ?? '',
+        pawapayCheckoutId: e['pawapayCheckoutId'] as String? ?? '',
+        paymentProvider: provider,
       );
     });
     return ReadAccountingYearPurchasesResponse()..purchases.addAll(purchases);
@@ -398,19 +436,21 @@ class BillingService extends BillingServiceBase {
         fiscalYear: year,
         stripeCheckoutSessionId: sessionId,
         product: product,
+        paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
       );
       if (request.stripeCustomerId.isNotEmpty) {
         await _updateStripeCustomerId(request.firmId, request.stripeCustomerId);
       }
       return response;
     }
-    return _fulfillLicenseFromStripeInternal(
+    return _fulfillLicenseInternal(
       request.firmId,
       request.licenseId,
       product.licensePlan,
       product.stripeProductId,
       request.priceId,
       product.maxUsers,
+      paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
       stripeCustomerId: request.stripeCustomerId.isNotEmpty ? request.stripeCustomerId : null,
       referralCode: request.referralCode.isNotEmpty ? request.referralCode : null,
       creditAppliedCents: request.creditAppliedCents,
@@ -436,15 +476,15 @@ class BillingService extends BillingServiceBase {
     }
   }
 
-  /// Internal: fulfill a license after Stripe payment. Called by RPC (service account) or tests.
-  /// Idempotent: if license already exists (e.g. webhook retry or sync-after-redirect), returns success.
-  Future<CreateLicenseResponse> _fulfillLicenseFromStripeInternal(
+  /// Internal: fulfill a license after provider payment. Idempotent on [licenseId].
+  Future<CreateLicenseResponse> _fulfillLicenseInternal(
     String firmId,
     String licenseId,
     LicensePlan plan,
     String providerProductId,
     String providerPriceId,
     int maxUsers, {
+    required PaymentProvider paymentProvider,
     String? stripeCustomerId,
     String? referralCode,
     int creditAppliedCents = 0,
@@ -459,7 +499,7 @@ class BillingService extends BillingServiceBase {
         providerPriceId: providerPriceId,
         maxUsers: maxUsers,
         validFrom: DateTime.now().toUtc().timestampProto,
-        paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
+        paymentProvider: paymentProvider,
         legalTermsVersionDate: termsDate,
       ),
       referralCode: referralCode ?? '',
@@ -490,12 +530,40 @@ class BillingService extends BillingServiceBase {
             providerProductId: providerProductId,
             providerPriceId: providerPriceId,
             maxUsers: maxUsers,
-            paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
+            paymentProvider: paymentProvider,
             legalTermsVersionDate: termsDate,
           );
       }
       rethrow;
     }
+  }
+
+  /// Backward-compatible alias used by older call sites / mental model.
+  Future<CreateLicenseResponse> _fulfillLicenseFromStripeInternal(
+    String firmId,
+    String licenseId,
+    LicensePlan plan,
+    String providerProductId,
+    String providerPriceId,
+    int maxUsers, {
+    String? stripeCustomerId,
+    String? referralCode,
+    int creditAppliedCents = 0,
+    String? legalTermsVersionDate,
+  }) {
+    return _fulfillLicenseInternal(
+      firmId,
+      licenseId,
+      plan,
+      providerProductId,
+      providerPriceId,
+      maxUsers,
+      paymentProvider: PaymentProvider.PAYMENT_PROVIDER_STRIPE,
+      stripeCustomerId: stripeCustomerId,
+      referralCode: referralCode,
+      creditAppliedCents: creditAppliedCents,
+      legalTermsVersionDate: legalTermsVersionDate,
+    );
   }
 
   Future<void> _updateStripeCustomerId(String firmId, String customerId) async {
@@ -1055,6 +1123,267 @@ class BillingService extends BillingServiceBase {
     );
 
     log.logRpcExit('fulfillFromStripeCheckoutSession');
+    return response;
+  }
+
+  @override
+  Future<CreatePawapayCheckoutResponse> createPawapayCheckout(
+      ServiceCall? call, CreatePawapayCheckoutRequest request) async {
+    final log = _logger.withContext(call);
+    final userPermission = _userPermissions(call);
+    _requireFirmId(userPermission);
+    _requireBillingRight(userPermission, Right.create);
+
+    if (request.productId.trim().isEmpty) {
+      throw GrpcError.invalidArgument('productId is required');
+    }
+    if (request.returnUrl.trim().isEmpty) {
+      throw GrpcError.invalidArgument('returnUrl is required');
+    }
+    _validateLegalTermsVersionDate(request.legalTermsVersionDate);
+
+    final product = await databaseMiddleware<BillingProduct?>(_poolService, (db) async {
+      return _lookupBillingProductByProductId(db, request.productId);
+    });
+    if (product == null) {
+      throw GrpcError.invalidArgument('Unknown product: ${request.productId}');
+    }
+    if (isSyscohadaProductId(product.productId)) {
+      try {
+        validateFiscalYear(request.fiscalYear);
+      } on ArgumentError catch (e) {
+        throw GrpcError.invalidArgument('${e.message}');
+      }
+    }
+
+    final client = _requirePawapayClient();
+    final checkoutId = generateUuidV4();
+
+    final purchaserEmail = await databaseMiddleware<String?>(_poolService, (db) async {
+      final userId = userPermission.userId.trim();
+      if (userId.isEmpty) return null;
+      final userDoc = await db
+          .collection(FenceService.userCollectionName)
+          .findOne(where.eq('userId', userId));
+      final mail = userDoc?['mail'] as String?;
+      final trimmed = mail?.trim();
+      if (trimmed == null || trimmed.isEmpty) return null;
+      return trimmed;
+    });
+
+    final metaFields = <String, String>{
+      'firmId': userPermission.firmId,
+      'productId': product.productId,
+      'productKind':
+          isSyscohadaProductId(product.productId) ? 'syscohada' : 'license',
+      'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
+    };
+    if (isSyscohadaProductId(product.productId)) {
+      metaFields['fiscalYear'] = request.fiscalYear.toString();
+    }
+    if (request.referralCode.trim().isNotEmpty) {
+      metaFields['referralCode'] = request.referralCode.trim();
+    }
+    if (request.creditAppliedCents > 0) {
+      metaFields['creditAppliedCents'] = request.creditAppliedCents.toString();
+    }
+    if (purchaserEmail != null) {
+      metaFields['purchaserEmail'] = purchaserEmail;
+    }
+
+    List<PawapayAmount> amounts;
+    try {
+      amounts = buildPawapayXofAmounts(product.productId);
+    } on ArgumentError catch (e) {
+      throw GrpcError.failedPrecondition('${e.message}');
+    }
+
+    log.logRpcEntry('createPawapayCheckout', requestData: {
+      'firmId': userPermission.firmId,
+      'productId': product.productId,
+      'checkoutId': checkoutId,
+    });
+
+    try {
+      final returnUrl =
+          appendCheckoutIdToReturnUrl(request.returnUrl.trim(), checkoutId);
+      final created = await client.initiateCheckout(
+        checkoutId: checkoutId,
+        returnUrl: returnUrl,
+        amounts: amounts,
+        countries: kPawapayXofCountries,
+        metadata: buildPawapayMetadata(metaFields),
+      );
+      if (created.redirectUrl.isEmpty) {
+        throw GrpcError.internal('PawaPay returned empty redirectUrl');
+      }
+      log.logRpcExit('createPawapayCheckout');
+      return CreatePawapayCheckoutResponse()
+        ..checkoutId = created.checkoutId
+        ..redirectUrl = created.redirectUrl;
+    } on PawapayCheckoutException catch (e) {
+      throw GrpcError.internal(e.message);
+    }
+  }
+
+  @override
+  Future<CreateLicenseResponse> fulfillLicenseFromPawapay(
+      ServiceCall? call, FulfillLicenseFromPawapayRequest request) async {
+    final bearer = call!.bearer;
+    final token = bearer.startsWith('Bearer ') ? bearer.substring(7) : bearer;
+    final jwt = JsonWebToken.parse(token);
+    if (!jwt.isServiceAccount) {
+      throw GrpcError.permissionDenied(
+        'fulfillLicenseFromPawapay requires service account',
+      );
+    }
+
+    final product = await databaseMiddleware<BillingProduct?>(_poolService, (db) async {
+      return _lookupBillingProductByProductId(db, request.productId);
+    });
+    if (product == null) {
+      throw GrpcError.invalidArgument('unknown product: ${request.productId}');
+    }
+
+    if (isSyscohadaProductId(product.productId)) {
+      final year = request.fiscalYear;
+      if (year == 0) {
+        throw GrpcError.invalidArgument(
+          'fiscalYear is required for SYSCOHADA purchases',
+        );
+      }
+      final checkoutId = request.checkoutId.isNotEmpty
+          ? request.checkoutId
+          : request.licenseId;
+      return recordAccountingYearPurchase(
+        firmId: request.firmId,
+        fiscalYear: year,
+        pawapayCheckoutId: checkoutId,
+        product: product,
+        paymentProvider: PaymentProvider.PAYMENT_PROVIDER_PAWAPAY,
+      );
+    }
+
+    final licenseId = request.licenseId.isNotEmpty
+        ? request.licenseId
+        : 'lic_pawapay_${_sanitizeStripeSessionId(request.checkoutId)}';
+
+    return _fulfillLicenseInternal(
+      request.firmId,
+      licenseId,
+      product.licensePlan,
+      product.pawapayProductId.isNotEmpty
+          ? product.pawapayProductId
+          : product.productId,
+      request.checkoutId,
+      product.maxUsers,
+      paymentProvider: PaymentProvider.PAYMENT_PROVIDER_PAWAPAY,
+      referralCode:
+          request.referralCode.isNotEmpty ? request.referralCode : null,
+      creditAppliedCents: request.creditAppliedCents,
+      legalTermsVersionDate: request.legalTermsVersionDate.isNotEmpty
+          ? request.legalTermsVersionDate
+          : null,
+    );
+  }
+
+  @override
+  Future<CreateLicenseResponse> fulfillFromPawapayCheckout(
+      ServiceCall? call, FulfillFromPawapayCheckoutRequest request) async {
+    final log = _logger.withContext(call);
+    final userPermission = _userPermissions(call);
+    _requireFirmId(userPermission);
+    _requireBillingRight(userPermission, Right.create);
+
+    if (request.checkoutId.trim().isEmpty) {
+      throw GrpcError.invalidArgument('checkoutId is required');
+    }
+    _validateLegalTermsVersionDate(request.legalTermsVersionDate);
+
+    final client = _requirePawapayClient();
+    PawapayCheckoutInfo info;
+    try {
+      info = await client.fetchCheckout(request.checkoutId.trim());
+    } on PawapayCheckoutException catch (e) {
+      throw GrpcError.notFound('Could not load PawaPay checkout: ${e.message}');
+    }
+
+    if (!info.isCompleted) {
+      throw GrpcError.failedPrecondition(
+        'Checkout is not completed yet (status: ${info.status})',
+      );
+    }
+
+    final firmIdFromMeta = info.metadata['firmId'] ?? '';
+    if (firmIdFromMeta != userPermission.firmId) {
+      throw GrpcError.permissionDenied(
+        'This checkout does not belong to your firm',
+      );
+    }
+
+    final productId = info.metadata['productId'] ?? '';
+    if (productId.isEmpty) {
+      throw GrpcError.internal('No productId in checkout metadata');
+    }
+
+    final product = await databaseMiddleware<BillingProduct?>(_poolService, (db) async {
+      return _lookupBillingProductByProductId(db, productId);
+    });
+    if (product == null) {
+      throw GrpcError.invalidArgument('Unknown product: $productId');
+    }
+
+    final termsForLicense = request.legalTermsVersionDate.trim();
+    final creditAppliedCents =
+        int.tryParse(info.metadata['creditAppliedCents'] ?? '') ?? 0;
+    final referralCode = info.metadata['referralCode'] ?? '';
+
+    if (isSyscohadaProductId(product.productId)) {
+      final year = int.tryParse(info.metadata['fiscalYear'] ?? '') ?? 0;
+      if (year == 0) {
+        throw GrpcError.invalidArgument(
+          'Checkout missing fiscalYear metadata for SYSCOHADA purchase',
+        );
+      }
+      log.logRpcEntry('fulfillFromPawapayCheckout', requestData: {
+        'firmId': userPermission.firmId,
+        'checkoutId': info.checkoutId,
+        'productKind': 'syscohada',
+        'fiscalYear': year,
+      });
+      final response = await recordAccountingYearPurchase(
+        firmId: userPermission.firmId,
+        fiscalYear: year,
+        pawapayCheckoutId: info.checkoutId,
+        product: product,
+        paymentProvider: PaymentProvider.PAYMENT_PROVIDER_PAWAPAY,
+      );
+      log.logRpcExit('fulfillFromPawapayCheckout');
+      return response;
+    }
+
+    final licenseId =
+        'lic_pawapay_${_sanitizeStripeSessionId(info.checkoutId)}';
+    log.logRpcEntry('fulfillFromPawapayCheckout', requestData: {
+      'firmId': userPermission.firmId,
+      'checkoutId': info.checkoutId,
+    });
+
+    final response = await _fulfillLicenseInternal(
+      userPermission.firmId,
+      licenseId,
+      product.licensePlan,
+      product.pawapayProductId.isNotEmpty
+          ? product.pawapayProductId
+          : product.productId,
+      info.checkoutId,
+      product.maxUsers,
+      paymentProvider: PaymentProvider.PAYMENT_PROVIDER_PAWAPAY,
+      referralCode: referralCode.isNotEmpty ? referralCode : null,
+      creditAppliedCents: creditAppliedCents,
+      legalTermsVersionDate: termsForLicense,
+    );
+    log.logRpcExit('fulfillFromPawapayCheckout');
     return response;
   }
 
