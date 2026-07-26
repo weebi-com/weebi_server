@@ -3,6 +3,7 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/logging.dart';
+import 'package:billing_service/src/accounting_year_purchase.dart';
 import 'package:billing_service/src/stripe_checkout.dart';
 
 Set<String> _distinctNonEmptySeatUserIds(License license) {
@@ -263,6 +264,108 @@ class BillingService extends BillingServiceBase {
     });
   }
 
+  /// Punctual SYSCOHADA year purchase (not a license seat, not a subscription).
+  /// Idempotent on [stripeCheckoutSessionId] and on [fiscalYear].
+  Future<CreateLicenseResponse> recordAccountingYearPurchase({
+    required String firmId,
+    required int fiscalYear,
+    required String stripeCheckoutSessionId,
+    required BillingProduct product,
+  }) async {
+    final year = validateFiscalYear(fiscalYear);
+    if (stripeCheckoutSessionId.trim().isEmpty) {
+      throw GrpcError.invalidArgument('stripeCheckoutSessionId is required');
+    }
+    if (!isSyscohadaProductId(product.productId)) {
+      throw GrpcError.invalidArgument(
+        'product ${product.productId} is not a SYSCOHADA accounting product',
+      );
+    }
+
+    return databaseMiddleware<CreateLicenseResponse>(_poolService, (db) async {
+      final firmCollection = db.collection(FenceService.firmCollectionName);
+      final firmDoc = await firmCollection.findOne(where.eq('firmId', firmId));
+      if (firmDoc == null) {
+        throw GrpcError.notFound('firm not found');
+      }
+
+      final existing = parseAccountingYearPurchases(
+        firmDoc[kAccountingYearPurchasesField],
+      );
+      final purchase = buildAccountingYearPurchase(
+        year: year,
+        stripeCheckoutSessionId: stripeCheckoutSessionId.trim(),
+        stripePriceId: product.stripePriceId,
+        paidAtUTC: DateTime.now().toUtc(),
+        amountCents: product.amountCents,
+        currency: product.currency.isNotEmpty ? product.currency : 'eur',
+      );
+      final merged = mergeAccountingYearPurchase(
+        existing: existing,
+        purchase: purchase,
+      );
+
+      if (!merged.alreadyFulfilled) {
+        await firmCollection.updateOne(
+          where.eq('firmId', firmId),
+          ModifierBuilder().set(
+            kAccountingYearPurchasesField,
+            merged.purchases,
+          ),
+        );
+      }
+
+      return CreateLicenseResponse()
+        ..statusResponse = (StatusResponse()
+          ..type = merged.alreadyFulfilled
+              ? StatusResponse_Type.SUCCESS
+              : StatusResponse_Type.CREATED
+          ..message = merged.alreadyFulfilled
+              ? 'Accounting year purchase already fulfilled'
+              : 'Accounting year purchase recorded');
+    });
+  }
+
+  /// Lists punctual accounting-year purchases for a firm (Mongo field only).
+  Future<List<Map<String, dynamic>>> listAccountingYearPurchases(
+    String firmId,
+  ) async {
+    return databaseMiddleware<List<Map<String, dynamic>>>(_poolService, (db) async {
+      final firmDoc = await db
+          .collection(FenceService.firmCollectionName)
+          .findOne(where.eq('firmId', firmId));
+      if (firmDoc == null) {
+        throw GrpcError.notFound('firm not found');
+      }
+      return parseAccountingYearPurchases(
+        firmDoc[kAccountingYearPurchasesField],
+      );
+    });
+  }
+
+  @override
+  Future<ReadAccountingYearPurchasesResponse> readAccountingYearPurchases(
+    ServiceCall? call,
+    Empty request,
+  ) async {
+    final userPermission = _userPermissions(call);
+    _requireFirmId(userPermission);
+    _requireBillingRight(userPermission, Right.read);
+
+    final raw = await listAccountingYearPurchases(userPermission.firmId);
+    final purchases = raw.map((e) {
+      return AccountingYearPurchase(
+        year: (e['year'] as num?)?.toInt() ?? 0,
+        stripeCheckoutSessionId: e['stripeCheckoutSessionId'] as String? ?? '',
+        stripePriceId: e['stripePriceId'] as String? ?? '',
+        paidAtUTC: e['paidAtUTC'] as String? ?? '',
+        amountCents: (e['amountCents'] as num?)?.toInt() ?? 0,
+        currency: e['currency'] as String? ?? '',
+      );
+    });
+    return ReadAccountingYearPurchasesResponse()..purchases.addAll(purchases);
+  }
+
   @override
   Future<CreateLicenseResponse> fulfillLicenseFromStripe(
       ServiceCall? call, FulfillLicenseFromStripeRequest request) async {
@@ -279,6 +382,27 @@ class BillingService extends BillingServiceBase {
     });
     if (product == null) {
       throw GrpcError.invalidArgument('unknown price: ${request.priceId}');
+    }
+    if (isSyscohadaProductId(product.productId)) {
+      final year = request.fiscalYear;
+      if (year == 0) {
+        throw GrpcError.invalidArgument(
+          'fiscalYear is required for SYSCOHADA purchases',
+        );
+      }
+      final sessionId = request.licenseId.isNotEmpty
+          ? request.licenseId
+          : 'acct_${year}_${request.priceId}';
+      final response = await recordAccountingYearPurchase(
+        firmId: request.firmId,
+        fiscalYear: year,
+        stripeCheckoutSessionId: sessionId,
+        product: product,
+      );
+      if (request.stripeCustomerId.isNotEmpty) {
+        await _updateStripeCustomerId(request.firmId, request.stripeCustomerId);
+      }
+      return response;
     }
     return _fulfillLicenseFromStripeInternal(
       request.firmId,
@@ -750,10 +874,20 @@ class BillingService extends BillingServiceBase {
       throw GrpcError.invalidArgument('Unknown price: ${request.priceId}');
     }
 
+    if (isSyscohadaProductId(product.productId)) {
+      try {
+        validateFiscalYear(request.fiscalYear);
+      } on ArgumentError catch (e) {
+        throw GrpcError.invalidArgument(e.message);
+      }
+    }
+
     log.logRpcEntry('createCheckoutSession', requestData: {
       'firmId': userPermission.firmId,
       'priceId': request.priceId,
       'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
+      if (isSyscohadaProductId(product.productId))
+        'fiscalYear': request.fiscalYear,
     });
 
     final customerId = await databaseMiddleware<String?>(_poolService, (db) async {
@@ -779,7 +913,11 @@ class BillingService extends BillingServiceBase {
     final metadata = <String, String>{
       'firmId': userPermission.firmId,
       'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
+      'productKind': isSyscohadaProductId(product.productId) ? 'syscohada' : 'license',
     };
+    if (isSyscohadaProductId(product.productId)) {
+      metadata['fiscalYear'] = request.fiscalYear.toString();
+    }
     if (purchaserEmail != null) {
       metadata['purchaserEmail'] = purchaserEmail;
     }
@@ -857,6 +995,33 @@ class BillingService extends BillingServiceBase {
     );
     if (product == null) {
       throw GrpcError.invalidArgument('Unknown price: ${sessionInfo.priceId}');
+    }
+
+    if (isSyscohadaProductId(product.productId)) {
+      final yearStr = sessionInfo.metadata['fiscalYear'] ?? '';
+      final year = int.tryParse(yearStr) ?? 0;
+      if (year == 0) {
+        throw GrpcError.invalidArgument(
+          'Checkout session missing fiscalYear metadata for SYSCOHADA purchase',
+        );
+      }
+      log.logRpcEntry('fulfillFromStripeCheckoutSession', requestData: {
+        'firmId': userPermission.firmId,
+        'sessionId': sessionInfo.id,
+        'productKind': 'syscohada',
+        'fiscalYear': year,
+      });
+      final response = await recordAccountingYearPurchase(
+        firmId: userPermission.firmId,
+        fiscalYear: year,
+        stripeCheckoutSessionId: sessionInfo.id,
+        product: product,
+      );
+      if (sessionInfo.customer != null && sessionInfo.customer!.isNotEmpty) {
+        await _updateStripeCustomerId(userPermission.firmId, sessionInfo.customer!);
+      }
+      log.logRpcExit('fulfillFromStripeCheckoutSession');
+      return response;
     }
 
     final licenseId = 'lic_stripe_${_sanitizeStripeSessionId(sessionInfo.id)}';

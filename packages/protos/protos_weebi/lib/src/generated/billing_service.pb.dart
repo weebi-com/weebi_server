@@ -544,6 +544,7 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
     $core.String? referralCode,
     $core.int? creditAppliedCents,
     $core.String? legalTermsVersionDate,
+    $core.int? fiscalYear,
   }) {
     final result = create();
     if (priceId != null) {
@@ -564,6 +565,9 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
     if (legalTermsVersionDate != null) {
       result.legalTermsVersionDate = legalTermsVersionDate;
     }
+    if (fiscalYear != null) {
+      result.fiscalYear = fiscalYear;
+    }
     return result;
   }
   CreateCheckoutSessionRequest._() : super();
@@ -577,6 +581,7 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(5, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
     ..aOS(6, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
+    ..a<$core.int>(7, _omitFieldNames ? '' : 'fiscalYear', $pb.PbFieldType.O3, protoName: 'fiscalYear')
     ..hasRequiredFields = false
   ;
 
@@ -660,6 +665,16 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
   $core.bool hasLegalTermsVersionDate() => $_has(5);
   @$pb.TagNumber(6)
   void clearLegalTermsVersionDate() => clearField(6);
+
+  /// / Fiscal/calendar year for punctual SYSCOHADA purchases (required when price is syscohada).
+  @$pb.TagNumber(7)
+  $core.int get fiscalYear => $_getIZ(6);
+  @$pb.TagNumber(7)
+  set fiscalYear($core.int v) { $_setSignedInt32(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasFiscalYear() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearFiscalYear() => clearField(7);
 }
 
 class CreateCheckoutSessionResponse extends $pb.GeneratedMessage {
@@ -722,6 +737,7 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
     $core.String? referralCode,
     $core.int? creditAppliedCents,
     $core.String? legalTermsVersionDate,
+    $core.int? fiscalYear,
   }) {
     final result = create();
     if (firmId != null) {
@@ -745,6 +761,9 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
     if (legalTermsVersionDate != null) {
       result.legalTermsVersionDate = legalTermsVersionDate;
     }
+    if (fiscalYear != null) {
+      result.fiscalYear = fiscalYear;
+    }
     return result;
   }
   FulfillLicenseFromStripeRequest._() : super();
@@ -759,6 +778,7 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(6, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
     ..aOS(7, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
+    ..a<$core.int>(8, _omitFieldNames ? '' : 'fiscalYear', $pb.PbFieldType.O3, protoName: 'fiscalYear')
     ..hasRequiredFields = false
   ;
 
@@ -846,6 +866,16 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
   $core.bool hasLegalTermsVersionDate() => $_has(6);
   @$pb.TagNumber(7)
   void clearLegalTermsVersionDate() => clearField(7);
+
+  /// / Fiscal year for punctual SYSCOHADA fulfill (from Checkout Session metadata).
+  @$pb.TagNumber(8)
+  $core.int get fiscalYear => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set fiscalYear($core.int v) { $_setSignedInt32(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasFiscalYear() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearFiscalYear() => clearField(8);
 }
 
 /// / Request to fulfill a license from a Stripe Checkout Session (e.g. after success redirect).
@@ -1168,6 +1198,171 @@ class ReadBillingProductsResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<BillingProduct> get products => $_getList(0);
+}
+
+/// / One punctual SYSCOHADA fiscal-year purchase (not a subscription).
+class AccountingYearPurchase extends $pb.GeneratedMessage {
+  factory AccountingYearPurchase({
+    $core.int? year,
+    $core.String? stripeCheckoutSessionId,
+    $core.String? stripePriceId,
+    $core.String? paidAtUTC,
+    $core.int? amountCents,
+    $core.String? currency,
+  }) {
+    final result = create();
+    if (year != null) {
+      result.year = year;
+    }
+    if (stripeCheckoutSessionId != null) {
+      result.stripeCheckoutSessionId = stripeCheckoutSessionId;
+    }
+    if (stripePriceId != null) {
+      result.stripePriceId = stripePriceId;
+    }
+    if (paidAtUTC != null) {
+      result.paidAtUTC = paidAtUTC;
+    }
+    if (amountCents != null) {
+      result.amountCents = amountCents;
+    }
+    if (currency != null) {
+      result.currency = currency;
+    }
+    return result;
+  }
+  AccountingYearPurchase._() : super();
+  factory AccountingYearPurchase.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AccountingYearPurchase.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AccountingYearPurchase', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'year', $pb.PbFieldType.O3)
+    ..aOS(2, _omitFieldNames ? '' : 'stripeCheckoutSessionId', protoName: 'stripeCheckoutSessionId')
+    ..aOS(3, _omitFieldNames ? '' : 'stripePriceId', protoName: 'stripePriceId')
+    ..aOS(4, _omitFieldNames ? '' : 'paidAtUTC', protoName: 'paidAtUTC')
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'amountCents', $pb.PbFieldType.O3, protoName: 'amountCents')
+    ..aOS(6, _omitFieldNames ? '' : 'currency')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AccountingYearPurchase clone() => AccountingYearPurchase()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AccountingYearPurchase copyWith(void Function(AccountingYearPurchase) updates) => super.copyWith((message) => updates(message as AccountingYearPurchase)) as AccountingYearPurchase;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AccountingYearPurchase create() => AccountingYearPurchase._();
+  AccountingYearPurchase createEmptyInstance() => create();
+  static $pb.PbList<AccountingYearPurchase> createRepeated() => $pb.PbList<AccountingYearPurchase>();
+  @$core.pragma('dart2js:noInline')
+  static AccountingYearPurchase getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AccountingYearPurchase>(create);
+  static AccountingYearPurchase? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get year => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set year($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasYear() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearYear() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get stripeCheckoutSessionId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set stripeCheckoutSessionId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStripeCheckoutSessionId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStripeCheckoutSessionId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get stripePriceId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set stripePriceId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasStripePriceId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStripePriceId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get paidAtUTC => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set paidAtUTC($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPaidAtUTC() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPaidAtUTC() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get amountCents => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set amountCents($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasAmountCents() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearAmountCents() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get currency => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set currency($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasCurrency() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearCurrency() => clearField(6);
+}
+
+class ReadAccountingYearPurchasesResponse extends $pb.GeneratedMessage {
+  factory ReadAccountingYearPurchasesResponse({
+    $core.Iterable<AccountingYearPurchase>? purchases,
+  }) {
+    final result = create();
+    if (purchases != null) {
+      result.purchases.addAll(purchases);
+    }
+    return result;
+  }
+  ReadAccountingYearPurchasesResponse._() : super();
+  factory ReadAccountingYearPurchasesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadAccountingYearPurchasesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAccountingYearPurchasesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
+    ..pc<AccountingYearPurchase>(1, _omitFieldNames ? '' : 'purchases', $pb.PbFieldType.PM, subBuilder: AccountingYearPurchase.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ReadAccountingYearPurchasesResponse clone() => ReadAccountingYearPurchasesResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ReadAccountingYearPurchasesResponse copyWith(void Function(ReadAccountingYearPurchasesResponse) updates) => super.copyWith((message) => updates(message as ReadAccountingYearPurchasesResponse)) as ReadAccountingYearPurchasesResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReadAccountingYearPurchasesResponse create() => ReadAccountingYearPurchasesResponse._();
+  ReadAccountingYearPurchasesResponse createEmptyInstance() => create();
+  static $pb.PbList<ReadAccountingYearPurchasesResponse> createRepeated() => $pb.PbList<ReadAccountingYearPurchasesResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ReadAccountingYearPurchasesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadAccountingYearPurchasesResponse>(create);
+  static ReadAccountingYearPurchasesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<AccountingYearPurchase> get purchases => $_getList(0);
 }
 
 

@@ -161,6 +161,9 @@ const TicketPb$json = {
     {'1': 'spend_totals', '3': 24, '4': 1, '5': 11, '6': '.weebi.ticket.TicketSpendTotalsPb', '9': 0, '10': 'spendTotals'},
     {'1': 'cover_totals', '3': 25, '4': 1, '5': 11, '6': '.weebi.ticket.TicketCoverTotalPb', '9': 0, '10': 'coverTotals'},
     {'1': 'replaced_ticket_id', '3': 26, '4': 1, '5': 9, '9': 4, '10': 'replacedTicketId', '17': true},
+    {'1': 'ohada_account_code', '3': 27, '4': 1, '5': 9, '9': 5, '10': 'ohadaAccountCode', '17': true},
+    {'1': 'treasury_from', '3': 28, '4': 1, '5': 9, '9': 6, '10': 'treasuryFrom', '17': true},
+    {'1': 'treasury_to', '3': 29, '4': 1, '5': 9, '9': 7, '10': 'treasuryTo', '17': true},
   ],
   '4': [TicketPb_PaymentTypePb$json],
   '8': [
@@ -169,9 +172,12 @@ const TicketPb$json = {
     {'1': '_snapshot_secondary_currency'},
     {'1': '_snapshot_local_per_secondary'},
     {'1': '_replaced_ticket_id'},
+    {'1': '_ohada_account_code'},
+    {'1': '_treasury_from'},
+    {'1': '_treasury_to'},
   ],
   '9': [
-    {'1': 27, '2': 99},
+    {'1': 30, '2': 99},
   ],
 };
 
@@ -212,11 +218,14 @@ final $typed_data.Uint8List ticketPbDescriptor = $convert.base64Decode(
     'dG90YWxzGBggASgLMiEud2VlYmkudGlja2V0LlRpY2tldFNwZW5kVG90YWxzUGJIAFILc3Blbm'
     'RUb3RhbHMSRQoMY292ZXJfdG90YWxzGBkgASgLMiAud2VlYmkudGlja2V0LlRpY2tldENvdmVy'
     'VG90YWxQYkgAUgtjb3ZlclRvdGFscxIxChJyZXBsYWNlZF90aWNrZXRfaWQYGiABKAlIBFIQcm'
-    'VwbGFjZWRUaWNrZXRJZIgBASJoCg1QYXltZW50VHlwZVBiEgsKB3Vua25vd24QABIICgRjYXNo'
-    'EAESCAoEbm9wZRACEg8KC21vYmlsZU1vbmV5EAMSCgoGY2hlcXVlEAQSDgoKY3JlZGl0Q2FyZB'
-    'AFEgkKBWdvb2RzEAZCCAoGdG90YWxzQgsKCV9jdXJyZW5jeUIeChxfc25hcHNob3Rfc2Vjb25k'
-    'YXJ5X2N1cnJlbmN5Qh8KHV9zbmFwc2hvdF9sb2NhbF9wZXJfc2Vjb25kYXJ5QhUKE19yZXBsYW'
-    'NlZF90aWNrZXRfaWRKBAgbEGM=');
+    'VwbGFjZWRUaWNrZXRJZIgBARIxChJvaGFkYV9hY2NvdW50X2NvZGUYGyABKAlIBVIQb2hhZGFB'
+    'Y2NvdW50Q29kZYgBARIoCg10cmVhc3VyeV9mcm9tGBwgASgJSAZSDHRyZWFzdXJ5RnJvbYgBAR'
+    'IkCgt0cmVhc3VyeV90bxgdIAEoCUgHUgp0cmVhc3VyeVRviAEBImgKDVBheW1lbnRUeXBlUGIS'
+    'CwoHdW5rbm93bhAAEggKBGNhc2gQARIICgRub3BlEAISDwoLbW9iaWxlTW9uZXkQAxIKCgZjaG'
+    'VxdWUQBBIOCgpjcmVkaXRDYXJkEAUSCQoFZ29vZHMQBkIICgZ0b3RhbHNCCwoJX2N1cnJlbmN5'
+    'Qh4KHF9zbmFwc2hvdF9zZWNvbmRhcnlfY3VycmVuY3lCHwodX3NuYXBzaG90X2xvY2FsX3Blcl'
+    '9zZWNvbmRhcnlCFQoTX3JlcGxhY2VkX3RpY2tldF9pZEIVChNfb2hhZGFfYWNjb3VudF9jb2Rl'
+    'QhAKDl90cmVhc3VyeV9mcm9tQg4KDF90cmVhc3VyeV90b0oECB4QYw==');
 
 @$core.Deprecated('Use counterfoilDescriptor instead')
 const Counterfoil$json = {

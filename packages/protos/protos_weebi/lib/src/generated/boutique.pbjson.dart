@@ -102,6 +102,7 @@ const BoutiquePb$json = {
     {'1': 'isDualCurrencyEnabled', '3': 17, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 18, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
     {'1': 'businessRules', '3': 19, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
+    {'1': 'closed_years', '3': 20, '4': 3, '5': 5, '10': 'closedYears'},
   ],
   '8': [
     {'1': '_currency'},
@@ -110,7 +111,7 @@ const BoutiquePb$json = {
     {'1': '_businessRules'},
   ],
   '9': [
-    {'1': 20, '2': 101},
+    {'1': 21, '2': 101},
   ],
 };
 
@@ -129,9 +130,9 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'RHVhbEN1cnJlbmN5RW5hYmxlZBgRIAEoCEgBUhNkdWFsQ3VycmVuY3lFbmFibGVkiAEBEj8KGH'
     'NlY29uZGFyeURpc3BsYXlDdXJyZW5jeRgSIAEoCUgCUhhzZWNvbmRhcnlEaXNwbGF5Q3VycmVu'
     'Y3mIAQESSAoNYnVzaW5lc3NSdWxlcxgTIAEoCzIdLndlZWJpLmJvdXRpcXVlLkJ1c2luZXNzUn'
-    'VsZXNIA1INYnVzaW5lc3NSdWxlc4gBAUILCglfY3VycmVuY3lCGAoWX2lzRHVhbEN1cnJlbmN5'
-    'RW5hYmxlZEIbChlfc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5QhAKDl9idXNpbmVzc1J1bGVzSg'
-    'QIFBBl');
+    'VsZXNIA1INYnVzaW5lc3NSdWxlc4gBARIhCgxjbG9zZWRfeWVhcnMYFCADKAVSC2Nsb3NlZFll'
+    'YXJzQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3VycmVuY3lFbmFibGVkQhsKGV9zZWNvbmRhcn'
+    'lEaXNwbGF5Q3VycmVuY3lCEAoOX2J1c2luZXNzUnVsZXNKBAgVEGU=');
 
 @$core.Deprecated('Use businessRulesDescriptor instead')
 const BusinessRules$json = {

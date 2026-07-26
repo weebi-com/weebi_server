@@ -138,6 +138,7 @@ const CreateCheckoutSessionRequest$json = {
     {'1': 'referralCode', '3': 4, '4': 1, '5': 9, '10': 'referralCode'},
     {'1': 'creditAppliedCents', '3': 5, '4': 1, '5': 5, '10': 'creditAppliedCents'},
     {'1': 'legalTermsVersionDate', '3': 6, '4': 1, '5': 9, '10': 'legalTermsVersionDate'},
+    {'1': 'fiscalYear', '3': 7, '4': 1, '5': 5, '10': 'fiscalYear'},
   ],
 };
 
@@ -147,7 +148,8 @@ final $typed_data.Uint8List createCheckoutSessionRequestDescriptor = $convert.ba
     'QSHgoKc3VjY2Vzc1VybBgCIAEoCVIKc3VjY2Vzc1VybBIcCgljYW5jZWxVcmwYAyABKAlSCWNh'
     'bmNlbFVybBIiCgxyZWZlcnJhbENvZGUYBCABKAlSDHJlZmVycmFsQ29kZRIuChJjcmVkaXRBcH'
     'BsaWVkQ2VudHMYBSABKAVSEmNyZWRpdEFwcGxpZWRDZW50cxI0ChVsZWdhbFRlcm1zVmVyc2lv'
-    'bkRhdGUYBiABKAlSFWxlZ2FsVGVybXNWZXJzaW9uRGF0ZQ==');
+    'bkRhdGUYBiABKAlSFWxlZ2FsVGVybXNWZXJzaW9uRGF0ZRIeCgpmaXNjYWxZZWFyGAcgASgFUg'
+    'pmaXNjYWxZZWFy');
 
 @$core.Deprecated('Use createCheckoutSessionResponseDescriptor instead')
 const CreateCheckoutSessionResponse$json = {
@@ -173,6 +175,7 @@ const FulfillLicenseFromStripeRequest$json = {
     {'1': 'referralCode', '3': 5, '4': 1, '5': 9, '10': 'referralCode'},
     {'1': 'creditAppliedCents', '3': 6, '4': 1, '5': 5, '10': 'creditAppliedCents'},
     {'1': 'legalTermsVersionDate', '3': 7, '4': 1, '5': 9, '10': 'legalTermsVersionDate'},
+    {'1': 'fiscalYear', '3': 8, '4': 1, '5': 5, '10': 'fiscalYear'},
   ],
 };
 
@@ -183,7 +186,7 @@ final $typed_data.Uint8List fulfillLicenseFromStripeRequestDescriptor = $convert
     'SWQSKgoQc3RyaXBlQ3VzdG9tZXJJZBgEIAEoCVIQc3RyaXBlQ3VzdG9tZXJJZBIiCgxyZWZlcn'
     'JhbENvZGUYBSABKAlSDHJlZmVycmFsQ29kZRIuChJjcmVkaXRBcHBsaWVkQ2VudHMYBiABKAVS'
     'EmNyZWRpdEFwcGxpZWRDZW50cxI0ChVsZWdhbFRlcm1zVmVyc2lvbkRhdGUYByABKAlSFWxlZ2'
-    'FsVGVybXNWZXJzaW9uRGF0ZQ==');
+    'FsVGVybXNWZXJzaW9uRGF0ZRIeCgpmaXNjYWxZZWFyGAggASgFUgpmaXNjYWxZZWFy');
 
 @$core.Deprecated('Use fulfillFromStripeCheckoutSessionRequestDescriptor instead')
 const FulfillFromStripeCheckoutSessionRequest$json = {
@@ -245,4 +248,39 @@ const ReadBillingProductsResponse$json = {
 final $typed_data.Uint8List readBillingProductsResponseDescriptor = $convert.base64Decode(
     'ChtSZWFkQmlsbGluZ1Byb2R1Y3RzUmVzcG9uc2USQQoIcHJvZHVjdHMYASADKAsyJS53ZWViaS'
     '5iaWxsaW5nLnNlcnZpY2UuQmlsbGluZ1Byb2R1Y3RSCHByb2R1Y3Rz');
+
+@$core.Deprecated('Use accountingYearPurchaseDescriptor instead')
+const AccountingYearPurchase$json = {
+  '1': 'AccountingYearPurchase',
+  '2': [
+    {'1': 'year', '3': 1, '4': 1, '5': 5, '10': 'year'},
+    {'1': 'stripeCheckoutSessionId', '3': 2, '4': 1, '5': 9, '10': 'stripeCheckoutSessionId'},
+    {'1': 'stripePriceId', '3': 3, '4': 1, '5': 9, '10': 'stripePriceId'},
+    {'1': 'paidAtUTC', '3': 4, '4': 1, '5': 9, '10': 'paidAtUTC'},
+    {'1': 'amountCents', '3': 5, '4': 1, '5': 5, '10': 'amountCents'},
+    {'1': 'currency', '3': 6, '4': 1, '5': 9, '10': 'currency'},
+  ],
+};
+
+/// Descriptor for `AccountingYearPurchase`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List accountingYearPurchaseDescriptor = $convert.base64Decode(
+    'ChZBY2NvdW50aW5nWWVhclB1cmNoYXNlEhIKBHllYXIYASABKAVSBHllYXISOAoXc3RyaXBlQ2'
+    'hlY2tvdXRTZXNzaW9uSWQYAiABKAlSF3N0cmlwZUNoZWNrb3V0U2Vzc2lvbklkEiQKDXN0cmlw'
+    'ZVByaWNlSWQYAyABKAlSDXN0cmlwZVByaWNlSWQSHAoJcGFpZEF0VVRDGAQgASgJUglwYWlkQX'
+    'RVVEMSIAoLYW1vdW50Q2VudHMYBSABKAVSC2Ftb3VudENlbnRzEhoKCGN1cnJlbmN5GAYgASgJ'
+    'UghjdXJyZW5jeQ==');
+
+@$core.Deprecated('Use readAccountingYearPurchasesResponseDescriptor instead')
+const ReadAccountingYearPurchasesResponse$json = {
+  '1': 'ReadAccountingYearPurchasesResponse',
+  '2': [
+    {'1': 'purchases', '3': 1, '4': 3, '5': 11, '6': '.weebi.billing.service.AccountingYearPurchase', '10': 'purchases'},
+  ],
+};
+
+/// Descriptor for `ReadAccountingYearPurchasesResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List readAccountingYearPurchasesResponseDescriptor = $convert.base64Decode(
+    'CiNSZWFkQWNjb3VudGluZ1llYXJQdXJjaGFzZXNSZXNwb25zZRJLCglwdXJjaGFzZXMYASADKA'
+    'syLS53ZWViaS5iaWxsaW5nLnNlcnZpY2UuQWNjb3VudGluZ1llYXJQdXJjaGFzZVIJcHVyY2hh'
+    'c2Vz');
 

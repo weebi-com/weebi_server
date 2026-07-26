@@ -9,12 +9,12 @@ Mirrors historic models_weebi logic:
 Formula (ticket contribution only; no closing ledger / overdraft):
   clientBalance    = sum(sellCovered)  - sum(sellDeferred)
   supplierBalance  = sum(spendCovered) - sum(spendDeferred)
-  balance          = clientBalance - supplierBalance - sum(wage)
+  balance          = clientBalance - supplierBalance
 
 Where ticket amounts match TicketWeebi.total / TicketPb.totalComputed:
   sell / sellDeferred   -> items price − promo − discount + tax
   spend / spendDeferred -> items cost  − promo − discount + tax
-  sellCovered / spendCovered / wage -> received
+  sellCovered / spendCovered -> received
 
 Only active tickets are counted (status != false). Soft-deleted rows
 (isDeleted == true) are skipped as well.
@@ -74,7 +74,7 @@ def ticket_total(ticket: dict[str, Any]) -> float:
     ticket_type = ticket.get("ticketType") or ""
     received = float(ticket.get("received") or 0)
 
-    if ticket_type in ("sellCovered", "spendCovered", "wage"):
+    if ticket_type in ("sellCovered", "spendCovered"):
         return received
 
     items = ticket.get("items") or []
@@ -129,14 +129,10 @@ class ContactAgg:
         return self.by_type.get("spendCovered", 0.0)
 
     @property
-    def wage(self) -> float:
-        return self.by_type.get("wage", 0.0)
-
-    @property
     def balance(self) -> float:
         client = self.sell_covered - self.sell_deferred
         supplier = self.spend_covered - self.spend_deferred
-        return client - supplier - self.wage
+        return client - supplier
 
 
 def compute(rows: list[dict[str, Any]], contact_id: int | None = None) -> list[ContactAgg]:
@@ -222,10 +218,9 @@ def main() -> int:
         print(f"  sellDeferred   ({a.counts.get('sellDeferred', 0):3d})  {_fmt(a.sell_deferred)}")
         print(f"  spendCovered   ({a.counts.get('spendCovered', 0):3d})  {_fmt(a.spend_covered)}")
         print(f"  spendDeferred  ({a.counts.get('spendDeferred', 0):3d})  {_fmt(a.spend_deferred)}")
-        print(f"  wage           ({a.counts.get('wage', 0):3d})  {_fmt(a.wage)}")
         print(
             "  balance = (sellCovered - sellDeferred)"
-            " - (spendCovered - spendDeferred) - wage"
+            " - (spendCovered - spendDeferred)"
         )
         print(f"  BALANCE        {_fmt(a.balance)}")
         print()

@@ -6,6 +6,9 @@
 ///
 /// Requires: STRIPE_SECRET_KEY env var
 /// Requires: MONGO_DB_URI - soft-deletes legacy catalog rows and inserts new ones
+/// 
+/// dart run tool/create_stripe_products.dart "sk_live_..." "mongodb+srv://..."
+
 library;
 
 import 'dart:convert';
@@ -70,21 +73,13 @@ void main(List<String> args) async {
   // Per-user plans. maxUsers=1 per purchased seat.
   final plans = [
     (
-      'Weebi Entreprise',
-      'entreprise',
-      LicensePlan.ENTERPRISE,
-      'Weebi Entreprise — 14 € / user',
-      1400,
-      1,
-    ),
-    (
       'Weebi Premium',
       'premium',
       LicensePlan.PREMIUM,
-      'Weebi Premium — 29 € / user',
-      2900,
+      'Weebi Premium — 14 € / user',
+      1400,
       1,
-    ),
+    )
   ];
 
   for (final (name, productId, licensePlan, desc, amountCents, maxUsers)
@@ -124,7 +119,7 @@ void main(List<String> args) async {
   }
 
   await db.close();
-  print('Done. billing_products updated (entreprise, premium).');
+  print('Done. billing_products updated (premium).');
   exit(0);
 }
 

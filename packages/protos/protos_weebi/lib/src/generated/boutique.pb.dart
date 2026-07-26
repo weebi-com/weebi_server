@@ -268,6 +268,7 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
     BusinessRules? businessRules,
+    $core.Iterable<$core.int>? closedYears,
   }) {
     final result = create();
     if (boutiqueId != null) {
@@ -329,6 +330,9 @@ class BoutiquePb extends $pb.GeneratedMessage {
     if (businessRules != null) {
       result.businessRules = businessRules;
     }
+    if (closedYears != null) {
+      result.closedYears.addAll(closedYears);
+    }
     return result;
   }
   BoutiquePb._() : super();
@@ -355,6 +359,7 @@ class BoutiquePb extends $pb.GeneratedMessage {
     ..aOB(17, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(18, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..aOM<BusinessRules>(19, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: BusinessRules.create)
+    ..p<$core.int>(20, _omitFieldNames ? '' : 'closedYears', $pb.PbFieldType.K3)
     ..hasRequiredFields = false
   ;
 
@@ -566,6 +571,10 @@ class BoutiquePb extends $pb.GeneratedMessage {
   void clearBusinessRules() => clearField(19);
   @$pb.TagNumber(19)
   BusinessRules ensureBusinessRules() => $_ensure(18);
+
+  /// / Calendar years soft-closed for SYSCOHADA SMT (client writes; server may ignore until fence supports it).
+  @$pb.TagNumber(20)
+  $core.List<$core.int> get closedYears => $_getList(19);
 }
 
 /// since a firm may contain different chains with different business realities.
