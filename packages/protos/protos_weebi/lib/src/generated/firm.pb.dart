@@ -13,6 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'boutique.pb.dart' as $23;
 import 'common/g_common.pb.dart' as $1;
 import 'common/g_timestamp.pb.dart' as $20;
 import 'license.pb.dart' as $24;
@@ -43,6 +44,7 @@ class Firm extends $pb.GeneratedMessage {
     $core.String? currency,
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
+    $core.Iterable<$23.ClosedYearPb>? closedYears,
   }) {
     final result = create();
     if (firmId != null) {
@@ -109,6 +111,9 @@ class Firm extends $pb.GeneratedMessage {
     if (secondaryDisplayCurrency != null) {
       result.secondaryDisplayCurrency = secondaryDisplayCurrency;
     }
+    if (closedYears != null) {
+      result.closedYears.addAll(closedYears);
+    }
     return result;
   }
   Firm._() : super();
@@ -136,6 +141,7 @@ class Firm extends $pb.GeneratedMessage {
     ..aOS(18, _omitFieldNames ? '' : 'currency')
     ..aOB(19, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(20, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
+    ..pc<$23.ClosedYearPb>(21, _omitFieldNames ? '' : 'closedYears', $pb.PbFieldType.PM, subBuilder: $23.ClosedYearPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -366,6 +372,10 @@ class Firm extends $pb.GeneratedMessage {
   $core.bool hasSecondaryDisplayCurrency() => $_has(19);
   @$pb.TagNumber(20)
   void clearSecondaryDisplayCurrency() => clearField(20);
+
+  /// / Soft-closed calendar years for SMT (waterfall with chain + boutique).
+  @$pb.TagNumber(21)
+  $core.List<$23.ClosedYearPb> get closedYears => $_getList(20);
 }
 
 class CreateFirmRequest extends $pb.GeneratedMessage {

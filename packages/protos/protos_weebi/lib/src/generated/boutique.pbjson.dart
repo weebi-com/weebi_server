@@ -102,6 +102,7 @@ const BoutiquePb$json = {
     {'1': 'isDualCurrencyEnabled', '3': 17, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 18, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
     {'1': 'businessRules', '3': 19, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
+    {'1': 'closed_years', '3': 20, '4': 3, '5': 11, '6': '.weebi.boutique.ClosedYearPb', '10': 'closedYears'},
   ],
   '8': [
     {'1': '_currency'},
@@ -110,7 +111,7 @@ const BoutiquePb$json = {
     {'1': '_businessRules'},
   ],
   '9': [
-    {'1': 20, '2': 101},
+    {'1': 21, '2': 101},
   ],
 };
 
@@ -129,9 +130,27 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'RHVhbEN1cnJlbmN5RW5hYmxlZBgRIAEoCEgBUhNkdWFsQ3VycmVuY3lFbmFibGVkiAEBEj8KGH'
     'NlY29uZGFyeURpc3BsYXlDdXJyZW5jeRgSIAEoCUgCUhhzZWNvbmRhcnlEaXNwbGF5Q3VycmVu'
     'Y3mIAQESSAoNYnVzaW5lc3NSdWxlcxgTIAEoCzIdLndlZWJpLmJvdXRpcXVlLkJ1c2luZXNzUn'
-    'VsZXNIA1INYnVzaW5lc3NSdWxlc4gBAUILCglfY3VycmVuY3lCGAoWX2lzRHVhbEN1cnJlbmN5'
-    'RW5hYmxlZEIbChlfc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5QhAKDl9idXNpbmVzc1J1bGVzSg'
-    'QIFBBl');
+    'VsZXNIA1INYnVzaW5lc3NSdWxlc4gBARI/CgxjbG9zZWRfeWVhcnMYFCADKAsyHC53ZWViaS5i'
+    'b3V0aXF1ZS5DbG9zZWRZZWFyUGJSC2Nsb3NlZFllYXJzQgsKCV9jdXJyZW5jeUIYChZfaXNEdW'
+    'FsQ3VycmVuY3lFbmFibGVkQhsKGV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3lCEAoOX2J1c2lu'
+    'ZXNzUnVsZXNKBAgVEGU=');
+
+@$core.Deprecated('Use closedYearPbDescriptor instead')
+const ClosedYearPb$json = {
+  '1': 'ClosedYearPb',
+  '2': [
+    {'1': 'year', '3': 1, '4': 1, '5': 5, '10': 'year'},
+    {'1': 'resultat', '3': 2, '4': 1, '5': 1, '10': 'resultat'},
+    {'1': 'treasury_total', '3': 3, '4': 1, '5': 1, '10': 'treasuryTotal'},
+    {'1': 'closed_at', '3': 4, '4': 1, '5': 9, '10': 'closedAt'},
+  ],
+};
+
+/// Descriptor for `ClosedYearPb`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List closedYearPbDescriptor = $convert.base64Decode(
+    'CgxDbG9zZWRZZWFyUGISEgoEeWVhchgBIAEoBVIEeWVhchIaCghyZXN1bHRhdBgCIAEoAVIIcm'
+    'VzdWx0YXQSJQoOdHJlYXN1cnlfdG90YWwYAyABKAFSDXRyZWFzdXJ5VG90YWwSGwoJY2xvc2Vk'
+    'X2F0GAQgASgJUghjbG9zZWRBdA==');
 
 @$core.Deprecated('Use businessRulesDescriptor instead')
 const BusinessRules$json = {
@@ -140,6 +159,7 @@ const BusinessRules$json = {
     {'1': 'isNegativeStockGuardEnabled', '3': 1, '4': 1, '5': 8, '10': 'isNegativeStockGuardEnabled'},
     {'1': 'isRecentTicketEditEnabled', '3': 2, '4': 1, '5': 8, '10': 'isRecentTicketEditEnabled'},
     {'1': 'recentTicketEditWindowMinutes', '3': 3, '4': 1, '5': 5, '10': 'recentTicketEditWindowMinutes'},
+    {'1': 'isVatSelectionEnabled', '3': 4, '4': 1, '5': 8, '10': 'isVatSelectionEnabled'},
   ],
 };
 
@@ -148,5 +168,6 @@ final $typed_data.Uint8List businessRulesDescriptor = $convert.base64Decode(
     'Cg1CdXNpbmVzc1J1bGVzEkAKG2lzTmVnYXRpdmVTdG9ja0d1YXJkRW5hYmxlZBgBIAEoCFIbaX'
     'NOZWdhdGl2ZVN0b2NrR3VhcmRFbmFibGVkEjwKGWlzUmVjZW50VGlja2V0RWRpdEVuYWJsZWQY'
     'AiABKAhSGWlzUmVjZW50VGlja2V0RWRpdEVuYWJsZWQSRAodcmVjZW50VGlja2V0RWRpdFdpbm'
-    'Rvd01pbnV0ZXMYAyABKAVSHXJlY2VudFRpY2tldEVkaXRXaW5kb3dNaW51dGVz');
+    'Rvd01pbnV0ZXMYAyABKAVSHXJlY2VudFRpY2tldEVkaXRXaW5kb3dNaW51dGVzEjQKFWlzVmF0'
+    'U2VsZWN0aW9uRW5hYmxlZBgEIAEoCFIVaXNWYXRTZWxlY3Rpb25FbmFibGVk');
 

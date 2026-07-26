@@ -1,5 +1,15 @@
 # changelog
 
+## 1.3.8 - 2026 july
+
+- PawaPay billing RPCs: `createPawapayCheckout`, `fulfillLicenseFromPawapay`, `fulfillFromPawapayCheckout`
+- `AccountingYearPurchase.pawapayCheckoutId` + `paymentProvider`
+
+## 1.3.7 - 2026 july
+
+- SYSCOHADA: `readAccountingYearPurchases`, `fiscalYear` on Stripe checkout/fulfill
+- enrich Chain model and Ticket model to handle accounting closing
+
 ## 1.3.6 - 2026 july
 
 - replaced_ticket_id to track if a ticket is a fix of a previous one (for transparency towards customers and managers)

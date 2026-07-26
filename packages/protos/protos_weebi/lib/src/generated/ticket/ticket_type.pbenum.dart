@@ -24,7 +24,8 @@ class TicketTypePb extends $pb.ProtobufEnum {
   static const TicketTypePb stockIn = TicketTypePb._(7, _omitEnumNames ? '' : 'stockIn');
   static const TicketTypePb stockOut = TicketTypePb._(8, _omitEnumNames ? '' : 'stockOut');
   static const TicketTypePb inventory = TicketTypePb._(9, _omitEnumNames ? '' : 'inventory');
-  static const TicketTypePb wage = TicketTypePb._(10, _omitEnumNames ? '' : 'wage');
+  static const TicketTypePb rebalance = TicketTypePb._(10, _omitEnumNames ? '' : 'rebalance');
+  static const TicketTypePb inventoryClosingValue = TicketTypePb._(11, _omitEnumNames ? '' : 'inventoryClosingValue');
 
   static const $core.List<TicketTypePb> values = <TicketTypePb> [
     unknown,
@@ -37,7 +38,8 @@ class TicketTypePb extends $pb.ProtobufEnum {
     stockIn,
     stockOut,
     inventory,
-    wage,
+    rebalance,
+    inventoryClosingValue,
   ];
 
   static final $core.Map<$core.int, TicketTypePb> _byValue = $pb.ProtobufEnum.initByValue(values);

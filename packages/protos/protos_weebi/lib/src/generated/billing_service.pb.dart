@@ -544,6 +544,7 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
     $core.String? referralCode,
     $core.int? creditAppliedCents,
     $core.String? legalTermsVersionDate,
+    $core.int? fiscalYear,
   }) {
     final result = create();
     if (priceId != null) {
@@ -564,6 +565,9 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
     if (legalTermsVersionDate != null) {
       result.legalTermsVersionDate = legalTermsVersionDate;
     }
+    if (fiscalYear != null) {
+      result.fiscalYear = fiscalYear;
+    }
     return result;
   }
   CreateCheckoutSessionRequest._() : super();
@@ -577,6 +581,7 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
     ..aOS(4, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(5, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
     ..aOS(6, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
+    ..a<$core.int>(7, _omitFieldNames ? '' : 'fiscalYear', $pb.PbFieldType.O3, protoName: 'fiscalYear')
     ..hasRequiredFields = false
   ;
 
@@ -660,6 +665,16 @@ class CreateCheckoutSessionRequest extends $pb.GeneratedMessage {
   $core.bool hasLegalTermsVersionDate() => $_has(5);
   @$pb.TagNumber(6)
   void clearLegalTermsVersionDate() => clearField(6);
+
+  /// / Fiscal/calendar year for punctual SYSCOHADA purchases (required when price is syscohada).
+  @$pb.TagNumber(7)
+  $core.int get fiscalYear => $_getIZ(6);
+  @$pb.TagNumber(7)
+  set fiscalYear($core.int v) { $_setSignedInt32(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasFiscalYear() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearFiscalYear() => clearField(7);
 }
 
 class CreateCheckoutSessionResponse extends $pb.GeneratedMessage {
@@ -722,6 +737,7 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
     $core.String? referralCode,
     $core.int? creditAppliedCents,
     $core.String? legalTermsVersionDate,
+    $core.int? fiscalYear,
   }) {
     final result = create();
     if (firmId != null) {
@@ -745,6 +761,9 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
     if (legalTermsVersionDate != null) {
       result.legalTermsVersionDate = legalTermsVersionDate;
     }
+    if (fiscalYear != null) {
+      result.fiscalYear = fiscalYear;
+    }
     return result;
   }
   FulfillLicenseFromStripeRequest._() : super();
@@ -759,6 +778,7 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
     ..aOS(5, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
     ..a<$core.int>(6, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
     ..aOS(7, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
+    ..a<$core.int>(8, _omitFieldNames ? '' : 'fiscalYear', $pb.PbFieldType.O3, protoName: 'fiscalYear')
     ..hasRequiredFields = false
   ;
 
@@ -846,6 +866,16 @@ class FulfillLicenseFromStripeRequest extends $pb.GeneratedMessage {
   $core.bool hasLegalTermsVersionDate() => $_has(6);
   @$pb.TagNumber(7)
   void clearLegalTermsVersionDate() => clearField(7);
+
+  /// / Fiscal year for punctual SYSCOHADA fulfill (from Checkout Session metadata).
+  @$pb.TagNumber(8)
+  $core.int get fiscalYear => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set fiscalYear($core.int v) { $_setSignedInt32(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasFiscalYear() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearFiscalYear() => clearField(8);
 }
 
 /// / Request to fulfill a license from a Stripe Checkout Session (e.g. after success redirect).
@@ -904,6 +934,418 @@ class FulfillFromStripeCheckoutSessionRequest extends $pb.GeneratedMessage {
   void clearCheckoutSessionId() => clearField(1);
 
   /// / Same value as sent to createCheckoutSession (YYYY-MM-DD). Persisted on the license; not read from Stripe.
+  @$pb.TagNumber(2)
+  $core.String get legalTermsVersionDate => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set legalTermsVersionDate($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLegalTermsVersionDate() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLegalTermsVersionDate() => clearField(2);
+}
+
+class CreatePawapayCheckoutRequest extends $pb.GeneratedMessage {
+  factory CreatePawapayCheckoutRequest({
+    $core.String? productId,
+    $core.String? returnUrl,
+    $core.String? referralCode,
+    $core.int? creditAppliedCents,
+    $core.String? legalTermsVersionDate,
+    $core.int? fiscalYear,
+  }) {
+    final result = create();
+    if (productId != null) {
+      result.productId = productId;
+    }
+    if (returnUrl != null) {
+      result.returnUrl = returnUrl;
+    }
+    if (referralCode != null) {
+      result.referralCode = referralCode;
+    }
+    if (creditAppliedCents != null) {
+      result.creditAppliedCents = creditAppliedCents;
+    }
+    if (legalTermsVersionDate != null) {
+      result.legalTermsVersionDate = legalTermsVersionDate;
+    }
+    if (fiscalYear != null) {
+      result.fiscalYear = fiscalYear;
+    }
+    return result;
+  }
+  CreatePawapayCheckoutRequest._() : super();
+  factory CreatePawapayCheckoutRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreatePawapayCheckoutRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreatePawapayCheckoutRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'productId', protoName: 'productId')
+    ..aOS(2, _omitFieldNames ? '' : 'returnUrl', protoName: 'returnUrl')
+    ..aOS(3, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
+    ..aOS(5, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'fiscalYear', $pb.PbFieldType.O3, protoName: 'fiscalYear')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreatePawapayCheckoutRequest clone() => CreatePawapayCheckoutRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreatePawapayCheckoutRequest copyWith(void Function(CreatePawapayCheckoutRequest) updates) => super.copyWith((message) => updates(message as CreatePawapayCheckoutRequest)) as CreatePawapayCheckoutRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreatePawapayCheckoutRequest create() => CreatePawapayCheckoutRequest._();
+  CreatePawapayCheckoutRequest createEmptyInstance() => create();
+  static $pb.PbList<CreatePawapayCheckoutRequest> createRepeated() => $pb.PbList<CreatePawapayCheckoutRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CreatePawapayCheckoutRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreatePawapayCheckoutRequest>(create);
+  static CreatePawapayCheckoutRequest? _defaultInstance;
+
+  /// / Weebi product id from billing_products (e.g. "premium", "syscohada"). Not a Stripe priceId.
+  @$pb.TagNumber(1)
+  $core.String get productId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set productId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasProductId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearProductId() => clearField(1);
+
+  /// / URL the customer is returned to after the hosted payment page (PawaPay returnUrl).
+  @$pb.TagNumber(2)
+  $core.String get returnUrl => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set returnUrl($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasReturnUrl() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearReturnUrl() => clearField(2);
+
+  /// / Optional referral code to apply.
+  @$pb.TagNumber(3)
+  $core.String get referralCode => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set referralCode($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasReferralCode() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearReferralCode() => clearField(3);
+
+  /// / Optional credit (cents) to apply. Deducted from firm balance.
+  @$pb.TagNumber(4)
+  $core.int get creditAppliedCents => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set creditAppliedCents($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasCreditAppliedCents() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearCreditAppliedCents() => clearField(4);
+
+  /// / CGV / terms version the buyer accepted before checkout (YYYY-MM-DD).
+  @$pb.TagNumber(5)
+  $core.String get legalTermsVersionDate => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set legalTermsVersionDate($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasLegalTermsVersionDate() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearLegalTermsVersionDate() => clearField(5);
+
+  /// / Fiscal/calendar year for punctual SYSCOHADA purchases (required when productId is syscohada).
+  @$pb.TagNumber(6)
+  $core.int get fiscalYear => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set fiscalYear($core.int v) { $_setSignedInt32(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasFiscalYear() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearFiscalYear() => clearField(6);
+}
+
+class CreatePawapayCheckoutResponse extends $pb.GeneratedMessage {
+  factory CreatePawapayCheckoutResponse({
+    $core.String? checkoutId,
+    $core.String? redirectUrl,
+  }) {
+    final result = create();
+    if (checkoutId != null) {
+      result.checkoutId = checkoutId;
+    }
+    if (redirectUrl != null) {
+      result.redirectUrl = redirectUrl;
+    }
+    return result;
+  }
+  CreatePawapayCheckoutResponse._() : super();
+  factory CreatePawapayCheckoutResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreatePawapayCheckoutResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreatePawapayCheckoutResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'checkoutId', protoName: 'checkoutId')
+    ..aOS(2, _omitFieldNames ? '' : 'redirectUrl', protoName: 'redirectUrl')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreatePawapayCheckoutResponse clone() => CreatePawapayCheckoutResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreatePawapayCheckoutResponse copyWith(void Function(CreatePawapayCheckoutResponse) updates) => super.copyWith((message) => updates(message as CreatePawapayCheckoutResponse)) as CreatePawapayCheckoutResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreatePawapayCheckoutResponse create() => CreatePawapayCheckoutResponse._();
+  CreatePawapayCheckoutResponse createEmptyInstance() => create();
+  static $pb.PbList<CreatePawapayCheckoutResponse> createRepeated() => $pb.PbList<CreatePawapayCheckoutResponse>();
+  @$core.pragma('dart2js:noInline')
+  static CreatePawapayCheckoutResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreatePawapayCheckoutResponse>(create);
+  static CreatePawapayCheckoutResponse? _defaultInstance;
+
+  /// / UUIDv4 checkout id (also used as licenseId suffix: lic_pawapay_{checkoutId}).
+  @$pb.TagNumber(1)
+  $core.String get checkoutId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set checkoutId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCheckoutId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCheckoutId() => clearField(1);
+
+  /// / Hosted payment page URL — redirect the customer here.
+  @$pb.TagNumber(2)
+  $core.String get redirectUrl => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set redirectUrl($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasRedirectUrl() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearRedirectUrl() => clearField(2);
+}
+
+/// / productId is the source of truth; billing_service maps it via billing_products.
+class FulfillLicenseFromPawapayRequest extends $pb.GeneratedMessage {
+  factory FulfillLicenseFromPawapayRequest({
+    $core.String? firmId,
+    $core.String? licenseId,
+    $core.String? checkoutId,
+    $core.String? productId,
+    $core.String? referralCode,
+    $core.int? creditAppliedCents,
+    $core.String? legalTermsVersionDate,
+    $core.int? fiscalYear,
+  }) {
+    final result = create();
+    if (firmId != null) {
+      result.firmId = firmId;
+    }
+    if (licenseId != null) {
+      result.licenseId = licenseId;
+    }
+    if (checkoutId != null) {
+      result.checkoutId = checkoutId;
+    }
+    if (productId != null) {
+      result.productId = productId;
+    }
+    if (referralCode != null) {
+      result.referralCode = referralCode;
+    }
+    if (creditAppliedCents != null) {
+      result.creditAppliedCents = creditAppliedCents;
+    }
+    if (legalTermsVersionDate != null) {
+      result.legalTermsVersionDate = legalTermsVersionDate;
+    }
+    if (fiscalYear != null) {
+      result.fiscalYear = fiscalYear;
+    }
+    return result;
+  }
+  FulfillLicenseFromPawapayRequest._() : super();
+  factory FulfillLicenseFromPawapayRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory FulfillLicenseFromPawapayRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FulfillLicenseFromPawapayRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'firmId', protoName: 'firmId')
+    ..aOS(2, _omitFieldNames ? '' : 'licenseId', protoName: 'licenseId')
+    ..aOS(3, _omitFieldNames ? '' : 'checkoutId', protoName: 'checkoutId')
+    ..aOS(4, _omitFieldNames ? '' : 'productId', protoName: 'productId')
+    ..aOS(5, _omitFieldNames ? '' : 'referralCode', protoName: 'referralCode')
+    ..a<$core.int>(6, _omitFieldNames ? '' : 'creditAppliedCents', $pb.PbFieldType.O3, protoName: 'creditAppliedCents')
+    ..aOS(7, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
+    ..a<$core.int>(8, _omitFieldNames ? '' : 'fiscalYear', $pb.PbFieldType.O3, protoName: 'fiscalYear')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  FulfillLicenseFromPawapayRequest clone() => FulfillLicenseFromPawapayRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  FulfillLicenseFromPawapayRequest copyWith(void Function(FulfillLicenseFromPawapayRequest) updates) => super.copyWith((message) => updates(message as FulfillLicenseFromPawapayRequest)) as FulfillLicenseFromPawapayRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FulfillLicenseFromPawapayRequest create() => FulfillLicenseFromPawapayRequest._();
+  FulfillLicenseFromPawapayRequest createEmptyInstance() => create();
+  static $pb.PbList<FulfillLicenseFromPawapayRequest> createRepeated() => $pb.PbList<FulfillLicenseFromPawapayRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FulfillLicenseFromPawapayRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FulfillLicenseFromPawapayRequest>(create);
+  static FulfillLicenseFromPawapayRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get firmId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set firmId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasFirmId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearFirmId() => clearField(1);
+
+  /// / Deterministic license id, e.g. lic_pawapay_{checkoutId}.
+  @$pb.TagNumber(2)
+  $core.String get licenseId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set licenseId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLicenseId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLicenseId() => clearField(2);
+
+  /// / PawaPay checkout UUID (idempotency / reconciliation key).
+  @$pb.TagNumber(3)
+  $core.String get checkoutId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set checkoutId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasCheckoutId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearCheckoutId() => clearField(3);
+
+  /// / Weebi product id (e.g. "premium", "syscohada").
+  @$pb.TagNumber(4)
+  $core.String get productId => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set productId($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasProductId() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearProductId() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get referralCode => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set referralCode($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasReferralCode() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearReferralCode() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.int get creditAppliedCents => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set creditAppliedCents($core.int v) { $_setSignedInt32(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasCreditAppliedCents() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearCreditAppliedCents() => clearField(6);
+
+  /// / CGV / terms version from checkout metadata (YYYY-MM-DD).
+  @$pb.TagNumber(7)
+  $core.String get legalTermsVersionDate => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set legalTermsVersionDate($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasLegalTermsVersionDate() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearLegalTermsVersionDate() => clearField(7);
+
+  /// / Fiscal year for punctual SYSCOHADA fulfill.
+  @$pb.TagNumber(8)
+  $core.int get fiscalYear => $_getIZ(7);
+  @$pb.TagNumber(8)
+  set fiscalYear($core.int v) { $_setSignedInt32(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasFiscalYear() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearFiscalYear() => clearField(8);
+}
+
+/// / Request to fulfill a license from a completed PawaPay checkout (e.g. after returnUrl).
+class FulfillFromPawapayCheckoutRequest extends $pb.GeneratedMessage {
+  factory FulfillFromPawapayCheckoutRequest({
+    $core.String? checkoutId,
+    $core.String? legalTermsVersionDate,
+  }) {
+    final result = create();
+    if (checkoutId != null) {
+      result.checkoutId = checkoutId;
+    }
+    if (legalTermsVersionDate != null) {
+      result.legalTermsVersionDate = legalTermsVersionDate;
+    }
+    return result;
+  }
+  FulfillFromPawapayCheckoutRequest._() : super();
+  factory FulfillFromPawapayCheckoutRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory FulfillFromPawapayCheckoutRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FulfillFromPawapayCheckoutRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'checkoutId', protoName: 'checkoutId')
+    ..aOS(2, _omitFieldNames ? '' : 'legalTermsVersionDate', protoName: 'legalTermsVersionDate')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  FulfillFromPawapayCheckoutRequest clone() => FulfillFromPawapayCheckoutRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  FulfillFromPawapayCheckoutRequest copyWith(void Function(FulfillFromPawapayCheckoutRequest) updates) => super.copyWith((message) => updates(message as FulfillFromPawapayCheckoutRequest)) as FulfillFromPawapayCheckoutRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static FulfillFromPawapayCheckoutRequest create() => FulfillFromPawapayCheckoutRequest._();
+  FulfillFromPawapayCheckoutRequest createEmptyInstance() => create();
+  static $pb.PbList<FulfillFromPawapayCheckoutRequest> createRepeated() => $pb.PbList<FulfillFromPawapayCheckoutRequest>();
+  @$core.pragma('dart2js:noInline')
+  static FulfillFromPawapayCheckoutRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<FulfillFromPawapayCheckoutRequest>(create);
+  static FulfillFromPawapayCheckoutRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get checkoutId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set checkoutId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCheckoutId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCheckoutId() => clearField(1);
+
+  /// / Same value as sent to createPawapayCheckout (YYYY-MM-DD). Persisted on the license.
   @$pb.TagNumber(2)
   $core.String get legalTermsVersionDate => $_getSZ(1);
   @$pb.TagNumber(2)
@@ -1074,6 +1516,7 @@ class BillingProduct extends $pb.GeneratedMessage {
   @$pb.TagNumber(7)
   void clearStripePriceId() => clearField(7);
 
+  /// / Optional internal SKU / label for PawaPay; amounts are sent explicitly (no Stripe-like Price IDs).
   @$pb.TagNumber(8)
   $core.String get pawapayProductId => $_getSZ(7);
   @$pb.TagNumber(8)
@@ -1168,6 +1611,201 @@ class ReadBillingProductsResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<BillingProduct> get products => $_getList(0);
+}
+
+/// / One punctual SYSCOHADA fiscal-year purchase (not a subscription).
+class AccountingYearPurchase extends $pb.GeneratedMessage {
+  factory AccountingYearPurchase({
+    $core.int? year,
+    $core.String? stripeCheckoutSessionId,
+    $core.String? stripePriceId,
+    $core.String? paidAtUTC,
+    $core.int? amountCents,
+    $core.String? currency,
+    $core.String? pawapayCheckoutId,
+    $24.PaymentProvider? paymentProvider,
+  }) {
+    final result = create();
+    if (year != null) {
+      result.year = year;
+    }
+    if (stripeCheckoutSessionId != null) {
+      result.stripeCheckoutSessionId = stripeCheckoutSessionId;
+    }
+    if (stripePriceId != null) {
+      result.stripePriceId = stripePriceId;
+    }
+    if (paidAtUTC != null) {
+      result.paidAtUTC = paidAtUTC;
+    }
+    if (amountCents != null) {
+      result.amountCents = amountCents;
+    }
+    if (currency != null) {
+      result.currency = currency;
+    }
+    if (pawapayCheckoutId != null) {
+      result.pawapayCheckoutId = pawapayCheckoutId;
+    }
+    if (paymentProvider != null) {
+      result.paymentProvider = paymentProvider;
+    }
+    return result;
+  }
+  AccountingYearPurchase._() : super();
+  factory AccountingYearPurchase.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory AccountingYearPurchase.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'AccountingYearPurchase', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'year', $pb.PbFieldType.O3)
+    ..aOS(2, _omitFieldNames ? '' : 'stripeCheckoutSessionId', protoName: 'stripeCheckoutSessionId')
+    ..aOS(3, _omitFieldNames ? '' : 'stripePriceId', protoName: 'stripePriceId')
+    ..aOS(4, _omitFieldNames ? '' : 'paidAtUTC', protoName: 'paidAtUTC')
+    ..a<$core.int>(5, _omitFieldNames ? '' : 'amountCents', $pb.PbFieldType.O3, protoName: 'amountCents')
+    ..aOS(6, _omitFieldNames ? '' : 'currency')
+    ..aOS(7, _omitFieldNames ? '' : 'pawapayCheckoutId', protoName: 'pawapayCheckoutId')
+    ..e<$24.PaymentProvider>(8, _omitFieldNames ? '' : 'paymentProvider', $pb.PbFieldType.OE, protoName: 'paymentProvider', defaultOrMaker: $24.PaymentProvider.PAYMENT_PROVIDER_UNKNOWN, valueOf: $24.PaymentProvider.valueOf, enumValues: $24.PaymentProvider.values)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  AccountingYearPurchase clone() => AccountingYearPurchase()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  AccountingYearPurchase copyWith(void Function(AccountingYearPurchase) updates) => super.copyWith((message) => updates(message as AccountingYearPurchase)) as AccountingYearPurchase;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static AccountingYearPurchase create() => AccountingYearPurchase._();
+  AccountingYearPurchase createEmptyInstance() => create();
+  static $pb.PbList<AccountingYearPurchase> createRepeated() => $pb.PbList<AccountingYearPurchase>();
+  @$core.pragma('dart2js:noInline')
+  static AccountingYearPurchase getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<AccountingYearPurchase>(create);
+  static AccountingYearPurchase? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get year => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set year($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasYear() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearYear() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get stripeCheckoutSessionId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set stripeCheckoutSessionId($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasStripeCheckoutSessionId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearStripeCheckoutSessionId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get stripePriceId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set stripePriceId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasStripePriceId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearStripePriceId() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get paidAtUTC => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set paidAtUTC($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPaidAtUTC() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPaidAtUTC() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get amountCents => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set amountCents($core.int v) { $_setSignedInt32(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasAmountCents() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearAmountCents() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get currency => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set currency($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasCurrency() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearCurrency() => clearField(6);
+
+  /// / Set when paid via PawaPay (mutually exclusive with stripeCheckoutSessionId in practice).
+  @$pb.TagNumber(7)
+  $core.String get pawapayCheckoutId => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set pawapayCheckoutId($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasPawapayCheckoutId() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearPawapayCheckoutId() => clearField(7);
+
+  /// / Which provider processed this purchase.
+  @$pb.TagNumber(8)
+  $24.PaymentProvider get paymentProvider => $_getN(7);
+  @$pb.TagNumber(8)
+  set paymentProvider($24.PaymentProvider v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasPaymentProvider() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearPaymentProvider() => clearField(8);
+}
+
+class ReadAccountingYearPurchasesResponse extends $pb.GeneratedMessage {
+  factory ReadAccountingYearPurchasesResponse({
+    $core.Iterable<AccountingYearPurchase>? purchases,
+  }) {
+    final result = create();
+    if (purchases != null) {
+      result.purchases.addAll(purchases);
+    }
+    return result;
+  }
+  ReadAccountingYearPurchasesResponse._() : super();
+  factory ReadAccountingYearPurchasesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ReadAccountingYearPurchasesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ReadAccountingYearPurchasesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.billing.service'), createEmptyInstance: create)
+    ..pc<AccountingYearPurchase>(1, _omitFieldNames ? '' : 'purchases', $pb.PbFieldType.PM, subBuilder: AccountingYearPurchase.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ReadAccountingYearPurchasesResponse clone() => ReadAccountingYearPurchasesResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ReadAccountingYearPurchasesResponse copyWith(void Function(ReadAccountingYearPurchasesResponse) updates) => super.copyWith((message) => updates(message as ReadAccountingYearPurchasesResponse)) as ReadAccountingYearPurchasesResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ReadAccountingYearPurchasesResponse create() => ReadAccountingYearPurchasesResponse._();
+  ReadAccountingYearPurchasesResponse createEmptyInstance() => create();
+  static $pb.PbList<ReadAccountingYearPurchasesResponse> createRepeated() => $pb.PbList<ReadAccountingYearPurchasesResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ReadAccountingYearPurchasesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ReadAccountingYearPurchasesResponse>(create);
+  static ReadAccountingYearPurchasesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<AccountingYearPurchase> get purchases => $_getList(0);
 }
 
 
