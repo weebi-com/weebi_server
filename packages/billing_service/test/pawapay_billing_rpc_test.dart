@@ -31,6 +31,28 @@ void main() {
       'licenses': <Map<String, dynamic>>[],
       'status': true,
     });
+    await db.collection(FenceService.boutiqueCollectionName).drop();
+    await db.createCollection(FenceService.boutiqueCollectionName);
+    await db.collection(FenceService.boutiqueCollectionName).insertOne({
+      'chainId': Dummy.chain.chainId,
+      'firmId': Dummy.firm.firmId,
+      'name': 'Test chain',
+      'boutiques': [
+        {
+          'boutiqueId': Dummy.boutiqueMongo.boutiqueId,
+          'firmId': Dummy.firm.firmId,
+          'chainId': Dummy.chain.chainId,
+          'boutique': {
+            'boutiqueId': Dummy.boutiqueMongo.boutiqueId,
+            'name': 'Dakar shop',
+            'addressFull': {
+              'city': 'Dakar',
+              'country': {'code2Letters': 'SN'},
+            },
+          },
+        },
+      ],
+    });
     await db.collection(FenceService.userCollectionName).insertOne({
       'userId': Dummy.adminPermission.userId,
       'mail': 'owner@weebi.test',
@@ -93,11 +115,19 @@ void main() {
     expect(resp.redirectUrl, isNotEmpty);
     expect(resp.checkoutId, isNotEmpty);
     expect(fakePawapay.initiated, hasLength(1));
-    final meta = fakePawapay.initiated.first['metadata'] as List;
+    final initiated = fakePawapay.initiated.first;
+    expect(initiated['countries'], ['SEN']);
+    final amounts = initiated['amounts'] as List;
+    expect(amounts, hasLength(1));
+    final amount = amounts.first as PawapayAmount;
+    expect(amount.country, 'SEN');
+    expect(amount.currency, 'XOF');
+    final meta = initiated['metadata'] as List;
     final flat = flattenPawapayMetadata(meta);
     expect(flat['firmId'], Dummy.firm.firmId);
     expect(flat['productId'], 'premium');
     expect(flat['purchaserEmail'], 'owner@weebi.test');
+    expect(flat['countryAlpha2'], 'SN');
   });
 
   test('fulfillFromPawapayCheckout creates PREMIUM licence idempotently', () async {
