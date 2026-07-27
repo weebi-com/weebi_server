@@ -26,9 +26,14 @@ COPY . .
 # Must be done after copying source code (script needs packages/protos/protos_weebi to exist)
 # but before melos bootstrap to ensure generated files are up-to-date
 # Ensure protoc-gen-dart is in PATH (from dart pub global activate protoc_plugin)
+# Pin source via .protos-version (PROTOS_COMMIT). Fail fast if expected RPCs are missing
+# so a stale/wrong protos checkout cannot produce a cryptic AOT compile error later.
 RUN chmod +x packages/protos/protos_weebi/tool/generate_protos.sh && \
     export PATH="$PATH:/root/.pub-cache/bin" && \
-    packages/protos/protos_weebi/tool/generate_protos.sh
+    packages/protos/protos_weebi/tool/generate_protos.sh && \
+    grep -q CreatePawapayCheckoutRequest packages/protos/protos_weebi/lib/src/generated/billing_service.pb.dart && \
+    grep -q CreateWebBridgeLinkRequest packages/protos/protos_weebi/lib/src/generated/fence_service.pb.dart && \
+    grep -q 'rebalance' packages/protos/protos_weebi/lib/src/generated/ticket/ticket_type.pbenum.dart
 
 RUN dart pub global activate melos
 # Ensure packages are still up-to-date if anything has changed
