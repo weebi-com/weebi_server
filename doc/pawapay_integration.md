@@ -228,6 +228,8 @@ sequenceDiagram
 - Injectable `PawapayCheckoutClient` + `FakePawapayCheckoutClient` / `PawapayHttpCheckoutClient` (`MockClient` tests)
 - RPCs implemented: `createPawapayCheckout`, `fulfillLicenseFromPawapay`, `fulfillFromPawapayCheckout`
 - XOF list prices (v1): Premium **19000**, SYSCOHADA **1900** (aligned with marketing FCFA)
+- Country: firm → chain → boutique waterfall (alpha-2), converted to ISO-3 for PawaPay;
+  single `countries` / `amounts` entry (XOF/XAF only in v1)
 - Env: `PAWAPAY_API_BASE_URL`, `PAWAPAY_API_TOKEN`
 - Tests: `test/pawapay_checkout_test.dart`, `test/pawapay_billing_rpc_test.dart`
 

@@ -74,8 +74,13 @@ void main() {
       final created = await client.initiateCheckout(
         checkoutId: 'afb57b93-7849-49aa-babb-4c3ccbfe3d79',
         returnUrl: 'https://app.weebi.com/#/billing?success=true',
-        amounts: buildPawapayXofAmounts('premium'),
-        countries: kPawapayXofCountries,
+        amounts: [
+          buildPawapayAmountForCountry(
+            productId: 'premium',
+            countryAlpha2Or3: 'SN',
+          ),
+        ],
+        countries: ['SEN'],
         metadata: buildPawapayMetadata({'firmId': 'firm-1', 'productId': 'premium'}),
       );
 
@@ -85,7 +90,10 @@ void main() {
       expect(captured.headers['Authorization'], 'Bearer tok_test');
       final body = jsonDecode(captured.body) as Map<String, dynamic>;
       expect(body['checkoutId'], 'afb57b93-7849-49aa-babb-4c3ccbfe3d79');
-      expect(body['countries'], contains('CIV'));
+      expect(body['countries'], ['SEN']);
+      expect(body['amounts'], [
+        {'country': 'SEN', 'currency': 'XOF', 'amount': '19000'},
+      ]);
     });
 
     test('fetchCheckout parses COMPLETED status + metadata', () async {
@@ -137,11 +145,127 @@ void main() {
         () => client.initiateCheckout(
           checkoutId: generateUuidV4(),
           returnUrl: 'https://x',
-          amounts: buildPawapayXofAmounts('premium'),
-          countries: kPawapayXofCountries,
+          amounts: [
+            buildPawapayAmountForCountry(
+              productId: 'premium',
+              countryAlpha2Or3: 'SN',
+            ),
+          ],
+          countries: ['SEN'],
           metadata: const [],
         ),
         throwsA(isA<PawapayCheckoutException>()),
+      );
+    });
+  });
+
+  group('iso2 / single country helpers', () {
+    test('maps OHADA alpha-2 to alpha-3 and XOF/XAF', () {
+      expect(iso2ToIso3Africa('sn'), 'SEN');
+      expect(iso2ToIso3Africa('CI'), 'CIV');
+      expect(iso2ToIso3Africa('cm'), 'CMR');
+      expect(pawapayCurrencyForCountryIso3('SEN'), 'XOF');
+      expect(pawapayCurrencyForCountryIso3('CMR'), 'XAF');
+    });
+
+    test('buildPawapayAmountForCountry is single country', () {
+      final a = buildPawapayAmountForCountry(
+        productId: 'syscohada',
+        countryAlpha2Or3: 'SN',
+      );
+      expect(a.country, 'SEN');
+      expect(a.currency, 'XOF');
+      expect(a.amount, '1900');
+    });
+
+    test('rejects non-FCFA African countries for v1 pricing', () {
+      expect(
+        () => buildPawapayAmountForCountry(
+          productId: 'premium',
+          countryAlpha2Or3: 'KE',
+        ),
+        throwsArgumentError,
+      );
+    });
+
+    test('resolveOrgCountryAlpha2 firm → chain → boutique', () {
+      expect(
+        resolveOrgCountryAlpha2(
+          firmDoc: {
+            'country': {'code2Letters': 'sn'},
+          },
+          chainDocs: const [],
+        ),
+        'SN',
+      );
+      expect(
+        resolveOrgCountryAlpha2(
+          firmDoc: {},
+          chainDocs: [
+            {
+              'chainId': 'c1',
+              'country': {'code2Letters': 'ci'},
+            },
+          ],
+        ),
+        'CI',
+      );
+      expect(
+        resolveOrgCountryAlpha2(
+          firmDoc: {},
+          chainDocs: [
+            {
+              'chainId': 'c1',
+              'boutiques': [
+                {
+                  'boutiqueId': 'b1',
+                  'boutique': {
+                    'addressFull': {
+                      'country': {'code2Letters': 'ml'},
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        ),
+        'ML',
+      );
+      expect(
+        resolveOrgCountryAlpha2(
+          firmDoc: {},
+          chainDocs: [
+            {
+              'chainId': 'other',
+              'boutiques': [
+                {
+                  'boutiqueId': 'bx',
+                  'boutique': {
+                    'addressFull': {
+                      'country': {'code2Letters': 'bf'},
+                    },
+                  },
+                },
+              ],
+            },
+            {
+              'chainId': 'pref',
+              'boutiques': [
+                {
+                  'boutiqueId': 'wanted',
+                  'boutique': {
+                    'addressFull': {
+                      'country': {'code2Letters': 'sn'},
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+          preferredChainIds: ['pref'],
+          preferredBoutiqueIds: ['wanted'],
+        ),
+        'SN',
       );
     });
   });

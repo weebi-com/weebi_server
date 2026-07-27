@@ -5,6 +5,7 @@ import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/logging.dart';
 import 'package:billing_service/src/accounting_year_purchase.dart';
 import 'package:billing_service/src/pawapay_checkout.dart';
+import 'package:billing_service/src/pawapay_country.dart';
 import 'package:billing_service/src/stripe_checkout.dart';
 
 Set<String> _distinctNonEmptySeatUserIds(License license) {
@@ -1171,12 +1172,40 @@ class BillingService extends BillingServiceBase {
       return trimmed;
     });
 
+    final countryAlpha2 = await databaseMiddleware<String?>(_poolService, (db) async {
+      final firmDoc = await db
+          .collection(FenceService.firmCollectionName)
+          .findOne(where.eq('firmId', userPermission.firmId));
+      final chainDocs = await db
+          .collection(FenceService.boutiqueCollectionName)
+          .find(where.eq('firmId', userPermission.firmId))
+          .toList();
+      final preferredChainIds = userPermission.hasLimitedAccess()
+          ? userPermission.limitedAccess.chainIds.ids.toList()
+          : <String>[];
+      final preferredBoutiqueIds = userPermission.hasLimitedAccess()
+          ? userPermission.limitedAccess.boutiqueIds.ids.toList()
+          : <String>[];
+      return resolveOrgCountryAlpha2(
+        firmDoc: firmDoc,
+        chainDocs: chainDocs.map((e) => Map<String, dynamic>.from(e)),
+        preferredChainIds: preferredChainIds,
+        preferredBoutiqueIds: preferredBoutiqueIds,
+      );
+    });
+    if (countryAlpha2 == null || countryAlpha2.isEmpty) {
+      throw GrpcError.failedPrecondition(
+        'Set a boutique address country (ISO alpha-2) before paying with mobile money',
+      );
+    }
+
     final metaFields = <String, String>{
       'firmId': userPermission.firmId,
       'productId': product.productId,
       'productKind':
           isSyscohadaProductId(product.productId) ? 'syscohada' : 'license',
       'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
+      'countryAlpha2': countryAlpha2,
     };
     if (isSyscohadaProductId(product.productId)) {
       metaFields['fiscalYear'] = request.fiscalYear.toString();
@@ -1191,9 +1220,12 @@ class BillingService extends BillingServiceBase {
       metaFields['purchaserEmail'] = purchaserEmail;
     }
 
-    List<PawapayAmount> amounts;
+    final PawapayAmount amount;
     try {
-      amounts = buildPawapayXofAmounts(product.productId);
+      amount = buildPawapayAmountForCountry(
+        productId: product.productId,
+        countryAlpha2Or3: countryAlpha2,
+      );
     } on ArgumentError catch (e) {
       throw GrpcError.failedPrecondition('${e.message}');
     }
@@ -1202,6 +1234,7 @@ class BillingService extends BillingServiceBase {
       'firmId': userPermission.firmId,
       'productId': product.productId,
       'checkoutId': checkoutId,
+      'country': amount.country,
     });
 
     try {
@@ -1210,8 +1243,8 @@ class BillingService extends BillingServiceBase {
       final created = await client.initiateCheckout(
         checkoutId: checkoutId,
         returnUrl: returnUrl,
-        amounts: amounts,
-        countries: kPawapayXofCountries,
+        amounts: [amount],
+        countries: [amount.country],
         metadata: buildPawapayMetadata(metaFields),
       );
       if (created.redirectUrl.isEmpty) {

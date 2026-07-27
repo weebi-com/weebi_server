@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:billing_service/src/pawapay_country.dart';
 import 'package:http/http.dart' as http;
 
 /// Result of initiating a PawaPay hosted checkout.
@@ -241,17 +242,7 @@ String generateUuidV4() {
       '${h.substring(16, 20)}-${h.substring(20)}';
 }
 
-/// Sandbox / v1 XOF list prices aligned with marketing (FCFA).
-const kPawapayXofCountries = <String>[
-  'CIV',
-  'SEN',
-  'MLI',
-  'BFA',
-  'BEN',
-  'TGO',
-  'NER',
-];
-
+/// Marketing FCFA list prices (same numeric for XOF / XAF in v1).
 int pawapayXofAmountForProduct(String productId) {
   final id = productId.trim().toLowerCase();
   if (id == 'syscohada') return 1900;
@@ -260,11 +251,45 @@ int pawapayXofAmountForProduct(String productId) {
   throw ArgumentError.value(productId, 'productId', 'no XOF list price configured');
 }
 
-List<PawapayAmount> buildPawapayXofAmounts(String productId) {
+/// Builds a single-country PawaPay `amounts` entry from Weebi alpha-2 (or alpha-3).
+///
+/// Throws [ArgumentError] when the country cannot be mapped, currency is missing,
+/// or v1 pricing does not support that currency (non-FCFA).
+PawapayAmount buildPawapayAmountForCountry({
+  required String productId,
+  required String countryAlpha2Or3,
+}) {
+  final iso3 = iso2ToIso3Africa(countryAlpha2Or3);
+  if (iso3 == null) {
+    throw ArgumentError.value(
+      countryAlpha2Or3,
+      'country',
+      'unsupported country for PawaPay (need African ISO alpha-2)',
+    );
+  }
+  final currency = pawapayCurrencyForCountryIso3(iso3);
+  if (currency == null) {
+    throw ArgumentError.value(
+      iso3,
+      'country',
+      'no PawaPay currency mapping for country',
+    );
+  }
+  if (!kPawapayFcfaCurrencies.contains(currency)) {
+    throw ArgumentError.value(
+      iso3,
+      'country',
+      'PawaPay v1 licence checkout only supports XOF/XAF (got $currency)',
+    );
+  }
   final amount = pawapayXofAmountForProduct(productId).toString();
+  return PawapayAmount(country: iso3, currency: currency, amount: amount);
+}
+
+/// @Deprecated Use [buildPawapayAmountForCountry] with a single resolved country.
+List<PawapayAmount> buildPawapayXofAmounts(String productId) {
   return [
-    for (final c in kPawapayXofCountries)
-      PawapayAmount(country: c, currency: 'XOF', amount: amount),
+    buildPawapayAmountForCountry(productId: productId, countryAlpha2Or3: 'SN'),
   ];
 }
 
