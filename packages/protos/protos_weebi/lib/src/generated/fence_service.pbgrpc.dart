@@ -60,6 +60,14 @@ class FenceServiceClient extends $grpc.Client {
       '/weebi.fence.service.FenceService/confirmPasswordReset',
       ($8.PasswordResetConfirmRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.StatusResponse.fromBuffer(value));
+  static final _$createWebBridgeLink = $grpc.ClientMethod<$8.CreateWebBridgeLinkRequest, $8.CreateWebBridgeLinkResponse>(
+      '/weebi.fence.service.FenceService/createWebBridgeLink',
+      ($8.CreateWebBridgeLinkRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $8.CreateWebBridgeLinkResponse.fromBuffer(value));
+  static final _$exchangeWebBridgeToken = $grpc.ClientMethod<$8.ExchangeWebBridgeTokenRequest, $8.Tokens>(
+      '/weebi.fence.service.FenceService/exchangeWebBridgeToken',
+      ($8.ExchangeWebBridgeTokenRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $8.Tokens.fromBuffer(value));
   static final _$createFirm = $grpc.ClientMethod<$10.CreateFirmRequest, $10.CreateFirmResponse>(
       '/weebi.fence.service.FenceService/createFirm',
       ($10.CreateFirmRequest value) => value.writeToBuffer(),
@@ -205,6 +213,14 @@ class FenceServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$1.StatusResponse> confirmPasswordReset($8.PasswordResetConfirmRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$confirmPasswordReset, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$8.CreateWebBridgeLinkResponse> createWebBridgeLink($8.CreateWebBridgeLinkRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$createWebBridgeLink, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$8.Tokens> exchangeWebBridgeToken($8.ExchangeWebBridgeTokenRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$exchangeWebBridgeToken, request, options: options);
   }
 
   $grpc.ResponseFuture<$10.CreateFirmResponse> createFirm($10.CreateFirmRequest request, {$grpc.CallOptions? options}) {
@@ -377,6 +393,20 @@ abstract class FenceServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $8.PasswordResetConfirmRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$8.CreateWebBridgeLinkRequest, $8.CreateWebBridgeLinkResponse>(
+        'createWebBridgeLink',
+        createWebBridgeLink_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $8.CreateWebBridgeLinkRequest.fromBuffer(value),
+        ($8.CreateWebBridgeLinkResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$8.ExchangeWebBridgeTokenRequest, $8.Tokens>(
+        'exchangeWebBridgeToken',
+        exchangeWebBridgeToken_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $8.ExchangeWebBridgeTokenRequest.fromBuffer(value),
+        ($8.Tokens value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$10.CreateFirmRequest, $10.CreateFirmResponse>(
         'createFirm',
         createFirm_Pre,
@@ -600,6 +630,14 @@ abstract class FenceServiceBase extends $grpc.Service {
     return confirmPasswordReset(call, await request);
   }
 
+  $async.Future<$8.CreateWebBridgeLinkResponse> createWebBridgeLink_Pre($grpc.ServiceCall call, $async.Future<$8.CreateWebBridgeLinkRequest> request) async {
+    return createWebBridgeLink(call, await request);
+  }
+
+  $async.Future<$8.Tokens> exchangeWebBridgeToken_Pre($grpc.ServiceCall call, $async.Future<$8.ExchangeWebBridgeTokenRequest> request) async {
+    return exchangeWebBridgeToken(call, await request);
+  }
+
   $async.Future<$10.CreateFirmResponse> createFirm_Pre($grpc.ServiceCall call, $async.Future<$10.CreateFirmRequest> request) async {
     return createFirm(call, await request);
   }
@@ -716,6 +754,8 @@ abstract class FenceServiceBase extends $grpc.Service {
   $async.Future<$8.Tokens> getSessionInternal($grpc.ServiceCall call, $8.SessionRequest request);
   $async.Future<$1.StatusResponse> requestPasswordReset($grpc.ServiceCall call, $8.PasswordResetRequest request);
   $async.Future<$1.StatusResponse> confirmPasswordReset($grpc.ServiceCall call, $8.PasswordResetConfirmRequest request);
+  $async.Future<$8.CreateWebBridgeLinkResponse> createWebBridgeLink($grpc.ServiceCall call, $8.CreateWebBridgeLinkRequest request);
+  $async.Future<$8.Tokens> exchangeWebBridgeToken($grpc.ServiceCall call, $8.ExchangeWebBridgeTokenRequest request);
   $async.Future<$10.CreateFirmResponse> createFirm($grpc.ServiceCall call, $10.CreateFirmRequest request);
   $async.Future<$10.Firm> readOneFirm($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$9.PendingUserResponse> createPendingUser($grpc.ServiceCall call, $9.PendingUserRequest request);

@@ -89,6 +89,20 @@ Future<void> main(List<String> args) async {
     ],
   });
 
+  /// WEB_BRIDGE_TOKENS - one-time App->Web magic links (short TTL)
+  const webBridgeTokensCollectionName = 'web_bridge_tokens';
+  await db.createCollection(webBridgeTokensCollectionName);
+  await db.runCommand({
+    'createIndexes': webBridgeTokensCollectionName,
+    'indexes': [
+      {
+        'key': {'expiresAt': 1},
+        'name': 'expiresAt_ttl',
+        'expireAfterSeconds': 0,
+      },
+    ],
+  });
+
   // firm
   final d = await db.ensureIndex(FenceService.firmCollectionName,
       name: 'firmId', keys: {'firmId': 1});

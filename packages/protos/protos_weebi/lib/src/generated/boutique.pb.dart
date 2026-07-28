@@ -13,10 +13,165 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'boutique.pbenum.dart';
 import 'common/address.pb.dart' as $22;
 import 'common/g_timestamp.pb.dart' as $20;
 import 'common/phone.pb.dart' as $21;
 import 'device.pb.dart' as $12;
+
+export 'boutique.pbenum.dart';
+
+/// / One self-declared business classification (ISIC-oriented).
+/// / Not an enum: the authoritative list lives in protos_weebi data.
+/// / Composite unique key: ([isic_code], [sub_code]). [isic_code] may repeat;
+/// / [sub_code] distinguishes Weebi refinements (empty when ISIC alone is enough).
+class BusinessClassification extends $pb.GeneratedMessage {
+  factory BusinessClassification({
+    $core.String? isicCode,
+    $core.String? subCode,
+    $core.String? emoji,
+    $core.String? labelFr,
+    $core.String? isicLabelFr,
+    $core.String? isicLabelEn,
+    $core.String? isicLabelEs,
+    CommerceTypePb? smtRegime,
+  }) {
+    final result = create();
+    if (isicCode != null) {
+      result.isicCode = isicCode;
+    }
+    if (subCode != null) {
+      result.subCode = subCode;
+    }
+    if (emoji != null) {
+      result.emoji = emoji;
+    }
+    if (labelFr != null) {
+      result.labelFr = labelFr;
+    }
+    if (isicLabelFr != null) {
+      result.isicLabelFr = isicLabelFr;
+    }
+    if (isicLabelEn != null) {
+      result.isicLabelEn = isicLabelEn;
+    }
+    if (isicLabelEs != null) {
+      result.isicLabelEs = isicLabelEs;
+    }
+    if (smtRegime != null) {
+      result.smtRegime = smtRegime;
+    }
+    return result;
+  }
+  BusinessClassification._() : super();
+  factory BusinessClassification.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BusinessClassification.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'BusinessClassification', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'isicCode')
+    ..aOS(2, _omitFieldNames ? '' : 'subCode')
+    ..aOS(3, _omitFieldNames ? '' : 'emoji')
+    ..aOS(4, _omitFieldNames ? '' : 'labelFr')
+    ..aOS(5, _omitFieldNames ? '' : 'isicLabelFr')
+    ..aOS(6, _omitFieldNames ? '' : 'isicLabelEn')
+    ..aOS(7, _omitFieldNames ? '' : 'isicLabelEs')
+    ..e<CommerceTypePb>(8, _omitFieldNames ? '' : 'smtRegime', $pb.PbFieldType.OE, defaultOrMaker: CommerceTypePb.unknown, valueOf: CommerceTypePb.valueOf, enumValues: CommerceTypePb.values)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  BusinessClassification clone() => BusinessClassification()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  BusinessClassification copyWith(void Function(BusinessClassification) updates) => super.copyWith((message) => updates(message as BusinessClassification)) as BusinessClassification;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static BusinessClassification create() => BusinessClassification._();
+  BusinessClassification createEmptyInstance() => create();
+  static $pb.PbList<BusinessClassification> createRepeated() => $pb.PbList<BusinessClassification>();
+  @$core.pragma('dart2js:noInline')
+  static BusinessClassification getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<BusinessClassification>(create);
+  static BusinessClassification? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get isicCode => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set isicCode($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasIsicCode() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearIsicCode() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get subCode => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set subCode($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasSubCode() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearSubCode() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get emoji => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set emoji($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasEmoji() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearEmoji() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get labelFr => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set labelFr($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasLabelFr() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLabelFr() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get isicLabelFr => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set isicLabelFr($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasIsicLabelFr() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearIsicLabelFr() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.String get isicLabelEn => $_getSZ(5);
+  @$pb.TagNumber(6)
+  set isicLabelEn($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasIsicLabelEn() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearIsicLabelEn() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get isicLabelEs => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set isicLabelEs($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasIsicLabelEs() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearIsicLabelEs() => clearField(7);
+
+  @$pb.TagNumber(8)
+  CommerceTypePb get smtRegime => $_getN(7);
+  @$pb.TagNumber(8)
+  set smtRegime(CommerceTypePb v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasSmtRegime() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearSmtRegime() => clearField(8);
+}
 
 class BoutiqueMongo extends $pb.GeneratedMessage {
   factory BoutiqueMongo({
@@ -268,6 +423,11 @@ class BoutiquePb extends $pb.GeneratedMessage {
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
     BusinessRules? businessRules,
+    $core.Iterable<ClosedYearPb>? closedYears,
+    $core.String? commercialRegisterNumber,
+    CommerceTypePb? commerceType,
+    $core.String? isicCode,
+    $core.String? isicSubCode,
   }) {
     final result = create();
     if (boutiqueId != null) {
@@ -329,6 +489,21 @@ class BoutiquePb extends $pb.GeneratedMessage {
     if (businessRules != null) {
       result.businessRules = businessRules;
     }
+    if (closedYears != null) {
+      result.closedYears.addAll(closedYears);
+    }
+    if (commercialRegisterNumber != null) {
+      result.commercialRegisterNumber = commercialRegisterNumber;
+    }
+    if (commerceType != null) {
+      result.commerceType = commerceType;
+    }
+    if (isicCode != null) {
+      result.isicCode = isicCode;
+    }
+    if (isicSubCode != null) {
+      result.isicSubCode = isicSubCode;
+    }
     return result;
   }
   BoutiquePb._() : super();
@@ -355,6 +530,11 @@ class BoutiquePb extends $pb.GeneratedMessage {
     ..aOB(17, _omitFieldNames ? '' : 'dualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(18, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..aOM<BusinessRules>(19, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: BusinessRules.create)
+    ..pc<ClosedYearPb>(20, _omitFieldNames ? '' : 'closedYears', $pb.PbFieldType.PM, subBuilder: ClosedYearPb.create)
+    ..aOS(21, _omitFieldNames ? '' : 'commercialRegisterNumber')
+    ..e<CommerceTypePb>(22, _omitFieldNames ? '' : 'commerceType', $pb.PbFieldType.OE, defaultOrMaker: CommerceTypePb.unknown, valueOf: CommerceTypePb.valueOf, enumValues: CommerceTypePb.values)
+    ..aOS(23, _omitFieldNames ? '' : 'isicCode')
+    ..aOS(24, _omitFieldNames ? '' : 'isicSubCode')
     ..hasRequiredFields = false
   ;
 
@@ -566,6 +746,204 @@ class BoutiquePb extends $pb.GeneratedMessage {
   void clearBusinessRules() => clearField(19);
   @$pb.TagNumber(19)
   BusinessRules ensureBusinessRules() => $_ensure(18);
+
+  /// / Soft-closed calendar years for SYSCOHADA SMT (client writes; server may
+  /// / ignore until fence supports it). Carries résultat + treasury for ranking.
+  @$pb.TagNumber(20)
+  $core.List<ClosedYearPb> get closedYears => $_getList(19);
+
+  /// / RCCM / registre de commerce (optional; required at SMT year close).
+  @$pb.TagNumber(21)
+  $core.String get commercialRegisterNumber => $_getSZ(20);
+  @$pb.TagNumber(21)
+  set commercialRegisterNumber($core.String v) { $_setString(20, v); }
+  @$pb.TagNumber(21)
+  $core.bool hasCommercialRegisterNumber() => $_has(20);
+  @$pb.TagNumber(21)
+  void clearCommercialRegisterNumber() => clearField(21);
+
+  /// / SMT regime A/B/C; unknown defaults to négoce ceiling.
+  @$pb.TagNumber(22)
+  CommerceTypePb get commerceType => $_getN(21);
+  @$pb.TagNumber(22)
+  set commerceType(CommerceTypePb v) { setField(22, v); }
+  @$pb.TagNumber(22)
+  $core.bool hasCommerceType() => $_has(21);
+  @$pb.TagNumber(22)
+  void clearCommerceType() => clearField(22);
+
+  /// / ISIC code from the chosen classification (string; may keep leading zeros).
+  @$pb.TagNumber(23)
+  $core.String get isicCode => $_getSZ(22);
+  @$pb.TagNumber(23)
+  set isicCode($core.String v) { $_setString(22, v); }
+  @$pb.TagNumber(23)
+  $core.bool hasIsicCode() => $_has(22);
+  @$pb.TagNumber(23)
+  void clearIsicCode() => clearField(23);
+
+  /// / Weebi refinement when several activities share the same ISIC (e.g. coiffure).
+  @$pb.TagNumber(24)
+  $core.String get isicSubCode => $_getSZ(23);
+  @$pb.TagNumber(24)
+  set isicSubCode($core.String v) { $_setString(23, v); }
+  @$pb.TagNumber(24)
+  $core.bool hasIsicSubCode() => $_has(23);
+  @$pb.TagNumber(24)
+  void clearIsicSubCode() => clearField(24);
+}
+
+/// / One soft-closed calendar year + minimal SMT snapshot (loan-potential hook).
+class ClosedYearPb extends $pb.GeneratedMessage {
+  factory ClosedYearPb({
+    $core.int? year,
+    $core.double? resultat,
+    $core.double? treasuryTotal,
+    $core.String? closedAt,
+    $core.String? commercialRegisterNumber,
+    CommerceTypePb? commerceType,
+    $core.String? isicCode,
+    $core.String? isicSubCode,
+  }) {
+    final result = create();
+    if (year != null) {
+      result.year = year;
+    }
+    if (resultat != null) {
+      result.resultat = resultat;
+    }
+    if (treasuryTotal != null) {
+      result.treasuryTotal = treasuryTotal;
+    }
+    if (closedAt != null) {
+      result.closedAt = closedAt;
+    }
+    if (commercialRegisterNumber != null) {
+      result.commercialRegisterNumber = commercialRegisterNumber;
+    }
+    if (commerceType != null) {
+      result.commerceType = commerceType;
+    }
+    if (isicCode != null) {
+      result.isicCode = isicCode;
+    }
+    if (isicSubCode != null) {
+      result.isicSubCode = isicSubCode;
+    }
+    return result;
+  }
+  ClosedYearPb._() : super();
+  factory ClosedYearPb.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ClosedYearPb.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ClosedYearPb', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.boutique'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'year', $pb.PbFieldType.O3)
+    ..a<$core.double>(2, _omitFieldNames ? '' : 'resultat', $pb.PbFieldType.OD)
+    ..a<$core.double>(3, _omitFieldNames ? '' : 'treasuryTotal', $pb.PbFieldType.OD)
+    ..aOS(4, _omitFieldNames ? '' : 'closedAt')
+    ..aOS(5, _omitFieldNames ? '' : 'commercialRegisterNumber')
+    ..e<CommerceTypePb>(6, _omitFieldNames ? '' : 'commerceType', $pb.PbFieldType.OE, defaultOrMaker: CommerceTypePb.unknown, valueOf: CommerceTypePb.valueOf, enumValues: CommerceTypePb.values)
+    ..aOS(7, _omitFieldNames ? '' : 'isicCode')
+    ..aOS(8, _omitFieldNames ? '' : 'isicSubCode')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ClosedYearPb clone() => ClosedYearPb()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ClosedYearPb copyWith(void Function(ClosedYearPb) updates) => super.copyWith((message) => updates(message as ClosedYearPb)) as ClosedYearPb;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ClosedYearPb create() => ClosedYearPb._();
+  ClosedYearPb createEmptyInstance() => create();
+  static $pb.PbList<ClosedYearPb> createRepeated() => $pb.PbList<ClosedYearPb>();
+  @$core.pragma('dart2js:noInline')
+  static ClosedYearPb getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ClosedYearPb>(create);
+  static ClosedYearPb? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get year => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set year($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasYear() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearYear() => clearField(1);
+
+  /// / Cash-basis SMT résultat (recettes − dépenses) for the closed year.
+  @$pb.TagNumber(2)
+  $core.double get resultat => $_getN(1);
+  @$pb.TagNumber(2)
+  set resultat($core.double v) { $_setDouble(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasResultat() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearResultat() => clearField(2);
+
+  /// / Sum of treasury closing balances (571+521+554) at 31/12.
+  @$pb.TagNumber(3)
+  $core.double get treasuryTotal => $_getN(2);
+  @$pb.TagNumber(3)
+  set treasuryTotal($core.double v) { $_setDouble(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasTreasuryTotal() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearTreasuryTotal() => clearField(3);
+
+  /// / ISO-8601 when the year was closed (optional; client fill).
+  @$pb.TagNumber(4)
+  $core.String get closedAt => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set closedAt($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasClosedAt() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearClosedAt() => clearField(4);
+
+  /// / Snapshot at close time (appears on SMT PDF/Excel).
+  @$pb.TagNumber(5)
+  $core.String get commercialRegisterNumber => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set commercialRegisterNumber($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasCommercialRegisterNumber() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCommercialRegisterNumber() => clearField(5);
+
+  @$pb.TagNumber(6)
+  CommerceTypePb get commerceType => $_getN(5);
+  @$pb.TagNumber(6)
+  set commerceType(CommerceTypePb v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasCommerceType() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearCommerceType() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get isicCode => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set isicCode($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasIsicCode() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearIsicCode() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get isicSubCode => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set isicSubCode($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasIsicSubCode() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearIsicSubCode() => clearField(8);
 }
 
 /// since a firm may contain different chains with different business realities.
@@ -576,6 +954,7 @@ class BusinessRules extends $pb.GeneratedMessage {
     $core.bool? isNegativeStockGuardEnabled,
     $core.bool? isRecentTicketEditEnabled,
     $core.int? recentTicketEditWindowMinutes,
+    $core.bool? isVatSelectionEnabled,
   }) {
     final result = create();
     if (isNegativeStockGuardEnabled != null) {
@@ -587,6 +966,9 @@ class BusinessRules extends $pb.GeneratedMessage {
     if (recentTicketEditWindowMinutes != null) {
       result.recentTicketEditWindowMinutes = recentTicketEditWindowMinutes;
     }
+    if (isVatSelectionEnabled != null) {
+      result.isVatSelectionEnabled = isVatSelectionEnabled;
+    }
     return result;
   }
   BusinessRules._() : super();
@@ -597,6 +979,7 @@ class BusinessRules extends $pb.GeneratedMessage {
     ..aOB(1, _omitFieldNames ? '' : 'isNegativeStockGuardEnabled', protoName: 'isNegativeStockGuardEnabled')
     ..aOB(2, _omitFieldNames ? '' : 'isRecentTicketEditEnabled', protoName: 'isRecentTicketEditEnabled')
     ..a<$core.int>(3, _omitFieldNames ? '' : 'recentTicketEditWindowMinutes', $pb.PbFieldType.O3, protoName: 'recentTicketEditWindowMinutes')
+    ..aOB(4, _omitFieldNames ? '' : 'isVatSelectionEnabled', protoName: 'isVatSelectionEnabled')
     ..hasRequiredFields = false
   ;
 
@@ -649,6 +1032,16 @@ class BusinessRules extends $pb.GeneratedMessage {
   $core.bool hasRecentTicketEditWindowMinutes() => $_has(2);
   @$pb.TagNumber(3)
   void clearRecentTicketEditWindowMinutes() => clearField(3);
+
+  /// OHADA: when true, show VAT selection on tickets (hidden by default for OHADA countries)
+  @$pb.TagNumber(4)
+  $core.bool get isVatSelectionEnabled => $_getBF(3);
+  @$pb.TagNumber(4)
+  set isVatSelectionEnabled($core.bool v) { $_setBool(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasIsVatSelectionEnabled() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearIsVatSelectionEnabled() => clearField(4);
 }
 
 

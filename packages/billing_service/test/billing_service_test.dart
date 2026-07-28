@@ -31,8 +31,7 @@ void main() {
     // Seed billing_products for referral commission lookup
     final nowIso = DateTime.now().toUtc().toIso8601String();
     final billingProducts = [
-      {'productId': 'entreprise', 'licensePlan': 1, 'maxUsers': 1, 'amountCents': 1400, 'currency': 'eur', 'stripeProductId': 'prod_entreprise', 'stripePriceId': 'price_entreprise', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
-      {'productId': 'premium', 'licensePlan': 2, 'maxUsers': 1, 'amountCents': 2900, 'currency': 'eur', 'stripeProductId': 'prod_premium', 'stripePriceId': 'price_premium', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
+      {'productId': 'premium', 'licensePlan': 2, 'maxUsers': 1, 'amountCents': 1400, 'currency': 'eur', 'stripeProductId': 'prod_premium', 'stripePriceId': 'price_premium', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
     ];
     await db.collection(BillingService.billingProductsCollectionName).insertMany(billingProducts);
 

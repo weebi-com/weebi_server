@@ -43,7 +43,6 @@ void main() {
         TicketTypePb.spend,
         TicketTypePb.spendDeferred,
         TicketTypePb.spendCovered,
-        TicketTypePb.wage,
       ];
       for (final type in financialTypes) {
         expect(type.isFinancial, true);
@@ -91,11 +90,6 @@ void main() {
       expect(spendCovered.isFinancial, true);
     });
 
-    test('wage type is financial (supplier payment)', () {
-      const wage = TicketTypePb.wage;
-      expect(wage.isFinancial, true);
-    });
-
     test('stock types are not financial', () {
       const stockIn = TicketTypePb.stockIn;
       const stockOut = TicketTypePb.stockOut;
@@ -116,14 +110,13 @@ void main() {
         TicketTypePb.spend,
         TicketTypePb.spendDeferred,
         TicketTypePb.spendCovered,
-        TicketTypePb.wage,
       ];
       // Each should have a unique visual representation (icon or color)
-      expect(financialTypes.length, 7);
+      expect(financialTypes.length, 6);
       
       // All names should be distinct
       final names = financialTypes.map((t) => t.name).toSet();
-      expect(names.length, 7);
+      expect(names.length, 6);
     });
 
     test('stock types consistently classified as non-financial', () {

@@ -13,6 +13,46 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use commerceTypePbDescriptor instead')
+const CommerceTypePb$json = {
+  '1': 'CommerceTypePb',
+  '2': [
+    {'1': 'unknown', '2': 0},
+    {'1': 'negoce', '2': 1},
+    {'1': 'artisanat', '2': 2},
+    {'1': 'services', '2': 3},
+  ],
+};
+
+/// Descriptor for `CommerceTypePb`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List commerceTypePbDescriptor = $convert.base64Decode(
+    'Cg5Db21tZXJjZVR5cGVQYhILCgd1bmtub3duEAASCgoGbmVnb2NlEAESDQoJYXJ0aXNhbmF0EA'
+    'ISDAoIc2VydmljZXMQAw==');
+
+@$core.Deprecated('Use businessClassificationDescriptor instead')
+const BusinessClassification$json = {
+  '1': 'BusinessClassification',
+  '2': [
+    {'1': 'isic_code', '3': 1, '4': 1, '5': 9, '10': 'isicCode'},
+    {'1': 'sub_code', '3': 2, '4': 1, '5': 9, '10': 'subCode'},
+    {'1': 'emoji', '3': 3, '4': 1, '5': 9, '10': 'emoji'},
+    {'1': 'label_fr', '3': 4, '4': 1, '5': 9, '10': 'labelFr'},
+    {'1': 'isic_label_fr', '3': 5, '4': 1, '5': 9, '10': 'isicLabelFr'},
+    {'1': 'isic_label_en', '3': 6, '4': 1, '5': 9, '10': 'isicLabelEn'},
+    {'1': 'isic_label_es', '3': 7, '4': 1, '5': 9, '10': 'isicLabelEs'},
+    {'1': 'smt_regime', '3': 8, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '10': 'smtRegime'},
+  ],
+};
+
+/// Descriptor for `BusinessClassification`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List businessClassificationDescriptor = $convert.base64Decode(
+    'ChZCdXNpbmVzc0NsYXNzaWZpY2F0aW9uEhsKCWlzaWNfY29kZRgBIAEoCVIIaXNpY0NvZGUSGQ'
+    'oIc3ViX2NvZGUYAiABKAlSB3N1YkNvZGUSFAoFZW1vamkYAyABKAlSBWVtb2ppEhkKCGxhYmVs'
+    'X2ZyGAQgASgJUgdsYWJlbEZyEiIKDWlzaWNfbGFiZWxfZnIYBSABKAlSC2lzaWNMYWJlbEZyEi'
+    'IKDWlzaWNfbGFiZWxfZW4YBiABKAlSC2lzaWNMYWJlbEVuEiIKDWlzaWNfbGFiZWxfZXMYByAB'
+    'KAlSC2lzaWNMYWJlbEVzEj0KCnNtdF9yZWdpbWUYCCABKA4yHi53ZWViaS5ib3V0aXF1ZS5Db2'
+    '1tZXJjZVR5cGVQYlIJc210UmVnaW1l');
+
 @$core.Deprecated('Use boutiqueMongoDescriptor instead')
 const BoutiqueMongo$json = {
   '1': 'BoutiqueMongo',
@@ -102,15 +142,24 @@ const BoutiquePb$json = {
     {'1': 'isDualCurrencyEnabled', '3': 17, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 18, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
     {'1': 'businessRules', '3': 19, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
+    {'1': 'closed_years', '3': 20, '4': 3, '5': 11, '6': '.weebi.boutique.ClosedYearPb', '10': 'closedYears'},
+    {'1': 'commercial_register_number', '3': 21, '4': 1, '5': 9, '9': 4, '10': 'commercialRegisterNumber', '17': true},
+    {'1': 'commerce_type', '3': 22, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '9': 5, '10': 'commerceType', '17': true},
+    {'1': 'isic_code', '3': 23, '4': 1, '5': 9, '9': 6, '10': 'isicCode', '17': true},
+    {'1': 'isic_sub_code', '3': 24, '4': 1, '5': 9, '9': 7, '10': 'isicSubCode', '17': true},
   ],
   '8': [
     {'1': '_currency'},
     {'1': '_isDualCurrencyEnabled'},
     {'1': '_secondaryDisplayCurrency'},
     {'1': '_businessRules'},
+    {'1': '_commercial_register_number'},
+    {'1': '_commerce_type'},
+    {'1': '_isic_code'},
+    {'1': '_isic_sub_code'},
   ],
   '9': [
-    {'1': 20, '2': 101},
+    {'1': 25, '2': 101},
   ],
 };
 
@@ -129,9 +178,39 @@ final $typed_data.Uint8List boutiquePbDescriptor = $convert.base64Decode(
     'RHVhbEN1cnJlbmN5RW5hYmxlZBgRIAEoCEgBUhNkdWFsQ3VycmVuY3lFbmFibGVkiAEBEj8KGH'
     'NlY29uZGFyeURpc3BsYXlDdXJyZW5jeRgSIAEoCUgCUhhzZWNvbmRhcnlEaXNwbGF5Q3VycmVu'
     'Y3mIAQESSAoNYnVzaW5lc3NSdWxlcxgTIAEoCzIdLndlZWJpLmJvdXRpcXVlLkJ1c2luZXNzUn'
-    'VsZXNIA1INYnVzaW5lc3NSdWxlc4gBAUILCglfY3VycmVuY3lCGAoWX2lzRHVhbEN1cnJlbmN5'
-    'RW5hYmxlZEIbChlfc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5QhAKDl9idXNpbmVzc1J1bGVzSg'
-    'QIFBBl');
+    'VsZXNIA1INYnVzaW5lc3NSdWxlc4gBARI/CgxjbG9zZWRfeWVhcnMYFCADKAsyHC53ZWViaS5i'
+    'b3V0aXF1ZS5DbG9zZWRZZWFyUGJSC2Nsb3NlZFllYXJzEkEKGmNvbW1lcmNpYWxfcmVnaXN0ZX'
+    'JfbnVtYmVyGBUgASgJSARSGGNvbW1lcmNpYWxSZWdpc3Rlck51bWJlcogBARJICg1jb21tZXJj'
+    'ZV90eXBlGBYgASgOMh4ud2VlYmkuYm91dGlxdWUuQ29tbWVyY2VUeXBlUGJIBVIMY29tbWVyY2'
+    'VUeXBliAEBEiAKCWlzaWNfY29kZRgXIAEoCUgGUghpc2ljQ29kZYgBARInCg1pc2ljX3N1Yl9j'
+    'b2RlGBggASgJSAdSC2lzaWNTdWJDb2RliAEBQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3Vycm'
+    'VuY3lFbmFibGVkQhsKGV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3lCEAoOX2J1c2luZXNzUnVs'
+    'ZXNCHQobX2NvbW1lcmNpYWxfcmVnaXN0ZXJfbnVtYmVyQhAKDl9jb21tZXJjZV90eXBlQgwKCl'
+    '9pc2ljX2NvZGVCEAoOX2lzaWNfc3ViX2NvZGVKBAgZEGU=');
+
+@$core.Deprecated('Use closedYearPbDescriptor instead')
+const ClosedYearPb$json = {
+  '1': 'ClosedYearPb',
+  '2': [
+    {'1': 'year', '3': 1, '4': 1, '5': 5, '10': 'year'},
+    {'1': 'resultat', '3': 2, '4': 1, '5': 1, '10': 'resultat'},
+    {'1': 'treasury_total', '3': 3, '4': 1, '5': 1, '10': 'treasuryTotal'},
+    {'1': 'closed_at', '3': 4, '4': 1, '5': 9, '10': 'closedAt'},
+    {'1': 'commercial_register_number', '3': 5, '4': 1, '5': 9, '10': 'commercialRegisterNumber'},
+    {'1': 'commerce_type', '3': 6, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '10': 'commerceType'},
+    {'1': 'isic_code', '3': 7, '4': 1, '5': 9, '10': 'isicCode'},
+    {'1': 'isic_sub_code', '3': 8, '4': 1, '5': 9, '10': 'isicSubCode'},
+  ],
+};
+
+/// Descriptor for `ClosedYearPb`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List closedYearPbDescriptor = $convert.base64Decode(
+    'CgxDbG9zZWRZZWFyUGISEgoEeWVhchgBIAEoBVIEeWVhchIaCghyZXN1bHRhdBgCIAEoAVIIcm'
+    'VzdWx0YXQSJQoOdHJlYXN1cnlfdG90YWwYAyABKAFSDXRyZWFzdXJ5VG90YWwSGwoJY2xvc2Vk'
+    'X2F0GAQgASgJUghjbG9zZWRBdBI8Chpjb21tZXJjaWFsX3JlZ2lzdGVyX251bWJlchgFIAEoCV'
+    'IYY29tbWVyY2lhbFJlZ2lzdGVyTnVtYmVyEkMKDWNvbW1lcmNlX3R5cGUYBiABKA4yHi53ZWVi'
+    'aS5ib3V0aXF1ZS5Db21tZXJjZVR5cGVQYlIMY29tbWVyY2VUeXBlEhsKCWlzaWNfY29kZRgHIA'
+    'EoCVIIaXNpY0NvZGUSIgoNaXNpY19zdWJfY29kZRgIIAEoCVILaXNpY1N1YkNvZGU=');
 
 @$core.Deprecated('Use businessRulesDescriptor instead')
 const BusinessRules$json = {
@@ -140,6 +219,7 @@ const BusinessRules$json = {
     {'1': 'isNegativeStockGuardEnabled', '3': 1, '4': 1, '5': 8, '10': 'isNegativeStockGuardEnabled'},
     {'1': 'isRecentTicketEditEnabled', '3': 2, '4': 1, '5': 8, '10': 'isRecentTicketEditEnabled'},
     {'1': 'recentTicketEditWindowMinutes', '3': 3, '4': 1, '5': 5, '10': 'recentTicketEditWindowMinutes'},
+    {'1': 'isVatSelectionEnabled', '3': 4, '4': 1, '5': 8, '10': 'isVatSelectionEnabled'},
   ],
 };
 
@@ -148,5 +228,6 @@ final $typed_data.Uint8List businessRulesDescriptor = $convert.base64Decode(
     'Cg1CdXNpbmVzc1J1bGVzEkAKG2lzTmVnYXRpdmVTdG9ja0d1YXJkRW5hYmxlZBgBIAEoCFIbaX'
     'NOZWdhdGl2ZVN0b2NrR3VhcmRFbmFibGVkEjwKGWlzUmVjZW50VGlja2V0RWRpdEVuYWJsZWQY'
     'AiABKAhSGWlzUmVjZW50VGlja2V0RWRpdEVuYWJsZWQSRAodcmVjZW50VGlja2V0RWRpdFdpbm'
-    'Rvd01pbnV0ZXMYAyABKAVSHXJlY2VudFRpY2tldEVkaXRXaW5kb3dNaW51dGVz');
+    'Rvd01pbnV0ZXMYAyABKAVSHXJlY2VudFRpY2tldEVkaXRXaW5kb3dNaW51dGVzEjQKFWlzVmF0'
+    'U2VsZWN0aW9uRW5hYmxlZBgEIAEoCFIVaXNWYXRTZWxlY3Rpb25FbmFibGVk');
 

@@ -11,9 +11,11 @@
 
 import 'dart:core' as $core;
 
+import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'boutique.pb.dart' as $23;
+import 'boutique.pbenum.dart' as $23;
 import 'btq_chain.pb.dart' as $11;
 import 'common/g_common.pb.dart' as $1;
 import 'common/g_timestamp.pb.dart' as $20;
@@ -31,6 +33,10 @@ class ChainRequest extends $pb.GeneratedMessage {
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
     $23.BusinessRules? businessRules,
+    $core.String? commercialRegisterNumber,
+    $23.CommerceTypePb? commerceType,
+    $core.String? isicCode,
+    $core.String? isicSubCode,
   }) {
     final result = create();
     if (chainId != null) {
@@ -51,6 +57,18 @@ class ChainRequest extends $pb.GeneratedMessage {
     if (businessRules != null) {
       result.businessRules = businessRules;
     }
+    if (commercialRegisterNumber != null) {
+      result.commercialRegisterNumber = commercialRegisterNumber;
+    }
+    if (commerceType != null) {
+      result.commerceType = commerceType;
+    }
+    if (isicCode != null) {
+      result.isicCode = isicCode;
+    }
+    if (isicSubCode != null) {
+      result.isicSubCode = isicSubCode;
+    }
     return result;
   }
   ChainRequest._() : super();
@@ -64,6 +82,10 @@ class ChainRequest extends $pb.GeneratedMessage {
     ..aOB(4, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(5, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..aOM<$23.BusinessRules>(6, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: $23.BusinessRules.create)
+    ..aOS(7, _omitFieldNames ? '' : 'commercialRegisterNumber')
+    ..e<$23.CommerceTypePb>(8, _omitFieldNames ? '' : 'commerceType', $pb.PbFieldType.OE, defaultOrMaker: $23.CommerceTypePb.unknown, valueOf: $23.CommerceTypePb.valueOf, enumValues: $23.CommerceTypePb.values)
+    ..aOS(9, _omitFieldNames ? '' : 'isicCode')
+    ..aOS(10, _omitFieldNames ? '' : 'isicSubCode')
     ..hasRequiredFields = false
   ;
 
@@ -143,6 +165,42 @@ class ChainRequest extends $pb.GeneratedMessage {
   void clearBusinessRules() => clearField(6);
   @$pb.TagNumber(6)
   $23.BusinessRules ensureBusinessRules() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  $core.String get commercialRegisterNumber => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set commercialRegisterNumber($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasCommercialRegisterNumber() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearCommercialRegisterNumber() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $23.CommerceTypePb get commerceType => $_getN(7);
+  @$pb.TagNumber(8)
+  set commerceType($23.CommerceTypePb v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasCommerceType() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearCommerceType() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get isicCode => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set isicCode($core.String v) { $_setString(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasIsicCode() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearIsicCode() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.String get isicSubCode => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set isicSubCode($core.String v) { $_setString(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasIsicSubCode() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearIsicSubCode() => clearField(10);
 }
 
 /// / Identifies a chain for deleteOneChain only (wire-compatible with ChainRequest carrying field 1 alone).
@@ -1393,6 +1451,217 @@ class SessionRequest extends $pb.GeneratedMessage {
   $core.bool hasSessionId() => $_has(0);
   @$pb.TagNumber(1)
   void clearSessionId() => clearField(1);
+}
+
+/// / Mint a short-lived App->Web bridge URL (authenticated).
+class CreateWebBridgeLinkRequest extends $pb.GeneratedMessage {
+  factory CreateWebBridgeLinkRequest({
+    $core.String? productId,
+    $core.int? fiscalYear,
+    $core.String? returnDeepLink,
+  }) {
+    final result = create();
+    if (productId != null) {
+      result.productId = productId;
+    }
+    if (fiscalYear != null) {
+      result.fiscalYear = fiscalYear;
+    }
+    if (returnDeepLink != null) {
+      result.returnDeepLink = returnDeepLink;
+    }
+    return result;
+  }
+  CreateWebBridgeLinkRequest._() : super();
+  factory CreateWebBridgeLinkRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateWebBridgeLinkRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateWebBridgeLinkRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'productId', protoName: 'productId')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'fiscalYear', $pb.PbFieldType.O3, protoName: 'fiscalYear')
+    ..aOS(3, _omitFieldNames ? '' : 'returnDeepLink', protoName: 'returnDeepLink')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreateWebBridgeLinkRequest clone() => CreateWebBridgeLinkRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateWebBridgeLinkRequest copyWith(void Function(CreateWebBridgeLinkRequest) updates) => super.copyWith((message) => updates(message as CreateWebBridgeLinkRequest)) as CreateWebBridgeLinkRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateWebBridgeLinkRequest create() => CreateWebBridgeLinkRequest._();
+  CreateWebBridgeLinkRequest createEmptyInstance() => create();
+  static $pb.PbList<CreateWebBridgeLinkRequest> createRepeated() => $pb.PbList<CreateWebBridgeLinkRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CreateWebBridgeLinkRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateWebBridgeLinkRequest>(create);
+  static CreateWebBridgeLinkRequest? _defaultInstance;
+
+  /// / Catalog product: "premium" or "syscohada".
+  @$pb.TagNumber(1)
+  $core.String get productId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set productId($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasProductId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearProductId() => clearField(1);
+
+  /// / Required when productId is "syscohada"; ignored for "premium".
+  @$pb.TagNumber(2)
+  $core.int get fiscalYear => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set fiscalYear($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasFiscalYear() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearFiscalYear() => clearField(2);
+
+  /// / Optional future deep link for return-to-app after payment (stored, unused in v1 web).
+  @$pb.TagNumber(3)
+  $core.String get returnDeepLink => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set returnDeepLink($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasReturnDeepLink() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearReturnDeepLink() => clearField(3);
+}
+
+class CreateWebBridgeLinkResponse extends $pb.GeneratedMessage {
+  factory CreateWebBridgeLinkResponse({
+    $core.String? url,
+    $core.String? token,
+    $fixnum.Int64? expiresAtUnix,
+  }) {
+    final result = create();
+    if (url != null) {
+      result.url = url;
+    }
+    if (token != null) {
+      result.token = token;
+    }
+    if (expiresAtUnix != null) {
+      result.expiresAtUnix = expiresAtUnix;
+    }
+    return result;
+  }
+  CreateWebBridgeLinkResponse._() : super();
+  factory CreateWebBridgeLinkResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CreateWebBridgeLinkResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateWebBridgeLinkResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'url')
+    ..aOS(2, _omitFieldNames ? '' : 'token')
+    ..aInt64(3, _omitFieldNames ? '' : 'expiresAtUnix', protoName: 'expiresAtUnix')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CreateWebBridgeLinkResponse clone() => CreateWebBridgeLinkResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CreateWebBridgeLinkResponse copyWith(void Function(CreateWebBridgeLinkResponse) updates) => super.copyWith((message) => updates(message as CreateWebBridgeLinkResponse)) as CreateWebBridgeLinkResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CreateWebBridgeLinkResponse create() => CreateWebBridgeLinkResponse._();
+  CreateWebBridgeLinkResponse createEmptyInstance() => create();
+  static $pb.PbList<CreateWebBridgeLinkResponse> createRepeated() => $pb.PbList<CreateWebBridgeLinkResponse>();
+  @$core.pragma('dart2js:noInline')
+  static CreateWebBridgeLinkResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CreateWebBridgeLinkResponse>(create);
+  static CreateWebBridgeLinkResponse? _defaultInstance;
+
+  /// / Full webapp URL including one-time token query params.
+  @$pb.TagNumber(1)
+  $core.String get url => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set url($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasUrl() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUrl() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get token => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set token($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasToken() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearToken() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $fixnum.Int64 get expiresAtUnix => $_getI64(2);
+  @$pb.TagNumber(3)
+  set expiresAtUnix($fixnum.Int64 v) { $_setInt64(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasExpiresAtUnix() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearExpiresAtUnix() => clearField(3);
+}
+
+class ExchangeWebBridgeTokenRequest extends $pb.GeneratedMessage {
+  factory ExchangeWebBridgeTokenRequest({
+    $core.String? token,
+  }) {
+    final result = create();
+    if (token != null) {
+      result.token = token;
+    }
+    return result;
+  }
+  ExchangeWebBridgeTokenRequest._() : super();
+  factory ExchangeWebBridgeTokenRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ExchangeWebBridgeTokenRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ExchangeWebBridgeTokenRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.fence.service'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'token')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ExchangeWebBridgeTokenRequest clone() => ExchangeWebBridgeTokenRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ExchangeWebBridgeTokenRequest copyWith(void Function(ExchangeWebBridgeTokenRequest) updates) => super.copyWith((message) => updates(message as ExchangeWebBridgeTokenRequest)) as ExchangeWebBridgeTokenRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ExchangeWebBridgeTokenRequest create() => ExchangeWebBridgeTokenRequest._();
+  ExchangeWebBridgeTokenRequest createEmptyInstance() => create();
+  static $pb.PbList<ExchangeWebBridgeTokenRequest> createRepeated() => $pb.PbList<ExchangeWebBridgeTokenRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ExchangeWebBridgeTokenRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ExchangeWebBridgeTokenRequest>(create);
+  static ExchangeWebBridgeTokenRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get token => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set token($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasToken() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearToken() => clearField(1);
 }
 
 class Tokens extends $pb.GeneratedMessage {

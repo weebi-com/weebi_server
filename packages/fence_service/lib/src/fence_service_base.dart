@@ -3,11 +3,13 @@ import 'dart:async';
 import 'dart:math' show Random;
 import 'dart:io';
 import 'dart:convert';
-import 'package:models_weebi/utils.dart' show RegExpWeebi;
 import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart';
+// ignore: unnecessary_import
+import 'package:protos_weebi/utils.dart' show RegExpWeebi;
 // ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
@@ -464,6 +466,185 @@ class FenceService extends FenceServiceBase {
     final metadata = call?.clientMetadata;
     if (metadata == null) return null;
     return metadata['x-session-id'] ?? metadata['X-Session-Id'];
+  }
+
+  @override
+  Future<CreateWebBridgeLinkResponse> createWebBridgeLink(
+      ServiceCall? call, CreateWebBridgeLinkRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('createWebBridgeLink', requestData: {
+      'productId': request.productId,
+      'fiscalYear': request.fiscalYear,
+    });
+
+    try {
+      final userPermission = isMock
+          ? userPermissionIfTest ?? UserPermissions()
+          : call.bearer.userPermissions;
+
+      if (userPermission.firmId.isEmpty) {
+        throw GrpcError.failedPrecondition('user has no firm');
+      }
+      if (userPermission.billingRights.rights.any((e) => e == Right.create) ==
+          false) {
+        throw GrpcError.permissionDenied(
+            'user does not have billing right: Right.create');
+      }
+
+      final WebBridgeProduct product;
+      try {
+        product = validateWebBridgeProduct(
+          productId: request.productId,
+          fiscalYear: request.fiscalYear,
+        );
+      } on WebBridgeProductError catch (e) {
+        throw GrpcError.invalidArgument(e.message);
+      }
+
+      final token = _generateBridgeToken();
+      final now = DateTime.now().toUtc();
+      final expiresAt = now.add(kWebBridgeTokenTtl);
+
+      String url;
+      try {
+        url = buildWebBridgeUrl(
+          webappBaseUrl: AppEnvironment.webappBaseUrl,
+          token: token,
+          product: product,
+        );
+      } on WebBridgeProductError catch (e) {
+        throw GrpcError.failedPrecondition(e.message);
+      }
+
+      await databaseMiddleware(_poolService, (db) async {
+        await db.collection(kWebBridgeTokensCollection).insertOne({
+          '_id': token,
+          'userId': userPermission.userId,
+          'firmId': userPermission.firmId,
+          'productId': product.productId,
+          if (product.fiscalYear != null) 'fiscalYear': product.fiscalYear,
+          if (request.returnDeepLink.isNotEmpty)
+            'returnDeepLink': request.returnDeepLink,
+          'createdAt': now.toIso8601String(),
+          'expiresAt': expiresAt,
+          'usedAt': null,
+        });
+      });
+
+      final response = CreateWebBridgeLinkResponse(
+        url: url,
+        token: token,
+        expiresAtUnix: Int64(expiresAt.millisecondsSinceEpoch ~/ 1000),
+      );
+      log.logRpcExit('createWebBridgeLink');
+      return response;
+    } on GrpcError catch (e) {
+      log.logRpcError('createWebBridgeLink', e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Tokens> exchangeWebBridgeToken(
+      ServiceCall? call, ExchangeWebBridgeTokenRequest request) async {
+    final log = _logger.withContext(call);
+    log.logRpcEntry('exchangeWebBridgeToken');
+
+    try {
+      final token = request.token.trim();
+      if (token.isEmpty) {
+        throw GrpcError.invalidArgument('token is required');
+      }
+
+      final now = DateTime.now().toUtc();
+      final claimed = await databaseMiddleware<Map<String, dynamic>?>(
+          _poolService, (db) async {
+        final collection = db.collection(kWebBridgeTokensCollection);
+        final doc = await collection.findOne(where.eq('_id', token));
+        if (doc == null) {
+          return null;
+        }
+        if (doc['usedAt'] != null) {
+          throw GrpcError.unauthenticated('bridge token already used');
+        }
+        final expiresAt = doc['expiresAt'];
+        DateTime? expires;
+        if (expiresAt is DateTime) {
+          expires = expiresAt.toUtc();
+        } else if (expiresAt is String) {
+          expires = DateTime.tryParse(expiresAt)?.toUtc();
+        }
+        if (expires == null || !expires.isAfter(now)) {
+          throw GrpcError.unauthenticated('bridge token expired');
+        }
+
+        final result = await collection.updateOne(
+          where.eq('_id', token).eq('usedAt', null),
+          ModifierBuilder().set('usedAt', now.toIso8601String()),
+        );
+        if (!result.isSuccess || result.nModified < 1) {
+          throw GrpcError.unauthenticated('bridge token already used');
+        }
+        return doc;
+      });
+
+      if (claimed == null) {
+        throw GrpcError.unauthenticated('invalid bridge token');
+      }
+
+      final userId = (claimed['userId'] as String?)?.trim() ?? '';
+      if (userId.isEmpty) {
+        throw GrpcError.internal('bridge token missing userId');
+      }
+
+      final userPrivate = await _checkUserAndProtoIt(userId);
+      final userPermissions = UserPermissions.create()
+        ..mergeFromProto3Json(
+          userPrivate.permissions.toProto3Json() as Map<String, dynamic>,
+        );
+
+      final accessJwt = JsonWebToken();
+      final payload = userPermissions.toProto3Json() as Map<String, dynamic>? ??
+          <String, dynamic>{};
+      accessJwt.createPayload(
+        userPermissions.userId,
+        expireIn: const Duration(days: 1),
+        payload: payload,
+      );
+      final accessToken = accessJwt.sign();
+
+      final refreshJwt = JsonWebToken();
+      refreshJwt.createPayload(
+        userPermissions.userId,
+        expireIn: const Duration(days: 30),
+        payload: {
+          'userId': userPermissions.userId,
+          'firmId': userPermissions.firmId,
+        },
+      );
+      final refreshToken = refreshJwt.sign();
+
+      final sessionId = await _createWebSession(
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        userId: userPermissions.userId,
+        log: log,
+      );
+
+      final tokens = Tokens(sessionId: sessionId);
+      log.logRpcExit('exchangeWebBridgeToken');
+      return tokens;
+    } on GrpcError catch (e) {
+      log.logRpcError('exchangeWebBridgeToken', e);
+      rethrow;
+    }
+  }
+
+  /// Cryptographically secure URL-safe token for App->Web bridge links.
+  String _generateBridgeToken() {
+    final random = Random.secure();
+    final bytes = List<int>.generate(32, (_) => random.nextInt(256));
+    return base64UrlEncode(bytes).replaceAll('=', '');
   }
 
   /// Internal endpoint used by Envoy to retrieve session data
@@ -1687,6 +1868,14 @@ class FenceService extends FenceServiceBase {
                     ..name = request.name
                     ..currency = defaultCurrencyCode)
               ]);
+          if (request.hasCommercialRegisterNumber()) {
+            final register = request.commercialRegisterNumber.trim();
+            if (register.isNotEmpty) {
+              chain.commercialRegisterNumber = register;
+              chain.boutiques.first.boutique.commercialRegisterNumber =
+                  register;
+            }
+          }
 
           try {
             await _createOneChainDBExec(chain, log: log);
@@ -1886,6 +2075,21 @@ class FenceService extends FenceServiceBase {
         }
         if (chainTemp.hasSecondaryDisplayCurrency()) {
           chain.secondaryDisplayCurrency = chainTemp.secondaryDisplayCurrency;
+        }
+        if (chainTemp.hasBusinessRules()) {
+          chain.businessRules = chainTemp.businessRules;
+        }
+        if (chainTemp.hasCommercialRegisterNumber()) {
+          chain.commercialRegisterNumber = chainTemp.commercialRegisterNumber;
+        }
+        if (chainTemp.hasCommerceType()) {
+          chain.commerceType = chainTemp.commerceType;
+        }
+        if (chainTemp.hasIsicCode()) {
+          chain.isicCode = chainTemp.isicCode;
+        }
+        if (chainTemp.hasIsicSubCode()) {
+          chain.isicSubCode = chainTemp.isicSubCode;
         }
 
         chains.add(chain);
@@ -2269,6 +2473,11 @@ class FenceService extends FenceServiceBase {
         'isDualCurrencyEnabled': request.isDualCurrencyEnabled,
       if (request.hasSecondaryDisplayCurrency())
         'secondaryDisplayCurrency': request.secondaryDisplayCurrency,
+      if (request.hasCommercialRegisterNumber())
+        'commercialRegisterNumber': request.commercialRegisterNumber,
+      if (request.hasCommerceType()) 'commerceType': request.commerceType.name,
+      if (request.hasIsicCode()) 'isicCode': request.isicCode,
+      if (request.hasIsicSubCode()) 'isicSubCode': request.isicSubCode,
     });
 /*     if (request.boutiques.any((b) => b.firmId != request.firmId)) {
       throw GrpcError.invalidArgument(
@@ -2359,6 +2568,41 @@ class FenceService extends FenceServiceBase {
             'businessRules',
             request.businessRules.toProto3Json(),
           );
+        }
+
+        if (request.hasCommercialRegisterNumber()) {
+          final register = request.commercialRegisterNumber.trim();
+          if (register.isEmpty) {
+            modifier = modifier.unset('commercialRegisterNumber');
+          } else {
+            modifier = modifier.set('commercialRegisterNumber', register);
+          }
+        }
+
+        if (request.hasCommerceType()) {
+          if (request.commerceType == CommerceTypePb.unknown) {
+            modifier = modifier.unset('commerceType');
+          } else {
+            modifier = modifier.set('commerceType', request.commerceType.name);
+          }
+        }
+
+        if (request.hasIsicCode()) {
+          final isic = request.isicCode.trim();
+          if (isic.isEmpty) {
+            modifier = modifier.unset('isicCode');
+          } else {
+            modifier = modifier.set('isicCode', isic);
+          }
+        }
+
+        if (request.hasIsicSubCode()) {
+          final sub = request.isicSubCode.trim();
+          if (sub.isEmpty) {
+            modifier = modifier.unset('isicSubCode');
+          } else {
+            modifier = modifier.set('isicSubCode', sub);
+          }
         }
 
         final result = await boutiqueCollection.updateOne(

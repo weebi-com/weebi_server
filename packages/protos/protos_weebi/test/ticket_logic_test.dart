@@ -77,14 +77,6 @@ void main() {
       );
       expect(t.totalComputed, 300.0);
     });
-
-    test('wage: total = received', () {
-      final t = TicketPb(
-        ticketType: TicketTypePb.wage,
-        received: 150.0,
-      );
-      expect(t.totalComputed, 150.0);
-    });
   });
 
   // ─── Stock types ──────────────────────────────────────────────────────────
@@ -552,7 +544,6 @@ void main() {
       expect(TicketTypePb.spend.isFinancial, true);
       expect(TicketTypePb.sellCovered.isFinancial, true);
       expect(TicketTypePb.spendCovered.isFinancial, true);
-      expect(TicketTypePb.wage.isFinancial, true);
       expect(TicketTypePb.sellDeferred.isFinancial, true);
       expect(TicketTypePb.spendDeferred.isFinancial, true);
     });

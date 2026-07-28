@@ -13,6 +13,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'boutique.pb.dart' as $23;
 import 'common/g_common.pb.dart' as $1;
 import 'common/g_timestamp.pb.dart' as $20;
 import 'license.pb.dart' as $24;
@@ -43,6 +44,7 @@ class Firm extends $pb.GeneratedMessage {
     $core.String? currency,
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
+    $core.Iterable<$23.ClosedYearPb>? closedYears,
   }) {
     final result = create();
     if (firmId != null) {
@@ -109,6 +111,9 @@ class Firm extends $pb.GeneratedMessage {
     if (secondaryDisplayCurrency != null) {
       result.secondaryDisplayCurrency = secondaryDisplayCurrency;
     }
+    if (closedYears != null) {
+      result.closedYears.addAll(closedYears);
+    }
     return result;
   }
   Firm._() : super();
@@ -136,6 +141,7 @@ class Firm extends $pb.GeneratedMessage {
     ..aOS(18, _omitFieldNames ? '' : 'currency')
     ..aOB(19, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(20, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
+    ..pc<$23.ClosedYearPb>(21, _omitFieldNames ? '' : 'closedYears', $pb.PbFieldType.PM, subBuilder: $23.ClosedYearPb.create)
     ..hasRequiredFields = false
   ;
 
@@ -366,12 +372,17 @@ class Firm extends $pb.GeneratedMessage {
   $core.bool hasSecondaryDisplayCurrency() => $_has(19);
   @$pb.TagNumber(20)
   void clearSecondaryDisplayCurrency() => clearField(20);
+
+  /// / Soft-closed calendar years for SMT (waterfall with chain + boutique).
+  @$pb.TagNumber(21)
+  $core.List<$23.ClosedYearPb> get closedYears => $_getList(20);
 }
 
 class CreateFirmRequest extends $pb.GeneratedMessage {
   factory CreateFirmRequest({
     $core.String? name,
     $core.String? currency,
+    $core.String? commercialRegisterNumber,
   }) {
     final result = create();
     if (name != null) {
@@ -379,6 +390,9 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
     }
     if (currency != null) {
       result.currency = currency;
+    }
+    if (commercialRegisterNumber != null) {
+      result.commercialRegisterNumber = commercialRegisterNumber;
     }
     return result;
   }
@@ -389,6 +403,7 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateFirmRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
     ..aOS(2, _omitFieldNames ? '' : 'currency')
+    ..aOS(3, _omitFieldNames ? '' : 'commercialRegisterNumber')
     ..hasRequiredFields = false
   ;
 
@@ -432,6 +447,16 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
   $core.bool hasCurrency() => $_has(1);
   @$pb.TagNumber(2)
   void clearCurrency() => clearField(2);
+
+  /// / Optional RCCM; copied to first chain + boutique only (not stored on Firm).
+  @$pb.TagNumber(3)
+  $core.String get commercialRegisterNumber => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set commercialRegisterNumber($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasCommercialRegisterNumber() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearCommercialRegisterNumber() => clearField(3);
 }
 
 class CreateFirmResponse extends $pb.GeneratedMessage {

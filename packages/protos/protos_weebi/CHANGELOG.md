@@ -1,5 +1,22 @@
 # changelog
 
+## 1.3.10 - 2026 july
+
+- `BusinessClassification`: composite key `isicCode` (string) + `subCode`
+- Wire fields `isicCode` / `isicSubCode` on boutique/chain/closed year
+- Embedded list: `BusinessClassifications.all` in `lib/src/data/business_classifications.dart`
+- Unit tests: unique (isic, sub) pairs, SMT regimes A/B/C, ISIC may repeat
+
+## 1.3.8 - 2026 july
+
+- PawaPay billing RPCs: `createPawapayCheckout`, `fulfillLicenseFromPawapay`, `fulfillFromPawapayCheckout`
+- `AccountingYearPurchase.pawapayCheckoutId` + `paymentProvider`
+
+## 1.3.7 - 2026 july
+
+- SYSCOHADA: `readAccountingYearPurchases`, `fiscalYear` on Stripe checkout/fulfill
+- enrich Chain model and Ticket model to handle accounting closing
+
 ## 1.3.6 - 2026 july
 
 - replaced_ticket_id to track if a ticket is a fix of a previous one (for transparency towards customers and managers)

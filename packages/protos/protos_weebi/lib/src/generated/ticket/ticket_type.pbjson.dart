@@ -27,7 +27,8 @@ const TicketTypePb$json = {
     {'1': 'stockIn', '2': 7},
     {'1': 'stockOut', '2': 8},
     {'1': 'inventory', '2': 9},
-    {'1': 'wage', '2': 10},
+    {'1': 'rebalance', '2': 10},
+    {'1': 'inventoryClosingValue', '2': 11},
   ],
 };
 
@@ -35,6 +36,6 @@ const TicketTypePb$json = {
 final $typed_data.Uint8List ticketTypePbDescriptor = $convert.base64Decode(
     'CgxUaWNrZXRUeXBlUGISCwoHdW5rbm93bhAAEggKBHNlbGwQARIQCgxzZWxsRGVmZXJyZWQQAh'
     'IPCgtzZWxsQ292ZXJlZBADEgkKBXNwZW5kEAQSEQoNc3BlbmREZWZlcnJlZBAFEhAKDHNwZW5k'
-    'Q292ZXJlZBAGEgsKB3N0b2NrSW4QBxIMCghzdG9ja091dBAIEg0KCWludmVudG9yeRAJEggKBH'
-    'dhZ2UQCg==');
+    'Q292ZXJlZBAGEgsKB3N0b2NrSW4QBxIMCghzdG9ja091dBAIEg0KCWludmVudG9yeRAJEg0KCX'
+    'JlYmFsYW5jZRAKEhkKFWludmVudG9yeUNsb3NpbmdWYWx1ZRAL');
 

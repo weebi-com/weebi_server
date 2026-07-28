@@ -19,6 +19,10 @@ bool _isPublicRpc(String? path, String methodName) {
       pathLower.contains('confirmpasswordreset') || methodLower.contains('confirmpasswordreset')) {
     return true;
   }
+  if (pathLower.contains('exchangewebbridgetoken') ||
+      methodLower.contains('exchangewebbridgetoken')) {
+    return true;
+  }
   if (pathLower.contains('readappminimumversion') || methodLower.contains('readappminimumversion')) {
     return true;
   }

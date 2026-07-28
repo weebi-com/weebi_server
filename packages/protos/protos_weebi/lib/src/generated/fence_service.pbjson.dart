@@ -23,12 +23,20 @@ const ChainRequest$json = {
     {'1': 'isDualCurrencyEnabled', '3': 4, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
     {'1': 'businessRules', '3': 6, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
+    {'1': 'commercial_register_number', '3': 7, '4': 1, '5': 9, '9': 4, '10': 'commercialRegisterNumber', '17': true},
+    {'1': 'commerce_type', '3': 8, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '9': 5, '10': 'commerceType', '17': true},
+    {'1': 'isic_code', '3': 9, '4': 1, '5': 9, '9': 6, '10': 'isicCode', '17': true},
+    {'1': 'isic_sub_code', '3': 10, '4': 1, '5': 9, '9': 7, '10': 'isicSubCode', '17': true},
   ],
   '8': [
     {'1': '_currency'},
     {'1': '_isDualCurrencyEnabled'},
     {'1': '_secondaryDisplayCurrency'},
     {'1': '_businessRules'},
+    {'1': '_commercial_register_number'},
+    {'1': '_commerce_type'},
+    {'1': '_isic_code'},
+    {'1': '_isic_sub_code'},
   ],
 };
 
@@ -39,8 +47,14 @@ final $typed_data.Uint8List chainRequestDescriptor = $convert.base64Decode(
     'RW5hYmxlZBgEIAEoCEgBUhVpc0R1YWxDdXJyZW5jeUVuYWJsZWSIAQESPwoYc2Vjb25kYXJ5RG'
     'lzcGxheUN1cnJlbmN5GAUgASgJSAJSGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeYgBARJICg1i'
     'dXNpbmVzc1J1bGVzGAYgASgLMh0ud2VlYmkuYm91dGlxdWUuQnVzaW5lc3NSdWxlc0gDUg1idX'
-    'NpbmVzc1J1bGVziAEBQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3VycmVuY3lFbmFibGVkQhsK'
-    'GV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3lCEAoOX2J1c2luZXNzUnVsZXM=');
+    'NpbmVzc1J1bGVziAEBEkEKGmNvbW1lcmNpYWxfcmVnaXN0ZXJfbnVtYmVyGAcgASgJSARSGGNv'
+    'bW1lcmNpYWxSZWdpc3Rlck51bWJlcogBARJICg1jb21tZXJjZV90eXBlGAggASgOMh4ud2VlYm'
+    'kuYm91dGlxdWUuQ29tbWVyY2VUeXBlUGJIBVIMY29tbWVyY2VUeXBliAEBEiAKCWlzaWNfY29k'
+    'ZRgJIAEoCUgGUghpc2ljQ29kZYgBARInCg1pc2ljX3N1Yl9jb2RlGAogASgJSAdSC2lzaWNTdW'
+    'JDb2RliAEBQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3VycmVuY3lFbmFibGVkQhsKGV9zZWNv'
+    'bmRhcnlEaXNwbGF5Q3VycmVuY3lCEAoOX2J1c2luZXNzUnVsZXNCHQobX2NvbW1lcmNpYWxfcm'
+    'VnaXN0ZXJfbnVtYmVyQhAKDl9jb21tZXJjZV90eXBlQgwKCl9pc2ljX2NvZGVCEAoOX2lzaWNf'
+    'c3ViX2NvZGU=');
 
 @$core.Deprecated('Use deleteChainRequestDescriptor instead')
 const DeleteChainRequest$json = {
@@ -312,6 +326,49 @@ const SessionRequest$json = {
 /// Descriptor for `SessionRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List sessionRequestDescriptor = $convert.base64Decode(
     'Cg5TZXNzaW9uUmVxdWVzdBIcCglzZXNzaW9uSWQYASABKAlSCXNlc3Npb25JZA==');
+
+@$core.Deprecated('Use createWebBridgeLinkRequestDescriptor instead')
+const CreateWebBridgeLinkRequest$json = {
+  '1': 'CreateWebBridgeLinkRequest',
+  '2': [
+    {'1': 'productId', '3': 1, '4': 1, '5': 9, '10': 'productId'},
+    {'1': 'fiscalYear', '3': 2, '4': 1, '5': 5, '10': 'fiscalYear'},
+    {'1': 'returnDeepLink', '3': 3, '4': 1, '5': 9, '10': 'returnDeepLink'},
+  ],
+};
+
+/// Descriptor for `CreateWebBridgeLinkRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createWebBridgeLinkRequestDescriptor = $convert.base64Decode(
+    'ChpDcmVhdGVXZWJCcmlkZ2VMaW5rUmVxdWVzdBIcCglwcm9kdWN0SWQYASABKAlSCXByb2R1Y3'
+    'RJZBIeCgpmaXNjYWxZZWFyGAIgASgFUgpmaXNjYWxZZWFyEiYKDnJldHVybkRlZXBMaW5rGAMg'
+    'ASgJUg5yZXR1cm5EZWVwTGluaw==');
+
+@$core.Deprecated('Use createWebBridgeLinkResponseDescriptor instead')
+const CreateWebBridgeLinkResponse$json = {
+  '1': 'CreateWebBridgeLinkResponse',
+  '2': [
+    {'1': 'url', '3': 1, '4': 1, '5': 9, '10': 'url'},
+    {'1': 'token', '3': 2, '4': 1, '5': 9, '10': 'token'},
+    {'1': 'expiresAtUnix', '3': 3, '4': 1, '5': 3, '10': 'expiresAtUnix'},
+  ],
+};
+
+/// Descriptor for `CreateWebBridgeLinkResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List createWebBridgeLinkResponseDescriptor = $convert.base64Decode(
+    'ChtDcmVhdGVXZWJCcmlkZ2VMaW5rUmVzcG9uc2USEAoDdXJsGAEgASgJUgN1cmwSFAoFdG9rZW'
+    '4YAiABKAlSBXRva2VuEiQKDWV4cGlyZXNBdFVuaXgYAyABKANSDWV4cGlyZXNBdFVuaXg=');
+
+@$core.Deprecated('Use exchangeWebBridgeTokenRequestDescriptor instead')
+const ExchangeWebBridgeTokenRequest$json = {
+  '1': 'ExchangeWebBridgeTokenRequest',
+  '2': [
+    {'1': 'token', '3': 1, '4': 1, '5': 9, '10': 'token'},
+  ],
+};
+
+/// Descriptor for `ExchangeWebBridgeTokenRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List exchangeWebBridgeTokenRequestDescriptor = $convert.base64Decode(
+    'Ch1FeGNoYW5nZVdlYkJyaWRnZVRva2VuUmVxdWVzdBIUCgV0b2tlbhgBIAEoCVIFdG9rZW4=');
 
 @$core.Deprecated('Use tokensDescriptor instead')
 const Tokens$json = {

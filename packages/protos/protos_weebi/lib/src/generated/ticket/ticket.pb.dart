@@ -485,7 +485,7 @@ class TicketSpendTotalsPb extends $pb.GeneratedMessage {
   void clearChange() => clearField(7);
 }
 
-/// Cover totals — set when ticketType is sellCovered, spendCovered, or wage.
+/// Cover totals — set when ticketType is sellCovered, spendCovered, or rebalance.
 /// No item computation: total equals the received amount.
 class TicketCoverTotalPb extends $pb.GeneratedMessage {
   factory TicketCoverTotalPb({
@@ -572,6 +572,9 @@ class TicketPb extends $pb.GeneratedMessage {
     TicketSpendTotalsPb? spendTotals,
     TicketCoverTotalPb? coverTotals,
     $core.String? replacedTicketId,
+    $core.String? ohadaAccountCode,
+    $core.String? treasuryFrom,
+    $core.String? treasuryTo,
   }) {
     final result = create();
     if (nonUniqueId != null) {
@@ -652,6 +655,15 @@ class TicketPb extends $pb.GeneratedMessage {
     if (replacedTicketId != null) {
       result.replacedTicketId = replacedTicketId;
     }
+    if (ohadaAccountCode != null) {
+      result.ohadaAccountCode = ohadaAccountCode;
+    }
+    if (treasuryFrom != null) {
+      result.treasuryFrom = treasuryFrom;
+    }
+    if (treasuryTo != null) {
+      result.treasuryTo = treasuryTo;
+    }
     return result;
   }
   TicketPb._() : super();
@@ -692,6 +704,9 @@ class TicketPb extends $pb.GeneratedMessage {
     ..aOM<TicketSpendTotalsPb>(24, _omitFieldNames ? '' : 'spendTotals', subBuilder: TicketSpendTotalsPb.create)
     ..aOM<TicketCoverTotalPb>(25, _omitFieldNames ? '' : 'coverTotals', subBuilder: TicketCoverTotalPb.create)
     ..aOS(26, _omitFieldNames ? '' : 'replacedTicketId')
+    ..aOS(27, _omitFieldNames ? '' : 'ohadaAccountCode')
+    ..aOS(28, _omitFieldNames ? '' : 'treasuryFrom')
+    ..aOS(29, _omitFieldNames ? '' : 'treasuryTo')
     ..hasRequiredFields = false
   ;
 
@@ -964,6 +979,36 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.bool hasReplacedTicketId() => $_has(25);
   @$pb.TagNumber(26)
   void clearReplacedTicketId() => clearField(26);
+
+  /// / SYSCOHADA account code for hors-catalogue sell/spend (owner-classified).
+  @$pb.TagNumber(27)
+  $core.String get ohadaAccountCode => $_getSZ(26);
+  @$pb.TagNumber(27)
+  set ohadaAccountCode($core.String v) { $_setString(26, v); }
+  @$pb.TagNumber(27)
+  $core.bool hasOhadaAccountCode() => $_has(26);
+  @$pb.TagNumber(27)
+  void clearOhadaAccountCode() => clearField(27);
+
+  /// / SMT treasury pocket leaving (571 / 521 / 554) for ticketType rebalance.
+  @$pb.TagNumber(28)
+  $core.String get treasuryFrom => $_getSZ(27);
+  @$pb.TagNumber(28)
+  set treasuryFrom($core.String v) { $_setString(27, v); }
+  @$pb.TagNumber(28)
+  $core.bool hasTreasuryFrom() => $_has(27);
+  @$pb.TagNumber(28)
+  void clearTreasuryFrom() => clearField(28);
+
+  /// / SMT treasury pocket receiving (571 / 521 / 554) for ticketType rebalance.
+  @$pb.TagNumber(29)
+  $core.String get treasuryTo => $_getSZ(28);
+  @$pb.TagNumber(29)
+  set treasuryTo($core.String v) { $_setString(28, v); }
+  @$pb.TagNumber(29)
+  $core.bool hasTreasuryTo() => $_has(28);
+  @$pb.TagNumber(29)
+  void clearTreasuryTo() => clearField(29);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {

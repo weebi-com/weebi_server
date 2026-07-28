@@ -31,15 +31,24 @@ const Chain$json = {
     {'1': 'isDualCurrencyEnabled', '3': 12, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 13, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
     {'1': 'businessRules', '3': 14, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
+    {'1': 'closed_years', '3': 15, '4': 3, '5': 11, '6': '.weebi.boutique.ClosedYearPb', '10': 'closedYears'},
+    {'1': 'commercial_register_number', '3': 16, '4': 1, '5': 9, '9': 4, '10': 'commercialRegisterNumber', '17': true},
+    {'1': 'commerce_type', '3': 17, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '9': 5, '10': 'commerceType', '17': true},
+    {'1': 'isic_code', '3': 18, '4': 1, '5': 9, '9': 6, '10': 'isicCode', '17': true},
+    {'1': 'isic_sub_code', '3': 19, '4': 1, '5': 9, '9': 7, '10': 'isicSubCode', '17': true},
   ],
   '8': [
     {'1': '_currency'},
     {'1': '_isDualCurrencyEnabled'},
     {'1': '_secondaryDisplayCurrency'},
     {'1': '_businessRules'},
+    {'1': '_commercial_register_number'},
+    {'1': '_commerce_type'},
+    {'1': '_isic_code'},
+    {'1': '_isic_sub_code'},
   ],
   '9': [
-    {'1': 15, '2': 101},
+    {'1': 20, '2': 101},
   ],
 };
 
@@ -56,9 +65,16 @@ final $typed_data.Uint8List chainDescriptor = $convert.base64Decode(
     'Y3kYCyABKAlIAFIIY3VycmVuY3mIAQESOQoVaXNEdWFsQ3VycmVuY3lFbmFibGVkGAwgASgISA'
     'FSFWlzRHVhbEN1cnJlbmN5RW5hYmxlZIgBARI/ChhzZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3kY'
     'DSABKAlIAlIYc2Vjb25kYXJ5RGlzcGxheUN1cnJlbmN5iAEBEkgKDWJ1c2luZXNzUnVsZXMYDi'
-    'ABKAsyHS53ZWViaS5ib3V0aXF1ZS5CdXNpbmVzc1J1bGVzSANSDWJ1c2luZXNzUnVsZXOIAQFC'
-    'CwoJX2N1cnJlbmN5QhgKFl9pc0R1YWxDdXJyZW5jeUVuYWJsZWRCGwoZX3NlY29uZGFyeURpc3'
-    'BsYXlDdXJyZW5jeUIQCg5fYnVzaW5lc3NSdWxlc0oECA8QZQ==');
+    'ABKAsyHS53ZWViaS5ib3V0aXF1ZS5CdXNpbmVzc1J1bGVzSANSDWJ1c2luZXNzUnVsZXOIAQES'
+    'PwoMY2xvc2VkX3llYXJzGA8gAygLMhwud2VlYmkuYm91dGlxdWUuQ2xvc2VkWWVhclBiUgtjbG'
+    '9zZWRZZWFycxJBChpjb21tZXJjaWFsX3JlZ2lzdGVyX251bWJlchgQIAEoCUgEUhhjb21tZXJj'
+    'aWFsUmVnaXN0ZXJOdW1iZXKIAQESSAoNY29tbWVyY2VfdHlwZRgRIAEoDjIeLndlZWJpLmJvdX'
+    'RpcXVlLkNvbW1lcmNlVHlwZVBiSAVSDGNvbW1lcmNlVHlwZYgBARIgCglpc2ljX2NvZGUYEiAB'
+    'KAlIBlIIaXNpY0NvZGWIAQESJwoNaXNpY19zdWJfY29kZRgTIAEoCUgHUgtpc2ljU3ViQ29kZY'
+    'gBAUILCglfY3VycmVuY3lCGAoWX2lzRHVhbEN1cnJlbmN5RW5hYmxlZEIbChlfc2Vjb25kYXJ5'
+    'RGlzcGxheUN1cnJlbmN5QhAKDl9idXNpbmVzc1J1bGVzQh0KG19jb21tZXJjaWFsX3JlZ2lzdG'
+    'VyX251bWJlckIQCg5fY29tbWVyY2VfdHlwZUIMCgpfaXNpY19jb2RlQhAKDl9pc2ljX3N1Yl9j'
+    'b2RlSgQIFBBl');
 
 @$core.Deprecated('Use chainsDescriptor instead')
 const Chains$json = {

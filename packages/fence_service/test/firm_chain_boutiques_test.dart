@@ -113,6 +113,50 @@ void main() async {
     chain = updated;
   });
 
+  test('updateOneChain persists isicCode + isicSubCode + commerceType',
+      () async {
+    final response = await fenceService.updateOneChain(
+      null,
+      ChainRequest(
+        chainId: chain.chainId,
+        name: chain.name,
+        isicCode: '9602',
+        isicSubCode: 'coiffure',
+        commerceType: CommerceTypePb.services,
+      ),
+    );
+    expect(response.type, StatusResponse_Type.UPDATED);
+    final again = await fenceService.readAllChains(null, Empty());
+    final updated =
+        again.chains.firstWhere((c) => c.chainId == chain.chainId);
+    expect(updated.isicCode, '9602');
+    expect(updated.isicSubCode, 'coiffure');
+    expect(updated.commerceType, CommerceTypePb.services);
+    chain = updated;
+  });
+
+  test('updateOneBoutique persists isicCode + isicSubCode as strings',
+      () async {
+    final boutiqueMongo = chain.boutiques.first
+      ..boutiqueId = chain.chainId
+      ..boutique.boutiqueId = chain.chainId;
+    boutiqueMongo.boutique
+      ..isicCode = '014'
+      ..clearIsicSubCode()
+      ..commerceType = CommerceTypePb.negoce;
+    final response = await fenceService.updateOneBoutique(
+      null,
+      BoutiqueRequest(
+          chainId: chain.chainId, boutique: boutiqueMongo.boutique),
+    );
+    expect(response.type, StatusResponse_Type.UPDATED);
+    final again = await fenceService.readAllChains(null, Empty());
+    final saved = again.chains.first.boutiques.first.boutique;
+    expect(saved.isicCode, '014');
+    expect(saved.isicSubCode, isEmpty);
+    expect(saved.commerceType, CommerceTypePb.negoce);
+  });
+
   test('test upsertOneBoutique', () async {
     final boutiqueLili = chain.boutiques.first
       ..boutiqueId = chain.chainId

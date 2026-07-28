@@ -58,7 +58,7 @@ extension TicketTypePbLogic on TicketTypePb {
       this == TicketTypePb.sell || this == TicketTypePb.sellDeferred;
 
   /// spend and spendDeferred compute totals from item costs.
-  /// spendCovered and wage use received.
+  /// spendCovered uses received.
   bool get isCost =>
       this == TicketTypePb.spend || this == TicketTypePb.spendDeferred;
 
@@ -68,8 +68,7 @@ extension TicketTypePbLogic on TicketTypePb {
       this == TicketTypePb.sellCovered ||
       this == TicketTypePb.spend ||
       this == TicketTypePb.spendDeferred ||
-      this == TicketTypePb.spendCovered ||
-      this == TicketTypePb.wage;
+      this == TicketTypePb.spendCovered;
 
   static const stockTypes = [
     TicketTypePb.stockIn,
@@ -153,7 +152,10 @@ extension TicketPbLogic on TicketPb {
     // cover types without a pre-computed cover_totals
     if (ticketType == TicketTypePb.sellCovered ||
         ticketType == TicketTypePb.spendCovered ||
-        ticketType == TicketTypePb.wage) return received;
+        ticketType == TicketTypePb.rebalance ||
+        ticketType == TicketTypePb.inventoryClosingValue) {
+      return received;
+    }
     return 0.0;
   }
 
@@ -178,7 +180,10 @@ extension TicketPbLogic on TicketPb {
     if (ticketType.isCost) return _effectiveSpendTotals.markdownsIncludedTaxExcluded;
     if (ticketType == TicketTypePb.sellCovered ||
         ticketType == TicketTypePb.spendCovered ||
-        ticketType == TicketTypePb.wage) return received;
+        ticketType == TicketTypePb.rebalance ||
+        ticketType == TicketTypePb.inventoryClosingValue) {
+      return received;
+    }
     return 0.0;
   }
 
