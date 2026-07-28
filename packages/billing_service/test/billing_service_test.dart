@@ -387,14 +387,6 @@ void main() {
         null,
         DeleteLicenseRequest(licenseId: 'license-starter-001'),
       );
-      await billingService.deleteLicense(
-        null,
-        DeleteLicenseRequest(licenseId: 'license-referral-001'),
-      );
-      await billingService.deleteLicense(
-        null,
-        DeleteLicenseRequest(licenseId: 'license-credit-applied-001'),
-      );
 
       final readResponse = await billingService.readLicenses(null, Empty());
       expect(readResponse.licenses, isEmpty);
