@@ -1,6 +1,6 @@
 name: fence_service
 description: fence service for weebi server
-version: 1.0.1
+version: 1.0.2
 publish_to: "none"
 # repository: https://github.com/my_org/my_repo
 
