@@ -69,10 +69,12 @@ void main() async {
       CreateWebBridgeLinkRequest(productId: 'premium'),
     );
     expect(resp.token, isNotEmpty);
-    expect(resp.url, contains('/#/bridge?'));
+    expect(resp.url, contains('#/bridge'));
     expect(resp.url, contains('product=premium'));
     expect(resp.url, contains('t=${resp.token}'));
     expect(resp.url, isNot(contains('year=')));
+    // Query before hash so OS/browser launch does not drop the token.
+    expect(resp.url.indexOf('?'), lessThan(resp.url.indexOf('#/bridge')));
     expect(resp.expiresAtUnix, greaterThan(0));
   });
 

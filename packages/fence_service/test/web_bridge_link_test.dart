@@ -46,7 +46,10 @@ void main() {
         token: 'abc123',
         product: const WebBridgeProduct(productId: 'premium'),
       );
-      expect(url, 'https://portal.weebi.com/#/bridge?t=abc123&product=premium');
+      expect(
+        url,
+        'https://portal.weebi.com/?t=abc123&product=premium#/bridge',
+      );
     });
 
     test('builds syscohada URL with year', () {
@@ -57,7 +60,7 @@ void main() {
       );
       expect(
         url,
-        'https://portal.weebi.com/#/bridge?t=tok&product=syscohada&year=2026',
+        'https://portal.weebi.com/?t=tok&product=syscohada&year=2026#/bridge',
       );
     });
 

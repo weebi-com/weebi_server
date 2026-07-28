@@ -138,7 +138,7 @@ Also: `AccountingYearPurchase.pawapayCheckoutId` + `paymentProvider`.
 
 Server stubs currently throw `UNIMPLEMENTED` until the PawaPay client is wired.
 
-**Magic link** stays payment-agnostic: mobile → `/#/bridge` → `/#/billing?product=…`
+**Magic link** stays payment-agnostic: mobile → `/?t=…#/bridge` → `/#/billing?product=…`
 → CGV → **Stripe or PawaPay**. See
 `weebi_client/webapp/docs/weebi_app_magic_link_bridge.md`.
 
