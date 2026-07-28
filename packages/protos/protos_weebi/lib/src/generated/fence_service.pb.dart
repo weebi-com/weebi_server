@@ -15,6 +15,7 @@ import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'boutique.pb.dart' as $23;
+import 'boutique.pbenum.dart' as $23;
 import 'btq_chain.pb.dart' as $11;
 import 'common/g_common.pb.dart' as $1;
 import 'common/g_timestamp.pb.dart' as $20;
@@ -32,6 +33,10 @@ class ChainRequest extends $pb.GeneratedMessage {
     $core.bool? isDualCurrencyEnabled,
     $core.String? secondaryDisplayCurrency,
     $23.BusinessRules? businessRules,
+    $core.String? commercialRegisterNumber,
+    $23.CommerceTypePb? commerceType,
+    $core.String? isicCode,
+    $core.String? isicSubCode,
   }) {
     final result = create();
     if (chainId != null) {
@@ -52,6 +57,18 @@ class ChainRequest extends $pb.GeneratedMessage {
     if (businessRules != null) {
       result.businessRules = businessRules;
     }
+    if (commercialRegisterNumber != null) {
+      result.commercialRegisterNumber = commercialRegisterNumber;
+    }
+    if (commerceType != null) {
+      result.commerceType = commerceType;
+    }
+    if (isicCode != null) {
+      result.isicCode = isicCode;
+    }
+    if (isicSubCode != null) {
+      result.isicSubCode = isicSubCode;
+    }
     return result;
   }
   ChainRequest._() : super();
@@ -65,6 +82,10 @@ class ChainRequest extends $pb.GeneratedMessage {
     ..aOB(4, _omitFieldNames ? '' : 'isDualCurrencyEnabled', protoName: 'isDualCurrencyEnabled')
     ..aOS(5, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..aOM<$23.BusinessRules>(6, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: $23.BusinessRules.create)
+    ..aOS(7, _omitFieldNames ? '' : 'commercialRegisterNumber')
+    ..e<$23.CommerceTypePb>(8, _omitFieldNames ? '' : 'commerceType', $pb.PbFieldType.OE, defaultOrMaker: $23.CommerceTypePb.unknown, valueOf: $23.CommerceTypePb.valueOf, enumValues: $23.CommerceTypePb.values)
+    ..aOS(9, _omitFieldNames ? '' : 'isicCode')
+    ..aOS(10, _omitFieldNames ? '' : 'isicSubCode')
     ..hasRequiredFields = false
   ;
 
@@ -144,6 +165,42 @@ class ChainRequest extends $pb.GeneratedMessage {
   void clearBusinessRules() => clearField(6);
   @$pb.TagNumber(6)
   $23.BusinessRules ensureBusinessRules() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  $core.String get commercialRegisterNumber => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set commercialRegisterNumber($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasCommercialRegisterNumber() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearCommercialRegisterNumber() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $23.CommerceTypePb get commerceType => $_getN(7);
+  @$pb.TagNumber(8)
+  set commerceType($23.CommerceTypePb v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasCommerceType() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearCommerceType() => clearField(8);
+
+  @$pb.TagNumber(9)
+  $core.String get isicCode => $_getSZ(8);
+  @$pb.TagNumber(9)
+  set isicCode($core.String v) { $_setString(8, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasIsicCode() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearIsicCode() => clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.String get isicSubCode => $_getSZ(9);
+  @$pb.TagNumber(10)
+  set isicSubCode($core.String v) { $_setString(9, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasIsicSubCode() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearIsicSubCode() => clearField(10);
 }
 
 /// / Identifies a chain for deleteOneChain only (wire-compatible with ChainRequest carrying field 1 alone).

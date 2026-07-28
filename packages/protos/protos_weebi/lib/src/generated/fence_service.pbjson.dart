@@ -23,12 +23,20 @@ const ChainRequest$json = {
     {'1': 'isDualCurrencyEnabled', '3': 4, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
     {'1': 'secondaryDisplayCurrency', '3': 5, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
     {'1': 'businessRules', '3': 6, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
+    {'1': 'commercial_register_number', '3': 7, '4': 1, '5': 9, '9': 4, '10': 'commercialRegisterNumber', '17': true},
+    {'1': 'commerce_type', '3': 8, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '9': 5, '10': 'commerceType', '17': true},
+    {'1': 'isic_code', '3': 9, '4': 1, '5': 9, '9': 6, '10': 'isicCode', '17': true},
+    {'1': 'isic_sub_code', '3': 10, '4': 1, '5': 9, '9': 7, '10': 'isicSubCode', '17': true},
   ],
   '8': [
     {'1': '_currency'},
     {'1': '_isDualCurrencyEnabled'},
     {'1': '_secondaryDisplayCurrency'},
     {'1': '_businessRules'},
+    {'1': '_commercial_register_number'},
+    {'1': '_commerce_type'},
+    {'1': '_isic_code'},
+    {'1': '_isic_sub_code'},
   ],
 };
 
@@ -39,8 +47,14 @@ final $typed_data.Uint8List chainRequestDescriptor = $convert.base64Decode(
     'RW5hYmxlZBgEIAEoCEgBUhVpc0R1YWxDdXJyZW5jeUVuYWJsZWSIAQESPwoYc2Vjb25kYXJ5RG'
     'lzcGxheUN1cnJlbmN5GAUgASgJSAJSGHNlY29uZGFyeURpc3BsYXlDdXJyZW5jeYgBARJICg1i'
     'dXNpbmVzc1J1bGVzGAYgASgLMh0ud2VlYmkuYm91dGlxdWUuQnVzaW5lc3NSdWxlc0gDUg1idX'
-    'NpbmVzc1J1bGVziAEBQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3VycmVuY3lFbmFibGVkQhsK'
-    'GV9zZWNvbmRhcnlEaXNwbGF5Q3VycmVuY3lCEAoOX2J1c2luZXNzUnVsZXM=');
+    'NpbmVzc1J1bGVziAEBEkEKGmNvbW1lcmNpYWxfcmVnaXN0ZXJfbnVtYmVyGAcgASgJSARSGGNv'
+    'bW1lcmNpYWxSZWdpc3Rlck51bWJlcogBARJICg1jb21tZXJjZV90eXBlGAggASgOMh4ud2VlYm'
+    'kuYm91dGlxdWUuQ29tbWVyY2VUeXBlUGJIBVIMY29tbWVyY2VUeXBliAEBEiAKCWlzaWNfY29k'
+    'ZRgJIAEoCUgGUghpc2ljQ29kZYgBARInCg1pc2ljX3N1Yl9jb2RlGAogASgJSAdSC2lzaWNTdW'
+    'JDb2RliAEBQgsKCV9jdXJyZW5jeUIYChZfaXNEdWFsQ3VycmVuY3lFbmFibGVkQhsKGV9zZWNv'
+    'bmRhcnlEaXNwbGF5Q3VycmVuY3lCEAoOX2J1c2luZXNzUnVsZXNCHQobX2NvbW1lcmNpYWxfcm'
+    'VnaXN0ZXJfbnVtYmVyQhAKDl9jb21tZXJjZV90eXBlQgwKCl9pc2ljX2NvZGVCEAoOX2lzaWNf'
+    'c3ViX2NvZGU=');
 
 @$core.Deprecated('Use deleteChainRequestDescriptor instead')
 const DeleteChainRequest$json = {

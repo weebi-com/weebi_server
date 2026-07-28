@@ -1,5 +1,12 @@
 # changelog
 
+## 1.3.10 - 2026 july
+
+- `BusinessClassification`: composite key `isicCode` (string) + `subCode`
+- Wire fields `isicCode` / `isicSubCode` on boutique/chain/closed year
+- Embedded list: `BusinessClassifications.all` in `lib/src/data/business_classifications.dart`
+- Unit tests: unique (isic, sub) pairs, SMT regimes A/B/C, ISIC may repeat
+
 ## 1.3.8 - 2026 july
 
 - PawaPay billing RPCs: `createPawapayCheckout`, `fulfillLicenseFromPawapay`, `fulfillFromPawapayCheckout`
