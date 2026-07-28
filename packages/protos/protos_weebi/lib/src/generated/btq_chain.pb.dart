@@ -14,6 +14,7 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'boutique.pb.dart' as $23;
+import 'boutique.pbenum.dart' as $23;
 import 'common/g_timestamp.pb.dart' as $20;
 
 class Chain extends $pb.GeneratedMessage {
@@ -33,6 +34,10 @@ class Chain extends $pb.GeneratedMessage {
     $core.String? secondaryDisplayCurrency,
     $23.BusinessRules? businessRules,
     $core.Iterable<$23.ClosedYearPb>? closedYears,
+    $core.String? commercialRegisterNumber,
+    $23.CommerceTypePb? commerceType,
+    $core.String? isicCode,
+    $core.String? isicSubCode,
   }) {
     final result = create();
     if (chainId != null) {
@@ -80,6 +85,18 @@ class Chain extends $pb.GeneratedMessage {
     if (closedYears != null) {
       result.closedYears.addAll(closedYears);
     }
+    if (commercialRegisterNumber != null) {
+      result.commercialRegisterNumber = commercialRegisterNumber;
+    }
+    if (commerceType != null) {
+      result.commerceType = commerceType;
+    }
+    if (isicCode != null) {
+      result.isicCode = isicCode;
+    }
+    if (isicSubCode != null) {
+      result.isicSubCode = isicSubCode;
+    }
     return result;
   }
   Chain._() : super();
@@ -102,6 +119,10 @@ class Chain extends $pb.GeneratedMessage {
     ..aOS(13, _omitFieldNames ? '' : 'secondaryDisplayCurrency', protoName: 'secondaryDisplayCurrency')
     ..aOM<$23.BusinessRules>(14, _omitFieldNames ? '' : 'businessRules', protoName: 'businessRules', subBuilder: $23.BusinessRules.create)
     ..pc<$23.ClosedYearPb>(15, _omitFieldNames ? '' : 'closedYears', $pb.PbFieldType.PM, subBuilder: $23.ClosedYearPb.create)
+    ..aOS(16, _omitFieldNames ? '' : 'commercialRegisterNumber')
+    ..e<$23.CommerceTypePb>(17, _omitFieldNames ? '' : 'commerceType', $pb.PbFieldType.OE, defaultOrMaker: $23.CommerceTypePb.unknown, valueOf: $23.CommerceTypePb.valueOf, enumValues: $23.CommerceTypePb.values)
+    ..aOS(18, _omitFieldNames ? '' : 'isicCode')
+    ..aOS(19, _omitFieldNames ? '' : 'isicSubCode')
     ..hasRequiredFields = false
   ;
 
@@ -256,6 +277,46 @@ class Chain extends $pb.GeneratedMessage {
   /// / Soft-closed calendar years for SMT (waterfall with firm + boutique).
   @$pb.TagNumber(15)
   $core.List<$23.ClosedYearPb> get closedYears => $_getList(14);
+
+  /// / RCCM / registre de commerce (optional; required at SMT year close).
+  @$pb.TagNumber(16)
+  $core.String get commercialRegisterNumber => $_getSZ(15);
+  @$pb.TagNumber(16)
+  set commercialRegisterNumber($core.String v) { $_setString(15, v); }
+  @$pb.TagNumber(16)
+  $core.bool hasCommercialRegisterNumber() => $_has(15);
+  @$pb.TagNumber(16)
+  void clearCommercialRegisterNumber() => clearField(16);
+
+  /// / SMT regime A/B/C; unknown defaults to négoce ceiling.
+  @$pb.TagNumber(17)
+  $23.CommerceTypePb get commerceType => $_getN(16);
+  @$pb.TagNumber(17)
+  set commerceType($23.CommerceTypePb v) { setField(17, v); }
+  @$pb.TagNumber(17)
+  $core.bool hasCommerceType() => $_has(16);
+  @$pb.TagNumber(17)
+  void clearCommerceType() => clearField(17);
+
+  /// / ISIC code from the chosen classification (string; may keep leading zeros).
+  @$pb.TagNumber(18)
+  $core.String get isicCode => $_getSZ(17);
+  @$pb.TagNumber(18)
+  set isicCode($core.String v) { $_setString(17, v); }
+  @$pb.TagNumber(18)
+  $core.bool hasIsicCode() => $_has(17);
+  @$pb.TagNumber(18)
+  void clearIsicCode() => clearField(18);
+
+  /// / Weebi refinement when several activities share the same ISIC.
+  @$pb.TagNumber(19)
+  $core.String get isicSubCode => $_getSZ(18);
+  @$pb.TagNumber(19)
+  set isicSubCode($core.String v) { $_setString(18, v); }
+  @$pb.TagNumber(19)
+  $core.bool hasIsicSubCode() => $_has(18);
+  @$pb.TagNumber(19)
+  void clearIsicSubCode() => clearField(19);
 }
 
 class Chains extends $pb.GeneratedMessage {

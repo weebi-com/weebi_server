@@ -116,3 +116,5 @@ export 'package:protos_weebi/src/generated/stats_service.pbgrpc.dart';
 export 'package:protos_weebi/src/generated/stats_service.pbjson.dart';
 
 export 'package:protos_weebi/src/ticket_logic.dart';
+export 'package:protos_weebi/src/data/business_classifications.dart';
+export 'package:protos_weebi/src/data/roles_default.dart';

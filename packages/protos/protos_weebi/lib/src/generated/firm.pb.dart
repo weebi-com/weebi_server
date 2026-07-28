@@ -382,6 +382,7 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
   factory CreateFirmRequest({
     $core.String? name,
     $core.String? currency,
+    $core.String? commercialRegisterNumber,
   }) {
     final result = create();
     if (name != null) {
@@ -389,6 +390,9 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
     }
     if (currency != null) {
       result.currency = currency;
+    }
+    if (commercialRegisterNumber != null) {
+      result.commercialRegisterNumber = commercialRegisterNumber;
     }
     return result;
   }
@@ -399,6 +403,7 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CreateFirmRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'weebi.firm'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'name')
     ..aOS(2, _omitFieldNames ? '' : 'currency')
+    ..aOS(3, _omitFieldNames ? '' : 'commercialRegisterNumber')
     ..hasRequiredFields = false
   ;
 
@@ -442,6 +447,16 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
   $core.bool hasCurrency() => $_has(1);
   @$pb.TagNumber(2)
   void clearCurrency() => clearField(2);
+
+  /// / Optional RCCM; copied to first chain + boutique only (not stored on Firm).
+  @$pb.TagNumber(3)
+  $core.String get commercialRegisterNumber => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set commercialRegisterNumber($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasCommercialRegisterNumber() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearCommercialRegisterNumber() => clearField(3);
 }
 
 class CreateFirmResponse extends $pb.GeneratedMessage {

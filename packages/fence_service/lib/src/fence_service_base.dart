@@ -1868,6 +1868,14 @@ class FenceService extends FenceServiceBase {
                     ..name = request.name
                     ..currency = defaultCurrencyCode)
               ]);
+          if (request.hasCommercialRegisterNumber()) {
+            final register = request.commercialRegisterNumber.trim();
+            if (register.isNotEmpty) {
+              chain.commercialRegisterNumber = register;
+              chain.boutiques.first.boutique.commercialRegisterNumber =
+                  register;
+            }
+          }
 
           try {
             await _createOneChainDBExec(chain, log: log);
@@ -2067,6 +2075,21 @@ class FenceService extends FenceServiceBase {
         }
         if (chainTemp.hasSecondaryDisplayCurrency()) {
           chain.secondaryDisplayCurrency = chainTemp.secondaryDisplayCurrency;
+        }
+        if (chainTemp.hasBusinessRules()) {
+          chain.businessRules = chainTemp.businessRules;
+        }
+        if (chainTemp.hasCommercialRegisterNumber()) {
+          chain.commercialRegisterNumber = chainTemp.commercialRegisterNumber;
+        }
+        if (chainTemp.hasCommerceType()) {
+          chain.commerceType = chainTemp.commerceType;
+        }
+        if (chainTemp.hasIsicCode()) {
+          chain.isicCode = chainTemp.isicCode;
+        }
+        if (chainTemp.hasIsicSubCode()) {
+          chain.isicSubCode = chainTemp.isicSubCode;
         }
 
         chains.add(chain);
@@ -2450,6 +2473,11 @@ class FenceService extends FenceServiceBase {
         'isDualCurrencyEnabled': request.isDualCurrencyEnabled,
       if (request.hasSecondaryDisplayCurrency())
         'secondaryDisplayCurrency': request.secondaryDisplayCurrency,
+      if (request.hasCommercialRegisterNumber())
+        'commercialRegisterNumber': request.commercialRegisterNumber,
+      if (request.hasCommerceType()) 'commerceType': request.commerceType.name,
+      if (request.hasIsicCode()) 'isicCode': request.isicCode,
+      if (request.hasIsicSubCode()) 'isicSubCode': request.isicSubCode,
     });
 /*     if (request.boutiques.any((b) => b.firmId != request.firmId)) {
       throw GrpcError.invalidArgument(
@@ -2540,6 +2568,41 @@ class FenceService extends FenceServiceBase {
             'businessRules',
             request.businessRules.toProto3Json(),
           );
+        }
+
+        if (request.hasCommercialRegisterNumber()) {
+          final register = request.commercialRegisterNumber.trim();
+          if (register.isEmpty) {
+            modifier = modifier.unset('commercialRegisterNumber');
+          } else {
+            modifier = modifier.set('commercialRegisterNumber', register);
+          }
+        }
+
+        if (request.hasCommerceType()) {
+          if (request.commerceType == CommerceTypePb.unknown) {
+            modifier = modifier.unset('commerceType');
+          } else {
+            modifier = modifier.set('commerceType', request.commerceType.name);
+          }
+        }
+
+        if (request.hasIsicCode()) {
+          final isic = request.isicCode.trim();
+          if (isic.isEmpty) {
+            modifier = modifier.unset('isicCode');
+          } else {
+            modifier = modifier.set('isicCode', isic);
+          }
+        }
+
+        if (request.hasIsicSubCode()) {
+          final sub = request.isicSubCode.trim();
+          if (sub.isEmpty) {
+            modifier = modifier.unset('isicSubCode');
+          } else {
+            modifier = modifier.set('isicSubCode', sub);
+          }
         }
 
         final result = await boutiqueCollection.updateOne(

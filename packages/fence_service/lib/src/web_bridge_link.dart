@@ -54,7 +54,12 @@ WebBridgeProduct validateWebBridgeProduct({
   return WebBridgeProduct(productId: pid);
 }
 
-/// Builds the SPA hash URL opened in the system browser.
+/// Builds the SPA URL opened in the system browser.
+///
+/// Query params sit **before** the hash (`/?t=…&product=…#/bridge`) so they
+/// survive `url_launcher` / OS handoff — many platforms drop the fragment when
+/// opening an external browser. The webapp reads them via
+/// [Uri.base.queryParameters] when the hash has no `?` (see billing bridge).
 String buildWebBridgeUrl({
   required String webappBaseUrl,
   required String token,
@@ -75,5 +80,5 @@ String buildWebBridgeUrl({
       .map((e) =>
           '${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent(e.value)}')
       .join('&');
-  return '$base/#/bridge?$query';
+  return '$base/?$query#/bridge';
 }
