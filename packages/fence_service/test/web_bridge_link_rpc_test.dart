@@ -1,7 +1,6 @@
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/mongo_pool.dart';
-import 'package:fence_service/src/web_bridge_link.dart';
 import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/grpc.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';

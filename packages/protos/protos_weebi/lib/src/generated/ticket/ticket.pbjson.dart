@@ -1,13 +1,15 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: ticket/ticket.proto
-//
-// @dart = 2.12
+// Generated from ticket/ticket.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_relative_imports
+// ignore_for_file: unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -17,17 +19,38 @@ import 'dart:typed_data' as $typed_data;
 const TicketMongo$json = {
   '1': 'TicketMongo',
   '2': [
-    {'1': 'ticket', '3': 1, '4': 1, '5': 11, '6': '.weebi.ticket.TicketPb', '10': 'ticket'},
+    {
+      '1': 'ticket',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.ticket.TicketPb',
+      '10': 'ticket'
+    },
     {'1': 'nonUniqueId', '3': 2, '4': 1, '5': 5, '10': 'nonUniqueId'},
     {'1': 'userId', '3': 3, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'boutiqueId', '3': 4, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'firmId', '3': 5, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 6, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'creationDate', '3': 7, '4': 1, '5': 9, '10': 'creationDate'},
-    {'1': 'lastTouchTimestampUTC', '3': 8, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
+    {
+      '1': 'lastTouchTimestampUTC',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastTouchTimestampUTC'
+    },
     {'1': 'isDeleted', '3': 9, '4': 1, '5': 8, '10': 'isDeleted'},
     {'1': 'contactId', '3': 10, '4': 1, '5': 5, '10': 'contactId'},
-    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.ticket.TicketMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
+    {
+      '1': 'additional_attributes',
+      '3': 99,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.ticket.TicketMongo.AdditionalAttributesEntry',
+      '10': 'additional_attributes'
+    },
   ],
   '3': [TicketMongo_AdditionalAttributesEntry$json],
   '9': [
@@ -65,10 +88,31 @@ const TicketSellTotalsPb$json = {
   '2': [
     {'1': 'items_only', '3': 1, '4': 1, '5': 1, '8': {}, '10': 'itemsOnly'},
     {'1': 'promo_val', '3': 2, '4': 1, '5': 1, '8': {}, '10': 'promoVal'},
-    {'1': 'markdowns_val', '3': 3, '4': 1, '5': 1, '8': {}, '10': 'markdownsVal'},
-    {'1': 'markdowns_included_tax_excluded', '3': 4, '4': 1, '5': 1, '8': {}, '10': 'markdownsIncludedTaxExcluded'},
+    {
+      '1': 'markdowns_val',
+      '3': 3,
+      '4': 1,
+      '5': 1,
+      '8': {},
+      '10': 'markdownsVal'
+    },
+    {
+      '1': 'markdowns_included_tax_excluded',
+      '3': 4,
+      '4': 1,
+      '5': 1,
+      '8': {},
+      '10': 'markdownsIncludedTaxExcluded'
+    },
     {'1': 'taxes_value', '3': 5, '4': 1, '5': 1, '8': {}, '10': 'taxesValue'},
-    {'1': 'markdowns_and_tax_included', '3': 6, '4': 1, '5': 1, '8': {}, '10': 'markdownsAndTaxIncluded'},
+    {
+      '1': 'markdowns_and_tax_included',
+      '3': 6,
+      '4': 1,
+      '5': 1,
+      '8': {},
+      '10': 'markdownsAndTaxIncluded'
+    },
     {'1': 'change', '3': 7, '4': 1, '5': 1, '8': {}, '10': 'change'},
   ],
 };
@@ -95,10 +139,31 @@ const TicketSpendTotalsPb$json = {
   '2': [
     {'1': 'items_only', '3': 1, '4': 1, '5': 1, '8': {}, '10': 'itemsOnly'},
     {'1': 'promo_val', '3': 2, '4': 1, '5': 1, '8': {}, '10': 'promoVal'},
-    {'1': 'markdowns_val', '3': 3, '4': 1, '5': 1, '8': {}, '10': 'markdownsVal'},
-    {'1': 'markdowns_included_tax_excluded', '3': 4, '4': 1, '5': 1, '8': {}, '10': 'markdownsIncludedTaxExcluded'},
+    {
+      '1': 'markdowns_val',
+      '3': 3,
+      '4': 1,
+      '5': 1,
+      '8': {},
+      '10': 'markdownsVal'
+    },
+    {
+      '1': 'markdowns_included_tax_excluded',
+      '3': 4,
+      '4': 1,
+      '5': 1,
+      '8': {},
+      '10': 'markdownsIncludedTaxExcluded'
+    },
     {'1': 'taxes_value', '3': 5, '4': 1, '5': 1, '8': {}, '10': 'taxesValue'},
-    {'1': 'markdowns_and_tax_included', '3': 6, '4': 1, '5': 1, '8': {}, '10': 'markdownsAndTaxIncluded'},
+    {
+      '1': 'markdowns_and_tax_included',
+      '3': 6,
+      '4': 1,
+      '5': 1,
+      '8': {},
+      '10': 'markdownsAndTaxIncluded'
+    },
     {'1': 'change', '3': 7, '4': 1, '5': 1, '8': {}, '10': 'change'},
   ],
 };
@@ -137,34 +202,155 @@ const TicketPb$json = {
   '1': 'TicketPb',
   '2': [
     {'1': 'nonUniqueId', '3': 1, '4': 1, '5': 5, '10': 'id'},
-    {'1': 'counterfoil', '3': 2, '4': 1, '5': 11, '6': '.weebi.ticket.Counterfoil', '10': 'counterfoil'},
+    {
+      '1': 'counterfoil',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.ticket.Counterfoil',
+      '10': 'counterfoil'
+    },
     {'1': 'date', '3': 3, '4': 1, '5': 9, '10': 'date'},
     {'1': 'statusUpdateDate', '3': 4, '4': 1, '5': 9, '10': 'statusUpdateDate'},
     {'1': 'status', '3': 5, '4': 1, '5': 8, '10': 'status'},
-    {'1': 'items', '3': 6, '4': 3, '5': 11, '6': '.weebi.ticket.ItemCartPb', '10': 'items'},
-    {'1': 'ticketType', '3': 7, '4': 1, '5': 14, '6': '.weebi.ticket_type.TicketTypePb', '10': 'ticketType'},
-    {'1': 'paymentType', '3': 8, '4': 1, '5': 14, '6': '.weebi.ticket.TicketPb.PaymentTypePb', '10': 'paymentType'},
+    {
+      '1': 'items',
+      '3': 6,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.ticket.ItemCartPb',
+      '10': 'items'
+    },
+    {
+      '1': 'ticketType',
+      '3': 7,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.ticket_type.TicketTypePb',
+      '10': 'ticketType'
+    },
+    {
+      '1': 'paymentType',
+      '3': 8,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.ticket.TicketPb.PaymentTypePb',
+      '10': 'paymentType'
+    },
     {'1': 'contactId', '3': 9, '4': 1, '5': 5, '10': 'contactId'},
-    {'1': 'taxe', '3': 10, '4': 1, '5': 11, '6': '.weebi.ticket.TaxPb', '10': 'taxe'},
+    {
+      '1': 'taxe',
+      '3': 10,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.ticket.TaxPb',
+      '10': 'taxe'
+    },
     {'1': 'promo', '3': 11, '4': 1, '5': 1, '10': 'promo'},
     {'1': 'received', '3': 12, '4': 1, '5': 1, '10': 'received'},
     {'1': 'discountAmount', '3': 13, '4': 1, '5': 1, '10': 'discountAmount'},
     {'1': 'comment', '3': 14, '4': 1, '5': 9, '10': 'comment'},
     {'1': 'creationDate', '3': 15, '4': 1, '5': 9, '10': 'creationDate'},
-    {'1': 'contactFirstName', '3': 16, '4': 1, '5': 9, '10': 'contactFirstName'},
+    {
+      '1': 'contactFirstName',
+      '3': 16,
+      '4': 1,
+      '5': 9,
+      '10': 'contactFirstName'
+    },
     {'1': 'contactLastName', '3': 17, '4': 1, '5': 9, '10': 'contactLastName'},
     {'1': 'contactPhone', '3': 18, '4': 1, '5': 9, '10': 'contactPhone'},
     {'1': 'contactMail', '3': 19, '4': 1, '5': 9, '10': 'contactMail'},
-    {'1': 'currency', '3': 20, '4': 1, '5': 9, '9': 1, '10': 'currency', '17': true},
-    {'1': 'snapshot_secondary_currency', '3': 21, '4': 1, '5': 9, '9': 2, '10': 'snapshotSecondaryCurrency', '17': true},
-    {'1': 'snapshot_local_per_secondary', '3': 22, '4': 1, '5': 1, '9': 3, '10': 'snapshotLocalPerSecondary', '17': true},
-    {'1': 'sell_totals', '3': 23, '4': 1, '5': 11, '6': '.weebi.ticket.TicketSellTotalsPb', '9': 0, '10': 'sellTotals'},
-    {'1': 'spend_totals', '3': 24, '4': 1, '5': 11, '6': '.weebi.ticket.TicketSpendTotalsPb', '9': 0, '10': 'spendTotals'},
-    {'1': 'cover_totals', '3': 25, '4': 1, '5': 11, '6': '.weebi.ticket.TicketCoverTotalPb', '9': 0, '10': 'coverTotals'},
-    {'1': 'replaced_ticket_id', '3': 26, '4': 1, '5': 9, '9': 4, '10': 'replacedTicketId', '17': true},
-    {'1': 'ohada_account_code', '3': 27, '4': 1, '5': 9, '9': 5, '10': 'ohadaAccountCode', '17': true},
-    {'1': 'treasury_from', '3': 28, '4': 1, '5': 9, '9': 6, '10': 'treasuryFrom', '17': true},
-    {'1': 'treasury_to', '3': 29, '4': 1, '5': 9, '9': 7, '10': 'treasuryTo', '17': true},
+    {
+      '1': 'currency',
+      '3': 20,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'currency',
+      '17': true
+    },
+    {
+      '1': 'snapshot_secondary_currency',
+      '3': 21,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'snapshotSecondaryCurrency',
+      '17': true
+    },
+    {
+      '1': 'snapshot_local_per_secondary',
+      '3': 22,
+      '4': 1,
+      '5': 1,
+      '9': 3,
+      '10': 'snapshotLocalPerSecondary',
+      '17': true
+    },
+    {
+      '1': 'sell_totals',
+      '3': 23,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.ticket.TicketSellTotalsPb',
+      '9': 0,
+      '10': 'sellTotals'
+    },
+    {
+      '1': 'spend_totals',
+      '3': 24,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.ticket.TicketSpendTotalsPb',
+      '9': 0,
+      '10': 'spendTotals'
+    },
+    {
+      '1': 'cover_totals',
+      '3': 25,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.ticket.TicketCoverTotalPb',
+      '9': 0,
+      '10': 'coverTotals'
+    },
+    {
+      '1': 'replaced_ticket_id',
+      '3': 26,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'replacedTicketId',
+      '17': true
+    },
+    {
+      '1': 'ohada_account_code',
+      '3': 27,
+      '4': 1,
+      '5': 9,
+      '9': 5,
+      '10': 'ohadaAccountCode',
+      '17': true
+    },
+    {
+      '1': 'treasury_from',
+      '3': 28,
+      '4': 1,
+      '5': 9,
+      '9': 6,
+      '10': 'treasuryFrom',
+      '17': true
+    },
+    {
+      '1': 'treasury_to',
+      '3': 29,
+      '4': 1,
+      '5': 9,
+      '9': 7,
+      '10': 'treasuryTo',
+      '17': true
+    },
   ],
   '4': [TicketPb_PaymentTypePb$json],
   '8': [
@@ -279,7 +465,13 @@ const ProxyArticleWorthPb$json = {
     {'1': 'status', '3': 4, '4': 1, '5': 8, '10': 'status'},
     {'1': 'proxyCalibreId', '3': 5, '4': 1, '5': 5, '10': 'proxyCalibreId'},
     {'1': 'proxyArticleId', '3': 6, '4': 1, '5': 5, '10': 'proxyArticleId'},
-    {'1': 'minimumUnitPerBasket', '3': 7, '4': 1, '5': 1, '10': 'minimumUnitPerBasket'},
+    {
+      '1': 'minimumUnitPerBasket',
+      '3': 7,
+      '4': 1,
+      '5': 1,
+      '10': 'minimumUnitPerBasket'
+    },
     {'1': 'articleWeight', '3': 8, '4': 1, '5': 1, '10': 'articleWeight'},
     {'1': 'price', '3': 9, '4': 1, '5': 1, '10': 'price'},
     {'1': 'cost', '3': 10, '4': 1, '5': 1, '10': 'cost'},
@@ -299,12 +491,46 @@ final $typed_data.Uint8List proxyArticleWorthPbDescriptor = $convert.base64Decod
 const ItemCartPb$json = {
   '1': 'ItemCartPb',
   '2': [
-    {'1': 'articleRetail', '3': 1, '4': 1, '5': 11, '6': '.weebi.article.ArticleRetailOnTicketPb', '10': 'articleRetail'},
-    {'1': 'articleBasket', '3': 2, '4': 1, '5': 11, '6': '.weebi.article.ArticleBasketOnTicketPb', '10': 'articleBasket'},
-    {'1': 'articleUncountable', '3': 3, '4': 1, '5': 11, '6': '.weebi.article.ArticleUncountableOnTicketPb', '10': 'articleUncountable'},
+    {
+      '1': 'articleRetail',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.article.ArticleRetailOnTicketPb',
+      '10': 'articleRetail'
+    },
+    {
+      '1': 'articleBasket',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.article.ArticleBasketOnTicketPb',
+      '10': 'articleBasket'
+    },
+    {
+      '1': 'articleUncountable',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.article.ArticleUncountableOnTicketPb',
+      '10': 'articleUncountable'
+    },
     {'1': 'quantity', '3': 4, '4': 1, '5': 1, '10': 'quantity'},
-    {'1': 'proxies_worth', '3': 5, '4': 3, '5': 11, '6': '.weebi.ticket.ProxyArticleWorthPb', '10': 'proxiesWorth'},
-    {'1': 'inventoryAbsoluteQt', '3': 6, '4': 1, '5': 1, '10': 'inventoryAbsoluteQt'},
+    {
+      '1': 'proxies_worth',
+      '3': 5,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.ticket.ProxyArticleWorthPb',
+      '10': 'proxiesWorth'
+    },
+    {
+      '1': 'inventoryAbsoluteQt',
+      '3': 6,
+      '4': 1,
+      '5': 1,
+      '10': 'inventoryAbsoluteQt'
+    },
     {'1': 'total_price', '3': 7, '4': 1, '5': 1, '8': {}, '10': 'totalPrice'},
     {'1': 'total_cost', '3': 8, '4': 1, '5': 1, '8': {}, '10': 'totalCost'},
   ],
@@ -322,4 +548,3 @@ final $typed_data.Uint8List itemCartPbDescriptor = $convert.base64Decode(
     'gBUhNpbnZlbnRvcnlBYnNvbHV0ZVF0EjwKC3RvdGFsX3ByaWNlGAcgASgBQhuKtRgXcXVhbnRp'
     'dHkgKiBhcnRpY2xlUHJpY2VSCnRvdGFsUHJpY2USOQoKdG90YWxfY29zdBgIIAEoAUIairUYFn'
     'F1YW50aXR5ICogYXJ0aWNsZUNvc3RSCXRvdGFsQ29zdA==');
-

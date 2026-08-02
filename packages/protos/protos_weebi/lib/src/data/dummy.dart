@@ -1,6 +1,5 @@
 import 'package:fixnum/fixnum.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
-import 'package:protos_weebi/src/data/roles_default.dart';
 import 'package:protos_weebi/src/password_encrypter.dart';
 
 /// hardcoded ids can hide gaps in real actual process

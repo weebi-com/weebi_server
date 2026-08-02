@@ -8,7 +8,7 @@
 choco install protoc
 
 # Install Dart plugin for protoc
-dart pub global activate protoc_plugin 21.1.0 # protobuf < 5.0
+dart pub global activate protoc_plugin 25.0.0 # protobuf >= 6.0
 
 # Add to PATH (add to your PowerShell profile for permanent)
 $env:PATH += ";$env:USERPROFILE\.pub-cache\bin"
@@ -21,7 +21,7 @@ sudo apt-get update
 sudo apt-get install -y protobuf-compiler
 
 # Install Dart plugin for protoc
-dart pub global activate protoc_plugin 21.1.0 # protobuf < 5.0
+dart pub global activate protoc_plugin 25.0.0 # protobuf >= 6.0
 
 # Add to PATH (add to ~/.bashrc or ~/.zshrc for permanent)
 export PATH="$PATH:$HOME/.pub-cache/bin"

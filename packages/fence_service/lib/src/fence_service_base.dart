@@ -13,7 +13,6 @@ import 'package:protos_weebi/utils.dart' show RegExpWeebi;
 // ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
-import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/encrypter.dart';
 import 'package:protos_weebi/extensions.dart';
 
@@ -337,6 +336,7 @@ class FenceService extends FenceServiceBase {
 
       final userPermission = await _readUserPermissionsByMailAndPassword(
           call, mailAndEncyptedPassword);
+      await _applyHasClosedYearsClaim(userPermission.userPermissions);
       var jwt = JsonWebToken();
       final payload = userPermission.userPermissions.toProto3Json()
               as Map<String, dynamic>? ??
@@ -602,6 +602,7 @@ class FenceService extends FenceServiceBase {
         ..mergeFromProto3Json(
           userPrivate.permissions.toProto3Json() as Map<String, dynamic>,
         );
+      await _applyHasClosedYearsClaim(userPermissions);
 
       final accessJwt = JsonWebToken();
       final payload = userPermissions.toProto3Json() as Map<String, dynamic>? ??
@@ -1021,7 +1022,7 @@ class FenceService extends FenceServiceBase {
   }
 
   /// Case-insensitive mail lookup (emails are not case-sensitive per RFC 5321)
-  _selectByMail(String mail) => where.match(
+  SelectorBuilder _selectByMail(String mail) => where.match(
         'mail',
         r'^' + RegExp.escape(mail.trim()) + r'$',
         caseInsensitive: true,
@@ -1076,6 +1077,7 @@ class FenceService extends FenceServiceBase {
       }
       final read = await _readUserPrivateAndTags(jwtRefresh.sub);
       final userPrivate = read.user;
+      await _applyHasClosedYearsClaim(userPrivate.permissions);
 
       var jwt = JsonWebToken();
       final payload =
@@ -2005,6 +2007,20 @@ class FenceService extends FenceServiceBase {
         rethrow;
       }
     });
+  }
+
+  /// Sets [UserPermissions.hasClosedYears] when any boutique of the firm
+  /// has soft-closed calendar years (JWT claim for ticket_service gate).
+  Future<void> _applyHasClosedYearsClaim(UserPermissions permissions) async {
+    if (permissions.firmId.isEmpty) return;
+    final chainsMongo = await _readChainsMongoFromDb(permissions.firmId);
+    final chains = <Chain>[
+      for (final m in chainsMongo)
+        Chain.create()..mergeFromProto3Json(m, ignoreUnknownFields: true),
+    ];
+    if (firmHasClosedYears(chains)) {
+      permissions.hasClosedYears = true;
+    }
   }
 
   /// Reads chain documents from DB. No filtering.

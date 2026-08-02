@@ -5,6 +5,8 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/logging.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'fx_snapshot_validation.dart';
+import 'closed_year_validation.dart';
+import 'closed_year_loader.dart';
 
 abstract class _Helpers {
   static SelectorBuilder selectTicket(String firmId, String boutiqueId,
@@ -43,6 +45,26 @@ class TicketService extends TicketServiceBase {
     );
   }
 
+  /// JWT [UserPermissions.hasClosedYears] gates the Mongo read.
+  Future<void> _assertClosedYearGate(
+    Db db,
+    UserPermissions userPermission,
+    TicketPb ticket,
+  ) async {
+    if (!userPermission.hasClosedYears) return;
+    final years = await loadBoutiqueClosedYears(
+      db,
+      firmId: userPermission.firmId,
+      chainId: ticket.counterfoil.chainId,
+      boutiqueId: ticket.counterfoil.boutiqueId,
+    );
+    assertTicketNotInClosedYears(
+      hasClosedYears: true,
+      ticket: ticket,
+      closedYears: years,
+    );
+  }
+
   @override
   Future<StatusResponse> createOne(
       ServiceCall? call, TicketRequest request) async {
@@ -72,6 +94,7 @@ class TicketService extends TicketServiceBase {
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       await _assertOperationalLicense(db, call, userPermission);
+      await _assertClosedYearGate(db, userPermission, request.ticket);
       final collection = db.collection(collectionName);
 
       try {
@@ -360,6 +383,7 @@ class TicketService extends TicketServiceBase {
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       await _assertOperationalLicense(db, call, userPermission);
+      await _assertClosedYearGate(db, userPermission, request.ticket);
       final collection = db.collection(collectionName);
 
       try {
@@ -443,6 +467,7 @@ class TicketService extends TicketServiceBase {
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       await _assertOperationalLicense(db, call, userPermission);
+      await _assertClosedYearGate(db, userPermission, request.ticket);
       final collection = db.collection(collectionName);
 
       try {
@@ -510,6 +535,9 @@ class TicketService extends TicketServiceBase {
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       await _assertOperationalLicense(db, call, userPermission);
+      for (final ticketPb in request.tickets) {
+        await _assertClosedYearGate(db, userPermission, ticketPb);
+      }
       final collection = db.collection(collectionName);
 
       final ticketsMap = <Map<String, dynamic>>[];
