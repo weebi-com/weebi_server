@@ -1,13 +1,15 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: btq_chain.proto
-//
-// @dart = 2.12
+// Generated from btq_chain.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_relative_imports
+// ignore_for_file: unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -20,22 +22,122 @@ const Chain$json = {
     {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
     {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'name', '3': 3, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'boutiques', '3': 4, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiqueMongo', '10': 'boutiques'},
-    {'1': 'creationDateUTC', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationDateUTC'},
-    {'1': 'lastUpdateTimestampUTC', '3': 6, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
-    {'1': 'lastUpdatedByuserId', '3': 7, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
+    {
+      '1': 'boutiques',
+      '3': 4,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.boutique.BoutiqueMongo',
+      '10': 'boutiques'
+    },
+    {
+      '1': 'creationDateUTC',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'creationDateUTC'
+    },
+    {
+      '1': 'lastUpdateTimestampUTC',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastUpdateTimestampUTC'
+    },
+    {
+      '1': 'lastUpdatedByuserId',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '10': 'lastUpdatedByuserId'
+    },
     {'1': 'isDeleted', '3': 8, '4': 1, '5': 8, '10': 'isDeleted'},
     {'1': 'deletedBy', '3': 9, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 10, '4': 1, '5': 9, '10': 'restoredBy'},
-    {'1': 'currency', '3': 11, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
-    {'1': 'isDualCurrencyEnabled', '3': 12, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
-    {'1': 'secondaryDisplayCurrency', '3': 13, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
-    {'1': 'businessRules', '3': 14, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
-    {'1': 'closed_years', '3': 15, '4': 3, '5': 11, '6': '.weebi.boutique.ClosedYearPb', '10': 'closedYears'},
-    {'1': 'commercial_register_number', '3': 16, '4': 1, '5': 9, '9': 4, '10': 'commercialRegisterNumber', '17': true},
-    {'1': 'commerce_type', '3': 17, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '9': 5, '10': 'commerceType', '17': true},
-    {'1': 'isic_code', '3': 18, '4': 1, '5': 9, '9': 6, '10': 'isicCode', '17': true},
-    {'1': 'isic_sub_code', '3': 19, '4': 1, '5': 9, '9': 7, '10': 'isicSubCode', '17': true},
+    {
+      '1': 'currency',
+      '3': 11,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'currency',
+      '17': true
+    },
+    {
+      '1': 'isDualCurrencyEnabled',
+      '3': 12,
+      '4': 1,
+      '5': 8,
+      '9': 1,
+      '10': 'isDualCurrencyEnabled',
+      '17': true
+    },
+    {
+      '1': 'secondaryDisplayCurrency',
+      '3': 13,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'secondaryDisplayCurrency',
+      '17': true
+    },
+    {
+      '1': 'businessRules',
+      '3': 14,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.boutique.BusinessRules',
+      '9': 3,
+      '10': 'businessRules',
+      '17': true
+    },
+    {
+      '1': 'closed_years',
+      '3': 15,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.boutique.ClosedYearPb',
+      '10': 'closedYears'
+    },
+    {
+      '1': 'commercial_register_number',
+      '3': 16,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'commercialRegisterNumber',
+      '17': true
+    },
+    {
+      '1': 'commerce_type',
+      '3': 17,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.boutique.CommerceTypePb',
+      '9': 5,
+      '10': 'commerceType',
+      '17': true
+    },
+    {
+      '1': 'isic_code',
+      '3': 18,
+      '4': 1,
+      '5': 9,
+      '9': 6,
+      '10': 'isicCode',
+      '17': true
+    },
+    {
+      '1': 'isic_sub_code',
+      '3': 19,
+      '4': 1,
+      '5': 9,
+      '9': 7,
+      '10': 'isicSubCode',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_currency'},
@@ -80,11 +182,17 @@ final $typed_data.Uint8List chainDescriptor = $convert.base64Decode(
 const Chains$json = {
   '1': 'Chains',
   '2': [
-    {'1': 'chains', '3': 1, '4': 3, '5': 11, '6': '.weebi.chain.Chain', '10': 'chains'},
+    {
+      '1': 'chains',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.chain.Chain',
+      '10': 'chains'
+    },
   ],
 };
 
 /// Descriptor for `Chains`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List chainsDescriptor = $convert.base64Decode(
     'CgZDaGFpbnMSKgoGY2hhaW5zGAEgAygLMhIud2VlYmkuY2hhaW4uQ2hhaW5SBmNoYWlucw==');
-

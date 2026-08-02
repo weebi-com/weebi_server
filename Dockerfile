@@ -1,5 +1,5 @@
 # Specify the Dart SDK base image version using dart:<version> (ex: dart:2.12)
-FROM dart:3.6.0 AS build
+FROM dart:3.12.2 AS build
 
 # Install protoc and git for proto generation
 RUN apt-get update && \
@@ -16,8 +16,8 @@ COPY pubspec.* ./
 # We run the command dart pub get to get dependencies. 
 RUN dart pub get
 
-# Install protoc-gen-dart plugin (pinned to version compatible with protobuf 4.0.0)
-RUN dart pub global activate protoc_plugin 21.1.0 # protobuf < 5.0
+# Install protoc-gen-dart plugin (pinned to version compatible with protobuf 6.0.0)
+RUN dart pub global activate protoc_plugin 25.0.0 # protobuf >= 6.0
 
 # copy all the source code to the container.
 COPY . .

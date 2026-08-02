@@ -1,13 +1,15 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: user_permissions.proto
-//
-// @dart = 2.12
+// Generated from user_permissions.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_relative_imports
+// ignore_for_file: unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -39,8 +41,8 @@ const ChainIds$json = {
 };
 
 /// Descriptor for `ChainIds`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List chainIdsDescriptor = $convert.base64Decode(
-    'CghDaGFpbklkcxIQCgNpZHMYASADKAlSA2lkcw==');
+final $typed_data.Uint8List chainIdsDescriptor =
+    $convert.base64Decode('CghDaGFpbklkcxIQCgNpZHMYASADKAlSA2lkcw==');
 
 @$core.Deprecated('Use boutiqueIdsDescriptor instead')
 const BoutiqueIds$json = {
@@ -51,15 +53,29 @@ const BoutiqueIds$json = {
 };
 
 /// Descriptor for `BoutiqueIds`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List boutiqueIdsDescriptor = $convert.base64Decode(
-    'CgtCb3V0aXF1ZUlkcxIQCgNpZHMYASADKAlSA2lkcw==');
+final $typed_data.Uint8List boutiqueIdsDescriptor =
+    $convert.base64Decode('CgtCb3V0aXF1ZUlkcxIQCgNpZHMYASADKAlSA2lkcw==');
 
 @$core.Deprecated('Use accessLimitedDescriptor instead')
 const AccessLimited$json = {
   '1': 'AccessLimited',
   '2': [
-    {'1': 'chainIds', '3': 1, '4': 1, '5': 11, '6': '.weebi.user.permissions.ChainIds', '10': 'chainIds'},
-    {'1': 'boutiqueIds', '3': 2, '4': 1, '5': 11, '6': '.weebi.user.permissions.BoutiqueIds', '10': 'boutiqueIds'},
+    {
+      '1': 'chainIds',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.ChainIds',
+      '10': 'chainIds'
+    },
+    {
+      '1': 'boutiqueIds',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.BoutiqueIds',
+      '10': 'boutiqueIds'
+    },
   ],
 };
 
@@ -87,24 +103,104 @@ const UserPermissions$json = {
   '2': [
     {'1': 'userId', '3': 1, '4': 1, '5': 9, '10': 'userId'},
     {'1': 'firmId', '3': 2, '4': 1, '5': 9, '10': 'firmId'},
-    {'1': 'limitedAccess', '3': 3, '4': 1, '5': 11, '6': '.weebi.user.permissions.AccessLimited', '9': 0, '10': 'limitedAccess'},
-    {'1': 'fullAccess', '3': 4, '4': 1, '5': 11, '6': '.weebi.user.permissions.AccessFull', '9': 0, '10': 'fullAccess'},
-    {'1': 'ticketRights', '3': 6, '4': 1, '5': 11, '6': '.weebi.user.permissions.TicketRights', '10': 'ticketRights'},
-    {'1': 'contactRights', '3': 7, '4': 1, '5': 11, '6': '.weebi.user.permissions.ContactRights', '10': 'contactRights'},
-    {'1': 'articleRights', '3': 8, '4': 1, '5': 11, '6': '.weebi.user.permissions.ArticleRights', '10': 'articleRights'},
-    {'1': 'boutiqueRights', '3': 9, '4': 1, '5': 11, '6': '.weebi.user.permissions.BoutiqueRights', '10': 'boutiqueRights'},
-    {'1': 'chainRights', '3': 10, '4': 1, '5': 11, '6': '.weebi.user.permissions.ChainRights', '10': 'chainRights'},
-    {'1': 'firmRights', '3': 11, '4': 1, '5': 11, '6': '.weebi.user.permissions.FirmRights', '10': 'firmRights'},
-    {'1': 'userManagementRights', '3': 12, '4': 1, '5': 11, '6': '.weebi.user.permissions.UserManagementRights', '10': 'userManagementRights'},
-    {'1': 'billingRights', '3': 13, '4': 1, '5': 11, '6': '.weebi.user.permissions.BillingRights', '10': 'billingRights'},
-    {'1': 'boolRights', '3': 14, '4': 1, '5': 11, '6': '.weebi.user.permissions.BoolRights', '10': 'boolRights'},
+    {
+      '1': 'limitedAccess',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.AccessLimited',
+      '9': 0,
+      '10': 'limitedAccess'
+    },
+    {
+      '1': 'fullAccess',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.AccessFull',
+      '9': 0,
+      '10': 'fullAccess'
+    },
+    {
+      '1': 'ticketRights',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.TicketRights',
+      '10': 'ticketRights'
+    },
+    {
+      '1': 'contactRights',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.ContactRights',
+      '10': 'contactRights'
+    },
+    {
+      '1': 'articleRights',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.ArticleRights',
+      '10': 'articleRights'
+    },
+    {
+      '1': 'boutiqueRights',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.BoutiqueRights',
+      '10': 'boutiqueRights'
+    },
+    {
+      '1': 'chainRights',
+      '3': 10,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.ChainRights',
+      '10': 'chainRights'
+    },
+    {
+      '1': 'firmRights',
+      '3': 11,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.FirmRights',
+      '10': 'firmRights'
+    },
+    {
+      '1': 'userManagementRights',
+      '3': 12,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.UserManagementRights',
+      '10': 'userManagementRights'
+    },
+    {
+      '1': 'billingRights',
+      '3': 13,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.BillingRights',
+      '10': 'billingRights'
+    },
+    {
+      '1': 'boolRights',
+      '3': 14,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.user.permissions.BoolRights',
+      '10': 'boolRights'
+    },
     {'1': 'is_firm_creator', '3': 15, '4': 1, '5': 8, '10': 'isFirmCreator'},
+    {'1': 'has_closed_years', '3': 16, '4': 1, '5': 8, '10': 'hasClosedYears'},
   ],
   '8': [
     {'1': 'access'},
   ],
   '9': [
-    {'1': 16, '2': 99},
+    {'1': 17, '2': 99},
   ],
 };
 
@@ -127,13 +223,21 @@ final $typed_data.Uint8List userPermissionsDescriptor = $convert.base64Decode(
     'DSABKAsyJS53ZWViaS51c2VyLnBlcm1pc3Npb25zLkJpbGxpbmdSaWdodHNSDWJpbGxpbmdSaW'
     'dodHMSQgoKYm9vbFJpZ2h0cxgOIAEoCzIiLndlZWJpLnVzZXIucGVybWlzc2lvbnMuQm9vbFJp'
     'Z2h0c1IKYm9vbFJpZ2h0cxImCg9pc19maXJtX2NyZWF0b3IYDyABKAhSDWlzRmlybUNyZWF0b3'
-    'JCCAoGYWNjZXNzSgQIEBBj');
+    'ISKAoQaGFzX2Nsb3NlZF95ZWFycxgQIAEoCFIOaGFzQ2xvc2VkWWVhcnNCCAoGYWNjZXNzSgQI'
+    'ERBj');
 
 @$core.Deprecated('Use articleRightsDescriptor instead')
 const ArticleRights$json = {
   '1': 'ArticleRights',
   '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.permissions.Right', '10': 'articleRights'},
+    {
+      '1': 'rights',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.weebi.user.permissions.Right',
+      '10': 'articleRights'
+    },
   ],
 };
 
@@ -146,7 +250,14 @@ final $typed_data.Uint8List articleRightsDescriptor = $convert.base64Decode(
 const BoutiqueRights$json = {
   '1': 'BoutiqueRights',
   '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.permissions.Right', '10': 'boutiqueRights'},
+    {
+      '1': 'rights',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.weebi.user.permissions.Right',
+      '10': 'boutiqueRights'
+    },
   ],
 };
 
@@ -159,7 +270,14 @@ final $typed_data.Uint8List boutiqueRightsDescriptor = $convert.base64Decode(
 const ChainRights$json = {
   '1': 'ChainRights',
   '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.permissions.Right', '10': 'chainRights'},
+    {
+      '1': 'rights',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.weebi.user.permissions.Right',
+      '10': 'chainRights'
+    },
   ],
 };
 
@@ -172,7 +290,14 @@ final $typed_data.Uint8List chainRightsDescriptor = $convert.base64Decode(
 const FirmRights$json = {
   '1': 'FirmRights',
   '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.permissions.Right', '10': 'firmRights'},
+    {
+      '1': 'rights',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.weebi.user.permissions.Right',
+      '10': 'firmRights'
+    },
   ],
 };
 
@@ -185,7 +310,14 @@ final $typed_data.Uint8List firmRightsDescriptor = $convert.base64Decode(
 const ContactRights$json = {
   '1': 'ContactRights',
   '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.permissions.Right', '10': 'contactRights'},
+    {
+      '1': 'rights',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.weebi.user.permissions.Right',
+      '10': 'contactRights'
+    },
   ],
 };
 
@@ -198,7 +330,14 @@ final $typed_data.Uint8List contactRightsDescriptor = $convert.base64Decode(
 const TicketRights$json = {
   '1': 'TicketRights',
   '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.permissions.Right', '10': 'ticketRights'},
+    {
+      '1': 'rights',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.weebi.user.permissions.Right',
+      '10': 'ticketRights'
+    },
   ],
 };
 
@@ -211,8 +350,21 @@ final $typed_data.Uint8List ticketRightsDescriptor = $convert.base64Decode(
 const UserManagementRights$json = {
   '1': 'UserManagementRights',
   '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.permissions.Right', '10': 'userManagementRights'},
-    {'1': 'canUpdateUserPassword', '3': 2, '4': 1, '5': 8, '10': 'canUpdateUserPassword'},
+    {
+      '1': 'rights',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.weebi.user.permissions.Right',
+      '10': 'userManagementRights'
+    },
+    {
+      '1': 'canUpdateUserPassword',
+      '3': 2,
+      '4': 1,
+      '5': 8,
+      '10': 'canUpdateUserPassword'
+    },
   ],
 };
 
@@ -226,7 +378,14 @@ final $typed_data.Uint8List userManagementRightsDescriptor = $convert.base64Deco
 const BillingRights$json = {
   '1': 'BillingRights',
   '2': [
-    {'1': 'rights', '3': 1, '4': 3, '5': 14, '6': '.weebi.user.permissions.Right', '10': 'billingRights'},
+    {
+      '1': 'rights',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.weebi.user.permissions.Right',
+      '10': 'billingRights'
+    },
   ],
 };
 
@@ -244,12 +403,36 @@ const BoolRights$json = {
     {'1': 'canGiveDiscount', '3': 3, '4': 1, '5': 8, '10': 'canGiveDiscount'},
     {'1': 'canSetPromo', '3': 4, '4': 1, '5': 8, '10': 'canSetPromo'},
     {'1': 'canStockMovement', '3': 5, '4': 1, '5': 8, '10': 'canStockMovement'},
-    {'1': 'canStockInventory', '3': 6, '4': 1, '5': 8, '10': 'canStockInventory'},
-    {'1': 'canSpendOutOfCatalog', '3': 7, '4': 1, '5': 8, '10': 'canSpendOutOfCatalog'},
+    {
+      '1': 'canStockInventory',
+      '3': 6,
+      '4': 1,
+      '5': 8,
+      '10': 'canStockInventory'
+    },
+    {
+      '1': 'canSpendOutOfCatalog',
+      '3': 7,
+      '4': 1,
+      '5': 8,
+      '10': 'canSpendOutOfCatalog'
+    },
     {'1': 'canPurchase', '3': 8, '4': 1, '5': 8, '10': 'canPurchase'},
     {'1': 'canImportTickets', '3': 9, '4': 1, '5': 8, '10': 'canImportTickets'},
-    {'1': 'canSellOutOfCatalog', '3': 10, '4': 1, '5': 8, '10': 'canSellOutOfCatalog'},
-    {'1': 'canUpdateContactBalanceOffline', '3': 11, '4': 1, '5': 8, '10': 'canUpdateContactBalanceOffline'},
+    {
+      '1': 'canSellOutOfCatalog',
+      '3': 10,
+      '4': 1,
+      '5': 8,
+      '10': 'canSellOutOfCatalog'
+    },
+    {
+      '1': 'canUpdateContactBalanceOffline',
+      '3': 11,
+      '4': 1,
+      '5': 8,
+      '10': 'canUpdateContactBalanceOffline'
+    },
   ],
 };
 
@@ -265,4 +448,3 @@ final $typed_data.Uint8List boolRightsDescriptor = $convert.base64Decode(
     'VsbE91dE9mQ2F0YWxvZxgKIAEoCFITY2FuU2VsbE91dE9mQ2F0YWxvZxJGCh5jYW5VcGRhdGVD'
     'b250YWN0QmFsYW5jZU9mZmxpbmUYCyABKAhSHmNhblVwZGF0ZUNvbnRhY3RCYWxhbmNlT2ZmbG'
     'luZQ==');
-

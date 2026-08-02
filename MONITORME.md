@@ -1,0 +1,1 @@
+grpcurl -import-path . -proto fence_service.proto prd.weebi.com:443 weebi.fence.service.FenceService/healthCheck
