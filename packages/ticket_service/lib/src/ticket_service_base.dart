@@ -1,5 +1,4 @@
 import 'package:fence_service/mongo_pool.dart' hide Timestamp;
-import 'package:fence_service/mongo_dart.dart' show Db;
 
 import 'package:fence_service/fence_service.dart' ;
 import 'package:fence_service/grpc.dart';

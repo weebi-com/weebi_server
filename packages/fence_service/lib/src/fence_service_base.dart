@@ -13,7 +13,6 @@ import 'package:protos_weebi/utils.dart' show RegExpWeebi;
 // ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
-import 'package:protos_weebi/data_dummy.dart';
 import 'package:protos_weebi/encrypter.dart';
 import 'package:protos_weebi/extensions.dart';
 
@@ -1023,7 +1022,7 @@ class FenceService extends FenceServiceBase {
   }
 
   /// Case-insensitive mail lookup (emails are not case-sensitive per RFC 5321)
-  _selectByMail(String mail) => where.match(
+  SelectorBuilder _selectByMail(String mail) => where.match(
         'mail',
         r'^' + RegExp.escape(mail.trim()) + r'$',
         caseInsensitive: true,

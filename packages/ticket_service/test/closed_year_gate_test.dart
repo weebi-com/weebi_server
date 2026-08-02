@@ -2,7 +2,6 @@ import 'dart:io' show InternetAddress, X509Certificate;
 
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/grpc.dart';
-import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/protos_weebi.dart';
@@ -26,11 +25,7 @@ class _FakeCall implements ServiceCall {
   @override
   InternetAddress? get remoteAddress => null;
   @override
-  int? get remotePort => null;
-  @override
   Map<String, String>? get trailers => null;
-  @override
-  String get remoteHost => '';
   @override
   void sendHeaders() {}
   @override

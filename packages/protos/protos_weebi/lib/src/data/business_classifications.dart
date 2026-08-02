@@ -1,5 +1,4 @@
 import 'package:protos_weebi/src/generated/boutique.pb.dart';
-import 'package:protos_weebi/src/generated/boutique.pbenum.dart';
 
 /// Authoritative ISIC-oriented business classifications for Weebi.
 ///
