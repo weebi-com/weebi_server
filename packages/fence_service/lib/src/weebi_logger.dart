@@ -104,9 +104,9 @@ class WeebiLogger {
       'logger': record.loggerName,
       'message': message,
       'service_name': _serviceName,
-      if (errorMessage != null) 'error': errorMessage,
-      if (stackTrace != null) 'stackTrace': stackTrace,
-      if (structuredData != null) ...structuredData,
+      'error': ?errorMessage,
+      'stackTrace': ?stackTrace,
+      ...?structuredData,
     };
 
     if (_isCloudRun) {
@@ -221,8 +221,8 @@ class WeebiLogger {
   void info(String message, {ServiceCall? call, Map<String, dynamic>? extra}) {
     final context = _extractContext(call);
     final logData = <String, dynamic>{
-      if (context != null) ...context,
-      if (extra != null) ...extra,
+      ...?context,
+      ...?extra,
     };
     _logger.info(_buildMessage(message, logData.isEmpty ? null : logData));
   }
@@ -231,8 +231,8 @@ class WeebiLogger {
   void warning(String message, {ServiceCall? call, Map<String, dynamic>? extra}) {
     final context = _extractContext(call);
     final logData = <String, dynamic>{
-      if (context != null) ...context,
-      if (extra != null) ...extra,
+      ...?context,
+      ...?extra,
     };
     _logger.warning(_buildMessage(message, logData.isEmpty ? null : logData));
   }
@@ -246,8 +246,8 @@ class WeebiLogger {
   }) {
     final context = _extractContext(call);
     final logData = <String, dynamic>{
-      if (context != null) ...context,
-      if (extra != null) ...extra,
+      ...?context,
+      ...?extra,
     };
     
     final messageWithData = _buildMessage(message, logData.isEmpty ? null : logData);
@@ -258,8 +258,8 @@ class WeebiLogger {
   void debug(String message, {ServiceCall? call, Map<String, dynamic>? extra}) {
     final context = _extractContext(call);
     final logData = <String, dynamic>{
-      if (context != null) ...context,
-      if (extra != null) ...extra,
+      ...?context,
+      ...?extra,
     };
     _logger.fine(_buildMessage(message, logData.isEmpty ? null : logData));
   }
@@ -269,8 +269,8 @@ class WeebiLogger {
     final context = _extractContext(call);
     final logData = <String, dynamic>{
       'rpcMethod': methodName,
-      if (context != null) ...context,
-      if (requestData != null) ...requestData,
+      ...?context,
+      ...?requestData,
     };
     _logger.info(_buildMessage('RPC entry: $methodName', logData));
   }
@@ -280,8 +280,8 @@ class WeebiLogger {
     final context = _extractContext(call);
     final logData = <String, dynamic>{
       'rpcMethod': methodName,
-      if (context != null) ...context,
-      if (resultData != null) ...resultData,
+      ...?context,
+      ...?resultData,
     };
     _logger.info(_buildMessage('RPC exit: $methodName', logData));
   }
@@ -297,8 +297,8 @@ class WeebiLogger {
     final context = _extractContext(call);
     final logData = <String, dynamic>{
       'rpcMethod': methodName,
-      if (context != null) ...context,
-      if (extra != null) ...extra,
+      ...?context,
+      ...?extra,
     };
     final messageWithData = _buildMessage('RPC error: $methodName', logData.isEmpty ? null : logData);
     _logger.severe(messageWithData, error, stackTrace);

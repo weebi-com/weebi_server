@@ -62,7 +62,7 @@ protoc --version
 
 ```bash
 # Reactivate the protoc plugin for Dart
-dart pub global activate protoc_plugin
+dart pub global activate protoc_plugin 25.0.0
 
 # Verify plugin is available
 protoc --dart_out=. --version
@@ -128,7 +128,7 @@ If you get a plugin error:
 ```bash
 # Remove and reinstall the plugin
 dart pub global deactivate protoc_plugin
-dart pub global activate protoc_plugin
+dart pub global activate protoc_plugin 25.0.0
 ```
 
 ### Path Issues

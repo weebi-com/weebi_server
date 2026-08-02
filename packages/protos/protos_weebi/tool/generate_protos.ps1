@@ -106,8 +106,8 @@ if (-not $protocGenDartPath) {
 
 Write-Host "Found: protoc-gen-dart ($protocGenDartPath)"
 
-# Use same protoc_plugin version as Dockerfile (compatible with protobuf ^4.0.0)
-$PROTOC_PLUGIN_VERSION = "21.1.0"
+# Use latest protoc_plugin version (required for protobuf ^6.0.0)
+$PROTOC_PLUGIN_VERSION = "25.0.0"
 Write-Host "Ensuring protoc_plugin $PROTOC_PLUGIN_VERSION (matches Dockerfile)..."
 & dart pub global activate protoc_plugin $PROTOC_PLUGIN_VERSION 2>&1 | Out-Null
 if ($LASTEXITCODE -ne 0) {

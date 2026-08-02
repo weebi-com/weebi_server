@@ -1,13 +1,15 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: firm.proto
-//
-// @dart = 2.12
+// Generated from firm.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_relative_imports
+// ignore_for_file: unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -54,20 +56,104 @@ const Firm$json = {
       '10': 'subscriptionEndTimestampUTC',
     },
     {'1': 'status', '3': 7, '4': 1, '5': 8, '10': 'status'},
-    {'1': 'statusUpdateTimestampUTC', '3': 8, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'statusUpdateTimestampUTC'},
-    {'1': 'lastUpdateTimestampUTC', '3': 9, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastUpdateTimestampUTC'},
-    {'1': 'lastUpdatedByuserId', '3': 10, '4': 1, '5': 9, '10': 'lastUpdatedByuserId'},
+    {
+      '1': 'statusUpdateTimestampUTC',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'statusUpdateTimestampUTC'
+    },
+    {
+      '1': 'lastUpdateTimestampUTC',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastUpdateTimestampUTC'
+    },
+    {
+      '1': 'lastUpdatedByuserId',
+      '3': 10,
+      '4': 1,
+      '5': 9,
+      '10': 'lastUpdatedByuserId'
+    },
     {'1': 'isMailVerified', '3': 11, '4': 1, '5': 8, '10': 'isMailVerified'},
-    {'1': 'creationDateUTC', '3': 12, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationDateUTC'},
-    {'1': 'stripeCustomerId', '3': 13, '4': 1, '5': 9, '10': 'stripeCustomerId'},
-    {'1': 'licenses', '3': 14, '4': 3, '5': 11, '6': '.weebi.license.License', '10': 'licenses'},
-    {'1': 'providerCustomerIds', '3': 15, '4': 3, '5': 11, '6': '.weebi.firm.Firm.ProviderCustomerIdsEntry', '10': 'providerCustomerIds'},
+    {
+      '1': 'creationDateUTC',
+      '3': 12,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'creationDateUTC'
+    },
+    {
+      '1': 'stripeCustomerId',
+      '3': 13,
+      '4': 1,
+      '5': 9,
+      '10': 'stripeCustomerId'
+    },
+    {
+      '1': 'licenses',
+      '3': 14,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.license.License',
+      '10': 'licenses'
+    },
+    {
+      '1': 'providerCustomerIds',
+      '3': 15,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.firm.Firm.ProviderCustomerIdsEntry',
+      '10': 'providerCustomerIds'
+    },
     {'1': 'referralCode', '3': 16, '4': 1, '5': 9, '10': 'referralCode'},
-    {'1': 'referralCreditBalanceCents', '3': 17, '4': 1, '5': 5, '10': 'referralCreditBalanceCents'},
-    {'1': 'currency', '3': 18, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
-    {'1': 'isDualCurrencyEnabled', '3': 19, '4': 1, '5': 8, '9': 1, '10': 'isDualCurrencyEnabled', '17': true},
-    {'1': 'secondaryDisplayCurrency', '3': 20, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
-    {'1': 'closed_years', '3': 21, '4': 3, '5': 11, '6': '.weebi.boutique.ClosedYearPb', '10': 'closedYears'},
+    {
+      '1': 'referralCreditBalanceCents',
+      '3': 17,
+      '4': 1,
+      '5': 5,
+      '10': 'referralCreditBalanceCents'
+    },
+    {
+      '1': 'currency',
+      '3': 18,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'currency',
+      '17': true
+    },
+    {
+      '1': 'isDualCurrencyEnabled',
+      '3': 19,
+      '4': 1,
+      '5': 8,
+      '9': 1,
+      '10': 'isDualCurrencyEnabled',
+      '17': true
+    },
+    {
+      '1': 'secondaryDisplayCurrency',
+      '3': 20,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'secondaryDisplayCurrency',
+      '17': true
+    },
+    {
+      '1': 'closed_years',
+      '3': 21,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.boutique.ClosedYearPb',
+      '10': 'closedYears'
+    },
   ],
   '3': [Firm_ProviderCustomerIdsEntry$json],
   '8': [
@@ -120,8 +206,24 @@ const CreateFirmRequest$json = {
   '1': 'CreateFirmRequest',
   '2': [
     {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'currency', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
-    {'1': 'commercial_register_number', '3': 3, '4': 1, '5': 9, '9': 1, '10': 'commercialRegisterNumber', '17': true},
+    {
+      '1': 'currency',
+      '3': 2,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'currency',
+      '17': true
+    },
+    {
+      '1': 'commercial_register_number',
+      '3': 3,
+      '4': 1,
+      '5': 9,
+      '9': 1,
+      '10': 'commercialRegisterNumber',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_currency'},
@@ -140,8 +242,22 @@ final $typed_data.Uint8List createFirmRequestDescriptor = $convert.base64Decode(
 const CreateFirmResponse$json = {
   '1': 'CreateFirmResponse',
   '2': [
-    {'1': 'statusResponse', '3': 1, '4': 1, '5': 11, '6': '.google.retail.common.StatusResponse', '10': 'statusResponse'},
-    {'1': 'firm', '3': 2, '4': 1, '5': 11, '6': '.weebi.firm.Firm', '10': 'firm'},
+    {
+      '1': 'statusResponse',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.google.retail.common.StatusResponse',
+      '10': 'statusResponse'
+    },
+    {
+      '1': 'firm',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.firm.Firm',
+      '10': 'firm'
+    },
   ],
 };
 
@@ -150,4 +266,3 @@ final $typed_data.Uint8List createFirmResponseDescriptor = $convert.base64Decode
     'ChJDcmVhdGVGaXJtUmVzcG9uc2USTAoOc3RhdHVzUmVzcG9uc2UYASABKAsyJC5nb29nbGUucm'
     'V0YWlsLmNvbW1vbi5TdGF0dXNSZXNwb25zZVIOc3RhdHVzUmVzcG9uc2USJAoEZmlybRgCIAEo'
     'CzIQLndlZWJpLmZpcm0uRmlybVIEZmlybQ==');
-

@@ -1,13 +1,15 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: stats_service.proto
-//
-// @dart = 2.12
+// Generated from stats_service.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_relative_imports
+// ignore_for_file: unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -49,11 +51,45 @@ const FinancialChartRequest$json = {
   '2': [
     {'1': 'firmId', '3': 1, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'boutiqueIds', '3': 2, '4': 3, '5': 9, '10': 'boutiqueIds'},
-    {'1': 'start', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'start'},
-    {'1': 'end', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'end'},
-    {'1': 'timePeriod', '3': 5, '4': 1, '5': 14, '6': '.weebi.stats.service.ChartTimePeriod', '10': 'timePeriod'},
-    {'1': 'metric', '3': 6, '4': 1, '5': 14, '6': '.weebi.stats.service.FinancialChartMetric', '10': 'metric'},
-    {'1': 'stackedByBoutique', '3': 7, '4': 1, '5': 8, '10': 'stackedByBoutique'},
+    {
+      '1': 'start',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'start'
+    },
+    {
+      '1': 'end',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'end'
+    },
+    {
+      '1': 'timePeriod',
+      '3': 5,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.stats.service.ChartTimePeriod',
+      '10': 'timePeriod'
+    },
+    {
+      '1': 'metric',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.stats.service.FinancialChartMetric',
+      '10': 'metric'
+    },
+    {
+      '1': 'stackedByBoutique',
+      '3': 7,
+      '4': 1,
+      '5': 8,
+      '10': 'stackedByBoutique'
+    },
   ],
 };
 
@@ -76,7 +112,7 @@ const FinancialChartResponse$json = {
 };
 
 /// Descriptor for `FinancialChartResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List financialChartResponseDescriptor = $convert.base64Decode(
-    'ChZGaW5hbmNpYWxDaGFydFJlc3BvbnNlEh4KCnN2Z0NvbnRlbnQYASABKAlSCnN2Z0NvbnRlbn'
-    'Q=');
-
+final $typed_data.Uint8List financialChartResponseDescriptor =
+    $convert.base64Decode(
+        'ChZGaW5hbmNpYWxDaGFydFJlc3BvbnNlEh4KCnN2Z0NvbnRlbnQYASABKAlSCnN2Z0NvbnRlbn'
+        'Q=');

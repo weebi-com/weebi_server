@@ -1,13 +1,15 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: boutique.proto
-//
-// @dart = 2.12
+// Generated from boutique.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, prefer_relative_imports
+// ignore_for_file: unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -40,7 +42,14 @@ const BusinessClassification$json = {
     {'1': 'isic_label_fr', '3': 5, '4': 1, '5': 9, '10': 'isicLabelFr'},
     {'1': 'isic_label_en', '3': 6, '4': 1, '5': 9, '10': 'isicLabelEn'},
     {'1': 'isic_label_es', '3': 7, '4': 1, '5': 9, '10': 'isicLabelEs'},
-    {'1': 'smt_regime', '3': 8, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '10': 'smtRegime'},
+    {
+      '1': 'smt_regime',
+      '3': 8,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.boutique.CommerceTypePb',
+      '10': 'smtRegime'
+    },
   ],
 };
 
@@ -57,20 +66,55 @@ final $typed_data.Uint8List businessClassificationDescriptor = $convert.base64De
 const BoutiqueMongo$json = {
   '1': 'BoutiqueMongo',
   '2': [
-    {'1': 'boutique', '3': 1, '4': 1, '5': 11, '6': '.weebi.boutique.BoutiquePb', '10': 'boutique'},
+    {
+      '1': 'boutique',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.boutique.BoutiquePb',
+      '10': 'boutique'
+    },
     {'1': 'boutiqueId', '3': 2, '4': 1, '5': 9, '10': 'boutiqueId'},
     {'1': 'firmId', '3': 3, '4': 1, '5': 9, '10': 'firmId'},
     {'1': 'chainId', '3': 4, '4': 1, '5': 9, '10': 'chainId'},
-    {'1': 'creationTimestampUTC', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'creationTimestampUTC'},
+    {
+      '1': 'creationTimestampUTC',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'creationTimestampUTC'
+    },
     {'1': 'name', '3': 6, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'devices', '3': 7, '4': 3, '5': 11, '6': '.weebi.device.Device', '10': 'devices'},
-    {'1': 'lastTouchTimestampUTC', '3': 8, '4': 1, '5': 11, '6': '.google.protobuf.Timestamp', '10': 'lastTouchTimestampUTC'},
+    {
+      '1': 'devices',
+      '3': 7,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.device.Device',
+      '10': 'devices'
+    },
+    {
+      '1': 'lastTouchTimestampUTC',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Timestamp',
+      '10': 'lastTouchTimestampUTC'
+    },
     {'1': 'logo', '3': 9, '4': 1, '5': 12, '10': 'logo'},
     {'1': 'logoExtension', '3': 10, '4': 1, '5': 9, '10': 'logoExtension'},
     {'1': 'isDeleted', '3': 11, '4': 1, '5': 8, '10': 'isDeleted'},
     {'1': 'deletedBy', '3': 12, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 13, '4': 1, '5': 9, '10': 'restoredBy'},
-    {'1': 'additional_attributes', '3': 99, '4': 3, '5': 11, '6': '.weebi.boutique.BoutiqueMongo.AdditionalAttributesEntry', '10': 'additional_attributes'},
+    {
+      '1': 'additional_attributes',
+      '3': 99,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.boutique.BoutiqueMongo.AdditionalAttributesEntry',
+      '10': 'additional_attributes'
+    },
   ],
   '3': [BoutiqueMongo_AdditionalAttributesEntry$json],
   '9': [
@@ -129,8 +173,22 @@ const BoutiquePb$json = {
       '10': 'status',
     },
     {'1': 'name', '3': 6, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'phone', '3': 7, '4': 1, '5': 11, '6': '.weebi.common.phone.Phone', '10': 'phone'},
-    {'1': 'addressFull', '3': 8, '4': 1, '5': 11, '6': '.weebi.common.address.Address', '10': 'addressFull'},
+    {
+      '1': 'phone',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.common.phone.Phone',
+      '10': 'phone'
+    },
+    {
+      '1': 'addressFull',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.common.address.Address',
+      '10': 'addressFull'
+    },
     {'1': 'promo', '3': 9, '4': 1, '5': 1, '10': 'promo'},
     {'1': 'promoStart', '3': 10, '4': 1, '5': 9, '10': 'promoStart'},
     {'1': 'promoEnd', '3': 11, '4': 1, '5': 9, '10': 'promoEnd'},
@@ -138,15 +196,88 @@ const BoutiquePb$json = {
     {'1': 'deletedBy', '3': 13, '4': 1, '5': 9, '10': 'deletedBy'},
     {'1': 'restoredBy', '3': 14, '4': 1, '5': 9, '10': 'restoredBy'},
     {'1': 'mail', '3': 15, '4': 1, '5': 9, '10': 'mail'},
-    {'1': 'currency', '3': 16, '4': 1, '5': 9, '9': 0, '10': 'currency', '17': true},
-    {'1': 'isDualCurrencyEnabled', '3': 17, '4': 1, '5': 8, '9': 1, '10': 'dualCurrencyEnabled', '17': true},
-    {'1': 'secondaryDisplayCurrency', '3': 18, '4': 1, '5': 9, '9': 2, '10': 'secondaryDisplayCurrency', '17': true},
-    {'1': 'businessRules', '3': 19, '4': 1, '5': 11, '6': '.weebi.boutique.BusinessRules', '9': 3, '10': 'businessRules', '17': true},
-    {'1': 'closed_years', '3': 20, '4': 3, '5': 11, '6': '.weebi.boutique.ClosedYearPb', '10': 'closedYears'},
-    {'1': 'commercial_register_number', '3': 21, '4': 1, '5': 9, '9': 4, '10': 'commercialRegisterNumber', '17': true},
-    {'1': 'commerce_type', '3': 22, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '9': 5, '10': 'commerceType', '17': true},
-    {'1': 'isic_code', '3': 23, '4': 1, '5': 9, '9': 6, '10': 'isicCode', '17': true},
-    {'1': 'isic_sub_code', '3': 24, '4': 1, '5': 9, '9': 7, '10': 'isicSubCode', '17': true},
+    {
+      '1': 'currency',
+      '3': 16,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'currency',
+      '17': true
+    },
+    {
+      '1': 'isDualCurrencyEnabled',
+      '3': 17,
+      '4': 1,
+      '5': 8,
+      '9': 1,
+      '10': 'dualCurrencyEnabled',
+      '17': true
+    },
+    {
+      '1': 'secondaryDisplayCurrency',
+      '3': 18,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'secondaryDisplayCurrency',
+      '17': true
+    },
+    {
+      '1': 'businessRules',
+      '3': 19,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.boutique.BusinessRules',
+      '9': 3,
+      '10': 'businessRules',
+      '17': true
+    },
+    {
+      '1': 'closed_years',
+      '3': 20,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.boutique.ClosedYearPb',
+      '10': 'closedYears'
+    },
+    {
+      '1': 'commercial_register_number',
+      '3': 21,
+      '4': 1,
+      '5': 9,
+      '9': 4,
+      '10': 'commercialRegisterNumber',
+      '17': true
+    },
+    {
+      '1': 'commerce_type',
+      '3': 22,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.boutique.CommerceTypePb',
+      '9': 5,
+      '10': 'commerceType',
+      '17': true
+    },
+    {
+      '1': 'isic_code',
+      '3': 23,
+      '4': 1,
+      '5': 9,
+      '9': 6,
+      '10': 'isicCode',
+      '17': true
+    },
+    {
+      '1': 'isic_sub_code',
+      '3': 24,
+      '4': 1,
+      '5': 9,
+      '9': 7,
+      '10': 'isicSubCode',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_currency'},
@@ -196,8 +327,21 @@ const ClosedYearPb$json = {
     {'1': 'resultat', '3': 2, '4': 1, '5': 1, '10': 'resultat'},
     {'1': 'treasury_total', '3': 3, '4': 1, '5': 1, '10': 'treasuryTotal'},
     {'1': 'closed_at', '3': 4, '4': 1, '5': 9, '10': 'closedAt'},
-    {'1': 'commercial_register_number', '3': 5, '4': 1, '5': 9, '10': 'commercialRegisterNumber'},
-    {'1': 'commerce_type', '3': 6, '4': 1, '5': 14, '6': '.weebi.boutique.CommerceTypePb', '10': 'commerceType'},
+    {
+      '1': 'commercial_register_number',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '10': 'commercialRegisterNumber'
+    },
+    {
+      '1': 'commerce_type',
+      '3': 6,
+      '4': 1,
+      '5': 14,
+      '6': '.weebi.boutique.CommerceTypePb',
+      '10': 'commerceType'
+    },
     {'1': 'isic_code', '3': 7, '4': 1, '5': 9, '10': 'isicCode'},
     {'1': 'isic_sub_code', '3': 8, '4': 1, '5': 9, '10': 'isicSubCode'},
   ],
@@ -216,10 +360,34 @@ final $typed_data.Uint8List closedYearPbDescriptor = $convert.base64Decode(
 const BusinessRules$json = {
   '1': 'BusinessRules',
   '2': [
-    {'1': 'isNegativeStockGuardEnabled', '3': 1, '4': 1, '5': 8, '10': 'isNegativeStockGuardEnabled'},
-    {'1': 'isRecentTicketEditEnabled', '3': 2, '4': 1, '5': 8, '10': 'isRecentTicketEditEnabled'},
-    {'1': 'recentTicketEditWindowMinutes', '3': 3, '4': 1, '5': 5, '10': 'recentTicketEditWindowMinutes'},
-    {'1': 'isVatSelectionEnabled', '3': 4, '4': 1, '5': 8, '10': 'isVatSelectionEnabled'},
+    {
+      '1': 'isNegativeStockGuardEnabled',
+      '3': 1,
+      '4': 1,
+      '5': 8,
+      '10': 'isNegativeStockGuardEnabled'
+    },
+    {
+      '1': 'isRecentTicketEditEnabled',
+      '3': 2,
+      '4': 1,
+      '5': 8,
+      '10': 'isRecentTicketEditEnabled'
+    },
+    {
+      '1': 'recentTicketEditWindowMinutes',
+      '3': 3,
+      '4': 1,
+      '5': 5,
+      '10': 'recentTicketEditWindowMinutes'
+    },
+    {
+      '1': 'isVatSelectionEnabled',
+      '3': 4,
+      '4': 1,
+      '5': 8,
+      '10': 'isVatSelectionEnabled'
+    },
   ],
 };
 
@@ -230,4 +398,3 @@ final $typed_data.Uint8List businessRulesDescriptor = $convert.base64Decode(
     'AiABKAhSGWlzUmVjZW50VGlja2V0RWRpdEVuYWJsZWQSRAodcmVjZW50VGlja2V0RWRpdFdpbm'
     'Rvd01pbnV0ZXMYAyABKAVSHXJlY2VudFRpY2tldEVkaXRXaW5kb3dNaW51dGVzEjQKFWlzVmF0'
     'U2VsZWN0aW9uRW5hYmxlZBgEIAEoCFIVaXNWYXRTZWxlY3Rpb25FbmFibGVk');
-

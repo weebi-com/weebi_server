@@ -12,3 +12,4 @@ export 'src/entitlement_helpers.dart';
 export 'src/operational_license_gate.dart';
 export 'src/business_rules_license_gate.dart';
 export 'src/web_bridge_link.dart';
+export 'src/closed_years_claim.dart';

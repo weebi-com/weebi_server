@@ -5,7 +5,7 @@ publish_to: "none"
 # repository: https://github.com/my_org/my_repo
 
 environment:
-  sdk: ^3.3.3
+  sdk: ">=3.12.2 <4.0.0"
 
 # Add regular dependencies here.
 dependencies:
@@ -25,4 +25,4 @@ dependencies:
 
 dev_dependencies:
   test: ^1.26.3
-  lints: ^5.0.0
+  lints: ^6.1.0

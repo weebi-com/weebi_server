@@ -37,8 +37,8 @@ Future<GrpcError?> loggingInterceptor(
     path,
     extra: {
       'rpcMethod': method.name,
-      if (authority != null) 'authority': authority,
-      if (context != null) ...context,
+      'authority': ?authority,
+      ...?context,
     },
   );
 

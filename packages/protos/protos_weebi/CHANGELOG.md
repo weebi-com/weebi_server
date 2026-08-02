@@ -1,5 +1,14 @@
 # changelog
 
+## 1.4.0 - 2026 august
+
+- protobuf:  ^6.0.0
+- grpc: ^5.1.0
+
+## 1.3.11 - 2026 august
+
+- has_closed_years in UserPermission to guard against adding/updating tickets in accounting-locked years
+
 ## 1.3.10 - 2026 july
 
 - `BusinessClassification`: composite key `isicCode` (string) + `subCode`

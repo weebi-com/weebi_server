@@ -3,7 +3,7 @@ import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/protos_weebi.dart';
-import 'package:protos_weebi/grpc.dart';
+import 'package:fence_service/grpc.dart';
 import 'package:test/test.dart';
 
 void main() {
