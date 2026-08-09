@@ -13,6 +13,7 @@ import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/weebi_app_service.dart';
 import 'package:billing_service/billing_service.dart';
+import 'package:evaluation_service/evaluation_service.dart';
 
 void main(List<String> arguments) async {
   Logger.root.level = Level.ALL;
@@ -46,6 +47,15 @@ void main(List<String> arguments) async {
   final weebiAppService = WeebiAppService(poolService);
   final billingService = BillingService(poolService);
 
+  final evaluationStore = TursoHttpEvaluationStore(
+    HttpTursoPipelineClient(
+      databaseUrl: AppEnvironment.tursoDatabaseUrl,
+      authToken: AppEnvironment.tursoAuthToken,
+    ),
+  );
+  await evaluationStore.ensureSchema();
+  final evaluationService = EvaluationService(evaluationStore);
+
   final server = Server.create(
     services: [
       articleService,
@@ -54,6 +64,7 @@ void main(List<String> arguments) async {
       fenceService,
       weebiAppService,
       billingService,
+      evaluationService,
     ],
     interceptors: interceptors,
   );

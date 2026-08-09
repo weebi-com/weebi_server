@@ -93,6 +93,30 @@ class AppEnvironment {
     );
   }
 
+  /// Turso / libSQL HTTP URL for BoutiqueScore evaluations (e.g. libsql://… or https://…).
+  static String get tursoDatabaseUrl {
+    final url = Platform.environment['TURSO_DATABASE_URL']?.trim();
+    if (url != null && url.isNotEmpty) {
+      return url;
+    }
+    throw Exception(
+      'Missing required environment variable: TURSO_DATABASE_URL\n'
+      'Required for EvaluationService (BoutiqueScore lead capture)',
+    );
+  }
+
+  /// Turso auth token (Bearer) for SQL-over-HTTP pipeline.
+  static String get tursoAuthToken {
+    final token = Platform.environment['TURSO_AUTH_TOKEN']?.trim();
+    if (token != null && token.isNotEmpty) {
+      return token;
+    }
+    throw Exception(
+      'Missing required environment variable: TURSO_AUTH_TOKEN\n'
+      'Required for EvaluationService (BoutiqueScore lead capture)',
+    );
+  }
+
   /// false by default
   /// When `true` ticket/article/contact RPCs require that user is either 
   /// firm creator 

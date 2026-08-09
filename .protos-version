@@ -2,7 +2,7 @@
 # This file specifies which version of the protos repository to use
 
 # Semver documented in weebi-com/protos VERSION / CHANGELOG
-PROTOS_VERSION=1.3.11
+PROTOS_VERSION=1.4.1
 
 # Branch or tag to checkout (use main for latest)
 PROTOS_COMMIT=main

@@ -23,6 +23,8 @@ dependencies:
     path: ../../packages/billing_service
   stats_service:
     path: ../../packages/stats_service
+  evaluation_service:
+    path: ../../packages/evaluation_service
 
 dev_dependencies:
   test: ^1.25.8
