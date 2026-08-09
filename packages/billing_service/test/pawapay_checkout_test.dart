@@ -161,11 +161,11 @@ void main() {
 
   group('iso2 / single country helpers', () {
     test('maps OHADA alpha-2 to alpha-3 and XOF/XAF', () {
-      expect(iso2ToIso3Africa('sn'), 'SEN');
-      expect(iso2ToIso3Africa('CI'), 'CIV');
-      expect(iso2ToIso3Africa('cm'), 'CMR');
-      expect(pawapayCurrencyForCountryIso3('SEN'), 'XOF');
-      expect(pawapayCurrencyForCountryIso3('CMR'), 'XAF');
+      expect(iso2ToIso3('sn'), 'SEN');
+      expect(iso2ToIso3('CI'), 'CIV');
+      expect(iso2ToIso3('cm'), 'CMR');
+      expect(currencyForCountryAlpha3('SEN'), 'XOF');
+      expect(currencyForCountryAlpha3('CMR'), 'XAF');
     });
 
     test('buildPawapayAmountForCountry is single country', () {

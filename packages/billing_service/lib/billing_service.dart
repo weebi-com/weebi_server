@@ -6,4 +6,5 @@ library;
 export 'src/billing_service_base.dart';
 export 'src/accounting_year_purchase.dart';
 export 'src/pawapay_checkout.dart';
-export 'src/pawapay_country.dart';
+export 'src/org_country_resolution.dart';
+export 'package:country_currency_iso/country_currency_iso.dart';

@@ -17,6 +17,7 @@ import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/weebi_app_service.dart';
 import 'package:billing_service/billing_service.dart';
 import 'package:stats_service/stats_service.dart';
+import 'package:evaluation_service/evaluation_service.dart';
 
 // * in a production environment, it’s generally not recommended to use * due to security concern
 // ? consider adding weebi domain cors here ?
@@ -89,6 +90,15 @@ void main(List<String> arguments) async {
     final billingService = BillingService(poolService);
     final statsService = StatsService(poolService);
 
+    final evaluationStore = TursoHttpEvaluationStore(
+      HttpTursoPipelineClient(
+        databaseUrl: AppEnvironment.tursoDatabaseUrl,
+        authToken: AppEnvironment.tursoAuthToken,
+      ),
+    );
+    await evaluationStore.ensureSchema();
+    final evaluationService = EvaluationService(evaluationStore);
+
     final server = Server.create(
       services: [
         articleService,
@@ -98,6 +108,7 @@ void main(List<String> arguments) async {
         weebiAppService,
         billingService,
         statsService,
+        evaluationService,
       ],
       interceptors: interceptors,
     );

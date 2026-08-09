@@ -29,32 +29,40 @@ bool _isPublicRpc(String? path, String methodName) {
   if (pathLower.contains('healthcheck') || methodLower.contains('healthcheck')) {
     return true;
   }
+  // BoutiqueScore lead capture — unauthenticated public funnel (spam controls later).
+  if (pathLower.contains('submitevaluation') || methodLower.contains('submitevaluation')) {
+    return true;
+  }
   return false;
 }
 
 FutureOr<GrpcError?> authInterceptor(ServiceCall call, ServiceMethod method) {
   final path = call.clientMetadata?[':path'] ?? call.clientMetadata?['path'];
-  
-  // Check if this is getSessionInternal - it needs API key auth instead of Bearer
-  if (path != null && path.toLowerCase().contains('getsessioninternal')) {
+
+  // Internal Envoy → backend RPC authenticated with x-api-key
+  final pathLower = path?.toLowerCase() ?? '';
+  final methodLower = method.name.toLowerCase();
+  if (pathLower.contains('getsessioninternal') ||
+      methodLower.contains('getsessioninternal')) {
     final apiKey = call.clientMetadata?['x-api-key'];
     if (apiKey == AppEnvironment.envoyApiKey) {
-      return null; // API key is valid
-    } else {
-      return GrpcError.permissionDenied('Invalid or missing API key for getSessionInternal');
+      return null;
     }
+    return GrpcError.permissionDenied(
+      'Invalid or missing API key for ${method.name}',
+    );
   }
-  
-  // For all other RPC that are public, skip auth
+
+  // Public RPCs (signup, healthCheck, SubmitEvaluation, …)
   if (_isPublicRpc(path, method.name)) {
-    return null; // allow public RPC calls (no auth required)
+    return null;
   }
-  
+
   final authLogger = WeebiLogger.forService('AuthInterceptor');
   if (path == null || path.isEmpty) {
     authLogger.warning('Auth: path null/empty', extra: {'rpcMethod': method.name});
   }
-  
+
   try {
     final bearerRaw = call.bearer.replaceAll('Bearer ', '');
     final jwt = JsonWebToken.parse(bearerRaw);

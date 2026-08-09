@@ -5,7 +5,7 @@ import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/logging.dart';
 import 'package:billing_service/src/accounting_year_purchase.dart';
 import 'package:billing_service/src/pawapay_checkout.dart';
-import 'package:billing_service/src/pawapay_country.dart';
+import 'package:billing_service/src/org_country_resolution.dart';
 import 'package:billing_service/src/stripe_checkout.dart';
 
 Set<String> _distinctNonEmptySeatUserIds(License license) {
