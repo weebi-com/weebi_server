@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:billing_service/src/pawapay_country.dart';
+import 'package:country_currency_iso/country_currency_iso.dart';
 import 'package:http/http.dart' as http;
+
+/// ISO 4217 currencies we can price for v1 licence checkouts (FCFA list prices).
+const Set<String> kPawapayFcfaCurrencies = kFcfaCurrencyCodes;
 
 /// Result of initiating a PawaPay hosted checkout.
 class PawapayCheckoutCreated {
@@ -246,7 +249,7 @@ String generateUuidV4() {
 int pawapayXofAmountForProduct(String productId) {
   final id = productId.trim().toLowerCase();
   if (id == 'syscohada') return 1900;
-  if (id == 'premium') return 19000;
+  if (id == 'premium') return 9900;
   // Fallback: refuse silent wrong prices — caller should map known SKUs.
   throw ArgumentError.value(productId, 'productId', 'no XOF list price configured');
 }
@@ -259,7 +262,7 @@ PawapayAmount buildPawapayAmountForCountry({
   required String productId,
   required String countryAlpha2Or3,
 }) {
-  final iso3 = iso2ToIso3Africa(countryAlpha2Or3);
+  final iso3 = iso2ToIso3(countryAlpha2Or3);
   if (iso3 == null) {
     throw ArgumentError.value(
       countryAlpha2Or3,
@@ -267,7 +270,7 @@ PawapayAmount buildPawapayAmountForCountry({
       'unsupported country for PawaPay (need African ISO alpha-2)',
     );
   }
-  final currency = pawapayCurrencyForCountryIso3(iso3);
+  final currency = currencyForCountryAlpha3(iso3);
   if (currency == null) {
     throw ArgumentError.value(
       iso3,

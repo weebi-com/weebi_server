@@ -51,6 +51,15 @@ class FenceService extends FenceServiceBase {
   static const String firmCollectionName = 'firm';
   static const String userCollectionName = 'user';
 
+  /// Idle lifetime of a web BFF session in MongoDB. Must match Envoy
+  /// `weebi_session_id` Max-Age (604800s). Sliding-extended on each
+  /// successful [getSessionInternal].
+  static const Duration webSessionTtl = Duration(days: 7);
+
+  static const Duration accessJwtTtl = Duration(days: 1);
+  static const Duration refreshJwtTtl = Duration(days: 30);
+  static const Duration accessJwtRefreshSkew = Duration(hours: 1);
+
   bool isMock;
   UserPermissions? userPermissionIfTest;
 
@@ -688,37 +697,33 @@ class FenceService extends FenceServiceBase {
       });
 
       if (session == null) {
-        log.debug('Session not found', extra: {
+        log.info('Session not found', extra: {
           'sessionId': request.sessionId,
-          'action': 'envoy_will_return_401',
+          'action': 'envoy_skips_jwt_injection',
         });
         throw GrpcError.notFound('Session not found');
       }
 
-      // Check if session has expired
       final expiresAt = session['expiresAt'];
       if (expiresAt != null) {
         final expiresAtDateTime = expiresAt is DateTime
             ? expiresAt
             : DateTime.parse(expiresAt.toString());
         if (DateTime.now().isAfter(expiresAtDateTime)) {
-          log.debug('Session expired', extra: {
+          log.info('Session expired', extra: {
             'sessionId': request.sessionId,
             'expiresAt': expiresAtDateTime.toIso8601String(),
             'now': DateTime.now().toIso8601String(),
-            'action': 'envoy_will_return_401',
+            'action': 'envoy_skips_jwt_injection',
           });
-          // Use failedPrecondition instead of unauthenticated - semantically clearer
-          // Lua script treats all non-200 as invalid session → 401
           throw GrpcError.failedPrecondition('Session expired');
         }
       }
 
-      // Extract JWT and refresh token
-      final jwt = session['jwt'] as String?;
-      final refreshToken = session['refreshToken'] as String?;
+      var jwt = session['jwt'] as String? ?? '';
+      var refreshToken = session['refreshToken'] as String? ?? '';
 
-      if (jwt == null || jwt.isEmpty) {
+      if (jwt.isEmpty) {
         log.error('Session corrupted - no JWT', extra: {
           'sessionId': request.sessionId,
           'action': 'envoy_will_return_500',
@@ -726,23 +731,57 @@ class FenceService extends FenceServiceBase {
         throw GrpcError.internal('Session data corrupted: missing JWT');
       }
 
+      if (_accessJwtShouldRefresh(jwt)) {
+        final userId = (session['userId'] as String?)?.trim() ?? '';
+        if (userId.isEmpty) {
+          throw GrpcError.failedPrecondition('Session expired');
+        }
+        final minted = await _mintTokensForUserId(userId);
+        jwt = minted.accessToken;
+        refreshToken = minted.refreshToken;
+        log.info('Refreshed access JWT during session lookup', extra: {
+          'sessionId': request.sessionId,
+          'userId': userId,
+        });
+      }
+
+      final now = DateTime.now();
+      final newExpiresAt = now.add(webSessionTtl);
+      await databaseMiddleware(_poolService, (db) async {
+        await db.collection('web_sessions').update(
+              where.eq('_id', request.sessionId),
+              ModifierBuilder()
+                  .set('jwt', jwt)
+                  .set('refreshToken', refreshToken)
+                  .set('expiresAt', newExpiresAt)
+                  .set('lastAccessed', now.toIso8601String()),
+            );
+      });
+
       log.info('Session validated - JWT will be injected by Envoy', extra: {
         'sessionId': request.sessionId,
         'userId': session['userId'],
         'jwtLength': jwt.length,
-        'hasRefreshToken': refreshToken != null && refreshToken.isNotEmpty,
+        'hasRefreshToken': refreshToken.isNotEmpty,
+        'expiresAt': newExpiresAt.toIso8601String(),
       });
 
       return Tokens(
         accessToken: jwt,
-        refreshToken: refreshToken ?? '',
+        refreshToken: refreshToken,
       );
     } on GrpcError catch (e) {
-      log.logRpcError('getSessionInternal', e, extra: {
-        'errorCode': e.code,
-        'note':
-            'Envoy Lua will interpret this as: 404→401 response, 401→401 response, 500→401 response',
-      });
+      if (e.code == StatusCode.notFound ||
+          e.code == StatusCode.failedPrecondition) {
+        log.info('getSessionInternal session miss', extra: {
+          'errorCode': e.code,
+          'message': e.message,
+        });
+      } else {
+        log.logRpcError('getSessionInternal', e, extra: {
+          'errorCode': e.code,
+        });
+      }
       rethrow;
     } catch (e) {
       log.error('Unexpected error in getSessionInternal', error: e, extra: {
@@ -751,6 +790,50 @@ class FenceService extends FenceServiceBase {
       });
       throw GrpcError.internal('Failed to retrieve session: $e');
     }
+  }
+
+  bool _accessJwtShouldRefresh(String jwt) {
+    try {
+      final token = JsonWebToken.parse(jwt);
+      if (!token.verify()) return true;
+      final exp = token.exp;
+      if (exp == null) return true;
+      final expiresAt = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+      return expiresAt.difference(DateTime.now()) <= accessJwtRefreshSkew;
+    } catch (_) {
+      return true;
+    }
+  }
+
+  Future<({String accessToken, String refreshToken})> _mintTokensForUserId(
+      String userId) async {
+    final read = await _readUserPrivateAndTags(userId);
+    await _applyHasClosedYearsClaim(read.user.permissions);
+
+    var jwt = JsonWebToken();
+    final payload =
+        read.user.permissions.toProto3Json() as Map<String, dynamic>? ??
+            <String, dynamic>{};
+    if (read.tags != null && read.tags!.isNotEmpty) {
+      payload['tags'] = read.tags!;
+    }
+    jwt.createPayload(
+      read.user.userId,
+      expireIn: accessJwtTtl,
+      payload: payload,
+    );
+    final accessToken = jwt.sign();
+
+    jwt = JsonWebToken();
+    jwt.createPayload(
+      read.user.userId,
+      expireIn: refreshJwtTtl,
+      payload: {
+        'userId': read.user.userId,
+        'firmId': read.user.permissions.firmId,
+      },
+    );
+    return (accessToken: accessToken, refreshToken: jwt.sign());
   }
 
   Future<void> _updateUserLastSignIn(String userId) async {
@@ -782,8 +865,7 @@ class FenceService extends FenceServiceBase {
         // Generate unique session ID using UUID v4
         final sessionId = _generateSessionId();
         final now = DateTime.now();
-        final expiresAt =
-            now.add(const Duration(days: 1)); // Match JWT expiration
+        final expiresAt = now.add(webSessionTtl);
 
         final sessionDoc = {
           '_id': sessionId,
@@ -837,7 +919,7 @@ class FenceService extends FenceServiceBase {
     return databaseMiddleware(_poolService, (db) async {
       try {
         final now = DateTime.now();
-        final expiresAt = now.add(const Duration(days: 1));
+        final expiresAt = now.add(webSessionTtl);
 
         await db.collection('web_sessions').update(
               where.eq('_id', sessionId),

@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 void main() {
   group('pawapayXofAmountForProduct', () {
     test('maps premium and syscohada to marketing FCFA amounts', () {
-      expect(pawapayXofAmountForProduct('premium'), 19000);
+      expect(pawapayXofAmountForProduct('premium'), 9900);
       expect(pawapayXofAmountForProduct('syscohada'), 1900);
     });
 
@@ -92,7 +92,7 @@ void main() {
       expect(body['checkoutId'], 'afb57b93-7849-49aa-babb-4c3ccbfe3d79');
       expect(body['countries'], ['SEN']);
       expect(body['amounts'], [
-        {'country': 'SEN', 'currency': 'XOF', 'amount': '19000'},
+        {'country': 'SEN', 'currency': 'XOF', 'amount': '9900'},
       ]);
     });
 
@@ -161,11 +161,11 @@ void main() {
 
   group('iso2 / single country helpers', () {
     test('maps OHADA alpha-2 to alpha-3 and XOF/XAF', () {
-      expect(iso2ToIso3Africa('sn'), 'SEN');
-      expect(iso2ToIso3Africa('CI'), 'CIV');
-      expect(iso2ToIso3Africa('cm'), 'CMR');
-      expect(pawapayCurrencyForCountryIso3('SEN'), 'XOF');
-      expect(pawapayCurrencyForCountryIso3('CMR'), 'XAF');
+      expect(iso2ToIso3('sn'), 'SEN');
+      expect(iso2ToIso3('CI'), 'CIV');
+      expect(iso2ToIso3('cm'), 'CMR');
+      expect(currencyForCountryAlpha3('SEN'), 'XOF');
+      expect(currencyForCountryAlpha3('CMR'), 'XAF');
     });
 
     test('buildPawapayAmountForCountry is single country', () {

@@ -182,6 +182,7 @@ PROTO_FILES_TO_CHECK=(
   "ticket/ticket_service.proto"
   "weebi_app_service.proto"
   "stats_service.proto"
+  "evaluation_service.proto"
 )
 
 echo "Checking proto files exist..."

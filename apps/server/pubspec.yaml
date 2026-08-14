@@ -1,6 +1,6 @@
 name: server
 description: weebi gRPC server
-version: 1.1.5
+version: 1.1.6
 publish_to: none
 # repository: https://github.com/my_org/my_repo
 
@@ -23,6 +23,8 @@ dependencies:
     path: ../../packages/billing_service
   stats_service:
     path: ../../packages/stats_service
+  evaluation_service:
+    path: ../../packages/evaluation_service
 
 dev_dependencies:
   test: ^1.25.8

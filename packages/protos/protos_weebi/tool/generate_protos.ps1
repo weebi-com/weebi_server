@@ -282,6 +282,7 @@ $PROTO_FILES_TO_CHECK = @(
     "fence_service.proto",
     "billing_service.proto",
     "stats_service.proto",
+    "evaluation_service.proto",
     "ticket\ticket.proto",
     "ticket\ticket_type.proto",
     "ticket\ticket_service.proto",

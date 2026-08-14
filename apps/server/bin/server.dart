@@ -17,6 +17,7 @@ import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/weebi_app_service.dart';
 import 'package:billing_service/billing_service.dart';
 import 'package:stats_service/stats_service.dart';
+import 'package:evaluation_service/evaluation_service.dart';
 
 // * in a production environment, it’s generally not recommended to use * due to security concern
 // ? consider adding weebi domain cors here ?
@@ -26,8 +27,12 @@ FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
     HttpHeaders.accessControlAllowOriginHeader: origin,
     HttpHeaders.accessControlAllowMethodsHeader:
         'GET, POST, PUT, DELETE, OPTIONS',
-    HttpHeaders.accessControlAllowHeadersHeader: '*',
-    HttpHeaders.accessControlExposeHeadersHeader: '*',
+    // Explicit list: `*` is invalid with Allow-Credentials, and BoutiqueScore
+    // gRPC-Web preflight sends x-grpc-web / x-user-agent.
+    HttpHeaders.accessControlAllowHeadersHeader:
+        'content-type,accept,authorization,x-api-key,x-grpc-web,x-user-agent,grpc-timeout,grpc-encoding,grpc-accept-encoding',
+    HttpHeaders.accessControlExposeHeadersHeader:
+        'grpc-status,grpc-message,grpc-status-details-bin',
     HttpHeaders.accessControlAllowCredentialsHeader: 'true',
   });
 
@@ -89,6 +94,17 @@ void main(List<String> arguments) async {
     final billingService = BillingService(poolService);
     final statsService = StatsService(poolService);
 
+    final evaluationStore = createEvaluationStore(
+      databaseUrl: AppEnvironment.tursoDatabaseUrl,
+      authToken: AppEnvironment.tursoAuthToken,
+    );
+    try {
+      await evaluationStore.ensureSchema();
+    } catch (e) {
+      print('WARNING: Turso evaluation schema not ready: $e');
+    }
+    final evaluationService = EvaluationService(evaluationStore);
+
     final server = Server.create(
       services: [
         articleService,
@@ -98,6 +114,7 @@ void main(List<String> arguments) async {
         weebiAppService,
         billingService,
         statsService,
+        evaluationService,
       ],
       interceptors: interceptors,
     );
