@@ -47,13 +47,15 @@ void main(List<String> arguments) async {
   final weebiAppService = WeebiAppService(poolService);
   final billingService = BillingService(poolService);
 
-  final evaluationStore = TursoHttpEvaluationStore(
-    HttpTursoPipelineClient(
-      databaseUrl: AppEnvironment.tursoDatabaseUrl,
-      authToken: AppEnvironment.tursoAuthToken,
-    ),
+  final evaluationStore = createEvaluationStore(
+    databaseUrl: AppEnvironment.tursoDatabaseUrl,
+    authToken: AppEnvironment.tursoAuthToken,
   );
-  await evaluationStore.ensureSchema();
+  try {
+    await evaluationStore.ensureSchema();
+  } catch (e) {
+    print('WARNING: Turso evaluation schema not ready: $e');
+  }
   final evaluationService = EvaluationService(evaluationStore);
 
   final server = Server.create(

@@ -1,4 +1,6 @@
 import 'package:fence_service/fence_service.dart';
+import 'package:fence_service/grpc.dart';
+import 'package:fence_service/mongo_dart.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/mongo_pool.dart';
 import 'package:protos_weebi/data_dummy.dart';
@@ -290,8 +292,93 @@ void main() async {
       reason: 'expiresAt should be stored as BSON Date (DateTime), not string. '
           'Got ${expiresAt.runtimeType}',
     );
+    final ttl = (expiresAt as DateTime).difference(DateTime.now());
+    expect(ttl, greaterThan(const Duration(days: 6)));
+    expect(ttl, lessThan(const Duration(days: 8)));
 
     // Cleanup
+    await fenceService.logout(
+      ServiceCallTest('', sessionId: tokens.sessionId),
+      Empty(),
+    );
+  });
+
+  test('getSessionInternal returns JWT and slides expiry to 7 days', () async {
+    final tokens = await fenceService.authenticateWithCredentials(
+      null,
+      Credentials(
+        mail: Dummy.userPublic.mail,
+        password: '1234',
+        isWebApp: true,
+      ),
+    );
+    final before = DateTime.now();
+    final result = await fenceService.getSessionInternal(
+      ServiceCallTest('', apiKey: AppEnvironment.envoyApiKey),
+      SessionRequest(sessionId: tokens.sessionId),
+    );
+    expect(result.accessToken, isNotEmpty);
+
+    final db = await poolService.acquire();
+    final session = await db
+        .collection(_webSessionsCollection)
+        .findOne(where.eq('_id', tokens.sessionId));
+    poolService.release(db);
+
+    final expiresAt = session!['expiresAt'] as DateTime;
+    expect(expiresAt.isAfter(before.add(const Duration(days: 6))), isTrue);
+    expect(expiresAt.isBefore(before.add(const Duration(days: 8))), isTrue);
+
+    await fenceService.logout(
+      ServiceCallTest('', sessionId: tokens.sessionId),
+      Empty(),
+    );
+  });
+
+  test('getSessionInternal throws notFound for unknown session', () async {
+    expect(
+      () => fenceService.getSessionInternal(
+        ServiceCallTest('', apiKey: AppEnvironment.envoyApiKey),
+        SessionRequest(sessionId: 'missing-session-id'),
+      ),
+      throwsA(
+        isA<GrpcError>().having((e) => e.code, 'code', StatusCode.notFound),
+      ),
+    );
+  });
+
+  test('getSessionInternal refreshes expired access JWT', () async {
+    final tokens = await fenceService.authenticateWithCredentials(
+      null,
+      Credentials(
+        mail: Dummy.userPublic.mail,
+        password: '1234',
+        isWebApp: true,
+      ),
+    );
+
+    final expiredJwt = JsonWebToken()
+      ..createPayload(
+        Dummy.userPublic.userId,
+        expireIn: const Duration(seconds: -120),
+      );
+    final expiredToken = expiredJwt.sign();
+
+    final db = await poolService.acquire();
+    await db.collection(_webSessionsCollection).update(
+          where.eq('_id', tokens.sessionId),
+          ModifierBuilder().set('jwt', expiredToken),
+        );
+    poolService.release(db);
+
+    final result = await fenceService.getSessionInternal(
+      ServiceCallTest('', apiKey: AppEnvironment.envoyApiKey),
+      SessionRequest(sessionId: tokens.sessionId),
+    );
+    expect(result.accessToken, isNotEmpty);
+    expect(result.accessToken, isNot(equals(expiredToken)));
+    expect(JsonWebToken.parse(result.accessToken).verify(), isTrue);
+
     await fenceService.logout(
       ServiceCallTest('', sessionId: tokens.sessionId),
       Empty(),

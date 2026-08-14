@@ -4,6 +4,7 @@ import 'package:protos_weebi/protos_weebi_io.dart' as pb;
 import 'package:uuid/uuid.dart';
 
 import 'store/evaluation_store.dart';
+import 'store/unconfigured_evaluation_store.dart';
 
 class EvaluationService extends pb.EvaluationServiceBase {
   EvaluationService(
@@ -42,6 +43,9 @@ class EvaluationService extends pb.EvaluationServiceBase {
       );
     } catch (e, st) {
       log.error('submitEvaluation persistence failed', error: e, stackTrace: st);
+      if (e is EvaluationStoreNotConfigured) {
+        throw GrpcError.unavailable('evaluation persistence is not configured');
+      }
       throw GrpcError.internal('failed to persist evaluation');
     }
 

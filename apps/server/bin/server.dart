@@ -27,8 +27,12 @@ FutureOr<GrpcError?> corsInterceptor(ServiceCall call, ServiceMethod method) {
     HttpHeaders.accessControlAllowOriginHeader: origin,
     HttpHeaders.accessControlAllowMethodsHeader:
         'GET, POST, PUT, DELETE, OPTIONS',
-    HttpHeaders.accessControlAllowHeadersHeader: '*',
-    HttpHeaders.accessControlExposeHeadersHeader: '*',
+    // Explicit list: `*` is invalid with Allow-Credentials, and BoutiqueScore
+    // gRPC-Web preflight sends x-grpc-web / x-user-agent.
+    HttpHeaders.accessControlAllowHeadersHeader:
+        'content-type,accept,authorization,x-api-key,x-grpc-web,x-user-agent,grpc-timeout,grpc-encoding,grpc-accept-encoding',
+    HttpHeaders.accessControlExposeHeadersHeader:
+        'grpc-status,grpc-message,grpc-status-details-bin',
     HttpHeaders.accessControlAllowCredentialsHeader: 'true',
   });
 
@@ -90,13 +94,15 @@ void main(List<String> arguments) async {
     final billingService = BillingService(poolService);
     final statsService = StatsService(poolService);
 
-    final evaluationStore = TursoHttpEvaluationStore(
-      HttpTursoPipelineClient(
-        databaseUrl: AppEnvironment.tursoDatabaseUrl,
-        authToken: AppEnvironment.tursoAuthToken,
-      ),
+    final evaluationStore = createEvaluationStore(
+      databaseUrl: AppEnvironment.tursoDatabaseUrl,
+      authToken: AppEnvironment.tursoAuthToken,
     );
-    await evaluationStore.ensureSchema();
+    try {
+      await evaluationStore.ensureSchema();
+    } catch (e) {
+      print('WARNING: Turso evaluation schema not ready: $e');
+    }
     final evaluationService = EvaluationService(evaluationStore);
 
     final server = Server.create(

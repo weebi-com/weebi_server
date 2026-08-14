@@ -16,8 +16,12 @@ Uses a mocked Turso `/v2/pipeline` client — no credentials required.
 
 | Variable             | Required | Purpose                                    |
 | -------------------- | -------- | ------------------------------------------ |
-| `TURSO_DATABASE_URL` | **yes**  | Turso DB URL (`libsql://…` or `https://…`) |
-| `TURSO_AUTH_TOKEN`   | **yes**  | Bearer token for Turso HTTP pipeline       |
+| `TURSO_DATABASE_URL` | for persist | Turso DB URL (`libsql://…` or `https://…`; converted to HTTPS) |
+| `TURSO_AUTH_TOKEN`   | for persist | Bearer token for Turso HTTP pipeline       |
+
+The gRPC process boots without these; `SubmitEvaluation` then returns `UNAVAILABLE` until they are set.
+
+JS encode round-trip (`test/grpc_web_js_encode_roundtrip_test.dart`) uses `tool/encode_sample_request.mjs` in this package (CI). A sibling `boutiquescore` checkout is preferred when present.
 
 ### BoutiqueScore HTML → Envoy
 

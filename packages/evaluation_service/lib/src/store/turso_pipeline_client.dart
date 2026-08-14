@@ -2,6 +2,19 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+/// Turso SQL-over-HTTP pipeline URL.
+/// Accepts `libsql://` or `https://`, with or without `/v2/pipeline`.
+Uri tursoPipelineUri(String databaseUrl) {
+  var base = databaseUrl.trim().replaceAll(RegExp(r'/+$'), '');
+  if (base.startsWith('libsql://')) {
+    base = 'https://${base.substring('libsql://'.length)}';
+  }
+  if (base.endsWith('/v2/pipeline')) {
+    return Uri.parse(base);
+  }
+  return Uri.parse('$base/v2/pipeline');
+}
+
 /// One SQL statement for Turso Hrana `/v2/pipeline`.
 class TursoSqlStatement {
   const TursoSqlStatement(this.sql, {this.args = const []});
@@ -47,17 +60,11 @@ class HttpTursoPipelineClient implements TursoPipelineClient {
     http.Client? httpClient,
   })  : _authToken = authToken,
         _httpClient = httpClient ?? http.Client(),
-        _pipelineUri = _pipelineUriFrom(databaseUrl);
+        _pipelineUri = tursoPipelineUri(databaseUrl);
 
   final String _authToken;
   final http.Client _httpClient;
   final Uri _pipelineUri;
-
-  static Uri _pipelineUriFrom(String databaseUrl) {
-    final base = databaseUrl.trim().replaceAll(RegExp(r'/+$'), '');
-    if (base.endsWith('/v2/pipeline')) return Uri.parse(base);
-    return Uri.parse('$base/v2/pipeline');
-  }
 
   @override
   Future<void> execute(List<TursoSqlStatement> statements) async {

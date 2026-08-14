@@ -101,8 +101,8 @@ Platform.environment :
 ['MONGO_DB_URI']
 ['JWT_SECRET_KEY']
 ['ENVOY_API_KEY'] -- Envoy → backend shared secret (`getSessionInternal` only)
-['TURSO_DATABASE_URL'] -- BoutiqueScore EvaluationService (Turso HTTP)
-['TURSO_AUTH_TOKEN'] -- Turso auth token for EvaluationService
+['TURSO_DATABASE_URL'] -- BoutiqueScore EvaluationService (Turso HTTP; optional at boot)
+['TURSO_AUTH_TOKEN'] -- Turso auth token for EvaluationService (optional at boot)
 ['WEEBI_EXPRESS_BASE_URL'] -- Base URL of weebi_express service (optional, e.g., http://localhost:8080)
 ['WEEBI_EXPRESS_JWT_SECRET_KEY'] -- JWT secret for weebi_express (optional, defaults to JWT_SECRET_KEY)
 ['WEBAPP_BASE_URL'] -- Public web portal origin for magic links

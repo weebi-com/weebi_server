@@ -249,7 +249,7 @@ String generateUuidV4() {
 int pawapayXofAmountForProduct(String productId) {
   final id = productId.trim().toLowerCase();
   if (id == 'syscohada') return 1900;
-  if (id == 'premium') return 19000;
+  if (id == 'premium') return 9900;
   // Fallback: refuse silent wrong prices — caller should map known SKUs.
   throw ArgumentError.value(productId, 'productId', 'no XOF list price configured');
 }

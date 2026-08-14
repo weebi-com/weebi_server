@@ -86,6 +86,9 @@ class AppEnvironment {
     if (apiKey != null && apiKey.isNotEmpty) {
       return apiKey;
     }
+    if (_isTestOrCI) {
+      return 'test-envoy-api-key';
+    }
     throw Exception(
       'Missing required environment variable: ENVOY_API_KEY\n'
       'This is required for Envoy to authenticate with FenceService.getSessionInternal\n'
@@ -94,27 +97,18 @@ class AppEnvironment {
   }
 
   /// Turso / libSQL HTTP URL for BoutiqueScore evaluations (e.g. libsql://… or https://…).
-  static String get tursoDatabaseUrl {
+  /// Null when unset — the gRPC server still boots; SubmitEvaluation then returns unavailable.
+  static String? get tursoDatabaseUrl {
     final url = Platform.environment['TURSO_DATABASE_URL']?.trim();
-    if (url != null && url.isNotEmpty) {
-      return url;
-    }
-    throw Exception(
-      'Missing required environment variable: TURSO_DATABASE_URL\n'
-      'Required for EvaluationService (BoutiqueScore lead capture)',
-    );
+    if (url == null || url.isEmpty) return null;
+    return url;
   }
 
   /// Turso auth token (Bearer) for SQL-over-HTTP pipeline.
-  static String get tursoAuthToken {
+  static String? get tursoAuthToken {
     final token = Platform.environment['TURSO_AUTH_TOKEN']?.trim();
-    if (token != null && token.isNotEmpty) {
-      return token;
-    }
-    throw Exception(
-      'Missing required environment variable: TURSO_AUTH_TOKEN\n'
-      'Required for EvaluationService (BoutiqueScore lead capture)',
-    );
+    if (token == null || token.isEmpty) return null;
+    return token;
   }
 
   /// false by default
