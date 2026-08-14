@@ -181,9 +181,10 @@ void main() {
 
   group('HttpTursoPipelineClient URI', () {
     test('appends /v2/pipeline when missing', () {
-      // Covered indirectly: construct client and inspect via execute to a
-      // capturing http Client would be heavier; assert helper via store SQL path
-      // is enough. Keep a light sanity check on statement JSON.
+      expect(
+        tursoPipelineUri('https://example.turso.io'),
+        Uri.parse('https://example.turso.io/v2/pipeline'),
+      );
       final stmt = TursoSqlStatement(
         'SELECT 1',
         args: [const TursoSqlArg.integer(1), const TursoSqlArg.text('x')],
@@ -192,6 +193,41 @@ void main() {
       expect(json['sql'], 'SELECT 1');
       expect((json['args'] as List).first['type'], 'integer');
       expect((json['args'] as List).first['value'], '1');
+    });
+
+    test('converts libsql:// to https://', () {
+      expect(
+        tursoPipelineUri('libsql://my-db.turso.io'),
+        Uri.parse('https://my-db.turso.io/v2/pipeline'),
+      );
+      expect(
+        tursoPipelineUri('libsql://my-db.turso.io/v2/pipeline'),
+        Uri.parse('https://my-db.turso.io/v2/pipeline'),
+      );
+    });
+  });
+
+  group('createEvaluationStore', () {
+    test('without credentials is unconfigured', () {
+      expect(
+        createEvaluationStore(),
+        isA<UnconfiguredEvaluationStore>(),
+      );
+    });
+
+    test('submitEvaluation returns unavailable when store is unconfigured',
+        () async {
+      final service = EvaluationService(const UnconfiguredEvaluationStore());
+      expect(
+        () => service.submitEvaluation(null, _validRequest()),
+        throwsA(
+          isA<GrpcError>().having(
+            (e) => e.code,
+            'code',
+            StatusCode.unavailable,
+          ),
+        ),
+      );
     });
   });
 }

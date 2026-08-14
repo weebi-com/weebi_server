@@ -6,8 +6,9 @@ class ServiceCallTest implements ServiceCall {
   final String jwt;
   final String path;
   final String? sessionId;
+  final String? apiKey;
 
-  ServiceCallTest(this.jwt, {this.path = '', this.sessionId});
+  ServiceCallTest(this.jwt, {this.path = '', this.sessionId, this.apiKey});
 
   @override
   // TOConsider: implement clientCertificate
@@ -19,6 +20,9 @@ class ServiceCallTest implements ServiceCall {
     final meta = <String, String>{'authorization': jwt, 'path': path};
     if (sessionId != null && sessionId!.isNotEmpty) {
       meta['x-session-id'] = sessionId!;
+    }
+    if (apiKey != null && apiKey!.isNotEmpty) {
+      meta['x-api-key'] = apiKey!;
     }
     return meta;
   }
