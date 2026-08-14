@@ -4,7 +4,7 @@
  *
  * Keep payload in sync with test/grpc_web_js_encode_roundtrip_test.dart.
  */
-import { writeFileSync } from 'node:fs';
+import { writeFileSync } from 'fs';
 import { encodeSubmitEvaluationRequest } from './grpc_web_submit.mjs';
 
 const payload = {

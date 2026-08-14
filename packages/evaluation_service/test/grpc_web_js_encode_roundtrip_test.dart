@@ -41,8 +41,18 @@ Future<void> _assertJsEncodeRoundtrip(_LocatedEncoder located) async {
     workingDirectory: located.workingDirectory.path,
   );
   expect(encode.exitCode, 0,
-      reason: 'stderr: ${encode.stderr}\nstdout: ${encode.stdout}');
-  expect(outFile.existsSync(), isTrue, reason: 'Expected ${located.script.path}');
+      reason: 'Node process failed.\n'
+          'Script: ${located.script.path}\n'
+          'CWD: ${located.workingDirectory.path}\n'
+          'stderr: ${encode.stderr}\n'
+          'stdout: ${encode.stdout}');
+  expect(outFile.existsSync(), isTrue,
+      reason: 'Node exited with 0 but did not create the output file.\n'
+          'Expected: ${outFile.path}\n'
+          'Script: ${located.script.path}\n'
+          'CWD: ${located.workingDirectory.path}\n'
+          'stderr: ${encode.stderr}\n'
+          'stdout: ${encode.stdout}');
 
   final bytes = await outFile.readAsBytes();
   expect(bytes, isNotEmpty);
@@ -115,11 +125,13 @@ _LocatedEncoder? _siblingBoutiquescoreEncoder() {
     final sibling = Directory('${dir.path}${sep}boutiquescore');
     final script =
         File('${sibling.path}${sep}tool${sep}encode_sample_request.mjs');
-    if (script.existsSync()) {
+    if (script.existsSync() &&
+        File('${sibling.path}${sep}site${sep}grpc_web_submit.mjs')
+            .existsSync()) {
       return _LocatedEncoder(
         label: 'sibling',
         script: script,
-        workingDirectory: sibling,
+        workingDirectory: script.parent,
       );
     }
     if (dir.parent.path == dir.path) break;
