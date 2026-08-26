@@ -1,6 +1,33 @@
 import 'package:collection/collection.dart';
 import 'package:protos_weebi/protos_weebi_io.dart';
 
+/// Fills identity fields on [incoming] from the stored user when the client
+/// sent a sparse permissions payload (e.g. access-only update).
+///
+/// Does **not** resurrect wiped CRUD rights — that is a client concern.
+/// Mutates and returns [incoming].
+UserPermissions coalesceUserIdentity(
+  UserPermissions incoming, {
+  required String documentFirmId,
+  required UserPermissions existing,
+}) {
+  if (incoming.firmId.isEmpty) {
+    if (documentFirmId.isNotEmpty) {
+      incoming.firmId = documentFirmId;
+    } else if (existing.firmId.isNotEmpty) {
+      incoming.firmId = existing.firmId;
+    }
+  }
+  if (incoming.userId.isEmpty && existing.userId.isNotEmpty) {
+    incoming.userId = existing.userId;
+  }
+  // Proto3 bool false cannot mean "unset"; keep creator flag one-way sticky.
+  if (existing.isFirmCreator) {
+    incoming.isFirmCreator = true;
+  }
+  return incoming;
+}
+
 extension UserPermissionsExtension on UserPermissions {
   bool isFirmAccessible(String firmId) =>
       firmId.isEmpty || this.firmId != firmId ? false : true;

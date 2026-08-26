@@ -130,6 +130,77 @@ void main() {
     expect(flat['countryAlpha2'], 'SN');
   });
 
+  test('createPawapayCheckout DRC boutique charges premium in CDF', () async {
+    final db = await poolService.acquire();
+    await _setDummyBoutiqueCountry(db, 'CD');
+    poolService.release(db);
+    try {
+      fakePawapay = FakePawapayCheckoutClient();
+      billingService = BillingService(
+        poolService,
+        isTest: true,
+        userPermissionIfTest: Dummy.adminPermission,
+        pawapayClient: fakePawapay,
+      );
+
+      await billingService.createPawapayCheckout(
+        null,
+        CreatePawapayCheckoutRequest(
+          productId: 'premium',
+          returnUrl: 'https://app.weebi.com/#/billing?success=true',
+          legalTermsVersionDate: '2026-05-01',
+        ),
+      );
+
+      final amount =
+          (fakePawapay.initiated.first['amounts'] as List).first as PawapayAmount;
+      expect(amount.country, 'COD');
+      expect(amount.currency, 'CDF');
+      expect(amount.amount, '39900');
+      final flat = flattenPawapayMetadata(fakePawapay.initiated.first['metadata']);
+      expect(flat['countryAlpha2'], 'CD');
+    } finally {
+      final restore = await poolService.acquire();
+      await _setDummyBoutiqueCountry(restore, 'SN');
+      poolService.release(restore);
+    }
+  });
+
+  test('createPawapayCheckout infers DRC from boutique CDF currency', () async {
+    final db = await poolService.acquire();
+    await _setDummyBoutiqueCountry(db, null, currency: 'CDF');
+    poolService.release(db);
+    try {
+      fakePawapay = FakePawapayCheckoutClient();
+      billingService = BillingService(
+        poolService,
+        isTest: true,
+        userPermissionIfTest: Dummy.adminPermission,
+        pawapayClient: fakePawapay,
+      );
+
+      await billingService.createPawapayCheckout(
+        null,
+        CreatePawapayCheckoutRequest(
+          productId: 'syscohada',
+          returnUrl: 'https://app.weebi.com/#/billing?success=true',
+          legalTermsVersionDate: '2026-05-01',
+          fiscalYear: 2025,
+        ),
+      );
+
+      final amount =
+          (fakePawapay.initiated.first['amounts'] as List).first as PawapayAmount;
+      expect(amount.country, 'COD');
+      expect(amount.currency, 'CDF');
+      expect(amount.amount, '7900');
+    } finally {
+      final restore = await poolService.acquire();
+      await _setDummyBoutiqueCountry(restore, 'SN', currency: '');
+      poolService.release(restore);
+    }
+  });
+
   test('fulfillFromPawapayCheckout creates PREMIUM licence idempotently', () async {
     final checkoutId = generateUuidV4();
     fakePawapay.fetchStatus = 'COMPLETED';
@@ -204,4 +275,41 @@ void main() {
     expect(list.any((e) => e['pawapayCheckoutId'] == checkoutId), isTrue);
     expect(list.any((e) => (e['year'] as num?)?.toInt() == 2025), isTrue);
   });
+}
+
+Future<void> _setDummyBoutiqueCountry(
+  Db db,
+  String? code2Letters, {
+  String? currency,
+}) async {
+  final col = db.collection(FenceService.boutiqueCollectionName);
+  final doc = await col.findOne(where.eq('firmId', Dummy.firm.firmId));
+  expect(doc, isNotNull);
+  final boutiques = (doc!['boutiques'] as List)
+      .map((e) => Map<String, dynamic>.from(e as Map))
+      .toList();
+  expect(boutiques, isNotEmpty);
+  final wrapper = Map<String, dynamic>.from(boutiques.first);
+  final boutique = Map<String, dynamic>.from(wrapper['boutique'] as Map);
+  if (code2Letters == null) {
+    boutique.remove('addressFull');
+  } else {
+    boutique['addressFull'] = {
+      'city': code2Letters == 'CD' ? 'Kinshasa' : 'Dakar',
+      'country': {'code2Letters': code2Letters},
+    };
+  }
+  if (currency != null) {
+    if (currency.isEmpty) {
+      boutique.remove('currency');
+    } else {
+      boutique['currency'] = currency;
+    }
+  }
+  wrapper['boutique'] = boutique;
+  boutiques[0] = wrapper;
+  await col.updateOne(
+    where.eq('firmId', Dummy.firm.firmId),
+    ModifierBuilder().set('boutiques', boutiques),
+  );
 }

@@ -267,11 +267,26 @@ void main() {
           seats: [LicenseSeat(userId: userId, firmId: 'f')],
         );
 
-    test('no-op when firmId empty (pre-firm user flows)', () {
+    test('throws when firmId empty for regular users', () {
       expect(
         () => assertUserHasOperationalLicense(
           userPermissions: UserPermissions.create()..userId = 'u',
           authorizationHeader: '',
+          licenses: [],
+        ),
+        throwsA(isA<GrpcError>().having((e) => e.code, 'code', StatusCode.failedPrecondition)),
+      );
+    });
+
+    test('no-op for service accounts with empty firmId', () {
+      // Create a JWT with the service_account tag
+      final jwt = JsonWebToken()..createPayload('s1', payload: {'tags': ['service_account'], 'firmId': ''});
+      final token = jwt.sign();
+
+      expect(
+        () => assertUserHasOperationalLicense(
+          userPermissions: UserPermissions.create()..userId = 's1',
+          authorizationHeader: 'Bearer $token',
           licenses: [],
         ),
         returnsNormally,
