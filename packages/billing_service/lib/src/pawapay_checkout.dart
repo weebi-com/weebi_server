@@ -4,8 +4,13 @@ import 'dart:math';
 import 'package:country_currency_iso/country_currency_iso.dart';
 import 'package:http/http.dart' as http;
 
-/// ISO 4217 currencies we can price for v1 licence checkouts (FCFA list prices).
+/// ISO 4217 currencies we can price for v1 licence checkouts.
 const Set<String> kPawapayFcfaCurrencies = kFcfaCurrencyCodes;
+const String kPawapayCdfCurrency = 'CDF';
+const Set<String> kPawapayLicenceCurrencies = {
+  ...kFcfaCurrencyCodes,
+  kPawapayCdfCurrency,
+};
 
 /// Result of initiating a PawaPay hosted checkout.
 class PawapayCheckoutCreated {
@@ -247,17 +252,35 @@ String generateUuidV4() {
 
 /// Marketing FCFA list prices (same numeric for XOF / XAF in v1).
 int pawapayXofAmountForProduct(String productId) {
+  return pawapayAmountForProduct(productId: productId, currency: 'XOF');
+}
+
+/// Fixed list prices by product and ISO 4217 (no FX at checkout).
+int pawapayAmountForProduct({
+  required String productId,
+  required String currency,
+}) {
   final id = productId.trim().toLowerCase();
-  if (id == 'syscohada') return 1900;
-  if (id == 'premium') return 9900;
-  // Fallback: refuse silent wrong prices — caller should map known SKUs.
-  throw ArgumentError.value(productId, 'productId', 'no XOF list price configured');
+  final cur = currency.trim().toUpperCase();
+  if (kPawapayFcfaCurrencies.contains(cur)) {
+    if (id == 'syscohada') return 1900;
+    if (id == 'premium') return 9900;
+  }
+  if (cur == kPawapayCdfCurrency) {
+    if (id == 'syscohada') return 7900;
+    if (id == 'premium') return 39900;
+  }
+  throw ArgumentError.value(
+    productId,
+    'productId',
+    'no $cur list price configured',
+  );
 }
 
 /// Builds a single-country PawaPay `amounts` entry from Weebi alpha-2 (or alpha-3).
 ///
 /// Throws [ArgumentError] when the country cannot be mapped, currency is missing,
-/// or v1 pricing does not support that currency (non-FCFA).
+/// or v1 pricing does not support that currency.
 PawapayAmount buildPawapayAmountForCountry({
   required String productId,
   required String countryAlpha2Or3,
@@ -278,14 +301,16 @@ PawapayAmount buildPawapayAmountForCountry({
       'no PawaPay currency mapping for country',
     );
   }
-  if (!kPawapayFcfaCurrencies.contains(currency)) {
+  if (!kPawapayLicenceCurrencies.contains(currency)) {
     throw ArgumentError.value(
       iso3,
       'country',
-      'PawaPay v1 licence checkout only supports XOF/XAF (got $currency)',
+      'PawaPay v1 licence checkout only supports XOF/XAF/CDF (got $currency)',
     );
   }
-  final amount = pawapayXofAmountForProduct(productId).toString();
+  final amount =
+      pawapayAmountForProduct(productId: productId, currency: currency)
+          .toString();
   return PawapayAmount(country: iso3, currency: currency, amount: amount);
 }
 

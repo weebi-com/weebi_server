@@ -40,4 +40,13 @@ extension ServiceCallExt on ServiceCall? {
       return this!.clientMetadata!['authorization']!;
     }
   }
+
+  bool get isServiceAccount {
+    try {
+      final jwt = JsonWebToken.parse(JsonWebToken.rawToken(bearer));
+      return jwt.isServiceAccount;
+    } catch (_) {
+      return false;
+    }
+  }
 }

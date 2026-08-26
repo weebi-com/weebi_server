@@ -1186,7 +1186,7 @@ class BillingService extends BillingServiceBase {
       final preferredBoutiqueIds = userPermission.hasLimitedAccess()
           ? userPermission.limitedAccess.boutiqueIds.ids.toList()
           : <String>[];
-      return resolveOrgCountryAlpha2(
+      return resolveOrgPawapayCountryAlpha2(
         firmDoc: firmDoc,
         chainDocs: chainDocs.map((e) => Map<String, dynamic>.from(e)),
         preferredChainIds: preferredChainIds,
@@ -1195,7 +1195,7 @@ class BillingService extends BillingServiceBase {
     });
     if (countryAlpha2 == null || countryAlpha2.isEmpty) {
       throw GrpcError.failedPrecondition(
-        'Set a boutique address country (ISO alpha-2) before paying with mobile money',
+        'Set a boutique address country (ISO alpha-2) or CDF billing currency before paying with mobile money',
       );
     }
 
