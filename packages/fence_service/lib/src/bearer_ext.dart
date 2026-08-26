@@ -1,3 +1,4 @@
+import 'package:fence_service/src/entitlement_helpers.dart';
 import 'package:fence_service/src/jwt.dart';
 import 'package:protos_weebi/grpc.dart' show ServiceCall, GrpcError;
 import 'package:protos_weebi/protos_weebi_io.dart' show UserPermissions;
@@ -9,9 +10,15 @@ extension BearerExt on String {
       return UserPermissions.create();
     } else {
       try {
-        final d = JsonWebToken.parse(this).payload;
-        return UserPermissions.create()
-          ..mergeFromProto3Json(d, ignoreUnknownFields: true);
+        final payload =
+            JsonWebToken.parse(JsonWebToken.rawToken(this)).payload;
+        final permissions = UserPermissions.create()
+          ..mergeFromProto3Json(payload, ignoreUnknownFields: true);
+        // Proto3 JSON merge can drop is_firm_creator / nested claims.
+        if (jwtPayloadSaysFirmCreator(payload)) {
+          permissions.isFirmCreator = true;
+        }
+        return permissions;
       } on FormatException catch (e) {
         print('BearerExt userPermissions $e');
         rethrow;
