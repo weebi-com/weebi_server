@@ -69,6 +69,16 @@ class FenceService extends FenceServiceBase {
     this.userPermissionIfTest,
   });
 
+  void _assertIsServiceAccountOrHasFirm(
+      ServiceCall? call, UserPermissions userPermissions) {
+    if (isMock) return;
+    if (call.isServiceAccount) return;
+    if (userPermissions.firmId.isEmpty) {
+      throw GrpcError.failedPrecondition(
+          'Missing firmId. Please create a firm first.');
+    }
+  }
+
   /// Get version information for health check using pubspec_parse
   Map<String, String> _getVersionInfo() {
     try {
@@ -808,6 +818,12 @@ class FenceService extends FenceServiceBase {
   Future<({String accessToken, String refreshToken})> _mintTokensForUserId(
       String userId) async {
     final read = await _readUserPrivateAndTags(userId);
+    // Heal nested permissions.firmId from document when clients wiped it.
+    coalesceUserIdentity(
+      read.user.permissions,
+      documentFirmId: read.user.firmId,
+      existing: read.user.permissions,
+    );
     await _applyHasClosedYearsClaim(read.user.permissions);
 
     var jwt = JsonWebToken();
@@ -1290,6 +1306,12 @@ class FenceService extends FenceServiceBase {
         final userPermission = UserPermissions.create()
           ..mergeFromProto3Json(
               userPrivate.permissions.toProto3Json() as Map<String, dynamic>);
+        // Heal nested permissions.firmId from document when clients wiped it.
+        coalesceUserIdentity(
+          userPermission,
+          documentFirmId: userPrivate.firmId,
+          existing: userPrivate.permissions,
+        );
         // Option B: pass top-level user "tags" through so they can be injected
         // into the JWT payload (UserPermissions proto has no tags field).
         final rawTags = userPrivateMongo['tags'];
@@ -1352,6 +1374,12 @@ class FenceService extends FenceServiceBase {
       throw GrpcError.permissionDenied(
           'user cannot be updated because it belongs to a different firm');
     }
+    // Sparse client payloads (e.g. access-only) omit firmId; preserve identity.
+    coalesceUserIdentity(
+      request.permissions,
+      documentFirmId: userPrivate.firmId,
+      existing: userPrivate.permissions,
+    );
     return _updateUserDBExec(request);
   }
 
@@ -2034,15 +2062,21 @@ class FenceService extends FenceServiceBase {
       final userCollection = db.collection(userCollectionName);
 
       try {
+        final modifier = ModifierBuilder()
+            .set('firstname', user.firstname)
+            .set('lastname', user.lastname)
+            .set('mail', user.mail)
+            .set('phone', user.phone.toProto3Json() as Map<String, dynamic>)
+            .set('permissions',
+                user.permissions.toProto3Json() as Map<String, dynamic>);
+        // Keep top-level firmId in sync with nested permissions.firmId so JWT
+        // heal and tenant queries stay consistent after sparse updates.
+        if (user.permissions.firmId.isNotEmpty) {
+          modifier.set('firmId', user.permissions.firmId);
+        }
         await userCollection.update(
           where.eq('userId', user.userId),
-          ModifierBuilder()
-              .set('firstname', user.firstname)
-              .set('lastname', user.lastname)
-              .set('mail', user.mail)
-              .set('phone', user.phone.toProto3Json() as Map<String, dynamic>)
-              .set('permissions',
-                  user.permissions.toProto3Json() as Map<String, dynamic>),
+          modifier,
         );
         return StatusResponse()
           ..type = StatusResponse_Type.UPDATED
@@ -3083,7 +3117,9 @@ class FenceService extends FenceServiceBase {
 
       try {
         await userCollection.update(where.eq('userId', user.userId),
-            ModifierBuilder().set('password', passwordEncrypted),
+            ModifierBuilder()
+                .set('password', passwordEncrypted)
+                .set('mustChangePassword', false),
             upsert: true);
         return SignUpResponse(
             statusResponse: StatusResponse()
@@ -3112,6 +3148,9 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
+
+    _assertIsServiceAccountOrHasFirm(call, userPermission);
+
     if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
         false) {
       print('DEBUG: readAllChains permission denied');
@@ -3120,16 +3159,6 @@ class FenceService extends FenceServiceBase {
     }
 
     try {
-      final userPermission = isMock
-          ? userPermissionIfTest ?? UserPermissions()
-          : call.bearer.userPermissions;
-      if (userPermission.chainRights.rights.any((e) => e == Right.read) ==
-          false) {
-        print('DEBUG: readAllChains permission denied');
-        throw GrpcError.permissionDenied(
-            'user does not have right to read chain');
-      }
-
       final chains = _filterChainsByAccess(
         userPermission,
         await _readAllChainsAndProtoThem(userPermission),
@@ -3165,6 +3194,8 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
+
+    _assertIsServiceAccountOrHasFirm(call, userPermission);
 
     if (userPermission.boutiqueRights.rights.any((e) => e == Right.read) ==
         false) {
@@ -3216,14 +3247,9 @@ class FenceService extends FenceServiceBase {
         requestData: {'firmId': request.firmId, 'userId': request.userId});
     if (request.firmId.isEmpty ||
         request.userId.isEmpty ||
-        request.passwordCurrent.isEmpty ||
         request.passwordNew.isEmpty) {
       throw GrpcError.invalidArgument(
-          'firmId / userId / passwordCurrent / passwordNew cannot be empty');
-    }
-    if (request.passwordCurrent == request.passwordNew) {
-      throw GrpcError.invalidArgument(
-          'passwordCurrent and passwordNew must be different');
+          'firmId / userId / passwordNew cannot be empty');
     }
 
     final userPermission = isMock
@@ -3237,17 +3263,33 @@ class FenceService extends FenceServiceBase {
 
     /// userManagementRights.rights is not enough here
     /// use canUpdateUserPassword
+    final isAdminResettingOther = request.userId != userPermission.userId &&
+        userPermission.userManagementRights.canUpdateUserPassword;
     if (request.userId != userPermission.userId &&
-        userPermission.userManagementRights.canUpdateUserPassword == false) {
+        isAdminResettingOther == false) {
       throw GrpcError.permissionDenied(
           "you do not have the right to update other users' passwords");
+    }
+
+    // Self-service still requires the current password. Admins with
+    // canUpdateUserPassword may set another user's password without it.
+    if (isAdminResettingOther == false) {
+      if (request.passwordCurrent.isEmpty) {
+        throw GrpcError.invalidArgument(
+            'passwordCurrent cannot be empty when changing your own password');
+      }
+      if (request.passwordCurrent == request.passwordNew) {
+        throw GrpcError.invalidArgument(
+            'passwordCurrent and passwordNew must be different');
+      }
     }
 
     final passwordNewEncrypted = _checkAndEncryptPassword(request.passwordNew);
     // we do not use _checkAndEncryptPassword below because it could lead to techical bug (catch 22)
     // in case password making rules change in the future
-    final passwordCurrentEncrypted =
-        Encrypter(request.passwordCurrent).encrypted;
+    final passwordCurrentEncrypted = request.passwordCurrent.isEmpty
+        ? ''
+        : Encrypter(request.passwordCurrent).encrypted;
 
     return databaseMiddleware<StatusResponse>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
@@ -3264,7 +3306,8 @@ class FenceService extends FenceServiceBase {
         }
         final userMongo = UserPrivate.create()
           ..mergeFromProto3Json(user, ignoreUnknownFields: true);
-        if (userMongo.passwordEncrypted != passwordCurrentEncrypted) {
+        if (isAdminResettingOther == false &&
+            userMongo.passwordEncrypted != passwordCurrentEncrypted) {
           throw GrpcError.invalidArgument('passwordCurrent is incorrect');
         }
 
@@ -3303,6 +3346,8 @@ class FenceService extends FenceServiceBase {
     final userPermission = isMock
         ? userPermissionIfTest ?? UserPermissions()
         : call.bearer.userPermissions;
+
+    _assertIsServiceAccountOrHasFirm(call, userPermission);
 
     if (userPermission.userManagementRights.rights
             .any((e) => e == Right.read) ==

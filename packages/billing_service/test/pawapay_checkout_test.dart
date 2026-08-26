@@ -17,6 +17,26 @@ void main() {
     });
   });
 
+  group('pawapayAmountForProduct', () {
+    test('maps premium and syscohada to CDF list prices', () {
+      expect(
+        pawapayAmountForProduct(productId: 'premium', currency: 'CDF'),
+        39900,
+      );
+      expect(
+        pawapayAmountForProduct(productId: 'syscohada', currency: 'cdf'),
+        7900,
+      );
+    });
+
+    test('rejects unknown product in CDF', () {
+      expect(
+        () => pawapayAmountForProduct(productId: 'entreprise', currency: 'CDF'),
+        throwsArgumentError,
+      );
+    });
+  });
+
   group('flattenPawapayMetadata', () {
     test('flattens array form', () {
       final meta = flattenPawapayMetadata([
@@ -168,6 +188,11 @@ void main() {
       expect(currencyForCountryAlpha3('CMR'), 'XAF');
     });
 
+    test('maps DRC alpha-2 to COD and CDF', () {
+      expect(iso2ToIso3('CD'), 'COD');
+      expect(currencyForCountryAlpha3('COD'), 'CDF');
+    });
+
     test('buildPawapayAmountForCountry is single country', () {
       final a = buildPawapayAmountForCountry(
         productId: 'syscohada',
@@ -186,6 +211,26 @@ void main() {
         ),
         throwsArgumentError,
       );
+    });
+
+    test('buildPawapayAmountForCountry prices DRC premium in CDF', () {
+      final a = buildPawapayAmountForCountry(
+        productId: 'premium',
+        countryAlpha2Or3: 'CD',
+      );
+      expect(a.country, 'COD');
+      expect(a.currency, 'CDF');
+      expect(a.amount, '39900');
+    });
+
+    test('buildPawapayAmountForCountry prices DRC syscohada in CDF', () {
+      final a = buildPawapayAmountForCountry(
+        productId: 'syscohada',
+        countryAlpha2Or3: 'cd',
+      );
+      expect(a.country, 'COD');
+      expect(a.currency, 'CDF');
+      expect(a.amount, '7900');
     });
 
     test('resolveOrgCountryAlpha2 firm → chain → boutique', () {
@@ -264,6 +309,64 @@ void main() {
           ],
           preferredChainIds: ['pref'],
           preferredBoutiqueIds: ['wanted'],
+        ),
+        'SN',
+      );
+    });
+
+    test('resolveOrgPawapayCountryAlpha2 infers CD from CDF currency', () {
+      expect(
+        resolveOrgPawapayCountryAlpha2(
+          firmDoc: {},
+          chainDocs: [
+            {
+              'chainId': 'c1',
+              'boutiques': [
+                {
+                  'boutiqueId': 'b1',
+                  'boutique': {
+                    'currency': 'CDF',
+                  },
+                },
+              ],
+            },
+          ],
+        ),
+        'CD',
+      );
+    });
+
+    test('resolveOrgPawapayCountryAlpha2 infers CD from currency CD', () {
+      expect(
+        resolveOrgPawapayCountryAlpha2(
+          firmDoc: {'currency': 'cd'},
+          chainDocs: const [],
+        ),
+        'CD',
+      );
+    });
+
+    test('resolveOrgPawapayCountryAlpha2 prefers address country over currency', () {
+      expect(
+        resolveOrgPawapayCountryAlpha2(
+          firmDoc: {},
+          chainDocs: [
+            {
+              'chainId': 'c1',
+              'currency': 'CDF',
+              'boutiques': [
+                {
+                  'boutiqueId': 'b1',
+                  'boutique': {
+                    'currency': 'CDF',
+                    'addressFull': {
+                      'country': {'code2Letters': 'sn'},
+                    },
+                  },
+                },
+              ],
+            },
+          ],
         ),
         'SN',
       );

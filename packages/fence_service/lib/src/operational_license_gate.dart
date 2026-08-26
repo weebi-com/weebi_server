@@ -40,7 +40,8 @@ Future<List<License>> loadFirmLicenses(Db db, String firmId) async {
 /// Subscription-backed features (e.g. portal ticket store filter/group, business
 /// rules) must use [userHasActiveLicensedSeat] with **no** creator exemption.
 ///
-/// No-op when [UserPermissions.firmId] is empty, or the bearer is a service-account JWT.
+/// No-op when the bearer is a service-account JWT (identified by "service_account" tag).
+/// Regular firmless users are NOT exempted and will fail the license check.
 ///
 /// No-op when [AppEnvironment.isLicenseCheckEnforced] is `false` (grace-period deploy).
 void assertUserHasOperationalLicense({
@@ -50,10 +51,8 @@ void assertUserHasOperationalLicense({
 }) {
   if (!AppEnvironment.isLicenseCheckEnforced) return;
 
-  if (userPermissions.firmId.isEmpty) return;
-
-  Map<String, dynamic>? jwtPayload;
   final rawToken = JsonWebToken.rawToken(authorizationHeader);
+  Map<String, dynamic>? jwtPayload;
   if (rawToken.isNotEmpty) {
     try {
       final jwt = JsonWebToken.parse(rawToken);
@@ -63,6 +62,11 @@ void assertUserHasOperationalLicense({
       // Still enforce the two predicates if token shape is wrong.
     }
   }
+
+  // If we reach here, it's not a service account.
+  // Firmless users (non-service accounts) MUST NOT bypass the license gate.
+  // They will naturally fail below since they have no licenses and aren't creators.
+
 
   if (userPermissions.userId.trim().isEmpty) {
     throw GrpcError.failedPrecondition(

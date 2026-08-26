@@ -131,6 +131,7 @@ void main() async {
     expect(alice.userPublic.mail, 'alice@weebi.com');
     expect(alice.userPublic.phone.countryCode, 1);
     expect(alice.userPublic.phone.number, '123456789');
+    expect(alice.userPublic.permissions.firmId, createFirmResponse.firm.firmId);
 
     // alice signs up and is linked to boss' firm
     print('DEBUG TEST: About to sign up Alice');
