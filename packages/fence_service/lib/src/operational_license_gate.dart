@@ -32,10 +32,13 @@ Future<List<License>> loadFirmLicenses(Db db, String firmId) async {
 
 /// Throws [GrpcError.failedPrecondition] if the user may not use ticket/article/contact flows.
 ///
-/// **Firm creator operational joker:** [UserPermissions.isFirmCreator] bypasses the
-/// seat check here only — a narrow preview/sync path. Subscription-backed product
-/// features (e.g. portal ticket store filter/group) must use [userHasActiveLicensedSeat]
-/// without this bypass (see `entitlement_helpers.dart`, webapp `SeatCapability`).
+/// Two **independent** predicates (firm creator is not a license):
+/// 1. Firm creator — [userHasFirmCreatorOperationalAccess] (proto and/or JWT claim).
+///    Allows this sync path only. Does not grant seat-gated product features.
+/// 2. Else an [userHasActiveLicensedSeat] on [licenses].
+///
+/// Subscription-backed features (e.g. portal ticket store filter/group, business
+/// rules) must use [userHasActiveLicensedSeat] with **no** creator exemption.
 ///
 /// No-op when [UserPermissions.firmId] is empty, or the bearer is a service-account JWT.
 ///
@@ -49,15 +52,15 @@ void assertUserHasOperationalLicense({
 
   if (userPermissions.firmId.isEmpty) return;
 
-  var token = authorizationHeader.trim();
-  if (token.startsWith('Bearer ')) {
-    token = token.substring(7).trim();
-  }
-  if (token.isNotEmpty) {
+  Map<String, dynamic>? jwtPayload;
+  final rawToken = JsonWebToken.rawToken(authorizationHeader);
+  if (rawToken.isNotEmpty) {
     try {
-      if (JsonWebToken.parse(token).isServiceAccount) return;
+      final jwt = JsonWebToken.parse(rawToken);
+      jwtPayload = jwt.payload;
+      if (jwt.isServiceAccount) return;
     } on FormatException {
-      // Still enforce normal license path if token shape is wrong.
+      // Still enforce the two predicates if token shape is wrong.
     }
   }
 
@@ -67,8 +70,15 @@ void assertUserHasOperationalLicense({
     );
   }
 
-  if (firmCreatorOperationalJoker(userPermissions)) return;
+  // 1. Creator — do not consult seats.
+  if (userHasFirmCreatorOperationalAccess(
+    userPermissions: userPermissions,
+    jwtPayload: jwtPayload,
+  )) {
+    return;
+  }
 
+  // 2. Non-creator — require a seat.
   if (userHasActiveLicensedSeat(userPermissions.userId, licenses)) {
     return;
   }

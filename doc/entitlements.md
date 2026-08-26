@@ -2,16 +2,16 @@
 
 Two proofs drive most product gates. Keep this list updated when you add or remove checks.
 
-## 1. Firm creator operational joker (JWT)
+## 1. Firm creator operational access (JWT)
 
-- **Meaning:** The user who created the firm may use a **narrow preview path** for core sync without consuming a license seat.
-- **Implementation:** `UserPermissions.isFirmCreator` is honored only inside operational access — today [`assertUserHasOperationalLicense`](../../weebi_server/packages/fence_service/lib/src/operational_license_gate.dart) and its callers.
-- **Current RPC surfaces (joker OR active seat):**
+- **Meaning:** The user who created the firm may use a **narrow preview path** for core sync **without a license seat**. This is not a license. A creator may also hold a seat for other paid actions.
+- **Implementation:** [`assertUserHasOperationalLicense`](../../weebi_server/packages/fence_service/lib/src/operational_license_gate.dart) checks **creator first** (`userHasFirmCreatorOperationalAccess`: proto flag and/or JWT `isFirmCreator` / `is_firm_creator`), then, only if they are not the creator, an active seat.
+- **Current RPC surfaces (creator **or** active seat):**
   - `ticket_service`: create/read/update/delete tickets (`_assertOperationalLicense` in `ticket_service_base.dart`)
   - `article_service`: same pattern (`article_service_base.dart`)
   - `contact_service`: same pattern (`contact_service_base.dart`)
 
-The joker is **not** a blanket “admin can do everything” flag.
+Creator status is **not** a blanket “admin can do everything” flag.
 
 ## 2. License seat entitlement (`LicenseSeatEntitlement`)
 

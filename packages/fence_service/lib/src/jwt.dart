@@ -117,6 +117,15 @@ class JsonWebToken {
 
   Map<String, dynamic> get payload => _payload;
 
+  /// Bare JWT from `Authorization` (`Bearer <jwt>` or the token alone).
+  static String rawToken(String authorizationHeader) {
+    final t = authorizationHeader.trim();
+    if (t.startsWith('Bearer ')) {
+      return t.substring(7).trim();
+    }
+    return t;
+  }
+
   /// Whether this token is from a service account (e.g. weebi_express calling
   /// FulfillLicenseFromStripe). Uses a strict rule: both conditions required.
   /// - [tags] (in payload) must contain "service_account". Tags are not in
