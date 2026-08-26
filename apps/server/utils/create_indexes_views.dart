@@ -76,6 +76,8 @@ Future<void> main(List<String> args) async {
 
   /// WEB_SESSIONS - for web app session storage (cookie-based auth via Envoy)
   /// TTL index: MongoDB automatically deletes expired sessions
+  /// expiresAt is sliding-extended to 7 days (FenceService.webSessionTtl),
+  /// matching Envoy weebi_session_id Max-Age=604800.
   const webSessionsCollectionName = 'web_sessions';
   await db.createCollection(webSessionsCollectionName);
   await db.runCommand({

@@ -322,6 +322,78 @@ void main() {
       );
     });
 
+    test('allows creator with a seat (creator and seat are independent)', () {
+      assertUserHasOperationalLicense(
+        userPermissions: UserPermissions.create()
+          ..firmId = 'f'
+          ..userId = 'u1'
+          ..isFirmCreator = true,
+        authorizationHeader: '',
+        licenses: [licenseWithSeat('u1')],
+      );
+    });
+
+    test('allows creator from JWT isFirmCreator when proto flag is false', () {
+      assertUserHasOperationalLicense(
+        userPermissions: UserPermissions.create()
+          ..firmId = 'f'
+          ..userId = 'u1',
+        authorizationHeader: _unsignedJwt({'isFirmCreator': true}),
+        licenses: [],
+      );
+    });
+
+    test('allows creator from JWT is_firm_creator when proto flag is false',
+        () {
+      assertUserHasOperationalLicense(
+        userPermissions: UserPermissions.create()
+          ..firmId = 'f'
+          ..userId = 'u1',
+        authorizationHeader: _unsignedJwt({'is_firm_creator': true}),
+        licenses: [],
+      );
+    });
+
+    test('allows creator from nested JWT permissions.isFirmCreator', () {
+      assertUserHasOperationalLicense(
+        userPermissions: UserPermissions.create()
+          ..firmId = 'f'
+          ..userId = 'u1',
+        authorizationHeader: _unsignedJwt({
+          'permissions': {'isFirmCreator': true},
+        }),
+        licenses: [],
+      );
+    });
+
+    test('Bearer prefix still sees JWT firm-creator claim', () {
+      final token = _unsignedJwt({'isFirmCreator': true});
+      assertUserHasOperationalLicense(
+        userPermissions: UserPermissions.create()
+          ..firmId = 'f'
+          ..userId = 'u1',
+        authorizationHeader: 'Bearer $token',
+        licenses: [],
+      );
+    });
+
+    test('minted proto JWT round-trips isFirmCreator via BearerExt', () {
+      final minted = UserPermissions.create()
+        ..firmId = 'f'
+        ..userId = 'u1'
+        ..isFirmCreator = true;
+      final token = _unsignedJwt(
+        minted.toProto3Json() as Map<String, dynamic>,
+      );
+      final parsed = token.userPermissions;
+      expect(parsed.isFirmCreator, isTrue);
+      assertUserHasOperationalLicense(
+        userPermissions: parsed,
+        authorizationHeader: token,
+        licenses: [],
+      );
+    });
+
     test('allows non-creator with active seat', () {
       assertUserHasOperationalLicense(
         userPermissions: UserPermissions.create()
@@ -525,6 +597,44 @@ void main() {
       );
       expect(
         firmCreatorOperationalJoker(UserPermissions.create()),
+        isFalse,
+      );
+    });
+
+    test('jwtPayloadSaysFirmCreator reads root, snake_case, nested', () {
+      expect(jwtPayloadSaysFirmCreator({'isFirmCreator': true}), isTrue);
+      expect(jwtPayloadSaysFirmCreator({'is_firm_creator': true}), isTrue);
+      expect(
+        jwtPayloadSaysFirmCreator({
+          'permissions': {'isFirmCreator': true},
+        }),
+        isTrue,
+      );
+      expect(jwtPayloadSaysFirmCreator({'isFirmCreator': false}), isFalse);
+      expect(jwtPayloadSaysFirmCreator({}), isFalse);
+      expect(jwtPayloadSaysFirmCreator(null), isFalse);
+    });
+
+    test('userHasFirmCreatorOperationalAccess is proto OR jwt', () {
+      expect(
+        userHasFirmCreatorOperationalAccess(
+          userPermissions: UserPermissions.create()..isFirmCreator = true,
+          jwtPayload: null,
+        ),
+        isTrue,
+      );
+      expect(
+        userHasFirmCreatorOperationalAccess(
+          userPermissions: UserPermissions.create(),
+          jwtPayload: {'isFirmCreator': true},
+        ),
+        isTrue,
+      );
+      expect(
+        userHasFirmCreatorOperationalAccess(
+          userPermissions: UserPermissions.create(),
+          jwtPayload: {},
+        ),
         isFalse,
       );
     });

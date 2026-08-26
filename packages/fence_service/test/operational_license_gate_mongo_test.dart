@@ -132,6 +132,30 @@ void main() {
       }
     });
 
+    test('firm creator allowed when DB firm has empty licenses', () async {
+      final db = await pool.acquire();
+      const id = 'gate_db_creator_empty_lic';
+      final coll = db.collection(FenceService.firmCollectionName);
+      try {
+        await coll.deleteMany(where.eq('firmId', id));
+        await coll.insertOne({
+          'firmId': id,
+          'licenses': <dynamic>[],
+        });
+        await assertUserHasOperationalLicenseWithDb(
+          db,
+          userPermissions: UserPermissions.create()
+            ..firmId = id
+            ..userId = 'u-creator'
+            ..isFirmCreator = true,
+          authorizationHeader: '',
+        );
+      } finally {
+        await coll.deleteMany(where.eq('firmId', id));
+        pool.release(db);
+      }
+    });
+
     test('non-creator allowed when seat is persisted on firm', () async {
       final db = await pool.acquire();
       const id = 'gate_db_seated';
