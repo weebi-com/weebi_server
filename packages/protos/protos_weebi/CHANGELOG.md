@@ -1,5 +1,11 @@
 # changelog
 
+## 1.4.2 - 2026 september
+
+- paginate in article/contact/ticket services
+- referral code in firm
+- pawapay_catalog_defaults
+
 ## 1.4.0 - 2026 august
 
 - protobuf:  ^6.0.0
