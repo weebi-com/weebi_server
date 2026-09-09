@@ -3,10 +3,13 @@ import 'package:fence_service/grpc.dart';
 import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/logging.dart';
+import 'package:http/http.dart' as http;
 import 'package:billing_service/src/accounting_year_purchase.dart';
 import 'package:billing_service/src/pawapay_checkout.dart';
+import 'package:billing_service/src/pawapay_catalog_defaults.dart';
 import 'package:billing_service/src/org_country_resolution.dart';
 import 'package:billing_service/src/stripe_checkout.dart';
+import 'package:billing_service/src/referral_pricing.dart';
 
 Set<String> _distinctNonEmptySeatUserIds(License license) {
   final ids = <String>{};
@@ -29,12 +32,25 @@ class BillingService extends BillingServiceBase {
   /// Injectable PawaPay client (tests inject [FakePawapayCheckoutClient]).
   final PawapayCheckoutClient? pawapayClient;
 
+  /// Injectable Stripe HTTP client / secret for tests (MockClient).
+  final http.Client? stripeHttpClient;
+  final String? stripeSecretKeyIfTest;
+
   BillingService(
     this._poolService, {
     this.isTest = false,
     this.userPermissionIfTest,
     this.pawapayClient,
+    this.stripeHttpClient,
+    this.stripeSecretKeyIfTest,
   });
+
+  String? _stripeSecretKey() {
+    if (isTest && stripeSecretKeyIfTest != null) {
+      return stripeSecretKeyIfTest;
+    }
+    return AppEnvironment.stripeSecretKey;
+  }
 
   PawapayCheckoutClient _requirePawapayClient() {
     if (pawapayClient != null) return pawapayClient!;
@@ -61,8 +77,7 @@ class BillingService extends BillingServiceBase {
     }
   }
 
-  static const _referralCommissionPercent = 20;
-  static const _minPayoutCents = 1500; // €15
+  static const _minPayoutCents = kReferralMinPayoutCents;
 
   /// Populate firmId on each LicenseSeat for MongoDB queries.
   License _licenseWithSeatFirmIds(License license, String firmId) {
@@ -129,8 +144,26 @@ class BillingService extends BillingServiceBase {
     return merged;
   }
 
-  int _commissionCents(int amountCents) {
-    return (amountCents * _referralCommissionPercent / 100).round();
+  int _commissionCents(int amountCents) => referrerCommissionCents(amountCents);
+
+  /// Validates referral code for checkout/create; throws GrpcError on failure.
+  Future<void> _assertValidReferralCode({
+    required Db db,
+    required String buyerFirmId,
+    required String referralCode,
+  }) async {
+    final code = referralCode.trim();
+    if (code.isEmpty) return;
+    final referrerDoc = await db
+        .collection(FenceService.firmCollectionName)
+        .findOne(where.eq('referralCode', code));
+    if (referrerDoc == null) {
+      throw GrpcError.invalidArgument('invalid referral code');
+    }
+    final referrerFirmId = referrerDoc['firmId'] as String?;
+    if (referrerFirmId == null || referrerFirmId == buyerFirmId) {
+      throw GrpcError.invalidArgument('cannot use own referral code');
+    }
   }
 
   /// Lookup billing product by Stripe price ID. Returns null if not found or deleted.
@@ -931,7 +964,7 @@ class BillingService extends BillingServiceBase {
     }
     _validateLegalTermsVersionDate(request.legalTermsVersionDate);
 
-    final secretKey = AppEnvironment.stripeSecretKey;
+    final secretKey = _stripeSecretKey();
     if (secretKey == null || secretKey.isEmpty) {
       throw GrpcError.failedPrecondition('Stripe not configured');
     }
@@ -951,10 +984,22 @@ class BillingService extends BillingServiceBase {
       }
     }
 
+    final referralCode = request.referralCode.trim();
+    if (referralCode.isNotEmpty) {
+      await databaseMiddleware<void>(_poolService, (db) async {
+        await _assertValidReferralCode(
+          db: db,
+          buyerFirmId: userPermission.firmId,
+          referralCode: referralCode,
+        );
+      });
+    }
+
     log.logRpcEntry('createCheckoutSession', requestData: {
       'firmId': userPermission.firmId,
       'priceId': request.priceId,
       'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
+      if (referralCode.isNotEmpty) 'referralCode': '***',
       if (isSyscohadaProductId(product.productId))
         'fiscalYear': request.fiscalYear,
     });
@@ -983,6 +1028,8 @@ class BillingService extends BillingServiceBase {
       'firmId': userPermission.firmId,
       'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
       'productKind': isSyscohadaProductId(product.productId) ? 'syscohada' : 'license',
+      // Catalog price for fulfill when checkout uses discounted price_data.
+      'priceId': request.priceId,
     };
     if (isSyscohadaProductId(product.productId)) {
       metadata['fiscalYear'] = request.fiscalYear.toString();
@@ -990,12 +1037,16 @@ class BillingService extends BillingServiceBase {
     if (purchaserEmail != null) {
       metadata['purchaserEmail'] = purchaserEmail;
     }
-    if (request.referralCode.isNotEmpty) {
-      metadata['referralCode'] = request.referralCode;
+    if (referralCode.isNotEmpty) {
+      metadata['referralCode'] = referralCode;
     }
     if (request.creditAppliedCents > 0) {
       metadata['creditAppliedCents'] = request.creditAppliedCents.toString();
     }
+
+    final int? discountedUnitAmount = referralCode.isNotEmpty
+        ? buyerChargeCents(product.amountCents)
+        : null;
 
     try {
       final url = await createStripeCheckoutSession(
@@ -1005,6 +1056,11 @@ class BillingService extends BillingServiceBase {
         cancelUrl: request.cancelUrl,
         metadata: metadata,
         customerId: customerId,
+        unitAmountCents: discountedUnitAmount,
+        currency: product.currency.isNotEmpty ? product.currency : 'eur',
+        stripeProductId: product.stripeProductId,
+        productName: product.productId,
+        httpClient: stripeHttpClient,
       );
       log.logRpcExit('createCheckoutSession');
       return CreateCheckoutSessionResponse()..checkoutUrl = url;
@@ -1026,7 +1082,7 @@ class BillingService extends BillingServiceBase {
     }
     _validateLegalTermsVersionDate(request.legalTermsVersionDate);
 
-    final secretKey = AppEnvironment.stripeSecretKey;
+    final secretKey = _stripeSecretKey();
     if (secretKey == null || secretKey.isEmpty) {
       throw GrpcError.failedPrecondition('Stripe not configured');
     }
@@ -1036,6 +1092,7 @@ class BillingService extends BillingServiceBase {
       sessionInfo = await fetchStripeCheckoutSession(
         sessionId: request.checkoutSessionId,
         stripeSecretKey: secretKey,
+        httpClient: stripeHttpClient,
       );
     } on StripeCheckoutException catch (e) {
       throw GrpcError.notFound('Could not load checkout session: ${e.message}');
@@ -1054,16 +1111,17 @@ class BillingService extends BillingServiceBase {
       );
     }
 
-    if (sessionInfo.priceId.isEmpty) {
+    final catalogPriceId = sessionInfo.catalogPriceId;
+    if (catalogPriceId.isEmpty) {
       throw GrpcError.internal('No price in checkout session');
     }
 
     final product = await databaseMiddleware<BillingProduct?>(
       _poolService,
-      (db) async => _lookupBillingProductByStripePriceId(db, sessionInfo.priceId),
+      (db) async => _lookupBillingProductByStripePriceId(db, catalogPriceId),
     );
     if (product == null) {
-      throw GrpcError.invalidArgument('Unknown price: ${sessionInfo.priceId}');
+      throw GrpcError.invalidArgument('Unknown price: $catalogPriceId');
     }
 
     if (isSyscohadaProductId(product.productId)) {
@@ -1157,6 +1215,17 @@ class BillingService extends BillingServiceBase {
       }
     }
 
+    final referralCode = request.referralCode.trim();
+    if (referralCode.isNotEmpty) {
+      await databaseMiddleware<void>(_poolService, (db) async {
+        await _assertValidReferralCode(
+          db: db,
+          buyerFirmId: userPermission.firmId,
+          referralCode: referralCode,
+        );
+      });
+    }
+
     final client = _requirePawapayClient();
     final checkoutId = generateUuidV4();
 
@@ -1210,8 +1279,8 @@ class BillingService extends BillingServiceBase {
     if (isSyscohadaProductId(product.productId)) {
       metaFields['fiscalYear'] = request.fiscalYear.toString();
     }
-    if (request.referralCode.trim().isNotEmpty) {
-      metaFields['referralCode'] = request.referralCode.trim();
+    if (referralCode.isNotEmpty) {
+      metaFields['referralCode'] = referralCode;
     }
     if (request.creditAppliedCents > 0) {
       metaFields['creditAppliedCents'] = request.creditAppliedCents.toString();
@@ -1220,11 +1289,26 @@ class BillingService extends BillingServiceBase {
       metaFields['purchaserEmail'] = purchaserEmail;
     }
 
+    final catalogAmounts = <String, int>{
+      for (final e in product.pawapayAmounts.entries) e.key: e.value,
+    };
+    if (catalogAmounts.isEmpty) {
+      // Transition: seed via tool/seed_pawapay_amounts.dart — defaults until migrated.
+      catalogAmounts.addAll(defaultPawapayAmountsForProduct(product.productId));
+    }
+    if (catalogAmounts.isEmpty) {
+      throw GrpcError.failedPrecondition(
+        'billing_products.${product.productId} has no pawapayAmounts; run seed_pawapay_amounts.dart',
+      );
+    }
+
     final PawapayAmount amount;
     try {
       amount = buildPawapayAmountForCountry(
         productId: product.productId,
         countryAlpha2Or3: countryAlpha2,
+        pawapayAmounts: catalogAmounts,
+        applyReferralBuyerDiscount: referralCode.isNotEmpty,
       );
     } on ArgumentError catch (e) {
       throw GrpcError.failedPrecondition('${e.message}');

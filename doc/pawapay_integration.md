@@ -170,12 +170,24 @@ sequenceDiagram
 
 ### Catalog / money
 
-- Keep Mongo `billing_products` as source of truth.
-- Stripe prices stay EUR; for PawaPay send **XOF (etc.)** via checkout `amounts[]`
-  and restrict `countries` (from
-  [active configuration](https://docs.pawapay.io/v2/api-reference/toolkit/active-configuration)).
-- Decide FX once: fixed XOF list price vs conversion from `amountCents` EUR.
-- `pawapayProductId` may stay empty or hold an internal SKU — PawaPay has no Stripe Price IDs.
+- Mongo `billing_products` is the **single source of truth**.
+- Stripe: `amountCents` + `currency` (EUR) + `stripePriceId` / `stripeProductId`.
+- PawaPay: **`pawapayAmounts`** map of ISO 4217 → minor units (fixed list prices, **no live FX**), e.g.
+
+```js
+pawapayAmounts: { XOF: 9900, XAF: 9900, CDF: 39900 }  // premium
+```
+
+- Seed / refresh PawaPay amounts without touching Stripe:
+
+```bash
+cd packages/billing_service
+dart run tool/seed_pawapay_amounts.dart "$MONGO_DB_URI"
+```
+
+- `create_stripe_products.dart` also writes `pawapayAmounts` on new rows.
+- `pawapayProductId` may stay empty (internal SKU only). PawaPay has no Stripe Price IDs; amounts are sent on `POST /v2/checkouts`.
+- Referral: buyer 10% discount applies to the **PawaPay catalog amount** charged; referrer 20% commission still uses EUR `amountCents`.
 
 ### `billing_service`
 

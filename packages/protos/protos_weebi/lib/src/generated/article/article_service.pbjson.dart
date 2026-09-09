@@ -43,6 +43,10 @@ const ReadAllRequest$json = {
       '6': '.google.protobuf.Timestamp',
       '10': 'lastFetchTimestampUTC'
     },
+    {'1': 'offset', '3': 3, '4': 1, '5': 5, '10': 'offset'},
+    {'1': 'limit', '3': 4, '4': 1, '5': 5, '10': 'limit'},
+    {'1': 'query', '3': 5, '4': 1, '5': 9, '10': 'query'},
+    {'1': 'statusFilter', '3': 6, '4': 1, '5': 5, '10': 'statusFilter'},
   ],
 };
 
@@ -50,7 +54,9 @@ const ReadAllRequest$json = {
 final $typed_data.Uint8List readAllRequestDescriptor = $convert.base64Decode(
     'Cg5SZWFkQWxsUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkElAKFWxhc3RGZXRjaF'
     'RpbWVzdGFtcFVUQxgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFWxhc3RGZXRj'
-    'aFRpbWVzdGFtcFVUQw==');
+    'aFRpbWVzdGFtcFVUQxIWCgZvZmZzZXQYAyABKAVSBm9mZnNldBIUCgVsaW1pdBgEIAEoBVIFbG'
+    'ltaXQSFAoFcXVlcnkYBSABKAlSBXF1ZXJ5EiIKDHN0YXR1c0ZpbHRlchgGIAEoBVIMc3RhdHVz'
+    'RmlsdGVy');
 
 @$core.Deprecated('Use calibreRequestDescriptor instead')
 const CalibreRequest$json = {
@@ -106,13 +112,19 @@ const CalibresResponse$json = {
       '6': '.weebi.article.CalibrePb',
       '10': 'calibres'
     },
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {'1': 'offset', '3': 3, '4': 1, '5': 5, '10': 'offset'},
+    {'1': 'hasMore', '3': 4, '4': 1, '5': 8, '10': 'hasMore'},
+    {'1': 'batchSize', '3': 5, '4': 1, '5': 5, '10': 'batchSize'},
   ],
 };
 
 /// Descriptor for `CalibresResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List calibresResponseDescriptor = $convert.base64Decode(
     'ChBDYWxpYnJlc1Jlc3BvbnNlEjQKCGNhbGlicmVzGAEgAygLMhgud2VlYmkuYXJ0aWNsZS5DYW'
-    'xpYnJlUGJSCGNhbGlicmVz');
+    'xpYnJlUGJSCGNhbGlicmVzEhQKBXRvdGFsGAIgASgFUgV0b3RhbBIWCgZvZmZzZXQYAyABKAVS'
+    'Bm9mZnNldBIYCgdoYXNNb3JlGAQgASgIUgdoYXNNb3JlEhwKCWJhdGNoU2l6ZRgFIAEoBVIJYm'
+    'F0Y2hTaXpl');
 
 @$core.Deprecated('Use readIdsRequestDescriptor instead')
 const ReadIdsRequest$json = {

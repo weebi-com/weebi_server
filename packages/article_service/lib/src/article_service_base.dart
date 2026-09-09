@@ -25,6 +25,35 @@ abstract class _Helpers {
           .eq('calibreId', request.photo.calibreId);
 }
 
+SelectorBuilder _readAllSelector({
+  required String firmId,
+  required String chainId,
+  required String query,
+  required int statusFilter,
+  required String statusField,
+  required List<String> queryFields,
+}) {
+  final selector = SelectorBuilder()
+      .eq('firmId', firmId)
+      .eq('chainId', chainId);
+  if (statusFilter == 1) {
+    selector.eq(statusField, true);
+  } else if (statusFilter == 2) {
+    selector.eq(statusField, false);
+  }
+  final trimmed = query.trim();
+  if (trimmed.isNotEmpty && queryFields.isNotEmpty) {
+    final escaped = RegExp.escape(trimmed);
+    selector.eq(r'$or', [
+      for (final field in queryFields)
+        {
+          field: {r'$regex': escaped, r'$options': 'i'},
+        },
+    ]);
+  }
+  return selector;
+}
+
 class ArticleService extends ArticleServiceBase {
   final MongoDbPoolService _poolService;
   final WeebiLogger _logger = WeebiLogger.forService('article_service');
@@ -253,27 +282,56 @@ class ArticleService extends ArticleServiceBase {
       _poolService,
       (db) async {
         await _assertOperationalLicense(db, call, userPermission);
+        await assertFreemiumFullDumpAllowed(
+          db,
+          userPermissions: userPermission,
+          authorizationHeader: isTest ? '' : (call?.bearer ?? ''),
+          resource: FreemiumDumpResource.article,
+          isFullDump: isFreemiumFullDump(
+            lastFetchEmpty: !request.lastFetchTimestampUTC.isNotEmpty,
+            limit: request.limit,
+          ),
+        );
         try {
-          final selector = SelectorBuilder()
-              .eq('firmId', userPermission.firmId)
-              .eq('chainId', request.chainId);
+          final collectionArticle = db.collection(collectionArticleName);
+          final selector = _readAllSelector(
+            firmId: userPermission.firmId,
+            chainId: request.chainId,
+            query: request.query,
+            statusFilter: request.statusFilter,
+            statusField: 'calibre.status',
+            queryFields: const [
+              'calibre.title',
+              'calibre.articlesRetail.designation',
+              'calibre.articlesRetail.barcodeEAN',
+            ],
+          );
 
           final bool isDeviceResync = request.lastFetchTimestampUTC.isNotEmpty;
-          final idsSet = <int>{};
-          final collectionArticle = db.collection(collectionArticleName);
-
           if (isDeviceResync) {
-            final documents = await collectionArticle.find(selector).toList();
-            for (final doc in documents) {
-              idsSet.add(doc['calibreId']);
-            }
-
             selector.and(where.gte('lastTouchTimestampUTC',
                 request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
           }
+
+          const maxPageSize = 100;
+          final paged = request.limit > 0;
+          final pageSize =
+              request.limit > maxPageSize ? maxPageSize : request.limit;
+
+          final total = paged ? await collectionArticle.count(selector) : 0;
+
+          selector.sortBy('calibreId');
+          if (paged) {
+            selector.skip(request.offset).limit(pageSize);
+          }
+
           final list = await collectionArticle.find(selector).toList();
           if (list.isEmpty) {
-            return CalibresResponse();
+            return CalibresResponse()
+              ..total = total
+              ..offset = request.offset
+              ..hasMore = false
+              ..batchSize = 0;
           }
           final calibres = <CalibrePb>[];
           for (final e in list) {
@@ -281,11 +339,17 @@ class ArticleService extends ArticleServiceBase {
               ..mergeFromProto3Json(e, ignoreUnknownFields: true);
             calibres.add(calibreMongo.calibre);
           }
-          final calibresBis = CalibresResponse();
-          calibresBis.calibres
+          final response = CalibresResponse();
+          response.calibres
             ..clear()
             ..addAll(calibres);
-          return calibresBis;
+          if (paged) {
+            response.total = total;
+            response.offset = request.offset;
+            response.batchSize = calibres.length;
+            response.hasMore = (request.offset + calibres.length) < total;
+          }
+          return response;
         } on GrpcError catch (e) {
           log.logRpcError('readAll', e);
           rethrow;
@@ -965,6 +1029,18 @@ class ArticleService extends ArticleServiceBase {
       _poolService,
       (db) async {
         await _assertOperationalLicense(db, call, userPermission);
+        await assertFreemiumFullDumpAllowed(
+          db,
+          userPermissions: userPermission,
+          authorizationHeader: isTest ? '' : (call.bearer),
+          resource: FreemiumDumpResource.articlePhoto,
+          isFullDump: isFreemiumFullDump(
+            lastFetchEmpty: !request.lastFetchTimestampUTC.isNotEmpty,
+            limit: request.limit,
+            offset: request.offset,
+            alwaysPaged: true,
+          ),
+        );
         final collectionPhoto = db.collection(collectionPhotoName);
         try {
           final selector = SelectorBuilder()

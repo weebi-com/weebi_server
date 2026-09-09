@@ -30,6 +30,10 @@ const ReadAllTicketsRequest$json = {
       '10': 'lastFetchTimestampUTC'
     },
     {'1': 'isDeleted', '3': 5, '4': 1, '5': 8, '10': 'isDeleted'},
+    {'1': 'offset', '3': 6, '4': 1, '5': 5, '10': 'offset'},
+    {'1': 'limit', '3': 7, '4': 1, '5': 5, '10': 'limit'},
+    {'1': 'query', '3': 8, '4': 1, '5': 9, '10': 'query'},
+    {'1': 'statusFilter', '3': 9, '4': 1, '5': 5, '10': 'statusFilter'},
   ],
   '9': [
     {'1': 1, '2': 2},
@@ -41,7 +45,9 @@ final $typed_data.Uint8List readAllTicketsRequestDescriptor = $convert.base64Dec
     'ChVSZWFkQWxsVGlja2V0c1JlcXVlc3QSGAoHY2hhaW5JZBgCIAEoCVIHY2hhaW5JZBIeCgpib3'
     'V0aXF1ZUlkGAMgASgJUgpib3V0aXF1ZUlkElAKFWxhc3RGZXRjaFRpbWVzdGFtcFVUQxgEIAEo'
     'CzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBSFWxhc3RGZXRjaFRpbWVzdGFtcFVUQxIcCg'
-    'lpc0RlbGV0ZWQYBSABKAhSCWlzRGVsZXRlZEoECAEQAg==');
+    'lpc0RlbGV0ZWQYBSABKAhSCWlzRGVsZXRlZBIWCgZvZmZzZXQYBiABKAVSBm9mZnNldBIUCgVs'
+    'aW1pdBgHIAEoBVIFbGltaXQSFAoFcXVlcnkYCCABKAlSBXF1ZXJ5EiIKDHN0YXR1c0ZpbHRlch'
+    'gJIAEoBVIMc3RhdHVzRmlsdGVySgQIARAC');
 
 @$core.Deprecated('Use findTicketRequestDescriptor instead')
 const FindTicketRequest$json = {
@@ -114,10 +120,16 @@ const TicketsResponse$json = {
       '6': '.weebi.ticket.TicketPb',
       '10': 'tickets'
     },
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {'1': 'offset', '3': 3, '4': 1, '5': 5, '10': 'offset'},
+    {'1': 'hasMore', '3': 4, '4': 1, '5': 8, '10': 'hasMore'},
+    {'1': 'batchSize', '3': 5, '4': 1, '5': 5, '10': 'batchSize'},
   ],
 };
 
 /// Descriptor for `TicketsResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List ticketsResponseDescriptor = $convert.base64Decode(
     'Cg9UaWNrZXRzUmVzcG9uc2USMAoHdGlja2V0cxgBIAMoCzIWLndlZWJpLnRpY2tldC5UaWNrZX'
-    'RQYlIHdGlja2V0cw==');
+    'RQYlIHdGlja2V0cxIUCgV0b3RhbBgCIAEoBVIFdG90YWwSFgoGb2Zmc2V0GAMgASgFUgZvZmZz'
+    'ZXQSGAoHaGFzTW9yZRgEIAEoCFIHaGFzTW9yZRIcCgliYXRjaFNpemUYBSABKAVSCWJhdGNoU2'
+    'l6ZQ==');
