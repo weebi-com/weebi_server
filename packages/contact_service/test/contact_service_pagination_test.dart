@@ -2,7 +2,6 @@ import 'package:test/test.dart';
 
 import 'package:contact_service/contact_service.dart';
 import 'package:fence_service/fence_service.dart';
-import 'package:fence_service/mongo_dart.dart' hide Timestamp;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';

@@ -1,6 +1,7 @@
 /// Weebi firm / chain / boutique Mongo helpers for resolving ISO 3166-1 alpha-2.
 ///
 /// ISO country ↔ currency tables live in `package:country_currency_iso`.
+library org_country_resolution;
 
 String? _alpha2FromCountryNode(dynamic country) {
   if (country is! Map) return null;

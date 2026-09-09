@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:billing_service/billing_service.dart';
 import 'package:fence_service/fence_service.dart';
-import 'package:fence_service/grpc.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/protos_weebi.dart';
