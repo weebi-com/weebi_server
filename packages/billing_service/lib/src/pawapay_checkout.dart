@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:country_currency_iso/country_currency_iso.dart';
 import 'package:http/http.dart' as http;
+import 'package:billing_service/src/referral_pricing.dart';
+import 'package:billing_service/src/pawapay_catalog_defaults.dart';
 
 /// ISO 4217 currencies we can price for v1 licence checkouts.
 const Set<String> kPawapayFcfaCurrencies = kFcfaCurrencyCodes;
@@ -251,39 +253,59 @@ String generateUuidV4() {
 }
 
 /// Marketing FCFA list prices (same numeric for XOF / XAF in v1).
+@Deprecated('Use pawapayAmountFromCatalog with billing_products.pawapayAmounts')
 int pawapayXofAmountForProduct(String productId) {
   return pawapayAmountForProduct(productId: productId, currency: 'XOF');
 }
 
-/// Fixed list prices by product and ISO 4217 (no FX at checkout).
+/// Resolves catalog list price from Mongo [pawapayAmounts] (ISO 4217 → minor units).
+///
+/// Throws [ArgumentError] when the currency is missing or non-positive.
+int pawapayAmountFromCatalog({
+  required Map<String, int> pawapayAmounts,
+  required String currency,
+  String productId = '',
+}) {
+  final cur = currency.trim().toUpperCase();
+  final amount = pawapayAmounts[cur] ?? pawapayAmounts[cur.toLowerCase()];
+  if (amount == null || amount <= 0) {
+    throw ArgumentError.value(
+      productId.isEmpty ? cur : '$productId/$cur',
+      'pawapayAmounts',
+      'no $cur list price in billing_products.pawapayAmounts',
+    );
+  }
+  return amount;
+}
+
+/// Fixed list prices by product and ISO 4217 (legacy hardcoded table).
+///
+/// Prefer [pawapayAmountFromCatalog] with Mongo `pawapayAmounts`.
+@Deprecated('Use pawapayAmountFromCatalog / billing_products.pawapayAmounts')
 int pawapayAmountForProduct({
   required String productId,
   required String currency,
 }) {
-  final id = productId.trim().toLowerCase();
-  final cur = currency.trim().toUpperCase();
-  if (kPawapayFcfaCurrencies.contains(cur)) {
-    if (id == 'syscohada') return 1900;
-    if (id == 'premium') return 9900;
-  }
-  if (cur == kPawapayCdfCurrency) {
-    if (id == 'syscohada') return 7900;
-    if (id == 'premium') return 39900;
-  }
-  throw ArgumentError.value(
-    productId,
-    'productId',
-    'no $cur list price configured',
+  final defaults = defaultPawapayAmountsForProduct(productId);
+  return pawapayAmountFromCatalog(
+    pawapayAmounts: defaults,
+    currency: currency,
+    productId: productId,
   );
 }
 
 /// Builds a single-country PawaPay `amounts` entry from Weebi alpha-2 (or alpha-3).
 ///
+/// [pawapayAmounts] comes from `billing_products` (ISO 4217 → minor units).
+/// When [applyReferralBuyerDiscount] is true, charges catalog − buyer discount %.
+///
 /// Throws [ArgumentError] when the country cannot be mapped, currency is missing,
-/// or v1 pricing does not support that currency.
+/// or catalog has no amount for that currency.
 PawapayAmount buildPawapayAmountForCountry({
   required String productId,
   required String countryAlpha2Or3,
+  Map<String, int>? pawapayAmounts,
+  bool applyReferralBuyerDiscount = false,
 }) {
   final iso3 = iso2ToIso3(countryAlpha2Or3);
   if (iso3 == null) {
@@ -308,10 +330,20 @@ PawapayAmount buildPawapayAmountForCountry({
       'PawaPay v1 licence checkout only supports XOF/XAF/CDF (got $currency)',
     );
   }
-  final amount =
-      pawapayAmountForProduct(productId: productId, currency: currency)
-          .toString();
-  return PawapayAmount(country: iso3, currency: currency, amount: amount);
+  final catalogMap = pawapayAmounts ?? defaultPawapayAmountsForProduct(productId);
+  final catalog = pawapayAmountFromCatalog(
+    pawapayAmounts: catalogMap,
+    currency: currency,
+    productId: productId,
+  );
+  final amount = applyReferralBuyerDiscount
+      ? buyerChargeCents(catalog)
+      : catalog;
+  return PawapayAmount(
+    country: iso3,
+    currency: currency,
+    amount: amount.toString(),
+  );
 }
 
 /// @Deprecated Use [buildPawapayAmountForCountry] with a single resolved country.

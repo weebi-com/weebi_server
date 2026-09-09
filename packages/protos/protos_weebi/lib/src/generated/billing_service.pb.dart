@@ -1455,6 +1455,7 @@ class BillingProduct extends $pb.GeneratedMessage {
     $4.Timestamp? updateDateUTC,
     $4.Timestamp? deletionDateUTC,
     $core.bool? isDeleted,
+    $core.Iterable<$core.MapEntry<$core.String, $core.int>>? pawapayAmounts,
   }) {
     final result = create();
     if (productId != null) result.productId = productId;
@@ -1469,6 +1470,8 @@ class BillingProduct extends $pb.GeneratedMessage {
     if (updateDateUTC != null) result.updateDateUTC = updateDateUTC;
     if (deletionDateUTC != null) result.deletionDateUTC = deletionDateUTC;
     if (isDeleted != null) result.isDeleted = isDeleted;
+    if (pawapayAmounts != null)
+      result.pawapayAmounts.addEntries(pawapayAmounts);
     return result;
   }
 
@@ -1504,6 +1507,12 @@ class BillingProduct extends $pb.GeneratedMessage {
     ..aOM<$4.Timestamp>(11, _omitFieldNames ? '' : 'deletionDateUTC',
         protoName: 'deletionDateUTC', subBuilder: $4.Timestamp.create)
     ..aOB(12, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
+    ..m<$core.String, $core.int>(13, _omitFieldNames ? '' : 'pawapayAmounts',
+        protoName: 'pawapayAmounts',
+        entryClassName: 'BillingProduct.PawapayAmountsEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.O3,
+        packageName: const $pb.PackageName('weebi.billing.service'))
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1639,6 +1648,11 @@ class BillingProduct extends $pb.GeneratedMessage {
   $core.bool hasIsDeleted() => $_has(11);
   @$pb.TagNumber(12)
   void clearIsDeleted() => $_clearField(12);
+
+  /// / Fixed PawaPay list prices by ISO 4217 (minor units): e.g. XOF→9900, CDF→39900.
+  /// / Source of truth for mobile-money checkout (not derived from EUR amountCents).
+  @$pb.TagNumber(13)
+  $pb.PbMap<$core.String, $core.int> get pawapayAmounts => $_getMap(12);
 }
 
 class ReadBillingProductsResponse extends $pb.GeneratedMessage {

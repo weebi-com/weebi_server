@@ -18,6 +18,54 @@ abstract class _Helpers {
           .eq('creationDate', creationDate);
 }
 
+void _applyStatusAndQuery({
+  required SelectorBuilder selector,
+  required int statusFilter,
+  required String query,
+}) {
+  if (statusFilter == 1) {
+    selector.eq('ticket.status', true);
+  } else if (statusFilter == 2) {
+    selector.eq('ticket.status', false);
+  }
+  final trimmed = query.trim();
+  if (trimmed.isEmpty) return;
+  final escaped = RegExp.escape(trimmed);
+  final orClauses = <Map<String, dynamic>>[
+    {
+      'ticket.comment': {r'$regex': escaped, r'$options': 'i'},
+    },
+    {
+      'ticket.contactFirstName': {r'$regex': escaped, r'$options': 'i'},
+    },
+    {
+      'ticket.contactLastName': {r'$regex': escaped, r'$options': 'i'},
+    },
+    {
+      'ticket.contactPhone': {r'$regex': escaped, r'$options': 'i'},
+    },
+    {
+      'ticket.contactMail': {r'$regex': escaped, r'$options': 'i'},
+    },
+    {
+      'ticket.counterfoil.userName': {r'$regex': escaped, r'$options': 'i'},
+    },
+    {
+      'ticket.items.articleRetail.designation': {
+        r'$regex': escaped,
+        r'$options': 'i',
+      },
+    },
+  ];
+  final asInt = int.tryParse(trimmed);
+  if (asInt != null) {
+    orClauses.add({'nonUniqueId': asInt});
+    orClauses.add({'contactId': asInt});
+    orClauses.add({'ticket.id': asInt});
+  }
+  selector.and(SelectorBuilder().eq(r'$or', orClauses));
+}
+
 class TicketService extends TicketServiceBase {
   final MongoDbPoolService _poolService;
   final WeebiLogger _logger = WeebiLogger.forService('ticket_service');
@@ -192,6 +240,16 @@ class TicketService extends TicketServiceBase {
 
     return databaseMiddleware<TicketsResponse>(_poolService, (db) async {
       await _assertOperationalLicense(db, call, userPermission);
+      await assertFreemiumFullDumpAllowed(
+        db,
+        userPermissions: userPermission,
+        authorizationHeader: isTest ? '' : (call?.bearer ?? ''),
+        resource: FreemiumDumpResource.ticket,
+        isFullDump: isFreemiumFullDump(
+          lastFetchEmpty: !request.lastFetchTimestampUTC.isNotEmpty,
+          limit: request.limit,
+        ),
+      );
 
       final selector = where
           .eq('firmId', userPermission.firmId)
@@ -249,12 +307,34 @@ class TicketService extends TicketServiceBase {
             .and(where.eq('isDeleted', false).or(where.eq('isDeleted', null)));
       }
 
+      _applyStatusAndQuery(
+        selector: selector,
+        statusFilter: request.statusFilter,
+        query: request.query,
+      );
+
       final collection = db.collection(collectionName);
 
       try {
+        const maxPageSize = 100;
+        final paged = request.limit > 0;
+        final pageSize =
+            request.limit > maxPageSize ? maxPageSize : request.limit;
+
+        final total = paged ? await collection.count(selector) : 0;
+
+        selector.sortBy('ticket.creationDate', descending: true);
+        if (paged) {
+          selector.skip(request.offset).limit(pageSize);
+        }
+
         final result = await collection.find(selector).toList();
         if (result.isEmpty) {
-          return TicketsResponse.create();
+          return TicketsResponse()
+            ..total = total
+            ..offset = request.offset
+            ..hasMore = false
+            ..batchSize = 0;
         }
         final tickets = <TicketPb>[];
         for (final t in result) {
@@ -266,8 +346,15 @@ class TicketService extends TicketServiceBase {
         ticketsBis.tickets
           ..clear()
           ..addAll(tickets);
+        if (paged) {
+          ticketsBis.total = total;
+          ticketsBis.offset = request.offset;
+          ticketsBis.batchSize = tickets.length;
+          ticketsBis.hasMore = (request.offset + tickets.length) < total;
+        }
         log.logRpcExit('readAll', resultData: {
           'ticketCount': tickets.length,
+          if (paged) 'total': total,
         });
         return ticketsBis;
       } on GrpcError catch (e) {

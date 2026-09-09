@@ -65,6 +65,10 @@ const ReadAllContactsRequest$json = {
       '6': '.google.protobuf.Timestamp',
       '10': 'lastFetchTimestampUTC'
     },
+    {'1': 'offset', '3': 3, '4': 1, '5': 5, '10': 'offset'},
+    {'1': 'limit', '3': 4, '4': 1, '5': 5, '10': 'limit'},
+    {'1': 'query', '3': 5, '4': 1, '5': 9, '10': 'query'},
+    {'1': 'statusFilter', '3': 6, '4': 1, '5': 5, '10': 'statusFilter'},
   ],
 };
 
@@ -72,7 +76,9 @@ const ReadAllContactsRequest$json = {
 final $typed_data.Uint8List readAllContactsRequestDescriptor = $convert.base64Decode(
     'ChZSZWFkQWxsQ29udGFjdHNSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQSUAoVbG'
     'FzdEZldGNoVGltZXN0YW1wVVRDGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcFIV'
-    'bGFzdEZldGNoVGltZXN0YW1wVVRD');
+    'bGFzdEZldGNoVGltZXN0YW1wVVRDEhYKBm9mZnNldBgDIAEoBVIGb2Zmc2V0EhQKBWxpbWl0GA'
+    'QgASgFUgVsaW1pdBIUCgVxdWVyeRgFIAEoCVIFcXVlcnkSIgoMc3RhdHVzRmlsdGVyGAYgASgF'
+    'UgxzdGF0dXNGaWx0ZXI=');
 
 @$core.Deprecated('Use contactRequestDescriptor instead')
 const ContactRequest$json = {
@@ -128,13 +134,19 @@ const ContactsResponse$json = {
       '6': '.weebi.contact.ContactPb',
       '10': 'contacts'
     },
+    {'1': 'total', '3': 2, '4': 1, '5': 5, '10': 'total'},
+    {'1': 'offset', '3': 3, '4': 1, '5': 5, '10': 'offset'},
+    {'1': 'hasMore', '3': 4, '4': 1, '5': 8, '10': 'hasMore'},
+    {'1': 'batchSize', '3': 5, '4': 1, '5': 5, '10': 'batchSize'},
   ],
 };
 
 /// Descriptor for `ContactsResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactsResponseDescriptor = $convert.base64Decode(
     'ChBDb250YWN0c1Jlc3BvbnNlEjQKCGNvbnRhY3RzGAEgAygLMhgud2VlYmkuY29udGFjdC5Db2'
-    '50YWN0UGJSCGNvbnRhY3Rz');
+    '50YWN0UGJSCGNvbnRhY3RzEhQKBXRvdGFsGAIgASgFUgV0b3RhbBIWCgZvZmZzZXQYAyABKAVS'
+    'Bm9mZnNldBIYCgdoYXNNb3JlGAQgASgIUgdoYXNNb3JlEhwKCWJhdGNoU2l6ZRgFIAEoBVIJYm'
+    'F0Y2hTaXpl');
 
 @$core.Deprecated('Use readContactsIdsRequestDescriptor instead')
 const ReadContactsIdsRequest$json = {

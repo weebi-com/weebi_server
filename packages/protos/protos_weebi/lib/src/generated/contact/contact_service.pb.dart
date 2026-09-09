@@ -166,11 +166,19 @@ class ReadAllContactsRequest extends $pb.GeneratedMessage {
   factory ReadAllContactsRequest({
     $core.String? chainId,
     $5.Timestamp? lastFetchTimestampUTC,
+    $core.int? offset,
+    $core.int? limit,
+    $core.String? query,
+    $core.int? statusFilter,
   }) {
     final result = create();
     if (chainId != null) result.chainId = chainId;
     if (lastFetchTimestampUTC != null)
       result.lastFetchTimestampUTC = lastFetchTimestampUTC;
+    if (offset != null) result.offset = offset;
+    if (limit != null) result.limit = limit;
+    if (query != null) result.query = query;
+    if (statusFilter != null) result.statusFilter = statusFilter;
     return result;
   }
 
@@ -191,6 +199,10 @@ class ReadAllContactsRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
     ..aOM<$5.Timestamp>(2, _omitFieldNames ? '' : 'lastFetchTimestampUTC',
         protoName: 'lastFetchTimestampUTC', subBuilder: $5.Timestamp.create)
+    ..aI(3, _omitFieldNames ? '' : 'offset')
+    ..aI(4, _omitFieldNames ? '' : 'limit')
+    ..aOS(5, _omitFieldNames ? '' : 'query')
+    ..aI(6, _omitFieldNames ? '' : 'statusFilter', protoName: 'statusFilter')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -233,6 +245,45 @@ class ReadAllContactsRequest extends $pb.GeneratedMessage {
   void clearLastFetchTimestampUTC() => $_clearField(2);
   @$pb.TagNumber(2)
   $5.Timestamp ensureLastFetchTimestampUTC() => $_ensure(1);
+
+  /// Portal pagination. limit == 0 means full dump (weebi_app sync).
+  @$pb.TagNumber(3)
+  $core.int get offset => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set offset($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasOffset() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOffset() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get limit => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set limit($core.int value) => $_setSignedInt32(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasLimit() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLimit() => $_clearField(4);
+
+  /// Case-insensitive match on firstName, lastName, mail, phone.number.
+  @$pb.TagNumber(5)
+  $core.String get query => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set query($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasQuery() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearQuery() => $_clearField(5);
+
+  /// 0 = all, 1 = active only, 2 = inactive only
+  @$pb.TagNumber(6)
+  $core.int get statusFilter => $_getIZ(5);
+  @$pb.TagNumber(6)
+  set statusFilter($core.int value) => $_setSignedInt32(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasStatusFilter() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearStatusFilter() => $_clearField(6);
 }
 
 class ContactRequest extends $pb.GeneratedMessage {
@@ -370,9 +421,17 @@ class ContactsRequest extends $pb.GeneratedMessage {
 class ContactsResponse extends $pb.GeneratedMessage {
   factory ContactsResponse({
     $core.Iterable<$2.ContactPb>? contacts,
+    $core.int? total,
+    $core.int? offset,
+    $core.bool? hasMore,
+    $core.int? batchSize,
   }) {
     final result = create();
     if (contacts != null) result.contacts.addAll(contacts);
+    if (total != null) result.total = total;
+    if (offset != null) result.offset = offset;
+    if (hasMore != null) result.hasMore = hasMore;
+    if (batchSize != null) result.batchSize = batchSize;
     return result;
   }
 
@@ -392,6 +451,10 @@ class ContactsResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..pPM<$2.ContactPb>(1, _omitFieldNames ? '' : 'contacts',
         subBuilder: $2.ContactPb.create)
+    ..aI(2, _omitFieldNames ? '' : 'total')
+    ..aI(3, _omitFieldNames ? '' : 'offset')
+    ..aOB(4, _omitFieldNames ? '' : 'hasMore', protoName: 'hasMore')
+    ..aI(5, _omitFieldNames ? '' : 'batchSize', protoName: 'batchSize')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -415,6 +478,42 @@ class ContactsResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $pb.PbList<$2.ContactPb> get contacts => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.int get total => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set total($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasTotal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTotal() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get offset => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set offset($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasOffset() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOffset() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get hasMore => $_getBF(3);
+  @$pb.TagNumber(4)
+  set hasMore($core.bool value) => $_setBool(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasHasMore() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearHasMore() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get batchSize => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set batchSize($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasBatchSize() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearBatchSize() => $_clearField(5);
 }
 
 class ReadContactsIdsRequest extends $pb.GeneratedMessage {
