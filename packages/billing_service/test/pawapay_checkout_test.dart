@@ -6,14 +6,44 @@ import 'package:http/testing.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('pawapayXofAmountForProduct', () {
-    test('maps premium and syscohada to marketing FCFA amounts', () {
-      expect(pawapayXofAmountForProduct('premium'), 9900);
-      expect(pawapayXofAmountForProduct('syscohada'), 1900);
+  group('pawapayAmountFromCatalog', () {
+    test('reads XOF/CDF from map', () {
+      expect(
+        pawapayAmountFromCatalog(
+          pawapayAmounts: {'XOF': 9900, 'CDF': 39900},
+          currency: 'xof',
+        ),
+        9900,
+      );
+      expect(
+        pawapayAmountFromCatalog(
+          pawapayAmounts: {'XOF': 9900, 'CDF': 39900},
+          currency: 'CDF',
+        ),
+        39900,
+      );
     });
 
-    test('rejects unknown products', () {
-      expect(() => pawapayXofAmountForProduct('entreprise'), throwsArgumentError);
+    test('rejects missing currency', () {
+      expect(
+        () => pawapayAmountFromCatalog(
+          pawapayAmounts: {'XOF': 9900},
+          currency: 'CDF',
+          productId: 'premium',
+        ),
+        throwsArgumentError,
+      );
+    });
+  });
+
+  group('buildPawapayAmountForCountry with catalog map', () {
+    test('uses Mongo amounts not hardcoded defaults when provided', () {
+      final a = buildPawapayAmountForCountry(
+        productId: 'premium',
+        countryAlpha2Or3: 'SN',
+        pawapayAmounts: {'XOF': 8800, 'XAF': 8800},
+      );
+      expect(a.amount, '8800');
     });
   });
 
@@ -221,6 +251,16 @@ void main() {
       expect(a.country, 'COD');
       expect(a.currency, 'CDF');
       expect(a.amount, '39900');
+    });
+
+    test('applies 10% buyer discount when requested', () {
+      final a = buildPawapayAmountForCountry(
+        productId: 'premium',
+        countryAlpha2Or3: 'SN',
+        applyReferralBuyerDiscount: true,
+      );
+      expect(a.amount, buyerChargeCents(9900).toString());
+      expect(a.amount, '8910');
     });
 
     test('buildPawapayAmountForCountry prices DRC syscohada in CDF', () {

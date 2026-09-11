@@ -1925,6 +1925,7 @@ class FenceService extends FenceServiceBase {
       name: request.name,
       status: true,
       creationDateUTC: nowProtoUTC,
+      referralCode: firmId,
     )..currency = defaultCurrencyCode;
 
     return databaseMiddleware<CreateFirmResponse>(_poolService, (db) async {

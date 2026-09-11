@@ -112,10 +112,13 @@ void main(List<String> args) async {
       ..creationDateUTC = now.timestampProto
       ..updateDateUTC = now.timestampProto
       ..isDeleted = false;
+    billingProduct.pawapayAmounts
+        .addAll(defaultPawapayAmountsForProduct(productId));
 
     final doc = billingProduct.toProto3Json() as Map<String, dynamic>;
     await collection.insertOne(doc);
     print('  Inserted into billing_products');
+    print('  pawapayAmounts=${billingProduct.pawapayAmounts}');
   }
 
   await db.close();

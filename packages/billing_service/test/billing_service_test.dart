@@ -2,7 +2,10 @@ import 'package:fence_service/grpc.dart' show GrpcError;
 import 'package:fence_service/mongo_pool.dart';
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:test/test.dart';
+import 'dart:convert';
 
 import 'package:billing_service/billing_service.dart';
 import 'package:fence_service/fence_service.dart';
@@ -31,7 +34,7 @@ void main() {
     // Seed billing_products for referral commission lookup
     final nowIso = DateTime.now().toUtc().toIso8601String();
     final billingProducts = [
-      {'productId': 'premium', 'licensePlan': 2, 'maxUsers': 1, 'amountCents': 1400, 'currency': 'eur', 'stripeProductId': 'prod_premium', 'stripePriceId': 'price_premium', 'pawapayProductId': '', 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
+      {'productId': 'premium', 'licensePlan': 2, 'maxUsers': 1, 'amountCents': 1400, 'currency': 'eur', 'stripeProductId': 'prod_premium', 'stripePriceId': 'price_premium', 'pawapayProductId': '', 'pawapayAmounts': defaultPawapayAmountsForProduct('premium'), 'creationDateUTC': nowIso, 'updateDateUTC': nowIso, 'isDeleted': false},
     ];
     await db.collection(BillingService.billingProductsCollectionName).insertMany(billingProducts);
 
@@ -405,9 +408,6 @@ void main() {
     });
   });
 
-  
-  // TODO: add test for getReferralInfo with referral code when ready, skipping for now
-/* 
   group('createLicense with referral', () {
     test('rejects invalid referral code', () async {
       final license = License(
@@ -454,36 +454,6 @@ void main() {
       }
     });
 
-    test('deducts creditAppliedCents from buyer when applying referral credit',
-        () async {
-      final db = await poolService.acquire();
-      await db.collection(FenceService.firmCollectionName).updateOne(
-        where.eq('firmId', firmId),
-        ModifierBuilder().set('referralCreditBalanceCents', 500),
-      );
-      poolService.release(db);
-
-      final license = License(
-        licenseId: 'license-credit-applied-001',
-        licensePlan: LicensePlan.ENTERPRISE,
-        providerProductId: 'prod_starter',
-        providerPriceId: 'price_starter',
-        maxUsers: 1,
-        validFrom: DateTime.now().toUtc().timestampProto,
-      );
-
-      await billingService.createLicense(
-        null,
-        CreateLicenseRequest(license: license, creditAppliedCents: 300),
-      );
-
-      final db3 = await poolService.acquire();
-      final firmDoc =
-          await db3.collection(FenceService.firmCollectionName).findOne(where.eq('firmId', firmId));
-      poolService.release(db3);
-      expect((firmDoc!['referralCreditBalanceCents'] as num?)?.toInt(), 200);
-    });
-
     test('credits referrer when valid referral code used', () async {
       final referrerFirmId = 'referrer-firm-001';
       final db = await poolService.acquire();
@@ -501,9 +471,9 @@ void main() {
       final license = License(
         licenseId: 'license-referral-001',
         licensePlan: LicensePlan.PREMIUM,
-        providerProductId: 'prod_boutique',
-        providerPriceId: 'price_boutique',
-        maxUsers: 3,
+        providerProductId: 'prod_premium',
+        providerPriceId: 'price_premium',
+        maxUsers: 1,
         validFrom: DateTime.now().toUtc().timestampProto,
       );
 
@@ -519,7 +489,182 @@ void main() {
           .collection(FenceService.firmCollectionName)
           .findOne(where.eq('firmId', referrerFirmId));
       poolService.release(db2);
-      expect((refDoc!['referralCreditBalanceCents'] as num?)?.toInt(), 580);
+      // PREMIUM catalog 1400 × 20% = 280
+      expect((refDoc!['referralCreditBalanceCents'] as num?)?.toInt(), 280);
+    });
+  });
+
+  group('createCheckoutSession referral validation', () {
+    late BillingService billingWithStripe;
+    late List<http.Request> stripeRequests;
+
+    setUp(() {
+      stripeRequests = [];
+      billingWithStripe = BillingService(
+        poolService,
+        isTest: true,
+        userPermissionIfTest: Dummy.adminPermission,
+        stripeSecretKeyIfTest: 'sk_test_fake',
+        stripeHttpClient: MockClient((request) async {
+          stripeRequests.add(request);
+          return http.Response(
+            jsonEncode({
+              'id': 'cs_test_ref',
+              'url': 'https://checkout.stripe.com/c/pay/cs_test_ref',
+            }),
+            200,
+          );
+        }),
+      );
+    });
+
+    test('rejects invalid referral before Stripe call', () async {
+      try {
+        await billingWithStripe.createCheckoutSession(
+          null,
+          CreateCheckoutSessionRequest(
+            priceId: 'price_premium',
+            successUrl: 'https://ok',
+            cancelUrl: 'https://cancel',
+            legalTermsVersionDate: '2026-05-01',
+            referralCode: 'no-such-referrer',
+          ),
+        );
+        fail('Expected invalidArgument');
+      } on GrpcError catch (e) {
+        expect(e.code, 3);
+        expect(e.message, contains('invalid referral'));
+      }
+      expect(stripeRequests, isEmpty);
+    });
+
+    test('rejects self-referral before Stripe call', () async {
+      final own = await billingService.getReferralInfo(null, Empty());
+      try {
+        await billingWithStripe.createCheckoutSession(
+          null,
+          CreateCheckoutSessionRequest(
+            priceId: 'price_premium',
+            successUrl: 'https://ok',
+            cancelUrl: 'https://cancel',
+            legalTermsVersionDate: '2026-05-01',
+            referralCode: own.referralCode,
+          ),
+        );
+        fail('Expected invalidArgument');
+      } on GrpcError catch (e) {
+        expect(e.code, 3);
+        expect(e.message, contains('own referral'));
+      }
+      expect(stripeRequests, isEmpty);
+    });
+
+    test('accepts firmId as referral code when referralCode field is missing',
+        () async {
+      final referrerFirmId = 'referrer-firmid-only-001';
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).insertOne({
+        'firmId': referrerFirmId,
+        'name': 'No Code Field',
+        'status': true,
+        'creationDateUTC': DateTime.now().toUtc(),
+        'licenses': [],
+      });
+      poolService.release(db);
+
+      final resp = await billingWithStripe.createCheckoutSession(
+        null,
+        CreateCheckoutSessionRequest(
+          priceId: 'price_premium',
+          successUrl: 'https://ok',
+          cancelUrl: 'https://cancel',
+          legalTermsVersionDate: '2026-05-01',
+          referralCode: referrerFirmId,
+        ),
+      );
+      expect(resp.checkoutUrl, isNotEmpty);
+    });
+
+    test('applies 10% discount and keeps referral metadata', () async {
+      final referrerFirmId = 'referrer-checkout-001';
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).insertOne({
+        'firmId': referrerFirmId,
+        'name': 'Checkout Referrer',
+        'status': true,
+        'creationDateUTC': DateTime.now().toUtc(),
+        'licenses': [],
+        'referralCode': referrerFirmId,
+        'referralCreditBalanceCents': 0,
+      });
+      poolService.release(db);
+
+      final resp = await billingWithStripe.createCheckoutSession(
+        null,
+        CreateCheckoutSessionRequest(
+          priceId: 'price_premium',
+          successUrl: 'https://ok',
+          cancelUrl: 'https://cancel',
+          legalTermsVersionDate: '2026-05-01',
+          referralCode: referrerFirmId,
+        ),
+      );
+
+      expect(resp.checkoutUrl, isNotEmpty);
+      expect(stripeRequests, hasLength(1));
+      final body = stripeRequests.first.body;
+      expect(body.contains('unit_amount%5D=1260') || body.contains('unit_amount]=1260'), isTrue);
+      expect(body, contains('referralCode%5D=$referrerFirmId'));
+      expect(body, contains('priceId%5D=price_premium'));
+    });
+
+    test('lowers Stripe charge by Weebi credit', () async {
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).updateOne(
+        where.eq('firmId', firmId),
+        ModifierBuilder().set('referralCreditBalanceCents', 400),
+      );
+      poolService.release(db);
+
+      await billingWithStripe.createCheckoutSession(
+        null,
+        CreateCheckoutSessionRequest(
+          priceId: 'price_premium',
+          successUrl: 'https://ok?success=true&session_id={CHECKOUT_SESSION_ID}',
+          cancelUrl: 'https://cancel',
+          legalTermsVersionDate: '2026-05-01',
+          creditAppliedCents: 400,
+        ),
+      );
+      final body = stripeRequests.last.body;
+      expect(
+        body.contains('unit_amount%5D=1000') || body.contains('unit_amount]=1000'),
+        isTrue,
+      );
+    });
+
+    test('fulfills with credit when charge is zero without Stripe', () async {
+      stripeRequests.clear();
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).updateOne(
+        where.eq('firmId', firmId),
+        ModifierBuilder().set('referralCreditBalanceCents', 5000),
+      );
+      poolService.release(db);
+
+      final resp = await billingWithStripe.createCheckoutSession(
+        null,
+        CreateCheckoutSessionRequest(
+          priceId: 'price_premium',
+          successUrl: 'https://ok?success=true&session_id={CHECKOUT_SESSION_ID}',
+          cancelUrl: 'https://cancel',
+          legalTermsVersionDate: '2026-05-01',
+          creditAppliedCents: 5000,
+        ),
+      );
+      expect(stripeRequests, isEmpty);
+      expect(resp.checkoutUrl, isNot(contains('{CHECKOUT_SESSION_ID}')));
+      expect(resp.checkoutUrl, contains('success=true'));
     });
   });
 
@@ -557,6 +702,4 @@ void main() {
       }
     });
   });
- */
-
 }

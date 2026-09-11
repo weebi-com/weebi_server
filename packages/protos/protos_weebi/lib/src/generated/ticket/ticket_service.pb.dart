@@ -25,6 +25,10 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
     $core.String? boutiqueId,
     $3.Timestamp? lastFetchTimestampUTC,
     $core.bool? isDeleted,
+    $core.int? offset,
+    $core.int? limit,
+    $core.String? query,
+    $core.int? statusFilter,
   }) {
     final result = create();
     if (chainId != null) result.chainId = chainId;
@@ -32,6 +36,10 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
     if (lastFetchTimestampUTC != null)
       result.lastFetchTimestampUTC = lastFetchTimestampUTC;
     if (isDeleted != null) result.isDeleted = isDeleted;
+    if (offset != null) result.offset = offset;
+    if (limit != null) result.limit = limit;
+    if (query != null) result.query = query;
+    if (statusFilter != null) result.statusFilter = statusFilter;
     return result;
   }
 
@@ -54,6 +62,10 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
     ..aOM<$3.Timestamp>(4, _omitFieldNames ? '' : 'lastFetchTimestampUTC',
         protoName: 'lastFetchTimestampUTC', subBuilder: $3.Timestamp.create)
     ..aOB(5, _omitFieldNames ? '' : 'isDeleted', protoName: 'isDeleted')
+    ..aI(6, _omitFieldNames ? '' : 'offset')
+    ..aI(7, _omitFieldNames ? '' : 'limit')
+    ..aOS(8, _omitFieldNames ? '' : 'query')
+    ..aI(9, _omitFieldNames ? '' : 'statusFilter', protoName: 'statusFilter')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -115,6 +127,45 @@ class ReadAllTicketsRequest extends $pb.GeneratedMessage {
   $core.bool hasIsDeleted() => $_has(3);
   @$pb.TagNumber(5)
   void clearIsDeleted() => $_clearField(5);
+
+  /// Portal pagination. limit == 0 means full dump (weebi_app sync).
+  @$pb.TagNumber(6)
+  $core.int get offset => $_getIZ(4);
+  @$pb.TagNumber(6)
+  set offset($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(6)
+  $core.bool hasOffset() => $_has(4);
+  @$pb.TagNumber(6)
+  void clearOffset() => $_clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.int get limit => $_getIZ(5);
+  @$pb.TagNumber(7)
+  set limit($core.int value) => $_setSignedInt32(5, value);
+  @$pb.TagNumber(7)
+  $core.bool hasLimit() => $_has(5);
+  @$pb.TagNumber(7)
+  void clearLimit() => $_clearField(7);
+
+  /// Case-insensitive match on comment, contact, user, item designation.
+  @$pb.TagNumber(8)
+  $core.String get query => $_getSZ(6);
+  @$pb.TagNumber(8)
+  set query($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(8)
+  $core.bool hasQuery() => $_has(6);
+  @$pb.TagNumber(8)
+  void clearQuery() => $_clearField(8);
+
+  /// 0 = all, 1 = active only, 2 = inactive only
+  @$pb.TagNumber(9)
+  $core.int get statusFilter => $_getIZ(7);
+  @$pb.TagNumber(9)
+  set statusFilter($core.int value) => $_setSignedInt32(7, value);
+  @$pb.TagNumber(9)
+  $core.bool hasStatusFilter() => $_has(7);
+  @$pb.TagNumber(9)
+  void clearStatusFilter() => $_clearField(9);
 }
 
 /// consider adding isDeleted param
@@ -335,9 +386,17 @@ class TicketsRequest extends $pb.GeneratedMessage {
 class TicketsResponse extends $pb.GeneratedMessage {
   factory TicketsResponse({
     $core.Iterable<$1.TicketPb>? tickets,
+    $core.int? total,
+    $core.int? offset,
+    $core.bool? hasMore,
+    $core.int? batchSize,
   }) {
     final result = create();
     if (tickets != null) result.tickets.addAll(tickets);
+    if (total != null) result.total = total;
+    if (offset != null) result.offset = offset;
+    if (hasMore != null) result.hasMore = hasMore;
+    if (batchSize != null) result.batchSize = batchSize;
     return result;
   }
 
@@ -357,6 +416,10 @@ class TicketsResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..pPM<$1.TicketPb>(1, _omitFieldNames ? '' : 'tickets',
         subBuilder: $1.TicketPb.create)
+    ..aI(2, _omitFieldNames ? '' : 'total')
+    ..aI(3, _omitFieldNames ? '' : 'offset')
+    ..aOB(4, _omitFieldNames ? '' : 'hasMore', protoName: 'hasMore')
+    ..aI(5, _omitFieldNames ? '' : 'batchSize', protoName: 'batchSize')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -380,6 +443,42 @@ class TicketsResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $pb.PbList<$1.TicketPb> get tickets => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.int get total => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set total($core.int value) => $_setSignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasTotal() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTotal() => $_clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.int get offset => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set offset($core.int value) => $_setSignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasOffset() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOffset() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.bool get hasMore => $_getBF(3);
+  @$pb.TagNumber(4)
+  set hasMore($core.bool value) => $_setBool(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasHasMore() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearHasMore() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.int get batchSize => $_getIZ(4);
+  @$pb.TagNumber(5)
+  set batchSize($core.int value) => $_setSignedInt32(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasBatchSize() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearBatchSize() => $_clearField(5);
 }
 
 const $core.bool _omitFieldNames =

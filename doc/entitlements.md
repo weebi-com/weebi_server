@@ -28,3 +28,14 @@ Server reference: [`license_seat_entitlement.dart`](../../weebi_server/packages/
 - **Dart packages (`users_weebi`):** [`firm_license_seat_utils`](../../weebi/packages/users/lib/src/firm_license_seat_utils.dart) exposes `firmCreatorOperationalJoker` (same meaning as server) and `userHasActiveLicensedSeat` for portal/access UI copy; seat checks stay strict—only messaging distinguishes the joker when `isFirmCreator` and there is no seat.
 
 Future firm-level entitlements (e.g. metered analytics) should be documented here as a third category when introduced.
+
+## 4. Freemium full-dump throttle
+
+Unlicensed (no active seat) users may run **at most one full collection dump per
+UTC period per collection** (`ticket` / `article` / `contact` / `article_photo`).
+Incremental sync and portal pagination are free.
+
+**Off outside production:** requires `ENV=PRD` and
+`FREEMIUM_THROTTLE_ENFORCED=true`. See
+[`freemium_throttle.md`](freemium_throttle.md) for dump vs incremental rules,
+env vars, and the `FREEMIUM_FULL_DUMP_QUOTA_EXCEEDED` client contract.

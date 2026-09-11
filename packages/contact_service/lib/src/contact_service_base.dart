@@ -14,6 +14,41 @@ abstract class _Helpers {
           .eq('creationDate', creationDate);
 }
 
+SelectorBuilder _readAllContactsSelector({
+  required String firmId,
+  required String chainId,
+  required String query,
+  required int statusFilter,
+}) {
+  final selector = SelectorBuilder()
+      .eq('firmId', firmId)
+      .eq('chainId', chainId);
+  if (statusFilter == 1) {
+    selector.eq('contact.status', true);
+  } else if (statusFilter == 2) {
+    selector.eq('contact.status', false);
+  }
+  final trimmed = query.trim();
+  if (trimmed.isNotEmpty) {
+    final escaped = RegExp.escape(trimmed);
+    selector.eq(r'$or', [
+      {
+        'contact.firstName': {r'$regex': escaped, r'$options': 'i'},
+      },
+      {
+        'contact.lastName': {r'$regex': escaped, r'$options': 'i'},
+      },
+      {
+        'contact.mail': {r'$regex': escaped, r'$options': 'i'},
+      },
+      {
+        'contact.phone.number': {r'$regex': escaped, r'$options': 'i'},
+      },
+    ]);
+  }
+  return selector;
+}
+
 class ContactService extends ContactServiceBase {
   final MongoDbPoolService _poolService;
   final WeebiLogger _logger = WeebiLogger.forService('contact_service');
@@ -245,42 +280,72 @@ class ContactService extends ContactServiceBase {
 
     return databaseMiddleware<ContactsResponse>(_poolService, (db) async {
       await _assertOperationalLicense(db, call, userPermission);
+      await assertFreemiumFullDumpAllowed(
+        db,
+        userPermissions: userPermission,
+        authorizationHeader: isTest ? '' : (call?.bearer ?? ''),
+        resource: FreemiumDumpResource.contact,
+        isFullDump: isFreemiumFullDump(
+          lastFetchEmpty: !request.lastFetchTimestampUTC.isNotEmpty,
+          limit: request.limit,
+        ),
+      );
       final collection = db.collection(collectionName);
 
-      try {
-        final selector = SelectorBuilder()
-            .eq('firmId', userPermission.firmId)
-            .eq('chainId', request.chainId);
+        try {
+          final selector = _readAllContactsSelector(
+            firmId: userPermission.firmId,
+            chainId: request.chainId,
+            query: request.query,
+            statusFilter: request.statusFilter,
+          );
 
-        final bool isDeviceResync = request.lastFetchTimestampUTC.isNotEmpty;
-        final idsSet = <int>{};
-        if (isDeviceResync) {
-          final documents = await collection.find(selector).toList();
-          for (final doc in documents) {
-            idsSet.add(doc['contactId']);
+          final bool isDeviceResync = request.lastFetchTimestampUTC.isNotEmpty;
+          if (isDeviceResync) {
+            selector.and(where.gte('lastTouchTimestampUTC',
+                request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
           }
-          selector.and(where.gte('lastTouchTimestampUTC',
-              request.lastFetchTimestampUTC.toDateTime().toIso8601String()));
-        }
-        //
 
-        final list = await collection.find(selector).toList();
-        if (list.isEmpty) {
-          return ContactsResponse();
-        }
+          const maxPageSize = 100;
+          final paged = request.limit > 0;
+          final pageSize =
+              request.limit > maxPageSize ? maxPageSize : request.limit;
 
-        final contacts = <ContactPb>[];
-        for (final e in list) {
-          final contactMongo = ContactMongo.create()
-            ..mergeFromProto3Json(e, ignoreUnknownFields: true);
-          contacts.add(contactMongo.contact);
-        }
+          final total = paged ? await collection.count(selector) : 0;
 
-        final contactsResponse = ContactsResponse.create();
-        contactsResponse.contacts
-          ..clear()
-          ..addAll(contacts);
-        return contactsResponse;
+          selector.sortBy('contactId');
+          if (paged) {
+            selector.skip(request.offset).limit(pageSize);
+          }
+
+          final list = await collection.find(selector).toList();
+          if (list.isEmpty) {
+            return ContactsResponse()
+              ..total = total
+              ..offset = request.offset
+              ..hasMore = false
+              ..batchSize = 0;
+          }
+
+          final contacts = <ContactPb>[];
+          for (final e in list) {
+            final contactMongo = ContactMongo.create()
+              ..mergeFromProto3Json(e, ignoreUnknownFields: true);
+            contacts.add(contactMongo.contact);
+          }
+
+          final contactsResponse = ContactsResponse.create();
+          contactsResponse.contacts
+            ..clear()
+            ..addAll(contacts);
+          if (paged) {
+            contactsResponse.total = total;
+            contactsResponse.offset = request.offset;
+            contactsResponse.batchSize = contacts.length;
+            contactsResponse.hasMore =
+                (request.offset + contacts.length) < total;
+          }
+          return contactsResponse;
         } on GrpcError catch (e) {
           log.logRpcError('readAll', e);
           rethrow;

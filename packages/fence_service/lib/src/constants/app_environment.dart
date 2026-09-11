@@ -142,6 +142,40 @@ class AppEnvironment {
     return 'EUR';
   }
 
+  /// Deployment label from `ENV` (e.g. `PRD`, `DEV`, `STG`).
+  static String get envName =>
+      (Platform.environment['ENV'] ?? '').trim().toUpperCase();
+
+  /// True when `ENV=PRD` (production Cloud Run).
+  static bool get isProductionEnvironment => envName == 'PRD';
+
+  /// For unit tests, [debugFreemiumThrottleOverride] takes precedence when non-null.
+  static bool? debugFreemiumThrottleOverride;
+
+  /// Freemium full-dump quota. **Off by default.** On only when
+  /// `ENV=PRD` **and** `FREEMIUM_THROTTLE_ENFORCED` is true.
+  /// See doc/freemium_throttle.md.
+  static bool get isFreemiumThrottleEnforced {
+    if (debugFreemiumThrottleOverride != null) {
+      return debugFreemiumThrottleOverride!;
+    }
+    if (!isProductionEnvironment) return false;
+    final v =
+        Platform.environment['FREEMIUM_THROTTLE_ENFORCED']?.trim().toLowerCase();
+    if (v == null || v.isEmpty) return false;
+    return v == 'true' || v == '1' || v == 'yes' || v == 'on';
+  }
+
+  /// UTC period length for freemium full dumps. Default 1 (daily); set 7 for weekly.
+  static int get freemiumFullDumpPeriodDays {
+    final raw =
+        Platform.environment['FREEMIUM_FULL_DUMP_PERIOD_DAYS']?.trim();
+    if (raw == null || raw.isEmpty) return 1;
+    final n = int.tryParse(raw);
+    if (n == null || n < 1) return 1;
+    return n;
+  }
+
   // Environment detection
   static bool get _isTestOrCI {
     // Check for CI environments

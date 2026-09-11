@@ -1,4 +1,4 @@
-# weebi dart grpc server
+﻿# weebi dart grpc server
 
 ## install proto tools
 
@@ -41,7 +41,7 @@ cd packages\protos\protos_weebi\tool
 bash packages/protos/protos_weebi/tool/generate_protos.sh
 ```
 
-If Bash reports `$'\r': command not found` or similar, the shell script has Windows line endings — fix once with `sed -i 's/\r$//' packages/protos/protos_weebi/tool/generate_protos.sh` (WSL) or set `core.autocrlf` / re-checkout for `*.sh`.
+If Bash reports `$'\r': command not found` or similar, the shell script has Windows line endings â€” fix once with `sed -i 's/\r$//' packages/protos/protos_weebi/tool/generate_protos.sh` (WSL) or set `core.autocrlf` / re-checkout for `*.sh`.
 
 A sibling `protos` repo (e.g. `git_weebi/protos`) is used automatically when present.
 
@@ -86,10 +86,15 @@ dart run apps/server/bin/server.dart
 ```
 
 ## troubleshoot
+ticketservice throttle ?
+/// Unlicensed full dumps (limit==0 and empty lastFetch) are quota'd server-side;
+/// see weebi_server/doc/freemium_throttle.md.
+
+
 if mongodb MongoServerSelectionError: connect ETIMEDOUT 
 
 In Windows Defender Firewall
-Go to Outbound Rules → New Rule.
+Go to Outbound Rules â†’ New Rule.
 Select Port, click Next.
 Choose TCP, specify 27017, click Next.
 Select Allow the connection, click Next.
@@ -100,7 +105,7 @@ Platform.environment :
 ['PORT'] -- gRPC server port (default: 8080)
 ['MONGO_DB_URI']
 ['JWT_SECRET_KEY']
-['ENVOY_API_KEY'] -- Envoy → backend shared secret (`getSessionInternal` only)
+['ENVOY_API_KEY'] -- Envoy â†’ backend shared secret (`getSessionInternal` only)
 ['TURSO_DATABASE_URL'] -- BoutiqueScore EvaluationService (Turso HTTP; optional at boot)
 ['TURSO_AUTH_TOKEN'] -- Turso auth token for EvaluationService (optional at boot)
 ['WEEBI_EXPRESS_BASE_URL'] -- Base URL of weebi_express service (optional, e.g., http://localhost:8080)
@@ -110,5 +115,11 @@ Platform.environment :
 Email functionality is handled by weebi_express service.
 Use healthCheck gRPC method for service health and version information.
 
-`SubmitEvaluation` (BoutiqueScore) is a **public** RPC — no JWT / no API key.
+`SubmitEvaluation` (BoutiqueScore) is a **public** RPC â€” no JWT / no API key.
 See also `packages/evaluation_service/README.md` for Turso deploy notes.
+['LICENSE_CHECK_ENFORCED'] -- Hard-block ticket/article/contact/stats without seat/creator (default off)
+['FREEMIUM_THROTTLE_ENFORCED'] -- Full-dump quota for unlicensed users; only with ENV=PRD (default off)
+['FREEMIUM_FULL_DUMP_PERIOD_DAYS'] -- UTC period length for freemium dumps (default 1; set 7 for weekly)
+['ENV'] -- Set `PRD` in Cloud Run for freemium throttle (and other prod gates)
+
+See `doc/freemium_throttle.md` for unlicensed full-dump quotas.

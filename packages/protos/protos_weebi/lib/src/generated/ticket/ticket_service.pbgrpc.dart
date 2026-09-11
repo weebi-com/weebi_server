@@ -34,8 +34,8 @@ class TicketServiceClient extends $grpc.Client {
 
   TicketServiceClient(super.channel, {super.options, super.interceptors});
 
-  /// / allows to read tickets from all accessible boutiques
-  /// / no need to paginate yet, will conisder streaming
+  /// / use [lastFetchTimestampUTC] to only read the latest changes since last fetch.
+  /// / Portal pagination: set [limit] > 0. limit == 0 means full dump (weebi_app sync).
   $grpc.ResponseFuture<$0.TicketsResponse> readAll(
     $0.ReadAllTicketsRequest request, {
     $grpc.CallOptions? options,

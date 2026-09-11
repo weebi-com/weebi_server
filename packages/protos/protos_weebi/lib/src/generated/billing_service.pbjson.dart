@@ -456,7 +456,26 @@ const BillingProduct$json = {
       '10': 'deletionDateUTC'
     },
     {'1': 'isDeleted', '3': 12, '4': 1, '5': 8, '10': 'isDeleted'},
+    {
+      '1': 'pawapayAmounts',
+      '3': 13,
+      '4': 3,
+      '5': 11,
+      '6': '.weebi.billing.service.BillingProduct.PawapayAmountsEntry',
+      '10': 'pawapayAmounts'
+    },
   ],
+  '3': [BillingProduct_PawapayAmountsEntry$json],
+};
+
+@$core.Deprecated('Use billingProductDescriptor instead')
+const BillingProduct_PawapayAmountsEntry$json = {
+  '1': 'PawapayAmountsEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 5, '10': 'value'},
+  ],
+  '7': {'7': true},
 };
 
 /// Descriptor for `BillingProduct`. Decode as a `google.protobuf.DescriptorProto`.
@@ -471,7 +490,10 @@ final $typed_data.Uint8List billingProductDescriptor = $convert.base64Decode(
     'VVVEMSQAoNdXBkYXRlRGF0ZVVUQxgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBS'
     'DXVwZGF0ZURhdGVVVEMSRAoPZGVsZXRpb25EYXRlVVRDGAsgASgLMhouZ29vZ2xlLnByb3RvYn'
     'VmLlRpbWVzdGFtcFIPZGVsZXRpb25EYXRlVVRDEhwKCWlzRGVsZXRlZBgMIAEoCFIJaXNEZWxl'
-    'dGVk');
+    'dGVkEmEKDnBhd2FwYXlBbW91bnRzGA0gAygLMjkud2VlYmkuYmlsbGluZy5zZXJ2aWNlLkJpbG'
+    'xpbmdQcm9kdWN0LlBhd2FwYXlBbW91bnRzRW50cnlSDnBhd2FwYXlBbW91bnRzGkEKE1Bhd2Fw'
+    'YXlBbW91bnRzRW50cnkSEAoDa2V5GAEgASgJUgNrZXkSFAoFdmFsdWUYAiABKAVSBXZhbHVlOg'
+    'I4AQ==');
 
 @$core.Deprecated('Use readBillingProductsResponseDescriptor instead')
 const ReadBillingProductsResponse$json = {
