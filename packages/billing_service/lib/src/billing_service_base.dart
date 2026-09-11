@@ -144,6 +144,17 @@ class BillingService extends BillingServiceBase {
     return merged;
   }
 
+  Future<Map<String, dynamic>?> _findReferrerFirm(Db db, String code) {
+    final trimmed = code.trim();
+    if (trimmed.isEmpty) return Future.value(null);
+    return db.collection(FenceService.firmCollectionName).findOne({
+      r'$or': [
+        {'referralCode': trimmed},
+        {'firmId': trimmed},
+      ],
+    });
+  }
+
   int _commissionCents(int amountCents) => referrerCommissionCents(amountCents);
 
   /// Validates referral code for checkout/create; throws GrpcError on failure.
@@ -154,9 +165,7 @@ class BillingService extends BillingServiceBase {
   }) async {
     final code = referralCode.trim();
     if (code.isEmpty) return;
-    final referrerDoc = await db
-        .collection(FenceService.firmCollectionName)
-        .findOne(where.eq('referralCode', code));
+    final referrerDoc = await _findReferrerFirm(db, code);
     if (referrerDoc == null) {
       throw GrpcError.invalidArgument('invalid referral code');
     }
@@ -246,9 +255,10 @@ class BillingService extends BillingServiceBase {
 
       String? referrerFirmId;
       if (request.referralCode.isNotEmpty) {
-        // referralCode = firmId, so lookup is case-sensitive (firmId is hex/numeric)
-        final referrerDoc = await firmCollection
-            .findOne(where.eq('referralCode', request.referralCode.trim()));
+        final referrerDoc = await _findReferrerFirm(
+          db,
+          request.referralCode.trim(),
+        );
         if (referrerDoc == null) {
           throw GrpcError.invalidArgument('invalid referral code');
         }
@@ -260,7 +270,7 @@ class BillingService extends BillingServiceBase {
 
       if (creditAppliedCents > 0) {
         final currentBalance =
-            (firmDoc['referralCreditBalanceCents'] as int?) ?? 0;
+            (firmDoc['referralCreditBalanceCents'] as num?)?.toInt() ?? 0;
         if (currentBalance < creditAppliedCents) {
           throw GrpcError.failedPrecondition(
             'insufficient referral credit: have $currentBalance cents, need $creditAppliedCents',
@@ -329,14 +339,18 @@ class BillingService extends BillingServiceBase {
     required BillingProduct product,
     String stripeCheckoutSessionId = '',
     String pawapayCheckoutId = '',
+    String creditPurchaseId = '',
     PaymentProvider paymentProvider = PaymentProvider.PAYMENT_PROVIDER_STRIPE,
+    String referralCode = '',
+    int creditAppliedCents = 0,
   }) async {
     final year = validateFiscalYear(fiscalYear);
     final stripeId = stripeCheckoutSessionId.trim();
     final pawapayId = pawapayCheckoutId.trim();
-    if (stripeId.isEmpty && pawapayId.isEmpty) {
+    final creditId = creditPurchaseId.trim();
+    if (stripeId.isEmpty && pawapayId.isEmpty && creditId.isEmpty) {
       throw GrpcError.invalidArgument(
-        'stripeCheckoutSessionId or pawapayCheckoutId is required',
+        'stripeCheckoutSessionId, pawapayCheckoutId or creditPurchaseId is required',
       );
     }
     if (!isSyscohadaProductId(product.productId)) {
@@ -357,10 +371,12 @@ class BillingService extends BillingServiceBase {
       );
       final purchase = buildAccountingYearPurchase(
         year: year,
-        stripeCheckoutSessionId: stripeId,
+        stripeCheckoutSessionId: stripeId.isNotEmpty ? stripeId : creditId,
         stripePriceId: product.stripePriceId,
         pawapayCheckoutId: pawapayId,
-        paymentProvider: paymentProvider.name,
+        paymentProvider: creditId.isNotEmpty
+            ? 'credit'
+            : paymentProvider.name,
         paidAtUTC: DateTime.now().toUtc(),
         amountCents: product.amountCents,
         currency: product.currency.isNotEmpty ? product.currency : 'eur',
@@ -371,13 +387,43 @@ class BillingService extends BillingServiceBase {
       );
 
       if (!merged.alreadyFulfilled) {
+        var modifier = ModifierBuilder().set(
+          kAccountingYearPurchasesField,
+          merged.purchases,
+        );
+        if (creditAppliedCents > 0) {
+          final currentBalance =
+              (firmDoc['referralCreditBalanceCents'] as num?)?.toInt() ?? 0;
+          if (currentBalance < creditAppliedCents) {
+            throw GrpcError.failedPrecondition(
+              'insufficient referral credit: have $currentBalance cents, need $creditAppliedCents',
+            );
+          }
+          modifier = modifier.inc(
+            'referralCreditBalanceCents',
+            -creditAppliedCents,
+          );
+        }
         await firmCollection.updateOne(
           where.eq('firmId', firmId),
-          ModifierBuilder().set(
-            kAccountingYearPurchasesField,
-            merged.purchases,
-          ),
+          modifier,
         );
+
+        if (referralCode.trim().isNotEmpty) {
+          final referrerDoc =
+              await _findReferrerFirm(db, referralCode.trim());
+          final referrerFirmId = referrerDoc?['firmId'] as String?;
+          final commissionCents = _commissionCents(product.amountCents);
+          if (referrerFirmId != null &&
+              referrerFirmId != firmId &&
+              commissionCents > 0) {
+            await firmCollection.updateOne(
+              where.eq('firmId', referrerFirmId),
+              ModifierBuilder()
+                  .inc('referralCreditBalanceCents', commissionCents),
+            );
+          }
+        }
       }
 
       return CreateLicenseResponse()
@@ -508,6 +554,56 @@ class BillingService extends BillingServiceBase {
         'legalTermsVersionDate must be YYYY-MM-DD',
       );
     }
+  }
+
+  String _successUrlAfterCreditFulfill(String successUrl) {
+    return successUrl
+        .replaceAll('&session_id={CHECKOUT_SESSION_ID}', '')
+        .replaceAll('session_id={CHECKOUT_SESSION_ID}&', '')
+        .replaceAll('session_id={CHECKOUT_SESSION_ID}', '');
+  }
+
+  Future<void> _fulfillPaidByWeebiCredit({
+    required String firmId,
+    required BillingProduct product,
+    required int creditAppliedCents,
+    String referralCode = '',
+    String legalTermsVersionDate = '',
+    int? fiscalYear,
+  }) async {
+    final id = 'credit_${DateTime.now().millisecondsSinceEpoch}';
+    if (isSyscohadaProductId(product.productId)) {
+      if (fiscalYear == null) {
+        throw GrpcError.invalidArgument(
+          'fiscalYear is required for SYSCOHADA credit purchases',
+        );
+      }
+      await recordAccountingYearPurchase(
+        firmId: firmId,
+        fiscalYear: fiscalYear,
+        product: product,
+        creditPurchaseId: id,
+        referralCode: referralCode,
+        creditAppliedCents: creditAppliedCents,
+        paymentProvider: PaymentProvider.PAYMENT_PROVIDER_UNKNOWN,
+      );
+      return;
+    }
+    await _fulfillLicenseInternal(
+      firmId,
+      'lic_$id',
+      product.licensePlan,
+      product.stripeProductId.isNotEmpty
+          ? product.stripeProductId
+          : product.productId,
+      product.stripePriceId,
+      product.maxUsers,
+      paymentProvider: PaymentProvider.PAYMENT_PROVIDER_UNKNOWN,
+      referralCode: referralCode.isEmpty ? null : referralCode,
+      creditAppliedCents: creditAppliedCents,
+      legalTermsVersionDate:
+          legalTermsVersionDate.isEmpty ? null : legalTermsVersionDate,
+    );
   }
 
   /// Internal: fulfill a license after provider payment. Idempotent on [licenseId].
@@ -883,7 +979,7 @@ class BillingService extends BillingServiceBase {
         );
       }
 
-      final balance = (firmDoc['referralCreditBalanceCents'] as int?) ?? 0;
+      final balance = (firmDoc['referralCreditBalanceCents'] as num?)?.toInt() ?? 0;
 
       return GetReferralInfoResponse()
         ..referralCode = referralCode
@@ -909,7 +1005,7 @@ class BillingService extends BillingServiceBase {
         throw GrpcError.notFound('firm not found');
       }
 
-      final balance = (firmDoc['referralCreditBalanceCents'] as int?) ?? 0;
+      final balance = (firmDoc['referralCreditBalanceCents'] as num?)?.toInt() ?? 0;
       if (balance < _minPayoutCents) {
         throw GrpcError.failedPrecondition(
           'minimum payout is $_minPayoutCents cents (€${_minPayoutCents / 100}), balance: $balance',
@@ -964,11 +1060,6 @@ class BillingService extends BillingServiceBase {
     }
     _validateLegalTermsVersionDate(request.legalTermsVersionDate);
 
-    final secretKey = _stripeSecretKey();
-    if (secretKey == null || secretKey.isEmpty) {
-      throw GrpcError.failedPrecondition('Stripe not configured');
-    }
-
     final product = await databaseMiddleware<BillingProduct?>(_poolService, (db) async {
       return _lookupBillingProductByStripePriceId(db, request.priceId);
     });
@@ -995,14 +1086,54 @@ class BillingService extends BillingServiceBase {
       });
     }
 
+    final pricing = await databaseMiddleware<CheckoutPricing>(_poolService, (db) async {
+      final firmDoc = await db
+          .collection(FenceService.firmCollectionName)
+          .findOne(where.eq('firmId', userPermission.firmId));
+      final balance =
+          (firmDoc?['referralCreditBalanceCents'] as num?)?.toInt() ?? 0;
+      return checkoutPricing(
+        catalogCents: product.amountCents,
+        applyReferralDiscount: referralCode.isNotEmpty,
+        requestedCreditCents: request.creditAppliedCents,
+        availableCreditCents: balance,
+      );
+    });
+
     log.logRpcEntry('createCheckoutSession', requestData: {
       'firmId': userPermission.firmId,
       'priceId': request.priceId,
       'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
       if (referralCode.isNotEmpty) 'referralCode': '***',
+      'creditAppliedCents': pricing.creditAppliedCents,
+      'chargeCents': pricing.chargeCents,
       if (isSyscohadaProductId(product.productId))
         'fiscalYear': request.fiscalYear,
     });
+
+    if (pricing.chargeCents <= 0) {
+      if (pricing.creditAppliedCents <= 0) {
+        throw GrpcError.failedPrecondition('nothing to charge');
+      }
+      await _fulfillPaidByWeebiCredit(
+        firmId: userPermission.firmId,
+        product: product,
+        creditAppliedCents: pricing.creditAppliedCents,
+        referralCode: referralCode,
+        legalTermsVersionDate: request.legalTermsVersionDate.trim(),
+        fiscalYear: isSyscohadaProductId(product.productId)
+            ? request.fiscalYear
+            : null,
+      );
+      log.logRpcExit('createCheckoutSession', resultData: {'fulfilledWithCredit': true});
+      return CreateCheckoutSessionResponse()
+        ..checkoutUrl = _successUrlAfterCreditFulfill(request.successUrl);
+    }
+
+    final secretKey = _stripeSecretKey();
+    if (secretKey == null || secretKey.isEmpty) {
+      throw GrpcError.failedPrecondition('Stripe not configured');
+    }
 
     final customerId = await databaseMiddleware<String?>(_poolService, (db) async {
       final firmDoc = await db
@@ -1040,13 +1171,12 @@ class BillingService extends BillingServiceBase {
     if (referralCode.isNotEmpty) {
       metadata['referralCode'] = referralCode;
     }
-    if (request.creditAppliedCents > 0) {
-      metadata['creditAppliedCents'] = request.creditAppliedCents.toString();
+    if (pricing.creditAppliedCents > 0) {
+      metadata['creditAppliedCents'] = pricing.creditAppliedCents.toString();
     }
 
-    final int? discountedUnitAmount = referralCode.isNotEmpty
-        ? buyerChargeCents(product.amountCents)
-        : null;
+    final int? unitAmountCents =
+        pricing.chargeCents != product.amountCents ? pricing.chargeCents : null;
 
     try {
       final url = await createStripeCheckoutSession(
@@ -1056,7 +1186,7 @@ class BillingService extends BillingServiceBase {
         cancelUrl: request.cancelUrl,
         metadata: metadata,
         customerId: customerId,
-        unitAmountCents: discountedUnitAmount,
+        unitAmountCents: unitAmountCents,
         currency: product.currency.isNotEmpty ? product.currency : 'eur',
         stripeProductId: product.stripeProductId,
         productName: product.productId,
@@ -1138,11 +1268,16 @@ class BillingService extends BillingServiceBase {
         'productKind': 'syscohada',
         'fiscalYear': year,
       });
+      final creditAppliedCents =
+          int.tryParse(sessionInfo.metadata['creditAppliedCents'] ?? '') ?? 0;
+      final referralCode = sessionInfo.metadata['referralCode'] ?? '';
       final response = await recordAccountingYearPurchase(
         firmId: userPermission.firmId,
         fiscalYear: year,
         stripeCheckoutSessionId: sessionInfo.id,
         product: product,
+        referralCode: referralCode,
+        creditAppliedCents: creditAppliedCents,
       );
       if (sessionInfo.customer != null && sessionInfo.customer!.isNotEmpty) {
         await _updateStripeCustomerId(userPermission.firmId, sessionInfo.customer!);
@@ -1226,6 +1361,39 @@ class BillingService extends BillingServiceBase {
       });
     }
 
+    final pricing = await databaseMiddleware<CheckoutPricing>(_poolService, (db) async {
+      final firmDoc = await db
+          .collection(FenceService.firmCollectionName)
+          .findOne(where.eq('firmId', userPermission.firmId));
+      final balance =
+          (firmDoc?['referralCreditBalanceCents'] as num?)?.toInt() ?? 0;
+      return checkoutPricing(
+        catalogCents: product.amountCents,
+        applyReferralDiscount: referralCode.isNotEmpty,
+        requestedCreditCents: request.creditAppliedCents,
+        availableCreditCents: balance,
+      );
+    });
+
+    if (pricing.chargeCents <= 0) {
+      if (pricing.creditAppliedCents <= 0) {
+        throw GrpcError.failedPrecondition('nothing to charge');
+      }
+      await _fulfillPaidByWeebiCredit(
+        firmId: userPermission.firmId,
+        product: product,
+        creditAppliedCents: pricing.creditAppliedCents,
+        referralCode: referralCode,
+        legalTermsVersionDate: request.legalTermsVersionDate.trim(),
+        fiscalYear: isSyscohadaProductId(product.productId)
+            ? request.fiscalYear
+            : null,
+      );
+      return CreatePawapayCheckoutResponse()
+        ..checkoutId = ''
+        ..redirectUrl = request.returnUrl.trim();
+    }
+
     final client = _requirePawapayClient();
     final checkoutId = generateUuidV4();
 
@@ -1282,8 +1450,8 @@ class BillingService extends BillingServiceBase {
     if (referralCode.isNotEmpty) {
       metaFields['referralCode'] = referralCode;
     }
-    if (request.creditAppliedCents > 0) {
-      metaFields['creditAppliedCents'] = request.creditAppliedCents.toString();
+    if (pricing.creditAppliedCents > 0) {
+      metaFields['creditAppliedCents'] = pricing.creditAppliedCents.toString();
     }
     if (purchaserEmail != null) {
       metaFields['purchaserEmail'] = purchaserEmail;
@@ -1304,11 +1472,26 @@ class BillingService extends BillingServiceBase {
 
     final PawapayAmount amount;
     try {
-      amount = buildPawapayAmountForCountry(
+      final base = buildPawapayAmountForCountry(
         productId: product.productId,
         countryAlpha2Or3: countryAlpha2,
         pawapayAmounts: catalogAmounts,
-        applyReferralBuyerDiscount: referralCode.isNotEmpty,
+        applyReferralBuyerDiscount: false,
+      );
+      final catalogLocal = int.parse(base.amount);
+      final chargeLocal = localChargeAfterCredit(
+        localCatalog: catalogLocal,
+        catalogEurCents: product.amountCents,
+        applyReferralDiscount: referralCode.isNotEmpty,
+        creditEurCents: pricing.creditAppliedCents,
+      );
+      if (chargeLocal <= 0) {
+        throw GrpcError.failedPrecondition('nothing to charge');
+      }
+      amount = PawapayAmount(
+        country: base.country,
+        currency: base.currency,
+        amount: chargeLocal.toString(),
       );
     } on ArgumentError catch (e) {
       throw GrpcError.failedPrecondition('${e.message}');
@@ -1474,6 +1657,8 @@ class BillingService extends BillingServiceBase {
         pawapayCheckoutId: info.checkoutId,
         product: product,
         paymentProvider: PaymentProvider.PAYMENT_PROVIDER_PAWAPAY,
+        referralCode: referralCode,
+        creditAppliedCents: creditAppliedCents,
       );
       log.logRpcExit('fulfillFromPawapayCheckout');
       return response;

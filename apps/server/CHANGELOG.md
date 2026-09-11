@@ -1,6 +1,10 @@
 # changelog
 
 
+## 1.1.8 - september 2026
+
+- use weebi credits and get discount
+
 ## 1.1.7 - september 2026
 
 - **billing_products** factorized

@@ -55,4 +55,75 @@ void main() {
       expect(referrerCommissionCents(charge), isNot(280));
     });
   });
+
+  group('checkoutPricing', () {
+    test('referral only', () {
+      final p = checkoutPricing(
+        catalogCents: 1400,
+        applyReferralDiscount: true,
+        requestedCreditCents: 0,
+        availableCreditCents: 5000,
+      );
+      expect(p.afterReferralCents, 1260);
+      expect(p.creditAppliedCents, 0);
+      expect(p.chargeCents, 1260);
+    });
+
+    test('credit only, capped at balance', () {
+      final p = checkoutPricing(
+        catalogCents: 1400,
+        applyReferralDiscount: false,
+        requestedCreditCents: 5000,
+        availableCreditCents: 400,
+      );
+      expect(p.afterReferralCents, 1400);
+      expect(p.creditAppliedCents, 400);
+      expect(p.chargeCents, 1000);
+    });
+
+    test('referral then credit, capped at remainder', () {
+      final p = checkoutPricing(
+        catalogCents: 1400,
+        applyReferralDiscount: true,
+        requestedCreditCents: 99999,
+        availableCreditCents: 5000,
+      );
+      expect(p.afterReferralCents, 1260);
+      expect(p.creditAppliedCents, 1260);
+      expect(p.chargeCents, 0);
+    });
+
+    test('checkbox off sends zero requested credit', () {
+      final p = checkoutPricing(
+        catalogCents: 1400,
+        applyReferralDiscount: true,
+        requestedCreditCents: 0,
+        availableCreditCents: 1260,
+      );
+      expect(p.creditAppliedCents, 0);
+      expect(p.chargeCents, 1260);
+    });
+  });
+
+  group('localChargeAfterCredit', () {
+    test('maps EUR credit onto XOF catalog', () {
+      expect(
+        creditToLocalListUnits(
+          creditEurCents: 280,
+          catalogEurCents: 1400,
+          localCatalog: 9900,
+        ),
+        1980,
+      );
+      expect(
+        localChargeAfterCredit(
+          localCatalog: 9900,
+          catalogEurCents: 1400,
+          applyReferralDiscount: true,
+          creditEurCents: 280,
+        ),
+        6930,
+      );
+    });
+  });
 }
