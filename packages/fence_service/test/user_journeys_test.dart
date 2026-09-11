@@ -80,6 +80,8 @@ void main() async {
           .collection(FenceService.firmCollectionName)
           .findOne(where.eq('firmId', createFirmResponse.firm.firmId));
       expect(firmDoc, isNotNull);
+      expect(firmDoc!['referralCode'], createFirmResponse.firm.firmId);
+      expect(firmDoc['referralCode'], firmDoc['firmId']);
 
       final userDoc = await dbFirmCheck
           .collection(FenceService.userCollectionName)
