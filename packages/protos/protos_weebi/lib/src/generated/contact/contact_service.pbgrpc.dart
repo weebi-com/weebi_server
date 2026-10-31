@@ -86,6 +86,14 @@ class ContactServiceClient extends $grpc.Client {
     return $createUnaryCall(_$deleteOne, request, options: options);
   }
 
+  /// / hard delete all contacts on the chain (not an id list)
+  $grpc.ResponseFuture<$1.StatusResponse> deleteAll(
+    $0.DeleteAllContactsRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$deleteAll, request, options: options);
+  }
+
   // method descriptors
 
   static final _$createOne =
@@ -122,6 +130,11 @@ class ContactServiceClient extends $grpc.Client {
       $grpc.ClientMethod<$0.ContactRequest, $1.StatusResponse>(
           '/weebi.contact.service.ContactService/deleteOne',
           ($0.ContactRequest value) => value.writeToBuffer(),
+          $1.StatusResponse.fromBuffer);
+  static final _$deleteAll =
+      $grpc.ClientMethod<$0.DeleteAllContactsRequest, $1.StatusResponse>(
+          '/weebi.contact.service.ContactService/deleteAll',
+          ($0.DeleteAllContactsRequest value) => value.writeToBuffer(),
           $1.StatusResponse.fromBuffer);
 }
 
@@ -184,6 +197,15 @@ abstract class ContactServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.ContactRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.DeleteAllContactsRequest, $1.StatusResponse>(
+            'deleteAll',
+            deleteAll_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.DeleteAllContactsRequest.fromBuffer(value),
+            ($1.StatusResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$1.StatusResponse> createOne_Pre($grpc.ServiceCall $call,
@@ -241,4 +263,12 @@ abstract class ContactServiceBase extends $grpc.Service {
 
   $async.Future<$1.StatusResponse> deleteOne(
       $grpc.ServiceCall call, $0.ContactRequest request);
+
+  $async.Future<$1.StatusResponse> deleteAll_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.DeleteAllContactsRequest> $request) async {
+    return deleteAll($call, await $request);
+  }
+
+  $async.Future<$1.StatusResponse> deleteAll(
+      $grpc.ServiceCall call, $0.DeleteAllContactsRequest request);
 }

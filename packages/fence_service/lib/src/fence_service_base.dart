@@ -1963,6 +1963,24 @@ class FenceService extends FenceServiceBase {
             rethrow;
           }
 
+          final defaultBoutiquePb = BoutiquePb.create()
+            ..boutiqueId = firmId
+            ..name = request.name
+            ..currency = defaultCurrencyCode;
+          if (request.hasBoutiqueMail()) {
+            final boutiqueMail = request.boutiqueMail.trim();
+            if (boutiqueMail.isNotEmpty) {
+              defaultBoutiquePb.mail = boutiqueMail;
+            }
+          }
+          if (request.hasBoutiquePhone()) {
+            final phoneDisplay = request.boutiquePhone.trim();
+            if (phoneDisplay.isNotEmpty) {
+              defaultBoutiquePb.phone =
+                  _phoneFromBoutiqueDisplay(phoneDisplay);
+            }
+          }
+
           final chain = Chain(
               firmId: firmId,
               chainId: firmId,
@@ -1976,10 +1994,7 @@ class FenceService extends FenceServiceBase {
                   ..boutiqueId = firmId
                   ..name = request.name
                   ..creationTimestampUTC = nowProtoUTC
-                  ..boutique = (BoutiquePb.create()
-                    ..boutiqueId = firmId
-                    ..name = request.name
-                    ..currency = defaultCurrencyCode)
+                  ..boutique = defaultBoutiquePb
               ]);
           if (request.hasCommercialRegisterNumber()) {
             final register = request.commercialRegisterNumber.trim();
@@ -1998,7 +2013,18 @@ class FenceService extends FenceServiceBase {
             rethrow;
           }
 
-          // Email/welcome mail functionality removed - will be handled by dedicated service
+          _notifySignupOpsAsync(
+            userId: userPermission.userId,
+            firmId: firmId,
+            firmName: request.name,
+            boutiqueMail: request.hasBoutiqueMail()
+                ? request.boutiqueMail.trim()
+                : '',
+            boutiquePhone: request.hasBoutiquePhone()
+                ? request.boutiquePhone.trim()
+                : '',
+          );
+
           log.logRpcExit('createFirm', resultData: {'firmId': firmId});
 
           return CreateFirmResponse(
@@ -3019,6 +3045,102 @@ class FenceService extends FenceServiceBase {
         rethrow;
       }
     });
+  }
+
+  /// Parses a boutique phone display string into [Phone].
+  /// Accepts forms like "+243 999999" or a bare number.
+  static Phone _phoneFromBoutiqueDisplay(String display) {
+    final trimmed = display.trim();
+    if (trimmed.isEmpty) {
+      return Phone.create();
+    }
+    final match = RegExp(r'^\+(\d+)\s*(.*)$').firstMatch(trimmed);
+    if (match != null) {
+      final countryCode = int.tryParse(match.group(1) ?? '') ?? 0;
+      final number =
+          (match.group(2) ?? '').replaceAll(RegExp(r'\s+'), '').trim();
+      if (countryCode > 0 && number.isNotEmpty) {
+        return Phone(countryCode: countryCode, number: number);
+      }
+    }
+    return Phone(countryCode: 0, number: trimmed);
+  }
+
+  /// Notifies weebi_express to email ops about a new firm (fire-and-forget).
+  void _notifySignupOpsAsync({
+    required String userId,
+    required String firmId,
+    required String firmName,
+    required String boutiqueMail,
+    required String boutiquePhone,
+  }) {
+    final baseUrl = AppEnvironment.weebiExpressBaseUrl;
+    if (baseUrl == null || baseUrl.isEmpty) {
+      _logger.warning(
+          'WEEBI_EXPRESS_BASE_URL not configured, skipping signup ops email',
+          extra: {'userId': userId, 'firmId': firmId});
+      return;
+    }
+
+    () async {
+      String accountEmail = '';
+      String firstname = '';
+      String lastname = '';
+      try {
+        final user = await _checkUserAndProtoIt(userId);
+        accountEmail = user.mail.trim();
+        firstname = user.firstname.trim();
+        lastname = user.lastname.trim();
+      } catch (e) {
+        _logger.warning('Could not load user for signup ops email',
+            extra: {'userId': userId, 'firmId': firmId, 'error': '$e'});
+      }
+
+      final expressSecret = AppEnvironment.weebiExpressJwtSecretKey;
+      final jwt = JsonWebToken(secretKeyFactory: () => expressSecret);
+      jwt.createPayload(
+        'weebi_express_service_account',
+        expireIn: const Duration(hours: 1),
+      );
+      final token = jwt.sign();
+
+      final payload = jsonEncode({
+        'userId': userId,
+        'firmId': firmId,
+        'firmName': firmName,
+        'email': accountEmail,
+        'firstname': firstname,
+        'lastname': lastname,
+        'boutiqueMail': boutiqueMail,
+        'boutiquePhone': boutiquePhone,
+      });
+
+      final url = Uri.parse('$baseUrl/api/v1/emails/notify-signup');
+      try {
+        final response = await http.post(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: payload,
+        );
+        if (response.statusCode == 200) {
+          _logger.info('Signup ops email requested',
+              extra: {'userId': userId, 'firmId': firmId});
+        } else {
+          _logger.warning('Failed to request signup ops email', extra: {
+            'userId': userId,
+            'firmId': firmId,
+            'statusCode': response.statusCode,
+            'response': response.body,
+          });
+        }
+      } catch (error) {
+        _logger.error('Error calling weebi_express notify-signup',
+            extra: {'userId': userId, 'firmId': firmId}, error: error);
+      }
+    }();
   }
 
   /// Sends confirmation email via weebi_express service (async, non-blocking)

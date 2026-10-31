@@ -1,5 +1,10 @@
 # changelog
 
+## 1.4.3 - 2026 october
+
+- `deleteAll` chain wipe (articles, contacts); `deleteAllCategories` / `deleteAllPhotos`
+- ticket `deleteAll` boutique-scoped soft delete (not an id list)
+
 ## 1.4.2 - 2026 september
 
 - paginate in article/contact/ticket services

@@ -224,10 +224,30 @@ const CreateFirmRequest$json = {
       '10': 'commercialRegisterNumber',
       '17': true
     },
+    {
+      '1': 'boutique_mail',
+      '3': 4,
+      '4': 1,
+      '5': 9,
+      '9': 2,
+      '10': 'boutiqueMail',
+      '17': true
+    },
+    {
+      '1': 'boutique_phone',
+      '3': 5,
+      '4': 1,
+      '5': 9,
+      '9': 3,
+      '10': 'boutiquePhone',
+      '17': true
+    },
   ],
   '8': [
     {'1': '_currency'},
     {'1': '_commercial_register_number'},
+    {'1': '_boutique_mail'},
+    {'1': '_boutique_phone'},
   ],
 };
 
@@ -235,8 +255,10 @@ const CreateFirmRequest$json = {
 final $typed_data.Uint8List createFirmRequestDescriptor = $convert.base64Decode(
     'ChFDcmVhdGVGaXJtUmVxdWVzdBISCgRuYW1lGAEgASgJUgRuYW1lEh8KCGN1cnJlbmN5GAIgAS'
     'gJSABSCGN1cnJlbmN5iAEBEkEKGmNvbW1lcmNpYWxfcmVnaXN0ZXJfbnVtYmVyGAMgASgJSAFS'
-    'GGNvbW1lcmNpYWxSZWdpc3Rlck51bWJlcogBAUILCglfY3VycmVuY3lCHQobX2NvbW1lcmNpYW'
-    'xfcmVnaXN0ZXJfbnVtYmVy');
+    'GGNvbW1lcmNpYWxSZWdpc3Rlck51bWJlcogBARIoCg1ib3V0aXF1ZV9tYWlsGAQgASgJSAJSDG'
+    'JvdXRpcXVlTWFpbIgBARIqCg5ib3V0aXF1ZV9waG9uZRgFIAEoCUgDUg1ib3V0aXF1ZVBob25l'
+    'iAEBQgsKCV9jdXJyZW5jeUIdChtfY29tbWVyY2lhbF9yZWdpc3Rlcl9udW1iZXJCEAoOX2JvdX'
+    'RpcXVlX21haWxCEQoPX2JvdXRpcXVlX3Bob25l');
 
 @$core.Deprecated('Use createFirmResponseDescriptor instead')
 const CreateFirmResponse$json = {

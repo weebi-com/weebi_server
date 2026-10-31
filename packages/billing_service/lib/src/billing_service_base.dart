@@ -1155,6 +1155,19 @@ class BillingService extends BillingServiceBase {
       return trimmed;
     });
 
+    final boutiqueContact = await databaseMiddleware<BoutiqueContactMeta>(
+      _poolService,
+      (db) async {
+        final chainDocs = await db
+            .collection(FenceService.boutiqueCollectionName)
+            .find(where.eq('firmId', userPermission.firmId))
+            .toList();
+        return firstBoutiqueContactFromChains(
+          chainDocs.map((e) => Map<String, dynamic>.from(e)),
+        );
+      },
+    );
+
     final metadata = <String, String>{
       'firmId': userPermission.firmId,
       'legalTermsVersionDate': request.legalTermsVersionDate.trim(),
@@ -1173,6 +1186,15 @@ class BillingService extends BillingServiceBase {
     }
     if (pricing.creditAppliedCents > 0) {
       metadata['creditAppliedCents'] = pricing.creditAppliedCents.toString();
+    }
+    if (boutiqueContact.name.isNotEmpty) {
+      metadata['boutiqueName'] = boutiqueContact.name;
+    }
+    if (boutiqueContact.mail.isNotEmpty) {
+      metadata['boutiqueMail'] = boutiqueContact.mail;
+    }
+    if (boutiqueContact.phone.isNotEmpty) {
+      metadata['boutiquePhone'] = boutiqueContact.phone;
     }
 
     final int? unitAmountCents =
@@ -1409,32 +1431,42 @@ class BillingService extends BillingServiceBase {
       return trimmed;
     });
 
-    final countryAlpha2 = await databaseMiddleware<String?>(_poolService, (db) async {
-      final firmDoc = await db
-          .collection(FenceService.firmCollectionName)
-          .findOne(where.eq('firmId', userPermission.firmId));
-      final chainDocs = await db
-          .collection(FenceService.boutiqueCollectionName)
-          .find(where.eq('firmId', userPermission.firmId))
-          .toList();
-      final preferredChainIds = userPermission.hasLimitedAccess()
-          ? userPermission.limitedAccess.chainIds.ids.toList()
-          : <String>[];
-      final preferredBoutiqueIds = userPermission.hasLimitedAccess()
-          ? userPermission.limitedAccess.boutiqueIds.ids.toList()
-          : <String>[];
-      return resolveOrgPawapayCountryAlpha2(
-        firmDoc: firmDoc,
-        chainDocs: chainDocs.map((e) => Map<String, dynamic>.from(e)),
-        preferredChainIds: preferredChainIds,
-        preferredBoutiqueIds: preferredBoutiqueIds,
-      );
-    });
+    final pawapayOrg = await databaseMiddleware<({String? country, BoutiqueContactMeta contact})>(
+      _poolService,
+      (db) async {
+        final firmDoc = await db
+            .collection(FenceService.firmCollectionName)
+            .findOne(where.eq('firmId', userPermission.firmId));
+        final chainDocs = await db
+            .collection(FenceService.boutiqueCollectionName)
+            .find(where.eq('firmId', userPermission.firmId))
+            .toList();
+        final chainMaps =
+            chainDocs.map((e) => Map<String, dynamic>.from(e)).toList();
+        final preferredChainIds = userPermission.hasLimitedAccess()
+            ? userPermission.limitedAccess.chainIds.ids.toList()
+            : <String>[];
+        final preferredBoutiqueIds = userPermission.hasLimitedAccess()
+            ? userPermission.limitedAccess.boutiqueIds.ids.toList()
+            : <String>[];
+        return (
+          country: resolveOrgPawapayCountryAlpha2(
+            firmDoc: firmDoc,
+            chainDocs: chainMaps,
+            preferredChainIds: preferredChainIds,
+            preferredBoutiqueIds: preferredBoutiqueIds,
+          ),
+          contact: firstBoutiqueContactFromChains(chainMaps),
+        );
+      },
+    );
+    final countryAlpha2 = pawapayOrg.country;
     if (countryAlpha2 == null || countryAlpha2.isEmpty) {
       throw GrpcError.failedPrecondition(
         'Set a boutique address country (ISO alpha-2) or CDF billing currency before paying with mobile money',
       );
     }
+    final boutiqueContact = pawapayOrg.contact;
 
     final metaFields = <String, String>{
       'firmId': userPermission.firmId,
@@ -1455,6 +1487,15 @@ class BillingService extends BillingServiceBase {
     }
     if (purchaserEmail != null) {
       metaFields['purchaserEmail'] = purchaserEmail;
+    }
+    if (boutiqueContact.name.isNotEmpty) {
+      metaFields['boutiqueName'] = boutiqueContact.name;
+    }
+    if (boutiqueContact.mail.isNotEmpty) {
+      metaFields['boutiqueMail'] = boutiqueContact.mail;
+    }
+    if (boutiqueContact.phone.isNotEmpty) {
+      metaFields['boutiquePhone'] = boutiqueContact.phone;
     }
 
     final catalogAmounts = <String, int>{

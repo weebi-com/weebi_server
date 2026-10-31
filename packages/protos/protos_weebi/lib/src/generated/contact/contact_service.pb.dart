@@ -622,6 +622,63 @@ class ContactsIdsResponse extends $pb.GeneratedMessage {
   $pb.PbList<$core.int> get ids => $_getList(0);
 }
 
+/// / chain-scoped wipe
+class DeleteAllContactsRequest extends $pb.GeneratedMessage {
+  factory DeleteAllContactsRequest({
+    $core.String? chainId,
+  }) {
+    final result = create();
+    if (chainId != null) result.chainId = chainId;
+    return result;
+  }
+
+  DeleteAllContactsRequest._();
+
+  factory DeleteAllContactsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeleteAllContactsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeleteAllContactsRequest',
+      package: const $pb.PackageName(
+          _omitMessageNames ? '' : 'weebi.contact.service'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteAllContactsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteAllContactsRequest copyWith(
+          void Function(DeleteAllContactsRequest) updates) =>
+      super.copyWith((message) => updates(message as DeleteAllContactsRequest))
+          as DeleteAllContactsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteAllContactsRequest create() => DeleteAllContactsRequest._();
+  @$core.override
+  DeleteAllContactsRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static DeleteAllContactsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteAllContactsRequest>(create);
+  static DeleteAllContactsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => $_clearField(1);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

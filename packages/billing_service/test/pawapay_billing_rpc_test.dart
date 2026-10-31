@@ -45,6 +45,8 @@ void main() {
           'boutique': {
             'boutiqueId': Dummy.boutiqueMongo.boutiqueId,
             'name': 'Dakar shop',
+            'mail': 'shop@weebi.test',
+            'phone': {'countryCode': 221, 'number': '770000000'},
             'addressFull': {
               'city': 'Dakar',
               'country': {'code2Letters': 'SN'},
@@ -130,6 +132,9 @@ void main() {
     expect(flat['productId'], 'premium');
     expect(flat['purchaserEmail'], 'owner@weebi.test');
     expect(flat['countryAlpha2'], 'SN');
+    expect(flat['boutiqueName'], 'Dakar shop');
+    expect(flat['boutiqueMail'], 'shop@weebi.test');
+    expect(flat['boutiquePhone'], '+221 770000000');
   });
 
   test('createPawapayCheckout DRC boutique charges premium in CDF', () async {

@@ -91,6 +91,14 @@ class ArticleServiceClient extends $grpc.Client {
     return $createUnaryCall(_$deleteOne, request, options: options);
   }
 
+  /// / hard delete all calibres on the chain (not an id list)
+  $grpc.ResponseFuture<$1.StatusResponse> deleteAll(
+    $0.DeleteAllRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$deleteAll, request, options: options);
+  }
+
   /// /
   /// / category
   /// /
@@ -128,6 +136,14 @@ class ArticleServiceClient extends $grpc.Client {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$deleteOneCategory, request, options: options);
+  }
+
+  /// / hard delete all categories on the chain
+  $grpc.ResponseFuture<$1.StatusResponse> deleteAllCategories(
+    $0.DeleteAllRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$deleteAllCategories, request, options: options);
   }
 
   /// /
@@ -177,6 +193,14 @@ class ArticleServiceClient extends $grpc.Client {
     return $createUnaryCall(_$deleteOnePhoto, request, options: options);
   }
 
+  /// / hard delete all photos on the chain
+  $grpc.ResponseFuture<$1.StatusResponse> deleteAllPhotos(
+    $0.DeleteAllRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$deleteAllPhotos, request, options: options);
+  }
+
   // method descriptors
 
   static final _$createOne =
@@ -214,6 +238,11 @@ class ArticleServiceClient extends $grpc.Client {
           '/weebi.article.service.ArticleService/deleteOne',
           ($0.CalibreRequest value) => value.writeToBuffer(),
           $1.StatusResponse.fromBuffer);
+  static final _$deleteAll =
+      $grpc.ClientMethod<$0.DeleteAllRequest, $1.StatusResponse>(
+          '/weebi.article.service.ArticleService/deleteAll',
+          ($0.DeleteAllRequest value) => value.writeToBuffer(),
+          $1.StatusResponse.fromBuffer);
   static final _$createOneCategory =
       $grpc.ClientMethod<$0.CategoryRequest, $1.StatusResponse>(
           '/weebi.article.service.ArticleService/createOneCategory',
@@ -238,6 +267,11 @@ class ArticleServiceClient extends $grpc.Client {
       $grpc.ClientMethod<$0.CategoryRequest, $1.StatusResponse>(
           '/weebi.article.service.ArticleService/deleteOneCategory',
           ($0.CategoryRequest value) => value.writeToBuffer(),
+          $1.StatusResponse.fromBuffer);
+  static final _$deleteAllCategories =
+      $grpc.ClientMethod<$0.DeleteAllRequest, $1.StatusResponse>(
+          '/weebi.article.service.ArticleService/deleteAllCategories',
+          ($0.DeleteAllRequest value) => value.writeToBuffer(),
           $1.StatusResponse.fromBuffer);
   static final _$createOnePhoto =
       $grpc.ClientMethod<$0.PhotoRequest, $1.StatusResponse>(
@@ -268,6 +302,11 @@ class ArticleServiceClient extends $grpc.Client {
       $grpc.ClientMethod<$0.PhotoRequest, $1.StatusResponse>(
           '/weebi.article.service.ArticleService/deleteOnePhoto',
           ($0.PhotoRequest value) => value.writeToBuffer(),
+          $1.StatusResponse.fromBuffer);
+  static final _$deleteAllPhotos =
+      $grpc.ClientMethod<$0.DeleteAllRequest, $1.StatusResponse>(
+          '/weebi.article.service.ArticleService/deleteAllPhotos',
+          ($0.DeleteAllRequest value) => value.writeToBuffer(),
           $1.StatusResponse.fromBuffer);
 }
 
@@ -326,6 +365,13 @@ abstract class ArticleServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.CalibreRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.DeleteAllRequest, $1.StatusResponse>(
+        'deleteAll',
+        deleteAll_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.DeleteAllRequest.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.CategoryRequest, $1.StatusResponse>(
         'createOneCategory',
         createOneCategory_Pre,
@@ -363,6 +409,13 @@ abstract class ArticleServiceBase extends $grpc.Service {
         false,
         false,
         ($core.List<$core.int> value) => $0.CategoryRequest.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.DeleteAllRequest, $1.StatusResponse>(
+        'deleteAllCategories',
+        deleteAllCategories_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.DeleteAllRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.PhotoRequest, $1.StatusResponse>(
         'createOnePhoto',
@@ -405,6 +458,13 @@ abstract class ArticleServiceBase extends $grpc.Service {
         false,
         false,
         ($core.List<$core.int> value) => $0.PhotoRequest.fromBuffer(value),
+        ($1.StatusResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.DeleteAllRequest, $1.StatusResponse>(
+        'deleteAllPhotos',
+        deleteAllPhotos_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.DeleteAllRequest.fromBuffer(value),
         ($1.StatusResponse value) => value.writeToBuffer()));
   }
 
@@ -464,6 +524,14 @@ abstract class ArticleServiceBase extends $grpc.Service {
   $async.Future<$1.StatusResponse> deleteOne(
       $grpc.ServiceCall call, $0.CalibreRequest request);
 
+  $async.Future<$1.StatusResponse> deleteAll_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.DeleteAllRequest> $request) async {
+    return deleteAll($call, await $request);
+  }
+
+  $async.Future<$1.StatusResponse> deleteAll(
+      $grpc.ServiceCall call, $0.DeleteAllRequest request);
+
   $async.Future<$1.StatusResponse> createOneCategory_Pre(
       $grpc.ServiceCall $call,
       $async.Future<$0.CategoryRequest> $request) async {
@@ -507,6 +575,15 @@ abstract class ArticleServiceBase extends $grpc.Service {
 
   $async.Future<$1.StatusResponse> deleteOneCategory(
       $grpc.ServiceCall call, $0.CategoryRequest request);
+
+  $async.Future<$1.StatusResponse> deleteAllCategories_Pre(
+      $grpc.ServiceCall $call,
+      $async.Future<$0.DeleteAllRequest> $request) async {
+    return deleteAllCategories($call, await $request);
+  }
+
+  $async.Future<$1.StatusResponse> deleteAllCategories(
+      $grpc.ServiceCall call, $0.DeleteAllRequest request);
 
   $async.Future<$1.StatusResponse> createOnePhoto_Pre(
       $grpc.ServiceCall $call, $async.Future<$0.PhotoRequest> $request) async {
@@ -555,4 +632,12 @@ abstract class ArticleServiceBase extends $grpc.Service {
 
   $async.Future<$1.StatusResponse> deleteOnePhoto(
       $grpc.ServiceCall call, $0.PhotoRequest request);
+
+  $async.Future<$1.StatusResponse> deleteAllPhotos_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.DeleteAllRequest> $request) async {
+    return deleteAllPhotos($call, await $request);
+  }
+
+  $async.Future<$1.StatusResponse> deleteAllPhotos(
+      $grpc.ServiceCall call, $0.DeleteAllRequest request);
 }

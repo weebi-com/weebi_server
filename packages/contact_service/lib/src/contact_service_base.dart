@@ -258,6 +258,51 @@ class ContactService extends ContactServiceBase {
   }
 
   @override
+  Future<StatusResponse> deleteAll(
+      ServiceCall? call, DeleteAllContactsRequest request) async {
+    final chainId = request.chainId.trim();
+    if (chainId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId is required');
+    }
+    final log = _logger.withContext(call);
+    log.logRpcEntry('deleteAll', requestData: {'chainId': chainId});
+
+    final userPermission = isTest
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    if (userPermission.contactRights.rights.any((e) => e == Right.delete) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to delete contact');
+    }
+    if (userPermission.isChainAccessible(chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain $chainId');
+    }
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
+      final collection = db.collection(collectionName);
+      try {
+        final result = await collection.deleteMany(
+          where.eq('firmId', userPermission.firmId).eq('chainId', chainId),
+        );
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError?.errmsg}');
+        }
+        log.logRpcExit('deleteAll');
+        return StatusResponse()
+          ..type = StatusResponse_Type.DELETED
+          ..timestamp = DateTime.now().timestampProto
+          ..message = 'deleted=${result.nRemoved}';
+      } on GrpcError catch (e) {
+        log.logRpcError('deleteAll', e);
+        rethrow;
+      }
+    });
+  }
+
+  @override
   Future<ContactsResponse> readAll(
       ServiceCall? call, ReadAllContactsRequest request) async {
     final log = _logger.withContext(call);
