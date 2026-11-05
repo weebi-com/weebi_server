@@ -591,6 +591,84 @@ class TicketService extends TicketServiceBase {
   }
 
   @override
+  Future<StatusResponse> deleteAll(
+      ServiceCall? call, DeleteAllTicketsRequest request) async {
+    final chainId = request.chainId.trim();
+    final boutiqueId = request.boutiqueId.trim();
+    if (chainId.isEmpty || boutiqueId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId and boutiqueId are required');
+    }
+    final log = _logger.withContext(call);
+    log.logRpcEntry('deleteAll', requestData: {
+      'chainId': chainId,
+      'boutiqueId': boutiqueId,
+    });
+
+    final userPermission = isTest
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    if (!userPermission.isFirmAndChainAccessible(
+        userPermission.firmId, chainId)) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain $chainId');
+    }
+    if (userPermission.isBoutiqueAccessible(boutiqueId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from boutique $boutiqueId');
+    }
+    if (userPermission.ticketRights.rights.any((e) => e == Right.delete) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to delete ticket');
+    }
+
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
+      if (userPermission.hasClosedYears) {
+        final years = await loadBoutiqueClosedYears(
+          db,
+          firmId: userPermission.firmId,
+          chainId: chainId,
+          boutiqueId: boutiqueId,
+        );
+        if (years.isNotEmpty) {
+          final sorted = years.toList()..sort();
+          throw GrpcError.failedPrecondition(
+            'Année(s) ${sorted.join(", ")} clôturée(s) — deleteAll tickets non accepté.',
+          );
+        }
+      }
+      final collection = db.collection(collectionName);
+      final selector = where
+          .eq('firmId', userPermission.firmId)
+          .eq('chainId', chainId)
+          .eq('boutiqueId', boutiqueId);
+      try {
+        final result = await collection.updateMany(
+          selector,
+          modify.set('isDeleted', true).set('lastTouchTimestampUTC',
+              DateTime.now().toUtc().timestampProto.toProto3Json()),
+        );
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError!.errmsg}');
+        }
+        log.logRpcExit('deleteAll');
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.DELETED
+          ..timestamp = DateTime.now().timestampProto
+          ..message = 'deleted=${result.nModified}';
+      } on GrpcError catch (e) {
+        log.logRpcError('deleteAll', e, extra: {
+          'chainId': chainId,
+          'boutiqueId': boutiqueId,
+        });
+        rethrow;
+      }
+    });
+  }
+
+  @override
   Future<StatusResponse> createMany(
       ServiceCall call, TicketsRequest request) async {
     final log = _logger.withContext(call);

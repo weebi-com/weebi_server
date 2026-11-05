@@ -263,6 +263,47 @@ void main() async {
       }
     });
 
+    test('deleteAll rejects when boutique has closed years', () async {
+      final createSvc = TicketService(
+        poolService,
+        isTest: true,
+        userPermissionIfTest: permsWithoutFlag,
+      );
+      await createSvc.createOne(
+        null,
+        TicketRequest(
+          ticket: makeTicket(date: '2025-03-01T10:00:00.000', nonUniqueId: 30),
+        ),
+      );
+
+      final gateSvc = TicketService(
+        poolService,
+        isTest: true,
+        userPermissionIfTest: permsWithFlag,
+      );
+      try {
+        await gateSvc.deleteAll(
+          null,
+          DeleteAllTicketsRequest(
+            chainId: counterfoil.chainId,
+            boutiqueId: counterfoil.boutiqueId,
+          ),
+        );
+        fail('Expected failedPrecondition');
+      } on GrpcError catch (e) {
+        expect(e.code, StatusCode.failedPrecondition);
+      }
+
+      final remaining = await createSvc.readAll(
+        null,
+        ReadAllTicketsRequest(
+          chainId: counterfoil.chainId,
+          boutiqueId: counterfoil.boutiqueId,
+        ),
+      );
+      expect(remaining.tickets.length, 1);
+    });
+
     test('deleteOne rejects ticket in closed year', () async {
       final createSvc = TicketService(
         poolService,

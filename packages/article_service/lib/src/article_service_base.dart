@@ -257,6 +257,64 @@ class ArticleService extends ArticleServiceBase {
     );
   }
 
+  Future<StatusResponse> _deleteAllByChain({
+    required ServiceCall? call,
+    required DeleteAllRequest request,
+    required String rpcName,
+    required String collectionName,
+  }) async {
+    final chainId = request.chainId.trim();
+    if (chainId.isEmpty) {
+      throw GrpcError.invalidArgument('chainId is required');
+    }
+    final log = _logger.withContext(call);
+    log.logRpcEntry(rpcName, requestData: {'chainId': chainId});
+
+    final userPermission = isTest
+        ? userPermissionIfTest ?? UserPermissions()
+        : call.bearer.userPermissions;
+    if (userPermission.articleRights.rights.any((e) => e == Right.delete) ==
+        false) {
+      throw GrpcError.permissionDenied(
+          'user does not have right to delete $rpcName');
+    }
+    if (userPermission.isChainAccessible(chainId) == false) {
+      throw GrpcError.permissionDenied(
+          'user cannot access data from chain $chainId');
+    }
+    return databaseMiddleware<StatusResponse>(_poolService, (db) async {
+      await _assertOperationalLicense(db, call, userPermission);
+      try {
+        final result = await db.collection(collectionName).deleteMany(
+              where.eq('firmId', userPermission.firmId).eq('chainId', chainId),
+            );
+        if (result.hasWriteErrors) {
+          throw GrpcError.unknown(
+              'hasWriteErrors ${result.writeError?.errmsg}');
+        }
+        log.logRpcExit(rpcName);
+        return StatusResponse()
+          ..type = StatusResponse_Type.DELETED
+          ..timestamp = DateTime.now().timestampProto
+          ..message = 'deleted=${result.nRemoved}';
+      } on GrpcError catch (e) {
+        log.logRpcError(rpcName, e);
+        rethrow;
+      }
+    });
+  }
+
+  @override
+  Future<StatusResponse> deleteAll(
+      ServiceCall? call, DeleteAllRequest request) {
+    return _deleteAllByChain(
+      call: call,
+      request: request,
+      rpcName: 'deleteAll',
+      collectionName: collectionArticleName,
+    );
+  }
+
   @override
   Future<CalibresResponse> readAll(
       ServiceCall? call, ReadAllRequest request) async {
@@ -627,6 +685,17 @@ class ArticleService extends ArticleServiceBase {
           rethrow;
         }
       },
+    );
+  }
+
+  @override
+  Future<StatusResponse> deleteAllCategories(
+      ServiceCall? call, DeleteAllRequest request) {
+    return _deleteAllByChain(
+      call: call,
+      request: request,
+      rpcName: 'deleteAllCategories',
+      collectionName: collectionCategoryName,
     );
   }
 
@@ -1005,6 +1074,17 @@ class ArticleService extends ArticleServiceBase {
           rethrow;
         }
       },
+    );
+  }
+
+  @override
+  Future<StatusResponse> deleteAllPhotos(
+      ServiceCall? call, DeleteAllRequest request) {
+    return _deleteAllByChain(
+      call: call,
+      request: request,
+      rpcName: 'deleteAllPhotos',
+      collectionName: collectionPhotoName,
     );
   }
 

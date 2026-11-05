@@ -453,4 +453,44 @@ void main() {
       expect(result.purchases, hasLength(1));
     });
   });
+
+  group('firstBoutiqueContactFromChains', () {
+    test('reads name mail and phone from first boutique', () {
+      final contact = firstBoutiqueContactFromChains([
+        {
+          'chainId': 'c1',
+          'boutiques': [
+            {
+              'boutiqueId': 'b1',
+              'name': 'Wrapper name',
+              'boutique': {
+                'name': 'Nested shop',
+                'mail': 'shop@weebi.com',
+                'phone': {'countryCode': 243, 'number': '999999'},
+              },
+            },
+          ],
+        },
+      ]);
+      expect(contact.name, 'Nested shop');
+      expect(contact.mail, 'shop@weebi.com');
+      expect(contact.phone, '+243 999999');
+    });
+
+    test('falls back to wrapper name when nested name empty', () {
+      final contact = firstBoutiqueContactFromChains([
+        {
+          'boutiques': [
+            {
+              'name': 'Wrapper only',
+              'boutique': {'mail': 'a@b.com'},
+            },
+          ],
+        },
+      ]);
+      expect(contact.name, 'Wrapper only');
+      expect(contact.mail, 'a@b.com');
+      expect(contact.phone, isEmpty);
+    });
+  });
 }

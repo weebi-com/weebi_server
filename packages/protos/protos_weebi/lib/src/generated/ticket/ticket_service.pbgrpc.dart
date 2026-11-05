@@ -79,6 +79,14 @@ class TicketServiceClient extends $grpc.Client {
     return $createUnaryCall(_$deleteOne, request, options: options);
   }
 
+  /// / boutique-scoped soft delete (not an id list; never hard-deletes)
+  $grpc.ResponseFuture<$2.StatusResponse> deleteAll(
+    $0.DeleteAllTicketsRequest request, {
+    $grpc.CallOptions? options,
+  }) {
+    return $createUnaryCall(_$deleteAll, request, options: options);
+  }
+
   // method descriptors
 
   static final _$readAll =
@@ -110,6 +118,11 @@ class TicketServiceClient extends $grpc.Client {
       $grpc.ClientMethod<$0.TicketRequest, $2.StatusResponse>(
           '/weebi.ticket.service.TicketService/deleteOne',
           ($0.TicketRequest value) => value.writeToBuffer(),
+          $2.StatusResponse.fromBuffer);
+  static final _$deleteAll =
+      $grpc.ClientMethod<$0.DeleteAllTicketsRequest, $2.StatusResponse>(
+          '/weebi.ticket.service.TicketService/deleteAll',
+          ($0.DeleteAllTicketsRequest value) => value.writeToBuffer(),
           $2.StatusResponse.fromBuffer);
 }
 
@@ -162,6 +175,15 @@ abstract class TicketServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.TicketRequest.fromBuffer(value),
         ($2.StatusResponse value) => value.writeToBuffer()));
+    $addMethod(
+        $grpc.ServiceMethod<$0.DeleteAllTicketsRequest, $2.StatusResponse>(
+            'deleteAll',
+            deleteAll_Pre,
+            false,
+            false,
+            ($core.List<$core.int> value) =>
+                $0.DeleteAllTicketsRequest.fromBuffer(value),
+            ($2.StatusResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.TicketsResponse> readAll_Pre($grpc.ServiceCall $call,
@@ -211,4 +233,12 @@ abstract class TicketServiceBase extends $grpc.Service {
 
   $async.Future<$2.StatusResponse> deleteOne(
       $grpc.ServiceCall call, $0.TicketRequest request);
+
+  $async.Future<$2.StatusResponse> deleteAll_Pre($grpc.ServiceCall $call,
+      $async.Future<$0.DeleteAllTicketsRequest> $request) async {
+    return deleteAll($call, await $request);
+  }
+
+  $async.Future<$2.StatusResponse> deleteAll(
+      $grpc.ServiceCall call, $0.DeleteAllTicketsRequest request);
 }

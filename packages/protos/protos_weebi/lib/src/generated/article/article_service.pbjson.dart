@@ -325,3 +325,15 @@ final $typed_data.Uint8List photosResponseDescriptor = $convert.base64Decode(
     'hvdG9QYlIGcGhvdG9zEhQKBXRvdGFsGAIgASgFUgV0b3RhbBIWCgZvZmZzZXQYAyABKAVSBm9m'
     'ZnNldBIYCgdoYXNNb3JlGAQgASgIUgdoYXNNb3JlEhwKCWJhdGNoU2l6ZRgFIAEoBVIJYmF0Y2'
     'hTaXpl');
+
+@$core.Deprecated('Use deleteAllRequestDescriptor instead')
+const DeleteAllRequest$json = {
+  '1': 'DeleteAllRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+  ],
+};
+
+/// Descriptor for `DeleteAllRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List deleteAllRequestDescriptor = $convert.base64Decode(
+    'ChBEZWxldGVBbGxSZXF1ZXN0EhgKB2NoYWluSWQYASABKAlSB2NoYWluSWQ=');
