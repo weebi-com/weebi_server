@@ -379,12 +379,16 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
     $core.String? name,
     $core.String? currency,
     $core.String? commercialRegisterNumber,
+    $core.String? boutiqueMail,
+    $core.String? boutiquePhone,
   }) {
     final result = create();
     if (name != null) result.name = name;
     if (currency != null) result.currency = currency;
     if (commercialRegisterNumber != null)
       result.commercialRegisterNumber = commercialRegisterNumber;
+    if (boutiqueMail != null) result.boutiqueMail = boutiqueMail;
+    if (boutiquePhone != null) result.boutiquePhone = boutiquePhone;
     return result;
   }
 
@@ -404,6 +408,8 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
     ..aOS(1, _omitFieldNames ? '' : 'name')
     ..aOS(2, _omitFieldNames ? '' : 'currency')
     ..aOS(3, _omitFieldNames ? '' : 'commercialRegisterNumber')
+    ..aOS(4, _omitFieldNames ? '' : 'boutiqueMail')
+    ..aOS(5, _omitFieldNames ? '' : 'boutiquePhone')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -454,6 +460,26 @@ class CreateFirmRequest extends $pb.GeneratedMessage {
   $core.bool hasCommercialRegisterNumber() => $_has(2);
   @$pb.TagNumber(3)
   void clearCommercialRegisterNumber() => $_clearField(3);
+
+  /// / Optional boutique contact email; stamped on the default BoutiquePb.
+  @$pb.TagNumber(4)
+  $core.String get boutiqueMail => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set boutiqueMail($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasBoutiqueMail() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearBoutiqueMail() => $_clearField(4);
+
+  /// / Optional boutique phone display string (e.g. "+243 999999"); stamped on the default BoutiquePb.
+  @$pb.TagNumber(5)
+  $core.String get boutiquePhone => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set boutiquePhone($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasBoutiquePhone() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearBoutiquePhone() => $_clearField(5);
 }
 
 class CreateFirmResponse extends $pb.GeneratedMessage {

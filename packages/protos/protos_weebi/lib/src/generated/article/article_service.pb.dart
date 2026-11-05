@@ -1211,6 +1211,62 @@ class PhotosResponse extends $pb.GeneratedMessage {
   void clearBatchSize() => $_clearField(5);
 }
 
+/// / chain-scoped wipe (calibres, categories, or photos)
+class DeleteAllRequest extends $pb.GeneratedMessage {
+  factory DeleteAllRequest({
+    $core.String? chainId,
+  }) {
+    final result = create();
+    if (chainId != null) result.chainId = chainId;
+    return result;
+  }
+
+  DeleteAllRequest._();
+
+  factory DeleteAllRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeleteAllRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeleteAllRequest',
+      package: const $pb.PackageName(
+          _omitMessageNames ? '' : 'weebi.article.service'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteAllRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteAllRequest copyWith(void Function(DeleteAllRequest) updates) =>
+      super.copyWith((message) => updates(message as DeleteAllRequest))
+          as DeleteAllRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteAllRequest create() => DeleteAllRequest._();
+  @$core.override
+  DeleteAllRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static DeleteAllRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteAllRequest>(create);
+  static DeleteAllRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => $_clearField(1);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

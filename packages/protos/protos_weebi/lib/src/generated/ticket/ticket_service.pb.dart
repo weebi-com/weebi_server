@@ -481,6 +481,75 @@ class TicketsResponse extends $pb.GeneratedMessage {
   void clearBatchSize() => $_clearField(5);
 }
 
+/// / boutique-scoped soft wipe
+class DeleteAllTicketsRequest extends $pb.GeneratedMessage {
+  factory DeleteAllTicketsRequest({
+    $core.String? chainId,
+    $core.String? boutiqueId,
+  }) {
+    final result = create();
+    if (chainId != null) result.chainId = chainId;
+    if (boutiqueId != null) result.boutiqueId = boutiqueId;
+    return result;
+  }
+
+  DeleteAllTicketsRequest._();
+
+  factory DeleteAllTicketsRequest.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory DeleteAllTicketsRequest.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'DeleteAllTicketsRequest',
+      package: const $pb.PackageName(
+          _omitMessageNames ? '' : 'weebi.ticket.service'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'chainId', protoName: 'chainId')
+    ..aOS(2, _omitFieldNames ? '' : 'boutiqueId', protoName: 'boutiqueId')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteAllTicketsRequest clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  DeleteAllTicketsRequest copyWith(
+          void Function(DeleteAllTicketsRequest) updates) =>
+      super.copyWith((message) => updates(message as DeleteAllTicketsRequest))
+          as DeleteAllTicketsRequest;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static DeleteAllTicketsRequest create() => DeleteAllTicketsRequest._();
+  @$core.override
+  DeleteAllTicketsRequest createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static DeleteAllTicketsRequest getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<DeleteAllTicketsRequest>(create);
+  static DeleteAllTicketsRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get chainId => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set chainId($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasChainId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearChainId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get boutiqueId => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set boutiqueId($core.String value) => $_setString(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasBoutiqueId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearBoutiqueId() => $_clearField(2);
+}
+
 const $core.bool _omitFieldNames =
     $core.bool.fromEnvironment('protobuf.omit_field_names');
 const $core.bool _omitMessageNames =

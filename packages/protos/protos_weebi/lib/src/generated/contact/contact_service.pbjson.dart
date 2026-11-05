@@ -172,3 +172,16 @@ const ContactsIdsResponse$json = {
 /// Descriptor for `ContactsIdsResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List contactsIdsResponseDescriptor = $convert
     .base64Decode('ChNDb250YWN0c0lkc1Jlc3BvbnNlEhAKA2lkcxgBIAMoBVIDaWRz');
+
+@$core.Deprecated('Use deleteAllContactsRequestDescriptor instead')
+const DeleteAllContactsRequest$json = {
+  '1': 'DeleteAllContactsRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+  ],
+};
+
+/// Descriptor for `DeleteAllContactsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List deleteAllContactsRequestDescriptor =
+    $convert.base64Decode(
+        'ChhEZWxldGVBbGxDb250YWN0c1JlcXVlc3QSGAoHY2hhaW5JZBgBIAEoCVIHY2hhaW5JZA==');

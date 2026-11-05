@@ -173,3 +173,53 @@ String? inferDrcCountryFromOrgCurrency({
   }
   return null;
 }
+
+/// Contact fields from the first boutique on a firm's chain documents (ops emails).
+class BoutiqueContactMeta {
+  final String name;
+  final String mail;
+  final String phone;
+
+  const BoutiqueContactMeta({
+    this.name = '',
+    this.mail = '',
+    this.phone = '',
+  });
+
+  bool get isEmpty => name.isEmpty && mail.isEmpty && phone.isEmpty;
+}
+
+String _phoneDisplayFromMap(dynamic phone) {
+  if (phone is! Map) return '';
+  final number = phone['number']?.toString().trim() ?? '';
+  if (number.isEmpty) return '';
+  final ccRaw = phone['countryCode'];
+  final cc = ccRaw is num ? ccRaw.toInt() : int.tryParse('$ccRaw') ?? 0;
+  if (cc == 0) return number;
+  return '+$cc $number';
+}
+
+/// Reads name / mail / phone from the first boutique found on [chainDocs].
+BoutiqueContactMeta firstBoutiqueContactFromChains(
+  Iterable<Map<String, dynamic>> chainDocs,
+) {
+  for (final chain in chainDocs) {
+    final boutiques = chain['boutiques'];
+    if (boutiques is! List || boutiques.isEmpty) continue;
+    final first = boutiques.first;
+    if (first is! Map) continue;
+    final wrapper = Map<String, dynamic>.from(first);
+    final nested = wrapper['boutique'];
+    final boutique = nested is Map
+        ? Map<String, dynamic>.from(nested)
+        : <String, dynamic>{};
+
+    final nestedName = boutique['name']?.toString().trim() ?? '';
+    final wrapperName = wrapper['name']?.toString().trim() ?? '';
+    final name = nestedName.isNotEmpty ? nestedName : wrapperName;
+    final mail = boutique['mail']?.toString().trim() ?? '';
+    final phone = _phoneDisplayFromMap(boutique['phone']);
+    return BoutiqueContactMeta(name: name, mail: mail, phone: phone);
+  }
+  return const BoutiqueContactMeta();
+}

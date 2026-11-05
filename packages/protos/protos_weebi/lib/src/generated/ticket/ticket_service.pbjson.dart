@@ -133,3 +133,18 @@ final $typed_data.Uint8List ticketsResponseDescriptor = $convert.base64Decode(
     'RQYlIHdGlja2V0cxIUCgV0b3RhbBgCIAEoBVIFdG90YWwSFgoGb2Zmc2V0GAMgASgFUgZvZmZz'
     'ZXQSGAoHaGFzTW9yZRgEIAEoCFIHaGFzTW9yZRIcCgliYXRjaFNpemUYBSABKAVSCWJhdGNoU2'
     'l6ZQ==');
+
+@$core.Deprecated('Use deleteAllTicketsRequestDescriptor instead')
+const DeleteAllTicketsRequest$json = {
+  '1': 'DeleteAllTicketsRequest',
+  '2': [
+    {'1': 'chainId', '3': 1, '4': 1, '5': 9, '10': 'chainId'},
+    {'1': 'boutiqueId', '3': 2, '4': 1, '5': 9, '10': 'boutiqueId'},
+  ],
+};
+
+/// Descriptor for `DeleteAllTicketsRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List deleteAllTicketsRequestDescriptor =
+    $convert.base64Decode(
+        'ChdEZWxldGVBbGxUaWNrZXRzUmVxdWVzdBIYCgdjaGFpbklkGAEgASgJUgdjaGFpbklkEh4KCm'
+        'JvdXRpcXVlSWQYAiABKAlSCmJvdXRpcXVlSWQ=');
