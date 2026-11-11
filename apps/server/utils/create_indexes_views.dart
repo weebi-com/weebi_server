@@ -106,8 +106,18 @@ Future<void> main(List<String> args) async {
   });
 
   // firm
+  // ensureIndex ignores an index that already has this name, so a pre-existing
+  // non-unique firmId index would stay non-unique. Drop that one first.
+  final firmCollection = db.collection(FenceService.firmCollectionName);
+  final firmIndexes = await firmCollection.getIndexes();
+  final firmIdIndexIsNotUnique = firmIndexes.any(
+    (info) => info['name'] == 'firmId' && info['unique'] != true,
+  );
+  if (firmIdIndexIsNotUnique) {
+    await firmCollection.dropIndexes('firmId');
+  }
   final d = await db.ensureIndex(FenceService.firmCollectionName,
-      name: 'firmId', keys: {'firmId': 1});
+      name: 'firmId', keys: {'firmId': 1}, unique: true);
   print(d);
   await db.ensureIndex(FenceService.firmCollectionName,
       name: 'name', keys: {'name': -1});

@@ -382,6 +382,44 @@ void main() {
       final response2 = await billingService.getReferralInfo(null, Empty());
       expect(response2.referralCode, response.referralCode);
     });
+
+    test('returns the stored letter code for a short firm id', () async {
+      const shortFirmId = '4';
+      const letterCode = 'AB12CDEF';
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).insertOne({
+        'firmId': shortFirmId,
+        'name': 'Short Firm',
+        'status': true,
+        'creationDateUTC': DateTime.now().toUtc(),
+        'licenses': [],
+        'referralCode': letterCode,
+      });
+      poolService.release(db);
+
+      final permissions = UserPermissions.create()
+        ..mergeFromMessage(Dummy.adminPermission)
+        ..firmId = shortFirmId
+        ..userId = 'user-short';
+      final shortFirmBilling = BillingService(
+        poolService,
+        isTest: true,
+        userPermissionIfTest: permissions,
+      );
+
+      final response = await shortFirmBilling.getReferralInfo(null, Empty());
+      expect(response.referralCode, letterCode);
+      expect(response.referralCode, isNot(shortFirmId));
+
+      final dbAfter = await poolService.acquire();
+      final doc = await dbAfter
+          .collection(FenceService.firmCollectionName)
+          .findOne(where.eq('firmId', shortFirmId));
+      poolService.release(dbAfter);
+      expect(doc!['firmId'], isA<String>());
+      expect(doc['firmId'], shortFirmId);
+      expect(doc['referralCode'], letterCode);
+    });
   });
 
   group('deleteLicense', () {
@@ -559,9 +597,9 @@ void main() {
       expect(stripeRequests, isEmpty);
     });
 
-    test('accepts firmId as referral code when referralCode field is missing',
+    test('accepts a legacy 13-digit firmId when referralCode field is missing',
         () async {
-      final referrerFirmId = 'referrer-firmid-only-001';
+      const referrerFirmId = '1700000000099';
       final db = await poolService.acquire();
       await db.collection(FenceService.firmCollectionName).insertOne({
         'firmId': referrerFirmId,
@@ -583,6 +621,60 @@ void main() {
         ),
       );
       expect(resp.checkoutUrl, isNotEmpty);
+    });
+
+    test('rejects a short firmId used as a referral code', () async {
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).insertOne({
+        'firmId': '8',
+        'name': 'Short Id Referrer',
+        'status': true,
+        'creationDateUTC': DateTime.now().toUtc(),
+        'licenses': [],
+        'referralCode': 'K7MNPQRS',
+      });
+      await db.collection(FenceService.firmCollectionName).insertOne({
+        'firmId': '9',
+        'name': 'Short Id Without Code',
+        'status': true,
+        'creationDateUTC': DateTime.now().toUtc(),
+        'licenses': [],
+      });
+      poolService.release(db);
+
+      Future<void> expectRejected(String code) async {
+        try {
+          await billingWithStripe.createCheckoutSession(
+            null,
+            CreateCheckoutSessionRequest(
+              priceId: 'price_premium',
+              successUrl: 'https://ok',
+              cancelUrl: 'https://cancel',
+              legalTermsVersionDate: '2026-05-01',
+              referralCode: code,
+            ),
+          );
+          fail('Expected invalidArgument for $code');
+        } on GrpcError catch (e) {
+          expect(e.code, 3);
+          expect(e.message, contains('invalid referral'));
+        }
+      }
+
+      await expectRejected('8');
+      await expectRejected('9');
+
+      final accepted = await billingWithStripe.createCheckoutSession(
+        null,
+        CreateCheckoutSessionRequest(
+          priceId: 'price_premium',
+          successUrl: 'https://ok',
+          cancelUrl: 'https://cancel',
+          legalTermsVersionDate: '2026-05-01',
+          referralCode: 'K7MNPQRS',
+        ),
+      );
+      expect(accepted.checkoutUrl, isNotEmpty);
     });
 
     test('applies 10% discount and keeps referral metadata', () async {

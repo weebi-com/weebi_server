@@ -1,4 +1,6 @@
+import 'package:fence_service/grpc.dart';
 import 'package:fence_service/mongo_pool.dart';
+import 'package:mongo_dart/mongo_dart.dart' show ModifierBuilder;
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/fence_service.dart';
@@ -153,6 +155,79 @@ void main() {
           await billingService.listAccountingYearPurchases(firmId);
 
       expect(purchases.map((p) => p['year']), containsAll([2025, 2026]));
+    });
+  });
+
+  group('complimentary first report', () {
+    Future<void> clearPurchases() async {
+      final db = await poolService.acquire();
+      await db.collection(FenceService.firmCollectionName).updateOne(
+            where.eq('firmId', firmId),
+            ModifierBuilder().set(kAccountingYearPurchasesField, <Map<String, dynamic>>[]),
+          );
+      poolService.release(db);
+    }
+
+    test('createPawapayCheckout grants the first year without PawaPay', () async {
+      await clearPurchases();
+
+      final resp = await billingService.createPawapayCheckout(
+        null,
+        CreatePawapayCheckoutRequest(
+          productId: kSyscohadaProductId,
+          returnUrl: 'https://app.weebi.com/#/billing?success=true',
+          legalTermsVersionDate: '2026-07-27',
+          fiscalYear: 2024,
+        ),
+      );
+      expect(resp.checkoutId, isEmpty);
+
+      final purchases = await billingService.listAccountingYearPurchases(firmId);
+      expect(purchases, hasLength(1));
+      expect(purchases.first['year'], 2024);
+      expect(purchases.first['amountCents'], 0);
+      expect(purchases.first['paymentProvider'], kComplimentaryPaymentProvider);
+      expect(
+        purchases.first['stripeCheckoutSessionId'],
+        complimentaryAccountingYearSessionId(2024),
+      );
+
+      final again = await billingService.createPawapayCheckout(
+        null,
+        CreatePawapayCheckoutRequest(
+          productId: kSyscohadaProductId,
+          returnUrl: 'https://app.weebi.com/#/billing?success=true',
+          legalTermsVersionDate: '2026-07-27',
+          fiscalYear: 2024,
+        ),
+      );
+      expect(again.checkoutId, isEmpty);
+      final stillOne = await billingService.listAccountingYearPurchases(firmId);
+      expect(stillOne, hasLength(1));
+    });
+
+    test('a second year is not complimentary', () async {
+      expect(
+        () => billingService.createPawapayCheckout(
+          null,
+          CreatePawapayCheckoutRequest(
+            productId: kSyscohadaProductId,
+            returnUrl: 'https://app.weebi.com/#/billing?success=true',
+            legalTermsVersionDate: '2026-07-27',
+            fiscalYear: 2023,
+          ),
+        ),
+        throwsA(
+          isA<GrpcError>().having(
+            (e) => e.message,
+            'message',
+            contains('PawaPay not configured'),
+          ),
+        ),
+      );
+
+      final purchases = await billingService.listAccountingYearPurchases(firmId);
+      expect(purchases.map((p) => p['year']), [2024]);
     });
   });
 }
