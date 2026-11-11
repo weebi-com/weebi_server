@@ -147,11 +147,14 @@ class BillingService extends BillingServiceBase {
   Future<Map<String, dynamic>?> _findReferrerFirm(Db db, String code) {
     final trimmed = code.trim();
     if (trimmed.isEmpty) return Future.value(null);
+    // Short integer firm ids are not public codes. Match firmId only for the
+    // legacy 13-digit epoch ids that were copied into referralCode.
+    final clauses = <Map<String, dynamic>>[
+      {'referralCode': trimmed},
+      if (isLegacyEpochFirmId(trimmed)) {'firmId': trimmed},
+    ];
     return db.collection(FenceService.firmCollectionName).findOne({
-      r'$or': [
-        {'referralCode': trimmed},
-        {'firmId': trimmed},
-      ],
+      r'$or': clauses,
     });
   }
 
@@ -971,7 +974,9 @@ class BillingService extends BillingServiceBase {
 
       var referralCode = firmDoc['referralCode'] as String? ?? '';
       if (referralCode.isEmpty) {
-        // referralCode = firmId (simple, no random generation)
+        // Firms created before referralCode existed used their firm id as the
+        // public code. createFirm now stores a letter-bearing code, so this
+        // backfill does not run for new short firm ids.
         referralCode = userPermission.firmId;
         await firmCollection.updateOne(
           where.eq('firmId', userPermission.firmId),
@@ -1041,6 +1046,67 @@ class BillingService extends BillingServiceBase {
     });
   }
 
+  /// True when [fiscalYear] is entitled with no new charge: already recorded,
+  /// or granted now as the firm's one complimentary SYSCOHADA year.
+  Future<bool> _syscohadaCoveredWithoutCharge({
+    required String firmId,
+    required int fiscalYear,
+    required String legalTermsVersionDate,
+  }) async {
+    final year = validateFiscalYear(fiscalYear);
+    return databaseMiddleware<bool>(_poolService, (db) async {
+      final firmCollection = db.collection(FenceService.firmCollectionName);
+      final firmDoc = await firmCollection.findOne(where.eq('firmId', firmId));
+      if (firmDoc == null) {
+        throw GrpcError.notFound('firm not found');
+      }
+      final existing = parseAccountingYearPurchases(
+        firmDoc[kAccountingYearPurchasesField],
+      );
+      final decision = decideSyscohadaCharge(
+        existing: existing,
+        fiscalYear: year,
+      );
+      switch (decision) {
+        case SyscohadaChargeDecision.alreadyOwned:
+          return true;
+        case SyscohadaChargeDecision.charge:
+          return false;
+        case SyscohadaChargeDecision.claimComplimentary:
+          final purchase = buildAccountingYearPurchase(
+            year: year,
+            paidAtUTC: DateTime.now().toUtc(),
+            amountCents: 0,
+            currency: 'xof',
+            stripeCheckoutSessionId: complimentaryAccountingYearSessionId(year),
+            paymentProvider: kComplimentaryPaymentProvider,
+            legalTermsVersionDate: legalTermsVersionDate.trim(),
+          );
+          final result = await firmCollection.updateOne(
+            {
+              'firmId': firmId,
+              r'$or': [
+                {kAccountingYearPurchasesField: {r'$exists': false}},
+                {kAccountingYearPurchasesField: {r'$size': 0}},
+              ],
+            },
+            {r'$set': {kAccountingYearPurchasesField: [purchase]}},
+          );
+          if (result.nModified == 1) return true;
+          final again =
+              await firmCollection.findOne(where.eq('firmId', firmId));
+          final purchases = parseAccountingYearPurchases(
+            again?[kAccountingYearPurchasesField],
+          );
+          return decideSyscohadaCharge(
+                existing: purchases,
+                fiscalYear: year,
+              ) ==
+              SyscohadaChargeDecision.alreadyOwned;
+      }
+    });
+  }
+
   @override
   Future<CreateCheckoutSessionResponse> createCheckoutSession(
       ServiceCall? call, CreateCheckoutSessionRequest request) async {
@@ -1072,6 +1138,19 @@ class BillingService extends BillingServiceBase {
         validateFiscalYear(request.fiscalYear);
       } on ArgumentError catch (e) {
         throw GrpcError.invalidArgument(e.message);
+      }
+      final covered = await _syscohadaCoveredWithoutCharge(
+        firmId: userPermission.firmId,
+        fiscalYear: request.fiscalYear,
+        legalTermsVersionDate: request.legalTermsVersionDate,
+      );
+      if (covered) {
+        log.logRpcExit('createCheckoutSession', resultData: {
+          'syscohadaWithoutCharge': true,
+          'fiscalYear': request.fiscalYear,
+        });
+        return CreateCheckoutSessionResponse()
+          ..checkoutUrl = _successUrlAfterCreditFulfill(request.successUrl);
       }
     }
 
@@ -1369,6 +1448,20 @@ class BillingService extends BillingServiceBase {
         validateFiscalYear(request.fiscalYear);
       } on ArgumentError catch (e) {
         throw GrpcError.invalidArgument('${e.message}');
+      }
+      final covered = await _syscohadaCoveredWithoutCharge(
+        firmId: userPermission.firmId,
+        fiscalYear: request.fiscalYear,
+        legalTermsVersionDate: request.legalTermsVersionDate,
+      );
+      if (covered) {
+        log.logRpcExit('createPawapayCheckout', resultData: {
+          'syscohadaWithoutCharge': true,
+          'fiscalYear': request.fiscalYear,
+        });
+        return CreatePawapayCheckoutResponse()
+          ..checkoutId = ''
+          ..redirectUrl = request.returnUrl.trim();
       }
     }
 

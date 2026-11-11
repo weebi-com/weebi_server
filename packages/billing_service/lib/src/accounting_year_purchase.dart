@@ -1,6 +1,7 @@
 /// Punctual SYSCOHADA accounting-year purchase helpers.
 ///
-/// Not a subscription: each paid fiscal year is a one-shot entitlement.
+/// Not a subscription: each fiscal year is a one-shot entitlement.
+/// The first year a firm obtains is complimentary. Later years are paid.
 /// Paying for 2025 does not grant 2026.
 library;
 
@@ -9,6 +10,13 @@ const kSyscohadaProductId = 'syscohada';
 
 /// Firm Mongo field storing punctual year purchases.
 const kAccountingYearPurchasesField = 'accountingYearPurchases';
+
+/// Stored on a complimentary (unpaid) year. Not a [PaymentProvider] enum name.
+const kComplimentaryPaymentProvider = 'complimentary';
+
+/// Idempotency key for the one complimentary year of a firm.
+String complimentaryAccountingYearSessionId(int year) =>
+    'complimentary_${validateFiscalYear(year)}';
 
 bool isSyscohadaProductId(String productId) =>
     productId.trim().toLowerCase() == kSyscohadaProductId;
@@ -30,6 +38,7 @@ Map<String, dynamic> buildAccountingYearPurchase({
   String stripePriceId = '',
   String pawapayCheckoutId = '',
   String paymentProvider = '',
+  String legalTermsVersionDate = '',
 }) {
   final map = <String, dynamic>{
     'year': validateFiscalYear(year),
@@ -49,7 +58,36 @@ Map<String, dynamic> buildAccountingYearPurchase({
   if (paymentProvider.isNotEmpty) {
     map['paymentProvider'] = paymentProvider;
   }
+  if (legalTermsVersionDate.isNotEmpty) {
+    map['legalTermsVersionDate'] = legalTermsVersionDate;
+  }
   return map;
+}
+
+/// How a SYSCOHADA checkout for [fiscalYear] should be fulfilled.
+enum SyscohadaChargeDecision {
+  /// This year is already on the firm (paid or complimentary).
+  alreadyOwned,
+
+  /// The firm has no SYSCOHADA year yet: grant this one at no charge.
+  claimComplimentary,
+
+  /// The complimentary year is used. This year must be paid.
+  charge,
+}
+
+SyscohadaChargeDecision decideSyscohadaCharge({
+  required List<Map<String, dynamic>> existing,
+  required int fiscalYear,
+}) {
+  final year = validateFiscalYear(fiscalYear);
+  for (final e in existing) {
+    if ((e['year'] as num?)?.toInt() == year) {
+      return SyscohadaChargeDecision.alreadyOwned;
+    }
+  }
+  if (existing.isEmpty) return SyscohadaChargeDecision.claimComplimentary;
+  return SyscohadaChargeDecision.charge;
 }
 
 class MergeAccountingYearPurchaseResult {

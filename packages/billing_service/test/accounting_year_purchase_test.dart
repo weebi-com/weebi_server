@@ -30,6 +30,39 @@ void main() {
     });
   });
 
+  group('decideSyscohadaCharge', () {
+    test('first year is complimentary', () {
+      expect(
+        decideSyscohadaCharge(existing: const [], fiscalYear: 2025),
+        SyscohadaChargeDecision.claimComplimentary,
+      );
+    });
+
+    test('same year again is already owned', () {
+      expect(
+        decideSyscohadaCharge(
+          existing: [
+            {'year': 2025, 'amountCents': 0},
+          ],
+          fiscalYear: 2025,
+        ),
+        SyscohadaChargeDecision.alreadyOwned,
+      );
+    });
+
+    test('a later year is charged', () {
+      expect(
+        decideSyscohadaCharge(
+          existing: [
+            {'year': 2025, 'amountCents': 0},
+          ],
+          fiscalYear: 2026,
+        ),
+        SyscohadaChargeDecision.charge,
+      );
+    });
+  });
+
   group('mergeAccountingYearPurchase', () {
     final existing = [
       {

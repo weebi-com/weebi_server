@@ -12,7 +12,7 @@ import 'package:fixnum/fixnum.dart';
 import 'package:protos_weebi/utils.dart' show RegExpWeebi;
 // ignore: unnecessary_import
 import 'package:fence_service/mongo_dart.dart' hide Timestamp;
-import 'package:fence_service/mongo_pool.dart';
+import 'package:fence_service/mongo_pool.dart' hide Timestamp;
 import 'package:protos_weebi/encrypter.dart';
 import 'package:protos_weebi/extensions.dart';
 
@@ -62,12 +62,14 @@ class FenceService extends FenceServiceBase {
 
   bool isMock;
   UserPermissions? userPermissionIfTest;
+  final FirmIdAllocator firmIds;
 
   FenceService(
     this._poolService, {
     this.isMock = false,
     this.userPermissionIfTest,
-  });
+    FirmIdAllocator? firmIds,
+  }) : firmIds = firmIds ?? FirmIdAllocator();
 
   void _assertIsServiceAccountOrHasFirm(
       ServiceCall? call, UserPermissions userPermissions) {
@@ -1881,12 +1883,77 @@ class FenceService extends FenceServiceBase {
   ///
   ///
 
+  /// Inserts a new firm. [firm.firmId] is the next counter value as a string.
+  /// A duplicate firm id allocates again. A duplicate referral code keeps the
+  /// same firm id and tries another code. A burned counter value is acceptable.
+  Future<({String firmId, Firm firm, bool inserted})> _insertAllocatedFirm(
+    Db db, {
+    required String name,
+    required String currencyCode,
+    required Timestamp creationDateUTC,
+  }) async {
+    final firmCollection = db.collection(firmCollectionName);
+    Object? lastDuplicate;
+
+    for (var attempt = 0; attempt < firmIdInsertAttempts; attempt++) {
+      final firmId = await firmIds.nextFirmId(db);
+      for (var codeAttempt = 0;
+          codeAttempt < firmIdInsertAttempts;
+          codeAttempt++) {
+        final referralCode = firmIds.nextReferralCode();
+        final firm = Firm(
+          firmId: firmId,
+          name: name,
+          status: true,
+          creationDateUTC: creationDateUTC,
+          referralCode: referralCode,
+        )..currency = currencyCode;
+        final document = firm.toProto3Json() as Map<String, dynamic>;
+
+        try {
+          final result = await firmCollection.insertOne(document);
+          final token = duplicateKeyIndexToken(result);
+          if (token == 'firmId') {
+            lastDuplicate = result.writeError?.errmsg;
+            break;
+          }
+          if (token == 'referralCode') {
+            lastDuplicate = result.writeError?.errmsg;
+            continue;
+          }
+          if (result.hasWriteErrors) {
+            throw GrpcError.unknown(
+                'hasWriteErrors ${result.writeError!.errmsg}');
+          }
+          final inserted = result.success && result.document != null;
+          return (firmId: firmId, firm: firm, inserted: inserted);
+        } catch (e) {
+          if (e is GrpcError) rethrow;
+          final token = duplicateKeyIndexTokenFromMessage(e.toString());
+          if (token == 'firmId') {
+            lastDuplicate = e;
+            break;
+          }
+          if (token == 'referralCode') {
+            lastDuplicate = e;
+            continue;
+          }
+          rethrow;
+        }
+      }
+    }
+
+    throw GrpcError.unknown('could not allocate a firmId: $lastDuplicate');
+  }
+
+
   /// only one firm per 'company' using weebi
   /// 1. user signup and get a userId
   /// 2. either
   ///     - A. user create a firm
   ///     - B. user joins a firm
-  /// we give firmId the userId
+  /// New firms receive the next whole number from the counters collection, stored as a string.
+  /// Existing epoch firm ids are left unchanged.
   /// Chain and Boutique will be created by default and will use the same firmId
   /// Since createFirm also updates user permission, clientApp needs to reauthent using refresh right after
   @override
@@ -1912,33 +1979,23 @@ class FenceService extends FenceServiceBase {
     // set the appropriate ids
 
     final nowProtoUTC = DateTime.now().toUtc().timestampProto;
-
-    final firmId = DateTime.now().objectIdString;
     final platformCurrency = AppEnvironment.platformDefaultCurrency;
     final defaultCurrencyCode =
         request.hasCurrency() && request.currency.trim().isNotEmpty
             ? CurrencyResolution.normalizeOr(request.currency, platformCurrency)
             : platformCurrency;
 
-    final firm = Firm(
-      firmId: firmId,
-      name: request.name,
-      status: true,
-      creationDateUTC: nowProtoUTC,
-      referralCode: firmId,
-    )..currency = defaultCurrencyCode;
-
     return databaseMiddleware<CreateFirmResponse>(_poolService, (db) async {
-      final firmCollection = db.collection(firmCollectionName);
-
       try {
-        final result = await firmCollection
-            .insertOne(firm.toProto3Json() as Map<String, dynamic>);
-        if (result.hasWriteErrors) {
-          throw GrpcError.unknown(
-              'hasWriteErrors ${result.writeError!.errmsg}');
-        }
-        if (result.success && result.document != null) {
+        final created = await _insertAllocatedFirm(
+          db,
+          name: request.name,
+          currencyCode: defaultCurrencyCode,
+          creationDateUTC: nowProtoUTC,
+        );
+        final firmId = created.firmId;
+        final firm = created.firm;
+        if (created.inserted) {
           final permissions = UserPermissions.create()
             ..articleRights = RightsAdmin.article
             ..boutiqueRights = RightsAdmin.boutique

@@ -186,6 +186,19 @@ void main() {
         pawapayClient: fakePawapay,
       );
 
+      // The first SYSCOHADA year is complimentary and never reaches PawaPay.
+      await billingService.recordAccountingYearPurchase(
+        firmId: Dummy.firm.firmId,
+        fiscalYear: 2020,
+        stripeCheckoutSessionId: 'cs_seed_prior_year',
+        product: BillingProduct(
+          productId: 'syscohada',
+          amountCents: 290,
+          currency: 'eur',
+          stripePriceId: 'price_syscohada',
+        ),
+      );
+
       await billingService.createPawapayCheckout(
         null,
         CreatePawapayCheckoutRequest(
