@@ -351,6 +351,15 @@ const TicketPb$json = {
       '10': 'treasuryTo',
       '17': true
     },
+    {
+      '1': 'payment_account_code',
+      '3': 30,
+      '4': 1,
+      '5': 9,
+      '9': 8,
+      '10': 'paymentAccountCode',
+      '17': true
+    },
   ],
   '4': [TicketPb_PaymentTypePb$json],
   '8': [
@@ -362,9 +371,10 @@ const TicketPb$json = {
     {'1': '_ohada_account_code'},
     {'1': '_treasury_from'},
     {'1': '_treasury_to'},
+    {'1': '_payment_account_code'},
   ],
   '9': [
-    {'1': 30, '2': 99},
+    {'1': 31, '2': 99},
   ],
 };
 
@@ -407,12 +417,14 @@ final $typed_data.Uint8List ticketPbDescriptor = $convert.base64Decode(
     'VG90YWxQYkgAUgtjb3ZlclRvdGFscxIxChJyZXBsYWNlZF90aWNrZXRfaWQYGiABKAlIBFIQcm'
     'VwbGFjZWRUaWNrZXRJZIgBARIxChJvaGFkYV9hY2NvdW50X2NvZGUYGyABKAlIBVIQb2hhZGFB'
     'Y2NvdW50Q29kZYgBARIoCg10cmVhc3VyeV9mcm9tGBwgASgJSAZSDHRyZWFzdXJ5RnJvbYgBAR'
-    'IkCgt0cmVhc3VyeV90bxgdIAEoCUgHUgp0cmVhc3VyeVRviAEBImgKDVBheW1lbnRUeXBlUGIS'
-    'CwoHdW5rbm93bhAAEggKBGNhc2gQARIICgRub3BlEAISDwoLbW9iaWxlTW9uZXkQAxIKCgZjaG'
-    'VxdWUQBBIOCgpjcmVkaXRDYXJkEAUSCQoFZ29vZHMQBkIICgZ0b3RhbHNCCwoJX2N1cnJlbmN5'
-    'Qh4KHF9zbmFwc2hvdF9zZWNvbmRhcnlfY3VycmVuY3lCHwodX3NuYXBzaG90X2xvY2FsX3Blcl'
-    '9zZWNvbmRhcnlCFQoTX3JlcGxhY2VkX3RpY2tldF9pZEIVChNfb2hhZGFfYWNjb3VudF9jb2Rl'
-    'QhAKDl90cmVhc3VyeV9mcm9tQg4KDF90cmVhc3VyeV90b0oECB4QYw==');
+    'IkCgt0cmVhc3VyeV90bxgdIAEoCUgHUgp0cmVhc3VyeVRviAEBEjUKFHBheW1lbnRfYWNjb3Vu'
+    'dF9jb2RlGB4gASgJSAhSEnBheW1lbnRBY2NvdW50Q29kZYgBASJoCg1QYXltZW50VHlwZVBiEg'
+    'sKB3Vua25vd24QABIICgRjYXNoEAESCAoEbm9wZRACEg8KC21vYmlsZU1vbmV5EAMSCgoGY2hl'
+    'cXVlEAQSDgoKY3JlZGl0Q2FyZBAFEgkKBWdvb2RzEAZCCAoGdG90YWxzQgsKCV9jdXJyZW5jeU'
+    'IeChxfc25hcHNob3Rfc2Vjb25kYXJ5X2N1cnJlbmN5Qh8KHV9zbmFwc2hvdF9sb2NhbF9wZXJf'
+    'c2Vjb25kYXJ5QhUKE19yZXBsYWNlZF90aWNrZXRfaWRCFQoTX29oYWRhX2FjY291bnRfY29kZU'
+    'IQCg5fdHJlYXN1cnlfZnJvbUIOCgxfdHJlYXN1cnlfdG9CFwoVX3BheW1lbnRfYWNjb3VudF9j'
+    'b2RlSgQIHxBj');
 
 @$core.Deprecated('Use counterfoilDescriptor instead')
 const Counterfoil$json = {

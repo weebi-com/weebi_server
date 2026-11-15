@@ -1,5 +1,10 @@
 # changelog
 
+## 1.4.5 - 2026 november
+
+- add ArticleKind.eMoney
+- add on ticket the payment code
+
 ## 1.4.4 - 2026 october
 
 - `CreateFirmRequest.boutiqueMail` / `boutiquePhone`: optional shop contact stamped on the default boutique

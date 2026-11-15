@@ -407,6 +407,7 @@ class ArticleRetailOnTicketPb extends $pb.GeneratedMessage {
     $core.double? price,
     $core.double? cost,
     $core.double? unitsInOnePiece,
+    $core.String? ohadaAccountCode,
   }) {
     final result = create();
     if (calibreId != null) result.calibreId = calibreId;
@@ -415,6 +416,7 @@ class ArticleRetailOnTicketPb extends $pb.GeneratedMessage {
     if (price != null) result.price = price;
     if (cost != null) result.cost = cost;
     if (unitsInOnePiece != null) result.unitsInOnePiece = unitsInOnePiece;
+    if (ohadaAccountCode != null) result.ohadaAccountCode = ohadaAccountCode;
     return result;
   }
 
@@ -438,6 +440,7 @@ class ArticleRetailOnTicketPb extends $pb.GeneratedMessage {
     ..aD(5, _omitFieldNames ? '' : 'cost')
     ..aD(6, _omitFieldNames ? '' : 'unitsInOnePiece',
         protoName: 'unitsInOnePiece')
+    ..aOS(7, _omitFieldNames ? '' : 'ohadaAccountCode')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -513,6 +516,16 @@ class ArticleRetailOnTicketPb extends $pb.GeneratedMessage {
   $core.bool hasUnitsInOnePiece() => $_has(5);
   @$pb.TagNumber(6)
   void clearUnitsInOnePiece() => $_clearField(6);
+
+  /// / SYSCOHADA wallet sub-account when kind is eMoney (e.g. 5521).
+  @$pb.TagNumber(7)
+  $core.String get ohadaAccountCode => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set ohadaAccountCode($core.String value) => $_setString(6, value);
+  @$pb.TagNumber(7)
+  $core.bool hasOhadaAccountCode() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearOhadaAccountCode() => $_clearField(7);
 }
 
 /// / default type of article
@@ -531,6 +544,7 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
     $core.double? cost,
     $core.double? unitsInOnePiece,
     $core.String? barcodeEAN,
+    $core.String? ohadaAccountCode,
   }) {
     final result = create();
     if (calibreId != null) result.calibreId = calibreId;
@@ -546,6 +560,7 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
     if (cost != null) result.cost = cost;
     if (unitsInOnePiece != null) result.unitsInOnePiece = unitsInOnePiece;
     if (barcodeEAN != null) result.barcodeEAN = barcodeEAN;
+    if (ohadaAccountCode != null) result.ohadaAccountCode = ohadaAccountCode;
     return result;
   }
 
@@ -578,6 +593,7 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
     ..aD(12, _omitFieldNames ? '' : 'unitsInOnePiece',
         protoName: 'unitsInOnePiece')
     ..aOS(13, _omitFieldNames ? '' : 'barcodeEAN', protoName: 'barcodeEAN')
+    ..aOS(14, _omitFieldNames ? '' : 'ohadaAccountCode')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -719,6 +735,16 @@ class ArticleRetailPb extends $pb.GeneratedMessage {
   $core.bool hasBarcodeEAN() => $_has(12);
   @$pb.TagNumber(13)
   void clearBarcodeEAN() => $_clearField(13);
+
+  /// / SYSCOHADA wallet sub-account (e.g. 5521 Orange Money, 5522 MTN).
+  @$pb.TagNumber(14)
+  $core.String get ohadaAccountCode => $_getSZ(13);
+  @$pb.TagNumber(14)
+  set ohadaAccountCode($core.String value) => $_setString(13, value);
+  @$pb.TagNumber(14)
+  $core.bool hasOhadaAccountCode() => $_has(13);
+  @$pb.TagNumber(14)
+  void clearOhadaAccountCode() => $_clearField(14);
 }
 
 /// a basket of several articles,  a basket cannot contain other baskets

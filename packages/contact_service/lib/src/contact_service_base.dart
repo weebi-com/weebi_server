@@ -543,15 +543,31 @@ class ContactService extends ContactServiceBase {
       await _assertOperationalLicense(db, call, userPermission);
       final collection = db.collection(collectionName);
       final nowProto = DateTime.now().toUtc().timestampProto;
-      final contactsMap = <Map<String, dynamic>>[];
+
+      // 1. PERFORM BATCH DUPLICATE CHECK
+      final contactCandidates = request.contacts.map((c) => {
+        'contactId': c.id,
+        'creationDate': c.creationDate,
+      }).toList();
+
+      final query = {
+        'firmId': userPermission.firmId,
+        'chainId': request.chainId,
+        r'$or': contactCandidates.map((c) => {
+          'contactId': c['contactId'],
+          'creationDate': c['creationDate'],
+        }).toList(),
+      };
+
+      final existingDocs = await collection.find(query).toList();
+      final existingKeys = existingDocs.map((doc) => "${doc['contactId']}_${doc['creationDate']}").toSet();
+
+      final contactsToInsert = <Map<String, dynamic>>[];
       int dups = 0;
+
       for (final contactPb in request.contacts) {
-        final snapshot = await collection.findOne(_Helpers.selectContact(
-            userPermission.firmId,
-            request.chainId,
-            contactPb.id,
-            contactPb.creationDate));
-        if (snapshot != null) {
+        final key = "${contactPb.id}_${contactPb.creationDate}";
+        if (existingKeys.contains(key)) {
           dups += 1;
           continue;
         }
@@ -563,13 +579,21 @@ class ContactService extends ContactServiceBase {
           ..firmId = userPermission.firmId
           ..userId = userPermission.userId
           ..lastTouchTimestampUTC = nowProto;
-        contactsMap.add(contactMongo.toProto3Json() as Map<String, dynamic>);
+        contactsToInsert.add(contactMongo.toProto3Json() as Map<String, dynamic>);
       }
-      if (request.contacts.length == dups) {
-        throw GrpcError.alreadyExists();
+      
+      if (contactsToInsert.isEmpty) {
+        if (dups > 0) {
+          throw GrpcError.alreadyExists();
+        }
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.CREATED
+          ..timestamp = DateTime.now().timestampProto
+          ..message = 'nothing to create';
       }
+
       try {
-        final result = await collection.insertMany(contactsMap);
+        final result = await collection.insertMany(contactsToInsert);
         if (result.hasWriteErrors) {
           final writeErrorsMessages = <String>[];
           for (final error in result.writeErrors) {

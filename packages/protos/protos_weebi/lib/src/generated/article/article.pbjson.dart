@@ -23,13 +23,14 @@ const ArticleKindPb$json = {
     {'1': 'retail', '2': 1},
     {'1': 'basket', '2': 2},
     {'1': 'uncountable', '2': 3},
+    {'1': 'eMoney', '2': 4},
   ],
 };
 
 /// Descriptor for `ArticleKindPb`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List articleKindPbDescriptor = $convert.base64Decode(
     'Cg1BcnRpY2xlS2luZFBiEgsKB3Vua25vd24QABIKCgZyZXRhaWwQARIKCgZiYXNrZXQQAhIPCg'
-    't1bmNvdW50YWJsZRAD');
+    't1bmNvdW50YWJsZRADEgoKBmVNb25leRAE');
 
 @$core.Deprecated('Use calibreMongoDescriptor instead')
 const CalibreMongo$json = {
@@ -204,6 +205,18 @@ const ArticleRetailOnTicketPb$json = {
     {'1': 'price', '3': 4, '4': 1, '5': 1, '10': 'price'},
     {'1': 'cost', '3': 5, '4': 1, '5': 1, '10': 'cost'},
     {'1': 'unitsInOnePiece', '3': 6, '4': 1, '5': 1, '10': 'unitsInOnePiece'},
+    {
+      '1': 'ohada_account_code',
+      '3': 7,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'ohadaAccountCode',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_ohada_account_code'},
   ],
 };
 
@@ -212,7 +225,8 @@ final $typed_data.Uint8List articleRetailOnTicketPbDescriptor = $convert.base64D
     'ChdBcnRpY2xlUmV0YWlsT25UaWNrZXRQYhIcCgljYWxpYnJlSWQYASABKAVSCWNhbGlicmVJZB'
     'IOCgJpZBgCIAEoBVICaWQSIAoLZGVzaWduYXRpb24YAyABKAlSC2Rlc2lnbmF0aW9uEhQKBXBy'
     'aWNlGAQgASgBUgVwcmljZRISCgRjb3N0GAUgASgBUgRjb3N0EigKD3VuaXRzSW5PbmVQaWVjZR'
-    'gGIAEoAVIPdW5pdHNJbk9uZVBpZWNl');
+    'gGIAEoAVIPdW5pdHNJbk9uZVBpZWNlEjEKEm9oYWRhX2FjY291bnRfY29kZRgHIAEoCUgAUhBv'
+    'aGFkYUFjY291bnRDb2RliAEBQhUKE19vaGFkYV9hY2NvdW50X2NvZGU=');
 
 @$core.Deprecated('Use articleRetailPbDescriptor instead')
 const ArticleRetailPb$json = {
@@ -245,6 +259,18 @@ const ArticleRetailPb$json = {
     {'1': 'cost', '3': 11, '4': 1, '5': 1, '10': 'cost'},
     {'1': 'unitsInOnePiece', '3': 12, '4': 1, '5': 1, '10': 'unitsInOnePiece'},
     {'1': 'barcodeEAN', '3': 13, '4': 1, '5': 9, '10': 'barcodeEAN'},
+    {
+      '1': 'ohada_account_code',
+      '3': 14,
+      '4': 1,
+      '5': 9,
+      '9': 0,
+      '10': 'ohadaAccountCode',
+      '17': true
+    },
+  ],
+  '8': [
+    {'1': '_ohada_account_code'},
   ],
 };
 
@@ -257,7 +283,9 @@ final $typed_data.Uint8List articleRetailPbDescriptor = $convert.base64Decode(
     'RGF0ZRgHIAEoCVIMY3JlYXRpb25EYXRlEh4KCnVwZGF0ZURhdGUYCCABKAlSCnVwZGF0ZURhdG'
     'USKgoQc3RhdHVzVXBkYXRlRGF0ZRgJIAEoCVIQc3RhdHVzVXBkYXRlRGF0ZRIUCgVwcmljZRgK'
     'IAEoAVIFcHJpY2USEgoEY29zdBgLIAEoAVIEY29zdBIoCg91bml0c0luT25lUGllY2UYDCABKA'
-    'FSD3VuaXRzSW5PbmVQaWVjZRIeCgpiYXJjb2RlRUFOGA0gASgJUgpiYXJjb2RlRUFO');
+    'FSD3VuaXRzSW5PbmVQaWVjZRIeCgpiYXJjb2RlRUFOGA0gASgJUgpiYXJjb2RlRUFOEjEKEm9o'
+    'YWRhX2FjY291bnRfY29kZRgOIAEoCUgAUhBvaGFkYUFjY291bnRDb2RliAEBQhUKE19vaGFkYV'
+    '9hY2NvdW50X2NvZGU=');
 
 @$core.Deprecated('Use articleBasketPbDescriptor instead')
 const ArticleBasketPb$json = {

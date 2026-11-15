@@ -148,7 +148,8 @@ Future<void> main(List<String> args) async {
   // basic
   await db.ensureIndex(ArticleService.collectionArticleName,
       name: 'firmId_chainId_calibreId_creationDate',
-      keys: {'firmId': 1, 'chainId': 1, 'calibreId': 1, 'creationDate': -1});
+      keys: {'firmId': 1, 'chainId': 1, 'calibreId': 1, 'creationDate': -1},
+      unique: true);
 
   // apps resync
   await db.ensureIndex(ArticleService.collectionArticleName,
@@ -164,8 +165,9 @@ Future<void> main(List<String> args) async {
   ///
   /// basic
   await db.ensureIndex(ArticleService.collectionPhotoName,
-      name: 'firmId_chainId_calibreId',
-      keys: {'firmId': 1, 'chainId': 1, 'calibreId': -1});
+      name: 'firmId_chainId_calibreId_photoId',
+      keys: {'firmId': 1, 'chainId': 1, 'calibreId': 1, 'photo.id': 1},
+      unique: true);
 
   // apps resync
   await db.ensureIndex(ArticleService.collectionPhotoName,
@@ -176,7 +178,8 @@ Future<void> main(List<String> args) async {
   /// basic
   await db.ensureIndex(ArticleService.collectionCategoryName,
       name: 'firmId_chainId_title',
-      keys: {'firmId': 1, 'chainId': 1, 'title': -1});
+      keys: {'firmId': 1, 'chainId': 1, 'title': -1},
+      unique: true);
 
   // apps resync
   await db.ensureIndex(ArticleService.collectionCategoryName,
@@ -190,7 +193,8 @@ Future<void> main(List<String> args) async {
   /// basic
   await db.ensureIndex(ContactService.collectionName,
       name: 'firmId_chainId_contactId_creationDate',
-      keys: {'firmId': 1, 'chainId': 1, 'contactId': 1, 'creationDate': -1});
+      keys: {'firmId': 1, 'chainId': 1, 'contactId': 1, 'creationDate': -1},
+      unique: true);
 
   /// for apps resync
   await db.ensureIndex(ContactService.collectionName,
@@ -224,7 +228,8 @@ Future<void> main(List<String> args) async {
         'contactId': 1,
         'isDeleted': 1,
         'creationDate': -1
-      });
+      },
+      unique: true);
 
   /// for apps resync
   await db.ensureIndex(TicketService.collectionName,

@@ -1,6 +1,8 @@
 # changelog
 
 
+- throttling to avoid freeriders
+
 ## 1.1.8 - september 2026
 
 - use weebi credits and get discount
