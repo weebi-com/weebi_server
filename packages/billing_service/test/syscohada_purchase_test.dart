@@ -1,6 +1,5 @@
 import 'package:fence_service/grpc.dart';
 import 'package:fence_service/mongo_pool.dart';
-import 'package:mongo_dart/mongo_dart.dart' show ModifierBuilder;
 import 'package:fence_service/protos_weebi.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/fence_service.dart';

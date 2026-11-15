@@ -1,5 +1,19 @@
 # changelog
 
+## 1.4.8 - 2026 november
+
+- MobileMoneyOperatorPb: `countryCode` → repeated `countryCodes` (empty = global)
+
+## 1.4.6 - 2026 november
+
+- add MobileMoneyService.listOperators and MobileMoneyOperatorPb
+- operator logo as `bytes` + `logoExtension` (not a URL)
+
+## 1.4.5 - 2026 november
+
+- add ArticleKind.eMoney
+- add on ticket the payment code
+
 ## 1.4.4 - 2026 october
 
 - `CreateFirmRequest.boutiqueMail` / `boutiquePhone`: optional shop contact stamped on the default boutique

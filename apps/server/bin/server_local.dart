@@ -12,6 +12,7 @@ import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/mongo_local_testing.dart';
 import 'package:fence_service/weebi_app_service.dart';
+import 'package:fence_service/mobile_money_service.dart';
 import 'package:billing_service/billing_service.dart';
 import 'package:evaluation_service/evaluation_service.dart';
 
@@ -45,6 +46,7 @@ void main(List<String> arguments) async {
   final ticketService = TicketService(poolService);
   final fenceService = FenceService(poolService);
   final weebiAppService = WeebiAppService(poolService);
+  final mobileMoneyService = MobileMoneyService(poolService);
   final billingService = BillingService(poolService);
 
   final evaluationStore = createEvaluationStore(
@@ -65,6 +67,7 @@ void main(List<String> arguments) async {
       ticketService,
       fenceService,
       weebiAppService,
+      mobileMoneyService,
       billingService,
       evaluationService,
     ],

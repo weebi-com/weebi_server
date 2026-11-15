@@ -110,6 +110,11 @@ export 'package:protos_weebi/src/generated/weebi_app_service.pbenum.dart';
 export 'package:protos_weebi/src/generated/weebi_app_service.pbgrpc.dart';
 export 'package:protos_weebi/src/generated/weebi_app_service.pbjson.dart';
 
+export 'package:protos_weebi/src/generated/mobile_money/mobile_money.pb.dart';
+export 'package:protos_weebi/src/generated/mobile_money/mobile_money.pbenum.dart';
+export 'package:protos_weebi/src/generated/mobile_money/mobile_money.pbgrpc.dart';
+export 'package:protos_weebi/src/generated/mobile_money/mobile_money.pbjson.dart';
+
 export 'package:protos_weebi/src/generated/stats_service.pb.dart';
 export 'package:protos_weebi/src/generated/stats_service.pbenum.dart';
 export 'package:protos_weebi/src/generated/stats_service.pbgrpc.dart';
