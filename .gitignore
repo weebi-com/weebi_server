@@ -36,3 +36,10 @@ packages/stats_service/.dart_tool/test/incremental_kernel.Ly9AZGFydD0zLjY=
 packages/stats_service/.dart_tool/test/incremental_kernel.Ly9AZGFydD0zLjc=
 packages/billing_service/tool/syscohada_billing_product.example.json
 pubspec.lock
+scripts/create_mobile_money_operator.js
+scripts/emoney_logos/mpesa.png
+scripts/emoney_logos/mtn_money.png
+scripts/emoney_logos/orange_money.png
+scripts/emoney_logos/wave.png
+scripts/emoney_logos/wizall.jpg
+scripts/emoney_logos/yas.jpg

@@ -7,6 +7,7 @@ import 'package:fence_service/mongo_dart.dart';
 
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
+import 'package:fence_service/mobile_money_service.dart';
 
 import 'views/all_views.dart';
 
@@ -106,8 +107,18 @@ Future<void> main(List<String> args) async {
   });
 
   // firm
+  // ensureIndex ignores an index that already has this name, so a pre-existing
+  // non-unique firmId index would stay non-unique. Drop that one first.
+  final firmCollection = db.collection(FenceService.firmCollectionName);
+  final firmIndexes = await firmCollection.getIndexes();
+  final firmIdIndexIsNotUnique = firmIndexes.any(
+    (info) => info['name'] == 'firmId' && info['unique'] != true,
+  );
+  if (firmIdIndexIsNotUnique) {
+    await firmCollection.dropIndexes('firmId');
+  }
   final d = await db.ensureIndex(FenceService.firmCollectionName,
-      name: 'firmId', keys: {'firmId': 1});
+      name: 'firmId', keys: {'firmId': 1}, unique: true);
   print(d);
   await db.ensureIndex(FenceService.firmCollectionName,
       name: 'name', keys: {'name': -1});
@@ -138,7 +149,8 @@ Future<void> main(List<String> args) async {
   // basic
   await db.ensureIndex(ArticleService.collectionArticleName,
       name: 'firmId_chainId_calibreId_creationDate',
-      keys: {'firmId': 1, 'chainId': 1, 'calibreId': 1, 'creationDate': -1});
+      keys: {'firmId': 1, 'chainId': 1, 'calibreId': 1, 'creationDate': -1},
+      unique: true);
 
   // apps resync
   await db.ensureIndex(ArticleService.collectionArticleName,
@@ -154,8 +166,9 @@ Future<void> main(List<String> args) async {
   ///
   /// basic
   await db.ensureIndex(ArticleService.collectionPhotoName,
-      name: 'firmId_chainId_calibreId',
-      keys: {'firmId': 1, 'chainId': 1, 'calibreId': -1});
+      name: 'firmId_chainId_calibreId_photoId',
+      keys: {'firmId': 1, 'chainId': 1, 'calibreId': 1, 'photo.id': 1},
+      unique: true);
 
   // apps resync
   await db.ensureIndex(ArticleService.collectionPhotoName,
@@ -166,7 +179,8 @@ Future<void> main(List<String> args) async {
   /// basic
   await db.ensureIndex(ArticleService.collectionCategoryName,
       name: 'firmId_chainId_title',
-      keys: {'firmId': 1, 'chainId': 1, 'title': -1});
+      keys: {'firmId': 1, 'chainId': 1, 'title': -1},
+      unique: true);
 
   // apps resync
   await db.ensureIndex(ArticleService.collectionCategoryName,
@@ -180,7 +194,8 @@ Future<void> main(List<String> args) async {
   /// basic
   await db.ensureIndex(ContactService.collectionName,
       name: 'firmId_chainId_contactId_creationDate',
-      keys: {'firmId': 1, 'chainId': 1, 'contactId': 1, 'creationDate': -1});
+      keys: {'firmId': 1, 'chainId': 1, 'contactId': 1, 'creationDate': -1},
+      unique: true);
 
   /// for apps resync
   await db.ensureIndex(ContactService.collectionName,
@@ -214,7 +229,8 @@ Future<void> main(List<String> args) async {
         'contactId': 1,
         'isDeleted': 1,
         'creationDate': -1
-      });
+      },
+      unique: true);
 
   /// for apps resync
   await db.ensureIndex(TicketService.collectionName,
@@ -235,6 +251,13 @@ Future<void> main(List<String> args) async {
         'ticket.payment_type': 1
       });
 
+  /// MOBILE MONEY OPERATOR CATALOG
+  await db.ensureIndex(MobileMoneyService.collectionName,
+      name: 'code', keys: {'code': 1}, unique: true);
+  await db.ensureIndex(MobileMoneyService.collectionName,
+      name: 'countryCode_active', keys: {'countryCode': 1, 'active': 1});
+  await _seedGlobalMobileMoneyOperators(db);
+
   /// VIEWS
   /// Create views if they don't exist. MongoDB's create returns success when
   /// view already exists with same definition (idempotent).
@@ -245,6 +268,53 @@ Future<void> main(List<String> args) async {
   print('finished indexes and views');
   await db.close();
   return;
+}
+
+/// Seeds Orange / MTN / Airtel with OHADA footprints. Idempotent (insert only).
+/// Prefer scripts/create_mobile_money_operator.js for Wave/Wizall + logos.
+Future<void> _seedGlobalMobileMoneyOperators(Db db) async {
+  final collection = db.collection(MobileMoneyService.collectionName);
+  const seeds = [
+    {
+      'code': '5521',
+      'name': 'Orange Money',
+      'countryCodes': [
+        'BF',
+        'CM',
+        'CF',
+        'CD',
+        'CI',
+        'GN',
+        'GW',
+        'ML',
+        'NE',
+        'SN',
+      ],
+    },
+    {
+      'code': '5522',
+      'name': 'MTN Money',
+      'countryCodes': ['BJ', 'CI', 'CM', 'CG', 'GA', 'GN', 'CD'],
+    },
+    {
+      'code': '5523',
+      'name': 'Airtel Money',
+      'countryCodes': ['NE', 'TD', 'CG', 'GA', 'CD', 'CF'],
+    },
+  ];
+  for (final seed in seeds) {
+    final existing = await collection.findOne(where.eq('code', seed['code']));
+    if (existing != null) continue;
+    await collection.insertOne({
+      'code': seed['code'],
+      'name': seed['name'],
+      'countryCodes': seed['countryCodes'],
+      'logo': '',
+      'logoExtension': 'unknown',
+      'active': true,
+    });
+    print('Seeded mobile money operator ${seed['code']}');
+  }
 }
 
 /// Creates a view if it doesn't exist. Idempotent: MongoDB returns success

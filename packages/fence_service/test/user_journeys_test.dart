@@ -69,7 +69,11 @@ void main() async {
     // Lili the boss creates her new unique firm
     final createFirmResponse = await fenceService.createFirm(
         ServiceCallTest(tokensBoss.accessToken),
-        CreateFirmRequest(name: "Lili's Big Biz"));
+        CreateFirmRequest(
+          name: "Lili's Big Biz",
+          boutiqueMail: 'shop@weebi.com',
+          boutiquePhone: '+33 145711299',
+        ));
 
     expect(createFirmResponse.firm.firmId.isNotEmpty, isTrue);
     expect(createFirmResponse.statusResponse.type, StatusResponse_Type.CREATED);
@@ -80,8 +84,16 @@ void main() async {
           .collection(FenceService.firmCollectionName)
           .findOne(where.eq('firmId', createFirmResponse.firm.firmId));
       expect(firmDoc, isNotNull);
-      expect(firmDoc!['referralCode'], createFirmResponse.firm.firmId);
-      expect(firmDoc['referralCode'], firmDoc['firmId']);
+      final storedFirmId = firmDoc!['firmId'];
+      expect(storedFirmId, isA<String>());
+      expect(storedFirmId, matches(RegExp(r'^[1-9]\d*$')));
+      expect(int.parse(storedFirmId as String).toString(), storedFirmId);
+      expect((storedFirmId).length, lessThan(13));
+      final referralCode = firmDoc['referralCode'] as String;
+      expect(referralCode, isNot(storedFirmId));
+      expect(referralCode.length, 8);
+      expect(referralCode, matches(RegExp(r'[A-Z]')));
+      expect(referralCode, isNot(matches(RegExp(r'^\d+$'))));
 
       final userDoc = await dbFirmCheck
           .collection(FenceService.userCollectionName)
@@ -89,6 +101,23 @@ void main() async {
       expect(userDoc, isNotNull);
       final perm = userDoc!['permissions'] as Map<String, dynamic>?;
       expect(perm?['isFirmCreator'], isTrue);
+
+      final chainDoc = await dbFirmCheck
+          .collection(FenceService.boutiqueCollectionName)
+          .findOne(where.eq('firmId', createFirmResponse.firm.firmId));
+      expect(chainDoc, isNotNull);
+      expect(chainDoc!['chainId'], storedFirmId);
+      expect(chainDoc['firmId'], storedFirmId);
+      final boutiques = chainDoc['boutiques'] as List<dynamic>;
+      expect(boutiques, isNotEmpty);
+      final firstBoutique = boutiques.first as Map<String, dynamic>;
+      expect(firstBoutique['boutiqueId'], storedFirmId);
+      expect(firstBoutique['chainId'], storedFirmId);
+      expect(firstBoutique['firmId'], storedFirmId);
+      final boutiquePb = firstBoutique['boutique'] as Map<String, dynamic>;
+      expect(boutiquePb['mail'], 'shop@weebi.com');
+      expect(boutiquePb['phone']?['countryCode'], 33);
+      expect(boutiquePb['phone']?['number'], '145711299');
     } finally {
       poolService.release(dbFirmCheck);
     }

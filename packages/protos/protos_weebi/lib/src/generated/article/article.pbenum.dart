@@ -23,16 +23,19 @@ class ArticleKindPb extends $pb.ProtobufEnum {
       ArticleKindPb._(2, _omitEnumNames ? '' : 'basket');
   static const ArticleKindPb uncountable =
       ArticleKindPb._(3, _omitEnumNames ? '' : 'uncountable');
+  static const ArticleKindPb eMoney =
+      ArticleKindPb._(4, _omitEnumNames ? '' : 'eMoney');
 
   static const $core.List<ArticleKindPb> values = <ArticleKindPb>[
     unknown,
     retail,
     basket,
     uncountable,
+    eMoney,
   ];
 
   static final $core.List<ArticleKindPb?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 3);
+      $pb.ProtobufEnum.$_initByValueList(values, 4);
   static ArticleKindPb? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

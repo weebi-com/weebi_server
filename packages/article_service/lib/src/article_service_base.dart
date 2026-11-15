@@ -827,19 +827,37 @@ class ArticleService extends ArticleServiceBase {
         await _assertOperationalLicense(db, call, userPermission);
         final collectionArticle = db.collection(collectionArticleName);
 
-        final calibresMap = <Map<String, dynamic>>[];
         final now = DateTime.now().toUtc().timestampProto;
+
+        // 1. PERFORM BATCH DUPLICATE CHECK
+        final calibreCandidates = request.calibres.map((c) => {
+          'calibreId': c.id,
+          'creationDate': c.creationDate,
+        }).toList();
+
+        // Use raw map syntax for the $or query.
+        final query = {
+          'firmId': userPermission.firmId,
+          'chainId': request.chainId,
+          r'$or': calibreCandidates.map((c) => {
+            'calibreId': c['calibreId'],
+            'creationDate': c['creationDate'],
+          }).toList(),
+        };
+
+        final existingDocs = await collectionArticle.find(query).toList();
+        final existingKeys = existingDocs.map((doc) => "${doc['calibreId']}_${doc['creationDate']}").toSet();
+
+        final calibresToInsert = <Map<String, dynamic>>[];
         int dups = 0;
+
         for (final calibre in request.calibres) {
-          final select = _Helpers.select(
-            userPermission.firmId,
-            CalibreRequest(chainId: request.chainId, calibre: calibre),
-          );
-          final snapshot = await collectionArticle.findOne(select);
-          if (snapshot != null) {
+          final key = "${calibre.id}_${calibre.creationDate}";
+          if (existingKeys.contains(key)) {
             dups += 1;
             continue;
           }
+
           final calibreMongo = CalibreMongo.create()
             ..calibre = calibre
             ..creationDate = calibre.creationDate
@@ -848,14 +866,21 @@ class ArticleService extends ArticleServiceBase {
             ..firmId = userPermission.firmId
             ..userId = userPermission.userId
             ..lastTouchTimestampUTC = now;
-          calibresMap.add(calibreMongo.toProto3Json() as Map<String, dynamic>);
+          calibresToInsert.add(calibreMongo.toProto3Json() as Map<String, dynamic>);
         }
-        if (request.calibres.length == dups) {
-          throw GrpcError.alreadyExists();
+
+        if (calibresToInsert.isEmpty) {
+          if (dups > 0) {
+            throw GrpcError.alreadyExists();
+          }
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.CREATED
+            ..timestamp = DateTime.now().timestampProto
+            ..message = 'nothing to create';
         }
 
         try {
-          final result = await collectionArticle.insertMany(calibresMap);
+          final result = await collectionArticle.insertMany(calibresToInsert);
           if (result.hasWriteErrors) {
             final writeErrorsMessages = <String>[];
             for (final error in result.writeErrors) {
@@ -918,19 +943,37 @@ class ArticleService extends ArticleServiceBase {
       (db) async {
         await _assertOperationalLicense(db, call, userPermission);
         final collectionPhoto = db.collection(collectionPhotoName);
-        final map = <Map<String, dynamic>>[];
+
         final now = DateTime.now().toUtc().timestampProto;
+
+        // 1. PERFORM BATCH DUPLICATE CHECK
+        final photoCandidates = request.photos.map((p) => {
+          'calibreId': p.calibreId,
+          'id': p.id,
+        }).toList();
+
+        final query = {
+          'firmId': userPermission.firmId,
+          'chainId': request.chainId,
+          r'$or': photoCandidates.map((c) => {
+            'calibreId': c['calibreId'],
+            'photo.id': c['id'],
+          }).toList(),
+        };
+
+        final existingDocs = await collectionPhoto.find(query).toList();
+        final existingKeys = existingDocs.map((doc) => "${doc['calibreId']}_${doc['photo']['id']}").toSet();
+
+        final photosToInsert = <Map<String, dynamic>>[];
         int dups = 0;
+
         for (final photo in request.photos) {
-          final select = _Helpers.selectPhoto(
-            userPermission.firmId,
-            PhotoRequest(chainId: request.chainId, photo: photo),
-          );
-          final snapshot = await collectionPhoto.findOne(select);
-          if (snapshot != null) {
+          final key = "${photo.calibreId}_${photo.id}";
+          if (existingKeys.contains(key)) {
             dups += 1;
             continue;
           }
+
           final photoMongo = ArticlePhotoMongo.create()
             ..photo = photo
             ..calibreId = photo.calibreId
@@ -938,13 +981,21 @@ class ArticleService extends ArticleServiceBase {
             ..firmId = userPermission.firmId
             ..userId = userPermission.userId
             ..lastTouchTimestampUTC = now;
-          map.add(photoMongo.toProto3Json() as Map<String, dynamic>);
+          photosToInsert.add(photoMongo.toProto3Json() as Map<String, dynamic>);
         }
-        if (request.photos.length == dups) {
-          throw GrpcError.alreadyExists();
+
+        if (photosToInsert.isEmpty) {
+          if (dups > 0) {
+            throw GrpcError.alreadyExists();
+          }
+          return StatusResponse.create()
+            ..type = StatusResponse_Type.CREATED
+            ..timestamp = DateTime.now().timestampProto
+            ..message = 'nothing to create';
         }
+
         try {
-          final result = await collectionPhoto.insertMany(map);
+          final result = await collectionPhoto.insertMany(photosToInsert);
           if (result.hasWriteErrors) {
             final writeErrorsMessages = <String>[];
             for (final error in result.writeErrors) {
@@ -1135,15 +1186,17 @@ class ArticleService extends ArticleServiceBase {
           final totalCount = await collectionPhoto.count(selector);
 
           // 2. DETERMINE OFFSET AND LIMIT
-          final maxAllowedLimit = 100;
-          final limit = request.limit > maxAllowedLimit ? maxAllowedLimit : request.limit;
+          const maxAllowedLimit = 100;
+          final paged = request.limit > 0;
+          final limit =
+              request.limit > maxAllowedLimit ? maxAllowedLimit : request.limit;
 
           // 3. FETCH BATCH WITH LIMIT
-          final list = await collectionPhoto
-              .find(selector)
-              .skip(request.offset)
-              .take(limit)
-              .toList();
+          if (paged) {
+            selector.skip(request.offset).limit(limit);
+          }
+
+          final list = await collectionPhoto.find(selector).toList();
 
           if (list.isEmpty) {
             return PhotosResponse.create()

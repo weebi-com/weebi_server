@@ -286,7 +286,8 @@ $PROTO_FILES_TO_CHECK = @(
     "ticket\ticket.proto",
     "ticket\ticket_type.proto",
     "ticket\ticket_service.proto",
-    "weebi_app_service.proto"
+    "weebi_app_service.proto",
+    "mobile_money\mobile_money.proto"
 )
 
 $PROTO_FILES = @()

@@ -560,6 +560,7 @@ class TicketPb extends $pb.GeneratedMessage {
     $core.String? ohadaAccountCode,
     $core.String? treasuryFrom,
     $core.String? treasuryTo,
+    $core.String? paymentAccountCode,
   }) {
     final result = create();
     if (nonUniqueId != null) result.nonUniqueId = nonUniqueId;
@@ -593,6 +594,8 @@ class TicketPb extends $pb.GeneratedMessage {
     if (ohadaAccountCode != null) result.ohadaAccountCode = ohadaAccountCode;
     if (treasuryFrom != null) result.treasuryFrom = treasuryFrom;
     if (treasuryTo != null) result.treasuryTo = treasuryTo;
+    if (paymentAccountCode != null)
+      result.paymentAccountCode = paymentAccountCode;
     return result;
   }
 
@@ -656,6 +659,7 @@ class TicketPb extends $pb.GeneratedMessage {
     ..aOS(27, _omitFieldNames ? '' : 'ohadaAccountCode')
     ..aOS(28, _omitFieldNames ? '' : 'treasuryFrom')
     ..aOS(29, _omitFieldNames ? '' : 'treasuryTo')
+    ..aOS(30, _omitFieldNames ? '' : 'paymentAccountCode')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -960,6 +964,16 @@ class TicketPb extends $pb.GeneratedMessage {
   $core.bool hasTreasuryTo() => $_has(28);
   @$pb.TagNumber(29)
   void clearTreasuryTo() => $_clearField(29);
+
+  /// / Specific wallet SYSCOHADA code when paymentType is mobileMoney (e.g. 5521).
+  @$pb.TagNumber(30)
+  $core.String get paymentAccountCode => $_getSZ(29);
+  @$pb.TagNumber(30)
+  set paymentAccountCode($core.String value) => $_setString(29, value);
+  @$pb.TagNumber(30)
+  $core.bool hasPaymentAccountCode() => $_has(29);
+  @$pb.TagNumber(30)
+  void clearPaymentAccountCode() => $_clearField(30);
 }
 
 class Counterfoil extends $pb.GeneratedMessage {

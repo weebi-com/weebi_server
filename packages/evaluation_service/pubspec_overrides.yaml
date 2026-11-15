@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: fence_service,protos_weebi
+dependency_overrides:
+  fence_service:
+    path: ..\\fence_service

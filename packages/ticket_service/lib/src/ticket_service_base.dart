@@ -705,19 +705,37 @@ class TicketService extends TicketServiceBase {
       }
       final collection = db.collection(collectionName);
 
-      final ticketsMap = <Map<String, dynamic>>[];
       final nowTimestampUtc = DateTime.now().toUtc().timestampProto;
+
+      // 1. PERFORM BATCH DUPLICATE CHECK
+      final ticketCandidates = request.tickets.map((t) => {
+        'boutiqueId': t.counterfoil.boutiqueId,
+        'nonUniqueId': t.nonUniqueId,
+        'creationDate': t.creationDate,
+      }).toList();
+
+      final query = {
+        'firmId': userPermission.firmId,
+        r'$or': ticketCandidates.map((c) => {
+          'boutiqueId': c['boutiqueId'],
+          'nonUniqueId': c['nonUniqueId'],
+          'creationDate': c['creationDate'],
+        }).toList(),
+      };
+
+      final existingDocs = await collection.find(query).toList();
+      final existingKeys = existingDocs.map((doc) => "${doc['boutiqueId']}_${doc['nonUniqueId']}_${doc['creationDate']}").toSet();
+
+      final ticketsToInsert = <Map<String, dynamic>>[];
       int dups = 0;
+
       for (final ticketPb in request.tickets) {
-        final snapshot = await collection.findOne(_Helpers.selectTicket(
-            userPermission.firmId,
-            ticketPb.counterfoil.boutiqueId,
-            ticketPb.nonUniqueId,
-            ticketPb.creationDate));
-        if (snapshot != null) {
+        final key = "${ticketPb.counterfoil.boutiqueId}_${ticketPb.nonUniqueId}_${ticketPb.creationDate}";
+        if (existingKeys.contains(key)) {
           dups += 1;
           continue;
         }
+
         final ticketMongo = TicketMongo.create()
           ..ticket = ticketPb
           ..creationDate = ticketPb.date
@@ -728,13 +746,21 @@ class TicketService extends TicketServiceBase {
           ..userId = userPermission.userId
           ..contactId = ticketPb.contactId
           ..lastTouchTimestampUTC = nowTimestampUtc;
-        ticketsMap.add(ticketMongo.toProto3Json() as Map<String, dynamic>);
+        ticketsToInsert.add(ticketMongo.toProto3Json() as Map<String, dynamic>);
       }
-      if (request.tickets.length == dups) {
-        throw GrpcError.alreadyExists();
+
+      if (ticketsToInsert.isEmpty) {
+        if (dups > 0) {
+          throw GrpcError.alreadyExists();
+        }
+        return StatusResponse.create()
+          ..type = StatusResponse_Type.CREATED
+          ..timestamp = DateTime.now().timestampProto
+          ..message = 'nothing to create';
       }
+
       try {
-        final result = await collection.insertMany(ticketsMap);
+        final result = await collection.insertMany(ticketsToInsert);
         if (result.hasWriteErrors) {
           final writeErrorsMessages = <String>[];
           for (final error in result.writeErrors) {
@@ -745,7 +771,7 @@ class TicketService extends TicketServiceBase {
         }
         if (result.success) {
           log.logRpcExit('createMany', resultData: {
-            'created': ticketsMap.length,
+            'created': ticketsToInsert.length,
             'dups': dups,
           });
           return StatusResponse.create()

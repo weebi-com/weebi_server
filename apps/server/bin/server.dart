@@ -15,6 +15,7 @@ import 'package:server/server_interceptors.dart';
 import 'package:ticket_service/ticket_service.dart';
 import 'package:fence_service/fence_service.dart';
 import 'package:fence_service/weebi_app_service.dart';
+import 'package:fence_service/mobile_money_service.dart';
 import 'package:billing_service/billing_service.dart';
 import 'package:stats_service/stats_service.dart';
 import 'package:evaluation_service/evaluation_service.dart';
@@ -90,6 +91,7 @@ void main(List<String> arguments) async {
     final contactService = ContactService(poolService);
     final ticketService = TicketService(poolService);
     final weebiAppService = WeebiAppService(poolService);
+    final mobileMoneyService = MobileMoneyService(poolService);
     final fenceService = FenceService(poolService);
     final billingService = BillingService(poolService);
     final statsService = StatsService(poolService);
@@ -112,6 +114,7 @@ void main(List<String> arguments) async {
         ticketService,
         fenceService,
         weebiAppService,
+        mobileMoneyService,
         billingService,
         statsService,
         evaluationService,
