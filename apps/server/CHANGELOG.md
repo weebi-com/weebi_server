@@ -1,7 +1,10 @@
 # changelog
 
 
+## 1.1.9 - nov 2026
 - throttling to avoid freeriders
+- new firmIds become numbers
+- handle mobile money
 
 ## 1.1.8 - september 2026
 
