@@ -835,15 +835,7 @@ class ArticleService extends ArticleServiceBase {
           'creationDate': c.creationDate,
         }).toList();
 
-        final selector = where
-            .eq('firmId', userPermission.firmId)
-            .eq('chainId', request.chainId);
-
-        final orFilters = calibreCandidates.map((c) => where.eq('calibreId', c['calibreId']).eq('creationDate', c['creationDate'])).toList();
-        
-        // chunk the OR query if it's too large, but for 500 it should be okay.
-        // Actually, mongo_dart might not handle or(List<SelectorBuilder>) easily.
-        // We can use the raw map syntax for better control.
+        // Use raw map syntax for the $or query.
         final query = {
           'firmId': userPermission.firmId,
           'chainId': request.chainId,
