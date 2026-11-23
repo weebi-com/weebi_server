@@ -25,12 +25,15 @@ class TestHelper {
 
   /// Returns a pool configured for a test-specific database. Pass a unique suffix
   /// per test file (e.g. the test file name without extension).
-  static MongoDbPoolService poolForDatabase(String dbSuffix) =>
+  static MongoDbPoolService poolForDatabase(
+    String dbSuffix, {
+    int poolSize = 1,
+  }) =>
       MongoDbPoolService(MongoPoolConfiguration(
         maxLifetimeMilliseconds: 180000,
         leakDetectionThreshold: 10000,
         uriString: uriForDatabase(dbSuffix),
-        poolSize: 2,
+        poolSize: poolSize,
       ));
 
   static MongoDbPoolService get defaultPoolService => MongoDbPoolService(

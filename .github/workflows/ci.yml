@@ -16,16 +16,25 @@ jobs:
         ports:
           - 27017:27017
         options: >-
+          --tmpfs /data/db
           --health-cmd "mongosh --eval 'db.runCommand({ping: 1})'"
-          --health-interval 10s
+          --health-interval 2s
           --health-timeout 5s
-          --health-retries 10
+          --health-retries 15
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@v1
+
+      - name: Cache Pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       - name: Install Melos
         run: dart pub global activate melos
