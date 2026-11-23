@@ -47,7 +47,8 @@ void main() async {
           firstname: 'lili',
           lastname: 'D. Boss',
           mail: 'lili@weebi.com',
-          password: '123456'),
+          password: '123456',
+          phone: Phone(countryCode: 33, number: '612345678')),
     );
     expect(response.statusResponse.type, StatusResponse_Type.CREATED);
     expect(response.userId.isNotEmpty, isTrue);
@@ -101,6 +102,9 @@ void main() async {
       expect(userDoc, isNotNull);
       final perm = userDoc!['permissions'] as Map<String, dynamic>?;
       expect(perm?['isFirmCreator'], isTrue);
+      final phone = userDoc['phone'] as Map<String, dynamic>?;
+      expect(phone?['countryCode'], 33);
+      expect(phone?['number'], '612345678');
 
       final chainDoc = await dbFirmCheck
           .collection(FenceService.boutiqueCollectionName)

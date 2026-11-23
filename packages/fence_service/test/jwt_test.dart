@@ -153,22 +153,26 @@ void main() {
       expect(parsedJwt.payload['array'], equals(originalPayload['array']));
     });
 
-    test('should handle expiration correctly', () async {
-      final jwt = JsonWebToken(secretKeyFactory: () => testSecretKey);
-      jwt.createPayload(
+    test('should handle expiration correctly', () {
+      final validJwt = JsonWebToken(secretKeyFactory: () => testSecretKey);
+      validJwt.createPayload(
         'exp_test_user',
-        expireIn: const Duration(seconds: 1),
+        expireIn: const Duration(seconds: 60),
       );
-      final token = jwt.sign();
+      validJwt.sign();
+      expect(validJwt.verify(), isTrue);
 
-      // Token should be valid immediately
-      expect(jwt.verify(), isTrue);
+      final expiredJwt = JsonWebToken(secretKeyFactory: () => testSecretKey);
+      expiredJwt.createPayload(
+        'exp_test_user',
+        expireIn: const Duration(seconds: -5),
+      );
+      final expiredToken = expiredJwt.sign();
 
-      // Wait for expiration (add buffer for CI timing variance)
-      await Future.delayed(const Duration(milliseconds: 1500));
-      
-      // Verify using the parsed token (more reliable in CI)
-      final parsedJwt = JsonWebToken.parse(token, secretKeyFactory: () => testSecretKey);
+      final parsedJwt = JsonWebToken.parse(
+        expiredToken,
+        secretKeyFactory: () => testSecretKey,
+      );
       expect(parsedJwt.verify(), isFalse, reason: 'Token should be expired');
     });
 

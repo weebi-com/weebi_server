@@ -15,22 +15,30 @@ final _channel = ClientChannel(
   options: _channelOptions, // pass the channelOptions above.
 );
 
-void main() async {
+void main() {
   final poolService = TestHelper.poolForDatabase('auth_test');
-  await poolService.initialize();
   setUpAll(() async {
+    await poolService.initialize();
     final db = await poolService.acquire();
-    final userCollection = db.collection('user');
-    await userCollection.insertOne({
-      'mail': 'dev@weebi.com',
-      'password': '1234',
-    });
+    try {
+      final userCollection = db.collection('user');
+      await userCollection.insertOne({
+        'mail': 'dev@weebi.com',
+        'password': '1234',
+      });
+    } finally {
+      poolService.release(db);
+    }
   });
 
   tearDownAll(() async {
     final db = await poolService.acquire();
-    await db.collection(FenceService.userCollectionName).drop();
-    poolService.release(db);
+    try {
+      await db.collection(FenceService.userCollectionName).drop();
+    } finally {
+      poolService.release(db);
+    }
+    await poolService.close();
   });
 
   test('test client auth', () async {

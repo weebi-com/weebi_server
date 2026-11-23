@@ -3033,10 +3033,11 @@ class FenceService extends FenceServiceBase {
         Credentials(mail: request.mail, password: request.password));
 
     final user = await _isMailAlreadyUsed(mailAndEncyptedPassword.mail);
+    final phone = _phoneFromSignUp(request);
     if (user.userId.isNotEmpty) {
       if (_isPendingUser(user)) {
         return await _updatePendingUser(
-            user, mailAndEncyptedPassword.passwordEncrypted);
+            user, mailAndEncyptedPassword.passwordEncrypted, phone);
       } else {
         // user signed it at least once
         throw GrpcError.invalidArgument(
@@ -3058,6 +3059,7 @@ class FenceService extends FenceServiceBase {
           mail: mailAndEncyptedPassword.mail,
           firstname: request.firstname,
           lastname: request.lastname,
+          phone: phone,
           mustChangePassword: false,
           creationDateUTC: DateTime.now().toUtc().timestampProto,
         );
@@ -3104,6 +3106,21 @@ class FenceService extends FenceServiceBase {
     });
   }
 
+  /// Phone is optional so older clients can still sign up.
+  /// A number without a country code is rejected.
+  static Phone _phoneFromSignUp(SignUpRequest request) {
+    if (!request.hasPhone()) return Phone();
+    final number = request.phone.number.trim();
+    if (number.isEmpty) return Phone();
+    if (request.phone.countryCode <= 0) {
+      throw GrpcError.invalidArgument('phone country code is required');
+    }
+    if (!RegExp(r'^\d+$').hasMatch(number)) {
+      throw GrpcError.invalidArgument('phone number must contain digits only');
+    }
+    return Phone(countryCode: request.phone.countryCode, number: number);
+  }
+
   /// Parses a boutique phone display string into [Phone].
   /// Accepts forms like "+243 999999" or a bare number.
   static Phone _phoneFromBoutiqueDisplay(String display) {
@@ -3143,11 +3160,18 @@ class FenceService extends FenceServiceBase {
       String accountEmail = '';
       String firstname = '';
       String lastname = '';
+      var phoneForOps = boutiquePhone.trim();
       try {
         final user = await _checkUserAndProtoIt(userId);
         accountEmail = user.mail.trim();
         firstname = user.firstname.trim();
         lastname = user.lastname.trim();
+        if (phoneForOps.isEmpty) {
+          final number = user.phone.number.trim();
+          if (number.isNotEmpty && user.phone.countryCode > 0) {
+            phoneForOps = '+${user.phone.countryCode} $number';
+          }
+        }
       } catch (e) {
         _logger.warning('Could not load user for signup ops email',
             extra: {'userId': userId, 'firmId': firmId, 'error': '$e'});
@@ -3169,7 +3193,7 @@ class FenceService extends FenceServiceBase {
         'firstname': firstname,
         'lastname': lastname,
         'boutiqueMail': boutiqueMail,
-        'boutiquePhone': boutiquePhone,
+        'boutiquePhone': phoneForOps,
       });
 
       final url = Uri.parse('$baseUrl/api/v1/emails/notify-signup');
@@ -3291,15 +3315,19 @@ class FenceService extends FenceServiceBase {
   // so when user signs up we only update password
   // if user was created by mistake, he/she can quit/delete profile to start fresh signup
   Future<SignUpResponse> _updatePendingUser(
-      UserPublic user, String passwordEncrypted) async {
+      UserPublic user, String passwordEncrypted, Phone phone) async {
     return databaseMiddleware<SignUpResponse>(_poolService, (db) async {
       final userCollection = db.collection(userCollectionName);
 
       try {
-        await userCollection.update(where.eq('userId', user.userId),
-            ModifierBuilder()
-                .set('password', passwordEncrypted)
-                .set('mustChangePassword', false),
+        final modifier = ModifierBuilder()
+            .set('password', passwordEncrypted)
+            .set('mustChangePassword', false);
+        if (phone.number.isNotEmpty && phone.countryCode > 0) {
+          modifier.set(
+              'phone', phone.toProto3Json() as Map<String, dynamic>);
+        }
+        await userCollection.update(where.eq('userId', user.userId), modifier,
             upsert: true);
         return SignUpResponse(
             statusResponse: StatusResponse()
