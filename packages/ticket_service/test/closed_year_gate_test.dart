@@ -43,8 +43,7 @@ void main() async {
 
   Future<void> seedChainWithClosedYear(int year) async {
     final db = await poolService.acquire();
-    await db.collection(FenceService.boutiqueCollectionName).drop();
-    await db.createCollection(FenceService.boutiqueCollectionName);
+    await db.collection(FenceService.boutiqueCollectionName).deleteMany({});
 
     final chain = Chain.create()
       ..mergeFromProto3Json(
@@ -85,6 +84,7 @@ void main() async {
       'firmId': Dummy.firm.firmId,
       'licenses': <dynamic>[],
     });
+    await db.createCollection(FenceService.boutiqueCollectionName);
     await db.createCollection(TicketService.collectionName);
     poolService.release(db);
 
@@ -115,12 +115,12 @@ void main() async {
     await db.collection(FenceService.firmCollectionName).drop();
     await db.collection(FenceService.boutiqueCollectionName).drop();
     poolService.release(db);
+    await poolService.close();
   });
 
   setUp(() async {
     final db = await poolService.acquire();
-    await db.collection(TicketService.collectionName).drop();
-    await db.createCollection(TicketService.collectionName);
+    await db.collection(TicketService.collectionName).deleteMany({});
     poolService.release(db);
     await seedChainWithClosedYear(2024);
   });

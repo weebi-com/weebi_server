@@ -12,7 +12,7 @@ void main() async {
       TestHelper.poolForDatabase('firm_id_allocation_test');
   await poolService.initialize();
 
-  setUp(() async {
+  setUpAll(() async {
     final db = await poolService.acquire();
     try {
       await _dropQuietly(db, FenceService.userCollectionName);
@@ -22,6 +22,7 @@ void main() async {
       await db.createCollection(FenceService.userCollectionName);
       await db.createCollection(FenceService.boutiqueCollectionName);
       await db.createCollection(FenceService.firmCollectionName);
+      await db.createCollection(firmIdCounterCollectionName);
       await db.ensureIndex(
         FenceService.firmCollectionName,
         name: 'firmId',
@@ -40,6 +41,18 @@ void main() async {
     }
   });
 
+  setUp(() async {
+    final db = await poolService.acquire();
+    try {
+      await db.collection(FenceService.userCollectionName).deleteMany({});
+      await db.collection(FenceService.boutiqueCollectionName).deleteMany({});
+      await db.collection(FenceService.firmCollectionName).deleteMany({});
+      await db.collection(firmIdCounterCollectionName).deleteMany({});
+    } finally {
+      poolService.release(db);
+    }
+  });
+
   tearDownAll(() async {
     final db = await poolService.acquire();
     try {
@@ -50,6 +63,7 @@ void main() async {
     } finally {
       poolService.release(db);
     }
+    await poolService.close();
   });
 
   test('new firms get consecutive integer strings and leave epoch ids alone',

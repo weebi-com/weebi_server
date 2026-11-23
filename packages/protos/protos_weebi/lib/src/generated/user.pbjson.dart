@@ -216,6 +216,14 @@ const SignUpRequest$json = {
     {'1': 'firstname', '3': 2, '4': 1, '5': 9, '10': 'firstname'},
     {'1': 'lastname', '3': 3, '4': 1, '5': 9, '10': 'lastname'},
     {'1': 'password', '3': 4, '4': 1, '5': 9, '10': 'pwd'},
+    {
+      '1': 'phone',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.weebi.common.phone.Phone',
+      '10': 'phone'
+    },
   ],
 };
 
@@ -223,7 +231,7 @@ const SignUpRequest$json = {
 final $typed_data.Uint8List signUpRequestDescriptor = $convert.base64Decode(
     'Cg1TaWduVXBSZXF1ZXN0EhIKBG1haWwYASABKAlSBG1haWwSHAoJZmlyc3RuYW1lGAIgASgJUg'
     'lmaXJzdG5hbWUSGgoIbGFzdG5hbWUYAyABKAlSCGxhc3RuYW1lEhUKCHBhc3N3b3JkGAQgASgJ'
-    'UgNwd2Q=');
+    'UgNwd2QSLwoFcGhvbmUYBSABKAsyGS53ZWViaS5jb21tb24ucGhvbmUuUGhvbmVSBXBob25l');
 
 @$core.Deprecated('Use signUpResponseDescriptor instead')
 const SignUpResponse$json = {

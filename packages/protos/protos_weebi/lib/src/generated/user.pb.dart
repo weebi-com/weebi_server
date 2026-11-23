@@ -451,12 +451,14 @@ class SignUpRequest extends $pb.GeneratedMessage {
     $core.String? firstname,
     $core.String? lastname,
     $core.String? password,
+    $0.Phone? phone,
   }) {
     final result = create();
     if (mail != null) result.mail = mail;
     if (firstname != null) result.firstname = firstname;
     if (lastname != null) result.lastname = lastname;
     if (password != null) result.password = password;
+    if (phone != null) result.phone = phone;
     return result;
   }
 
@@ -477,6 +479,8 @@ class SignUpRequest extends $pb.GeneratedMessage {
     ..aOS(2, _omitFieldNames ? '' : 'firstname')
     ..aOS(3, _omitFieldNames ? '' : 'lastname')
     ..aOS(4, _omitFieldNames ? '' : 'pwd', protoName: 'password')
+    ..aOM<$0.Phone>(5, _omitFieldNames ? '' : 'phone',
+        subBuilder: $0.Phone.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -533,6 +537,17 @@ class SignUpRequest extends $pb.GeneratedMessage {
   $core.bool hasPassword() => $_has(3);
   @$pb.TagNumber(4)
   void clearPassword() => $_clearField(4);
+
+  @$pb.TagNumber(5)
+  $0.Phone get phone => $_getN(4);
+  @$pb.TagNumber(5)
+  set phone($0.Phone value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasPhone() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearPhone() => $_clearField(5);
+  @$pb.TagNumber(5)
+  $0.Phone ensurePhone() => $_ensure(4);
 }
 
 class SignUpResponse extends $pb.GeneratedMessage {

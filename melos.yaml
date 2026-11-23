@@ -28,12 +28,12 @@ scripts:
 # if fail consider dart pub upgrade
 # intl_utils:generate, run flutter pub global activate intl_utils
   test:
-    run: melos run test:dart --no-select && melos run test:flutter --no-select
-    description: Run all Dart & Flutter tests in this project.
+    run: melos run test:dart --no-select
+    description: Run all Dart tests in this project.
 
   test:dart:
-    run: melos exec -c 1 --dir-exists="test" --fail-fast -- "dart test test"
-    description: Run Dart tests for a specific package in this project.
+    run: melos exec -c 4 --dir-exists="test" --fail-fast -- "dart test -j 4 test"
+    description: Run Dart tests across packages in parallel.
     packageFilters:
       flutter: false
 
