@@ -486,10 +486,16 @@ class CreateFirmResponse extends $pb.GeneratedMessage {
   factory CreateFirmResponse({
     $3.StatusResponse? statusResponse,
     Firm? firm,
+    $core.String? accessToken,
+    $core.String? refreshToken,
+    $core.String? sessionId,
   }) {
     final result = create();
     if (statusResponse != null) result.statusResponse = statusResponse;
     if (firm != null) result.firm = firm;
+    if (accessToken != null) result.accessToken = accessToken;
+    if (refreshToken != null) result.refreshToken = refreshToken;
+    if (sessionId != null) result.sessionId = sessionId;
     return result;
   }
 
@@ -509,6 +515,9 @@ class CreateFirmResponse extends $pb.GeneratedMessage {
     ..aOM<$3.StatusResponse>(1, _omitFieldNames ? '' : 'statusResponse',
         protoName: 'statusResponse', subBuilder: $3.StatusResponse.create)
     ..aOM<Firm>(2, _omitFieldNames ? '' : 'firm', subBuilder: Firm.create)
+    ..aOS(3, _omitFieldNames ? '' : 'accessToken', protoName: 'accessToken')
+    ..aOS(4, _omitFieldNames ? '' : 'refreshToken', protoName: 'refreshToken')
+    ..aOS(5, _omitFieldNames ? '' : 'sessionId', protoName: 'sessionId')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -551,6 +560,36 @@ class CreateFirmResponse extends $pb.GeneratedMessage {
   void clearFirm() => $_clearField(2);
   @$pb.TagNumber(2)
   Firm ensureFirm() => $_ensure(1);
+
+  /// / Credential minted from the permissions just saved. The caller installs it
+  /// / and does not sign in again. Empty when the firm was not created.
+  @$pb.TagNumber(3)
+  $core.String get accessToken => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set accessToken($core.String value) => $_setString(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasAccessToken() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearAccessToken() => $_clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get refreshToken => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set refreshToken($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasRefreshToken() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearRefreshToken() => $_clearField(4);
+
+  /// / Set when the call carried x-session-id and that web session was updated.
+  @$pb.TagNumber(5)
+  $core.String get sessionId => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set sessionId($core.String value) => $_setString(4, value);
+  @$pb.TagNumber(5)
+  $core.bool hasSessionId() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearSessionId() => $_clearField(5);
 }
 
 const $core.bool _omitFieldNames =
