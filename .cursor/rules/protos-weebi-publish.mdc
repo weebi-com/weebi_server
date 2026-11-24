@@ -1,0 +1,13 @@
+---
+description: Depend on published protos_weebi; never path-override it in apps
+alwaysApply: true
+---
+
+# protos_weebi is published, then consumed
+
+`protos_weebi` reaches weebi and weebi_client only as a published pub.dev version.
+
+- When a change needs new generated Dart, bump `protos` VERSION and CHANGELOG, and `protos_weebi` pubspec plus CHANGELOG, to the next version.
+- Point weebi and weebi_client at that version (`protos_weebi: ^x.y.z`). Do not path-override `protos_weebi` in those apps.
+- weebi_server keeps its existing path dependency on the local package.
+- Do not publish the package. Stop and wait for Pierre to publish it before `pub get` on the apps can succeed.

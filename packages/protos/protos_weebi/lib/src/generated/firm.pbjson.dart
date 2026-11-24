@@ -280,6 +280,9 @@ const CreateFirmResponse$json = {
       '6': '.weebi.firm.Firm',
       '10': 'firm'
     },
+    {'1': 'accessToken', '3': 3, '4': 1, '5': 9, '10': 'accessToken'},
+    {'1': 'refreshToken', '3': 4, '4': 1, '5': 9, '10': 'refreshToken'},
+    {'1': 'sessionId', '3': 5, '4': 1, '5': 9, '10': 'sessionId'},
   ],
 };
 
@@ -287,4 +290,6 @@ const CreateFirmResponse$json = {
 final $typed_data.Uint8List createFirmResponseDescriptor = $convert.base64Decode(
     'ChJDcmVhdGVGaXJtUmVzcG9uc2USTAoOc3RhdHVzUmVzcG9uc2UYASABKAsyJC5nb29nbGUucm'
     'V0YWlsLmNvbW1vbi5TdGF0dXNSZXNwb25zZVIOc3RhdHVzUmVzcG9uc2USJAoEZmlybRgCIAEo'
-    'CzIQLndlZWJpLmZpcm0uRmlybVIEZmlybQ==');
+    'CzIQLndlZWJpLmZpcm0uRmlybVIEZmlybRIgCgthY2Nlc3NUb2tlbhgDIAEoCVILYWNjZXNzVG'
+    '9rZW4SIgoMcmVmcmVzaFRva2VuGAQgASgJUgxyZWZyZXNoVG9rZW4SHAoJc2Vzc2lvbklkGAUg'
+    'ASgJUglzZXNzaW9uSWQ=');

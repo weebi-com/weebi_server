@@ -817,6 +817,35 @@ class FenceService extends FenceServiceBase {
     }
   }
 
+  ({String accessToken, String refreshToken}) _signUserTokens(
+    UserPermissions permissions, {
+    List<String>? tags,
+  }) {
+    var jwt = JsonWebToken();
+    final payload =
+        permissions.toProto3Json() as Map<String, dynamic>? ??
+            <String, dynamic>{};
+    if (tags != null && tags.isNotEmpty) {
+      payload['tags'] = tags;
+    }
+    jwt.createPayload(
+      permissions.userId,
+      expireIn: accessJwtTtl,
+      payload: payload,
+    );
+    final accessToken = jwt.sign();
+    jwt = JsonWebToken();
+    jwt.createPayload(
+      permissions.userId,
+      expireIn: refreshJwtTtl,
+      payload: {
+        'userId': permissions.userId,
+        'firmId': permissions.firmId,
+      },
+    );
+    return (accessToken: accessToken, refreshToken: jwt.sign());
+  }
+
   Future<({String accessToken, String refreshToken})> _mintTokensForUserId(
       String userId) async {
     final read = await _readUserPrivateAndTags(userId);
@@ -1955,7 +1984,7 @@ class FenceService extends FenceServiceBase {
   /// New firms receive the next whole number from the counters collection, stored as a string.
   /// Existing epoch firm ids are left unchanged.
   /// Chain and Boutique will be created by default and will use the same firmId
-  /// Since createFirm also updates user permission, clientApp needs to reauthent using refresh right after
+  /// createFirm binds the user to the firm and returns the credential for that firm. The caller installs it and does not sign in again.
   @override
   Future<CreateFirmResponse> createFirm(
       ServiceCall? call, CreateFirmRequest request) async {
@@ -2082,6 +2111,19 @@ class FenceService extends FenceServiceBase {
                 : '',
           );
 
+          final minted = _signUserTokens(permissions);
+          var sessionId = '';
+          final existingSessionId = _getSessionIdFromMetadata(call);
+          if (existingSessionId != null && existingSessionId.isNotEmpty) {
+            await _updateWebSession(
+              sessionId: existingSessionId,
+              accessToken: minted.accessToken,
+              refreshToken: minted.refreshToken,
+              log: log,
+            );
+            sessionId = existingSessionId;
+          }
+
           log.logRpcExit('createFirm', resultData: {'firmId': firmId});
 
           return CreateFirmResponse(
@@ -2090,6 +2132,9 @@ class FenceService extends FenceServiceBase {
               ..id = firmId
               ..timestamp = DateTime.now().timestampProto,
             firm: firm,
+            accessToken: minted.accessToken,
+            refreshToken: minted.refreshToken,
+            sessionId: sessionId,
           );
         } else {
           log.logRpcExit('createFirm', resultData: {
@@ -2120,11 +2165,15 @@ class FenceService extends FenceServiceBase {
       final userCollection = db.collection(userCollectionName);
 
       try {
-        await userCollection.update(
+        final result = await userCollection.updateOne(
           where.eq('userId', userId),
           ModifierBuilder().set('firmId', firmId).set('permissions',
               permissions.toProto3Json() as Map<String, dynamic>),
         );
+        if (!result.isSuccess || result.nMatched < 1) {
+          throw GrpcError.internal(
+              'createFirm did not update user $userId');
+        }
 
         return StatusResponse()
           ..type = StatusResponse_Type.UPDATED
@@ -3050,8 +3099,7 @@ class FenceService extends FenceServiceBase {
       try {
         // mail/user does not exist AND is not a pending user
         final userId = DateTime.now().objectIdString;
-        final permissions = UserPermissions(
-            userId: userId, firmRights: FirmRights(rights: [Right.create]));
+        final permissions = founderPermissions(userId);
         final userPrivate = UserPrivate(
           userId: userId,
           permissions: permissions,

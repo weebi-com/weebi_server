@@ -63,9 +63,10 @@ void main() async {
     final permissions = tokensBoss.accessToken.userPermissions;
 
     expect(permissions.firmId.isEmpty, isTrue);
+    expect(permissions.isFirmCreator, isFalse);
     expect(permissions.userId, response.userId);
-    expect(permissions.firmRights.rights.length, 1);
     expect(permissions.firmRights.rights.contains(Right.create), isTrue);
+    expect(permissions.chainRights.rights.contains(Right.create), isTrue);
 
     // Lili the boss creates her new unique firm
     final createFirmResponse = await fenceService.createFirm(
@@ -126,14 +127,17 @@ void main() async {
       poolService.release(dbFirmCheck);
     }
 
-    // boss permissions should not longer allow firm creation
-    final tokensBoss2 = await fenceService.authenticateWithRefreshToken(
-        null, RefreshToken(refreshToken: tokensBoss.refreshToken));
+    // The createFirm response is the credential. No second login.
+    final issued = createFirmResponse.accessToken;
+    expect(issued.isNotEmpty, isTrue);
+    expect(createFirmResponse.refreshToken.isNotEmpty, isTrue);
 
-    final liliPermissions2 = tokensBoss2.accessToken.userPermissions;
+    final liliPermissions2 = issued.userPermissions;
 
     expect(liliPermissions2.firmRights.rights.length, 3);
     expect(liliPermissions2.firmRights.rights.contains(Right.create), isFalse);
+    expect(liliPermissions2.chainRights.rights.contains(Right.create), isTrue);
+    expect(liliPermissions2.isFirmCreator, isTrue);
     expect(liliPermissions2.firmId, createFirmResponse.firm.firmId);
 
     // boss creates alice
@@ -142,7 +146,7 @@ void main() async {
     print('DEBUG TEST: Boss userId: ${response.userId}');
 
     final alice = await fenceService.createPendingUser(
-      ServiceCallTest(tokensBoss2.accessToken),
+      ServiceCallTest(issued),
       PendingUserRequest(
         password: '987654321',
         mail: 'alice@weebi.com',
@@ -211,14 +215,14 @@ void main() async {
 
     // DEBUG: Log the authentication token before calling readAllUsers
     print(
-        'DEBUG TEST: About to call readAllUsers with token: ${tokensBoss2.accessToken}');
+        'DEBUG TEST: About to call readAllUsers with token: ${issued}');
     print(
-        'DEBUG TEST: Token userPermissions: ${tokensBoss2.accessToken.userPermissions}');
+        'DEBUG TEST: Token userPermissions: ${issued.userPermissions}');
     print(
-        'DEBUG TEST: Token firmId: ${tokensBoss2.accessToken.userPermissions.firmId}');
+        'DEBUG TEST: Token firmId: ${issued.userPermissions.firmId}');
 
     final allUsers = await fenceService.readAllUsers(
-        ServiceCallTest(tokensBoss2.accessToken), Empty());
+        ServiceCallTest(issued), Empty());
 
     // DEBUG: Log the result
     print('DEBUG TEST: readAllUsers returned ${allUsers.users.length} users');
@@ -232,7 +236,7 @@ void main() async {
     final aliceUser = allUsers.users.firstWhere((u) => u.firstname == 'Alice');
 
     final passwordUpdaeResponse = await fenceService.updateUserPassword(
-        ServiceCallTest(tokensBoss2.accessToken),
+        ServiceCallTest(issued),
         PasswordUpdateRequest(
             userId: aliceUser.userId,
             firmId: liliPermissions2.firmId,
@@ -251,7 +255,7 @@ void main() async {
     // Lili is fed up with Alice, fires her and deletes her account
 
     final deleteUserResponse = await fenceService.deleteOneUser(
-        ServiceCallTest(tokensBoss2.accessToken),
+        ServiceCallTest(issued),
         UserId(userId: aliceUser.userId));
 
     expect(deleteUserResponse.type, StatusResponse_Type.DELETED);
