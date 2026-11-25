@@ -14,7 +14,7 @@ abstract class RightsAdmin {
   static final chain = ChainRights(
     rights: const [Right.create, Right.read, Right.update, Right.delete],
   );
-  // Firm creation only available after signup just in case
+  /// Firm create is retired once the founder is bound to a firm.
   static final firm = FirmRights(
     rights: const [Right.read, Right.update, Right.delete],
   );
@@ -53,3 +53,26 @@ abstract class RightSalesperson {
     canSetPromo: false,
   );
 }
+
+/// New self-signup account. Admin rights plus firm-create, no firm yet.
+/// [createFirm] replaces firm rights with [RightsAdmin.firm] and sets firmId.
+UserPermissions founderPermissions(String userId) => UserPermissions(
+      userId: userId,
+      articleRights: RightsAdmin.article,
+      boutiqueRights: RightsAdmin.boutique,
+      contactRights: RightsAdmin.contact,
+      chainRights: RightsAdmin.chain,
+      firmRights: FirmRights(
+        rights: const [
+          Right.create,
+          Right.read,
+          Right.update,
+          Right.delete,
+        ],
+      ),
+      ticketRights: RightsAdmin.ticket,
+      boolRights: RightsAdmin.boolRights,
+      userManagementRights: RightsAdmin.userManagement,
+      billingRights: RightsAdmin.billing,
+      fullAccess: AccessFull(hasFullAccess: true),
+    );
