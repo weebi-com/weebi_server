@@ -336,6 +336,13 @@ const ArticleBasketPb$json = {
       '5': 1,
       '10': 'markupAmountSalesOnly'
     },
+    {
+      '1': 'doNotSellProxiesSeparately',
+      '3': 13,
+      '4': 1,
+      '5': 8,
+      '10': 'doNotSellProxiesSeparately'
+    },
   ],
 };
 
@@ -349,7 +356,8 @@ final $typed_data.Uint8List articleBasketPbDescriptor = $convert.base64Decode(
     'USKgoQc3RhdHVzVXBkYXRlRGF0ZRgJIAEoCVIQc3RhdHVzVXBkYXRlRGF0ZRI3Cgdwcm94aWVz'
     'GAogAygLMh0ud2VlYmkuYXJ0aWNsZS5Qcm94eUFydGljbGVQYlIHcHJveGllcxIvCg5kaXNjb3'
     'VudEFtb3VudBgLIAEoAVIXZGlzY291bnRBbW91bnRTYWxlc09ubHkSKwoMbWFya3VwQW1vdW50'
-    'GAwgASgBUhVtYXJrdXBBbW91bnRTYWxlc09ubHk=');
+    'GAwgASgBUhVtYXJrdXBBbW91bnRTYWxlc09ubHkSPgoaZG9Ob3RTZWxsUHJveGllc1NlcGFyYX'
+    'RlbHkYDSABKAhSGmRvTm90U2VsbFByb3hpZXNTZXBhcmF0ZWx5');
 
 @$core.Deprecated('Use articleBasketOnTicketPbDescriptor instead')
 const ArticleBasketOnTicketPb$json = {
