@@ -1,6 +1,10 @@
 # changelog
 
 
+## 1.5.1 - 2026 november
+
+- `ArticleBasketPb.doNotSellProxiesSeparately`: optionally hide basket component articles from separate sale
+
 ## 1.5.0 - 2026 november
 
 - feat: seamless signup

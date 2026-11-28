@@ -145,6 +145,16 @@ void main() async {
       CreateFirmRequest(name: 'Web Shop'),
     );
     expect(created.sessionId, sessionId);
+    expect(
+      created.accessToken,
+      isEmpty,
+      reason: 'Web BFF createFirm must keep accessToken server-side',
+    );
+    expect(
+      created.refreshToken,
+      isEmpty,
+      reason: 'Web BFF createFirm must keep refreshToken server-side',
+    );
 
     final dbAfter = await poolService.acquire();
     late String sessionJwt;

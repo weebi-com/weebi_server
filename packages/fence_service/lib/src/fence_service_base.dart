@@ -2112,29 +2112,31 @@ class FenceService extends FenceServiceBase {
           );
 
           final minted = _signUserTokens(permissions);
-          var sessionId = '';
           final existingSessionId = _getSessionIdFromMetadata(call);
-          if (existingSessionId != null && existingSessionId.isNotEmpty) {
+          final isWebSession =
+              existingSessionId != null && existingSessionId.isNotEmpty;
+          if (isWebSession) {
             await _updateWebSession(
               sessionId: existingSessionId,
               accessToken: minted.accessToken,
               refreshToken: minted.refreshToken,
               log: log,
             );
-            sessionId = existingSessionId;
           }
 
           log.logRpcExit('createFirm', resultData: {'firmId': firmId});
 
+          // Match authenticateWithCredentials(isWebApp: true): when updating a
+          // server-side web session, keep JWTs out of the browser response.
           return CreateFirmResponse(
             statusResponse: StatusResponse.create()
               ..type = StatusResponse_Type.CREATED
               ..id = firmId
               ..timestamp = DateTime.now().timestampProto,
             firm: firm,
-            accessToken: minted.accessToken,
-            refreshToken: minted.refreshToken,
-            sessionId: sessionId,
+            accessToken: isWebSession ? '' : minted.accessToken,
+            refreshToken: isWebSession ? '' : minted.refreshToken,
+            sessionId: isWebSession ? existingSessionId : '',
           );
         } else {
           log.logRpcExit('createFirm', resultData: {

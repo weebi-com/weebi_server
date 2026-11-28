@@ -43,6 +43,14 @@ scripts:
     packageFilters:
       flutter: true
 
+  test:dev:
+    run: dart test test_e2e --reporter expanded
+    exec:
+      concurrency: 1
+    description: Run live contract & multi-actor journey E2E suite against dev (Envoy gRPC-Web + native gRPC).
+    packageFilters:
+      scope: server
+
   lint:all:
     run: melos run analyze && melos run format
     description: Run all static analysis checks.

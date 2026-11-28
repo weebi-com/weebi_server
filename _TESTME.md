@@ -36,3 +36,19 @@ export MONGO_DB_URI=mongodb://localhost:27017/local
 dart bin/server.dart
 ```
 
+***
+
+## dev — contract & multi-actor journey E2E (~3s)
+
+Runs both **Envoy gRPC-Web BFF** (`weebi-envoyproxy-dev`, CORS, `Set-Cookie`, `x-session-id`, zero-JWT-leak audit) and **native gRPC** (`dev.weebi.com:443`, PoS pairing) in one pass:
+
+``` shell
+melos run test:dev
+# or directly:
+cd apps/server
+dart test test_e2e --reporter expanded
+```
+
+Override targets via env vars (`WEEBI_GRPC_HOST`, `WEEBI_GRPC_PORT`, `WEEBI_GRPC_INSECURE=true`, `WEEBI_ENVOY_URL`) to run the same suite against local server + local Envoy.
+
+
