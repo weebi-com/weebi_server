@@ -762,6 +762,7 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
     $core.Iterable<ProxyArticlePb>? proxies,
     $core.double? discountAmount,
     $core.double? markupAmount,
+    $core.bool? doNotSellProxiesSeparately,
   }) {
     final result = create();
     if (calibreId != null) result.calibreId = calibreId;
@@ -776,6 +777,8 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
     if (proxies != null) result.proxies.addAll(proxies);
     if (discountAmount != null) result.discountAmount = discountAmount;
     if (markupAmount != null) result.markupAmount = markupAmount;
+    if (doNotSellProxiesSeparately != null)
+      result.doNotSellProxiesSeparately = doNotSellProxiesSeparately;
     return result;
   }
 
@@ -809,6 +812,8 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
         protoName: 'discountAmount')
     ..aD(12, _omitFieldNames ? '' : 'markupAmountSalesOnly',
         protoName: 'markupAmount')
+    ..aOB(13, _omitFieldNames ? '' : 'doNotSellProxiesSeparately',
+        protoName: 'doNotSellProxiesSeparately')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -935,6 +940,15 @@ class ArticleBasketPb extends $pb.GeneratedMessage {
   $core.bool hasMarkupAmount() => $_has(11);
   @$pb.TagNumber(12)
   void clearMarkupAmount() => $_clearField(12);
+
+  @$pb.TagNumber(13)
+  $core.bool get doNotSellProxiesSeparately => $_getBF(12);
+  @$pb.TagNumber(13)
+  set doNotSellProxiesSeparately($core.bool value) => $_setBool(12, value);
+  @$pb.TagNumber(13)
+  $core.bool hasDoNotSellProxiesSeparately() => $_has(12);
+  @$pb.TagNumber(13)
+  void clearDoNotSellProxiesSeparately() => $_clearField(13);
 }
 
 class ArticleBasketOnTicketPb extends $pb.GeneratedMessage {
